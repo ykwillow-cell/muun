@@ -15,13 +15,14 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { calculateSaju, SajuResult } from "@/lib/saju";
 
-// 폼 스키마 정의 (만세력과 동일)
+// 폼 스키마 정의
 const formSchema = z.object({
   name: z.string().min(1, "이름을 입력해주세요"),
   gender: z.enum(["male", "female"]),
   birthDate: z.string().min(1, "생년월일을 입력해주세요"),
   birthTime: z.string().min(1, "태어난 시간을 입력해주세요"),
   calendarType: z.enum(["solar", "lunar"]),
+  maritalStatus: z.enum(["single", "married"]),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -114,43 +115,47 @@ function getPastInterpretation(stem: string): string {
   return interpretations[stem] || "당신의 과거는 당신을 만드는 소중한 자산입니다.";
 }
 
-// Persona B - 미래 방향 (더 자세함)
-function getFutureDirection(stem: string): string {
+// Persona B - 미래 방향 (결혼 유무 반영)
+function getFutureDirection(stem: string, maritalStatus: string): string {
   const directions: Record<string, string> = {
-    '甲': "당신의 미래는 밝습니다. 지금까지 쌓은 경험과 도전 정신을 바탕으로 30대 중반부터 새로운 기회가 찾아올 것입니다. 당신이 원하던 일을 시작할 수 있는 시기가 올 것입니다. 지금은 그 기회를 위해 준비하는 시간입니다. 계속 배우고 성장하세요.",
-    '乙': "당신의 섬세함과 창의성이 빛날 시간이 옵니다. 예술, 디자인, 문학 등 창의적인 분야에서 성공할 가능성이 높습니다. 당신의 감정을 표현하는 방법을 찾으면 많은 사람들이 감동받을 것입니다. 자신의 감정을 두려워하지 마세요. 그것이 당신의 가장 큰 자산입니다.",
-    '丙': "40대가 당신의 전성기입니다. 지금까지의 밝은 에너지와 활동성이 큰 성과로 나타날 것입니다. 당신이 주도적으로 이끌 수 있는 프로젝트나 일이 생길 것입니다. 당신의 열정을 현실로 만들 수 있는 시기가 올 것입니다. 지금의 노력을 계속하세요.",
-    '丁': "당신의 깊이 있는 생각이 큰 통찰력으로 발전할 것입니다. 인생의 의미를 찾는 일, 사람들을 상담하는 일, 또는 철학적인 일에서 성공할 수 있습니다. 당신의 깊이가 많은 사람들을 도울 것입니다. 자신의 생각을 표현하는 용기를 내세요.",
-    '戊': "50대에 안정과 번영이 찾아올 것입니다. 당신의 성실함과 책임감이 큰 신뢰로 돌아올 것입니다. 지도자나 관리자의 위치에서 당신의 가치가 빛날 것입니다. 지금의 노력이 반드시 보상받을 것입니다. 계속 성실하게 살아가세요.",
-    '己': "당신이 남을 돕는 일에서 진정한 행복을 찾을 것입니다. 상담, 교육, 의료, 사회복지 등 사람을 돕는 분야에서 큰 성공을 거둘 것입니다. 당신의 따뜻함이 세상을 바꿀 것입니다. 자신을 위한 시간도 가져야 한다는 것을 기억하세요.",
-    '庚': "리더십이 필요한 자리에서 당신의 가치가 빛날 것입니다. 당신의 강한 의지와 결단력이 많은 사람들을 이끌 것입니다. 경영, 정치, 군사, 스포츠 등 여러 분야에서 성공할 수 있습니다. 당신의 강함을 긍정적으로 사용하세요.",
-    '辛': "당신의 예민함을 예술이나 창작으로 표현하면 큰 성공을 거둘 것입니다. 음악, 미술, 문학, 영화 등에서 당신의 재능이 빛날 것입니다. 당신의 예민함은 약점이 아니라 강점입니다. 자신을 믿고 표현하세요.",
-    '壬': "당신의 적응력을 활용해 새로운 분야에 도전하면 성공할 것입니다. 여행, 무역, 국제 업무 등 새로운 환경을 필요로 하는 일에서 빛날 것입니다. 당신의 유연함이 큰 자산이 될 것입니다. 계속 배우고 성장하세요.",
-    '癸': "당신의 조용한 영향력으로 주변을 변화시킬 것입니다. 당신의 진정성이 사람들을 움직일 것입니다. 교육, 문화, 종교, 철학 등 정신적인 분야에서 성공할 수 있습니다. 자신의 목소리를 내세요. 당신의 말은 소중합니다."
+    '甲': "당신의 미래는 밝습니다. 지금까지 쌓은 경험과 도전 정신을 바탕으로 30대 중반부터 새로운 기회가 찾아올 것입니다.",
+    '乙': "당신의 섬세함과 창의성이 빛날 시간이 옵니다. 예술, 디자인, 문학 등 창의적인 분야에서 성공할 가능성이 높습니다.",
+    '丙': "40대가 당신의 전성기입니다. 지금까지의 밝은 에너지와 활동성이 큰 성과로 나타날 것입니다.",
+    '丁': "당신의 깊이 있는 생각이 큰 통찰력으로 발전할 것입니다. 인생의 의미를 찾는 일에서 성공할 수 있습니다.",
+    '戊': "50대에 안정과 번영이 찾아올 것입니다. 당신의 성실함과 책임감이 큰 신뢰로 돌아올 것입니다.",
+    '己': "당신이 남을 돕는 일에서 진정한 행복을 찾을 것입니다. 상담이나 교육 분야에서 큰 성공을 거둘 것입니다.",
+    '庚': "리더십이 필요한 자리에서 당신의 가치가 빛날 것입니다. 당신의 강한 의지가 많은 사람들을 이끌 것입니다.",
+    '辛': "당신의 예민함을 예술이나 창작으로 표현하면 큰 성공을 거둘 것입니다. 당신의 예민함은 강점입니다.",
+    '壬': "당신의 적응력을 활용해 새로운 분야에 도전하면 성공할 것입니다. 여행이나 무역 분야에서 빛날 것입니다.",
+    '癸': "당신의 조용한 영향력으로 주변을 변화시킬 것입니다. 당신의 진정성이 사람들을 움직일 것입니다."
   };
-  return directions[stem] || "당신의 미래는 밝습니다. 현재에 충실하세요.";
+
+  const maritalAdvice = maritalStatus === "married" 
+    ? " 배우자와의 소통이 당신의 운을 더욱 상승시키는 열쇠가 될 것입니다. 가정의 안정이 곧 사회적 성공으로 이어지는 흐름입니다."
+    : " 지금은 자신에게 집중하며 내면의 역량을 키우는 시기입니다. 곧 당신의 가치를 알아주는 소중한 인연이나 기회가 찾아올 것입니다.";
+
+  return (directions[stem] || "당신의 미래는 밝습니다. 현재에 충실하세요.") + maritalAdvice;
 }
 
-// 십간 설명 (중학생 수준)
+// 십간 설명
 function getStemExplanation(stem: string): string {
   const explanations: Record<string, string> = {
-    '甲': "갑(甲)은 봄의 새싹을 의미합니다. 새로운 시작, 성장, 도전을 나타냅니다. 갑 일주의 사람들은 항상 앞으로 나아가려는 에너지가 있습니다.",
-    '乙': "을(乙)은 봄의 꽃을 의미합니다. 유연함, 섬세함, 창의성을 나타냅니다. 을 일주의 사람들은 감정이 풍부하고 예술적 감각이 있습니다.",
-    '丙': "병(丙)은 여름의 태양을 의미합니다. 밝음, 열정, 활동성을 나타냅니다. 병 일주의 사람들은 에너지가 많고 주변을 밝게 만듭니다.",
-    '丁': "정(丁)은 촛불을 의미합니다. 깊이, 통찰력, 감성을 나타냅니다. 정 일주의 사람들은 깊은 생각을 하고 감정이 풍부합니다.",
-    '戊': "무(戊)는 여름의 땅을 의미합니다. 안정, 신뢰, 책임감을 나타냅니다. 무 일주의 사람들은 성실하고 믿을 수 있습니다.",
-    '己': "기(己)는 땅의 양지를 의미합니다. 배려, 따뜻함, 공감을 나타냅니다. 기 일주의 사람들은 남을 돕는 것을 좋아합니다.",
-    '庚': "경(庚)은 가을의 금속을 의미합니다. 강함, 결단력, 리더십을 나타냅니다. 경 일주의 사람들은 의지가 강하고 결정력이 있습니다.",
-    '辛': "신(辛)은 보석을 의미합니다. 예민함, 섬세함, 아름다움을 나타냅니다. 신 일주의 사람들은 예술적 감각이 뛰어나고 예민합니다.",
-    '壬': "임(壬)은 겨울의 물을 의미합니다. 유연함, 적응력, 지혜를 나타냅니다. 임 일주의 사람들은 어떤 상황에도 잘 적응합니다.",
-    '癸': "계(癸)는 이슬을 의미합니다. 신중함, 깊이, 진정성을 나타냅니다. 계 일주의 사람들은 조용하지만 깊은 영향력이 있습니다."
+    '甲': "갑(甲)은 봄의 새싹을 의미합니다. 새로운 시작, 성장, 도전을 나타냅니다.",
+    '乙': "을(乙)은 봄의 꽃을 의미합니다. 유연함, 섬세함, 창의성을 나타냅니다.",
+    '丙': "병(丙)은 여름의 태양을 의미합니다. 밝음, 열정, 활동성을 나타냅니다.",
+    '丁': "정(丁)은 촛불을 의미합니다. 깊이, 통찰력, 감성을 나타냅니다.",
+    '戊': "무(戊)는 여름의 땅을 의미합니다. 안정, 신뢰, 책임감을 나타냅니다.",
+    '己': "기(己)는 땅의 양지를 의미합니다. 배려, 따뜻함, 공감을 나타냅니다.",
+    '庚': "경(庚)은 가을의 금속을 의미합니다. 강함, 결단력, 리더십을 나타냅니다.",
+    '辛': "신(辛)은 보석을 의미합니다. 예민함, 섬세함, 아름다움을 나타냅니다.",
+    '壬': "임(壬)은 겨울의 물을 의미합니다. 유연함, 적응력, 지혜를 나타냅니다.",
+    '癸': "계(癸)는 이슬을 의미합니다. 신중함, 깊이, 진정성을 나타냅니다."
   };
   return explanations[stem] || "십간은 동양 철학의 기본 개념입니다.";
 }
 
 export default function LifelongSaju() {
   const [result, setResult] = useState<SajuResult | null>(null);
-  const [showPeakDetails, setShowPeakDetails] = useState(false);
   
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -160,10 +165,10 @@ export default function LifelongSaju() {
       birthDate: "2000-01-01",
       birthTime: "12:00",
       calendarType: "solar",
+      maritalStatus: "single",
     },
   });
 
-  // 로컬 스토리지에서 데이터 불러오기
   useEffect(() => {
     const savedData = localStorage.getItem("muun_user_data");
     if (savedData) {
@@ -173,10 +178,7 @@ export default function LifelongSaju() {
   }, [form]);
 
   const onSubmit = (data: FormValues) => {
-    // 데이터 저장
     localStorage.setItem("muun_user_data", JSON.stringify(data));
-    
-    // 사주 계산
     const date = new Date(`${data.birthDate}T${data.birthTime}`);
     const sajuResult = calculateSaju(date, data.gender);
     setResult(sajuResult);
@@ -185,7 +187,6 @@ export default function LifelongSaju() {
   if (!result) {
     return (
       <div className="min-h-screen bg-background text-foreground pb-20">
-        {/* Header */}
         <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
           <div className="container mx-auto px-4 h-14 flex items-center">
             <Link href="/">
@@ -197,7 +198,6 @@ export default function LifelongSaju() {
           </div>
         </header>
 
-        {/* Form Section */}
         <main className="container mx-auto px-4 py-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -214,7 +214,6 @@ export default function LifelongSaju() {
               </CardHeader>
               <CardContent>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                  {/* 이름 */}
                   <div>
                     <Label htmlFor="name" className="text-white mb-2 block">이름</Label>
                     <Input
@@ -228,50 +227,56 @@ export default function LifelongSaju() {
                     )}
                   </div>
 
-                  {/* 성별 */}
-                  <div>
-                    <Label className="text-white mb-3 block">성별</Label>
-                    <RadioGroup value={form.watch("gender")} onValueChange={(value) => form.setValue("gender", value as "male" | "female")}>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="male" id="male" />
-                        <Label htmlFor="male" className="text-white cursor-pointer">남성</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="female" id="female" />
-                        <Label htmlFor="female" className="text-white cursor-pointer">여성</Label>
-                      </div>
-                    </RadioGroup>
+                  <div className="grid grid-cols-2 gap-6">
+                    <div>
+                      <Label className="text-white mb-3 block">성별</Label>
+                      <RadioGroup value={form.watch("gender")} onValueChange={(value) => form.setValue("gender", value as "male" | "female")}>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="male" id="male" />
+                          <Label htmlFor="male" className="text-white cursor-pointer">남성</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="female" id="female" />
+                          <Label htmlFor="female" className="text-white cursor-pointer">여성</Label>
+                        </div>
+                      </RadioGroup>
+                    </div>
+                    <div>
+                      <Label className="text-white mb-3 block">결혼 유무</Label>
+                      <RadioGroup value={form.watch("maritalStatus")} onValueChange={(value) => form.setValue("maritalStatus", value as "single" | "married")}>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="single" id="single" />
+                          <Label htmlFor="single" className="text-white cursor-pointer">미혼</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="married" id="married" />
+                          <Label htmlFor="married" className="text-white cursor-pointer">기혼</Label>
+                        </div>
+                      </RadioGroup>
+                    </div>
                   </div>
 
-                  {/* 생년월일 */}
-                  <div>
-                    <Label htmlFor="birthDate" className="text-white mb-2 block">생년월일</Label>
-                    <Input
-                      id="birthDate"
-                      type="date"
-                      {...form.register("birthDate")}
-                      className="bg-white/5 border-white/10 text-white"
-                    />
-                    {form.formState.errors.birthDate && (
-                      <p className="text-red-400 text-sm mt-1">{form.formState.errors.birthDate.message}</p>
-                    )}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="birthDate" className="text-white mb-2 block">생년월일</Label>
+                      <Input
+                        id="birthDate"
+                        type="date"
+                        {...form.register("birthDate")}
+                        className="bg-white/5 border-white/10 text-white"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="birthTime" className="text-white mb-2 block">태어난 시간</Label>
+                      <Input
+                        id="birthTime"
+                        type="time"
+                        {...form.register("birthTime")}
+                        className="bg-white/5 border-white/10 text-white"
+                      />
+                    </div>
                   </div>
 
-                  {/* 태어난 시간 */}
-                  <div>
-                    <Label htmlFor="birthTime" className="text-white mb-2 block">태어난 시간</Label>
-                    <Input
-                      id="birthTime"
-                      type="time"
-                      {...form.register("birthTime")}
-                      className="bg-white/5 border-white/10 text-white"
-                    />
-                    {form.formState.errors.birthTime && (
-                      <p className="text-red-400 text-sm mt-1">{form.formState.errors.birthTime.message}</p>
-                    )}
-                  </div>
-
-                  {/* 달력 종류 */}
                   <div>
                     <Label htmlFor="calendarType" className="text-white mb-2 block">달력 종류</Label>
                     <Select value={form.watch("calendarType")} onValueChange={(value) => form.setValue("calendarType", value as "solar" | "lunar")}>
@@ -302,11 +307,10 @@ export default function LifelongSaju() {
   const businessScore = getBusinessScore(result.dayPillar.stem);
   const loveScore = getLoveScore(result.dayPillar.stem);
   const lifeData = generateLifeCurveData();
-  const peakAge = lifeData.find(d => d.peak)?.label || "30대";
+  const maritalStatus = form.getValues("maritalStatus");
 
   return (
     <div className="min-h-screen bg-background text-foreground pb-20">
-      {/* Header */}
       <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
         <div className="container mx-auto px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
@@ -320,7 +324,7 @@ export default function LifelongSaju() {
             size="icon"
             className="text-yellow-400 hover:bg-yellow-400/10"
             onClick={() => {
-              const text = `${form.getValues('name')}님의 평생사주 결과를 확인해보세요! 무운(무료 운세)에서 당신의 인생 흐름을 알아보세요.`;
+              const text = `${form.getValues('name')}님의 평생사주 결과를 확인해보세요!`;
               if (window.Kakao) {
                 window.Kakao.Share.sendDefault({
                   objectType: 'feed',
@@ -342,163 +346,117 @@ export default function LifelongSaju() {
         </div>
       </header>
 
-      {/* Results Section */}
       <main className="container mx-auto px-4 py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="max-w-4xl mx-auto space-y-6"
+          className="max-w-2xl mx-auto space-y-8"
         >
-          {/* 사주팔자 정보 */}
-          <Card className="bg-gradient-to-br from-blue-900/40 to-purple-900/40 border-white/10 shadow-xl backdrop-blur-md">
-            <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
-                <Star className="w-5 h-5 text-primary" />
-                {form.getValues('name')}님의 사주팔자
+          <Card className="bg-card border-white/10 shadow-xl backdrop-blur-md overflow-hidden">
+            <CardHeader className="bg-white/5 pb-4">
+              <CardTitle className="text-2xl text-white text-center">
+                {form.getValues("name")}님의 타고난 운명
               </CardTitle>
+              <p className="text-center text-primary font-medium">
+                {maritalStatus === "married" ? "💍 기혼" : "✨ 미혼"} · {form.getValues("gender") === "male" ? "남성" : "여성"}
+              </p>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-4 gap-4">
-                <div className="text-center p-4 bg-white/5 rounded-lg border border-white/10">
-                  <p className="text-xs text-muted-foreground mb-2">년주(年柱)</p>
-                  <p className="text-2xl font-bold text-primary">{result.yearPillar.stem}{result.yearPillar.branch}</p>
-                  <p className="text-xs text-white/50 mt-1">{stemNames[result.yearPillar.stem]}{branchNames[result.yearPillar.branch]}</p>
+            <CardContent className="p-6">
+              <div className="grid grid-cols-4 gap-4 text-center mb-8">
+                <div className="space-y-2">
+                  <p className="text-xs text-muted-foreground">연주</p>
+                  <div className="text-xl font-bold text-primary">{result.yearPillar.stem}{result.yearPillar.branch}</div>
+                  <p className="text-xs text-white/50">{stemNames[result.yearPillar.stem]}{branchNames[result.yearPillar.branch]}</p>
                 </div>
-                <div className="text-center p-4 bg-white/5 rounded-lg border border-white/10">
-                  <p className="text-xs text-muted-foreground mb-2">월주(月柱)</p>
-                  <p className="text-2xl font-bold text-primary">{result.monthPillar.stem}{result.monthPillar.branch}</p>
-                  <p className="text-xs text-white/50 mt-1">{stemNames[result.monthPillar.stem]}{branchNames[result.monthPillar.branch]}</p>
+                <div className="space-y-2">
+                  <p className="text-xs text-muted-foreground">월주</p>
+                  <div className="text-xl font-bold text-primary">{result.monthPillar.stem}{result.monthPillar.branch}</div>
+                  <p className="text-xs text-white/50">{stemNames[result.monthPillar.stem]}{branchNames[result.monthPillar.branch]}</p>
                 </div>
-                <div className="text-center p-4 bg-white/5 rounded-lg border border-white/10">
-                  <p className="text-xs text-muted-foreground mb-2">일주(日柱)</p>
-                  <p className="text-2xl font-bold text-primary">{result.dayPillar.stem}{result.dayPillar.branch}</p>
-                  <p className="text-xs text-white/50 mt-1">{stemNames[result.dayPillar.stem]}{branchNames[result.dayPillar.branch]}</p>
+                <div className="space-y-2">
+                  <p className="text-xs text-muted-foreground">일주</p>
+                  <div className="text-xl font-bold text-primary">{result.dayPillar.stem}{result.dayPillar.branch}</div>
+                  <p className="text-xs text-white/50">{stemNames[result.dayPillar.stem]}{branchNames[result.dayPillar.branch]}</p>
                 </div>
-                <div className="text-center p-4 bg-white/5 rounded-lg border border-white/10">
-                  <p className="text-xs text-muted-foreground mb-2">시주(時柱)</p>
-                  <p className="text-2xl font-bold text-primary">{result.hourPillar.stem}{result.hourPillar.branch}</p>
-                  <p className="text-xs text-white/50 mt-1">{stemNames[result.hourPillar.stem]}{branchNames[result.hourPillar.branch]}</p>
+                <div className="space-y-2">
+                  <p className="text-xs text-muted-foreground">시주</p>
+                  <div className="text-xl font-bold text-primary">{result.hourPillar.stem}{result.hourPillar.branch}</div>
+                  <p className="text-xs text-white/50">{stemNames[result.hourPillar.stem]}{branchNames[result.hourPillar.branch]}</p>
                 </div>
               </div>
-              <p className="text-sm text-white/70 text-center">
-                사주팔자는 태어난 년, 월, 일, 시를 십간십지로 나타낸 것입니다. 각각 2글자씩, 총 8글자로 이루어져 있습니다.
-              </p>
-            </CardContent>
-          </Card>
-
-          {/* Persona C - 점수 카드 (최상단) */}
-          <div className="grid grid-cols-3 gap-4">
-            <Card className="bg-gradient-to-br from-yellow-900/40 to-orange-900/40 border-white/10 shadow-xl backdrop-blur-md">
-              <CardContent className="p-6 text-center">
-                <div className="text-4xl mb-2">💰</div>
-                <p className="text-xs text-muted-foreground mb-2">재물운</p>
-                <p className="text-3xl font-bold text-yellow-400">{wealthScore}</p>
-                <p className="text-xs text-white/60 mt-2">/ 100</p>
-              </CardContent>
-            </Card>
-            <Card className="bg-gradient-to-br from-blue-900/40 to-cyan-900/40 border-white/10 shadow-xl backdrop-blur-md">
-              <CardContent className="p-6 text-center">
-                <Briefcase className="w-8 h-8 text-blue-400 mx-auto mb-2" />
-                <p className="text-xs text-muted-foreground mb-2">사업운</p>
-                <p className="text-3xl font-bold text-blue-400">{businessScore}</p>
-                <p className="text-xs text-white/60 mt-2">/ 100</p>
-              </CardContent>
-            </Card>
-            <Card className="bg-gradient-to-br from-pink-900/40 to-rose-900/40 border-white/10 shadow-xl backdrop-blur-md">
-              <CardContent className="p-6 text-center">
-                <Heart className="w-8 h-8 text-pink-400 mx-auto mb-2" />
-                <p className="text-xs text-muted-foreground mb-2">연애운</p>
-                <p className="text-3xl font-bold text-pink-400">{loveScore}</p>
-                <p className="text-xs text-white/60 mt-2">/ 100</p>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Persona A - 인생 굴곡 그래프 */}
-          <Card className="bg-gradient-to-br from-purple-900/40 to-blue-900/40 border-white/10 shadow-xl backdrop-blur-md">
-            <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
-                <TrendingUp className="w-5 h-5 text-primary" />
-                인생 굴곡 흐름 (전성기: {peakAge})
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={lifeData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-                  <XAxis dataKey="label" stroke="rgba(255,255,255,0.5)" />
-                  <YAxis stroke="rgba(255,255,255,0.5)" />
-                  <Tooltip 
-                    contentStyle={{ backgroundColor: 'rgba(0,0,0,0.8)', border: '1px solid rgba(255,255,255,0.2)' }}
-                    labelStyle={{ color: '#fff' }}
-                  />
-                  <Line
-                    type="monotone" 
-                    dataKey="score" 
-                    stroke="#FFD700" 
-                    strokeWidth={3}
-                    dot={(props) => {
-                      const { cx, cy, payload } = props;
-                      if (payload.peak) {
-                        return (
-                          <g key={`peak-${payload.age}`}>
-                            <circle cx={cx} cy={cy} r={6} fill="#FFD700" />
-                            <text x={cx} y={cy - 15} textAnchor="middle" fill="#FFD700" fontSize={14} fontWeight="bold">
-                              🚩
-                            </text>
-                          </g>
-                        );
-                      }
-                      return <circle key={`dot-${payload.age}`} cx={cx} cy={cy} r={4} fill="#FFD700" />;
-                    }}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-              <p className="text-sm text-white/70 text-center mt-4">
-                당신의 전성기는 {peakAge}입니다. 이 시기에 중요한 결정을 하거나 새로운 일을 시작하면 좋은 결과를 얻을 수 있습니다.
-              </p>
-            </CardContent>
-          </Card>
-
-          {/* Persona B - 성격 특성 */}
-          <Card className="bg-gradient-to-br from-green-900/40 to-emerald-900/40 border-white/10 shadow-xl backdrop-blur-md">
-            <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-primary" />
-                당신의 성격 특성
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <p className="text-white/80 leading-relaxed">
-                {getPersonalityInterpretation(result.dayPillar.stem)}
-              </p>
-              <div className="bg-white/5 p-4 rounded-lg border border-white/10">
-                <p className="text-sm text-white/70 font-semibold mb-2">당신의 일주: {stemNames[result.dayPillar.stem]}{branchNames[result.dayPillar.branch]}({result.dayPillar.stem}{result.dayPillar.branch})</p>
-                <p className="text-sm text-white/70">
+              <div className="p-4 bg-white/5 rounded-lg border border-white/10">
+                <p className="text-white/80 text-sm leading-relaxed text-center">
                   {getStemExplanation(result.dayPillar.stem)}
                 </p>
               </div>
             </CardContent>
           </Card>
 
-          {/* Persona B - 지나온 길 */}
-          <Card className="bg-gradient-to-br from-orange-900/40 to-amber-900/40 border-white/10 shadow-xl backdrop-blur-md">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <Card className="bg-card border-white/10">
+              <CardContent className="p-6 flex flex-col items-center gap-2">
+                <Zap className="w-8 h-8 text-yellow-400" />
+                <p className="text-sm text-muted-foreground">재물운</p>
+                <p className="text-2xl font-bold text-white">{wealthScore}점</p>
+              </CardContent>
+            </Card>
+            <Card className="bg-card border-white/10">
+              <CardContent className="p-6 flex flex-col items-center gap-2">
+                <Briefcase className="w-8 h-8 text-blue-400" />
+                <p className="text-sm text-muted-foreground">사업운</p>
+                <p className="text-2xl font-bold text-white">{businessScore}점</p>
+              </CardContent>
+            </Card>
+            <Card className="bg-card border-white/10">
+              <CardContent className="p-6 flex flex-col items-center gap-2">
+                <Heart className="w-8 h-8 text-pink-400" />
+                <p className="text-sm text-muted-foreground">연애운</p>
+                <p className="text-2xl font-bold text-white">{loveScore}점</p>
+              </CardContent>
+            </Card>
+          </div>
+
+          <Card className="bg-card border-white/10">
             <CardHeader>
               <CardTitle className="text-white flex items-center gap-2">
-                <Zap className="w-5 h-5 text-primary" />
-                지나온 길 (과거)
+                <TrendingUp className="w-5 h-5 text-primary" />
+                인생의 흐름
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="h-64 w-full">
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={lifeData}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                    <XAxis dataKey="label" stroke="rgba(255,255,255,0.5)" />
+                    <YAxis hide />
+                    <Tooltip 
+                      contentStyle={{ backgroundColor: '#1a1a1a', border: '1px solid rgba(255,255,255,0.1)' }}
+                      itemStyle={{ color: '#fff' }}
+                    />
+                    <Line type="monotone" dataKey="score" stroke="#EAB308" strokeWidth={3} dot={{ r: 6, fill: '#EAB308' }} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-card border-white/10">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-primary" />
+                성격 및 특성
               </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-white/80 leading-relaxed">
-                {getPastInterpretation(result.dayPillar.stem)}
+                {getPersonalityInterpretation(result.dayPillar.stem)}
               </p>
             </CardContent>
           </Card>
 
-          {/* Persona B - 나아갈 길 */}
-          <Card className="bg-gradient-to-br from-cyan-900/40 to-blue-900/40 border-white/10 shadow-xl backdrop-blur-md">
+          <Card className="bg-card border-white/10">
             <CardHeader>
               <CardTitle className="text-white flex items-center gap-2">
                 <Star className="w-5 h-5 text-primary" />
@@ -507,37 +465,17 @@ export default function LifelongSaju() {
             </CardHeader>
             <CardContent>
               <p className="text-white/80 leading-relaxed">
-                {getFutureDirection(result.dayPillar.stem)}
+                {getFutureDirection(result.dayPillar.stem, maritalStatus)}
               </p>
             </CardContent>
           </Card>
 
-          {/* 공유 버튼 */}
-          <div className="flex gap-3">
-            <Button
-              onClick={() => {
-                const text = `${form.getValues('name')}님의 평생사주:\n재물운 ${wealthScore}/100, 사업운 ${businessScore}/100, 연애운 ${loveScore}/100\n\n무운(무료 운세)에서 당신의 평생사주를 확인해보세요!`;
-                if (window.Kakao) {
-                  window.Kakao.Share.sendDefault({
-                    objectType: 'feed',
-                    content: {
-                      title: '나의 평생사주',
-                      description: text,
-                      imageUrl: 'https://via.placeholder.com/1200x630',
-                      link: {
-                        mobileWebUrl: window.location.href,
-                        webUrl: window.location.href,
-                      },
-                    },
-                  });
-                }
-              }}
-              className="flex-1 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold"
-            >
-              <Share2 className="w-4 h-4 mr-2" />
-              카카오톡으로 공유하기
-            </Button>
-          </div>
+          <Button
+            onClick={() => setResult(null)}
+            className="w-full bg-white/5 hover:bg-white/10 text-white border border-white/10"
+          >
+            다시 확인하기
+          </Button>
         </motion.div>
       </main>
     </div>
