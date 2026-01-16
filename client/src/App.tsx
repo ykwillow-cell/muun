@@ -9,6 +9,7 @@ import Manselyeok from "./pages/Manselyeok";
 import LifelongSaju from "./pages/LifelongSaju";
 import YearlyFortune from "./pages/YearlyFortune";
 import Compatibility from "./pages/Compatibility";
+import Tojeong from "./pages/Tojeong";
 
 function Router() {
   return (
@@ -18,6 +19,7 @@ function Router() {
       <Route path="/lifelong-saju" component={LifelongSaju} />
       <Route path="/yearly-fortune" component={YearlyFortune} />
       <Route path="/compatibility" component={Compatibility} />
+      <Route path="/tojeong" component={Tojeong} />
       <Route component={NotFound} />
     </Switch>
   );

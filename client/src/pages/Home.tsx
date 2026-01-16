@@ -69,7 +69,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full max-w-6xl"
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-6xl"
         >
           <Link href="/lifelong-saju">
             <Card className="bg-card hover:bg-card/80 border-white/10 transition-all duration-300 hover:scale-105 cursor-pointer group overflow-hidden">
@@ -111,6 +111,21 @@ export default function Home() {
                 <h3 className="text-xl font-bold text-white">궁합</h3>
                 <p className="text-sm text-muted-foreground">
                   두 사람의 궁합 분석
+                </p>
+              </CardContent>
+            </Card>
+          </Link>
+
+          <Link href="/tojeong">
+            <Card className="bg-card hover:bg-card/80 border-white/10 transition-all duration-300 hover:scale-105 cursor-pointer group overflow-hidden">
+              <CardContent className="p-6 flex flex-col items-center text-center h-full justify-center gap-3 relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="w-16 h-16 mb-2 transition-transform group-hover:scale-110 duration-300">
+                  <img src="/images/icon_crystal_ball.png" alt="토정비결" className="w-full h-full object-contain" />
+                </div>
+                <h3 className="text-xl font-bold text-white">토정비결</h3>
+                <p className="text-sm text-muted-foreground">
+                  한 해의 신비로운 지침서
                 </p>
               </CardContent>
             </Card>
