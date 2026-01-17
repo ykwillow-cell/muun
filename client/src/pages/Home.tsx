@@ -12,6 +12,9 @@ export default function Home() {
     { href: "/manselyeok", label: "만세력", icon: "/images/icon_calendar.png", color: "from-primary/20" },
   ];
 
+  // 공통 가로 너비 클래스
+  const commonMaxWidth = "w-full max-w-2xl mx-auto";
+
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden relative">
       {/* Background Stars Effect */}
@@ -29,7 +32,7 @@ export default function Home() {
       <main className="relative z-10 container mx-auto px-4 py-8 flex flex-col items-center gap-12">
         
         {/* Hero Section */}
-        <section className="flex flex-col items-center justify-center pt-8 gap-6 w-full">
+        <section className={`flex flex-col items-center justify-center pt-8 gap-6 ${commonMaxWidth}`}>
           <motion.div 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -50,7 +53,7 @@ export default function Home() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative w-full max-w-lg aspect-[2/1] rounded-3xl overflow-hidden bg-gradient-to-r from-blue-600 to-blue-400 shadow-2xl border border-white/20"
+            className="relative w-full aspect-[2/1] rounded-3xl overflow-hidden bg-gradient-to-r from-blue-600 to-blue-400 shadow-2xl border border-white/20"
           >
             <div className="absolute inset-0 flex items-center justify-between px-8">
               <div className="space-y-2 z-10">
@@ -72,7 +75,7 @@ export default function Home() {
         </section>
 
         {/* Compact Icon Grid Menu Section */}
-        <section className="w-full max-w-2xl bg-white rounded-[2.5rem] p-8 shadow-xl">
+        <section className={`${commonMaxWidth} bg-white rounded-[2.5rem] p-8 shadow-xl`}>
           <div className="mb-6">
             <p className="text-gray-400 text-xs font-medium mb-1">소름 돋는 미래 예측</p>
             <h3 className="text-xl font-bold text-gray-900">가장 정확한 사주 풀이</h3>
@@ -101,7 +104,7 @@ export default function Home() {
         </section>
 
         {/* SEO Content Section */}
-        <section className="w-full max-w-4xl space-y-12 py-12 border-t border-white/5">
+        <section className={`${commonMaxWidth} space-y-12 py-12 border-t border-white/5`}>
           <div className="space-y-6">
             <h2 className="text-2xl font-bold text-white flex items-center gap-3">
               <BookOpen className="text-primary w-6 h-6" />
@@ -142,7 +145,7 @@ export default function Home() {
           </div>
         </section>
 
-        <footer className="w-full pt-8 pb-8 border-t border-white/5">
+        <footer className={`${commonMaxWidth} pt-8 pb-8 border-t border-white/5`}>
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="text-center md:text-left space-y-1">
               <h2 className="text-lg font-bold text-white">무운 (MuUn)</h2>
