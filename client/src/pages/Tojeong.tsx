@@ -163,16 +163,28 @@ export default function Tojeong() {
                   </div>
 
                   <div>
-                    <Label htmlFor="calendarType" className="text-white mb-2 block">달력 종류</Label>
-                    <Select value={form.watch("calendarType")} onValueChange={(value) => form.setValue("calendarType", value as "solar" | "lunar")}>
-                      <SelectTrigger className="bg-white/5 border-white/10 text-white">
-                        <SelectValue placeholder="달력을 선택해주세요" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="solar">양력 (태양력)</SelectItem>
-                        <SelectItem value="lunar">음력 (음력)</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <Label className="text-white mb-3 block">구분</Label>
+                    <ToggleGroup
+                      type="single"
+                      value={form.watch("calendarType")}
+                      onValueChange={(value) => {
+                        if (value) form.setValue("calendarType", value as "solar" | "lunar");
+                      }}
+                      className="justify-start"
+                    >
+                      <ToggleGroupItem
+                        value="solar"
+                        className="px-8 py-2 rounded-l-md border border-white/10 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white"
+                      >
+                        양력
+                      </ToggleGroupItem>
+                      <ToggleGroupItem
+                        value="lunar"
+                        className="px-8 py-2 rounded-r-md border border-l-0 border-white/10 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white"
+                      >
+                        음력
+                      </ToggleGroupItem>
+                    </ToggleGroup>
                   </div>
 
                   <Button type="submit" className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white font-semibold">

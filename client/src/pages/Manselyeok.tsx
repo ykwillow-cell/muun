@@ -145,20 +145,28 @@ export default function Manselyeok() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label>양력/음력</Label>
-                    <Select 
-                      defaultValue="solar" 
-                      onValueChange={(val) => form.setValue("calendarType", val as "solar" | "lunar")}
+                    <Label>구분</Label>
+                    <ToggleGroup
+                      type="single"
+                      value={form.watch("calendarType")}
+                      onValueChange={(value) => {
+                        if (value) form.setValue("calendarType", value as "solar" | "lunar");
+                      }}
+                      className="justify-start"
                     >
-                      <SelectTrigger className="bg-white/5 border-white/10 text-white">
-                        <SelectValue placeholder="선택하세요" />
-                      </SelectTrigger>
-                      <SelectContent className="bg-background border-white/10 text-white">
-                        <SelectItem value="solar">양력</SelectItem>
-                        <SelectItem value="lunar">음력 (평달)</SelectItem>
-                        <SelectItem value="lunar-leap">음력 (윤달)</SelectItem>
-                      </SelectContent>
-                    </Select>
+                      <ToggleGroupItem
+                        value="solar"
+                        className="px-8 py-2 rounded-l-md border border-white/10 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white"
+                      >
+                        양력
+                      </ToggleGroupItem>
+                      <ToggleGroupItem
+                        value="lunar"
+                        className="px-8 py-2 rounded-r-md border border-l-0 border-white/10 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white"
+                      >
+                        음력
+                      </ToggleGroupItem>
+                    </ToggleGroup>
                   </div>
 
                   <Button type="submit" className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-bold py-6 text-lg shadow-[0_0_20px_rgba(255,215,0,0.3)]">
