@@ -74,11 +74,11 @@ export default function Home() {
           </motion.div>
         </section>
 
-        {/* Compact Icon Grid Menu Section */}
-        <section className={`${commonMaxWidth} bg-white rounded-[2.5rem] p-8 shadow-xl`}>
+        {/* Compact Icon Grid Menu Section - Updated to Dark Theme */}
+        <section className={`${commonMaxWidth} bg-card/40 backdrop-blur-xl rounded-[2.5rem] p-8 shadow-2xl border border-white/10`}>
           <div className="mb-6">
-            <p className="text-gray-400 text-xs font-medium mb-1">소름 돋는 미래 예측</p>
-            <h3 className="text-xl font-bold text-gray-900">가장 정확한 사주 풀이</h3>
+            <p className="text-primary/60 text-xs font-medium mb-1">소름 돋는 미래 예측</p>
+            <h3 className="text-xl font-bold text-white">가장 정확한 사주 풀이</h3>
           </div>
           
           <motion.div 
@@ -90,13 +90,13 @@ export default function Home() {
             {menuItems.map((item, index) => (
               <Link key={index} href={item.href}>
                 <div className="flex flex-col items-center gap-2 group cursor-pointer">
-                  <div className={`relative w-16 h-16 rounded-2xl bg-gradient-to-br ${item.color} to-transparent flex items-center justify-center transition-transform group-hover:scale-110 duration-300`}>
-                    <img src={item.icon} alt={item.label} className="w-10 h-10 object-contain" />
-                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white flex items-center justify-center">
+                  <div className={`relative w-16 h-16 rounded-2xl bg-gradient-to-br ${item.color} to-white/5 border border-white/10 flex items-center justify-center transition-transform group-hover:scale-110 duration-300 shadow-lg`}>
+                    <img src={item.icon} alt={item.label} className="w-10 h-10 object-contain drop-shadow-md" />
+                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-background flex items-center justify-center">
                       <span className="text-[8px] text-white font-bold">N</span>
                     </div>
                   </div>
-                  <span className="text-sm font-medium text-gray-700 group-hover:text-primary transition-colors">{item.label}</span>
+                  <span className="text-sm font-medium text-white/80 group-hover:text-primary transition-colors">{item.label}</span>
                 </div>
               </Link>
             ))}
