@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { calculateSaju, SajuResult } from "@/lib/saju";
+import { trackEvent } from "@/lib/ga4";
 
 // 폼 스키마 정의
 const formSchema = z.object({
@@ -162,7 +163,10 @@ export default function YearlyFortune() {
                       type="single"
                       value={form.watch("gender")}
                       onValueChange={(value) => {
-                        if (value) form.setValue("gender", value as "male" | "female");
+                        if (value) {
+                          form.setValue("gender", value as "male" | "female");
+                          trackEvent("User Input", "Change Gender", value);
+                        }
                       }}
                       className="justify-start"
                     >
@@ -208,7 +212,10 @@ export default function YearlyFortune() {
                       type="single"
                       value={form.watch("calendarType")}
                       onValueChange={(value) => {
-                        if (value) form.setValue("calendarType", value as "solar" | "lunar");
+                        if (value) {
+                          form.setValue("calendarType", value as "solar" | "lunar");
+                          trackEvent("User Input", "Change Calendar Type", value);
+                        }
                       }}
                       className="justify-start"
                     >
@@ -227,7 +234,11 @@ export default function YearlyFortune() {
                     </ToggleGroup>
                   </div>
 
-                  <Button type="submit" className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white font-semibold">
+                  <Button 
+                    type="submit" 
+                    onClick={() => trackEvent("User Action", "Click View Fortune", "Yearly Fortune")}
+                    className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white font-semibold"
+                  >
                     <Sparkles className="w-4 h-4 mr-2" />
                     2026년 운세 보기
                   </Button>

@@ -6,6 +6,9 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import { GNB } from "./components/GNB";
+import { useEffect } from "react";
+import { useLocation } from "wouter";
+import { initGA, trackPageView } from "@/lib/ga4";
 import Manselyeok from "./pages/Manselyeok";
 import LifelongSaju from "./pages/LifelongSaju";
 import YearlyFortune from "./pages/YearlyFortune";
@@ -17,6 +20,16 @@ import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 
 function Router() {
+  const [location] = useLocation();
+
+  useEffect(() => {
+    initGA();
+  }, []);
+
+  useEffect(() => {
+    trackPageView(location);
+  }, [location]);
+
   return (
     <Switch>
       <Route path="/" component={Home} />
