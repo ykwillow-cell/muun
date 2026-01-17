@@ -168,13 +168,13 @@ export default function YearlyFortune() {
                     >
                       <ToggleGroupItem
                         value="male"
-                        className="px-8 py-2 rounded-l-md border border-white/10 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white"
+                        className="px-8 py-3 text-base rounded-l-md border border-white/10 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white"
                       >
                         남성
                       </ToggleGroupItem>
                       <ToggleGroupItem
                         value="female"
-                        className="px-8 py-2 rounded-r-md border border-l-0 border-white/10 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white"
+                        className="px-8 py-3 text-base rounded-r-md border border-l-0 border-white/10 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white"
                       >
                         여성
                       </ToggleGroupItem>
@@ -183,7 +183,7 @@ export default function YearlyFortune() {
 
                   <div className="grid grid-cols-1 gap-6">
                     <div className="space-y-2">
-                      <Label htmlFor="birthDate" className="text-white block text-sm font-medium">생년월일</Label>
+                      <Label htmlFor="birthDate" className="text-white block text-base font-semibold">생년월일</Label>
                       <Input
                         id="birthDate"
                         type="date"
@@ -192,7 +192,7 @@ export default function YearlyFortune() {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="birthTime" className="text-white block text-sm font-medium">태어난 시간</Label>
+                      <Label htmlFor="birthTime" className="text-white block text-base font-semibold">태어난 시간</Label>
                       <Input
                         id="birthTime"
                         type="time"
@@ -203,7 +203,7 @@ export default function YearlyFortune() {
                   </div>
 
                   <div>
-                    <Label className="text-white mb-3 block">구분</Label>
+                    <Label className="text-white mb-3 block text-base font-semibold">구분</Label>
                     <ToggleGroup
                       type="single"
                       value={form.watch("calendarType")}
@@ -214,13 +214,13 @@ export default function YearlyFortune() {
                     >
                       <ToggleGroupItem
                         value="solar"
-                        className="px-8 py-2 rounded-l-md border border-white/10 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white"
+                        className="px-8 py-3 text-base rounded-l-md border border-white/10 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white"
                       >
                         양력
                       </ToggleGroupItem>
                       <ToggleGroupItem
                         value="lunar"
-                        className="px-8 py-2 rounded-r-md border border-l-0 border-white/10 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white"
+                        className="px-8 py-3 text-base rounded-r-md border border-l-0 border-white/10 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white"
                       >
                         음력
                       </ToggleGroupItem>
