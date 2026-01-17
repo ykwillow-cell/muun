@@ -229,23 +229,23 @@ export default function LifelongSaju() {
                     </div>
                   </div>
 
-                  <div className="space-y-4">
-                    <div>
-                      <Label htmlFor="birthDate" className="text-white mb-2 block">생년월일</Label>
+                  <div className="grid grid-cols-1 gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="birthDate" className="text-white block text-sm font-medium">생년월일</Label>
                       <Input
                         id="birthDate"
                         type="date"
                         {...form.register("birthDate")}
-                        className="bg-white/5 border-white/10 text-white w-full"
+                        className="bg-white/5 border-white/10 text-white w-full appearance-none"
                       />
                     </div>
-                    <div>
-                      <Label htmlFor="birthTime" className="text-white mb-2 block">태어난 시간</Label>
+                    <div className="space-y-2">
+                      <Label htmlFor="birthTime" className="text-white block text-sm font-medium">태어난 시간</Label>
                       <Input
                         id="birthTime"
                         type="time"
                         {...form.register("birthTime")}
-                        className="bg-white/5 border-white/10 text-white w-full"
+                        className="bg-white/5 border-white/10 text-white w-full appearance-none"
                       />
                     </div>
                   </div>

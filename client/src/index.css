@@ -159,3 +159,40 @@
     }
   }
 }
+/* iOS Date/Time Input Reset */
+@layer base {
+  input[type="date"],
+  input[type="time"] {
+    position: relative;
+    min-height: 2.5rem; /* h-10 equivalent for better touch target and alignment */
+    appearance: none;
+    -webkit-appearance: none;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Remove default icons in some browsers if needed, 
+     but keep them functional for iOS where they are usually invisible until clicked */
+  input[type="date"]::-webkit-calendar-picker-indicator,
+  input[type="time"]::-webkit-calendar-picker-indicator {
+    background: transparent;
+    bottom: 0;
+    color: transparent;
+    cursor: pointer;
+    height: auto;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: auto;
+  }
+
+  /* Ensure text is vertically centered in iOS */
+  input[type="date"]::-webkit-date-and-time-value,
+  input[type="time"]::-webkit-date-and-time-value {
+    min-height: 1.5em;
+    display: flex;
+    align-items: center;
+    text-align: left;
+  }
+}
