@@ -8,6 +8,7 @@ export default function Home() {
     { href: "/yearly-fortune", label: "신년운세", icon: "/images/icon_stars.png", color: "from-blue-500/20" },
     { href: "/tojeong", label: "토정비결", icon: "/images/icon_crystal_ball.png", color: "from-yellow-500/20" },
     { href: "/lifelong-saju", label: "평생사주", icon: "/images/icon_crystal_ball.png", color: "from-purple-500/20" },
+    { href: "/psychology", label: "심리풀이", icon: "/images/icon_brain.png", color: "from-indigo-500/20" },
     { href: "/compatibility", label: "짝궁합", icon: "/images/icon_heart.png", color: "from-pink-500/20" },
     { href: "/manselyeok", label: "만세력", icon: "/images/icon_calendar.png", color: "from-primary/20" },
   ];
@@ -49,32 +50,34 @@ export default function Home() {
           </motion.div>
 
           {/* Banner Style Character Section */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="relative w-full aspect-[2/1] rounded-3xl overflow-hidden bg-gradient-to-r from-blue-600 to-blue-400 shadow-2xl border border-white/20"
-          >
-            <div className="absolute inset-0 flex items-center justify-between px-8">
-              <div className="space-y-2 z-10">
-                <span className="bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-[10px] text-white font-bold uppercase tracking-wider">심리풀이 오픈</span>
-                <h2 className="text-xl md:text-2xl font-bold text-white leading-tight">
-                  오늘 내 심리는?<br />매일 달라지는 재미!
-                </h2>
-                <p className="text-white/80 text-xs">데일리 심리풀이 오픈!</p>
+          <Link href="/psychology" className="w-full">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative w-full aspect-[2/1] rounded-3xl overflow-hidden bg-gradient-to-r from-blue-600 to-blue-400 shadow-2xl border border-white/20 cursor-pointer group"
+            >
+              <div className="absolute inset-0 flex items-center justify-between px-8">
+                <div className="space-y-2 z-10">
+                  <span className="bg-white/20 backdrop-blur-md px-3 py-1 rounded-full text-[10px] text-white font-bold uppercase tracking-wider">심리풀이 오픈</span>
+                  <h2 className="text-xl md:text-2xl font-bold text-white leading-tight group-hover:text-yellow-200 transition-colors">
+                    오늘 내 심리는?<br />매일 달라지는 재미!
+                  </h2>
+                  <p className="text-white/80 text-xs">데일리 심리풀이 바로가기 &gt;</p>
+                </div>
+                <div className="relative w-32 h-32 md:w-40 md:h-40 transition-transform group-hover:scale-110 duration-500">
+                  <img 
+                    src="/images/horse_mascot.png" 
+                    alt="무운 마스코트" 
+                    className="w-full h-full object-contain drop-shadow-2xl"
+                  />
+                </div>
               </div>
-              <div className="relative w-32 h-32 md:w-40 md:h-40">
-                <img 
-                  src="/images/horse_mascot.png" 
-                  alt="무운 마스코트" 
-                  className="w-full h-full object-contain drop-shadow-2xl"
-                />
-              </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </Link>
         </section>
 
-        {/* Compact Icon Grid Menu Section - Updated to Dark Theme */}
+        {/* Compact Icon Grid Menu Section */}
         <section className={`${commonMaxWidth} bg-card/40 backdrop-blur-xl rounded-[2.5rem] p-8 shadow-2xl border border-white/10`}>
           <div className="mb-6">
             <p className="text-primary/60 text-xs font-medium mb-1">소름 돋는 미래 예측</p>
