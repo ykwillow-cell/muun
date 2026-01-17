@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { calculateSaju, SajuResult } from "@/lib/saju";
 
@@ -118,26 +118,37 @@ export default function Tojeong() {
 
                   <div>
                     <Label className="text-white mb-3 block">성별</Label>
-                    <RadioGroup value={form.watch("gender")} onValueChange={(value) => form.setValue("gender", value as "male" | "female")}>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="male" id="male" />
-                        <Label htmlFor="male" className="text-white cursor-pointer">남성</Label>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="female" id="female" />
-                        <Label htmlFor="female" className="text-white cursor-pointer">여성</Label>
-                      </div>
-                    </RadioGroup>
+                    <ToggleGroup
+                      type="single"
+                      value={form.watch("gender")}
+                      onValueChange={(value) => {
+                        if (value) form.setValue("gender", value as "male" | "female");
+                      }}
+                      className="justify-start"
+                    >
+                      <ToggleGroupItem
+                        value="male"
+                        className="px-8 py-2 rounded-l-md border border-white/10 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white"
+                      >
+                        남성
+                      </ToggleGroupItem>
+                      <ToggleGroupItem
+                        value="female"
+                        className="px-8 py-2 rounded-r-md border border-l-0 border-white/10 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white"
+                      >
+                        여성
+                      </ToggleGroupItem>
+                    </ToggleGroup>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="birthDate" className="text-white mb-2 block">생년월일</Label>
                       <Input
                         id="birthDate"
                         type="date"
                         {...form.register("birthDate")}
-                        className="bg-white/5 border-white/10 text-white"
+                        className="bg-white/5 border-white/10 text-white w-full"
                       />
                     </div>
                     <div>
@@ -146,7 +157,7 @@ export default function Tojeong() {
                         id="birthTime"
                         type="time"
                         {...form.register("birthTime")}
-                        className="bg-white/5 border-white/10 text-white"
+                        className="bg-white/5 border-white/10 text-white w-full"
                       />
                     </div>
                   </div>

@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { calculateSaju, SajuResult } from "@/lib/saju";
 
@@ -181,16 +181,27 @@ export default function Compatibility() {
 
                     <div>
                       <Label className="text-white mb-3 block">성별</Label>
-                      <RadioGroup value={form.watch("gender1")} onValueChange={(value) => form.setValue("gender1", value as "male" | "female")}>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="male" id="male1" />
-                          <Label htmlFor="male1" className="text-white cursor-pointer">남성</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="female" id="female1" />
-                          <Label htmlFor="female1" className="text-white cursor-pointer">여성</Label>
-                        </div>
-                      </RadioGroup>
+                      <ToggleGroup
+                        type="single"
+                        value={form.watch("gender1")}
+                        onValueChange={(value) => {
+                          if (value) form.setValue("gender1", value as "male" | "female");
+                        }}
+                        className="justify-start"
+                      >
+                        <ToggleGroupItem
+                          value="male"
+                          className="px-8 py-2 rounded-l-md border border-white/10 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white"
+                        >
+                          남성
+                        </ToggleGroupItem>
+                        <ToggleGroupItem
+                          value="female"
+                          className="px-8 py-2 rounded-r-md border border-l-0 border-white/10 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white"
+                        >
+                          여성
+                        </ToggleGroupItem>
+                      </ToggleGroup>
                     </div>
 
                     <div>
@@ -246,16 +257,27 @@ export default function Compatibility() {
 
                     <div>
                       <Label className="text-white mb-3 block">성별</Label>
-                      <RadioGroup value={form.watch("gender2")} onValueChange={(value) => form.setValue("gender2", value as "male" | "female")}>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="male" id="male2" />
-                          <Label htmlFor="male2" className="text-white cursor-pointer">남성</Label>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <RadioGroupItem value="female" id="female2" />
-                          <Label htmlFor="female2" className="text-white cursor-pointer">여성</Label>
-                        </div>
-                      </RadioGroup>
+                      <ToggleGroup
+                        type="single"
+                        value={form.watch("gender2")}
+                        onValueChange={(value) => {
+                          if (value) form.setValue("gender2", value as "male" | "female");
+                        }}
+                        className="justify-start"
+                      >
+                        <ToggleGroupItem
+                          value="male"
+                          className="px-8 py-2 rounded-l-md border border-white/10 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white"
+                        >
+                          남성
+                        </ToggleGroupItem>
+                        <ToggleGroupItem
+                          value="female"
+                          className="px-8 py-2 rounded-r-md border border-l-0 border-white/10 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white"
+                        >
+                          여성
+                        </ToggleGroupItem>
+                      </ToggleGroup>
                     </div>
 
                     <div>
