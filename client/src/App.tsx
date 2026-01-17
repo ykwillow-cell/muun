@@ -5,6 +5,7 @@ import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
+import { GNB } from "./components/GNB";
 import Manselyeok from "./pages/Manselyeok";
 import LifelongSaju from "./pages/LifelongSaju";
 import YearlyFortune from "./pages/YearlyFortune";
@@ -39,6 +40,7 @@ function App() {
       <ThemeProvider defaultTheme="dark">
         <TooltipProvider>
           <Toaster />
+          <GNB />
           <Router />
         </TooltipProvider>
       </ThemeProvider>
