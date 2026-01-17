@@ -1,0 +1,86 @@
+import { motion } from "framer-motion";
+import { ChevronLeft, Shield } from "lucide-react";
+import { Link } from "wouter";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+
+export default function Privacy() {
+  return (
+    <div className="min-h-screen bg-background text-foreground pb-20">
+      <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
+        <div className="container mx-auto px-4 h-14 flex items-center">
+          <Link href="/">
+            <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/10">
+              <ChevronLeft className="h-6 w-6" />
+            </Button>
+          </Link>
+          <h1 className="text-xl font-bold text-white">개인정보처리방침</h1>
+        </div>
+      </header>
+
+      <main className="container mx-auto px-4 py-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="max-w-3xl mx-auto space-y-8"
+        >
+          <div className="flex items-center gap-3 mb-6">
+            <Shield className="w-8 h-8 text-primary" />
+            <h2 className="text-3xl font-bold text-white">개인정보처리방침</h2>
+          </div>
+
+          <Card className="bg-card border-white/10">
+            <CardContent className="p-8 space-y-6 text-muted-foreground leading-relaxed">
+              <section className="space-y-3">
+                <h3 className="text-xl font-bold text-white">1. 개인정보의 처리 목적</h3>
+                <p>
+                  '무운'(이하 '서비스')은 사용자가 입력한 생년월일, 태어난 시간, 성별 등의 정보를 오직 사주 및 운세 결과 계산을 위한 목적으로만 처리합니다. 본 서비스는 회원가입을 요구하지 않으며, 입력된 정보는 서버에 영구적으로 저장되지 않습니다.
+                </p>
+              </section>
+
+              <section className="space-y-3">
+                <h3 className="text-xl font-bold text-white">2. 처리하는 개인정보 항목</h3>
+                <p>
+                  서비스 이용 과정에서 다음과 같은 정보가 입력될 수 있습니다:
+                </p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>필수항목: 이름(별칭), 성별, 생년월일, 태어난 시간</li>
+                  <li>자동수집항목: 접속 로그, 쿠키, 접속 IP 정보 (서비스 안정성 및 통계 분석용)</li>
+                </ul>
+              </section>
+
+              <section className="space-y-3">
+                <h3 className="text-xl font-bold text-white">3. 개인정보의 보유 및 이용기간</h3>
+                <p>
+                  사용자가 입력한 사주 정보는 브라우저의 로컬 스토리지(Local Storage)에 임시 저장되어 사용자의 편의를 돕습니다. 서버에는 어떠한 개인 식별 정보도 저장되지 않으며, 브라우저 캐시를 삭제하거나 서비스를 종료하면 정보는 더 이상 이용되지 않습니다.
+                </p>
+              </section>
+
+              <section className="space-y-3">
+                <h3 className="text-xl font-bold text-white">4. 제3자 제공 및 위탁</h3>
+                <p>
+                  서비스는 사용자의 개인정보를 외부에 제공하거나 처리를 위탁하지 않습니다. 다만, 구글 애드센스 등 광고 서비스 이용 시 비식별화된 통계 정보가 활용될 수 있습니다.
+                </p>
+              </section>
+
+              <section className="space-y-3">
+                <h3 className="text-xl font-bold text-white">5. 이용자의 권리</h3>
+                <p>
+                  이용자는 언제든지 브라우저 설정을 통해 쿠키 저장을 거부하거나 로컬 스토리지를 삭제함으로써 자신의 정보를 직접 관리할 수 있습니다.
+                </p>
+              </section>
+
+              <section className="space-y-3">
+                <h3 className="text-xl font-bold text-white">6. 개인정보 보호책임자</h3>
+                <p>
+                  서비스 이용 중 발생하는 개인정보 관련 문의는 아래 메일로 연락 주시기 바랍니다.<br />
+                  이메일: support@muun.im
+                </p>
+              </section>
+            </CardContent>
+          </Card>
+        </motion.div>
+      </main>
+    </div>
+  );
+}

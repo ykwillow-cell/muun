@@ -10,6 +10,9 @@ import LifelongSaju from "./pages/LifelongSaju";
 import YearlyFortune from "./pages/YearlyFortune";
 import Compatibility from "./pages/Compatibility";
 import Tojeong from "./pages/Tojeong";
+import About from "./pages/About";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
 
 function Router() {
   return (
@@ -20,6 +23,9 @@ function Router() {
       <Route path="/yearly-fortune" component={YearlyFortune} />
       <Route path="/compatibility" component={Compatibility} />
       <Route path="/tojeong" component={Tojeong} />
+      <Route path="/about" component={About} />
+      <Route path="/privacy" component={Privacy} />
+      <Route path="/terms" component={Terms} />
       <Route component={NotFound} />
     </Switch>
   );
