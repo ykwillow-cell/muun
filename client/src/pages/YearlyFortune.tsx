@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, Star, Sparkles, User, Zap, Briefcase, Activity, Users, Loader2 } from "lucide-react";
+import { ChevronLeft, Star, Sparkles, User, Zap, Briefcase } from "lucide-react";
 import { Link } from "wouter";
 
 import { Button } from "@/components/ui/button";
@@ -13,7 +13,10 @@ import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { calculateSaju, SajuResult } from "@/lib/saju";
 import { trackEvent } from "@/lib/ga4";
-import { fortuneApi, FortuneSection } from "@/lib/fortune-api";
+import { 
+  generateYearlyFortune, 
+  FortuneResult 
+} from "@/lib/fortune-templates";
 
 const formSchema = z.object({
   name: z.string().min(1, "이름을 입력해주세요"),
@@ -27,12 +30,15 @@ type FormValues = z.infer<typeof formSchema>;
 
 export default function YearlyFortune() {
   const [result, setResult] = useState<SajuResult | null>(null);
-  const [fortunes, setFortunes] = useState<Record<string, FortuneSection | null>>({
+  const [fortunes, setFortunes] = useState<{
+    general: FortuneResult | null;
+    wealth: FortuneResult | null;
+    career: FortuneResult | null;
+  }>({
     general: null,
     wealth: null,
     career: null,
   });
-  const [isLoading, setIsLoading] = useState(false);
   
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -54,28 +60,25 @@ export default function YearlyFortune() {
   }, [form]);
 
   const onSubmit = async (data: FormValues) => {
-    setIsLoading(true);
     localStorage.setItem("muun_user_data", JSON.stringify(data));
     const date = new Date(`${data.birthDate}T${data.birthTime}`);
     const sajuResult = calculateSaju(date, data.gender);
     setResult(sajuResult);
     window.scrollTo(0, 0);
 
-    const fetchAll = async () => {
-      const tasks = [
-        { key: 'general', fn: fortuneApi.fetchYearlyGeneral },
-        { key: 'wealth', fn: fortuneApi.fetchWealth },
-        { key: 'career', fn: fortuneApi.fetchCareer },
-      ];
-
-      for (const task of tasks) {
-        const res = await task.fn(sajuResult);
-        setFortunes(prev => ({ ...prev, [task.key]: res }));
-      }
-      setIsLoading(false);
-    };
-
-    fetchAll();
+    // 템플릿 기반 운세 생성 (비용 없음!)
+    const allFortunes = generateYearlyFortune(sajuResult);
+    
+    // 순차적으로 표시하는 효과를 위해 딜레이 적용
+    const fortuneKeys = ['general', 'wealth', 'career'] as const;
+    
+    for (let i = 0; i < fortuneKeys.length; i++) {
+      await new Promise(resolve => setTimeout(resolve, 400));
+      setFortunes(prev => ({
+        ...prev,
+        [fortuneKeys[i]]: allFortunes[fortuneKeys[i]]
+      }));
+    }
   };
 
   if (!result) {
@@ -212,6 +215,12 @@ export default function YearlyFortune() {
     );
   }
 
+  const fortuneIcons: Record<string, React.ReactNode> = {
+    general: <Sparkles className="w-5 h-5" />,
+    wealth: <Zap className="w-5 h-5" />,
+    career: <Briefcase className="w-5 h-5" />,
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground pb-20">
       <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
@@ -252,45 +261,31 @@ export default function YearlyFortune() {
         <div className="space-y-6">
           <AnimatePresence>
             {Object.entries(fortunes).map(([key, fortune], index) => (
-              <motion.div
-                key={key}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <Card className="bg-card border-white/10 overflow-hidden">
-                  <CardHeader className="bg-white/5 border-b border-white/5">
-                    <CardTitle className="text-lg flex items-center gap-2 text-primary">
-                      {key === 'general' && <Sparkles className="w-5 h-5" />}
-                      {key === 'wealth' && <Zap className="w-5 h-5" />}
-                      {key === 'career' && <Briefcase className="w-5 h-5" />}
-                      {fortune?.title || "분석 중..."}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-6">
-                    {fortune ? (
+              fortune && (
+                <motion.div
+                  key={key}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <Card className="bg-card border-white/10 overflow-hidden">
+                    <CardHeader className="bg-white/5 border-b border-white/5">
+                      <CardTitle className="text-lg flex items-center gap-2 text-primary">
+                        {fortuneIcons[key]}
+                        {fortune.title}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="p-6">
                       <p className="text-white/80 leading-relaxed whitespace-pre-wrap">
                         {fortune.content}
                       </p>
-                    ) : (
-                      <div className="flex flex-col items-center justify-center py-12 space-y-4">
-                        <Loader2 className="w-8 h-8 text-primary animate-spin" />
-                        <p className="text-white/40 text-sm">2026년의 흐름을 정밀 분석하고 있습니다...</p>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              </motion.div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              )
             ))}
           </AnimatePresence>
         </div>
-
-        {isLoading && (
-          <div className="fixed bottom-8 left-1/2 -translate-x-1/2 bg-primary/20 backdrop-blur-md border border-primary/30 px-6 py-3 rounded-full flex items-center gap-3 shadow-2xl">
-            <Loader2 className="w-4 h-4 text-primary animate-spin" />
-            <span className="text-primary text-sm font-bold">병오년의 기운을 분석 중입니다...</span>
-          </div>
-        )}
       </main>
     </div>
   );
