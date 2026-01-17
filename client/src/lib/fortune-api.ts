@@ -1,8 +1,13 @@
 import { OpenAI } from "openai";
 import { SajuResult } from "./saju";
 
-// OpenAI 클라이언트 초기화 (Manus 환경에서는 API 키와 베이스 URL이 자동 설정됨)
-const client = new OpenAI();
+// OpenAI 클라이언트 초기화
+// Vercel 배포 환경에서는 클라이언트 측에서 호출 시 dangerouslyAllowBrowser 옵션이 필요합니다.
+// 주의: 실제 상용 서비스에서는 API 키 노출 방지를 위해 백엔드 프록시를 사용하는 것이 권장됩니다.
+const client = new OpenAI({
+  apiKey: import.meta.env.VITE_OPENAI_API_KEY || "",
+  dangerouslyAllowBrowser: true
+});
 
 export interface FortuneSection {
   title: string;
@@ -34,9 +39,13 @@ function getSajuString(saju: SajuResult) {
 async function fetchFortune(saju: SajuResult, type: string, prompt: string): Promise<FortuneSection> {
   const sajuInfo = getSajuString(saju);
   
+  if (!client.apiKey) {
+    return { title: `${type} 분석`, content: "API 키가 설정되지 않았습니다. 관리자에게 문의해주세요." };
+  }
+
   try {
     const response = await client.chat.completions.create({
-      model: "gpt-4.1-mini",
+      model: "gpt-4o-mini", // Vercel 환경에서 안정적인 모델로 변경
       messages: [
         {
           role: "system",
@@ -52,45 +61,38 @@ async function fetchFortune(saju: SajuResult, type: string, prompt: string): Pro
 
     const content = response.choices[0].message.content || "운세를 불러오는 데 실패했습니다.";
     
-    // 제목 추출 시도 (첫 줄이 제목 형태인 경우)
     const lines = content.split('\n').filter(l => l.trim() !== '');
     let title = `${type} 분석`;
     let finalContent = content;
 
-    if (lines[0].length < 50 && (lines[0].includes('운') || lines[0].includes(':') || lines[0].startsWith('#'))) {
+    if (lines.length > 0 && lines[0].length < 50 && (lines[0].includes('운') || lines[0].includes(':') || lines[0].startsWith('#'))) {
       title = lines[0].replace(/^[#\s*]+|[#\s*]+$/g, '');
       finalContent = lines.slice(1).join('\n\n');
     }
 
     return { title, content: finalContent };
-  } catch (error) {
+  } catch (error: any) {
     console.error(`Error fetching ${type}:`, error);
-    return { title: `${type} 분석`, content: "데이터를 불러오는 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요." };
+    return { title: `${type} 분석`, content: `데이터를 불러오는 중 오류가 발생했습니다: ${error.message}` };
   }
 }
 
 export const fortuneApi = {
-  // 초년운
   fetchEarlyLife: (saju: SajuResult) => 
     fetchFortune(saju, "초년운 (1세~27세)", "당신의 어린 시절과 청년기의 운명을 상세하고 길게, 비유를 섞어서 서술해줘. 성장 과정에서의 특징과 배움의 기운을 중심으로 작성해줘."),
   
-  // 중년운
   fetchMidLife: (saju: SajuResult) => 
     fetchFortune(saju, "중년운 (28세~57세)", "당신의 인생 황금기인 중년의 운명을 상세하고 길게, 비유를 섞어서 서술해줘. 사회적 성취, 가정의 안정, 인생의 전환점을 중심으로 작성해줘."),
   
-  // 말년운
   fetchLateLife: (saju: SajuResult) => 
     fetchFortune(saju, "말년운 (58세 이후)", "당신의 노후와 말년의 운명을 상세하고 길게, 비유를 섞어서 서술해줘. 평온함, 건강, 후손과의 관계, 정신적 풍요를 중심으로 작성해줘."),
   
-  // 재물운
   fetchWealth: (saju: SajuResult) => 
     fetchFortune(saju, "재물운", "당신의 평생 재물 흐름을 상세하고 길게, 비유를 섞어서 서술해줘. 돈이 들어오는 통로, 자산 관리의 지혜, 주의해야 할 시기를 중심으로 작성해줘."),
   
-  // 직업운
   fetchCareer: (saju: SajuResult) => 
     fetchFortune(saju, "직업운", "당신의 천직과 사회적 활동의 운명을 상세하고 길게, 비유를 섞어서 서술해줘. 어울리는 직업군, 조직 내에서의 역할, 성공을 위한 조언을 중심으로 작성해줘."),
 
-  // 2026년 총운
   fetchYearlyGeneral: (saju: SajuResult) => 
     fetchFortune(saju, "2026년 병오년 총운", "2026년 병오년(붉은 말의 해)의 전체적인 흐름을 상세하고 길게, 비유를 섞어서 서술해줘. 하늘의 기운과 땅의 기운이 당신에게 미치는 영향을 중심으로 작성해줘."),
 };
