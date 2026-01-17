@@ -1,16 +1,47 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import { BookOpen, Star, ShieldCheck, Info } from "lucide-react";
+import { BookOpen, Star, ShieldCheck, Info, BrainCircuit, ScrollText, Sparkles, Heart, CalendarDays } from "lucide-react";
 
 export default function Home() {
+  // 아이콘 리소스가 부족한 경우 Lucide 아이콘을 활용하여 디자인 일관성과 노출 보장
   const menuItems = [
-    { href: "/yearly-fortune", label: "신년운세", icon: "/images/icon_stars.png", color: "from-blue-500/20" },
-    { href: "/tojeong", label: "토정비결", icon: "/images/icon_crystal_ball.png", color: "from-yellow-500/20" },
-    { href: "/lifelong-saju", label: "평생사주", icon: "/images/icon_crystal_ball.png", color: "from-purple-500/20" },
-    { href: "/psychology", label: "심리풀이", icon: "/images/icon_brain.png", color: "from-indigo-500/20" },
-    { href: "/compatibility", label: "짝궁합", icon: "/images/icon_heart.png", color: "from-pink-500/20" },
-    { href: "/manselyeok", label: "만세력", icon: "/images/icon_calendar.png", color: "from-primary/20" },
+    { 
+      href: "/yearly-fortune", 
+      label: "신년운세", 
+      icon: <Star className="w-10 h-10 text-blue-400 drop-shadow-md" />, 
+      color: "from-blue-500/20" 
+    },
+    { 
+      href: "/tojeong", 
+      label: "토정비결", 
+      icon: <ScrollText className="w-10 h-10 text-yellow-400 drop-shadow-md" />, 
+      color: "from-yellow-500/20" 
+    },
+    { 
+      href: "/lifelong-saju", 
+      label: "평생사주", 
+      icon: <Sparkles className="w-10 h-10 text-purple-400 drop-shadow-md" />, 
+      color: "from-purple-500/20" 
+    },
+    { 
+      href: "/psychology", 
+      label: "심리풀이", 
+      icon: <BrainCircuit className="w-10 h-10 text-indigo-400 drop-shadow-md" />, 
+      color: "from-indigo-500/20" 
+    },
+    { 
+      href: "/compatibility", 
+      label: "짝궁합", 
+      icon: <Heart className="w-10 h-10 text-pink-400 drop-shadow-md" />, 
+      color: "from-pink-500/20" 
+    },
+    { 
+      href: "/manselyeok", 
+      label: "만세력", 
+      icon: <CalendarDays className="w-10 h-10 text-primary drop-shadow-md" />, 
+      color: "from-primary/20" 
+    },
   ];
 
   // 공통 가로 너비 클래스
@@ -94,7 +125,7 @@ export default function Home() {
               <Link key={index} href={item.href}>
                 <div className="flex flex-col items-center gap-2 group cursor-pointer">
                   <div className={`relative w-16 h-16 rounded-2xl bg-gradient-to-br ${item.color} to-white/5 border border-white/10 flex items-center justify-center transition-transform group-hover:scale-110 duration-300 shadow-lg`}>
-                    <img src={item.icon} alt={item.label} className="w-10 h-10 object-contain drop-shadow-md" />
+                    {item.icon}
                     <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-background flex items-center justify-center">
                       <span className="text-[8px] text-white font-bold">N</span>
                     </div>
