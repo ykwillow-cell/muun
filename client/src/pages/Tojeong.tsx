@@ -141,7 +141,7 @@ export default function Tojeong() {
                     </ToggleGroup>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="space-y-4">
                     <div>
                       <Label htmlFor="birthDate" className="text-white mb-2 block">생년월일</Label>
                       <Input

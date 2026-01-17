@@ -204,24 +204,26 @@ export default function Compatibility() {
                       </ToggleGroup>
                     </div>
 
-                    <div>
-                      <Label htmlFor="birthDate1" className="text-white mb-2 block">생년월일</Label>
-                      <Input
-                        id="birthDate1"
-                        type="date"
-                        {...form.register("birthDate1")}
-                        className="bg-white/5 border-white/10 text-white"
-                      />
-                    </div>
+                    <div className="space-y-4">
+                      <div>
+                        <Label htmlFor="birthDate1" className="text-white mb-2 block">생년월일</Label>
+                        <Input
+                          id="birthDate1"
+                          type="date"
+                          {...form.register("birthDate1")}
+                          className="bg-white/5 border-white/10 text-white w-full"
+                        />
+                      </div>
 
-                    <div>
-                      <Label htmlFor="birthTime1" className="text-white mb-2 block">태어난 시간</Label>
-                      <Input
-                        id="birthTime1"
-                        type="time"
-                        {...form.register("birthTime1")}
-                        className="bg-white/5 border-white/10 text-white"
-                      />
+                      <div>
+                        <Label htmlFor="birthTime1" className="text-white mb-2 block">태어난 시간</Label>
+                        <Input
+                          id="birthTime1"
+                          type="time"
+                          {...form.register("birthTime1")}
+                          className="bg-white/5 border-white/10 text-white w-full"
+                        />
+                      </div>
                     </div>
 
                     <div>
@@ -292,24 +294,26 @@ export default function Compatibility() {
                       </ToggleGroup>
                     </div>
 
-                    <div>
-                      <Label htmlFor="birthDate2" className="text-white mb-2 block">생년월일</Label>
-                      <Input
-                        id="birthDate2"
-                        type="date"
-                        {...form.register("birthDate2")}
-                        className="bg-white/5 border-white/10 text-white"
-                      />
-                    </div>
+                    <div className="space-y-4">
+                      <div>
+                        <Label htmlFor="birthDate2" className="text-white mb-2 block">생년월일</Label>
+                        <Input
+                          id="birthDate2"
+                          type="date"
+                          {...form.register("birthDate2")}
+                          className="bg-white/5 border-white/10 text-white w-full"
+                        />
+                      </div>
 
-                    <div>
-                      <Label htmlFor="birthTime2" className="text-white mb-2 block">태어난 시간</Label>
-                      <Input
-                        id="birthTime2"
-                        type="time"
-                        {...form.register("birthTime2")}
-                        className="bg-white/5 border-white/10 text-white"
-                      />
+                      <div>
+                        <Label htmlFor="birthTime2" className="text-white mb-2 block">태어난 시간</Label>
+                        <Input
+                          id="birthTime2"
+                          type="time"
+                          {...form.register("birthTime2")}
+                          className="bg-white/5 border-white/10 text-white w-full"
+                        />
+                      </div>
                     </div>
 
                     <div>
