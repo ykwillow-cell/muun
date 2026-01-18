@@ -69,8 +69,8 @@ export function GNB() {
         <div className="flex items-center gap-2">
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild className="md:hidden">
-              <Button variant="ghost" size="icon" className="text-primary hover:bg-primary/10 w-12 h-12">
-                <Menu className="h-8 w-8" />
+              <Button variant="ghost" size="icon" className="text-primary hover:bg-primary/10 w-14 h-14">
+                <Menu className="h-10 w-10" />
                 <span className="sr-only">Toggle menu</span>
               </Button>
             </SheetTrigger>
