@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /private
+
+Sitemap: https://muun2.vercel.app/sitemap.xml
+
+# Google AdSense
+User-agent: Googlebot
+Allow: /

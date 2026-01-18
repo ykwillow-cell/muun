@@ -64,9 +64,23 @@ export default function Privacy() {
               </section>
 
               <section className="space-y-3">
+                <h3 className="text-xl font-bold text-white">4-1. Google 광고 및 쿠키 정책</h3>
+                <p>
+                  본 서비스는 Google AdSense를 통해 광고를 게시합니다. Google은 사용자의 관심사에 기반한 맞춤형 광고를 제공하기 위해 쿠키를 사용할 수 있습니다. 사용자는 Google 광고 설정 페이지에서 맞춤형 광고 설정을 변경할 수 있습니다.
+                </p>
+              </section>
+
+              <section className="space-y-3">
                 <h3 className="text-xl font-bold text-white">5. 이용자의 권리</h3>
                 <p>
                   이용자는 언제든지 브라우저 설정을 통해 쿠키 저장을 거부하거나 로컬 스토리지를 삭제함으로써 자신의 정보를 직접 관리할 수 있습니다.
+                </p>
+              </section>
+
+              <section className="space-y-3">
+                <h3 className="text-xl font-bold text-white">5-1. 광고 정책 준수</h3>
+                <p>
+                  본 서비스는 Google AdSense 광고 정책을 준수하며, 사용자에게 광고 클릭을 유도하거나 강요하지 않습니다. 광고와 콘텐츠는 명확하게 구분되어 있습니다.
                 </p>
               </section>
 
@@ -75,6 +89,20 @@ export default function Privacy() {
                 <p>
                   서비스 이용 중 발생하는 개인정보 관련 문의는 아래 메일로 연락 주시기 바랍니다.<br />
                   이메일: support@muun.im
+                </p>
+              </section>
+
+              <section className="space-y-3">
+                <h3 className="text-xl font-bold text-white">7. 정책 변경</h3>
+                <p>
+                  본 개인정보처리방침은 법령 변경이나 서비스 정책 변경에 따라 수정될 수 있습니다. 변경 사항은 서비스 페이지에 공지됩니다.
+                </p>
+              </section>
+
+              <section className="space-y-3">
+                <h3 className="text-xl font-bold text-white">8. 시행일</h3>
+                <p>
+                  본 개인정보처리방침은 2026년 1월 18일부터 시행됩니다.
                 </p>
               </section>
             </CardContent>
