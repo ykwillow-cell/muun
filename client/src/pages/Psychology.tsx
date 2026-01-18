@@ -14,59 +14,108 @@ const PSYCHOLOGY_TESTS = [
     icon: <BrainCircuit className="w-6 h-6 text-purple-400" />,
     questions: [
       {
-        question: "길을 걷다 우연히 아주 예쁜 꽃을 발견했습니다. 당신의 행동은?",
+        question: "1. 낯선 숲속을 걷다가 갈림길을 만났습니다. 당신은 어떤 길을 선택하나요?",
         options: [
-          { text: "사진을 찍어 SNS에 공유하거나 친구에게 보낸다.", score: "A" },
-          { text: "가만히 서서 한참 동안 꽃의 향기와 모양을 감상한다.", score: "B" },
-          { text: "예쁘다고 생각하며 그냥 지나간다.", score: "C" },
-          { text: "이 꽃의 이름이 무엇인지 검색해본다.", score: "D" }
+          { text: "꽃이 만발하고 햇살이 잘 드는 밝은 길", score: 10 },
+          { text: "나무가 울창하고 신비로운 분위기의 좁은 길", score: 20 },
+          { text: "누군가 지나간 흔적이 뚜렷한 넓은 길", score: 30 },
+          { text: "어디로 연결될지 알 수 없는 안개 낀 길", score: 40 }
         ]
       },
       {
-        question: "새로운 사람들과의 모임에서 당신은 주로 어떤 모습인가요?",
+        question: "2. 우연히 발견한 오래된 상자 안에 한 가지 물건이 들어있다면 무엇일까요?",
         options: [
-          { text: "먼저 다가가 말을 걸고 분위기를 주도한다.", score: "A" },
-          { text: "상대방의 이야기를 경청하며 리액션을 잘 해준다.", score: "B" },
-          { text: "조용히 상황을 지켜보며 필요한 말만 한다.", score: "C" },
-          { text: "공통 관심사를 찾아 깊이 있는 대화를 시도한다.", score: "D" }
+          { text: "어린 시절 소중했던 추억의 장난감", score: 10 },
+          { text: "누군가에게 전달되지 못한 연애 편지", score: 20 },
+          { text: "반짝이는 보석이나 금화", score: 30 },
+          { text: "미래를 예언하는 신비한 지도", score: 40 }
+        ]
+      },
+      {
+        question: "3. 갑자기 비가 내리기 시작합니다. 당신의 첫 번째 행동은?",
+        options: [
+          { text: "빗소리를 즐기며 천천히 걷는다", score: 10 },
+          { text: "가까운 건물 안으로 들어가 비를 피한다", score: 20 },
+          { text: "가방에서 미리 준비한 우산을 꺼낸다", score: 30 },
+          { text: "비를 맞으며 뛰어가는 사람들을 관찰한다", score: 40 }
+        ]
+      },
+      {
+        question: "4. 카페에서 창밖을 보며 휴식을 취할 때, 당신의 시선은 어디에 머무나요?",
+        options: [
+          { text: "웃으며 대화하는 사람들의 표정", score: 10 },
+          { text: "바쁘게 움직이는 자동차와 도시의 풍경", score: 20 },
+          { text: "하늘의 구름이나 흔들리는 나뭇잎", score: 30 },
+          { text: "자신의 모습이 비치는 유리창", score: 40 }
+        ]
+      },
+      {
+        question: "5. 잠들기 전, 당신은 주로 어떤 생각을 하나요?",
+        options: [
+          { text: "오늘 하루 있었던 즐거운 일들", score: 10 },
+          { text: "내일 해야 할 일들에 대한 계획", score: 20 },
+          { text: "현실에서는 일어날 수 없는 판타지 같은 상상", score: 30 },
+          { text: "삶의 의미나 우주의 신비에 대한 깊은 고민", score: 40 }
         ]
       }
     ],
-    results: {
-      A: { title: "열정적인 분위기 메이커", desc: "당신은 에너지가 넘치고 주변 사람들에게 긍정적인 영향을 주는 사람입니다. 새로운 도전을 두려워하지 않으며, 당신의 밝은 기운이 주변을 환하게 만듭니다." },
-      B: { title: "따뜻한 공감의 소유자", desc: "당신은 타인의 감정을 잘 이해하고 배려하는 따뜻한 마음을 가졌습니다. 사람들은 당신과 대화할 때 편안함을 느끼며, 당신은 존재만으로도 큰 위로가 됩니다." },
-      C: { title: "냉철하고 합리적인 분석가", desc: "당신은 감정에 휘둘리지 않고 상황을 객관적으로 바라보는 능력이 탁월합니다. 효율적이고 실용적인 해결책을 찾아내는 데 능숙하며 신중한 성격입니다." },
-      D: { title: "깊이 있는 탐구자", desc: "당신은 사물의 본질을 궁금해하고 지적인 호기심이 강한 사람입니다. 남들이 보지 못하는 세밀한 부분까지 찾아내며, 자신만의 세계가 뚜렷합니다." }
-    }
+    results: [
+      {
+        min: 50,
+        max: 80,
+        type: "A",
+        title: "순수한 마음을 가진 낙천주의자",
+        desc: "당신은 밝고 긍정적인 에너지를 가진 사람입니다. 주변 사람들에게 따뜻함을 전하며, 작은 것에서도 행복을 찾을 줄 아는 순수한 영혼을 가졌군요. 때로는 현실적인 고민보다 감정에 충실한 편이지만, 그 덕분에 당신 주변에는 항상 사람들이 모여듭니다. 당신의 숨겨진 성격은 '무한한 포용력'입니다."
+      },
+      {
+        min: 90,
+        max: 120,
+        type: "B",
+        title: "안정을 추구하는 신중한 전략가",
+        desc: "당신은 상황을 객관적으로 파악하고 리스크를 최소화하려는 경향이 있습니다. 겉으로는 평온해 보이지만 속으로는 수많은 계산과 계획을 세우는 철저함을 가졌군요. 신뢰를 중요하게 생각하며, 한 번 맺은 인연을 소중히 여깁니다. 당신의 숨겨진 성격은 '강인한 책임감'입니다."
+      },
+      {
+        min: 130,
+        max: 160,
+        type: "C",
+        title: "자유로운 영혼의 예술가",
+        desc: "당신은 틀에 박힌 것을 싫어하고 자신만의 독특한 시각으로 세상을 바라봅니다. 풍부한 감수성과 상상력을 바탕으로 새로운 가치를 창조해내는 능력이 탁월하군요. 남들과는 조금 다른 길을 걷는 것에 두려움이 없으며 독립적인 성향이 강합니다. 당신의 숨겨진 성격은 '독창적인 통찰력'입니다."
+      },
+      {
+        min: 170,
+        max: 200,
+        type: "D",
+        title: "깊은 내면을 가진 철학자",
+        desc: "당신은 사물의 본질과 삶의 의미를 끊임없이 탐구하는 깊은 내면의 소유자입니다. 가벼운 대화보다는 진지한 사색을 즐기며, 혼자만의 시간 속에서 에너지를 얻는 편이군요. 남들이 보지 못하는 세밀한 진실을 꿰뚫어 보는 눈을 가졌습니다. 당신의 숨겨진 성격은 '냉철한 직관력'입니다."
+      }
+    ]
   }
 ];
 
 export default function Psychology() {
   const [step, setStep] = useState<"intro" | "quiz" | "result">("intro");
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState<string[]>([]);
+  const [totalScore, setTotalScore] = useState(0);
   const [finalResult, setFinalResult] = useState<any>(null);
 
-  const test = PSYCHOLOGY_TESTS[0]; // 현재는 첫 번째 테스트만 제공
+  const test = PSYCHOLOGY_TESTS[0];
 
   const handleStart = () => {
     setStep("quiz");
     setCurrentQuestion(0);
-    setAnswers([]);
+    setTotalScore(0);
   };
 
-  const handleAnswer = (score: string) => {
-    const newAnswers = [...answers, score];
-    setAnswers(newAnswers);
+  const handleAnswer = (score: number) => {
+    const newTotalScore = totalScore + score;
+    setTotalScore(newTotalScore);
 
     if (currentQuestion < test.questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
     } else {
-      // 결과 계산 (가장 많이 나온 점수 기준)
-      const counts: any = {};
-      newAnswers.forEach(s => counts[s] = (counts[s] || 0) + 1);
-      const topScore = Object.keys(counts).reduce((a, b) => counts[a] > counts[b] ? a : b);
-      setFinalResult(test.results[topScore as keyof typeof test.results]);
+      // 결과 계산 (총점 기준)
+      const result = test.results.find(r => newTotalScore >= r.min && newTotalScore <= r.max);
+      setFinalResult(result || test.results[test.results.length - 1]);
       setStep("result");
     }
   };
@@ -76,7 +125,7 @@ export default function Psychology() {
       try {
         await navigator.share({
           title: '무운 데일리 심리풀이',
-          text: `나의 심리 테스트 결과: ${finalResult.title}`,
+          text: `나의 숨겨진 성격 테스트 결과: ${finalResult.title}`,
           url: window.location.href,
         });
       } catch (err) {
