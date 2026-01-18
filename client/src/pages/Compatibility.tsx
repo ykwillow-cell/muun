@@ -5,6 +5,7 @@ import { z } from "zod";
 import { motion } from "framer-motion";
 import { ChevronLeft, Heart, Share2, Sparkles, User } from "lucide-react";
 import { Link } from "wouter";
+import { shareContent } from "@/lib/share";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -371,21 +372,10 @@ export default function Compatibility() {
             size="icon"
             className="text-yellow-400 hover:bg-yellow-400/10"
             onClick={() => {
-              const text = `${form.getValues('name1')}과 ${form.getValues('name2')}의 궁합을 확인해보세요! 무운(무료 운세)에서 당신들의 궁합을 알아보세요.`;
-              if (window.Kakao) {
-                window.Kakao.Share.sendDefault({
-                  objectType: 'feed',
-                  content: {
-                    title: '우리의 궁합',
-                    description: text,
-                    imageUrl: 'https://via.placeholder.com/1200x630',
-                    link: {
-                      mobileWebUrl: window.location.href,
-                      webUrl: window.location.href,
-                    },
-                  },
-                });
-              }
+              shareContent({
+                title: '무운 궁합 결과',
+                text: `${form.getValues('name1')}님과 ${form.getValues('name2')}님의 궁합 결과를 확인해보세요!`,
+              });
             }}
           >
             <Share2 className="h-5 w-5" />

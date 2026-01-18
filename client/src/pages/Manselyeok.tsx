@@ -5,6 +5,7 @@ import { z } from "zod";
 import { motion } from "framer-motion";
 import { ChevronLeft, Info, Share2 } from "lucide-react";
 import { Link } from "wouter";
+import { shareContent } from "@/lib/share";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -63,12 +64,29 @@ export default function Manselyeok() {
       {/* Header */}
       <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
         <div className="container mx-auto px-4 h-14 flex items-center">
-          <Link href="/">
-            <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/10">
-              <ChevronLeft className="h-6 w-6" />
+          <div className="flex items-center">
+            <Link href="/">
+              <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/10">
+                <ChevronLeft className="h-6 w-6" />
+              </Button>
+            </Link>
+            <h1 className="text-lg font-bold text-white">만세력</h1>
+          </div>
+          {result && (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="ml-auto text-white hover:bg-white/10"
+              onClick={() => {
+                shareContent({
+                  title: '무운 만세력 결과',
+                  text: `${form.getValues('name')}님의 사주팔자 만세력 결과를 확인해보세요!`,
+                });
+              }}
+            >
+              <Share2 className="h-5 w-5" />
             </Button>
-          </Link>
-          <h1 className="text-lg font-bold text-white">만세력</h1>
+          )}
         </div>
       </header>
 

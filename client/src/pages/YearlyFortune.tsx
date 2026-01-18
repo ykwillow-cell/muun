@@ -3,8 +3,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, Star, Sparkles, User, Zap, Briefcase } from "lucide-react";
+import { ChevronLeft, Star, Sparkles, User, Zap, Briefcase, Share2 } from "lucide-react";
 import { Link } from "wouter";
+import { shareContent } from "@/lib/share";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -231,6 +232,19 @@ export default function YearlyFortune() {
             </Button>
             <h1 className="text-xl font-bold text-white">2026년 병오년 운세</h1>
           </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="text-white hover:bg-white/10"
+            onClick={() => {
+              shareContent({
+                title: '무운 2026년 병오년 운세',
+                text: `${form.getValues('name')}님의 2026년 운세 결과를 확인해보세요!`,
+              });
+            }}
+          >
+            <Share2 className="h-5 w-5" />
+          </Button>
         </div>
       </header>
 

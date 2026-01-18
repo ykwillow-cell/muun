@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, Share2, RefreshCw, BrainCircuit, Heart, Sparkles, Target } from "lucide-react";
 import { Link } from "wouter";
+import { shareContent } from "@/lib/share";
 
 // 심리 테스트 데이터
 const PSYCHOLOGY_TESTS = [
@@ -121,17 +122,10 @@ export default function Psychology() {
   };
 
   const handleShare = async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: '무운 데일리 심리풀이',
-          text: `나의 숨겨진 성격 테스트 결과: ${finalResult.title}`,
-          url: window.location.href,
-        });
-      } catch (err) {
-        console.log('공유 실패:', err);
-      }
-    }
+    await shareContent({
+      title: '무운 데일리 심리풀이',
+      text: `나의 숨겨진 성격 테스트 결과: ${finalResult.title}`,
+    });
   };
 
   return (

@@ -2,8 +2,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, Star, Sparkles, User, Zap, Briefcase, Activity, Heart, Quote, TrendingUp } from "lucide-react";
+import { ChevronLeft, Star, Sparkles, User, Zap, Briefcase, Activity, Heart, Quote, TrendingUp, Share2 } from "lucide-react";
 import { Link } from "wouter";
+import { shareContent } from "@/lib/share";
 import { useState, useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -273,6 +274,19 @@ export default function LifelongSaju() {
             </Button>
             <h1 className="text-xl font-bold text-white">평생사주 풀이</h1>
           </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="text-white hover:bg-white/10"
+            onClick={() => {
+              shareContent({
+                title: '무운 평생사주 결과',
+                text: `${form.getValues('name')}님의 평생사주 풀이 결과를 확인해보세요!`,
+              });
+            }}
+          >
+            <Share2 className="h-5 w-5" />
+          </Button>
         </div>
       </header>
 

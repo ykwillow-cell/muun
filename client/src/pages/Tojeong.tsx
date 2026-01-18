@@ -5,6 +5,7 @@ import { z } from "zod";
 import { motion } from "framer-motion";
 import { ChevronLeft, Share2, Sparkles, User, TrendingUp, Zap, Briefcase, Activity, Users, Quote, BookOpen } from "lucide-react";
 import { Link } from "wouter";
+import { shareContent } from "@/lib/share";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -212,7 +213,17 @@ export default function Tojeong() {
             </Button>
             <h1 className="text-xl font-bold text-white">토정비결 결과</h1>
           </div>
-          <Button variant="ghost" size="icon" className="text-yellow-400 hover:bg-yellow-400/10">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="text-yellow-400 hover:bg-yellow-400/10"
+            onClick={() => {
+              shareContent({
+                title: '무운 토정비결 결과',
+                text: `${form.getValues('name')}님의 2026년 토정비결 결과를 확인해보세요!`,
+              });
+            }}
+          >
             <Share2 className="h-5 w-5" />
           </Button>
         </div>
