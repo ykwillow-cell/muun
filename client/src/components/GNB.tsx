@@ -36,27 +36,27 @@ export function GNB() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-background/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-background/60 backdrop-blur-2xl">
       <div className="container flex h-16 items-center justify-between">
-        <div className="flex items-center gap-8">
-          <Link href="/" className="flex items-center space-x-2 group">
-            <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform">
+        <div className="flex items-center gap-12">
+          <Link href="/" className="flex items-center space-x-2.5 group">
+            <div className="w-9 h-9 bg-primary rounded-xl flex items-center justify-center group-hover:rotate-12 transition-all duration-500 shadow-[0_0_20px_rgba(255,215,0,0.2)]">
               <Sparkles className="w-5 h-5 text-background" />
             </div>
-            <span className="text-xl font-black tracking-tighter text-primary">
+            <span className="text-2xl font-black tracking-tighter text-primary">
               MUUN
             </span>
           </Link>
-          <nav className="hidden md:flex items-center space-x-8 text-sm font-medium">
+          <nav className="hidden md:flex items-center space-x-10 text-[13px] font-semibold tracking-wide">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "relative py-2 transition-colors hover:text-primary",
+                  "relative py-1 transition-all duration-300 hover:text-primary",
                   location === item.href
-                    ? "text-primary after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-primary"
-                    : "text-foreground/60"
+                    ? "text-primary after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-primary after:rounded-full"
+                    : "text-foreground/50"
                 )}
               >
                 {item.name}
