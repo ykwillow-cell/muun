@@ -58,7 +58,7 @@ export default function Home() {
         <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-purple-900/10 rounded-full blur-[120px]" />
       </div>
 
-      <main className="relative z-10 container mx-auto px-4 py-12 md:py-20 flex flex-col gap-20">
+      <main className="relative z-10 container mx-auto px-4 py-12 md:py-20 flex flex-col gap-16 md:gap-20">
         
         {/* Hero Section */}
         <section className={`flex flex-col items-center text-center gap-8 ${commonMaxWidth}`}>
@@ -81,7 +81,7 @@ export default function Home() {
               <span className="text-primary">가장 맑은 거울, 무운</span>
             </h1>
             
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+            <p className="text-base md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed px-4 md:px-0">
               복잡한 가입 없이, 30년 전통의 명리학 지혜를<br className="hidden md:block" /> 
               현대적인 감각으로 풀어낸 무료 운세 서비스를 경험해보세요.
             </p>
@@ -93,20 +93,20 @@ export default function Home() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="group relative w-full aspect-[21/9] md:aspect-[3/1] rounded-[2rem] overflow-hidden glass-panel hover:border-primary/30 transition-all duration-500"
+              className="group relative w-full min-h-[180px] md:aspect-[3/1] rounded-[2rem] overflow-hidden glass-panel hover:border-primary/30 transition-all duration-500"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 group-hover:opacity-100 transition-opacity" />
-              <div className="absolute inset-0 flex items-center justify-between px-8 md:px-12">
-                <div className="text-left space-y-3 z-10">
+              <div className="absolute inset-0 flex items-center justify-between px-6 md:px-12 py-6">
+                <div className="text-left space-y-3 z-10 flex-1">
                   <div className="inline-block px-2 py-0.5 rounded bg-primary text-[10px] font-bold text-background uppercase">New</div>
-                  <h2 className="text-xl md:text-3xl font-bold text-white group-hover:text-primary transition-colors">
+                  <h2 className="text-lg md:text-3xl font-bold text-white group-hover:text-primary transition-colors leading-tight">
                     오늘 내 심리는?<br />매일 달라지는 마음의 날씨
                   </h2>
                   <div className="flex items-center gap-2 text-sm text-primary font-medium">
                     지금 확인하기 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>
-                <div className="relative w-32 h-32 md:w-48 md:h-48">
+                <div className="relative w-24 h-24 md:w-48 md:h-48 flex-shrink-0">
                   <img 
                     src="/images/horse_mascot.png" 
                     alt="Mascot" 
@@ -120,28 +120,28 @@ export default function Home() {
 
         {/* Services Grid */}
         <section className={commonMaxWidth}>
-          <div className="flex flex-col md:flex-row justify-between items-end mb-10 gap-4">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-10 gap-4 px-2 md:px-0">
             <div className="space-y-2">
               <h3 className="text-2xl md:text-3xl font-bold text-white">운세 카테고리</h3>
-              <p className="text-muted-foreground">당신이 궁금한 모든 미래를 준비했습니다.</p>
+              <p className="text-muted-foreground text-sm md:text-base">당신이 궁금한 모든 미래를 준비했습니다.</p>
             </div>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
             {menuItems.map((item, index) => (
               <Link key={index} href={item.href}>
                 <motion.div 
                   whileHover={{ y: -8 }}
-                  className="group relative p-6 md:p-8 rounded-[2rem] glass-panel hover:bg-white/5 transition-all duration-300 cursor-pointer h-full flex flex-col gap-6"
+                  className="group relative p-6 md:p-8 rounded-[2rem] glass-panel hover:bg-white/5 transition-all duration-300 cursor-pointer h-full flex flex-col gap-4 md:gap-6"
                 >
-                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${item.color} to-transparent flex items-center justify-center group-hover:scale-110 transition-transform duration-500`}>
+                  <div className={`w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-gradient-to-br ${item.color} to-transparent flex items-center justify-center group-hover:scale-110 transition-transform duration-500`}>
                     {item.icon}
                   </div>
                   <div className="space-y-1">
                     <h4 className="text-lg font-bold text-white group-hover:text-primary transition-colors">{item.label}</h4>
                     <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
                   </div>
-                  <div className="mt-auto pt-4 flex justify-end">
+                  <div className="mt-auto pt-2 md:pt-4 flex justify-end">
                     <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary group-hover:text-background transition-all">
                       <ArrowRight className="w-4 h-4" />
                     </div>
