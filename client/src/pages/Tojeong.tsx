@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion } from "framer-motion";
-import { ChevronLeft, Share2, Sparkles, User, TrendingUp, Zap, Briefcase, Activity, Users, Quote, BookOpen } from "lucide-react";
+import { ChevronLeft, Share2, Sparkles, User, TrendingUp, Zap, Briefcase, Activity, Users, Quote, BookOpen, Info } from "lucide-react";
 import { Link } from "wouter";
 import { shareContent } from "@/lib/share";
 
@@ -13,7 +13,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { calculateSaju, SajuResult } from "@/lib/saju";
+import { calculateSaju, SajuResult, calculateElementBalance, generateFortuneDetails } from "@/lib/saju";
+import SajuChart from "@/components/SajuChart";
+import LuckyItems from "@/components/LuckyItems";
+import iljuData from "@/lib/ilju-data.json";
 
 // 폼 스키마 정의
 const formSchema = z.object({
@@ -49,6 +52,7 @@ function getTojeongReview(stem: string): { title: string; general: string; detai
 
 export default function Tojeong() {
   const [result, setResult] = useState<SajuResult | null>(null);
+  const [extraInfo, setExtraInfo] = useState<any>(null);
   
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -74,6 +78,11 @@ export default function Tojeong() {
     const date = new Date(`${data.birthDate}T${data.birthTime}`);
     const sajuResult = calculateSaju(date, data.gender);
     setResult(sajuResult);
+    
+    // 추가 정보 생성
+    const details = generateFortuneDetails(sajuResult);
+    setExtraInfo(details);
+    
     window.scrollTo(0, 0);
   };
 
@@ -241,6 +250,44 @@ export default function Tojeong() {
               <h2 className="text-3xl font-bold text-white">2026년 토정비결 상세 풀이</h2>
               <p className="text-primary/80">토정 이지함 선생의 지혜를 빌려 당신의 한 해를 정교하게 분석합니다.</p>
             </div>
+
+            {/* 시각화 데이터 보강 */}
+            {extraInfo && (
+              <div className="space-y-8 mb-10">
+                <SajuChart 
+                  data={calculateElementBalance(result)} 
+                  scores={extraInfo.scores} 
+                />
+
+                <Card className="bg-card border-white/10 overflow-hidden">
+                  <CardHeader className="border-b border-white/5">
+                    <CardTitle className="text-lg flex items-center gap-2 text-primary">
+                      <Sparkles className="w-5 h-5" />
+                      핵심 기운 분석
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-8">
+                    <p className="text-xl font-bold text-white mb-4">
+                      {form.getValues("name")}님은 "{extraInfo.mainElement}"의 기운이 가장 강합니다.
+                    </p>
+                    <p className="text-lg text-white/80 leading-relaxed mb-6">
+                      {extraInfo.summary} {extraInfo.advice}
+                    </p>
+
+                    {iljuData[result.dayPillar.stem + result.dayPillar.branch as keyof typeof iljuData] && (
+                      <div className="mt-6 pt-6 border-t border-white/5">
+                        <p className="text-sm font-bold text-primary mb-3">[{result.dayPillar.stem}{result.dayPillar.branch} 일주 상세 분석]</p>
+                        <p className="text-white/70 leading-relaxed whitespace-pre-wrap">
+                          {iljuData[result.dayPillar.stem + result.dayPillar.branch as keyof typeof iljuData]}
+                        </p>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+
+                <LuckyItems lucky={extraInfo.lucky} />
+              </div>
+            )}
             
             <Card className="bg-white/5 border-white/10 mb-10">
               <CardContent className="p-6 space-y-4">
