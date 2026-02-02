@@ -277,7 +277,7 @@ export default function Tojeong() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {tojeong.detailed.map((item: any, idx: number) => (
                 <Card key={idx} className="bg-card border-white/10">
-                  <CardHeader className="pb-2">
+                  <CardHeader className="pb-2 border-b border-white/5 mb-4">
                     <CardTitle className="text-lg text-white">{item.category}</CardTitle>
                   </CardHeader>
                   <CardContent>

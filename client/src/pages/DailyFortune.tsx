@@ -113,7 +113,7 @@ export default function DailyFortune() {
 
           {/* Detail Card */}
           <Card className="bg-card border-white/10 overflow-hidden">
-            <CardHeader className="bg-white/5 border-b border-white/5">
+            <CardHeader className="border-b border-white/5">
               <CardTitle className="text-lg flex items-center gap-2 text-primary">
                 <Zap className="w-5 h-5" />
                 오늘의 총평

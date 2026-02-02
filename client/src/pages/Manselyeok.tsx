@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, Info, Share2, Sparkles, RefreshCcw, Zap, ArrowRight } from "lucide-react";
+import { ChevronLeft, Info, Share2, Sparkles, RefreshCcw, Zap, ArrowRight, User, Activity } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { shareContent } from "@/lib/share";
 
@@ -131,6 +131,12 @@ export default function Manselyeok() {
               </div>
 
               <Card className="glass-panel border-white/5 overflow-hidden">
+                <CardHeader className="border-b border-white/5 mb-4">
+                  <CardTitle className="text-xl text-primary flex items-center gap-2">
+                    <User className="w-5 h-5" />
+                    사용자 정보
+                  </CardTitle>
+                </CardHeader>
                 <CardContent className="p-8 md:p-10">
                   <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -270,38 +276,49 @@ export default function Manselyeok() {
 
               {/* 추가 분석 정보 */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Card className="glass-panel border-white/5 p-8 space-y-4">
-                  <h4 className="text-lg font-bold text-white flex items-center gap-2">
-                    <Sparkles className="w-5 h-5 text-primary" />
-                    나의 본원: {result.dayPillar.stemElement}의 기운
-                  </h4>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {form.getValues("name")}님은 {result.dayPillar.stemElement}의 기운을 타고나셨습니다. 이는 당신의 핵심 성격과 인생의 태도를 결정짓는 가장 중요한 요소입니다.
-                  </p>
+                <Card className="glass-panel border-white/5 overflow-hidden">
+                  <CardHeader className="border-b border-white/5 mb-4">
+                    <CardTitle className="text-lg font-bold text-white flex items-center gap-2">
+                      <Activity className="w-5 h-5 text-primary" />
+                      조언
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-8 pt-0 space-y-4">
+                    <h4 className="font-bold text-white text-base">
+                      {result.dayPillar.stemElement}의 기운
+                    </h4>
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      {form.getValues("name")}님은 {result.dayPillar.stemElement}의 기운을 타고나셨습니다. 이는 당신의 핵심 성격과 인생의 태도를 결정짓는 가장 중요한 요소입니다.
+                    </p>
+                  </CardContent>
                 </Card>
-                <Card className="glass-panel border-white/5 p-8 space-y-4">
-                  <h4 className="text-lg font-bold text-white flex items-center gap-2">
-                    <Info className="w-5 h-5 text-blue-400" />
-                    오행 분석
-                  </h4>
-                  <div className="flex gap-2">
-                    {['木', '火', '土', '金', '水'].map(el => (
-                      <div key={el} className="flex-1 h-2 rounded-full bg-white/5 overflow-hidden">
-                        <div className={`h-full ${getElementColor(el as FiveElement).split(' ')[2]}`} style={{ width: '60%' }} />
-                      </div>
-                    ))}
-                  </div>
-                  <p className="text-xs text-muted-foreground">전체적인 오행의 조화가 안정적입니다.</p>
+                <Card className="glass-panel border-white/5 overflow-hidden">
+                  <CardHeader className="border-b border-white/5 mb-4">
+                    <CardTitle className="text-lg font-bold text-white flex items-center gap-2">
+                      <Sparkles className="w-5 h-5 text-primary" />
+                      성격 분석
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-8 pt-0 space-y-4">
+                    <div className="flex gap-2">
+                      {['木', '火', '土', '金', '水'].map(el => (
+                        <div key={el} className="flex-1 h-2 rounded-full bg-white/5 overflow-hidden">
+                          <div className={`h-full ${getElementColor(el as FiveElement).split(' ')[2]}`} style={{ width: '60%' }} />
+                        </div>
+                      ))}
+                    </div>
+                    <p className="text-xs text-muted-foreground">전체적인 오행의 조화가 안정적입니다.</p>
+                  </CardContent>
                 </Card>
               </div>
 
               <div className="flex justify-center pt-6">
                 <Button 
-                  variant="outline" 
+                  variant="ghost" 
                   onClick={() => setResult(null)}
-                  className="rounded-full px-8 border-white/10 hover:bg-white/5"
+                  className="text-muted-foreground hover:text-white"
                 >
-                  다른 정보로 분석하기
+                  다른 정보로 다시 분석하기
                 </Button>
               </div>
             </motion.div>

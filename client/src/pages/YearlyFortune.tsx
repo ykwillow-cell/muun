@@ -262,7 +262,7 @@ export default function YearlyFortune() {
             { label: "연주", pillar: result.yearPillar },
           ].map((item, i) => (
             <Card key={i} className="bg-white/5 border-white/10 text-center overflow-hidden">
-              <div className="bg-white/10 py-1 text-[10px] sm:text-xs text-white/60">{item.label}</div>
+              <div className="py-1 text-[10px] sm:text-xs text-white/60 border-b border-white/5">{item.label}</div>
               <CardContent className="p-2 sm:p-4">
                 <div className="text-xl sm:text-3xl font-bold text-primary mb-1">{item.pillar.stem}</div>
                 <div className="text-xl sm:text-3xl font-bold text-white">{item.pillar.branch}</div>
@@ -283,7 +283,7 @@ export default function YearlyFortune() {
                   transition={{ delay: index * 0.1 }}
                 >
                   <Card className="bg-card border-white/10 overflow-hidden">
-                    <CardHeader className="bg-white/5 border-b border-white/5">
+                    <CardHeader className="border-b border-white/5">
                       <CardTitle className="text-lg flex items-center gap-2 text-primary">
                         {fortuneIcons[key]}
                         {fortune.title}

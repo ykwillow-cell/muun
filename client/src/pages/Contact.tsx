@@ -90,7 +90,7 @@ export default function Contact() {
           </div>
 
           <Card className="bg-card border-white/10">
-            <CardHeader>
+            <CardHeader className="border-b border-white/5 mb-6">
               <CardTitle className="text-2xl text-primary">문의 양식</CardTitle>
             </CardHeader>
             <CardContent>
