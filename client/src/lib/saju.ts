@@ -316,6 +316,57 @@ function calculateTenGod(targetStem: HeavenlyStem, dayStem: HeavenlyStem): TenGo
 }
 
 // 메인 계산 함수
+// 오행별 행운 데이터 매핑
+export const ELEMENT_LUCKY_DATA: Record<FiveElement, {
+  colors: string[];
+  numbers: number[];
+  foods: string[];
+  directions: string[];
+  activities: string[];
+  avoid: string[];
+}> = {
+  '木': {
+    colors: ['초록색', '청색'],
+    numbers: [3, 8],
+    foods: ['신맛 나는 과일', '채소', '곡물'],
+    directions: ['동쪽'],
+    activities: ['산책', '독서', '새로운 계획 세우기'],
+    avoid: ['지나친 음주', '충동적인 결정']
+  },
+  '火': {
+    colors: ['빨간색', '주황색'],
+    numbers: [2, 7],
+    foods: ['쓴맛 나는 채소', '커피', '구운 요리'],
+    directions: ['남쪽'],
+    activities: ['운동', '사교 모임', '발표'],
+    avoid: ['조급함', '다툼']
+  },
+  '土': {
+    colors: ['노란색', '브라운'],
+    numbers: [5, 0],
+    foods: ['단맛 나는 단호박', '고구마', '뿌리 채소'],
+    directions: ['중앙'],
+    activities: ['명상', '부동산 관련 공부', '정리정돈'],
+    avoid: ['게으름', '고집']
+  },
+  '金': {
+    colors: ['흰색', '금색', '은색'],
+    numbers: [4, 9],
+    foods: ['매운맛 나는 음식', '무', '생강'],
+    directions: ['서쪽'],
+    activities: ['정리', '결단 내리기', '금속 공예'],
+    avoid: ['냉소적인 태도', '슬픔']
+  },
+  '水': {
+    colors: ['검은색', '회색'],
+    numbers: [1, 6],
+    foods: ['짠맛 나는 해조류', '검은콩', '물'],
+    directions: ['북쪽'],
+    activities: ['휴식', '지식 탐구', '목욕'],
+    avoid: ['두려움', '밤샘']
+  }
+};
+
 export function calculateSaju(birthDate: Date, gender: 'male' | 'female'): SajuResult {
   const yearPillarRaw = getYearPillar(birthDate);
   const monthPillarRaw = getMonthPillar(birthDate, yearPillarRaw.stem);
@@ -359,5 +410,63 @@ export function calculateSaju(birthDate: Date, gender: 'male' | 'female'): SajuR
     hourPillar,
     birthDate,
     gender
+  };
+}
+
+// 오행 분포 계산 함수
+export function calculateElementBalance(saju: SajuResult) {
+  const elements: Record<FiveElement, number> = { '木': 0, '火': 0, '土': 0, '金': 0, '水': 0 };
+  const pillars = [saju.yearPillar, saju.monthPillar, saju.dayPillar, saju.hourPillar];
+  
+  pillars.forEach(p => {
+    elements[p.stemElement] += 1;
+    elements[p.branchElement] += 1;
+  });
+  
+  return Object.entries(elements).map(([name, value]) => ({
+    name,
+    value,
+    fullMark: 8
+  }));
+}
+
+// 운세 점수 및 조합형 문장 생성 엔진
+export function generateFortuneDetails(saju: SajuResult) {
+  const balance = calculateElementBalance(saju);
+  const strongest = [...balance].sort((a, b) => b.value - a.value)[0];
+  const weakest = [...balance].sort((a, b) => a.value - b.value)[0];
+  
+  const elementNames: Record<FiveElement, string> = { '木': '나무', '火': '불', '土': '흙', '金': '쇠', '水': '물' };
+  
+  // 조합형 문장 생성
+  const summaries = {
+    '木': ["성장과 발전의 기운이 강합니다.", "창의적인 아이디어가 샘솟는 시기입니다.", "새로운 시작을 하기에 최적의 조건입니다."],
+    '火': ["열정과 에너지가 넘치는 구성입니다.", "자신의 능력을 널리 알릴 기회가 많습니다.", "화려하고 역동적인 삶의 태도를 가집니다."],
+    '土': ["안정감과 신뢰가 바탕이 되는 사주입니다.", "중재자로서의 능력이 탁월합니다.", "결실을 맺고 저장하는 능력이 좋습니다."],
+    '金': ["결단력과 정의감이 돋보이는 구성입니다.", "군더더기 없는 깔끔한 처세가 강점입니다.", "단단한 의지로 목표를 달성하는 힘이 있습니다."],
+    '水': ["지혜롭고 유연한 사고방식을 가졌습니다.", "통찰력이 깊어 본질을 꿰뚫어 봅니다.", "주변과 잘 융화되면서도 자신의 흐름을 유지합니다."]
+  };
+
+  const advice = {
+    '木': "지나친 의욕보다는 내실을 다지는 것이 중요합니다.",
+    '火': "감정 조절에 유의하며 차분함을 유지하세요.",
+    '土': "변화를 두려워하지 말고 유연하게 대처하세요.",
+    '金': "주변 사람들에게 조금 더 따뜻한 포용력을 보여주세요.",
+    '水': "생각만 하기보다는 실행에 옮기는 용기가 필요합니다."
+  };
+
+  const luckyData = ELEMENT_LUCKY_DATA[strongest.name as FiveElement];
+
+  return {
+    summary: summaries[strongest.name as FiveElement][Math.floor(Math.random() * 3)],
+    mainElement: elementNames[strongest.name as FiveElement],
+    advice: advice[weakest.name as FiveElement],
+    scores: {
+      wealth: 70 + (Math.random() * 25),
+      health: 65 + (Math.random() * 30),
+      love: 60 + (Math.random() * 35),
+      career: 75 + (Math.random() * 20)
+    },
+    lucky: luckyData
   };
 }

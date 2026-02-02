@@ -12,7 +12,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { calculateSaju, SajuResult } from "@/lib/saju";
+import { calculateSaju, SajuResult, calculateElementBalance, generateFortuneDetails } from "@/lib/saju";
+import SajuChart from "@/components/SajuChart";
+import LuckyItems from "@/components/LuckyItems";
+import iljuData from "@/lib/ilju-data.json";
 import { trackEvent } from "@/lib/ga4";
 import { 
   generateYearlyFortune, 
@@ -40,6 +43,7 @@ export default function YearlyFortune() {
     wealth: null,
     career: null,
   });
+  const [extraInfo, setExtraInfo] = useState<any>(null);
   
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -69,6 +73,8 @@ export default function YearlyFortune() {
 
     // 템플릿 기반 운세 생성 (비용 없음!)
     const allFortunes = generateYearlyFortune(sajuResult);
+    const details = generateFortuneDetails(sajuResult);
+    setExtraInfo(details);
     
     // 순차적으로 표시하는 효과를 위해 딜레이 적용
     const fortuneKeys = ['general', 'wealth', 'career'] as const;
@@ -270,6 +276,48 @@ export default function YearlyFortune() {
             </Card>
           ))}
         </motion.div>
+
+        {/* 시각화 데이터 보강 */}
+        {extraInfo && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="space-y-8"
+          >
+            <SajuChart 
+              data={calculateElementBalance(result)} 
+              scores={extraInfo.scores} 
+            />
+
+            <Card className="bg-card border-white/10 overflow-hidden">
+              <CardHeader className="border-b border-white/5">
+                <CardTitle className="text-lg flex items-center gap-2 text-primary">
+                  <Sparkles className="w-5 h-5" />
+                  핵심 기운 분석
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-8">
+                <p className="text-xl font-bold text-white mb-4">
+                  {form.getValues("name")}님은 "{extraInfo.mainElement}"의 기운이 가장 강합니다.
+                </p>
+                <p className="text-lg text-white/80 leading-relaxed mb-6">
+                  {extraInfo.summary} {extraInfo.advice}
+                </p>
+                
+                {iljuData[result.dayPillar.stem + result.dayPillar.branch as keyof typeof iljuData] && (
+                  <div className="mt-6 pt-6 border-t border-white/5">
+                    <p className="text-sm font-bold text-primary mb-3">[{result.dayPillar.stem}{result.dayPillar.branch} 일주 상세 분석]</p>
+                    <p className="text-white/70 leading-relaxed whitespace-pre-wrap">
+                      {iljuData[result.dayPillar.stem + result.dayPillar.branch as keyof typeof iljuData]}
+                    </p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            <LuckyItems lucky={extraInfo.lucky} />
+          </motion.div>
+        )}
 
         {/* 운세 섹션들 */}
         <div className="space-y-6">
