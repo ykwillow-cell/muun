@@ -176,7 +176,7 @@ export default function DailyFortune() {
                 });
               }}
             >
-              친구에게 공유하고 복채내기
+              친구에게 공유하기
             </Button>
           </div>
         </motion.div>
