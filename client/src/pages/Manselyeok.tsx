@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, Info, Share2, Sparkles, RefreshCcw } from "lucide-react";
-import { Link } from "wouter";
+import { ChevronLeft, Info, Share2, Sparkles, RefreshCcw, Zap, ArrowRight } from "lucide-react";
+import { Link, useLocation } from "wouter";
 import { shareContent } from "@/lib/share";
 
 import { Button } from "@/components/ui/button";
@@ -38,6 +38,7 @@ const getElementColor = (element: FiveElement) => {
 
 export default function Manselyeok() {
   const [result, setResult] = useState<SajuResult | null>(null);
+  const [location, setLocation] = useLocation();
   
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -60,6 +61,14 @@ export default function Manselyeok() {
 
   const onSubmit = (data: FormValues) => {
     localStorage.setItem("muun_user_data", JSON.stringify(data));
+    
+    // 오늘의 운세에서 온 경우 바로 돌아가기
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("redirect") === "daily-fortune") {
+      setLocation("/daily-fortune");
+      return;
+    }
+
     const date = new Date(`${data.birthDate}T${data.birthTime}`);
     const sajuResult = calculateSaju(date, data.gender);
     setResult(sajuResult);
@@ -242,6 +251,22 @@ export default function Manselyeok() {
                   </div>
                 ))}
               </div>
+
+              {/* 오늘의 운세 바로가기 버튼 */}
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="pt-4"
+              >
+                <Link href="/daily-fortune">
+                  <Button className="w-full h-16 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-black text-lg rounded-2xl shadow-xl hover:scale-[1.02] transition-all flex items-center justify-center gap-3">
+                    <Zap className="w-6 h-6 fill-white" />
+                    오늘의 운세 확인하러 가기
+                    <ArrowRight className="w-5 h-5" />
+                  </Button>
+                </Link>
+              </motion.div>
 
               {/* 추가 분석 정보 */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

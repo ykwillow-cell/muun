@@ -30,7 +30,7 @@ export default function DailyFortune() {
           <p className="text-muted-foreground">
             오늘의 운세를 보려면 먼저 사주 정보를 입력해야 합니다.
           </p>
-          <Link href="/manselyeok">
+          <Link href="/manselyeok?redirect=daily-fortune">
             <Button className="w-full bg-primary text-background font-bold">
               정보 입력하러 가기
             </Button>
