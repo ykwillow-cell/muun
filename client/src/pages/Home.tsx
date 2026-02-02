@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import { BookOpen, Star, ShieldCheck, Info, BrainCircuit, ScrollText, Sparkles, Heart, CalendarDays, ArrowRight } from "lucide-react";
+import { BookOpen, Star, ShieldCheck, Info, BrainCircuit, ScrollText, Sparkles, Heart, CalendarDays, ArrowRight, Zap } from "lucide-react";
 
 export default function Home() {
   const menuItems = [
@@ -17,6 +17,13 @@ export default function Home() {
       icon: <ScrollText className="w-8 h-8 text-yellow-400" />, 
       color: "from-yellow-500/20",
       desc: "전통 비결의 지혜"
+    },
+    { 
+      href: "/daily-fortune", 
+      label: "오늘운세", 
+      icon: <Zap className="w-8 h-8 text-orange-400" />, 
+      color: "from-orange-500/20",
+      desc: "매일 확인하는 나의 행운"
     },
     { 
       href: "/lifelong-saju", 

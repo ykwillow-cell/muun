@@ -17,7 +17,8 @@ import {
   Heart, 
   BrainCircuit, 
   Info,
-  ChevronRight
+  ChevronRight,
+  Zap
 } from "lucide-react";
 import { useState } from "react";
 
@@ -25,6 +26,7 @@ const navItems = [
   { name: "만세력", href: "/manselyeok", icon: Calendar, description: "나의 타고난 기운 확인" },
   { name: "평생사주", href: "/lifelong-saju", icon: User, description: "인생의 전체적인 흐름" },
   { name: "토정비결", href: "/tojeong", icon: BookOpen, description: "전통 방식으로 보는 운세" },
+  { name: "오늘의 운세", href: "/daily-fortune", icon: Zap, description: "매일 확인하는 나의 행운" },
   { name: "신년운세", href: "/yearly-fortune", icon: Sparkles, description: "2026년 병오년 운세" },
   { name: "궁합", href: "/compatibility", icon: Heart, description: "상대방과의 조화" },
   { name: "심리테스트", href: "/psychology", icon: BrainCircuit, description: "나도 모르는 내 마음" },

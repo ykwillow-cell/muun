@@ -12,6 +12,7 @@ import { initGA, trackPageView } from "@/lib/ga4";
 import Manselyeok from "./pages/Manselyeok";
 import LifelongSaju from "./pages/LifelongSaju";
 import YearlyFortune from "./pages/YearlyFortune";
+import DailyFortune from "./pages/DailyFortune";
 import Compatibility from "./pages/Compatibility";
 import Tojeong from "./pages/Tojeong";
 import Psychology from "./pages/Psychology";
@@ -37,6 +38,7 @@ function Router() {
       <Route path="/manselyeok" component={Manselyeok} />
       <Route path="/lifelong-saju" component={LifelongSaju} />
       <Route path="/yearly-fortune" component={YearlyFortune} />
+      <Route path="/daily-fortune" component={DailyFortune} />
       <Route path="/compatibility" component={Compatibility} />
       <Route path="/tojeong" component={Tojeong} />
       <Route path="/psychology" component={Psychology} />
