@@ -47,7 +47,7 @@ export default function About() {
               </div>
               <h3 className="text-2xl font-bold text-white">무운의 의미</h3>
               <p className="text-muted-foreground leading-relaxed">
-                무운(MuUn)은 '없을 무(無)'와 '운 운(運)'을 결합하여, 정해진 운명에 얽매이지 않고 스스로 운을 만들어가는 주체적인 삶을 응원한다는 철학을 담고 있습니다.
+                무운(MuUn)은 '없을 무(無)'와 '운 운(運)'을 결합한 이름입니다. 이는 "정해진 운명은 없다"는 역설적인 의미를 내포하며, 타고난 기운을 이해하되 그에 얽매이지 않고 스스로의 선택으로 운을 만들어가는 주체적인 삶을 응원한다는 무운만의 독보적인 브랜드 철학을 담고 있습니다. 우리는 당신이 운명의 주인이 될 수 있도록 돕습니다.
               </p>
             </Card>
 
@@ -57,20 +57,28 @@ export default function About() {
               </div>
               <h3 className="text-2xl font-bold text-white">따뜻한 위로</h3>
               <p className="text-muted-foreground leading-relaxed">
-                단순한 길흉화복의 예측을 넘어, 지친 일상에 작은 쉼표가 될 수 있는 따뜻한 조언과 인생의 긍정적인 방향성을 제시하고자 합니다.
+                우리는 단순한 길흉화복의 예측이나 단정적인 미래 고지를 지양합니다. 대신, 복잡하고 지친 현대 사회를 살아가는 당신에게 따뜻한 위로와 공감을 전하며, 명리학적 근거를 바탕으로 한 긍정적인 삶의 방향성과 실질적인 조언을 제시합니다. 무운은 당신의 마음을 치유하는 가장 맑은 거울이 되고자 합니다.
               </p>
             </Card>
           </div>
 
           <section className="glass-panel border-white/5 p-10 md:p-16 rounded-[3rem] space-y-10">
             <div className="max-w-2xl space-y-6">
-              <h3 className="text-3xl font-bold text-white">우리의 철학</h3>
+              <h3 className="text-3xl font-bold text-white">무운의 핵심 가치와 전문성</h3>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                우리는 사주가 정해진 미래를 맞추는 도구가 아니라, 나 자신을 더 깊이 이해하고 타인과의 관계를 조화롭게 만드는 <span className="text-primary font-bold">'마음의 거울'</span>이라고 믿습니다. 
+                무운은 사주명리학을 미신이나 단순한 점술이 아닌, <span className="text-primary font-bold">'자기 성찰의 인문학'</span>으로 정의합니다. 나 자신을 더 깊이 이해하고, 타인과의 관계를 조화롭게 만들며, 삶의 중요한 순간에 현명한 결정을 내릴 수 있도록 돕는 도구가 바로 사주입니다.
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                30년 경력 역술인의 전문적인 식견을 현대적인 알고리즘으로 구현하여, 가장 쉽고 친절한 언어로 당신의 운명을 설명해 드립니다.
+                우리의 서비스는 30년 이상의 풍부한 임상 경험을 가진 역술 전문가의 방대한 데이터를 기반으로 합니다. 이 전문 지식을 최신 IT 기술과 정교한 알고리즘으로 녹여내어, 누구나 이해하기 쉬운 현대적이고 친절한 언어로 당신의 운명 스토리를 들려드립니다.
               </p>
+              <div className="space-y-4 pt-4">
+                <h4 className="text-xl font-bold text-white">왜 무운을 신뢰할 수 있나요?</h4>
+                <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
+                  <li><strong>검증된 데이터:</strong> 수만 건의 실제 상담 사례를 분석하여 도출된 고유의 해석 로직을 사용합니다.</li>
+                  <li><strong>사용자 중심 설계:</strong> 복잡한 한자나 어려운 전문 용어 대신, 직관적이고 현대적인 문체로 결과를 제공합니다.</li>
+                  <li><strong>투명한 가치 제공:</strong> 모든 분석 과정에서 사용자의 개인정보를 수집하지 않으며, 순수한 가치 전달에만 집중합니다.</li>
+                </ul>
+              </div>
             </div>
             
             <div className="pt-8 border-t border-white/5 grid grid-cols-1 md:grid-cols-2 gap-12">

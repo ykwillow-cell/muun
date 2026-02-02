@@ -82,8 +82,7 @@ export default function Home() {
             </h1>
             
             <p className="text-base md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed px-4 md:px-0">
-              복잡한 가입 없이, 30년 전통의 명리학 지혜를<br className="hidden md:block" /> 
-              현대적인 감각으로 풀어낸 무료 운세 서비스를 경험해보세요.
+              복잡한 가입 절차 없이, 30년 전통의 명리학적 통찰과 현대적인 알고리즘이 결합된 고품질 운세 서비스를 제공합니다. 당신의 과거를 돌아보고 현재를 진단하며, 더 나은 미래를 설계할 수 있도록 무운이 함께하겠습니다.
             </p>
           </motion.div>
 
@@ -152,28 +151,51 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Philosophy Section */}
-        <section className={`${commonMaxWidth} grid grid-cols-1 md:grid-cols-3 gap-6`}>
-          <div className="p-8 rounded-[2rem] glass-panel space-y-4">
-            <div className="w-12 h-12 rounded-xl bg-yellow-400/10 flex items-center justify-center">
-              <Star className="text-yellow-400 w-6 h-6" />
-            </div>
-            <h4 className="text-xl font-bold text-white">정확한 알고리즘</h4>
-            <p className="text-sm text-muted-foreground leading-relaxed">30년 경력 역술인의 전문 데이터를 현대적 알고리즘으로 정교하게 구현했습니다.</p>
+        {/* Detailed Explanation Section */}
+        <section className={`${commonMaxWidth} space-y-12`}>
+          <div className="text-center space-y-4">
+            <h3 className="text-3xl font-bold text-white">왜 무운인가요?</h3>
+            <p className="text-muted-foreground">무운은 사용자에게 가장 가치 있는 통찰을 제공하기 위해 세 가지 원칙을 지킵니다.</p>
           </div>
-          <div className="p-8 rounded-[2rem] glass-panel space-y-4">
-            <div className="w-12 h-12 rounded-xl bg-green-400/10 flex items-center justify-center">
-              <ShieldCheck className="text-green-400 w-6 h-6" />
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="p-8 rounded-[2rem] glass-panel space-y-4 border border-white/5">
+              <div className="w-12 h-12 rounded-xl bg-yellow-400/10 flex items-center justify-center">
+                <Star className="text-yellow-400 w-6 h-6" />
+              </div>
+              <h4 className="text-xl font-bold text-white">정밀한 명리 알고리즘</h4>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                단순한 확률 게임이 아닙니다. 30년 이상의 임상 경험을 가진 명리학 전문가의 고유 데이터를 바탕으로, 수천 가지의 사주 조합을 정밀하게 분석하는 현대적 알고리즘을 구축했습니다.
+              </p>
             </div>
-            <h4 className="text-xl font-bold text-white">철저한 익명성</h4>
-            <p className="text-sm text-muted-foreground leading-relaxed">입력하신 정보는 서버에 저장되지 않으며, 오직 당신의 브라우저에서만 처리됩니다.</p>
+            <div className="p-8 rounded-[2rem] glass-panel space-y-4 border border-white/5">
+              <div className="w-12 h-12 rounded-xl bg-green-400/10 flex items-center justify-center">
+                <ShieldCheck className="text-green-400 w-6 h-6" />
+              </div>
+              <h4 className="text-xl font-bold text-white">데이터 주권과 익명성</h4>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                당신의 소중한 개인정보는 서버에 단 1초도 머물지 않습니다. 모든 계산은 사용자의 브라우저 로컬 환경에서 수행되며, 페이지를 닫는 즉시 휘발됩니다. 우리는 정보의 보안을 최우선으로 생각합니다.
+              </p>
+            </div>
+            <div className="p-8 rounded-[2rem] glass-panel space-y-4 border border-white/5">
+              <div className="w-12 h-12 rounded-xl bg-blue-400/10 flex items-center justify-center">
+                <Info className="text-blue-400 w-6 h-6" />
+              </div>
+              <h4 className="text-xl font-bold text-white">지속 가능한 무료 가치</h4>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                고품질의 운세 정보가 누구나 누릴 수 있는 보편적 가치가 되기를 바랍니다. 회원가입이나 유료 결제 유도 없이, 모든 프리미엄 콘텐츠를 투명하게 공개하여 사용자에게 실질적인 도움을 드립니다.
+              </p>
+            </div>
           </div>
-          <div className="p-8 rounded-[2rem] glass-panel space-y-4">
-            <div className="w-12 h-12 rounded-xl bg-blue-400/10 flex items-center justify-center">
-              <Info className="text-blue-400 w-6 h-6" />
-            </div>
-            <h4 className="text-xl font-bold text-white">완전 무료 서비스</h4>
-            <p className="text-sm text-muted-foreground leading-relaxed">어떠한 결제 유도나 회원가입 없이 모든 운세 풀이를 자유롭게 이용하실 수 있습니다.</p>
+
+          <div className="p-10 rounded-[2.5rem] bg-white/5 border border-white/10 space-y-6">
+            <h4 className="text-2xl font-bold text-white">운세를 대하는 무운의 자세</h4>
+            <p className="text-muted-foreground leading-relaxed">
+              사주는 결정된 미래를 맞추는 점술이 아닙니다. 태어난 시점의 우주 에너지를 분석하여 자신의 강점과 약점을 파악하고, 다가올 시련에 대비하며 기회를 포착하는 '인생의 기상청'과 같습니다. 무운은 명리학의 본질인 '중화(中和)'의 정신을 담아, 어느 한쪽으로 치우치지 않는 균형 잡힌 시각을 제공합니다.
+            </p>
+            <p className="text-muted-foreground leading-relaxed">
+              우리는 사용자가 자신의 운명을 스스로 개척해 나갈 수 있도록 돕는 조력자가 되고자 합니다. 무운에서 제공하는 만세력, 평생사주, 토정비결 등의 다양한 도구를 통해 당신만의 인생 지도를 그려보세요.
+            </p>
           </div>
         </section>
 

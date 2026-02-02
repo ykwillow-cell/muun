@@ -239,8 +239,23 @@ export default function Tojeong() {
           <section className="space-y-4">
             <div className="text-center space-y-2 mb-6">
               <h2 className="text-3xl font-bold text-white">2026년 토정비결 상세 풀이</h2>
-              <p className="text-primary/80">토정 이지함 선생의 지혜를 빌려 한 해의 운세를 풀어드립니다.</p>
+              <p className="text-primary/80">토정 이지함 선생의 지혜를 빌려 당신의 한 해를 정교하게 분석합니다.</p>
             </div>
+            
+            <Card className="bg-white/5 border-white/10 mb-10">
+              <CardContent className="p-6 space-y-4">
+                <h4 className="font-bold text-white flex items-center gap-2">
+                  <Info className="w-4 h-4 text-primary" />
+                  토정비결이란 무엇인가요?
+                </h4>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  토정비결은 조선시대의 학자 토정 이지함 선생이 지은 것으로 알려진 한국의 전통 운세서입니다. 주역의 원리를 바탕으로 하되, 서민들이 알기 쉽게 재구성된 것이 특징입니다. 사주팔자 중 태어난 연, 월, 일의 세 가지 정보를 바탕으로 한 해의 신수를 총 144개의 괘로 풀어내어 설명합니다.
+                </p>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  무운의 토정비결은 이러한 전통적인 괘 분석 방식을 현대적으로 재해석하여, 오늘날의 삶에 적용 가능한 실질적인 조언을 제공합니다. 단순히 운이 좋다 나쁘다를 넘어, 어떤 마음가짐으로 한 해를 살아가야 할지에 대한 지혜를 얻어보세요.
+                </p>
+              </CardContent>
+            </Card>
             <div className="flex items-center gap-2 mb-2">
               <div className="h-8 w-1 bg-primary rounded-full" />
               <h3 className="text-2xl font-bold text-white">총론: {tojeong.title}</h3>
@@ -287,6 +302,24 @@ export default function Tojeong() {
                 <Quote className="absolute bottom-4 right-4 w-8 h-8 text-primary/20 rotate-180" />
               </CardContent>
             </Card>
+          </section>
+
+          <section className="bg-white/5 border border-white/10 rounded-3xl p-8 space-y-6">
+            <h4 className="text-xl font-bold text-white">운세를 현명하게 활용하는 법</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <h5 className="font-bold text-primary text-sm">긍정적인 기운은 증폭시키세요</h5>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  좋은 운세가 나왔다면 그것은 당신의 노력이 결실을 맺을 준비가 되었다는 신호입니다. 자만하지 말고 더욱 적극적으로 행동하여 기회를 잡으세요.
+                </p>
+              </div>
+              <div className="space-y-2">
+                <h5 className="font-bold text-primary text-sm">주의사항은 지혜로운 경고입니다</h5>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  조심해야 할 부분이 있다면 그것은 액운이 아니라 미리 대비하라는 조언입니다. 미리 인지하고 준비한다면 어떤 시련도 가볍게 넘길 수 있습니다.
+                </p>
+              </div>
+            </div>
           </section>
 
           <div className="flex flex-col gap-4 pt-6">

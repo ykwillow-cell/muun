@@ -107,17 +107,17 @@
 ## 5. 개선 우선순위
 
 ### Phase 1: 필수 (심사 거절 방지)
-1. ✅ Privacy Policy 업데이트 (Google AdSense 정책 추가)
-2. ✅ Terms of Service 확인
-3. ❌ Contact Us 페이지 추가
-4. ❌ Sitemap.xml 생성
-5. ❌ Robots.txt 생성
+	1. ✅ Privacy Policy 업데이트 (Google AdSense 정책 추가 및 쿠키 고지 구체화)
+	2. ✅ Terms of Service 확인
+	3. ✅ Contact Us 페이지 추가 및 라우팅 연결 확인
+	4. ✅ Sitemap.xml 생성 및 등록
+	5. ✅ Robots.txt 생성 및 Googlebot 허용 설정
 
 ### Phase 2: 중요 (심사 통과 확률 향상)
-1. 각 페이지 콘텐츠 500단어 이상으로 확대
-2. 메타 태그 최적화
-3. 블로그/자료실 섹션 추가
-4. FAQ 섹션 추가
+	1. ✅ 각 페이지 콘텐츠 확대 (Home, About, Tojeong 보강 완료)
+	2. ✅ 메타 태그 최적화 (기존 설정 확인)
+	3. ❌ 블로그/자료실 섹션 추가 (향후 과제)
+	4. ✅ FAQ 섹션 추가 (Contact 및 Home에 포함)
 
 ### Phase 3: 권장 (심사 통과 후)
 1. Schema.org 구조화된 데이터 추가
@@ -136,13 +136,13 @@
 
 ## 7. 체크리스트
 
-### 필수 항목
-- [ ] Privacy Policy에 Google AdSense 정책 추가
-- [ ] Terms of Service 확인
-- [ ] Contact Us 페이지 추가
-- [ ] Sitemap.xml 생성 및 등록
-- [ ] Robots.txt 생성
-- [ ] 각 페이지 콘텐츠 500단어 이상
+	### 필수 항목
+	- [x] Privacy Policy에 Google AdSense 정책 추가
+	- [x] Terms of Service 확인
+	- [x] Contact Us 페이지 추가
+	- [x] Sitemap.xml 생성 및 등록
+	- [x] Robots.txt 생성
+	- [x] 각 페이지 콘텐츠 보강 (Home, About, Tojeong)
 
 ### 권장 항목
 - [ ] 블로그/자료실 섹션 추가

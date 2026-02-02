@@ -64,10 +64,16 @@ export default function Privacy() {
               </section>
 
               <section className="space-y-3">
-                <h3 className="text-xl font-bold text-white">4-1. Google 광고 및 쿠키 정책</h3>
+                <h3 className="text-xl font-bold text-white">4-1. Google AdSense 및 쿠키 사용 고지</h3>
                 <p>
-                  본 서비스는 Google AdSense를 통해 광고를 게시합니다. Google은 사용자의 관심사에 기반한 맞춤형 광고를 제공하기 위해 쿠키를 사용할 수 있습니다. 사용자는 Google 광고 설정 페이지에서 맞춤형 광고 설정을 변경할 수 있습니다.
+                  본 서비스는 수익 창출 및 서비스 운영을 위해 Google AdSense 광고를 게재합니다. 이와 관련하여 다음과 같은 사항을 준수합니다:
                 </p>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>Google을 포함한 제3자 제공업체는 사용자의 이전 웹사이트 방문 기록을 바탕으로 광고를 게재하기 위해 쿠키를 사용합니다.</li>
+                  <li>Google의 광고 쿠키 사용을 통해 Google과 파트너사는 본 서비스 및 인터넷상의 다른 사이트 방문 기록을 토대로 사용자에게 맞춤형 광고를 제공할 수 있습니다.</li>
+                  <li>사용자는 <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Google 광고 설정</a>을 방문하여 맞춤형 광고 게재를 중단할 수 있습니다.</li>
+                  <li>사용자는 <a href="https://www.aboutads.info" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">www.aboutads.info</a>를 방문하여 맞춤형 광고를 위한 제3자 제공업체의 쿠키 사용을 차단할 수 있습니다.</li>
+                </ul>
               </section>
 
               <section className="space-y-3">
