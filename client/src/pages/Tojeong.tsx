@@ -96,7 +96,7 @@ export default function Tojeong() {
                 <ChevronLeft className="h-6 w-6" />
               </Button>
             </Link>
-            <h1 className="text-xl font-bold text-white">토정비결</h1>
+            <h1 className="text-xl font-bold text-white">무료 토정비결</h1>
           </div>
         </header>
 
@@ -109,10 +109,10 @@ export default function Tojeong() {
           >
             <Card className="bg-card border-white/10 shadow-xl backdrop-blur-md">
               <CardHeader>
-                <CardTitle className="text-white flex items-center gap-2">
-                  <BookOpen className="w-5 h-5 text-primary" />
-                  토정비결 정보 입력
-                </CardTitle>
+                  <CardTitle className="text-white flex items-center gap-2">
+                    <BookOpen className="w-5 h-5 text-primary" />
+                    무료 토정비결 정보 입력
+                  </CardTitle>
               </CardHeader>
               <CardContent>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -220,7 +220,7 @@ export default function Tojeong() {
             <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/10" onClick={() => setResult(null)}>
               <ChevronLeft className="h-6 w-6" />
             </Button>
-            <h1 className="text-xl font-bold text-white">토정비결 결과</h1>
+            <h1 className="text-xl font-bold text-white">무료 토정비결 결과</h1>
           </div>
           <Button
             variant="ghost"

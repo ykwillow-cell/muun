@@ -10,7 +10,7 @@ import { shareContent } from "@/lib/share";
 const PSYCHOLOGY_TESTS = [
   {
     id: "personality",
-    title: "나의 숨겨진 성격 찾기",
+    title: "무료 심리 테스트: 나의 숨겨진 성격 찾기",
     description: "평소 무심코 하는 행동 속에 숨겨진 당신의 진짜 성격은?",
     icon: <BrainCircuit className="w-6 h-6 text-purple-400" />,
     questions: [
@@ -137,7 +137,7 @@ export default function Psychology() {
               <ChevronLeft className="w-6 h-6" />
             </Button>
           </Link>
-          <h1 className="text-xl font-bold">데일리 심리풀이</h1>
+          <h1 className="text-xl font-bold">무료 심리 테스트</h1>
         </header>
 
         <AnimatePresence mode="wait">

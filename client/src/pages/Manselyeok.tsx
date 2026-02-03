@@ -85,7 +85,7 @@ export default function Manselyeok() {
                 <ChevronLeft className="h-5 w-5" />
               </Button>
             </Link>
-            <h1 className="text-lg font-bold tracking-tight">만세력</h1>
+            <h1 className="text-lg font-bold tracking-tight">무료 만세력</h1>
           </div>
           {result && (
             <div className="flex gap-2">
@@ -126,7 +126,7 @@ export default function Manselyeok() {
               transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
             >
               <div className="text-center mb-10 space-y-2">
-                <h2 className="text-3xl font-bold text-white">사주 정보 입력</h2>
+                <h2 className="text-3xl font-bold text-white">무료 만세력 사주 정보 입력</h2>
                 <p className="text-muted-foreground">정확한 분석을 위해 태어난 시간을 입력해주세요.</p>
               </div>
 
@@ -206,7 +206,7 @@ export default function Manselyeok() {
                     </div>
 
                     <Button type="submit" className="w-full h-14 bg-primary text-background hover:bg-primary/90 font-black text-lg rounded-2xl shadow-[0_10px_30px_rgba(255,215,0,0.2)] transition-all active:scale-[0.98]">
-                      만세력 분석하기
+                      무료 만세력 분석하기
                     </Button>
                   </form>
                 </CardContent>

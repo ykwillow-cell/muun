@@ -98,7 +98,7 @@ export default function YearlyFortune() {
                 <ChevronLeft className="h-6 w-6" />
               </Button>
             </Link>
-            <h1 className="text-xl font-bold text-white">올해운세</h1>
+            <h1 className="text-xl font-bold text-white">2026년 무료 신년운세</h1>
           </div>
         </header>
 
@@ -211,7 +211,7 @@ export default function YearlyFortune() {
                     className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white font-semibold py-6 text-lg"
                   >
                     <Sparkles className="w-5 h-5 mr-2" />
-                    2026년 운세 보기
+                    2026년 무료 신년운세 보기
                   </Button>
                 </form>
               </CardContent>
@@ -236,7 +236,7 @@ export default function YearlyFortune() {
             <Button variant="ghost" size="icon" onClick={() => setResult(null)} className="mr-2 text-white hover:bg-white/10">
               <ChevronLeft className="h-6 w-6" />
             </Button>
-            <h1 className="text-xl font-bold text-white">2026년 병오년 운세</h1>
+            <h1 className="text-xl font-bold text-white">2026년 무료 신년운세 결과</h1>
           </div>
           <Button
             variant="ghost"

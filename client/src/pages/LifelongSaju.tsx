@@ -109,7 +109,7 @@ export default function LifelongSaju() {
                 <ChevronLeft className="h-6 w-6" />
               </Button>
             </Link>
-            <h1 className="text-xl font-bold text-white">평생사주</h1>
+            <h1 className="text-xl font-bold text-white">무료 평생사주 풀이</h1>
           </div>
         </header>
 
@@ -250,7 +250,7 @@ export default function LifelongSaju() {
                     className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white font-semibold py-6 text-lg"
                   >
                     <Sparkles className="w-5 h-5 mr-2" />
-                    평생사주 보기
+                    무료 평생사주 보기
                   </Button>
                 </form>
               </CardContent>
