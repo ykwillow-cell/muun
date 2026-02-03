@@ -112,7 +112,7 @@ const CitySelector = ({ value, onChange }: { value: string; onChange: (city: str
   );
 
   return (
-    <div className="relative">
+    <div className="relative z-20">
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
@@ -130,7 +130,7 @@ const CitySelector = ({ value, onChange }: { value: string; onChange: (city: str
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
-          className="absolute top-full left-0 right-0 mt-2 bg-background/95 border border-white/10 rounded-lg shadow-2xl z-50 backdrop-blur-xl"
+          className="absolute top-full left-0 right-0 mt-2 bg-background/95 border border-white/10 rounded-lg shadow-2xl z-[100] backdrop-blur-xl"
         >
           <div className="p-3 border-b border-white/10">
             <div className="flex items-center gap-2 bg-white/5 px-3 py-2 rounded-lg">
@@ -253,7 +253,7 @@ const Astrology: React.FC = () => {
               </p>
             </div>
 
-            <Card className="bg-card/50 border-white/10 shadow-2xl backdrop-blur-xl overflow-hidden">
+            <Card className="bg-card/50 border-white/10 shadow-2xl backdrop-blur-xl relative z-10">
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary/50 via-purple-500/50 to-blue-500/50" />
               <CardHeader>
                 <CardTitle className="text-white flex items-center gap-2">
@@ -284,7 +284,7 @@ const Astrology: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="space-y-2">
+                  <div className="space-y-2 relative z-20">
                     <Label className="text-white/70 text-sm font-medium">태어난 도시</Label>
                     <CitySelector 
                       value={form.watch("birthCity")} 
