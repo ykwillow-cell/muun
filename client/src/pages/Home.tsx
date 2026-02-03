@@ -47,6 +47,13 @@ export default function Home() {
       desc: "서로의 기운과 조화"
     },
     { 
+      href: "/astrology", 
+      label: "점성술", 
+      icon: <Star className="w-8 h-8 text-purple-400" />, 
+      color: "from-purple-500/20",
+      desc: "별이 들려주는 운명"
+    },
+    { 
       href: "/manselyeok", 
       label: "만세력", 
       icon: <CalendarDays className="w-8 h-8 text-primary" />, 
