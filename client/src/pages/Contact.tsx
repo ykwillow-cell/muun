@@ -56,11 +56,17 @@ export default function Contact() {
           setSubmitted(false);
         }, 5000);
       } else {
-        alert("문의 전송에 실패했습니다. 나중에 다시 시도해주세요.");
+        const errorData = await response.json();
+        console.error("Formspree error:", errorData);
+        if (errorData.errors) {
+          alert(`전송 실패: ${errorData.errors.map((e: any) => e.message).join(", ")}`);
+        } else {
+          alert("문의 전송에 실패했습니다. Formspree 설정을 확인해주세요.");
+        }
       }
     } catch (error) {
       console.error("Error submitting form:", error);
-      alert("오류가 발생했습니다. 나중에 다시 시도해주세요.");
+      alert("네트워크 오류가 발생했습니다. 인터넷 연결을 확인해주세요.");
     } finally {
       setIsSubmitting(false);
     }
