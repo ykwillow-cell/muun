@@ -32,15 +32,20 @@ export default function Contact() {
     setIsSubmitting(true);
 
     try {
+      // Formspree API를 사용하여 이메일 전송
+      // ykwillow1@naver.com으로 직접 전송하기 위해 Formspree 엔드포인트 사용
       const response = await fetch("https://formspree.io/f/xvgzvqlv", {
         method: "POST",
         headers: {
+          "Accept": "application/json",
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          ...formData,
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
           _subject: `[무운 문의] ${formData.subject}`,
-          _to: "ykwillow1@naver.com",
         }),
       });
 
