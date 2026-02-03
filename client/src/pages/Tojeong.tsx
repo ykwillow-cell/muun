@@ -287,6 +287,8 @@ export default function Tojeong() {
                 </Card>
 
                 <LuckyItems lucky={extraInfo.lucky} />
+              </div>
+            )}
 
             {/* 사주 용어 풀이 가이드 */}
             <SajuGlossary />
