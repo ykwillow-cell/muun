@@ -1,64 +1,142 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardHeader, CardContent } from '../components/ui/card';
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { motion } from "framer-motion";
+import { Card, CardHeader, CardContent, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
+import { Label } from "../components/ui/label";
 import { calculateAstrology, ZODIAC_SIGNS } from '../lib/astrology';
 import zodiacData from '../lib/zodiac-data.json';
-import { Star, Moon, Sun, Info } from 'lucide-react';
+import { Star, Moon, Sun, Info, ChevronLeft, Sparkles, User } from 'lucide-react';
+import { Link } from "wouter";
+
+const formSchema = z.object({
+  birthDate: z.string().min(1, "생년월일을 입력해주세요"),
+  birthTime: z.string().min(1, "태어난 시간을 입력해주세요"),
+});
+
+type FormValues = z.infer<typeof formSchema>;
 
 const Astrology: React.FC = () => {
-  const [birthDate, setBirthDate] = useState('');
-  const [birthTime, setBirthTime] = useState('');
   const [result, setResult] = useState<any>(null);
 
-  const handleCalculate = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!birthDate) return;
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      birthDate: "2000-01-01",
+      birthTime: "12:00",
+    },
+  });
 
-    const date = new Date(`${birthDate}T${birthTime || '12:00'}:00`);
-    const data = calculateAstrology(date);
-    setResult(data);
+  useEffect(() => {
+    const savedData = localStorage.getItem("muun_user_data");
+    if (savedData) {
+      const parsed = JSON.parse(savedData);
+      form.reset({
+        birthDate: parsed.birthDate,
+        birthTime: parsed.birthTime,
+      });
+    }
+  }, [form]);
+
+  const onSubmit = (data: FormValues) => {
+    const date = new Date(`${data.birthDate}T${data.birthTime}`);
+    const astrologyResult = calculateAstrology(date);
+    setResult(astrologyResult);
+    window.scrollTo(0, 0);
   };
 
-  return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-          서양 점성술 분석
-        </h1>
-        <p className="text-gray-400">당신이 태어난 순간, 하늘의 별들이 들려주는 이야기를 확인해보세요.</p>
-      </div>
-
-      <Card className="bg-slate-900/50 border-slate-800 mb-8">
-        <CardContent className="pt-6">
-          <form onSubmit={handleCalculate} className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-400 mb-2">생년월일</label>
-              <Input
-                type="date"
-                value={birthDate}
-                onChange={(e) => setBirthDate(e.target.value)}
-                className="bg-slate-800 border-slate-700 text-white"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-400 mb-2">태어난 시간 (선택)</label>
-              <Input
-                type="time"
-                value={birthTime}
-                onChange={(e) => setBirthTime(e.target.value)}
-                className="bg-slate-800 border-slate-700 text-white"
-              />
-            </div>
-            <div className="flex items-end">
-              <Button type="submit" className="w-full bg-purple-600 hover:bg-purple-700 text-white">
-                별자리 분석하기
+  if (!result) {
+    return (
+      <div className="min-h-screen bg-background text-foreground pb-20">
+        <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
+          <div className="container mx-auto px-4 h-14 flex items-center">
+            <Link href="/">
+              <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/10">
+                <ChevronLeft className="h-6 w-6" />
               </Button>
+            </Link>
+            <h1 className="text-xl font-bold text-white">점성술 분석</h1>
+          </div>
+        </header>
+
+        <main className="container mx-auto px-4 py-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="max-w-2xl mx-auto space-y-6"
+          >
+            <div className="text-center mb-12">
+              <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
+                서양 점성술 분석
+              </h2>
+              <p className="text-gray-400">당신이 태어난 순간, 하늘의 별들이 들려주는 이야기를 확인해보세요.</p>
             </div>
-          </form>
-        </CardContent>
-      </Card>
+
+            <Card className="bg-card border-white/10 shadow-xl backdrop-blur-md">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center gap-2">
+                  <Star className="w-5 h-5 text-purple-400" />
+                  점성술 정보 입력
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  <div className="grid grid-cols-1 gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="birthDate" className="text-white block text-base font-semibold">생년월일</Label>
+                      <Input
+                        id="birthDate"
+                        type="date"
+                        {...form.register("birthDate")}
+                        className="bg-white/5 border-white/10 text-white w-full appearance-none"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="birthTime" className="text-white block text-base font-semibold">태어난 시간</Label>
+                      <Input
+                        id="birthTime"
+                        type="time"
+                        {...form.register("birthTime")}
+                        className="bg-white/5 border-white/10 text-white w-full appearance-none"
+                      />
+                    </div>
+                  </div>
+
+                  <Button type="submit" className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-semibold">
+                    <Sparkles className="w-4 h-4 mr-2" />
+                    별자리 분석하기
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </main>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-background text-foreground pb-20">
+      <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
+        <div className="container mx-auto px-4 h-14 flex items-center justify-between">
+          <div className="flex items-center">
+            <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/10" onClick={() => setResult(null)}>
+              <ChevronLeft className="h-6 w-6" />
+            </Button>
+            <h1 className="text-xl font-bold text-white">점성술 분석 결과</h1>
+          </div>
+        </div>
+      </header>
+
+      <div className="container mx-auto px-4 py-8 max-w-4xl">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-white mb-2">당신의 탄생 별자리 차트</h2>
+          <p className="text-purple-400/80">하늘의 행성들이 당신에게 주는 특별한 메시지입니다.</p>
+        </div>
 
       {result && (
         <div className="space-y-8 animate-in fade-in duration-700">
