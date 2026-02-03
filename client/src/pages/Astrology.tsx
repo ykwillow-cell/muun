@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardHeader, CardContent, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from "../components/ui/label";
-import { calculateAstrology, ZODIAC_SIGNS } from '../lib/astrology';
+import { calculateAstrology, ZODIAC_SIGNS, PLANETS } from '../lib/astrology';
 import zodiacData from '../lib/zodiac-data.json';
-import { Star, Moon, Sun, Info, ChevronLeft, Sparkles, User } from 'lucide-react';
+import { Star, Moon, Sun, Info, ChevronLeft, Sparkles, User, Compass, Zap, Shield, Globe } from 'lucide-react';
 import { Link } from "wouter";
 
 const formSchema = z.object({
@@ -19,8 +19,89 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
+// 점성술 차트 컴포넌트
+const AstrologyChart = ({ planets }: { planets: any[] }) => {
+  return (
+    <div className="relative w-full aspect-square max-w-[400px] mx-auto">
+      {/* 배경 원 (황도 12궁) */}
+      <svg viewBox="0 0 400 400" className="w-full h-full transform -rotate-90">
+        {/* 바깥 원 */}
+        <circle cx="200" cy="200" r="180" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
+        <circle cx="200" cy="200" r="140" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
+        
+        {/* 12궁 구분선 및 아이콘 */}
+        {ZODIAC_SIGNS.map((sign, i) => {
+          const angle = i * 30;
+          const x1 = 200 + 140 * Math.cos((angle * Math.PI) / 180);
+          const y1 = 200 + 140 * Math.sin((angle * Math.PI) / 180);
+          const x2 = 200 + 180 * Math.cos((angle * Math.PI) / 180);
+          const y2 = 200 + 180 * Math.sin((angle * Math.PI) / 180);
+          
+          // 아이콘 위치
+          const iconAngle = angle + 15;
+          const iconX = 200 + 160 * Math.cos((iconAngle * Math.PI) / 180);
+          const iconY = 200 + 160 * Math.sin((iconAngle * Math.PI) / 180);
+          
+          return (
+            <g key={sign.en}>
+              <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
+              <text 
+                x={iconX} 
+                y={iconY} 
+                fill="rgba(255,255,255,0.5)" 
+                fontSize="12" 
+                textAnchor="middle" 
+                alignmentBaseline="middle"
+                transform={`rotate(90, ${iconX}, ${iconY})`}
+              >
+                {sign.icon}
+              </text>
+            </g>
+          );
+        })}
+
+        {/* 행성 위치 표시 */}
+        {planets.map((p) => {
+          const angle = p.longitude;
+          const r = p.en === 'Sun' ? 120 : p.en === 'Moon' ? 100 : 80;
+          const x = 200 + r * Math.cos((angle * Math.PI) / 180);
+          const y = 200 + r * Math.sin((angle * Math.PI) / 180);
+          
+          return (
+            <motion.g 
+              key={p.en}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.5 + planets.indexOf(p) * 0.1 }}
+            >
+              <circle cx={x} cy={y} r="4" fill={p.en === 'Sun' ? '#fbbf24' : p.en === 'Moon' ? '#60a5fa' : '#a78bfa'} />
+              <text 
+                x={x} 
+                y={y - 10} 
+                fill="white" 
+                fontSize="10" 
+                textAnchor="middle"
+                transform={`rotate(90, ${x}, ${y - 10})`}
+              >
+                {p.icon}
+              </text>
+            </motion.g>
+          );
+        })}
+      </svg>
+      
+      {/* 중앙 로고 효과 */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-primary/20 rounded-full blur-xl animate-pulse" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+        <Sparkles className="w-6 h-6 text-primary opacity-50" />
+      </div>
+    </div>
+  );
+};
+
 const Astrology: React.FC = () => {
   const [result, setResult] = useState<any>(null);
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -41,10 +122,15 @@ const Astrology: React.FC = () => {
     }
   }, [form]);
 
-  const onSubmit = (data: FormValues) => {
+  const onSubmit = async (data: FormValues) => {
+    setLoading(true);
+    // 분석하는 느낌을 주기 위한 딜레이
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    
     const date = new Date(`${data.birthDate}T${data.birthTime}`);
     const astrologyResult = calculateAstrology(date);
     setResult(astrologyResult);
+    setLoading(false);
     window.scrollTo(0, 0);
   };
 
@@ -70,45 +156,64 @@ const Astrology: React.FC = () => {
             className="max-w-2xl mx-auto space-y-6"
           >
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-blue-400 bg-clip-text text-transparent">
-                서양 점성술 분석
+              <div className="inline-block p-3 rounded-2xl bg-primary/10 mb-4">
+                <Compass className="w-8 h-8 text-primary animate-spin-slow" />
+              </div>
+              <h2 className="text-4xl font-black mb-4 bg-gradient-to-r from-primary via-purple-400 to-blue-400 bg-clip-text text-transparent tracking-tight">
+                당신의 탄생 차트 분석
               </h2>
-              <p className="text-gray-400">당신이 태어난 순간, 하늘의 별들이 들려주는 이야기를 확인해보세요.</p>
+              <p className="text-foreground/60 max-w-md mx-auto">
+                태어난 순간 하늘의 행성들이 배치된 지도를 통해 당신의 성격과 운명의 흐름을 분석합니다.
+              </p>
             </div>
 
-            <Card className="bg-card border-white/10 shadow-xl backdrop-blur-md">
+            <Card className="bg-card/50 border-white/10 shadow-2xl backdrop-blur-xl overflow-hidden">
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary/50 via-purple-500/50 to-blue-500/50" />
               <CardHeader>
                 <CardTitle className="text-white flex items-center gap-2">
-                  <Star className="w-5 h-5 text-purple-400" />
-                  점성술 정보 입력
+                  <Star className="w-5 h-5 text-primary" />
+                  탄생 정보 입력
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                  <div className="grid grid-cols-1 gap-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <Label htmlFor="birthDate" className="text-white block text-base font-semibold">생년월일</Label>
+                      <Label htmlFor="birthDate" className="text-white/70 text-sm font-medium">생년월일</Label>
                       <Input
                         id="birthDate"
                         type="date"
                         {...form.register("birthDate")}
-                        className="bg-white/5 border-white/10 text-white w-full appearance-none"
+                        className="bg-white/5 border-white/10 text-white h-12 focus:ring-primary/50"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="birthTime" className="text-white block text-base font-semibold">태어난 시간</Label>
+                      <Label htmlFor="birthTime" className="text-white/70 text-sm font-medium">태어난 시간</Label>
                       <Input
                         id="birthTime"
                         type="time"
                         {...form.register("birthTime")}
-                        className="bg-white/5 border-white/10 text-white w-full appearance-none"
+                        className="bg-white/5 border-white/10 text-white h-12 focus:ring-primary/50"
                       />
                     </div>
                   </div>
 
-                  <Button type="submit" className="w-full bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-500 hover:to-blue-500 text-white font-semibold">
-                    <Sparkles className="w-4 h-4 mr-2" />
-                    별자리 분석하기
+                  <Button 
+                    type="submit" 
+                    disabled={loading}
+                    className="w-full h-14 bg-primary hover:bg-primary/90 text-background font-bold text-lg rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98]"
+                  >
+                    {loading ? (
+                      <div className="flex items-center gap-2">
+                        <div className="w-5 h-5 border-2 border-background/30 border-t-background rounded-full animate-spin" />
+                        천체 위치 계산 중...
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2">
+                        <Sparkles className="w-5 h-5" />
+                        운명의 지도 그리기
+                      </div>
+                    )}
                   </Button>
                 </form>
               </CardContent>
@@ -127,79 +232,114 @@ const Astrology: React.FC = () => {
             <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/10" onClick={() => setResult(null)}>
               <ChevronLeft className="h-6 w-6" />
             </Button>
-            <h1 className="text-xl font-bold text-white">점성술 분석 결과</h1>
+            <h1 className="text-xl font-bold text-white">분석 결과</h1>
           </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-white mb-2">당신의 탄생 별자리 차트</h2>
-          <p className="text-purple-400/80">하늘의 행성들이 당신에게 주는 특별한 메시지입니다.</p>
-        </div>
-
-      {result && (
-        <div className="space-y-8 animate-in fade-in duration-700">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Sun Sign Card */}
-            <Card className="bg-slate-900/50 border-slate-800 overflow-hidden">
-              <CardHeader className="border-b border-slate-800/50 pb-4">
-                <div className="flex items-center gap-2 text-yellow-500">
-                  <Sun size={20} />
-                  <h3 className="font-bold">태양 별자리 (Sun Sign)</h3>
-                </div>
-              </CardHeader>
-              <CardContent className="pt-6">
-                <div className="flex items-center gap-4 mb-4">
-                  <span className="text-5xl">{result.sun.sign.icon}</span>
-                  <div>
-                    <div className="text-2xl font-bold text-white">{result.sun.sign.name}</div>
-                    <div className="text-sm text-gray-500">{result.sun.sign.en}</div>
+      <main className="container mx-auto px-4 py-8 max-w-5xl">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          {/* 왼쪽: 시각적 차트 */}
+          <div className="lg:col-span-5 space-y-6">
+            <Card className="bg-card/30 border-white/10 backdrop-blur-xl p-6 sticky top-24">
+              <div className="text-center mb-6">
+                <h3 className="text-lg font-bold text-white flex items-center justify-center gap-2">
+                  <Globe className="w-4 h-4 text-primary" />
+                  Natal Chart
+                </h3>
+                <p className="text-xs text-white/40">당신이 태어난 순간의 하늘</p>
+              </div>
+              <AstrologyChart planets={result.planets} />
+              <div className="mt-8 grid grid-cols-2 gap-2">
+                {result.planets.slice(0, 4).map((p: any) => (
+                  <div key={p.en} className="flex items-center gap-2 bg-white/5 p-2 rounded-lg border border-white/5">
+                    <span className="text-lg">{p.icon}</span>
+                    <div className="text-[10px]">
+                      <div className="text-white/40">{p.name}</div>
+                      <div className="text-white font-bold">{p.sign.name}</div>
+                    </div>
                   </div>
-                </div>
-                <div className="text-gray-300 leading-relaxed whitespace-pre-wrap">
-                  {(zodiacData as any)[result.sun.sign.en]}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Moon Sign Card */}
-            <Card className="bg-slate-900/50 border-slate-800 overflow-hidden">
-              <CardHeader className="border-b border-slate-800/50 pb-4">
-                <div className="flex items-center gap-2 text-blue-400">
-                  <Moon size={20} />
-                  <h3 className="font-bold">달 별자리 (Moon Sign)</h3>
-                </div>
-              </CardHeader>
-              <CardContent className="pt-6">
-                <div className="flex items-center gap-4 mb-4">
-                  <span className="text-5xl">{result.moon.sign.icon}</span>
-                  <div>
-                    <div className="text-2xl font-bold text-white">{result.moon.sign.name}</div>
-                    <div className="text-sm text-gray-500">{result.moon.sign.en}</div>
-                  </div>
-                </div>
-                <p className="text-gray-400 text-sm mb-4 italic">
-                  * 달 별자리는 당신의 내면 세계와 감정적인 본능을 상징합니다.
-                </p>
-                <div className="text-gray-300 leading-relaxed whitespace-pre-wrap">
-                  {(zodiacData as any)[result.moon.sign.en]}
-                </div>
-              </CardContent>
+                ))}
+              </div>
             </Card>
           </div>
 
-          <Card className="bg-slate-900/50 border-slate-800">
-            <CardContent className="pt-6 flex items-start gap-3">
-              <Info className="text-purple-400 mt-1 flex-shrink-0" size={18} />
-              <p className="text-sm text-gray-400">
-                본 분석 결과는 현대 점성술 이론을 바탕으로 생성되었습니다. 
-                태어난 시간을 정확히 입력할수록 더욱 정밀한 달 별자리와 하우스 분석이 가능합니다.
-              </p>
-            </CardContent>
-          </Card>
+          {/* 오른쪽: 상세 해석 */}
+          <div className="lg:col-span-7 space-y-6">
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="space-y-6"
+            >
+              {/* 핵심 요약 */}
+              <div className="bg-gradient-to-br from-primary/20 to-purple-500/20 border border-primary/20 rounded-3xl p-8 relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-4 opacity-10">
+                  <Sparkles className="w-24 h-24 text-primary" />
+                </div>
+                <h2 className="text-2xl font-black text-white mb-4">
+                  {result.sun.sign.name}의 기운을 타고난 <br/>
+                  <span className="text-primary">빛나는 영혼</span>입니다.
+                </h2>
+                <p className="text-white/70 leading-relaxed">
+                  태양의 위치는 당신의 자아와 생명력을 상징합니다. {result.sun.sign.name}의 에너지는 당신이 세상을 살아가는 근본적인 방식과 열정을 정의합니다.
+                </p>
+              </div>
+
+              {/* 행성별 상세 분석 */}
+              <div className="space-y-4">
+                <h3 className="text-xl font-bold text-white flex items-center gap-2 px-2">
+                  <Zap className="w-5 h-5 text-yellow-400" />
+                  행성별 상세 분석
+                </h3>
+                
+                <div className="grid gap-4">
+                  {result.planets.map((p: any, i: number) => (
+                    <motion.div
+                      key={p.en}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.1 }}
+                    >
+                      <Card className="bg-card/50 border-white/10 hover:border-primary/30 transition-colors overflow-hidden group">
+                        <CardHeader className="p-4 bg-white/5 flex flex-row items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div className="w-10 h-10 rounded-full bg-background flex items-center justify-center text-xl border border-white/10 group-hover:scale-110 transition-transform">
+                              {p.icon}
+                            </div>
+                            <div>
+                              <CardTitle className="text-sm font-bold text-white">{p.name} ({p.en})</CardTitle>
+                              <div className="text-[10px] text-primary font-bold">{p.sign.name} {p.sign.icon}</div>
+                            </div>
+                          </div>
+                          <div className="text-[10px] text-white/30 font-mono">
+                            {p.longitude.toFixed(2)}°
+                          </div>
+                        </CardHeader>
+                        <CardContent className="p-5">
+                          <div className="text-sm text-white/70 leading-relaxed whitespace-pre-wrap">
+                            {(zodiacData as any)[p.sign.en] || "상세 분석 데이터를 준비 중입니다."}
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
+
+              {/* 안내 문구 */}
+              <Card className="bg-blue-500/5 border-blue-500/20">
+                <CardContent className="p-4 flex items-start gap-3">
+                  <Info className="text-blue-400 mt-1 flex-shrink-0" size={18} />
+                  <p className="text-xs text-blue-400/80 leading-relaxed">
+                    본 분석은 현대 점성술의 행성 위치 계산법을 바탕으로 합니다. 
+                    각 행성은 당신의 성격(태양), 감정(달), 소통(수성), 사랑(금성), 행동(화성) 등 삶의 다양한 영역에 영향을 미칩니다.
+                  </p>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </div>
         </div>
-      )}
+      </main>
     </div>
   );
 };
