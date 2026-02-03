@@ -25,15 +25,40 @@ export default function Contact() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // 실제 구현에서는 여기서 이메일 전송 로직이 필요합니다
-    console.log("Form submitted:", formData);
-    setSubmitted(true);
-    setTimeout(() => {
-      setFormData({ name: "", email: "", subject: "", message: "" });
-      setSubmitted(false);
-    }, 3000);
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch("https://formspree.io/f/xvgzvqlv", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+          _subject: `[무운 문의] ${formData.subject}`,
+          _to: "ykwillow1@naver.com",
+        }),
+      });
+
+      if (response.ok) {
+        setSubmitted(true);
+        setFormData({ name: "", email: "", subject: "", message: "" });
+        setTimeout(() => {
+          setSubmitted(false);
+        }, 5000);
+      } else {
+        alert("문의 전송에 실패했습니다. 나중에 다시 시도해주세요.");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("오류가 발생했습니다. 나중에 다시 시도해주세요.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -165,9 +190,10 @@ export default function Contact() {
 
                   <Button
                     type="submit"
-                    className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-bold py-6 text-lg rounded-lg shadow-[0_0_20px_rgba(255,215,0,0.3)]"
+                    disabled={isSubmitting}
+                    className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-bold py-6 text-lg rounded-lg shadow-[0_0_20px_rgba(255,215,0,0.3)] disabled:opacity-50"
                   >
-                    문의 보내기
+                    {isSubmitting ? "전송 중..." : "문의 보내기"}
                   </Button>
                 </form>
               )}
