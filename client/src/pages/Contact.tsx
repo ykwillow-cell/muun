@@ -15,8 +15,6 @@ export default function Contact() {
     message: "",
   });
 
-  const [submitted, setSubmitted] = useState(false);
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -25,51 +23,17 @@ export default function Contact() {
     }));
   };
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitting(true);
-
-    try {
-      // Formspree API를 사용하여 이메일 전송
-      // ykwillow1@naver.com으로 직접 전송하기 위해 Formspree 엔드포인트 사용
-      const response = await fetch("https://formspree.io/f/xvgzvqlv", {
-        method: "POST",
-        headers: {
-          "Accept": "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          subject: formData.subject,
-          message: formData.message,
-          _subject: `[무운 문의] ${formData.subject}`,
-        }),
-      });
-
-      if (response.ok) {
-        setSubmitted(true);
-        setFormData({ name: "", email: "", subject: "", message: "" });
-        setTimeout(() => {
-          setSubmitted(false);
-        }, 5000);
-      } else {
-        const errorData = await response.json();
-        console.error("Formspree error:", errorData);
-        if (errorData.errors) {
-          alert(`전송 실패: ${errorData.errors.map((e: any) => e.message).join(", ")}`);
-        } else {
-          alert("문의 전송에 실패했습니다. Formspree 설정을 확인해주세요.");
-        }
-      }
-    } catch (error) {
-      console.error("Error submitting form:", error);
-      alert("네트워크 오류가 발생했습니다. 인터넷 연결을 확인해주세요.");
-    } finally {
-      setIsSubmitting(false);
-    }
+    
+    // 이메일 본문 구성
+    const body = `이름: ${formData.name}\n이메일: ${formData.email}\n\n내용:\n${formData.message}`;
+    
+    // mailto 링크 생성
+    const mailtoUrl = `mailto:ykwillow1@naver.com?subject=${encodeURIComponent(`[무운 문의] ${formData.subject}`)}&body=${encodeURIComponent(body)}`;
+    
+    // 새 창에서 메일 앱 열기
+    window.location.href = mailtoUrl;
   };
 
   return (
@@ -104,7 +68,7 @@ export default function Contact() {
               <CardContent className="p-6 space-y-3 text-center">
                 <Mail className="w-8 h-8 text-primary mx-auto" />
                 <h3 className="font-bold text-white">이메일</h3>
-                <p className="text-sm text-muted-foreground">support@muun.im</p>
+                <p className="text-sm text-muted-foreground">ykwillow1@naver.com</p>
               </CardContent>
             </Card>
 
@@ -130,84 +94,72 @@ export default function Contact() {
               <CardTitle className="text-2xl text-primary">문의 양식</CardTitle>
             </CardHeader>
             <CardContent>
-              {submitted ? (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="text-center py-8 space-y-3"
-                >
-                  <div className="text-4xl">✓</div>
-                  <h3 className="text-xl font-bold text-white">문의가 접수되었습니다!</h3>
-                  <p className="text-muted-foreground">
-                    빠른 시간 내에 답변드리겠습니다.
-                  </p>
-                </motion.div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="name">이름 *</Label>
-                      <Input
-                        id="name"
-                        name="name"
-                        placeholder="이름을 입력하세요"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                        className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="email">이메일 *</Label>
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        placeholder="이메일을 입력하세요"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                        className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
-                      />
-                    </div>
-                  </div>
-
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <Label htmlFor="subject">제목 *</Label>
+                    <Label htmlFor="name">이름 *</Label>
                     <Input
-                      id="subject"
-                      name="subject"
-                      placeholder="문의 제목을 입력하세요"
-                      value={formData.subject}
+                      id="name"
+                      name="name"
+                      placeholder="이름을 입력하세요"
+                      value={formData.name}
                       onChange={handleChange}
                       required
                       className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
                     />
                   </div>
-
                   <div className="space-y-2">
-                    <Label htmlFor="message">메시지 *</Label>
-                    <textarea
-                      id="message"
-                      name="message"
-                      placeholder="문의 내용을 입력하세요"
-                      value={formData.message}
+                    <Label htmlFor="email">이메일 *</Label>
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      placeholder="이메일을 입력하세요"
+                      value={formData.email}
                       onChange={handleChange}
                       required
-                      rows={6}
-                      className="w-full px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder:text-white/30 focus:border-primary/50 transition-all"
+                      className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
                     />
                   </div>
+                </div>
 
-                  <Button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-bold py-6 text-lg rounded-lg shadow-[0_0_20px_rgba(255,215,0,0.3)] disabled:opacity-50"
-                  >
-                    {isSubmitting ? "전송 중..." : "문의 보내기"}
-                  </Button>
-                </form>
-              )}
+                <div className="space-y-2">
+                  <Label htmlFor="subject">제목 *</Label>
+                  <Input
+                    id="subject"
+                    name="subject"
+                    placeholder="문의 제목을 입력하세요"
+                    value={formData.subject}
+                    onChange={handleChange}
+                    required
+                    className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="message">메시지 *</Label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    placeholder="문의 내용을 입력하세요"
+                    value={formData.message}
+                    onChange={handleChange}
+                    required
+                    rows={6}
+                    className="w-full px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder:text-white/30 focus:border-primary/50 transition-all"
+                  />
+                </div>
+
+                <Button
+                  type="submit"
+                  className="w-full bg-primary text-primary-foreground hover:bg-primary/90 font-bold py-6 text-lg rounded-lg shadow-[0_0_20px_rgba(255,215,0,0.3)]"
+                >
+                  문의 보내기
+                </Button>
+                <p className="text-xs text-center text-muted-foreground">
+                  * 버튼을 누르면 메일 앱이 실행됩니다.
+                </p>
+              </form>
             </CardContent>
           </Card>
 
