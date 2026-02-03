@@ -384,10 +384,10 @@ const Astrology: React.FC = () => {
                 </div>
                 <h2 className="text-2xl font-black text-white mb-4">
                   {result.sun.sign.name}의 기운을 타고난 <br/>
-                  <span className="text-primary">빛나는 영혼</span>입니다.
+                  <span className="text-primary">당신은 어떤 사람일까요?</span>
                 </h2>
                 <p className="text-white/70 leading-relaxed">
-                  태양의 위치는 당신의 자아와 생명력을 상징합니다. {result.sun.sign.name}의 에너지는 당신이 세상을 살아가는 근본적인 방식과 열정을 정의합니다.
+                  점성술에서 '태양'은 당신의 가장 핵심적인 모습과 삶을 대하는 태도를 말해줘요. {result.sun.sign.name}의 에너지를 품은 당신이 가진 특별한 매력을 아래에서 확인해보세요.
                 </p>
               </div>
 
@@ -395,7 +395,7 @@ const Astrology: React.FC = () => {
               <div className="space-y-4">
                 <h3 className="text-xl font-bold text-white flex items-center gap-2 px-2">
                   <Zap className="w-5 h-5 text-yellow-400" />
-                  행성별 상세 분석
+                  하늘의 행성들이 보내는 메시지
                 </h3>
                 
                 <div className="grid gap-4">
@@ -413,8 +413,16 @@ const Astrology: React.FC = () => {
                               {p.icon}
                             </div>
                             <div>
-                              <CardTitle className="text-sm font-bold text-white">{p.name} ({p.en})</CardTitle>
-                              <div className="text-[10px] text-primary font-bold">{p.sign.name} {p.sign.icon}</div>
+                              <CardTitle className="text-sm font-bold text-white">
+                                {p.en === 'Sun' ? '나의 본모습' : 
+                                 p.en === 'Moon' ? '나의 속마음' : 
+                                 p.en === 'Mercury' ? '나의 소통 방식' : 
+                                 p.en === 'Venus' ? '나의 사랑과 취향' : 
+                                 p.en === 'Mars' ? '나의 열정과 에너지' : 
+                                 p.en === 'Jupiter' ? '나의 행운과 성장' : 
+                                 p.en === 'Saturn' ? '나의 책임과 교훈' : p.name}
+                              </CardTitle>
+                              <div className="text-[10px] text-primary font-bold">{p.name}이(가) {p.sign.name}에 머물 때</div>
                             </div>
                           </div>
                           <div className="text-[10px] text-white/30 font-mono">
@@ -437,9 +445,9 @@ const Astrology: React.FC = () => {
                 <CardContent className="p-4 flex items-start gap-3">
                   <Info className="text-blue-400 mt-1 flex-shrink-0" size={18} />
                   <p className="text-xs text-blue-400/80 leading-relaxed">
-                    본 분석은 현대 점성술의 행성 위치 계산법을 바탕으로 합니다. 
-                    각 행성은 당신의 성격(태양), 감정(달), 소통(수성), 사랑(금성), 행동(화성) 등 삶의 다양한 영역에 영향을 미칩니다.
-                    위치 정보({result.city?.name})는 정확한 탄생 차트 계산에 필수적입니다.
+                    이 분석은 당신이 태어난 순간, 하늘의 행성들이 어디에 있었는지를 계산한 결과예요. 
+                    태양은 당신의 겉모습을, 달은 숨겨진 감정을, 금성은 사랑의 방식을 알려준답니다. 
+                    나를 더 깊이 이해하는 재미있는 가이드로 활용해보세요!
                   </p>
                 </CardContent>
               </Card>
