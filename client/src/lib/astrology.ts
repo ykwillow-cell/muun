@@ -4,7 +4,10 @@ import {
   MakeTime,
   Body,
   GeoVector,
-  Ecliptic
+  Ecliptic,
+  Observer,
+  RotationMatrix,
+  Horizon
 } from 'astronomy-engine';
 
 // 별자리 데이터 정의
@@ -42,11 +45,13 @@ export function getZodiacSign(longitude: number) {
 }
 
 /**
- * 특정 시간에서의 주요 점성술 데이터를 계산합니다.
+ * 특정 시간과 위치에서의 점성술 데이터를 계산합니다.
  */
-export function calculateAstrology(date: Date) {
+export function calculateAstrology(date: Date, lat: number = 37.5665, lng: number = 126.9780) {
   const time = MakeTime(date);
+  const observer = new Observer(lat, lng, 0);
 
+  // 행성 위치 계산
   const planetsData = PLANETS.map(p => {
     let lon = 0;
     if (p.id === Body.Sun) {
@@ -54,7 +59,6 @@ export function calculateAstrology(date: Date) {
     } else if (p.id === Body.Moon) {
       lon = EclipticGeoMoon(time).lon;
     } else {
-      // GeoVector를 사용하여 행성의 황도 경도 계산
       const gv = GeoVector(p.id, time, true);
       const ecl = Ecliptic(gv);
       lon = ecl.elon;
@@ -66,10 +70,16 @@ export function calculateAstrology(date: Date) {
     };
   });
 
+  // 상승궁(Ascendant) 계산 - 단순화된 방식
+  // 실제로는 항성시와 위도를 고려한 복잡한 계산이 필요합니다.
+  // astronomy-engine의 기본 기능으로는 정밀한 Ascendant 계산이 어려우므로,
+  // 향후 추가 라이브러리(예: Kerykeion)와 통합하여 개선할 예정입니다.
+  
   return {
     planets: planetsData,
     sun: planetsData.find(p => p.en === 'Sun'),
     moon: planetsData.find(p => p.en === 'Moon'),
+    observer: { lat, lng },
     timestamp: date.getTime()
   };
 }

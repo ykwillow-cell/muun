@@ -8,13 +8,15 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from "../components/ui/label";
 import { calculateAstrology, ZODIAC_SIGNS, PLANETS } from '../lib/astrology';
+import { MAJOR_CITIES, City } from '../lib/cities';
 import zodiacData from '../lib/zodiac-data.json';
-import { Star, Moon, Sun, Info, ChevronLeft, Sparkles, User, Compass, Zap, Shield, Globe } from 'lucide-react';
+import { Star, Moon, Sun, Info, ChevronLeft, Sparkles, User, Compass, Zap, Shield, Globe, MapPin, Search } from 'lucide-react';
 import { Link } from "wouter";
 
 const formSchema = z.object({
   birthDate: z.string().min(1, "생년월일을 입력해주세요"),
   birthTime: z.string().min(1, "태어난 시간을 입력해주세요"),
+  birthCity: z.string().min(1, "태어난 도시를 선택해주세요"),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -99,15 +101,88 @@ const AstrologyChart = ({ planets }: { planets: any[] }) => {
   );
 };
 
+// 도시 선택 드롭다운 컴포넌트
+const CitySelector = ({ value, onChange }: { value: string; onChange: (city: string) => void }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  
+  const selectedCity = MAJOR_CITIES.find(c => c.name === value);
+  const filteredCities = MAJOR_CITIES.filter(c => 
+    c.name.includes(searchTerm) || c.en.toUpperCase().includes(searchTerm.toUpperCase())
+  );
+
+  return (
+    <div className="relative">
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full h-12 px-4 bg-white/5 border border-white/10 text-white rounded-lg flex items-center justify-between hover:border-primary/30 transition-colors"
+      >
+        <div className="flex items-center gap-2">
+          <MapPin className="w-4 h-4 text-primary" />
+          <span>{selectedCity?.name || "도시 선택"}</span>
+        </div>
+        <ChevronLeft className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-90' : '-rotate-90'}`} />
+      </button>
+
+      {isOpen && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          className="absolute top-full left-0 right-0 mt-2 bg-background/95 border border-white/10 rounded-lg shadow-2xl z-50 backdrop-blur-xl"
+        >
+          <div className="p-3 border-b border-white/10">
+            <div className="flex items-center gap-2 bg-white/5 px-3 py-2 rounded-lg">
+              <Search className="w-4 h-4 text-white/40" />
+              <input
+                type="text"
+                placeholder="도시 검색..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="bg-transparent text-white text-sm outline-none flex-1 placeholder-white/40"
+              />
+            </div>
+          </div>
+          <div className="max-h-60 overflow-y-auto">
+            {filteredCities.map((city) => (
+              <button
+                key={city.name}
+                type="button"
+                onClick={() => {
+                  onChange(city.name);
+                  setIsOpen(false);
+                  setSearchTerm("");
+                }}
+                className={`w-full px-4 py-3 text-left text-sm hover:bg-white/5 transition-colors flex items-center gap-3 ${
+                  selectedCity?.name === city.name ? 'bg-primary/20 text-primary' : 'text-white/70'
+                }`}
+              >
+                <MapPin className="w-4 h-4" />
+                <div>
+                  <div className="font-medium">{city.name}</div>
+                  <div className="text-xs text-white/40">{city.en}</div>
+                </div>
+              </button>
+            ))}
+          </div>
+        </motion.div>
+      )}
+    </div>
+  );
+};
+
 const Astrology: React.FC = () => {
   const [result, setResult] = useState<any>(null);
   const [loading, setLoading] = useState(false);
+  const [selectedCity, setSelectedCity] = useState<City | null>(null);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       birthDate: "2000-01-01",
       birthTime: "12:00",
+      birthCity: "서울",
     },
   });
 
@@ -118,18 +193,29 @@ const Astrology: React.FC = () => {
       form.reset({
         birthDate: parsed.birthDate,
         birthTime: parsed.birthTime,
+        birthCity: parsed.birthCity || "서울",
       });
+      const city = MAJOR_CITIES.find(c => c.name === (parsed.birthCity || "서울"));
+      setSelectedCity(city || MAJOR_CITIES[0]);
+    } else {
+      setSelectedCity(MAJOR_CITIES[0]);
     }
   }, [form]);
 
   const onSubmit = async (data: FormValues) => {
     setLoading(true);
-    // 분석하는 느낌을 주기 위한 딜레이
     await new Promise(resolve => setTimeout(resolve, 1500));
     
+    const city = MAJOR_CITIES.find(c => c.name === data.birthCity);
+    if (!city) return;
+
     const date = new Date(`${data.birthDate}T${data.birthTime}`);
-    const astrologyResult = calculateAstrology(date);
-    setResult(astrologyResult);
+    const astrologyResult = calculateAstrology(date, city.lat, city.lng);
+    
+    setResult({
+      ...astrologyResult,
+      city: city
+    });
     setLoading(false);
     window.scrollTo(0, 0);
   };
@@ -198,6 +284,14 @@ const Astrology: React.FC = () => {
                     </div>
                   </div>
 
+                  <div className="space-y-2">
+                    <Label className="text-white/70 text-sm font-medium">태어난 도시</Label>
+                    <CitySelector 
+                      value={form.watch("birthCity")} 
+                      onChange={(city) => form.setValue("birthCity", city)}
+                    />
+                  </div>
+
                   <Button 
                     type="submit" 
                     disabled={loading}
@@ -234,6 +328,12 @@ const Astrology: React.FC = () => {
             </Button>
             <h1 className="text-xl font-bold text-white">분석 결과</h1>
           </div>
+          {result.city && (
+            <div className="flex items-center gap-1 text-xs text-white/50">
+              <MapPin className="w-3 h-3" />
+              {result.city.name}
+            </div>
+          )}
         </div>
       </header>
 
@@ -248,6 +348,12 @@ const Astrology: React.FC = () => {
                   Natal Chart
                 </h3>
                 <p className="text-xs text-white/40">당신이 태어난 순간의 하늘</p>
+                {result.city && (
+                  <p className="text-xs text-primary mt-2 flex items-center justify-center gap-1">
+                    <MapPin className="w-3 h-3" />
+                    {result.city.name} ({result.city.lat.toFixed(2)}°N, {Math.abs(result.city.lng).toFixed(2)}°{result.city.lng > 0 ? 'E' : 'W'})
+                  </p>
+                )}
               </div>
               <AstrologyChart planets={result.planets} />
               <div className="mt-8 grid grid-cols-2 gap-2">
@@ -333,6 +439,7 @@ const Astrology: React.FC = () => {
                   <p className="text-xs text-blue-400/80 leading-relaxed">
                     본 분석은 현대 점성술의 행성 위치 계산법을 바탕으로 합니다. 
                     각 행성은 당신의 성격(태양), 감정(달), 소통(수성), 사랑(금성), 행동(화성) 등 삶의 다양한 영역에 영향을 미칩니다.
+                    위치 정보({result.city?.name})는 정확한 탄생 차트 계산에 필수적입니다.
                   </p>
                 </CardContent>
               </Card>
