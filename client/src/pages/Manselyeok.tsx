@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { calculateSaju, SajuResult, FiveElement } from "@/lib/saju";
+import SajuGlossary from "@/components/SajuGlossary";
 
 // 폼 스키마 정의
 const formSchema = z.object({
@@ -311,6 +312,9 @@ export default function Manselyeok() {
                   </CardContent>
                 </Card>
               </div>
+
+              {/* 사주 용어 풀이 가이드 */}
+              <SajuGlossary />
 
               <div className="flex justify-center pt-6">
                 <Button 

@@ -16,6 +16,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { calculateSaju, SajuResult, calculateElementBalance, generateFortuneDetails } from "@/lib/saju";
 import SajuChart from "@/components/SajuChart";
 import LuckyItems from "@/components/LuckyItems";
+import SajuGlossary from "@/components/SajuGlossary";
 import iljuData from "@/lib/ilju-data.json";
 
 // 폼 스키마 정의
@@ -286,8 +287,11 @@ export default function Tojeong() {
                 </Card>
 
                 <LuckyItems lucky={extraInfo.lucky} />
-              </div>
-            )}
+
+            {/* 사주 용어 풀이 가이드 */}
+            <SajuGlossary />
+
+            {/* 오늘의 운세 바로가기 버튼 */}
             
             <Card className="bg-white/5 border-white/10 mb-10">
               <CardContent className="p-6 space-y-4">

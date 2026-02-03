@@ -15,6 +15,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { calculateSaju, SajuResult, calculateElementBalance, generateFortuneDetails } from "@/lib/saju";
 import SajuChart from "@/components/SajuChart";
 import LuckyItems from "@/components/LuckyItems";
+import SajuGlossary from "@/components/SajuGlossary";
 import iljuData from "@/lib/ilju-data.json";
 import { trackEvent } from "@/lib/ga4";
 import { 
@@ -360,6 +361,9 @@ export default function LifelongSaju() {
             <LuckyItems lucky={extraInfo.lucky} />
           </motion.div>
         )}
+
+        {/* 사주 용어 풀이 가이드 */}
+        <SajuGlossary />
 
         {/* 운세 섹션들 */}
         <div className="space-y-6">
