@@ -91,8 +91,8 @@ export default function Home() {
             </div>
             
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1]">
-              <span className="text-gradient">당신의 운명을 비추는</span><br />
-              <span className="text-primary">가장 맑은 거울, 무운</span>
+              <span className="text-gradient">무료 사주 및 2026년</span><br />
+              <span className="text-primary">무료 운세 서비스, 무운</span>
             </h1>
             
             <p className="text-base md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed px-4 md:px-0">
@@ -113,7 +113,7 @@ export default function Home() {
                 <div className="text-left space-y-3 z-10 flex-1">
                   <div className="inline-block px-2 py-0.5 rounded bg-primary text-[10px] font-bold text-background uppercase">New</div>
                   <h2 className="text-lg md:text-3xl font-bold text-white group-hover:text-primary transition-colors leading-tight">
-                    오늘 내 심리는?<br />매일 달라지는 마음의 날씨
+                    무료 심리 테스트<br />매일 달라지는 마음의 날씨
                   </h2>
                   <div className="flex items-center gap-2 text-sm text-primary font-medium">
                     지금 확인하기 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -135,7 +135,7 @@ export default function Home() {
         <section className={commonMaxWidth}>
           <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-10 gap-4 px-2 md:px-0">
             <div className="space-y-2">
-              <h3 className="text-2xl md:text-3xl font-bold text-white">운세 카테고리</h3>
+              <h2 className="text-2xl md:text-3xl font-bold text-white">무료 사주 및 운세 카테고리</h2>
               <p className="text-muted-foreground text-sm md:text-base">당신이 궁금한 모든 미래를 준비했습니다.</p>
             </div>
           </div>
@@ -168,7 +168,7 @@ export default function Home() {
         {/* Detailed Explanation Section */}
         <section className={`${commonMaxWidth} space-y-12`}>
           <div className="text-center space-y-4">
-            <h3 className="text-3xl font-bold text-white">왜 무운인가요?</h3>
+            <h2 className="text-3xl font-bold text-white">왜 무운 무료 사주인가요?</h2>
             <p className="text-muted-foreground">무운은 사용자에게 가장 가치 있는 통찰을 제공하기 위해 세 가지 원칙을 지킵니다.</p>
           </div>
           
