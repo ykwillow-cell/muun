@@ -24,10 +24,10 @@ interface ErrorState {
 
 // 감성적인 에러 메시지 매핑
 const EMOTIONAL_ERROR_MESSAGES: Record<string, string> = {
-  quota: "상담사가 잠시 명상 중입니다.\n잠시 후에 다시 시도해 주세요.",
-  api: "카드의 목소리가 아직 명확하지 않습니다.\n다시 한 번 시도해 주세요.",
-  network: "신령한 연결이 끊어졌습니다.\n인터넷 연결을 확인해 주세요.",
-  unknown: "예상치 못한 신비로운 일이 발생했습니다.\n다시 시도해 주세요.",
+  quota: "현재 상담 신청이 너무 많아 상담사가 잠시 휴식 중입니다.\n약 1분 뒤에 다시 '해석하기'를 눌러주세요.",
+  api: "카드의 목소리가 아직 명확하지 않습니다.\n잠시 후 다시 한 번 시도해 주세요.",
+  network: "신령한 연결이 원활하지 않습니다.\n인터넷 연결을 확인하고 다시 시도해 주세요.",
+  unknown: "신비로운 기운에 일시적인 간섭이 생겼습니다.\n다시 시도해 주시면 정성껏 해석해 드릴게요.",
 };
 
 export default function Tarot() {
@@ -115,11 +115,11 @@ ${question}
       console.log("⏳ 3초 대기 중...");
       await new Promise(r => setTimeout(r, 3000));
 
-      // gemini-2.0-flash 모델 고정 (절대로 다른 모델 사용 금지)
-      console.log("🔄 API 호출 시작 (모델: gemini-2.0-flash, 단일 요청)...");
+      // gemini-1.5-flash 모델로 변경 (2.0-flash 할당량 부족 문제 해결)
+      console.log("🔄 API 호출 시작 (모델: gemini-1.5-flash, 단일 요청)...");
       const genAI = new GoogleGenerativeAI(API_KEY);
       const model = genAI.getGenerativeModel({
-        model: "gemini-2.0-flash",
+        model: "gemini-1.5-flash",
         generationConfig: { maxOutputTokens: 1000 }
       });
 
