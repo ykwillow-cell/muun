@@ -108,7 +108,7 @@ export default function Home() {
           </motion.div>
 
           {/* Featured Banner */}
-          <Link href="/psychology" className="w-full max-w-3xl">
+          <Link href="/yearly-fortune" className="w-full max-w-3xl">
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -118,9 +118,9 @@ export default function Home() {
               <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 group-hover:opacity-100 transition-opacity" />
               <div className="absolute inset-0 flex items-center justify-between px-6 md:px-12 py-6">
                 <div className="text-left space-y-3 z-10 flex-1">
-                  <div className="inline-block px-2 py-0.5 rounded bg-primary text-[10px] font-bold text-background uppercase">New</div>
+                  <div className="inline-block px-2 py-0.5 rounded bg-primary text-[10px] font-bold text-background uppercase">2026</div>
                   <h2 className="text-lg md:text-3xl font-bold text-white group-hover:text-primary transition-colors leading-tight">
-                    무료 심리 테스트<br />매일 달라지는 마음의 날씨
+                    2026년 신년운세<br />미리 보는 당신의 한 해
                   </h2>
                   <div className="flex items-center gap-2 text-sm text-primary font-medium">
                     지금 확인하기 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
