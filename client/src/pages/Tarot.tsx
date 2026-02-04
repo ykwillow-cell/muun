@@ -4,10 +4,8 @@ import { Sparkles, RefreshCw, ChevronRight, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import axios from "axios";
 import tarotData from "@/lib/tarot-data.json";
-
-const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
 interface TarotCard {
   id: number;
@@ -22,7 +20,6 @@ interface ErrorState {
   message: string;
 }
 
-// 감성적인 에러 메시지 매핑
 const EMOTIONAL_ERROR_MESSAGES: Record<string, string> = {
   quota: "현재 상담 신청이 너무 많아 상담사가 잠시 휴식 중입니다.\n약 1분 뒤에 다시 '해석하기'를 눌러주세요.",
   api: "카드의 목소리가 아직 명확하지 않습니다.\n잠시 후 다시 한 번 시도해 주세요.",
@@ -60,19 +57,12 @@ export default function Tarot() {
   const handleSelectCard = (card: TarotCard) => {
     if (selectedCards.length >= 3) return;
     if (selectedCards.find(c => c.id === card.id)) return;
-
     const newSelected = [...selectedCards, card];
     setSelectedCards(newSelected);
   };
 
-  // ============================================================================
-  // 최종 고정: gemini-2.0-flash 모델, 3초 강제 지연
-  // 사용자가 '해석하기' 버튼을 눌렀을 때만 호출 (중복 호출 차단)
-  // ============================================================================
   const getInterpretation = async () => {
-    // 단일 호출 보장: 이미 로딩 중이면 즉시 리턴
     if (isLoading) return;
-    
     if (selectedCards.length !== 3) {
       toast.error("카드 3장을 모두 선택해 주세요.");
       return;
@@ -84,91 +74,43 @@ export default function Tarot() {
     setInterpretation("");
 
     try {
-      if (!API_KEY) {
-        throw new Error("API_KEY_NOT_SET");
-      }
-
-      // 프롬프트: 3장의 카드를 한 번에 보내서 전체적인 운세를 하나의 답변으로
-      const prompt = `당신은 20년 경력의 신비로운 타로 마스터입니다.
-
-【사용자의 고민】
-${question}
-
-【뽑힌 3장의 카드 (한 번에 종합 해석)】
-• 과거/상황: ${selectedCards[0].korName} (${selectedCards[0].name})
-• 현재/조언: ${selectedCards[1].korName} (${selectedCards[1].name})
-• 미래/결과: ${selectedCards[2].korName} (${selectedCards[2].name})
-
-【해석 방식】
-1. 3장의 카드를 개별적으로 설명하지 말고, 하나의 흐름 있는 이야기로 유기적으로 연결해 주세요.
-2. "당신의 현재 상황에 비추어 볼 때..." 같은 표현으로 사용자의 고민과 직접 연결해 주세요.
-3. 과거 → 현재 → 미래의 흐름을 명확하게 보여주되, 마치 한 편의 이야기를 읽는 듯한 느낌을 주세요.
-4. 신비로우면서도 따뜻하고 다정한 말투를 유지해 주세요.
-5. 마지막에는 사용자를 진심으로 응원하는 메시지로 마무리해 주세요.
-
-【형식】
-- 마크다운 형식을 사용하여 중요한 부분은 **굵게** 표시해 주세요.
-- 문단을 명확히 나누어 가독성을 높여 주세요.
-- 너무 길지 않되, 충분히 깊이 있는 해석을 제공해 주세요.`;
-
-      // 3초 강제 지연 (호출 직전, 429 에러 방지)
-      console.log("⏳ 3초 대기 중...");
+      console.log("⏳ 3초 대기 중 (안정적인 호출을 위해)...");
       await new Promise(r => setTimeout(r, 3000));
 
-      // gemini-1.5-flash 모델로 변경 (2.0-flash 할당량 부족 문제 해결)
-      console.log("🔄 API 호출 시작 (모델: gemini-1.5-flash, 단일 요청)...");
-      const genAI = new GoogleGenerativeAI(API_KEY);
-      const model = genAI.getGenerativeModel({
-        model: "gemini-1.5-flash",
-        generationConfig: { maxOutputTokens: 1000 }
+      console.log("🔄 서버 API 호출 시작...");
+      // 클라이언트 SDK 대신 서버 API(/api/tarot) 호출
+      const response = await axios.post("/api/tarot", {
+        question,
+        cards: selectedCards.map(c => ({
+          name: c.name,
+          korName: c.korName
+        }))
       });
 
-      // 단일 API 호출: 3장의 카드를 한 번에 해석
-      const response = await model.generateContent(prompt);
-      const text = response.text();
-
-      if (!text) {
+      if (!response.data || !response.data.interpretation) {
         throw new Error("EMPTY_RESPONSE");
       }
 
-      setInterpretation(text);
+      setInterpretation(response.data.interpretation);
       console.log("해석 결과 수신 성공!");
-      console.log("✅ AI Tarot: 해석 생성 성공 (단일 호출)");
-    } catch (error: any) {
-      console.error("❌ AI Tarot Error:", error);
-
+    } catch (err: any) {
+      console.error("❌ AI Tarot Error:", err);
+      
       let errorType: "quota" | "api" | "network" | "unknown" = "unknown";
-      const errorMessage = error.message || "알 수 없는 오류";
-      const errorString = JSON.stringify(error);
-
-      if (
-        errorMessage.includes("429") ||
-        errorMessage.includes("RESOURCE_EXHAUSTED") ||
-        errorMessage.includes("quota") ||
-        errorString.includes("429") ||
-        errorString.includes("RESOURCE_EXHAUSTED")
-      ) {
+      const status = err.response?.status;
+      
+      if (status === 429) {
         errorType = "quota";
-      } else if (
-        errorMessage.includes("404") ||
-        errorMessage.includes("NOT_FOUND") ||
-        errorMessage.includes("API")
-      ) {
+      } else if (status === 404 || status === 500) {
         errorType = "api";
-      } else if (
-        errorMessage.includes("network") ||
-        errorMessage.includes("fetch") ||
-        errorMessage.includes("ERR_INTERNET_DISCONNECTED")
-      ) {
+      } else if (err.code === "ERR_NETWORK") {
         errorType = "network";
       }
 
       setError({
         type: errorType,
-        message: errorMessage,
+        message: err.message || "알 수 없는 오류",
       });
-
-      setInterpretation("");
       toast.error(EMOTIONAL_ERROR_MESSAGES[errorType]);
     } finally {
       setIsLoading(false);
