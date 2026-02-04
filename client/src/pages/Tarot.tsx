@@ -79,12 +79,17 @@ export default function Tarot() {
 
       console.log("🔄 서버 API 호출 시작...");
       // 클라이언트 SDK 대신 서버 API(/api/tarot) 호출
+      // Vercel 환경에 따라 /api/tarot 또는 /api/tarot.ts로 매핑될 수 있음
       const response = await axios.post("/api/tarot", {
         question,
         cards: selectedCards.map(c => ({
           name: c.name,
           korName: c.korName
         }))
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
 
       if (!response.data || !response.data.interpretation) {
