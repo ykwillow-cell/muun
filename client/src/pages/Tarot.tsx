@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, RefreshCw, ChevronRight, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -7,8 +7,17 @@ import { toast } from "sonner";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import tarotData from "@/lib/tarot-data.json";
 
-// API 키 관리: 배포 시에는 환경 변수(VITE_GEMINI_API_KEY)를 사용하세요.
-// 로컬 테스트 시에는 아래 문자열에 직접 넣어서 테스트할 수 있습니다.
+// ============================================================================
+// API 키 관리 가이드:
+// ============================================================================
+// 1. 로컬 테스트: 아래 API_KEY에 직접 입력하여 테스트
+// 2. 배포 시 (GitHub Pages):
+//    - Vercel 환경 변수: VITE_GEMINI_API_KEY 설정
+//    - 또는 Google Cloud Console에서 API 키 사용 제한 설정:
+//      * HTTP 리퍼러 제한: https://muunsaju.com/*
+//      * 이렇게 하면 muunsaju.com에서만 키를 사용할 수 있음
+// ============================================================================
+
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY || "AIzaSyAZwrh_Gt2iwQYiPDTzsWLyPgpuHA3WikI";
 
 interface TarotCard {
@@ -26,7 +35,7 @@ export default function Tarot() {
   const [interpretation, setInterpretation] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [shuffledDeck, setShuffledDeck] = useState<TarotCard[]>([]);
-  const [errorDetail, setErrorDetail] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const shuffleDeck = () => {
     const deck = [...tarotData];
@@ -61,17 +70,24 @@ export default function Tarot() {
   const getInterpretation = async (cards: TarotCard[]) => {
     setIsLoading(true);
     setStep("result");
-    setErrorDetail(null);
+    setErrorMessage(null);
 
     try {
+      // API 키 검증
       if (!API_KEY || API_KEY === "YOUR_API_KEY_HERE") {
-        throw new Error("API_KEY_MISSING: Gemini API 키가 설정되지 않았습니다.");
+        throw new Error(
+          "API_KEY_NOT_SET: Gemini API 키가 설정되지 않았습니다. " +
+          "코드의 API_KEY 변수를 확인하거나 VITE_GEMINI_API_KEY 환경 변수를 설정해 주세요."
+        );
       }
 
+      // GoogleGenerativeAI 클라이언트 초기화 (서버 호출 없음, 브라우저에서 직접 호출)
       const genAI = new GoogleGenerativeAI(API_KEY);
-      // 모델명을 gemini-1.5-flash-latest로 설정
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+      
+      // 모델명을 gemini-2.0-flash로 설정 (최신 안정 버전)
+      const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
+      // 프롬프트 구성
       const prompt = `
 너는 따뜻하고 통찰력 있는 타로 마스터야. 
 사용자의 고민에 대해 뽑힌 3장의 타로 카드를 바탕으로 깊이 있고 다정한 해석을 제공해줘.
@@ -92,24 +108,32 @@ ${question}
 - 마지막에는 사용자를 진심으로 응원하는 따뜻한 한마디를 덧붙여줘.
 `;
 
+      // @google/generative-ai SDK를 사용하여 브라우저에서 직접 Gemini API 호출
       const result = await model.generateContent(prompt);
       const response = await result.response;
       const text = response.text();
 
       if (!text) {
-        throw new Error("EMPTY_RESPONSE: AI가 해석을 생성하지 못했습니다.");
+        throw new Error(
+          "EMPTY_RESPONSE: AI가 해석을 생성하지 못했습니다. " +
+          "다시 시도해 주세요."
+        );
       }
 
       setInterpretation(text);
+      console.log("✅ AI Tarot: 해석 생성 성공");
     } catch (error: any) {
-      console.error("--- AI Tarot Error Details ---");
-      console.error("Error Name:", error.name);
-      console.error("Error Message:", error.message);
-      if (error.stack) console.error("Stack Trace:", error.stack);
-      console.error("-------------------------------");
+      // 에러 로깅 (개발자 도구에서 확인 가능)
+      console.error("❌ AI Tarot Error:");
+      console.error("  Error Name:", error.name);
+      console.error("  Error Message:", error.message);
+      console.error("  Full Error:", error);
 
-      setErrorDetail(error.message);
-      toast.error("해석을 가져오는 중 오류가 발생했습니다. 콘솔을 확인해 주세요.");
+      // 사용자에게 보여줄 에러 메시지 (error.message 포함)
+      const userFriendlyMessage = error.message || "알 수 없는 오류가 발생했습니다.";
+      setErrorMessage(userFriendlyMessage);
+
+      toast.error(`오류: ${userFriendlyMessage}`);
       setInterpretation("죄송합니다. 해석을 불러오는 중에 문제가 발생했습니다.");
     } finally {
       setIsLoading(false);
@@ -121,7 +145,7 @@ ${question}
     setStep("input");
     setSelectedCards([]);
     setInterpretation("");
-    setErrorDetail(null);
+    setErrorMessage(null);
   };
 
   return (
@@ -242,7 +266,15 @@ ${question}
                     className="space-y-4"
                   >
                     <div className="aspect-[2/3.5] rounded-2xl overflow-hidden border border-primary/30 shadow-[0_0_30px_rgba(255,215,0,0.1)] bg-white/5">
-                      <img src={card.image} alt={card.name} className="w-full h-full object-cover" />
+                      <img 
+                        src={card.image} 
+                        alt={card.name} 
+                        className="w-full h-full object-cover" 
+                        onError={(e) => {
+                          console.error(`이미지 로드 실패: ${card.image}`);
+                          (e.target as HTMLImageElement).src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Crect fill='%23333' width='200' height='300'/%3E%3C/svg%3E";
+                        }}
+                      />
                     </div>
                     <div className="text-center">
                       <span className="text-[10px] md:text-xs text-primary font-bold uppercase tracking-widest block mb-1">
@@ -282,12 +314,15 @@ ${question}
                       animate={{ opacity: 1 }}
                       className="prose prose-invert max-w-none"
                     >
-                      {errorDetail ? (
-                        <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 flex items-start gap-3 text-red-400">
+                      {errorMessage ? (
+                        <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 flex items-start gap-3 text-red-400 space-y-2">
                           <AlertCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
                           <div className="space-y-1">
                             <p className="font-bold">해석을 가져오지 못했습니다.</p>
-                            <p className="text-sm opacity-80">{errorDetail}</p>
+                            <p className="text-sm opacity-90 break-words">{errorMessage}</p>
+                            <p className="text-xs opacity-70 mt-2">
+                              개발자 도구(F12) &gt; Console 탭에서 더 자세한 오류를 확인할 수 있습니다.
+                            </p>
                           </div>
                         </div>
                       ) : (
