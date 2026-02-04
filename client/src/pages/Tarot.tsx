@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, RefreshCw, ChevronRight, AlertCircle } from "lucide-react";
+import { Sparkles, RefreshCw, ChevronRight, AlertCircle, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
@@ -20,12 +20,12 @@ interface TarotCard {
 interface ErrorState {
   type: "quota" | "api" | "network" | "unknown";
   message: string;
-  retryCount: number;
+  timestamp: number;
 }
 
 // 감성적인 에러 메시지 매핑
 const EMOTIONAL_ERROR_MESSAGES: Record<string, string> = {
-  quota: "신비로운 기운이 잠시 흩어졌습니다.\n잠시 후 다시 카드를 뽑아주세요.",
+  quota: "신비로운 기운이 잠시 흩어졌습니다.\n10초 뒤에 다시 시도해 주세요.",
   api: "카드의 목소리가 아직 명확하지 않습니다.\n다시 한 번 시도해 주세요.",
   network: "신령한 연결이 끊어졌습니다.\n인터넷 연결을 확인해 주세요.",
   unknown: "예상치 못한 신비로운 일이 발생했습니다.\n다시 시도해 주세요.",
@@ -40,6 +40,29 @@ export default function Tarot() {
   const [shuffledDeck, setShuffledDeck] = useState<TarotCard[]>([]);
   const [error, setError] = useState<ErrorState | null>(null);
   const [retryCountdown, setRetryCountdown] = useState(0);
+  const [canRetry, setCanRetry] = useState(false);
+
+  // 10초 대기 타이머
+  useEffect(() => {
+    if (!error) return;
+
+    const now = Date.now();
+    const elapsedSeconds = Math.floor((now - error.timestamp) / 1000);
+    const remainingSeconds = Math.max(0, 10 - elapsedSeconds);
+
+    if (remainingSeconds === 0) {
+      setCanRetry(true);
+      return;
+    }
+
+    setRetryCountdown(remainingSeconds);
+    const timer = setTimeout(() => {
+      setCanRetry(true);
+      setRetryCountdown(0);
+    }, remainingSeconds * 1000);
+
+    return () => clearTimeout(timer);
+  }, [error]);
 
   const shuffleDeck = () => {
     const deck = [...tarotData];
@@ -71,101 +94,65 @@ export default function Tarot() {
     }
   };
 
-  // Exponential Backoff를 이용한 재시도 로직
-  const retryWithBackoff = async (
-    fn: () => Promise<string>,
-    maxRetries: number = 3,
-    initialDelay: number = 2000
-  ): Promise<string> => {
-    let lastError: any;
-
-    for (let attempt = 0; attempt < maxRetries; attempt++) {
-      try {
-        return await fn();
-      } catch (error: any) {
-        lastError = error;
-
-        // 429 에러인 경우만 재시도
-        if (error.message?.includes("429") || error.message?.includes("RESOURCE_EXHAUSTED")) {
-          if (attempt < maxRetries - 1) {
-            const delay = initialDelay * Math.pow(2, attempt);
-            console.log(`⏳ 재시도 대기 중... (${delay / 1000}초)`);
-
-            // UI에 카운트다운 표시
-            for (let i = Math.ceil(delay / 1000); i > 0; i--) {
-              setRetryCountdown(i);
-              await new Promise(resolve => setTimeout(resolve, 1000));
-            }
-            setRetryCountdown(0);
-          }
-        } else {
-          // 429가 아닌 다른 에러는 즉시 throw
-          throw error;
-        }
-      }
-    }
-
-    throw lastError;
-  };
-
   const getInterpretation = async (cards: TarotCard[]) => {
     setIsLoading(true);
     setStep("result");
     setError(null);
     setInterpretation("");
+    setCanRetry(false);
 
     try {
       if (!API_KEY || API_KEY === "YOUR_API_KEY_HERE") {
         throw new Error("API_KEY_NOT_SET");
       }
 
-      // 3장의 카드를 하나의 프롬프트로 통합 (단 한 번의 API 호출)
+      // ============================================================================
+      // 단일 API 호출: 3장의 카드를 하나의 프롬프트로 통합
+      // ============================================================================
       const prompt = `
-너는 따뜻하고 통찰력 있는 타로 마스터야. 
-사용자의 고민에 대해 뽑힌 3장의 타로 카드를 종합해서 하나의 운세로 해석해 줘.
+당신은 20년 경력의 신비로운 타로 마스터입니다.
+사용자의 고민에 대해 뽑힌 3장의 타로 카드를 종합적으로 해석해 주세요.
 
-[사용자 질문]
+【사용자의 고민】
 ${question}
 
-[선택된 카드 (3장 종합 해석)]
-1. 과거/상황: ${cards[0].korName} (${cards[0].name})
-2. 현재/조언: ${cards[1].korName} (${cards[1].name})
-3. 미래/결과: ${cards[2].korName} (${cards[2].name})
+【뽑힌 3장의 카드】
+• 과거/상황: ${cards[0].korName} (${cards[0].name})
+• 현재/조언: ${cards[1].korName} (${cards[1].name})
+• 미래/결과: ${cards[2].korName} (${cards[2].name})
 
-[해석 가이드]
-- 너는 신비로우면서도 다정한 전문 타로 상담사야. 
-- 사용자의 마음을 어루만져주는 따뜻한 말투를 사용해줘.
-- 3장의 카드를 종합해서 하나의 흐름 있는 이야기로 풀어내줘.
-- 각 카드의 상징과 질문의 연관성을 깊이 있게 통찰해줘.
-- 가독성을 위해 마크다운 형식을 사용하여 문단을 나누고 중요한 부분은 강조해줘.
-- 마지막에는 사용자를 진심으로 응원하는 따뜻한 한마디를 덧붙여줘.
+【해석 방식】
+1. 각 카드의 의미를 개별적으로 설명하지 말고, 3장을 하나의 이야기로 유기적으로 연결해 주세요.
+2. "당신의 현재 상황에 비추어 볼 때..." 같은 표현으로 사용자의 고민과 직접 연결해 주세요.
+3. 과거 → 현재 → 미래의 흐름을 명확하게 보여주되, 마치 한 편의 이야기를 읽는 듯한 느낌을 주세요.
+4. 신비로우면서도 따뜻하고 다정한 말투를 유지해 주세요.
+5. 사용자를 응원하는 메시지로 마무리해 주세요.
+
+【형식】
+- 마크다운 형식을 사용하여 중요한 부분은 **굵게** 표시해 주세요.
+- 문단을 명확히 나누어 가독성을 높여 주세요.
+- 너무 길지 않되, 충분히 깊이 있는 해석을 제공해 주세요.
 `;
 
-      // Exponential Backoff와 함께 API 호출 (재시도 로직 포함)
-      const result = await retryWithBackoff(async () => {
-        const genAI = new GoogleGenerativeAI(API_KEY);
-        
-        // gemini-1.5-flash 사용 (할당량이 더 넉넉함)
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+      // gemini-1.5-flash로 고정 (할당량이 가장 안정적)
+      const genAI = new GoogleGenerativeAI(API_KEY);
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-        const response = await model.generateContent(prompt);
-        const text = response.text();
+      // 단일 API 호출로 모든 해석을 받아옴
+      const response = await model.generateContent(prompt);
+      const text = response.text();
 
-        if (!text) {
-          throw new Error("EMPTY_RESPONSE");
-        }
+      if (!text) {
+        throw new Error("EMPTY_RESPONSE");
+      }
 
-        return text;
-      });
-
-      setInterpretation(result);
+      setInterpretation(text);
       console.log("✅ AI Tarot: 해석 생성 성공");
     } catch (error: any) {
       console.error("❌ AI Tarot Error:", error);
 
       // 에러 타입 분류
       let errorType: "quota" | "api" | "network" | "unknown" = "unknown";
-      let errorMessage = error.message || "알 수 없는 오류";
 
       if (error.message?.includes("429") || error.message?.includes("RESOURCE_EXHAUSTED")) {
         errorType = "quota";
@@ -177,15 +164,14 @@ ${question}
 
       setError({
         type: errorType,
-        message: errorMessage,
-        retryCount: 0,
+        message: error.message || "알 수 없는 오류",
+        timestamp: Date.now(),
       });
 
       setInterpretation("");
       toast.error(EMOTIONAL_ERROR_MESSAGES[errorType]);
     } finally {
       setIsLoading(false);
-      setRetryCountdown(0);
     }
   };
 
@@ -196,6 +182,7 @@ ${question}
     setInterpretation("");
     setError(null);
     setRetryCountdown(0);
+    setCanRetry(false);
   };
 
   const handleRetry = () => {
@@ -239,6 +226,7 @@ ${question}
                   onChange={(e) => setQuestion(e.target.value)}
                   placeholder="예: 올해 연애운이 궁금해요. / 이직을 고민 중인데 잘 될까요?"
                   className="w-full min-h-[150px] bg-white/5 border border-white/10 rounded-2xl p-6 text-lg focus:outline-none focus:border-primary/50 transition-colors resize-none"
+                  disabled={isLoading}
                 />
               </div>
               <Button 
@@ -274,7 +262,7 @@ ${question}
                       onClick={() => handleSelectCard(card)}
                       className={`relative w-16 h-28 md:w-24 md:h-40 rounded-xl cursor-pointer transition-all duration-300 ${
                         selectedCards.find(c => c.id === card.id) ? "opacity-0 pointer-events-none" : "opacity-100"
-                      }`}
+                      } ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
                       disabled={isLoading}
                     >
                       <div className="absolute inset-0 bg-gradient-to-br from-primary/40 to-purple-900/40 border border-primary/30 rounded-xl flex items-center justify-center overflow-hidden shadow-lg">
@@ -358,11 +346,7 @@ ${question}
                     <div className="space-y-4">
                       <div className="flex items-center gap-2 text-primary animate-pulse mb-4">
                         <RefreshCw className="w-4 h-4 animate-spin" />
-                        <span className="text-sm font-medium">
-                          {retryCountdown > 0 
-                            ? `신비로운 기운을 모으는 중... (${retryCountdown}초)`
-                            : "AI 상담사가 카드를 읽고 있습니다..."}
-                        </span>
+                        <span className="text-sm font-medium">AI 상담사가 카드를 읽고 있습니다...</span>
                       </div>
                       <Skeleton className="h-4 w-full bg-white/5" />
                       <Skeleton className="h-4 w-[90%] bg-white/5" />
@@ -378,15 +362,22 @@ ${question}
                       {error ? (
                         <div className="p-4 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-start gap-3 text-purple-300 space-y-3">
                           <AlertCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
-                          <div className="space-y-2">
+                          <div className="space-y-3 flex-1">
                             <p className="font-bold whitespace-pre-line">{EMOTIONAL_ERROR_MESSAGES[error.type]}</p>
+                            {retryCountdown > 0 && (
+                              <div className="flex items-center gap-2 text-sm opacity-80">
+                                <Clock className="w-4 h-4" />
+                                <span>{retryCountdown}초 뒤에 다시 시도할 수 있습니다.</span>
+                              </div>
+                            )}
                             <Button 
                               onClick={handleRetry}
-                              disabled={isLoading}
+                              disabled={isLoading || !canRetry}
                               variant="outline"
-                              className="mt-3 border-purple-500/30 hover:bg-purple-500/10 disabled:opacity-50 disabled:cursor-not-allowed"
+                              className="mt-2 border-purple-500/30 hover:bg-purple-500/10 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                              <RefreshCw className="w-4 h-4 mr-2" /> 다시 시도하기
+                              <RefreshCw className="w-4 h-4 mr-2" /> 
+                              {canRetry ? "다시 시도하기" : `${retryCountdown}초 대기 중...`}
                             </Button>
                           </div>
                         </div>
