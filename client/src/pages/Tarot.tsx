@@ -132,19 +132,19 @@ ${question}
 - 문단을 명확히 나누어 가독성을 높여 주세요.
 - 너무 길지 않되, 충분히 깊이 있는 해석을 제공해 주세요.`;
 
-      // 2초 강제 지연
+      // 2초 강제 지연 (호출 직전)
       console.log("⏳ 2초 대기 중...");
       await new Promise(r => setTimeout(r, 2000));
 
-      // gemini-2.0-flash 모델 고정
+      // gemini-2.0-flash 모델 고정 (1.5 버전 사용 금지)
+      console.log("🔄 API 호출 시작 (모델: gemini-2.0-flash, 단일 요청)...");
       const genAI = new GoogleGenerativeAI(API_KEY);
       const model = genAI.getGenerativeModel({
         model: "gemini-2.0-flash",
         generationConfig: { maxOutputTokens: 500 }
       });
 
-      // 단일 API 호출: 3장의 카드를 한 번에 해석
-      console.log("🔄 API 호출 시작 (gemini-2.0-flash, 단일 요청)...");
+      // 단일 API 호출: 3장의 카드를 한 번에 해석 (카드마다 따로 호출하지 않음)
       const response = await model.generateContent(prompt);
       const text = response.text();
 
@@ -153,18 +153,23 @@ ${question}
       }
 
       setInterpretation(text);
-      console.log("✅ AI Tarot: 해석 생성 성공");
+      console.log("✅ AI Tarot: 해석 생성 성공 (단일 호출)");
     } catch (error: any) {
       console.error("❌ AI Tarot Error:", error);
 
       // 에러 타입 분류
       let errorType: "quota" | "api" | "network" | "unknown" = "unknown";
       const errorMessage = error.message || "알 수 없는 오류";
+      const errorString = JSON.stringify(error);
+
+      console.error("📋 상세 에러 정보:", errorString);
 
       if (
         errorMessage.includes("429") ||
         errorMessage.includes("RESOURCE_EXHAUSTED") ||
-        errorMessage.includes("quota")
+        errorMessage.includes("quota") ||
+        errorString.includes("429") ||
+        errorString.includes("RESOURCE_EXHAUSTED")
       ) {
         errorType = "quota";
       } else if (
