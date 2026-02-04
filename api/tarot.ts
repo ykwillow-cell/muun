@@ -1,4 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
+import axios from 'axios';
 
 export default async function handler(
   req: VercelRequest,
@@ -16,6 +17,7 @@ export default async function handler(
 
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
+    console.error('GEMINI_API_KEY is not set in environment variables');
     return res.status(500).json({ error: 'API key not configured' });
   }
 
@@ -38,16 +40,13 @@ ${question}
 - 말투는 신비로우면서도 다정하게, 전문 상담사처럼 작성해 주세요.
 - 가독성을 위해 적절한 문단 나누기와 강조를 사용해 주세요.
 - 마지막에는 사용자를 응원하는 따뜻한 한마디를 덧붙여 주세요.
-- 결과는 JSON 형식이 아닌, 마크다운 형식이 포함된 일반 텍스트로 답변해 주세요.
+- 결과는 마크다운 형식이 포함된 일반 텍스트로 답변해 주세요.
 `;
 
   try {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${apiKey}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+    const response = await axios.post(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${apiKey}`,
+      {
         contents: [{
           parts: [{ text: prompt }]
         }],
@@ -57,19 +56,25 @@ ${question}
           topP: 0.95,
           maxOutputTokens: 2048,
         }
-      })
-    });
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      }
+    );
 
-    const data = await response.json();
-    
-    if (data.error) {
-      throw new Error(data.error.message || 'Gemini API Error');
+    if (response.data.error) {
+      throw new Error(response.data.error.message || 'Gemini API Error');
     }
 
-    const interpretation = data.candidates[0].content.parts[0].text;
+    const interpretation = response.data.candidates[0].content.parts[0].text;
     return res.status(200).json({ interpretation });
   } catch (error: any) {
-    console.error('Tarot API Error:', error);
-    return res.status(500).json({ error: error.message || 'Internal server error' });
+    console.error('Tarot API Error:', error.response?.data || error.message);
+    return res.status(500).json({ 
+      error: 'AI 해석을 생성하는 중 오류가 발생했습니다.',
+      details: error.response?.data?.error?.message || error.message 
+    });
   }
 }

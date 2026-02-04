@@ -1,9 +1,7 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, RefreshCw, Send, ChevronRight, Info } from "lucide-react";
+import { Sparkles, RefreshCw, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import tarotData from "@/lib/tarot-data.json";
@@ -24,7 +22,6 @@ export default function Tarot() {
   const [isLoading, setIsLoading] = useState(false);
   const [shuffledDeck, setShuffledDeck] = useState<TarotCard[]>([]);
 
-  // 카드 셔플 함수
   const shuffleDeck = () => {
     const deck = [...tarotData];
     for (let i = deck.length - 1; i > 0; i--) {
@@ -65,12 +62,16 @@ export default function Tarot() {
         body: JSON.stringify({ question, cards }),
       });
 
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "API Error");
+      }
+
       const data = await response.json();
-      if (data.error) throw new Error(data.error);
       setInterpretation(data.interpretation);
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
-      toast.error("해석을 가져오는 중 오류가 발생했습니다.");
+      toast.error(`해석을 가져오는 중 오류가 발생했습니다: ${error.message}`);
       setStep("shuffle");
       setSelectedCards([]);
     } finally {
@@ -88,7 +89,6 @@ export default function Tarot() {
   return (
     <div className="min-h-screen bg-background text-foreground pb-20">
       <div className="container max-w-4xl mx-auto px-4 pt-12 md:pt-20">
-        {/* Header */}
         <div className="text-center space-y-4 mb-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -106,7 +106,6 @@ export default function Tarot() {
         </div>
 
         <AnimatePresence mode="wait">
-          {/* Step 1: Input */}
           {step === "input" && (
             <motion.div
               key="input"
@@ -133,7 +132,6 @@ export default function Tarot() {
             </motion.div>
           )}
 
-          {/* Step 2: Shuffle & Select */}
           {step === "shuffle" && (
             <motion.div
               key="shuffle"
@@ -147,21 +145,21 @@ export default function Tarot() {
                 <p className="text-muted-foreground">가장 마음이 끌리는 카드를 순서대로 클릭하세요. ({selectedCards.length}/3)</p>
               </div>
 
-              <div className="relative h-[300px] md:h-[400px] flex items-center justify-center overflow-hidden">
-                <div className="flex flex-wrap justify-center gap-2 md:gap-4 max-w-3xl">
-                  {shuffledDeck.slice(0, 20).map((card, index) => (
+              <div className="relative py-8 flex items-center justify-center">
+                <div className="flex flex-wrap justify-center gap-3 md:gap-4 max-w-3xl">
+                  {shuffledDeck.slice(0, 21).map((card, index) => (
                     <motion.div
                       key={index}
-                      whileHover={{ y: -20, scale: 1.05 }}
+                      whileHover={{ y: -15, scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => handleSelectCard(card)}
-                      className={`relative w-16 h-28 md:w-24 md:h-40 rounded-lg cursor-pointer transition-all duration-300 ${
+                      className={`relative w-16 h-28 md:w-24 md:h-40 rounded-xl cursor-pointer transition-all duration-300 ${
                         selectedCards.find(c => c.id === card.id) ? "opacity-0 pointer-events-none" : "opacity-100"
                       }`}
                     >
-                      <div className="absolute inset-0 bg-gradient-to-br from-primary/40 to-purple-900/40 border border-primary/30 rounded-lg flex items-center justify-center overflow-hidden">
-                        <div className="w-full h-full border-2 border-primary/20 m-1 rounded-md flex items-center justify-center">
-                          <Sparkles className="w-6 h-6 text-primary/40" />
+                      <div className="absolute inset-0 bg-gradient-to-br from-primary/40 to-purple-900/40 border border-primary/30 rounded-xl flex items-center justify-center overflow-hidden shadow-lg">
+                        <div className="w-full h-full border-2 border-primary/10 m-1 rounded-lg flex items-center justify-center">
+                          <Sparkles className="w-6 h-6 text-primary/30" />
                         </div>
                       </div>
                     </motion.div>
@@ -169,14 +167,14 @@ export default function Tarot() {
                 </div>
               </div>
 
-              <div className="flex justify-center gap-6">
+              <div className="flex justify-center gap-4 md:gap-8">
                 {[0, 1, 2].map((i) => (
-                  <div key={i} className="w-20 h-32 md:w-28 md:h-44 border-2 border-dashed border-white/10 rounded-xl flex items-center justify-center relative">
+                  <div key={i} className="w-20 h-32 md:w-32 md:h-52 border-2 border-dashed border-white/10 rounded-2xl flex items-center justify-center relative bg-white/5">
                     {selectedCards[i] ? (
                       <motion.div
                         initial={{ rotateY: 180, opacity: 0 }}
                         animate={{ rotateY: 0, opacity: 1 }}
-                        className="w-full h-full bg-primary/10 rounded-xl flex items-center justify-center"
+                        className="w-full h-full bg-primary/10 rounded-2xl flex items-center justify-center border border-primary/30"
                       >
                         <span className="text-[10px] md:text-xs font-bold text-primary text-center px-2">{selectedCards[i].korName}</span>
                       </motion.div>
@@ -189,7 +187,6 @@ export default function Tarot() {
             </motion.div>
           )}
 
-          {/* Step 3: Result */}
           {step === "result" && (
             <motion.div
               key="result"
@@ -197,7 +194,6 @@ export default function Tarot() {
               animate={{ opacity: 1, y: 0 }}
               className="space-y-12"
             >
-              {/* Selected Cards Display */}
               <div className="grid grid-cols-3 gap-4 md:gap-8">
                 {selectedCards.map((card, index) => (
                   <motion.div
@@ -207,7 +203,7 @@ export default function Tarot() {
                     transition={{ delay: index * 0.2, duration: 0.8 }}
                     className="space-y-4"
                   >
-                    <div className="aspect-[2/3.5] rounded-2xl overflow-hidden border border-primary/30 shadow-[0_0_30px_rgba(255,215,0,0.1)]">
+                    <div className="aspect-[2/3.5] rounded-2xl overflow-hidden border border-primary/30 shadow-[0_0_30px_rgba(255,215,0,0.1)] bg-white/5">
                       <img src={card.image} alt={card.name} className="w-full h-full object-cover" />
                     </div>
                     <div className="text-center">
@@ -220,7 +216,6 @@ export default function Tarot() {
                 ))}
               </div>
 
-              {/* Interpretation */}
               <div className="glass-panel p-8 md:p-12 rounded-[2.5rem] space-y-8 relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent opacity-50" />
                 
