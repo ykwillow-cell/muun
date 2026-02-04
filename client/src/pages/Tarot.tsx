@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, RefreshCw, ChevronRight, AlertCircle, Clock } from "lucide-react";
+import { Sparkles, RefreshCw, ChevronRight, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
@@ -20,12 +20,11 @@ interface TarotCard {
 interface ErrorState {
   type: "quota" | "api" | "network" | "unknown";
   message: string;
-  timestamp: number;
 }
 
 // 감성적인 에러 메시지 매핑
 const EMOTIONAL_ERROR_MESSAGES: Record<string, string> = {
-  quota: "상담사가 잠시 명상 중입니다.\n1분 뒤에 다시 시도해 주세요.",
+  quota: "상담사가 잠시 명상 중입니다.\n잠시 후에 다시 시도해 주세요.",
   api: "카드의 목소리가 아직 명확하지 않습니다.\n다시 한 번 시도해 주세요.",
   network: "신령한 연결이 끊어졌습니다.\n인터넷 연결을 확인해 주세요.",
   unknown: "예상치 못한 신비로운 일이 발생했습니다.\n다시 시도해 주세요.",
@@ -39,30 +38,6 @@ export default function Tarot() {
   const [isLoading, setIsLoading] = useState(false);
   const [shuffledDeck, setShuffledDeck] = useState<TarotCard[]>([]);
   const [error, setError] = useState<ErrorState | null>(null);
-  const [retryCountdown, setRetryCountdown] = useState(0);
-  const [canRetry, setCanRetry] = useState(false);
-
-  // 1분(60초) 대기 타이머
-  useEffect(() => {
-    if (!error) return;
-
-    const now = Date.now();
-    const elapsedSeconds = Math.floor((now - error.timestamp) / 1000);
-    const remainingSeconds = Math.max(0, 60 - elapsedSeconds);
-
-    if (remainingSeconds === 0) {
-      setCanRetry(true);
-      return;
-    }
-
-    setRetryCountdown(remainingSeconds);
-    const timer = setTimeout(() => {
-      setCanRetry(true);
-      setRetryCountdown(0);
-    }, remainingSeconds * 1000);
-
-    return () => clearTimeout(timer);
-  }, [error]);
 
   const shuffleDeck = () => {
     const deck = [...tarotData];
@@ -88,16 +63,16 @@ export default function Tarot() {
 
     const newSelected = [...selectedCards, card];
     setSelectedCards(newSelected);
-
-    // 중복 호출 차단: 카드 3장을 다 뽑아도 자동으로 API를 호출하지 않음
-    // 사용자가 '해석하기' 버튼을 눌렀을 때만 호출
   };
 
   // ============================================================================
-  // 최종 고정: gemini-2.0-flash 모델, 3초 강제 지연, 1분 대기
+  // 최종 고정: gemini-2.0-flash 모델, 3초 강제 지연
   // 사용자가 '해석하기' 버튼을 눌렀을 때만 호출 (중복 호출 차단)
   // ============================================================================
   const getInterpretation = async () => {
+    // 단일 호출 보장: 이미 로딩 중이면 즉시 리턴
+    if (isLoading) return;
+    
     if (selectedCards.length !== 3) {
       toast.error("카드 3장을 모두 선택해 주세요.");
       return;
@@ -107,10 +82,9 @@ export default function Tarot() {
     setStep("result");
     setError(null);
     setInterpretation("");
-    setCanRetry(false);
 
     try {
-      if (!API_KEY || API_KEY === "YOUR_API_KEY_HERE") {
+      if (!API_KEY) {
         throw new Error("API_KEY_NOT_SET");
       }
 
@@ -146,10 +120,10 @@ ${question}
       const genAI = new GoogleGenerativeAI(API_KEY);
       const model = genAI.getGenerativeModel({
         model: "gemini-2.0-flash",
-        generationConfig: { maxOutputTokens: 500 }
+        generationConfig: { maxOutputTokens: 1000 }
       });
 
-      // 단일 API 호출: 3장의 카드를 한 번에 해석 (카드마다 따로 호출하지 않음)
+      // 단일 API 호출: 3장의 카드를 한 번에 해석
       const response = await model.generateContent(prompt);
       const text = response.text();
 
@@ -163,12 +137,9 @@ ${question}
     } catch (error: any) {
       console.error("❌ AI Tarot Error:", error);
 
-      // 에러 타입 분류
       let errorType: "quota" | "api" | "network" | "unknown" = "unknown";
       const errorMessage = error.message || "알 수 없는 오류";
       const errorString = JSON.stringify(error);
-
-      console.error("📋 상세 에러 정보:", errorString);
 
       if (
         errorMessage.includes("429") ||
@@ -195,7 +166,6 @@ ${question}
       setError({
         type: errorType,
         message: errorMessage,
-        timestamp: Date.now(),
       });
 
       setInterpretation("");
@@ -211,12 +181,6 @@ ${question}
     setSelectedCards([]);
     setInterpretation("");
     setError(null);
-    setRetryCountdown(0);
-    setCanRetry(false);
-  };
-
-  const handleRetry = () => {
-    getInterpretation();
   };
 
   return (
@@ -291,11 +255,13 @@ ${question}
                       className={`relative w-16 h-28 md:w-24 md:h-40 rounded-xl cursor-pointer transition-all duration-300 ${
                         selectedCards.find(c => c.id === card.id) ? "opacity-0 pointer-events-none" : "opacity-100"
                       } ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
-                      disabled={isLoading}
                     >
                       <div className="absolute inset-0 bg-gradient-to-br from-primary/40 to-purple-900/40 border border-primary/30 rounded-xl flex items-center justify-center overflow-hidden shadow-lg">
-                        <div className="w-full h-full border-2 border-primary/10 m-1 rounded-lg flex items-center justify-center">
-                          <Sparkles className="w-6 h-6 text-primary/30" />
+                        <div className="w-full h-full opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <div className="w-8 h-8 md:w-12 md:h-12 border-2 border-primary/30 rounded-full flex items-center justify-center">
+                            <div className="w-4 h-4 md:w-6 md:h-6 bg-primary/20 rounded-full" />
+                          </div>
                         </div>
                       </div>
                     </motion.div>
@@ -321,7 +287,6 @@ ${question}
                 ))}
               </div>
 
-              {/* 중복 호출 차단: 카드 3장을 다 뽑은 후 '해석하기' 버튼을 눌렀을 때만 API 호출 */}
               {selectedCards.length === 3 && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
@@ -419,20 +384,14 @@ ${question}
                           <AlertCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
                           <div className="space-y-3 flex-1">
                             <p className="font-bold whitespace-pre-line">{EMOTIONAL_ERROR_MESSAGES[error.type]}</p>
-                            {retryCountdown > 0 && (
-                              <div className="flex items-center gap-2 text-sm opacity-80">
-                                <Clock className="w-4 h-4" />
-                                <span>{retryCountdown}초 뒤에 다시 시도할 수 있습니다.</span>
-                              </div>
-                            )}
                             <Button 
-                              onClick={handleRetry}
-                              disabled={isLoading || !canRetry}
+                              onClick={getInterpretation}
+                              disabled={isLoading}
                               variant="outline"
                               className="mt-2 border-purple-500/30 hover:bg-purple-500/10 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                               <RefreshCw className="w-4 h-4 mr-2" /> 
-                              {canRetry ? "다시 시도하기" : `${retryCountdown}초 대기 중...`}
+                              다시 시도하기
                             </Button>
                           </div>
                         </div>
@@ -450,9 +409,9 @@ ${question}
                     onClick={resetTarot}
                     disabled={isLoading}
                     variant="outline"
-                    className="w-full h-14 rounded-2xl border-white/10 hover:bg-white/5 gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full h-14 rounded-2xl border-white/10 hover:bg-white/5"
                   >
-                    <RefreshCw className="w-4 h-4" /> 다시 상담하기
+                    새로운 상담 시작하기
                   </Button>
                 )}
               </div>
