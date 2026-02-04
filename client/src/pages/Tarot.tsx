@@ -7,17 +7,6 @@ import { toast } from "sonner";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import tarotData from "@/lib/tarot-data.json";
 
-// ============================================================================
-// API 키 관리 가이드:
-// ============================================================================
-// 1. 로컬 테스트: 아래 API_KEY에 직접 입력하여 테스트
-// 2. 배포 시 (GitHub Pages):
-//    - Vercel 환경 변수: VITE_GEMINI_API_KEY 설정
-//    - 또는 Google Cloud Console에서 API 키 사용 제한 설정:
-//      * HTTP 리퍼러 제한: https://muunsaju.com/*
-//      * 이렇게 하면 muunsaju.com에서만 키를 사용할 수 있음
-// ============================================================================
-
 const API_KEY = import.meta.env.VITE_GEMINI_API_KEY || "AIzaSyAZwrh_Gt2iwQYiPDTzsWLyPgpuHA3WikI";
 
 interface TarotCard {
@@ -28,6 +17,20 @@ interface TarotCard {
   image: string;
 }
 
+interface ErrorState {
+  type: "quota" | "api" | "network" | "unknown";
+  message: string;
+  retryCount: number;
+}
+
+// 감성적인 에러 메시지 매핑
+const EMOTIONAL_ERROR_MESSAGES: Record<string, string> = {
+  quota: "신비로운 기운이 잠시 흩어졌습니다.\n잠시 후 다시 카드를 뽑아주세요.",
+  api: "카드의 목소리가 아직 명확하지 않습니다.\n다시 한 번 시도해 주세요.",
+  network: "신령한 연결이 끊어졌습니다.\n인터넷 연결을 확인해 주세요.",
+  unknown: "예상치 못한 신비로운 일이 발생했습니다.\n다시 시도해 주세요.",
+};
+
 export default function Tarot() {
   const [question, setQuestion] = useState("");
   const [step, setStep] = useState<"input" | "shuffle" | "result">("input");
@@ -35,7 +38,8 @@ export default function Tarot() {
   const [interpretation, setInterpretation] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [shuffledDeck, setShuffledDeck] = useState<TarotCard[]>([]);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [error, setError] = useState<ErrorState | null>(null);
+  const [retryCountdown, setRetryCountdown] = useState(0);
 
   const shuffleDeck = () => {
     const deck = [...tarotData];
@@ -67,35 +71,63 @@ export default function Tarot() {
     }
   };
 
+  // Exponential Backoff를 이용한 재시도 로직
+  const retryWithBackoff = async (
+    fn: () => Promise<string>,
+    maxRetries: number = 3,
+    initialDelay: number = 2000
+  ): Promise<string> => {
+    let lastError: any;
+
+    for (let attempt = 0; attempt < maxRetries; attempt++) {
+      try {
+        return await fn();
+      } catch (error: any) {
+        lastError = error;
+
+        // 429 에러인 경우만 재시도
+        if (error.message?.includes("429") || error.message?.includes("RESOURCE_EXHAUSTED")) {
+          if (attempt < maxRetries - 1) {
+            const delay = initialDelay * Math.pow(2, attempt);
+            console.log(`⏳ 재시도 대기 중... (${delay / 1000}초)`);
+
+            // UI에 카운트다운 표시
+            for (let i = Math.ceil(delay / 1000); i > 0; i--) {
+              setRetryCountdown(i);
+              await new Promise(resolve => setTimeout(resolve, 1000));
+            }
+            setRetryCountdown(0);
+          }
+        } else {
+          // 429가 아닌 다른 에러는 즉시 throw
+          throw error;
+        }
+      }
+    }
+
+    throw lastError;
+  };
+
   const getInterpretation = async (cards: TarotCard[]) => {
     setIsLoading(true);
     setStep("result");
-    setErrorMessage(null);
+    setError(null);
+    setInterpretation("");
 
     try {
-      // API 키 검증
       if (!API_KEY || API_KEY === "YOUR_API_KEY_HERE") {
-        throw new Error(
-          "API_KEY_NOT_SET: Gemini API 키가 설정되지 않았습니다. " +
-          "코드의 API_KEY 변수를 확인하거나 VITE_GEMINI_API_KEY 환경 변수를 설정해 주세요."
-        );
+        throw new Error("API_KEY_NOT_SET");
       }
 
-      // GoogleGenerativeAI 클라이언트 초기화 (서버 호출 없음, 브라우저에서 직접 호출)
-      const genAI = new GoogleGenerativeAI(API_KEY);
-      
-      // 모델명을 gemini-2.0-flash로 설정 (최신 안정 버전)
-      const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-
-      // 프롬프트 구성
+      // 3장의 카드를 하나의 프롬프트로 통합 (단 한 번의 API 호출)
       const prompt = `
 너는 따뜻하고 통찰력 있는 타로 마스터야. 
-사용자의 고민에 대해 뽑힌 3장의 타로 카드를 바탕으로 깊이 있고 다정한 해석을 제공해줘.
+사용자의 고민에 대해 뽑힌 3장의 타로 카드를 종합해서 하나의 운세로 해석해 줘.
 
 [사용자 질문]
 ${question}
 
-[선택된 카드]
+[선택된 카드 (3장 종합 해석)]
 1. 과거/상황: ${cards[0].korName} (${cards[0].name})
 2. 현재/조언: ${cards[1].korName} (${cards[1].name})
 3. 미래/결과: ${cards[2].korName} (${cards[2].name})
@@ -103,40 +135,57 @@ ${question}
 [해석 가이드]
 - 너는 신비로우면서도 다정한 전문 타로 상담사야. 
 - 사용자의 마음을 어루만져주는 따뜻한 말투를 사용해줘.
+- 3장의 카드를 종합해서 하나의 흐름 있는 이야기로 풀어내줘.
 - 각 카드의 상징과 질문의 연관성을 깊이 있게 통찰해줘.
 - 가독성을 위해 마크다운 형식을 사용하여 문단을 나누고 중요한 부분은 강조해줘.
 - 마지막에는 사용자를 진심으로 응원하는 따뜻한 한마디를 덧붙여줘.
 `;
 
-      // @google/generative-ai SDK를 사용하여 브라우저에서 직접 Gemini API 호출
-      const result = await model.generateContent(prompt);
-      const response = await result.response;
-      const text = response.text();
+      // Exponential Backoff와 함께 API 호출 (재시도 로직 포함)
+      const result = await retryWithBackoff(async () => {
+        const genAI = new GoogleGenerativeAI(API_KEY);
+        
+        // gemini-1.5-flash 사용 (할당량이 더 넉넉함)
+        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-      if (!text) {
-        throw new Error(
-          "EMPTY_RESPONSE: AI가 해석을 생성하지 못했습니다. " +
-          "다시 시도해 주세요."
-        );
-      }
+        const response = await model.generateContent(prompt);
+        const text = response.text();
 
-      setInterpretation(text);
+        if (!text) {
+          throw new Error("EMPTY_RESPONSE");
+        }
+
+        return text;
+      });
+
+      setInterpretation(result);
       console.log("✅ AI Tarot: 해석 생성 성공");
     } catch (error: any) {
-      // 에러 로깅 (개발자 도구에서 확인 가능)
-      console.error("❌ AI Tarot Error:");
-      console.error("  Error Name:", error.name);
-      console.error("  Error Message:", error.message);
-      console.error("  Full Error:", error);
+      console.error("❌ AI Tarot Error:", error);
 
-      // 사용자에게 보여줄 에러 메시지 (error.message 포함)
-      const userFriendlyMessage = error.message || "알 수 없는 오류가 발생했습니다.";
-      setErrorMessage(userFriendlyMessage);
+      // 에러 타입 분류
+      let errorType: "quota" | "api" | "network" | "unknown" = "unknown";
+      let errorMessage = error.message || "알 수 없는 오류";
 
-      toast.error(`오류: ${userFriendlyMessage}`);
-      setInterpretation("죄송합니다. 해석을 불러오는 중에 문제가 발생했습니다.");
+      if (error.message?.includes("429") || error.message?.includes("RESOURCE_EXHAUSTED")) {
+        errorType = "quota";
+      } else if (error.message?.includes("API")) {
+        errorType = "api";
+      } else if (error.message?.includes("network") || error.message?.includes("fetch")) {
+        errorType = "network";
+      }
+
+      setError({
+        type: errorType,
+        message: errorMessage,
+        retryCount: 0,
+      });
+
+      setInterpretation("");
+      toast.error(EMOTIONAL_ERROR_MESSAGES[errorType]);
     } finally {
       setIsLoading(false);
+      setRetryCountdown(0);
     }
   };
 
@@ -145,7 +194,14 @@ ${question}
     setStep("input");
     setSelectedCards([]);
     setInterpretation("");
-    setErrorMessage(null);
+    setError(null);
+    setRetryCountdown(0);
+  };
+
+  const handleRetry = () => {
+    if (selectedCards.length === 3) {
+      getInterpretation(selectedCards);
+    }
   };
 
   return (
@@ -187,7 +243,8 @@ ${question}
               </div>
               <Button 
                 onClick={handleStart}
-                className="w-full h-16 rounded-2xl text-lg font-bold gap-2 shadow-[0_0_20px_rgba(255,215,0,0.2)]"
+                disabled={isLoading}
+                className="w-full h-16 rounded-2xl text-lg font-bold gap-2 shadow-[0_0_20px_rgba(255,215,0,0.2)] disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 상담 시작하기 <ChevronRight className="w-5 h-5" />
               </Button>
@@ -218,6 +275,7 @@ ${question}
                       className={`relative w-16 h-28 md:w-24 md:h-40 rounded-xl cursor-pointer transition-all duration-300 ${
                         selectedCards.find(c => c.id === card.id) ? "opacity-0 pointer-events-none" : "opacity-100"
                       }`}
+                      disabled={isLoading}
                     >
                       <div className="absolute inset-0 bg-gradient-to-br from-primary/40 to-purple-900/40 border border-primary/30 rounded-xl flex items-center justify-center overflow-hidden shadow-lg">
                         <div className="w-full h-full border-2 border-primary/10 m-1 rounded-lg flex items-center justify-center">
@@ -271,7 +329,6 @@ ${question}
                         alt={card.name} 
                         className="w-full h-full object-cover" 
                         onError={(e) => {
-                          console.error(`이미지 로드 실패: ${card.image}`);
                           (e.target as HTMLImageElement).src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Crect fill='%23333' width='200' height='300'/%3E%3C/svg%3E";
                         }}
                       />
@@ -301,7 +358,11 @@ ${question}
                     <div className="space-y-4">
                       <div className="flex items-center gap-2 text-primary animate-pulse mb-4">
                         <RefreshCw className="w-4 h-4 animate-spin" />
-                        <span className="text-sm font-medium">AI 상담사가 카드를 읽고 있습니다...</span>
+                        <span className="text-sm font-medium">
+                          {retryCountdown > 0 
+                            ? `신비로운 기운을 모으는 중... (${retryCountdown}초)`
+                            : "AI 상담사가 카드를 읽고 있습니다..."}
+                        </span>
                       </div>
                       <Skeleton className="h-4 w-full bg-white/5" />
                       <Skeleton className="h-4 w-[90%] bg-white/5" />
@@ -314,15 +375,19 @@ ${question}
                       animate={{ opacity: 1 }}
                       className="prose prose-invert max-w-none"
                     >
-                      {errorMessage ? (
-                        <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 flex items-start gap-3 text-red-400 space-y-2">
+                      {error ? (
+                        <div className="p-4 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-start gap-3 text-purple-300 space-y-3">
                           <AlertCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
-                          <div className="space-y-1">
-                            <p className="font-bold">해석을 가져오지 못했습니다.</p>
-                            <p className="text-sm opacity-90 break-words">{errorMessage}</p>
-                            <p className="text-xs opacity-70 mt-2">
-                              개발자 도구(F12) &gt; Console 탭에서 더 자세한 오류를 확인할 수 있습니다.
-                            </p>
+                          <div className="space-y-2">
+                            <p className="font-bold whitespace-pre-line">{EMOTIONAL_ERROR_MESSAGES[error.type]}</p>
+                            <Button 
+                              onClick={handleRetry}
+                              disabled={isLoading}
+                              variant="outline"
+                              className="mt-3 border-purple-500/30 hover:bg-purple-500/10 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                              <RefreshCw className="w-4 h-4 mr-2" /> 다시 시도하기
+                            </Button>
                           </div>
                         </div>
                       ) : (
@@ -334,11 +399,12 @@ ${question}
                   )}
                 </div>
 
-                {!isLoading && (
+                {!isLoading && !error && (
                   <Button 
                     onClick={resetTarot}
+                    disabled={isLoading}
                     variant="outline"
-                    className="w-full h-14 rounded-2xl border-white/10 hover:bg-white/5 gap-2"
+                    className="w-full h-14 rounded-2xl border-white/10 hover:bg-white/5 gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <RefreshCw className="w-4 h-4" /> 다시 상담하기
                   </Button>
