@@ -25,11 +25,14 @@ interface ErrorState {
 
 // 감성적인 에러 메시지 매핑
 const EMOTIONAL_ERROR_MESSAGES: Record<string, string> = {
-  quota: "상담사가 잠시 생각 중입니다.\n1분 뒤에 다시 시도해 주세요.",
+  quota: "상담사가 잠시 자리를 비웠습니다.\n30초 뒤에 다시 시도해 주세요.",
   api: "카드의 목소리가 아직 명확하지 않습니다.\n다시 한 번 시도해 주세요.",
   network: "신령한 연결이 끊어졌습니다.\n인터넷 연결을 확인해 주세요.",
   unknown: "예상치 못한 신비로운 일이 발생했습니다.\n다시 시도해 주세요.",
 };
+
+// 유틸: 지연 함수
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 export default function Tarot() {
   const [question, setQuestion] = useState("");
@@ -42,13 +45,13 @@ export default function Tarot() {
   const [retryCountdown, setRetryCountdown] = useState(0);
   const [canRetry, setCanRetry] = useState(false);
 
-  // 1분(60초) 대기 타이머
+  // 30초 대기 타이머
   useEffect(() => {
     if (!error) return;
 
     const now = Date.now();
     const elapsedSeconds = Math.floor((now - error.timestamp) / 1000);
-    const remainingSeconds = Math.max(0, 60 - elapsedSeconds);
+    const remainingSeconds = Math.max(0, 30 - elapsedSeconds);
 
     if (remainingSeconds === 0) {
       setCanRetry(true);
@@ -95,7 +98,7 @@ export default function Tarot() {
   };
 
   // ============================================================================
-  // 핵심: 단일 API 호출 (3장의 카드를 한 번에 해석)
+  // 핵심: 모델명 자동 전환 + 강제 지연 + 표준 SDK 초기화
   // ============================================================================
   const getInterpretation = async (cards: TarotCard[]) => {
     setIsLoading(true);
@@ -109,9 +112,7 @@ export default function Tarot() {
         throw new Error("API_KEY_NOT_SET");
       }
 
-      // ========================================================================
       // 프롬프트: 3장의 카드를 한 번에 보내서 전체적인 운세를 하나의 답변으로
-      // ========================================================================
       const prompt = `당신은 20년 경력의 신비로운 타로 마스터입니다.
 
 【사용자의 고민】
@@ -134,12 +135,45 @@ ${question}
 - 문단을 명확히 나누어 가독성을 높여 주세요.
 - 너무 길지 않되, 충분히 깊이 있는 해석을 제공해 주세요.`;
 
-      // gemini-1.5-flash로 고정 (가장 안정적인 무료 모델)
+      // 강제 지연: 요청 전 2초 대기
+      console.log("⏳ 요청 전 2초 대기 중...");
+      await delay(2000);
+
+      // 표준 SDK 초기화 형식 준수
       const genAI = new GoogleGenerativeAI(API_KEY);
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+      
+      // 모델명 자동 전환 로직: gemini-1.5-flash 시도 → 실패 시 gemini-1.5-flash-latest로 전환
+      let model;
+      let modelName = "gemini-1.5-flash";
+      
+      try {
+        console.log(`🔄 모델 호출 시작: ${modelName}`);
+        model = genAI.getGenerativeModel({
+          model: modelName,
+          generationConfig: { maxOutputTokens: 500 }
+        });
+
+        // 실제 호출해서 모델 유효성 확인
+        const testResponse = await model.generateContent("test");
+        console.log(`✅ 모델 ${modelName} 사용 가능`);
+      } catch (modelError: any) {
+        console.warn(`⚠️ 모델 ${modelName} 실패, 대체 모델로 전환...`);
+        
+        // 대체 모델로 전환
+        modelName = "gemini-1.5-flash-latest";
+        console.log(`🔄 모델 호출 시작: ${modelName}`);
+        model = genAI.getGenerativeModel({
+          model: modelName,
+          generationConfig: { maxOutputTokens: 500 }
+        });
+      }
+
+      // 강제 지연: 요청 후 2초 대기
+      console.log("⏳ 요청 후 2초 대기 중...");
+      await delay(2000);
 
       // 단일 API 호출: 3장의 카드를 한 번에 해석
-      console.log("🔄 API 호출 시작 (단일 요청)...");
+      console.log(`🔄 API 호출 시작 (모델: ${modelName}, 단일 요청)...`);
       const response = await model.generateContent(prompt);
       const text = response.text();
 
@@ -148,24 +182,37 @@ ${question}
       }
 
       setInterpretation(text);
-      console.log("✅ AI Tarot: 해석 생성 성공 (단일 호출)");
+      console.log("✅ AI Tarot: 해석 생성 성공");
     } catch (error: any) {
       console.error("❌ AI Tarot Error:", error);
 
       // 에러 타입 분류
       let errorType: "quota" | "api" | "network" | "unknown" = "unknown";
+      const errorMessage = error.message || "알 수 없는 오류";
 
-      if (error.message?.includes("429") || error.message?.includes("RESOURCE_EXHAUSTED")) {
+      if (
+        errorMessage.includes("429") ||
+        errorMessage.includes("RESOURCE_EXHAUSTED") ||
+        errorMessage.includes("quota")
+      ) {
         errorType = "quota";
-      } else if (error.message?.includes("API") || error.message?.includes("404")) {
+      } else if (
+        errorMessage.includes("404") ||
+        errorMessage.includes("NOT_FOUND") ||
+        errorMessage.includes("API")
+      ) {
         errorType = "api";
-      } else if (error.message?.includes("network") || error.message?.includes("fetch")) {
+      } else if (
+        errorMessage.includes("network") ||
+        errorMessage.includes("fetch") ||
+        errorMessage.includes("ERR_INTERNET_DISCONNECTED")
+      ) {
         errorType = "network";
       }
 
       setError({
         type: errorType,
-        message: error.message || "알 수 없는 오류",
+        message: errorMessage,
         timestamp: Date.now(),
       });
 
