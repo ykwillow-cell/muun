@@ -74,39 +74,75 @@ export default function Tarot() {
     setInterpretation("");
 
     try {
-      console.log("⏳ 3초 대기 중 (안정적인 호출을 위해)...");
+      const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+      if (!API_KEY) {
+        throw new Error("API_KEY_MISSING");
+      }
+
+      const prompt = `
+당신은 "신비롭고 다정한 전문 타로 상담사"입니다. 
+사용자의 고민에 대해 뽑힌 3장의 타로 카드를 바탕으로 깊이 있고 따뜻한 해석을 제공해 주세요.
+
+【사용자 질문】
+${question}
+
+【선택된 카드】
+1. 과거/상황: ${selectedCards[0].korName} (${selectedCards[0].name})
+2. 현재/조언: ${selectedCards[1].korName} (${selectedCards[1].name})
+3. 미래/결과: ${selectedCards[2].korName} (${selectedCards[2].name})
+
+【해석 방식】
+1. 3장의 카드를 개별적으로 설명하지 말고, 하나의 흐름 있는 이야기로 유기적으로 연결해 주세요.
+2. "당신의 현재 상황에 비추어 볼 때..." 같은 표현으로 사용자의 고민과 직접 연결해 주세요.
+3. 과거 → 현재 → 미래의 흐름을 명확하게 보여주되, 마치 한 편의 이야기를 읽는 듯한 느낌을 주세요.
+4. 신비로우면서도 따뜻하고 다정한 말투를 유지해 주세요.
+5. 마지막에는 사용자를 진심으로 응원하는 메시지로 마무리해 주세요.
+
+【형식】
+- 마크다운 형식을 사용하여 중요한 부분은 **굵게** 표시해 주세요.
+- 문단을 명확히 나누어 가독성을 높여 주세요.
+- 너무 길지 않되, 충분히 깊이 있는 해석을 제공해 주세요.`;
+
+      console.log("⏳ 3초 대기 중...");
       await new Promise(r => setTimeout(r, 3000));
 
-      console.log("🔄 서버 API 호출 시작...");
-      // 클라이언트 SDK 대신 서버 API(/api/tarot) 호출
-      // Vercel 환경에 따라 /api/tarot 또는 /api/tarot.ts로 매핑될 수 있음
-      const response = await axios.post("/api/tarot", {
-        question,
-        cards: selectedCards.map(c => ({
-          name: c.name,
-          korName: c.korName
-        }))
-      }, {
-        headers: {
-          'Content-Type': 'application/json'
+      console.log("🔄 API 호출 시작 (모델: gemini-1.5-flash, 직접 호출)...");
+      
+      // SDK 대신 표준 REST API 엔드포인트 직접 호출 (v1 경로 고정으로 404 방지)
+      const response = await axios.post(
+        `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${API_KEY}`,
+        {
+          contents: [{
+            parts: [{ text: prompt }]
+          }],
+          generationConfig: {
+            maxOutputTokens: 1000,
+            temperature: 0.7
+          }
+        },
+        {
+          headers: { 'Content-Type': 'application/json' }
         }
-      });
+      );
 
-      if (!response.data || !response.data.interpretation) {
+      const text = response.data?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+      if (!text) {
         throw new Error("EMPTY_RESPONSE");
       }
 
-      setInterpretation(response.data.interpretation);
+      setInterpretation(text);
       console.log("해석 결과 수신 성공!");
     } catch (err: any) {
       console.error("❌ AI Tarot Error:", err);
       
       let errorType: "quota" | "api" | "network" | "unknown" = "unknown";
       const status = err.response?.status;
-      
-      if (status === 429) {
+      const errorMsg = err.response?.data?.error?.message || err.message || "";
+
+      if (status === 429 || errorMsg.includes("quota") || errorMsg.includes("exhausted")) {
         errorType = "quota";
-      } else if (status === 404 || status === 500) {
+      } else if (status === 404 || status === 400 || errorMsg.includes("API")) {
         errorType = "api";
       } else if (err.code === "ERR_NETWORK") {
         errorType = "network";
@@ -114,7 +150,7 @@ export default function Tarot() {
 
       setError({
         type: errorType,
-        message: err.message || "알 수 없는 오류",
+        message: errorMsg,
       });
       toast.error(EMOTIONAL_ERROR_MESSAGES[errorType]);
     } finally {
