@@ -18,6 +18,7 @@ import Tojeong from "./pages/Tojeong";
 import Psychology from "./pages/Psychology";
 import Astrology from "./pages/Astrology";
 import Tarot from "./pages/Tarot";
+import TarotHistory from "./pages/TarotHistory";
 import About from "./pages/About";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
@@ -46,6 +47,7 @@ function Router() {
       <Route path="/psychology" component={Psychology} />
       <Route path="/astrology" component={Astrology} />
       <Route path="/tarot" component={Tarot} />
+      <Route path="/tarot-history" component={TarotHistory} />
       <Route path="/about" component={About} />
       <Route path="/privacy" component={Privacy} />
       <Route path="/terms" component={Terms} />

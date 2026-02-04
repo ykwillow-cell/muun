@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, RefreshCw, ChevronRight, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -6,6 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import axios from "axios";
 import tarotData from "@/lib/tarot-data.json";
+import { saveTarotReading } from "@/lib/tarot-db";
 
 interface TarotCard {
   id: number;
@@ -35,6 +36,8 @@ export default function Tarot() {
   const [isLoading, setIsLoading] = useState(false);
   const [shuffledDeck, setShuffledDeck] = useState<TarotCard[]>([]);
   const [error, setError] = useState<ErrorState | null>(null);
+  const [isSaved, setIsSaved] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   const shuffleDeck = () => {
     const deck = [...tarotData];
@@ -158,12 +161,42 @@ ${question}
     }
   };
 
+  const handleSaveReading = async () => {
+    if (!interpretation || selectedCards.length !== 3) {
+      toast.error("저장할 수 없습니다.");
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      await saveTarotReading({
+        timestamp: Date.now(),
+        question,
+        selectedCards: selectedCards.map(card => ({
+          id: card.id,
+          name: card.name,
+          korName: card.korName,
+          image: card.image
+        })),
+        interpretation
+      });
+      setIsSaved(true);
+      toast.success("상담 기록이 저장되었습니다!");
+    } catch (error) {
+      console.error("기록 저장 실패:", error);
+      toast.error("기록 저장에 실패했습니다.");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   const resetTarot = () => {
     setQuestion("");
     setStep("input");
     setSelectedCards([]);
     setInterpretation("");
     setError(null);
+    setIsSaved(false);
   };
 
   return (
@@ -388,14 +421,23 @@ ${question}
                 </div>
 
                 {!isLoading && !error && (
-                  <Button 
-                    onClick={resetTarot}
-                    disabled={isLoading}
-                    variant="outline"
-                    className="w-full h-14 rounded-2xl border-white/10 hover:bg-white/5"
-                  >
-                    새로운 상담 시작하기
-                  </Button>
+                  <div className="space-y-3">
+                    <Button 
+                      onClick={handleSaveReading}
+                      disabled={isSaving || isSaved}
+                      className="w-full h-14 rounded-2xl text-lg font-bold gap-2 shadow-[0_0_20px_rgba(255,215,0,0.2)] disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      {isSaved ? "\u2713 저장됨" : isSaving ? "저장 중..." : "내 기록으로 저장하기"}
+                    </Button>
+                    <Button 
+                      onClick={resetTarot}
+                      disabled={isLoading}
+                      variant="outline"
+                      className="w-full h-14 rounded-2xl border-white/10 hover:bg-white/5"
+                    >
+                      새로운 상담 시작하기
+                    </Button>
+                  </div>
                 )}
               </div>
             </motion.div>

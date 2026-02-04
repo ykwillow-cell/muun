@@ -19,7 +19,8 @@ import {
   Info,
   ChevronRight,
   Star,
-  Zap
+  Zap,
+  History
 } from "lucide-react";
 import { useState } from "react";
 
@@ -33,6 +34,7 @@ const navItems = [
   { name: "점성술", href: "/astrology", icon: Star, description: "별들이 들려주는 나의 운명" },
   { name: "심리테스트", href: "/psychology", icon: BrainCircuit, description: "나도 모르는 내 마음" },
   { name: "AI 타로", href: "/tarot", icon: Sparkles, description: "AI가 읽어주는 운명의 카드" },
+  { name: "내 타로 기록", href: "/tarot-history", icon: History, description: "지난 상담 기록 조회" },
   { name: "소개", href: "/about", icon: Info, description: "MUUN 서비스 이야기" },
   { name: "문의", href: "/contact", icon: Info, description: "문의 및 피드백" },
 ];
