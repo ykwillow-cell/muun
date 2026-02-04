@@ -7,7 +7,7 @@ import { toast } from "sonner";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import tarotData from "@/lib/tarot-data.json";
 
-const API_KEY = import.meta.env.VITE_GEMINI_API_KEY || "AIzaSyAZwrh_Gt2iwQYiPDTzsWLyPgpuHA3WikI";
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
 interface TarotCard {
   id: number;
@@ -158,6 +158,7 @@ ${question}
       }
 
       setInterpretation(text);
+      console.log("해석 결과 수신 성공!");
       console.log("✅ AI Tarot: 해석 생성 성공 (단일 호출)");
     } catch (error: any) {
       console.error("❌ AI Tarot Error:", error);
