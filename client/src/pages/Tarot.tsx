@@ -106,11 +106,11 @@ ${question}
       console.log("⏳ 3초 대기 중...");
       await new Promise(r => setTimeout(r, 3000));
 
-      console.log("🔄 API 호출 시작 (모델: gemini-2.0-flash-exp, 직접 호출)...");
+      console.log("🔄 API 호출 시작 (모델: gemini-2.0-flash, 직접 호출)...");
       
-      // 현재 API 키에서 사용 가능한 모델인 gemini-2.0-flash-exp로 변경
+      // 현재 API 키에서 사용 가능한 모델인 gemini-2.0-flash로 변경
       const response = await axios.post(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${API_KEY}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`,
         {
           contents: [{
             parts: [{ text: prompt }]
