@@ -1,10 +1,15 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, RefreshCw, ChevronRight } from "lucide-react";
+import { Sparkles, RefreshCw, ChevronRight, AlertCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import tarotData from "@/lib/tarot-data.json";
+
+// API 키 관리: 배포 시에는 환경 변수(VITE_GEMINI_API_KEY)를 사용하세요.
+// 로컬 테스트 시에는 아래 문자열에 직접 넣어서 테스트할 수 있습니다.
+const API_KEY = import.meta.env.VITE_GEMINI_API_KEY || "AIzaSyAZwrh_Gt2iwQYiPDTzsWLyPgpuHA3WikI";
 
 interface TarotCard {
   id: number;
@@ -21,6 +26,7 @@ export default function Tarot() {
   const [interpretation, setInterpretation] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [shuffledDeck, setShuffledDeck] = useState<TarotCard[]>([]);
+  const [errorDetail, setErrorDetail] = useState<string | null>(null);
 
   const shuffleDeck = () => {
     const deck = [...tarotData];
@@ -55,42 +61,56 @@ export default function Tarot() {
   const getInterpretation = async (cards: TarotCard[]) => {
     setIsLoading(true);
     setStep("result");
+    setErrorDetail(null);
+
     try {
-      // API 호출 경로를 절대 경로로 명시하거나 환경 변수를 고려할 수 있도록 설정
-      const response = await fetch("/api/tarot", {
-        method: "POST",
-        headers: { 
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },
-        body: JSON.stringify({ 
-          question: question.trim(), 
-          cards: cards.map(c => ({ id: c.id, name: c.name, korName: c.korName })) 
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        // 구체적인 에러 로그를 콘솔에 출력 (디버깅용)
-        console.error("--- AI Tarot API Error Details ---");
-        console.error("Status:", response.status);
-        console.error("Error Data:", data);
-        console.error("----------------------------------");
-        
-        throw new Error(data.details || data.error || `Server Error (${response.status})`);
+      if (!API_KEY || API_KEY === "YOUR_API_KEY_HERE") {
+        throw new Error("API_KEY_MISSING: Gemini API 키가 설정되지 않았습니다.");
       }
 
-      if (!data.interpretation) {
-        throw new Error("해석 데이터가 비어 있습니다.");
+      const genAI = new GoogleGenerativeAI(API_KEY);
+      // 모델명을 gemini-1.5-flash-latest로 설정
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-latest" });
+
+      const prompt = `
+너는 따뜻하고 통찰력 있는 타로 마스터야. 
+사용자의 고민에 대해 뽑힌 3장의 타로 카드를 바탕으로 깊이 있고 다정한 해석을 제공해줘.
+
+[사용자 질문]
+${question}
+
+[선택된 카드]
+1. 과거/상황: ${cards[0].korName} (${cards[0].name})
+2. 현재/조언: ${cards[1].korName} (${cards[1].name})
+3. 미래/결과: ${cards[2].korName} (${cards[2].name})
+
+[해석 가이드]
+- 너는 신비로우면서도 다정한 전문 타로 상담사야. 
+- 사용자의 마음을 어루만져주는 따뜻한 말투를 사용해줘.
+- 각 카드의 상징과 질문의 연관성을 깊이 있게 통찰해줘.
+- 가독성을 위해 마크다운 형식을 사용하여 문단을 나누고 중요한 부분은 강조해줘.
+- 마지막에는 사용자를 진심으로 응원하는 따뜻한 한마디를 덧붙여줘.
+`;
+
+      const result = await model.generateContent(prompt);
+      const response = await result.response;
+      const text = response.text();
+
+      if (!text) {
+        throw new Error("EMPTY_RESPONSE: AI가 해석을 생성하지 못했습니다.");
       }
 
-      setInterpretation(data.interpretation);
+      setInterpretation(text);
     } catch (error: any) {
-      console.error("[Tarot Page Error]:", error);
-      toast.error(`해석을 가져오는 중 오류가 발생했습니다. 개발자 도구 콘솔을 확인해 주세요.`);
-      // 에러 발생 시 셔플 단계로 돌아가지 않고 결과창에서 에러 상태를 보여주거나 리셋 버튼 제공
-      setInterpretation("오류가 발생했습니다. 다시 시도해 주세요.");
+      console.error("--- AI Tarot Error Details ---");
+      console.error("Error Name:", error.name);
+      console.error("Error Message:", error.message);
+      if (error.stack) console.error("Stack Trace:", error.stack);
+      console.error("-------------------------------");
+
+      setErrorDetail(error.message);
+      toast.error("해석을 가져오는 중 오류가 발생했습니다. 콘솔을 확인해 주세요.");
+      setInterpretation("죄송합니다. 해석을 불러오는 중에 문제가 발생했습니다.");
     } finally {
       setIsLoading(false);
     }
@@ -101,6 +121,7 @@ export default function Tarot() {
     setStep("input");
     setSelectedCards([]);
     setInterpretation("");
+    setErrorDetail(null);
   };
 
   return (
@@ -261,9 +282,19 @@ export default function Tarot() {
                       animate={{ opacity: 1 }}
                       className="prose prose-invert max-w-none"
                     >
-                      <div className="text-foreground/90 leading-relaxed whitespace-pre-wrap text-base md:text-lg">
-                        {interpretation}
-                      </div>
+                      {errorDetail ? (
+                        <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/20 flex items-start gap-3 text-red-400">
+                          <AlertCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
+                          <div className="space-y-1">
+                            <p className="font-bold">해석을 가져오지 못했습니다.</p>
+                            <p className="text-sm opacity-80">{errorDetail}</p>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="text-foreground/90 leading-relaxed whitespace-pre-wrap text-base md:text-lg">
+                          {interpretation}
+                        </div>
+                      )}
                     </motion.div>
                   )}
                 </div>
