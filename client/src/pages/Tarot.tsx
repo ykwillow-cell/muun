@@ -25,7 +25,7 @@ interface ErrorState {
 
 // 감성적인 에러 메시지 매핑
 const EMOTIONAL_ERROR_MESSAGES: Record<string, string> = {
-  quota: "신비로운 기운이 잠시 흩어졌습니다.\n10초 뒤에 다시 시도해 주세요.",
+  quota: "상담사가 잠시 생각 중입니다.\n1분 뒤에 다시 시도해 주세요.",
   api: "카드의 목소리가 아직 명확하지 않습니다.\n다시 한 번 시도해 주세요.",
   network: "신령한 연결이 끊어졌습니다.\n인터넷 연결을 확인해 주세요.",
   unknown: "예상치 못한 신비로운 일이 발생했습니다.\n다시 시도해 주세요.",
@@ -42,13 +42,13 @@ export default function Tarot() {
   const [retryCountdown, setRetryCountdown] = useState(0);
   const [canRetry, setCanRetry] = useState(false);
 
-  // 10초 대기 타이머
+  // 1분(60초) 대기 타이머
   useEffect(() => {
     if (!error) return;
 
     const now = Date.now();
     const elapsedSeconds = Math.floor((now - error.timestamp) / 1000);
-    const remainingSeconds = Math.max(0, 10 - elapsedSeconds);
+    const remainingSeconds = Math.max(0, 60 - elapsedSeconds);
 
     if (remainingSeconds === 0) {
       setCanRetry(true);
@@ -94,6 +94,9 @@ export default function Tarot() {
     }
   };
 
+  // ============================================================================
+  // 핵심: 단일 API 호출 (3장의 카드를 한 번에 해석)
+  // ============================================================================
   const getInterpretation = async (cards: TarotCard[]) => {
     setIsLoading(true);
     setStep("result");
@@ -106,39 +109,37 @@ export default function Tarot() {
         throw new Error("API_KEY_NOT_SET");
       }
 
-      // ============================================================================
-      // 단일 API 호출: 3장의 카드를 하나의 프롬프트로 통합
-      // ============================================================================
-      const prompt = `
-당신은 20년 경력의 신비로운 타로 마스터입니다.
-사용자의 고민에 대해 뽑힌 3장의 타로 카드를 종합적으로 해석해 주세요.
+      // ========================================================================
+      // 프롬프트: 3장의 카드를 한 번에 보내서 전체적인 운세를 하나의 답변으로
+      // ========================================================================
+      const prompt = `당신은 20년 경력의 신비로운 타로 마스터입니다.
 
 【사용자의 고민】
 ${question}
 
-【뽑힌 3장의 카드】
+【뽑힌 3장의 카드 (한 번에 종합 해석)】
 • 과거/상황: ${cards[0].korName} (${cards[0].name})
 • 현재/조언: ${cards[1].korName} (${cards[1].name})
 • 미래/결과: ${cards[2].korName} (${cards[2].name})
 
 【해석 방식】
-1. 각 카드의 의미를 개별적으로 설명하지 말고, 3장을 하나의 이야기로 유기적으로 연결해 주세요.
+1. 3장의 카드를 개별적으로 설명하지 말고, 하나의 흐름 있는 이야기로 유기적으로 연결해 주세요.
 2. "당신의 현재 상황에 비추어 볼 때..." 같은 표현으로 사용자의 고민과 직접 연결해 주세요.
 3. 과거 → 현재 → 미래의 흐름을 명확하게 보여주되, 마치 한 편의 이야기를 읽는 듯한 느낌을 주세요.
 4. 신비로우면서도 따뜻하고 다정한 말투를 유지해 주세요.
-5. 사용자를 응원하는 메시지로 마무리해 주세요.
+5. 마지막에는 사용자를 진심으로 응원하는 메시지로 마무리해 주세요.
 
 【형식】
 - 마크다운 형식을 사용하여 중요한 부분은 **굵게** 표시해 주세요.
 - 문단을 명확히 나누어 가독성을 높여 주세요.
-- 너무 길지 않되, 충분히 깊이 있는 해석을 제공해 주세요.
-`;
+- 너무 길지 않되, 충분히 깊이 있는 해석을 제공해 주세요.`;
 
-      // gemini-1.5-flash로 고정 (할당량이 가장 안정적)
+      // gemini-1.5-flash로 고정 (가장 안정적인 무료 모델)
       const genAI = new GoogleGenerativeAI(API_KEY);
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-      // 단일 API 호출로 모든 해석을 받아옴
+      // 단일 API 호출: 3장의 카드를 한 번에 해석
+      console.log("🔄 API 호출 시작 (단일 요청)...");
       const response = await model.generateContent(prompt);
       const text = response.text();
 
@@ -147,7 +148,7 @@ ${question}
       }
 
       setInterpretation(text);
-      console.log("✅ AI Tarot: 해석 생성 성공");
+      console.log("✅ AI Tarot: 해석 생성 성공 (단일 호출)");
     } catch (error: any) {
       console.error("❌ AI Tarot Error:", error);
 
@@ -156,7 +157,7 @@ ${question}
 
       if (error.message?.includes("429") || error.message?.includes("RESOURCE_EXHAUSTED")) {
         errorType = "quota";
-      } else if (error.message?.includes("API")) {
+      } else if (error.message?.includes("API") || error.message?.includes("404")) {
         errorType = "api";
       } else if (error.message?.includes("network") || error.message?.includes("fetch")) {
         errorType = "network";
