@@ -56,24 +56,41 @@ export default function Tarot() {
     setIsLoading(true);
     setStep("result");
     try {
+      // API 호출 경로를 절대 경로로 명시하거나 환경 변수를 고려할 수 있도록 설정
       const response = await fetch("/api/tarot", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question, cards }),
+        headers: { 
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({ 
+          question: question.trim(), 
+          cards: cards.map(c => ({ id: c.id, name: c.name, korName: c.korName })) 
+        }),
       });
 
+      const data = await response.json();
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "API Error");
+        // 구체적인 에러 로그를 콘솔에 출력 (디버깅용)
+        console.error("--- AI Tarot API Error Details ---");
+        console.error("Status:", response.status);
+        console.error("Error Data:", data);
+        console.error("----------------------------------");
+        
+        throw new Error(data.details || data.error || `Server Error (${response.status})`);
       }
 
-      const data = await response.json();
+      if (!data.interpretation) {
+        throw new Error("해석 데이터가 비어 있습니다.");
+      }
+
       setInterpretation(data.interpretation);
     } catch (error: any) {
-      console.error(error);
-      toast.error(`해석을 가져오는 중 오류가 발생했습니다: ${error.message}`);
-      setStep("shuffle");
-      setSelectedCards([]);
+      console.error("[Tarot Page Error]:", error);
+      toast.error(`해석을 가져오는 중 오류가 발생했습니다. 개발자 도구 콘솔을 확인해 주세요.`);
+      // 에러 발생 시 셔플 단계로 돌아가지 않고 결과창에서 에러 상태를 보여주거나 리셋 버튼 제공
+      setInterpretation("오류가 발생했습니다. 다시 시도해 주세요.");
     } finally {
       setIsLoading(false);
     }

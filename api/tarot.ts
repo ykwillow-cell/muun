@@ -24,14 +24,23 @@ export default async function handler(
 
   const { question, cards } = req.body;
 
-  if (!question || !cards || !Array.isArray(cards)) {
-    return res.status(400).json({ error: 'Missing required fields' });
+  // 입력 데이터 검증 및 로그
+  console.log('[Tarot API] Received Request:', { question, cardsCount: cards?.length });
+
+  if (!question || !cards || !Array.isArray(cards) || cards.length < 3) {
+    return res.status(400).json({ 
+      error: '필수 데이터가 누락되었습니다.', 
+      details: '질문과 3장의 카드 정보가 필요합니다.' 
+    });
   }
 
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
-    console.error('GEMINI_API_KEY is missing');
-    return res.status(500).json({ error: 'API key not configured' });
+    console.error('[Tarot API] GEMINI_API_KEY is missing in environment variables');
+    return res.status(500).json({ 
+      error: '서버 설정 오류', 
+      details: 'API 키가 설정되지 않았습니다. Vercel 환경 변수를 확인해 주세요.' 
+    });
   }
 
   const prompt = `
@@ -57,7 +66,8 @@ ${question}
 `;
 
   try {
-    // 모델을 더 안정적인 gemini-1.5-flash로 변경
+    console.log('[Tarot API] Calling Gemini API...');
+    
     const response = await axios.post(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
       {
@@ -72,26 +82,32 @@ ${question}
         }
       },
       {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        timeout: 30000 // 30초 타임아웃 설정
+        headers: { 'Content-Type': 'application/json' },
+        timeout: 25000 // Vercel 무료 티어 함수 실행 시간 제한(10초)을 고려해야 하지만, 일단 25초 설정 (Vercel 설정에 따라 다름)
       }
     );
 
     if (!response.data || !response.data.candidates || response.data.candidates.length === 0) {
-      console.error('Invalid Gemini API response:', JSON.stringify(response.data));
-      throw new Error('AI 해석을 생성하지 못했습니다.');
+      console.error('[Tarot API] Gemini API returned empty candidates:', JSON.stringify(response.data));
+      throw new Error('AI가 해석을 생성하지 못했습니다. 다시 시도해 주세요.');
     }
 
     const interpretation = response.data.candidates[0].content.parts[0].text;
+    console.log('[Tarot API] Success: Interpretation generated');
+    
     return res.status(200).json({ interpretation });
   } catch (error: any) {
-    console.error('Tarot API Error:', error.response?.data || error.message);
-    const errorMessage = error.response?.data?.error?.message || error.message;
-    return res.status(500).json({ 
-      error: 'AI 해석을 생성하는 중 오류가 발생했습니다.',
-      details: errorMessage
+    const errorStatus = error.response?.status || 500;
+    const errorData = error.response?.data || error.message;
+    
+    console.error('[Tarot API] Error occurred:', {
+      status: errorStatus,
+      data: errorData
+    });
+
+    return res.status(errorStatus).json({ 
+      error: 'AI 해석 생성 중 오류가 발생했습니다.',
+      details: typeof errorData === 'object' ? JSON.stringify(errorData) : errorData
     });
   }
 }
