@@ -89,15 +89,20 @@ export default function Tarot() {
     const newSelected = [...selectedCards, card];
     setSelectedCards(newSelected);
 
-    if (newSelected.length === 3) {
-      getInterpretation(newSelected);
-    }
+    // 중복 호출 차단: 카드 3장을 다 뽑아도 자동으로 API를 호출하지 않음
+    // 사용자가 '해석하기' 버튼을 눌렀을 때만 호출
   };
 
   // ============================================================================
-  // 최종 고정: gemini-2.0-flash 모델, 단일 요청, 2초 지연, 1분 대기
+  // 최종 고정: gemini-2.0-flash 모델, 3초 강제 지연, 1분 대기
+  // 사용자가 '해석하기' 버튼을 눌렀을 때만 호출 (중복 호출 차단)
   // ============================================================================
-  const getInterpretation = async (cards: TarotCard[]) => {
+  const getInterpretation = async () => {
+    if (selectedCards.length !== 3) {
+      toast.error("카드 3장을 모두 선택해 주세요.");
+      return;
+    }
+
     setIsLoading(true);
     setStep("result");
     setError(null);
@@ -116,9 +121,9 @@ export default function Tarot() {
 ${question}
 
 【뽑힌 3장의 카드 (한 번에 종합 해석)】
-• 과거/상황: ${cards[0].korName} (${cards[0].name})
-• 현재/조언: ${cards[1].korName} (${cards[1].name})
-• 미래/결과: ${cards[2].korName} (${cards[2].name})
+• 과거/상황: ${selectedCards[0].korName} (${selectedCards[0].name})
+• 현재/조언: ${selectedCards[1].korName} (${selectedCards[1].name})
+• 미래/결과: ${selectedCards[2].korName} (${selectedCards[2].name})
 
 【해석 방식】
 1. 3장의 카드를 개별적으로 설명하지 말고, 하나의 흐름 있는 이야기로 유기적으로 연결해 주세요.
@@ -132,11 +137,11 @@ ${question}
 - 문단을 명확히 나누어 가독성을 높여 주세요.
 - 너무 길지 않되, 충분히 깊이 있는 해석을 제공해 주세요.`;
 
-      // 2초 강제 지연 (호출 직전)
-      console.log("⏳ 2초 대기 중...");
-      await new Promise(r => setTimeout(r, 2000));
+      // 3초 강제 지연 (호출 직전, 429 에러 방지)
+      console.log("⏳ 3초 대기 중...");
+      await new Promise(r => setTimeout(r, 3000));
 
-      // gemini-2.0-flash 모델 고정 (1.5 버전 사용 금지)
+      // gemini-2.0-flash 모델 고정 (절대로 다른 모델 사용 금지)
       console.log("🔄 API 호출 시작 (모델: gemini-2.0-flash, 단일 요청)...");
       const genAI = new GoogleGenerativeAI(API_KEY);
       const model = genAI.getGenerativeModel({
@@ -210,9 +215,7 @@ ${question}
   };
 
   const handleRetry = () => {
-    if (selectedCards.length === 3) {
-      getInterpretation(selectedCards);
-    }
+    getInterpretation();
   };
 
   return (
@@ -316,6 +319,33 @@ ${question}
                   </div>
                 ))}
               </div>
+
+              {/* 중복 호출 차단: 카드 3장을 다 뽑은 후 '해석하기' 버튼을 눌렀을 때만 API 호출 */}
+              {selectedCards.length === 3 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex justify-center"
+                >
+                  <Button 
+                    onClick={getInterpretation}
+                    disabled={isLoading}
+                    className="px-8 h-14 rounded-2xl text-lg font-bold gap-2 shadow-[0_0_20px_rgba(255,215,0,0.2)] disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isLoading ? (
+                      <>
+                        <RefreshCw className="w-5 h-5 animate-spin" />
+                        해석 중...
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles className="w-5 h-5" />
+                        해석하기
+                      </>
+                    )}
+                  </Button>
+                </motion.div>
+              )}
             </motion.div>
           )}
 
