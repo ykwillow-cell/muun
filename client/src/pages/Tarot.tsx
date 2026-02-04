@@ -106,11 +106,11 @@ ${question}
       console.log("⏳ 3초 대기 중...");
       await new Promise(r => setTimeout(r, 3000));
 
-      console.log("🔄 API 호출 시작 (모델: gemini-1.5-flash-latest, 직접 호출)...");
+      console.log("🔄 API 호출 시작 (모델: gemini-2.0-flash-exp, 직접 호출)...");
       
-      // 모델 명칭을 가장 안정적인 -latest 버전으로 변경하고 v1beta 경로와 v1 경로 모두에 대응 가능한 규격 사용
+      // 현재 API 키에서 사용 가능한 모델인 gemini-2.0-flash-exp로 변경
       const response = await axios.post(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${API_KEY}`,
         {
           contents: [{
             parts: [{ text: prompt }]
