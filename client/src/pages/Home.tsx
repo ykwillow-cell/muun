@@ -54,6 +54,13 @@ export default function Home() {
       desc: "별이 들려주는 운명"
     },
     { 
+      href: "/tarot", 
+      label: "AI 타로", 
+      icon: <Sparkles className="w-8 h-8 text-yellow-400" />, 
+      color: "from-yellow-500/20",
+      desc: "AI가 읽어주는 운명의 카드"
+    },
+    { 
       href: "/manselyeok", 
       label: "만세력", 
       icon: <CalendarDays className="w-8 h-8 text-primary" />, 
