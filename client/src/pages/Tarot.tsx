@@ -106,11 +106,11 @@ ${question}
       console.log("⏳ 3초 대기 중...");
       await new Promise(r => setTimeout(r, 3000));
 
-      console.log("🔄 API 호출 시작 (모델: gemini-1.5-flash, 직접 호출)...");
+      console.log("🔄 API 호출 시작 (모델: gemini-1.5-flash-latest, 직접 호출)...");
       
-      // SDK 대신 표준 REST API 엔드포인트 직접 호출 (v1 경로 고정으로 404 방지)
+      // 모델 명칭을 가장 안정적인 -latest 버전으로 변경하고 v1beta 경로와 v1 경로 모두에 대응 가능한 규격 사용
       const response = await axios.post(
-        `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${API_KEY}`,
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${API_KEY}`,
         {
           contents: [{
             parts: [{ text: prompt }]
