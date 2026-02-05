@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion } from "framer-motion";
-import { ChevronLeft, Share2, Sparkles, User, BookOpen, Info, Calendar } from "lucide-react";
+import { ChevronLeft, Share2, Sparkles, User, BookOpen, Info, Calendar, ScrollText } from "lucide-react";
 import { Link } from "wouter";
 import { shareContent } from "@/lib/share";
 
@@ -12,7 +12,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { calculateSaju, SajuResult } from "@/lib/saju";
 import { calculateTojeong } from "@/lib/tojeong";
 
 // 폼 스키마 정의 (태어난 시간 제외)
@@ -51,7 +50,6 @@ export default function Tojeong() {
     const savedData = localStorage.getItem("muun_user_data");
     if (savedData) {
       const parsed = JSON.parse(savedData);
-      // 기존 데이터에서 birthTime 제외하고 로드
       const { birthTime, ...rest } = parsed;
       form.reset({ ...form.getValues(), ...rest });
     }
@@ -60,8 +58,6 @@ export default function Tojeong() {
   const onSubmit = (data: FormValues) => {
     localStorage.setItem("muun_user_data", JSON.stringify(data));
     const date = new Date(data.birthDate);
-    
-    // 토정비결 괘 계산
     const tojeongResult = calculateTojeong(date, 2026);
     const monthlyFortunes = getMonthlyFortunes(tojeongResult.hexagram);
     
@@ -74,98 +70,114 @@ export default function Tojeong() {
     window.scrollTo(0, 0);
   };
 
+  const commonMaxWidth = "w-full max-w-4xl mx-auto";
+
   if (!result) {
     return (
-      <div className="min-h-screen bg-[#0f172a] text-slate-200 pb-20 font-serif">
-        <header className="sticky top-0 z-50 backdrop-blur-md bg-slate-900/50 border-b border-amber-900/30">
+      <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased">
+        {/* Background Effects */}
+        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px]" />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-yellow-900/10 rounded-full blur-[120px]" />
+        </div>
+
+        <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
           <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
             <Link href="/">
-              <Button variant="ghost" size="icon" className="mr-2 text-amber-200 hover:bg-amber-900/20">
+              <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/10">
                 <ChevronLeft className="h-6 w-6" />
               </Button>
             </Link>
-            <h1 className="text-xl font-bold text-amber-100">전통 토정비결</h1>
+            <h1 className="text-xl font-bold text-white">토정비결</h1>
           </div>
         </header>
 
-        <main className="container mx-auto max-w-[1280px] px-4 py-8">
+        <main className="relative z-10 container mx-auto max-w-[1280px] px-4 py-8 md:py-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="max-w-2xl mx-auto space-y-6"
+            className={`${commonMaxWidth} space-y-8`}
           >
-            <div className="text-center space-y-2 mb-8">
-              <h2 className="text-3xl font-bold text-amber-200">2026년 토정비결</h2>
-              <p className="text-slate-400">이지함 선생의 원문 괘 계산법으로 한 해의 운세를 풀이합니다.</p>
+            <div className="text-center space-y-4">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-yellow-500/10 border border-yellow-500/20 backdrop-blur-xl">
+                <ScrollText className="w-4 h-4 text-yellow-400" />
+                <span className="text-[11px] md:text-xs font-bold tracking-widest text-yellow-400 uppercase">2026년 병오년 운세</span>
+              </div>
+              <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white">전통 토정비결</h2>
+              <p className="text-muted-foreground text-sm md:text-base">이지함 선생의 원문 괘 계산법으로 한 해의 흐름을 읽어드립니다.</p>
             </div>
 
-            <Card className="bg-slate-900/80 border-amber-900/30 shadow-2xl backdrop-blur-sm">
-              <CardHeader>
-                  <CardTitle className="text-amber-100 flex items-center gap-2">
-                    <BookOpen className="w-5 h-5 text-amber-500" />
+            <Card className="bg-white/5 border-white/10 shadow-2xl backdrop-blur-md rounded-[2rem] overflow-hidden">
+              <CardHeader className="border-b border-white/5 p-6 md:p-10">
+                  <CardTitle className="text-white flex items-center gap-3 text-xl md:text-2xl">
+                    <div className="w-10 h-10 rounded-xl bg-yellow-500/20 flex items-center justify-center">
+                      <User className="w-6 h-6 text-yellow-400" />
+                    </div>
                     운세 정보 입력
                   </CardTitle>
               </CardHeader>
-              <CardContent>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="name" className="text-slate-300">이름</Label>
+              <CardContent className="p-6 md:p-10">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="space-y-3">
+                      <Label htmlFor="name" className="text-white text-base font-medium ml-1">이름</Label>
                       <Input
                         id="name"
                         placeholder="성함을 입력하세요"
                         {...form.register("name")}
-                        className="bg-slate-950/50 border-slate-800 text-slate-200 focus:border-amber-500"
+                        className="h-14 bg-white/5 border-white/10 text-white placeholder:text-white/20 rounded-2xl focus:ring-primary/50 focus:border-primary transition-all"
                       />
                     </div>
 
-                    <div className="space-y-2">
-                      <Label className="text-slate-300">성별</Label>
+                    <div className="space-y-3">
+                      <Label className="text-white text-base font-medium ml-1">성별</Label>
                       <ToggleGroup
                         type="single"
                         value={form.watch("gender")}
                         onValueChange={(value) => {
                           if (value) form.setValue("gender", value as "male" | "female");
                         }}
-                        className="justify-start"
+                        className="justify-start h-14 bg-white/5 p-1 rounded-2xl border border-white/10"
                       >
-                        <ToggleGroupItem value="male" className="flex-1 border-slate-800 data-[state=on]:bg-amber-900/40 data-[state=on]:text-amber-200">남성</ToggleGroupItem>
-                        <ToggleGroupItem value="female" className="flex-1 border-slate-800 data-[state=on]:bg-amber-900/40 data-[state=on]:text-amber-200">여성</ToggleGroupItem>
+                        <ToggleGroupItem value="male" className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all">남성</ToggleGroupItem>
+                        <ToggleGroupItem value="female" className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all">여성</ToggleGroupItem>
                       </ToggleGroup>
                     </div>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label htmlFor="birthDate" className="text-slate-300">생년월일</Label>
+                  <div className="space-y-3">
+                    <Label htmlFor="birthDate" className="text-white text-base font-medium ml-1">생년월일</Label>
                     <Input
                       id="birthDate"
                       type="date"
                       {...form.register("birthDate")}
-                      className="bg-slate-950/50 border-slate-800 text-slate-200"
+                      className="h-14 bg-white/5 border-white/10 text-white rounded-2xl focus:ring-primary/50 focus:border-primary transition-all"
                     />
                   </div>
 
-                  <div className="space-y-3">
-                    <Label className="text-slate-300">날짜 구분</Label>
+                  <div className="space-y-4">
+                    <Label className="text-white text-base font-medium ml-1">날짜 구분</Label>
                     <ToggleGroup
                       type="single"
                       value={form.watch("calendarType")}
                       onValueChange={(value) => {
                         if (value) form.setValue("calendarType", value as "solar" | "lunar");
                       }}
-                      className="justify-start"
+                      className="justify-start h-14 bg-white/5 p-1 rounded-2xl border border-white/10"
                     >
-                      <ToggleGroupItem value="solar" className="px-8 border-slate-800 data-[state=on]:bg-amber-900/40 data-[state=on]:text-amber-200">양력</ToggleGroupItem>
-                      <ToggleGroupItem value="lunar" className="px-8 border-slate-800 data-[state=on]:bg-amber-900/40 data-[state=on]:text-amber-200">음력</ToggleGroupItem>
+                      <ToggleGroupItem value="solar" className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all">양력</ToggleGroupItem>
+                      <ToggleGroupItem value="lunar" className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all">음력</ToggleGroupItem>
                     </ToggleGroup>
-                    <p className="text-xs text-amber-500/80 flex items-center gap-1">
-                      <Info className="w-3 h-3" />
-                      토정비결은 전통적으로 음력 생일을 기준으로 할 때 가장 정확합니다.
-                    </p>
+                    <div className="flex items-start gap-2 p-4 rounded-2xl bg-yellow-500/5 border border-yellow-500/10">
+                      <Info className="w-4 h-4 text-yellow-400 mt-0.5 flex-shrink-0" />
+                      <p className="text-xs md:text-sm text-yellow-200/70 leading-relaxed">
+                        토정비결은 전통적으로 <strong>음력 생일</strong>을 기준으로 할 때 가장 정확합니다.
+                      </p>
+                    </div>
                   </div>
 
-                  <Button type="submit" className="w-full bg-amber-700 hover:bg-amber-600 text-white font-bold py-6 text-lg shadow-lg shadow-amber-900/20">
+                  <Button type="submit" className="w-full h-16 bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-lg rounded-2xl shadow-lg shadow-primary/20 transition-all hover:scale-[1.02] active:scale-[0.98]">
                     <Sparkles className="w-5 h-5 mr-2" />
                     2026년 토정비결 결과 보기
                   </Button>
@@ -179,59 +191,77 @@ export default function Tojeong() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0f172a] text-slate-200 pb-20 font-serif">
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-slate-900/50 border-b border-amber-900/30">
+    <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased">
+      {/* Background Effects */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-yellow-900/10 rounded-full blur-[120px]" />
+      </div>
+
+      <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
         <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
-            <Button variant="ghost" size="icon" className="mr-2 text-amber-200 hover:bg-amber-900/20" onClick={() => setResult(null)}>
+            <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/10" onClick={() => setResult(null)}>
               <ChevronLeft className="h-6 w-6" />
             </Button>
-            <h1 className="text-xl font-bold text-amber-100">토정비결 결과</h1>
+            <h1 className="text-xl font-bold text-white">토정비결 결과</h1>
           </div>
-          <Button variant="ghost" size="icon" className="text-amber-400" onClick={() => shareContent({ title: '무운 토정비결', text: '나의 2026년 운세는?' })}>
+          <Button variant="ghost" size="icon" className="text-primary hover:bg-primary/10" onClick={() => shareContent({ title: '무운 토정비결', text: '나의 2026년 운세는?' })}>
             <Share2 className="h-5 w-5" />
           </Button>
         </div>
       </header>
 
-      <main className="container mx-auto max-w-[1280px] px-4 py-8">
+      <main className="relative z-10 container mx-auto max-w-[1280px] px-4 py-8 md:py-16">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="max-w-3xl mx-auto space-y-12"
+          className={`${commonMaxWidth} space-y-12`}
         >
           <div className="text-center space-y-4">
-            <div className="inline-block px-4 py-1 rounded-full bg-amber-900/30 border border-amber-700/50 text-amber-400 text-sm mb-2">
-              제 {result.hexagram}괘
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-xl">
+              <span className="text-[11px] md:text-xs font-bold tracking-widest text-primary uppercase">제 {result.hexagram}괘</span>
             </div>
-            <h2 className="text-4xl font-bold text-amber-100">{result.name}님의 2026년 운세</h2>
-            <p className="text-slate-400 text-lg">"하늘의 기운이 땅으로 내려와 만물이 소생하는 형국입니다."</p>
+            <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white">{result.name}님의 2026년 운세</h2>
+            <p className="text-muted-foreground text-lg italic">"하늘의 기운이 땅으로 내려와 만물이 소생하는 형국입니다."</p>
           </div>
 
           {/* 월별 운세 타임라인 */}
           <section className="space-y-8">
-            <h3 className="text-2xl font-bold text-amber-200 flex items-center gap-2 border-b border-amber-900/30 pb-2">
-              <Calendar className="w-6 h-6" />
-              월별 상세 운세
-            </h3>
-            <div className="relative border-l-2 border-amber-900/30 ml-4 pl-8 space-y-12">
+            <div className="flex items-center gap-3 border-b border-white/10 pb-4">
+              <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
+                <Calendar className="w-6 h-6 text-primary" />
+              </div>
+              <h3 className="text-xl md:text-2xl font-bold text-white">월별 상세 운세</h3>
+            </div>
+            
+            <div className="relative border-l-2 border-white/10 ml-4 pl-8 space-y-10">
               {result.monthlyFortunes.map((item: any) => (
-                <div key={item.month} className="relative">
-                  <div className="absolute -left-[41px] top-0 w-4 h-4 rounded-full bg-amber-600 border-4 border-slate-900" />
-                  <div className="bg-slate-900/50 border border-slate-800 p-6 rounded-xl hover:border-amber-700/50 transition-colors">
-                    <div className="flex justify-between items-center mb-3">
-                      <span className="text-xl font-bold text-amber-400">{item.month}월</span>
-                      <span className="px-2 py-0.5 rounded bg-amber-900/20 text-amber-500 text-xs border border-amber-900/50">{item.tag}</span>
+                <motion.div 
+                  key={item.month} 
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  className="relative"
+                >
+                  <div className="absolute -left-[41px] top-0 w-4 h-4 rounded-full bg-primary border-4 border-background shadow-[0_0_15px_rgba(var(--primary),0.5)]" />
+                  <div className="bg-white/5 border border-white/10 p-6 md:p-8 rounded-[2rem] hover:bg-white/10 transition-all duration-300 group">
+                    <div className="flex justify-between items-center mb-4">
+                      <span className="text-xl md:text-2xl font-black text-primary group-hover:scale-110 transition-transform origin-left">{item.month}월</span>
+                      <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold border border-primary/20">{item.tag}</span>
                     </div>
-                    <p className="text-slate-300 leading-relaxed">{item.content}</p>
+                    <p className="text-white/70 leading-relaxed text-sm md:text-base">{item.content}</p>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
           </section>
 
-          <Card className="bg-amber-900/10 border-amber-900/30 p-8 text-center">
-            <p className="text-amber-200 italic">"운명은 정해진 것이 아니라, 스스로 만들어가는 것입니다. <br/>오늘의 지혜를 바탕으로 더 나은 내일을 설계하시기 바랍니다."</p>
+          <Card className="bg-primary/5 border-primary/20 p-8 md:p-12 rounded-[2.5rem] text-center shadow-2xl">
+            <p className="text-primary/80 italic text-sm md:text-lg leading-relaxed">
+              "운명은 정해진 것이 아니라, 스스로 만들어가는 것입니다. <br className="hidden md:block" />
+              오늘의 지혜를 바탕으로 더 나은 내일을 설계하시기 바랍니다."
+            </p>
           </Card>
         </motion.div>
       </main>
