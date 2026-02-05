@@ -72,7 +72,6 @@ export default function Tarot() {
       return;
     }
 
-    // 결과 확인 버튼 클릭 이벤트 추적 (타로 해석 시작 시점)
     trackCustomEvent("check_fortune_result", {
       fortune_type: "AI타로",
       question_length: question.length
@@ -113,12 +112,8 @@ ${question}
 - 문단을 명확히 나누어 가독성을 높여 주세요.
 - 너무 길지 않되, 충분히 깊이 있는 해석을 제공해 주세요.`;
 
-      console.log("⏳ 3초 대기 중...");
       await new Promise(r => setTimeout(r, 3000));
 
-      console.log("🔄 API 호출 시작 (모델: gemini-2.0-flash, 직접 호출)...");
-      
-      // 현재 API 키에서 사용 가능한 모델인 gemini-2.0-flash로 변경
       const response = await axios.post(
         `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`,
         {
@@ -142,7 +137,6 @@ ${question}
       }
 
       setInterpretation(text);
-      console.log("해석 결과 수신 성공!");
     } catch (err: any) {
       console.error("❌ AI Tarot Error:", err);
       
@@ -294,7 +288,7 @@ ${question}
 
               <div className="flex justify-center gap-4 md:gap-8">
                 {[0, 1, 2].map((i) => (
-                  <div key={i} className="w-20 h-32 md:w-32 md:h-52 border-2 border-dashed border-white/10 rounded-2xl flex items-center justify-center relative bg-white/5">
+                  <div key={i} className="w-20 h-32 md:w-32 md:h-48 rounded-2xl border-2 border-dashed border-white/10 flex items-center justify-center overflow-hidden">
                     {selectedCards[i] ? (
                       <motion.div
                         initial={{ opacity: 0, scale: 0.5 }}
@@ -344,11 +338,21 @@ ${question}
             >
               <div className="grid grid-cols-3 gap-4">
                 {selectedCards.map((card, i) => (
-                  <div key={i} className="space-y-2 text-center">
-                    <div className="aspect-[2/3] bg-gradient-to-br from-primary/20 to-purple-900/20 border border-primary/30 rounded-2xl flex items-center justify-center p-4 shadow-lg">
-                      <div className="text-center">
-                        <div className="text-[10px] md:text-xs text-primary/60 mb-1">{i === 0 ? "과거" : i === 1 ? "현재" : "미래"}</div>
-                        <div className="text-xs md:text-base font-bold text-white">{card.korName}</div>
+                  <div key={i} className="space-y-3 text-center">
+                    <div className="aspect-[2/3] relative group overflow-hidden rounded-2xl border border-primary/30 shadow-2xl transition-all duration-500 hover:border-primary/60">
+                      <img 
+                        src={card.image} 
+                        alt={card.korName}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60" />
+                      <div className="absolute bottom-0 left-0 w-full p-2 md:p-4 text-center">
+                        <div className="text-[10px] md:text-xs text-primary font-bold uppercase tracking-wider mb-0.5">
+                          {i === 0 ? "과거" : i === 1 ? "현재" : "미래"}
+                        </div>
+                        <div className="text-xs md:text-base font-black text-white truncate">
+                          {card.korName}
+                        </div>
                       </div>
                     </div>
                   </div>
