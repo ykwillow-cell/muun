@@ -77,7 +77,7 @@ export function GNB() {
             </span>
           </Link>
           <nav className="hidden md:flex items-center space-x-10 text-[13px] font-semibold tracking-wide">
-            {navItems.map((item) => (
+            {navItems.filter(item => item.name !== "소개" && item.name !== "문의").map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
