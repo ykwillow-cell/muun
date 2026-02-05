@@ -107,31 +107,34 @@ export default function Home() {
             </h1>
           </motion.div>
 
-          {/* Featured Banner - Mobile Enhanced */}
+          {/* Featured Banner - User Feedback Reflected */}
           <Link href="/yearly-fortune" onClick={() => handleCategoryClick("신년운세(배너)")} className="w-full">
             <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="group relative w-full min-h-[160px] md:min-h-[220px] rounded-[2rem] md:rounded-[3rem] overflow-hidden glass-panel border-white/10 hover:border-primary/40 transition-all duration-500 cursor-pointer shadow-2xl shadow-primary/5"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="group relative w-full min-h-[180px] md:min-h-[240px] rounded-[2rem] md:rounded-[3rem] overflow-hidden bg-gradient-to-br from-[#1a1a3a] via-[#2a1a4a] to-[#1a1a3a] border border-white/10 hover:border-primary/40 transition-all duration-500 cursor-pointer shadow-2xl"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/30 via-purple-600/20 to-primary/10 group-hover:opacity-100 transition-opacity" />
-              <div className="absolute inset-0 flex items-center justify-between px-6 md:px-16 py-6 md:py-10">
-                <div className="text-left space-y-3 md:space-y-6 z-10 flex-1">
-                  <div className="inline-block px-2.5 py-1 rounded-lg bg-primary/20 border border-primary/30 text-[10px] md:text-xs font-black text-primary uppercase tracking-tighter">LOGIN FREE</div>
-                  <h2 className="text-xl md:text-4xl font-black text-white group-hover:text-primary transition-colors leading-tight">
-                    2026 신년운세<br /><span className="text-white/70 text-sm md:text-2xl font-medium">내 한 해의 흐름 확인하기</span>
+              <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 opacity-50" />
+              <div className="absolute inset-0 flex items-center justify-between px-8 md:px-16 py-8 md:py-12">
+                <div className="text-left space-y-4 md:space-y-8 z-10 flex-1">
+                  <div className="inline-flex items-center gap-2">
+                    <div className="px-2.5 py-1 rounded bg-[#ffcc00] text-[10px] md:text-xs font-black text-black uppercase tracking-tighter">로그인 없이 바로</div>
+                  </div>
+                  <h2 className="text-[22px] md:text-5xl font-bold text-white leading-[1.3]">
+                    신년운세<br />
+                    <span className="text-[17px] md:text-3xl font-medium text-white/90">내 한 해의 흐름 확인하기</span>
                   </h2>
-                  <div className="inline-flex items-center gap-2 px-5 py-2.5 md:px-8 md:py-4 rounded-2xl bg-primary text-background text-xs md:text-lg font-black hover:bg-white transition-all shadow-xl shadow-primary/20 active:scale-95">
-                    지금 바로 확인하기 <ArrowRight className="w-4 h-4 md:w-6 md:h-6" />
+                  <div className="flex items-center gap-2 text-[#ffcc00] group-hover:gap-4 transition-all duration-300">
+                    <span className="text-sm md:text-xl font-bold border-b-2 border-[#ffcc00] pb-0.5">지금 바로 확인하기</span>
+                    <ArrowRight className="w-5 h-5 md:w-7 md:h-7" />
                   </div>
                 </div>
-                <div className="relative w-24 h-24 md:w-64 md:h-64 flex-shrink-0 -mr-4 md:-mr-8">
-                  <div className="absolute inset-0 bg-primary/20 blur-[40px] rounded-full animate-pulse" />
+                <div className="relative w-32 h-32 md:w-72 md:h-72 flex-shrink-0 -mr-4 md:-mr-10">
                   <img 
                     src="/images/horse_mascot.png" 
                     alt="Mascot" 
-                    className="relative w-full h-full object-contain drop-shadow-[0_20px_50px_rgba(255,215,0,0.3)] group-hover:scale-110 group-hover:-rotate-6 transition-transform duration-700"
+                    className="relative w-full h-full object-contain drop-shadow-[0_20px_60px_rgba(0,0,0,0.5)] group-hover:scale-105 transition-transform duration-700"
                   />
                 </div>
               </div>
