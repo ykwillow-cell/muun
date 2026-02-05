@@ -305,7 +305,7 @@ export default function YearlyFortune() {
                     </CardHeader>
                     <CardContent className="p-6">
                       <div className="prose prose-invert max-w-none">
-                        <p className="text-white/80 leading-relaxed whitespace-pre-wrap">
+                        <p className="text-white/90 leading-relaxed whitespace-pre-wrap">
                           {fortune.content}
                         </p>
                       </div>

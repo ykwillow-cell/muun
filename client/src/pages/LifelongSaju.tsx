@@ -350,7 +350,7 @@ export default function LifelongSaju() {
                 {iljuData[result.dayPillar.stem + result.dayPillar.branch as keyof typeof iljuData] && (
                   <div className="mt-6 pt-6 border-t border-white/5">
                     <p className="text-sm font-bold text-primary mb-3">[{result.dayPillar.stem}{result.dayPillar.branch} 일주 상세 분석]</p>
-                    <p className="text-white/70 leading-relaxed whitespace-pre-wrap">
+                    <p className="text-white/85 leading-relaxed whitespace-pre-wrap">
                       {iljuData[result.dayPillar.stem + result.dayPillar.branch as keyof typeof iljuData]}
                     </p>
                   </div>
@@ -384,7 +384,7 @@ export default function LifelongSaju() {
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="p-6">
-                      <p className="text-white/80 leading-relaxed whitespace-pre-wrap">
+                      <p className="text-white/90 leading-relaxed whitespace-pre-wrap">
                         {fortune.content}
                       </p>
                     </CardContent>

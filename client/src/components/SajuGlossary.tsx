@@ -10,7 +10,7 @@ const SajuGlossary: React.FC = () => {
           <BookOpen className="w-5 h-5 text-primary" />
           십신(십성)으로 보는 나의 사회적 관계와 성격
         </h3>
-        <p className="text-gray-400 text-sm leading-relaxed">
+        <p className="text-gray-300 text-sm leading-relaxed font-medium">
           사주명리학에서 '십신'은 내가 태어난 날의 기운(일간)을 기준으로 다른 글자들과의 관계를 열 가지 형태로 분류한 것입니다. 이를 통해 개인의 성격, 재물운, 직업운, 그리고 인간관계를 파악할 수 있습니다.
         </p>
       </div>
@@ -25,7 +25,7 @@ const SajuGlossary: React.FC = () => {
               </div>
             </div>
           </AccordionTrigger>
-          <AccordionContent className="text-gray-300 space-y-4 pb-4">
+          <AccordionContent className="text-white/90 space-y-4 pb-4">
             <p>
               <strong className="text-blue-300">비견(比肩):</strong> 나를 상징하는 기운과 동일한 오행입니다. 자존감이 강하고 주관이 뚜렷하며, 독립적인 성향을 나타냅니다. 동료나 형제와의 평등한 관계를 중시합니다.
             </p>
@@ -44,7 +44,7 @@ const SajuGlossary: React.FC = () => {
               </div>
             </div>
           </AccordionTrigger>
-          <AccordionContent className="text-gray-300 space-y-4 pb-4">
+          <AccordionContent className="text-white/90 space-y-4 pb-4">
             <p>
               <strong className="text-green-300">식신(食神):</strong> 내가 생해주는 기운으로 음양이 같은 경우입니다. 풍요로움과 먹을 복을 상징하며, 연구하고 탐구하는 능력, 그리고 한 분야에 몰입하는 기질이 강합니다.
             </p>
@@ -63,7 +63,7 @@ const SajuGlossary: React.FC = () => {
               </div>
             </div>
           </AccordionTrigger>
-          <AccordionContent className="text-gray-300 space-y-4 pb-4">
+          <AccordionContent className="text-white/90 space-y-4 pb-4">
             <p>
               <strong className="text-yellow-300">편재(偏財):</strong> 내가 극하는 기운으로 음양이 같은 경우입니다. 고정적이지 않은 큰 재물, 사업 수완, 공간 지각 능력을 의미합니다. 모험심이 강하고 넓은 시야를 가진 것이 특징입니다.
             </p>
@@ -82,7 +82,7 @@ const SajuGlossary: React.FC = () => {
               </div>
             </div>
           </AccordionTrigger>
-          <AccordionContent className="text-gray-300 space-y-4 pb-4">
+          <AccordionContent className="text-white/90 space-y-4 pb-4">
             <p>
               <strong className="text-red-300">편관(偏官):</strong> 나를 극하는 기운으로 음양이 같은 경우입니다. 강력한 카리스마, 책임감, 인내심을 상징합니다. 어려운 상황을 돌파하는 힘이 있으며 명예를 중시합니다.
             </p>
@@ -101,7 +101,7 @@ const SajuGlossary: React.FC = () => {
               </div>
             </div>
           </AccordionTrigger>
-          <AccordionContent className="text-gray-300 space-y-4 pb-4">
+          <AccordionContent className="text-white/90 space-y-4 pb-4">
             <p>
               <strong className="text-purple-300">편인(偏印):</strong> 나를 생해주는 기운으로 음양이 같은 경우입니다. 독창적인 아이디어, 기술적 재능, 신비학적 관심 등을 나타냅니다. 남들이 보지 못하는 이면을 읽어내는 통찰력이 있습니다.
             </p>
@@ -112,9 +112,12 @@ const SajuGlossary: React.FC = () => {
         </AccordionItem>
       </Accordion>
       
-      <div className="bg-primary/10 border border-primary/20 rounded-lg p-4 mt-8">
-        <p className="text-primary-foreground/90 text-sm leading-relaxed">
-          <span className="font-bold">💡 팁:</span> 위 설명은 일반적인 성향이며, 전체적인 사주 구성과 운의 흐름에 따라 실제 작용은 달라질 수 있습니다. 무운의 정밀 분석 결과를 통해 당신만의 특별한 기운을 확인해보세요.
+      <div className="bg-primary/10 border border-primary/30 rounded-lg p-5 mt-8 shadow-lg shadow-primary/5">
+        <p className="text-primary font-medium text-sm leading-relaxed">
+          <span className="font-bold text-primary flex items-center gap-2 mb-1">
+            <span className="text-base">💡</span> 팁:
+          </span> 
+          위 설명은 일반적인 성향이며, 전체적인 사주 구성과 운의 흐름에 따라 실제 작용은 달라질 수 있습니다. 무운의 정밀 분석 결과를 통해 당신만의 특별한 기운을 확인해보세요.
         </p>
       </div>
     </div>
