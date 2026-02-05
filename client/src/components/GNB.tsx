@@ -95,22 +95,22 @@ export function GNB() {
         </div>
 
         <div className="flex items-center gap-1">
-          {/* 공유 버튼 - 터치 영역 44px 확보 */}
+          {/* 공유 버튼 - 아이콘 크기 24px, 두께 2px, 색상 노란색(primary)으로 수정 */}
           <Button 
             variant="ghost" 
             size="icon" 
             onClick={handleShare}
-            className="text-foreground/70 hover:bg-white/5 w-11 h-11 md:w-10 md:h-10 flex items-center justify-center"
+            className="text-primary hover:bg-primary/10 w-11 h-11 md:w-10 md:h-10 flex items-center justify-center"
             aria-label="Share"
           >
-            <Share2 className="h-5 w-5" />
+            <Share2 className="h-6 w-6" strokeWidth={2} />
           </Button>
 
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild className="md:hidden">
-              {/* 메뉴 버튼 - 터치 영역 44px 확보 */}
+              {/* 메뉴 버튼 - 아이콘 크기 24px, 두께 2px, 색상 노란색(primary)으로 수정 */}
               <Button variant="ghost" size="icon" className="text-primary hover:bg-primary/10 w-11 h-11 flex items-center justify-center">
-                <Menu className="h-6 w-6" />
+                <Menu className="h-6 w-6" strokeWidth={2} />
                 <span className="sr-only">Toggle menu</span>
               </Button>
             </SheetTrigger>
