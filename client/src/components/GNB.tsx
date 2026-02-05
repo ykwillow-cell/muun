@@ -66,7 +66,7 @@ export function GNB() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-background/60 backdrop-blur-3xl">
-      <div className="container flex h-16 md:h-20 items-center justify-between px-5 md:px-8">
+      <div className="container max-w-[1280px] flex h-16 md:h-20 items-center justify-between px-5 md:px-8">
         <div className="flex items-center gap-16">
           <Link href="/" className="flex items-center space-x-3 group">
             <div className="w-10 h-10 md:w-12 md:h-12 bg-primary rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-all duration-500 shadow-[0_0_30px_rgba(255,215,0,0.3)]">
