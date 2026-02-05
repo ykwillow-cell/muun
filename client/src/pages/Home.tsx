@@ -118,9 +118,7 @@ export default function Home() {
               <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 opacity-50" />
               <div className="absolute inset-0 flex items-center justify-between px-8 md:px-16 py-8 md:py-12">
                 <div className="text-left space-y-4 md:space-y-8 z-10 flex-1">
-                  <div className="inline-flex items-center gap-2">
-                    <div className="px-2.5 py-1 rounded bg-[#ffcc00] text-[10px] md:text-xs font-black text-black uppercase tracking-tighter">로그인 없이 바로</div>
-                  </div>
+
                   <h2 className="text-[22px] md:text-5xl font-bold text-white leading-[1.3]">
                     신년운세<br />
                     <span className="text-[17px] md:text-3xl font-medium text-white/90">내 한 해의 흐름 확인하기</span>
