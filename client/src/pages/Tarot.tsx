@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, RefreshCw, ChevronRight, AlertCircle, ArrowRight } from "lucide-react";
+import { Sparkles, RefreshCw, ChevronRight, AlertCircle, ArrowRight, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
@@ -261,7 +261,7 @@ ${question}
                 <p className="text-muted-foreground text-xs md:text-sm">가장 마음이 끌리는 카드를 순서대로 클릭하세요. ({selectedCards.length}/3)</p>
               </div>
 
-              {/* 선택된 카드 미리보기 섹션 - 모바일에서 상단 배치 */}
+              {/* 선택된 카드 미리보기 섹션 */}
               <div className="flex justify-center gap-3 md:gap-8">
                 {[0, 1, 2].map((i) => (
                   <div key={i} className="w-20 h-32 md:w-32 md:h-48 rounded-2xl border-2 border-dashed border-white/10 flex items-center justify-center overflow-hidden bg-white/5 relative">
@@ -283,44 +283,33 @@ ${question}
                 ))}
               </div>
 
-              {/* 카드 셔플 덱 - 모바일에서 부채꼴 레이아웃 */}
-              <div className="relative py-4 md:py-8 min-h-[250px] md:min-h-[400px] flex items-center justify-center overflow-hidden md:overflow-visible">
-                <div className="flex flex-wrap justify-center gap-2 md:gap-4 max-w-3xl px-4 relative">
+              {/* 카드 셔플 덱 - 정돈된 격자 레이아웃으로 수정 */}
+              <div className="relative py-4 md:py-8 flex items-center justify-center">
+                <div className="grid grid-cols-7 md:grid-cols-11 gap-2 md:gap-4 max-w-4xl px-4">
                   {shuffledDeck.slice(0, 22).map((card, index) => {
                     const isSelected = selectedCards.find(c => c.id === card.id);
-                    // 모바일용 부채꼴 계산
-                    const total = 22;
-                    const mid = total / 2;
-                    const angle = (index - mid) * (window.innerWidth < 768 ? 4 : 2);
-                    const x = (index - mid) * (window.innerWidth < 768 ? 8 : 0);
                     
                     return (
                       <motion.div
                         key={index}
-                        initial={false}
-                        animate={{
-                          rotate: window.innerWidth < 768 ? angle : 0,
-                          x: window.innerWidth < 768 ? x : 0,
-                          y: isSelected ? -100 : 0,
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ 
                           opacity: isSelected ? 0 : 1,
-                          scale: isSelected ? 0.5 : 1
+                          y: isSelected ? -20 : 0,
+                          scale: isSelected ? 0.8 : 1
                         }}
-                        whileHover={{ y: -20, scale: 1.1, zIndex: 50 }}
-                        whileTap={{ scale: 0.9 }}
+                        whileHover={{ y: -10, scale: 1.05, zIndex: 50 }}
+                        whileTap={{ scale: 0.95 }}
                         onClick={() => handleSelectCard(card)}
-                        className={`relative w-14 h-24 md:w-24 md:h-40 rounded-xl cursor-pointer transition-all duration-300 origin-bottom ${
+                        className={`relative w-full aspect-[2/3] rounded-xl cursor-pointer transition-all duration-300 ${
                           isSelected ? "pointer-events-none" : "opacity-100"
                         } ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
-                        style={{
-                          marginLeft: window.innerWidth < 768 ? "-2.5rem" : "0",
-                          zIndex: index
-                        }}
                       >
                         <div className="absolute inset-0 bg-gradient-to-br from-primary/40 to-purple-900/40 border border-primary/30 rounded-xl flex items-center justify-center overflow-hidden shadow-lg backdrop-blur-sm">
                           <div className="w-full h-full opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
                           <div className="absolute inset-0 flex items-center justify-center">
-                            <div className="w-6 h-6 md:w-12 md:h-12 border-2 border-primary/30 rounded-full flex items-center justify-center">
-                              <div className="w-3 h-3 md:w-6 md:h-6 bg-primary/20 rounded-full" />
+                            <div className="w-4 h-4 md:w-8 md:h-8 border-2 border-primary/30 rounded-full flex items-center justify-center">
+                              <div className="w-2 h-2 md:w-4 md:h-4 bg-primary/20 rounded-full" />
                             </div>
                           </div>
                         </div>
@@ -330,7 +319,7 @@ ${question}
                 </div>
               </div>
 
-              {/* 하단 버튼 영역 - 모바일에서 플로팅 느낌으로 강조 */}
+              {/* 하단 버튼 영역 */}
               <div className={`flex justify-center transition-all duration-500 ${selectedCards.length === 3 ? "scale-110" : "opacity-50"}`}>
                 <Button
                   size="lg"
@@ -427,30 +416,49 @@ ${question}
                 )}
               </div>
 
-              <div className="flex flex-col md:flex-row gap-4 justify-center">
-                <Button
-                  variant="outline"
-                  size="lg"
-                  onClick={resetTarot}
-                  className="h-14 px-8 rounded-xl border-white/10 hover:bg-white/5 gap-2"
-                >
-                  <RefreshCw className="w-4 h-4" />
-                  다시 상담하기
-                </Button>
-                {!error && !isLoading && (
+              <div className="flex flex-col items-center gap-6">
+                <div className="flex flex-col md:flex-row gap-4 justify-center w-full">
                   <Button
+                    variant="outline"
                     size="lg"
-                    onClick={handleSaveReading}
-                    disabled={isSaved || isSaving}
-                    className="h-14 px-8 rounded-xl gap-2 shadow-lg"
+                    onClick={resetTarot}
+                    className="h-14 px-8 rounded-xl border-white/10 hover:bg-white/5 gap-2"
                   >
-                    {isSaving ? (
-                      <RefreshCw className="w-4 h-4 animate-spin" />
-                    ) : (
-                      <Sparkles className="w-4 h-4" />
-                    )}
-                    {isSaved ? "저장 완료" : "상담 기록 저장하기"}
+                    <RefreshCw className="w-4 h-4" />
+                    다시 상담하기
                   </Button>
+                  {!error && !isLoading && (
+                    <Button
+                      size="lg"
+                      onClick={handleSaveReading}
+                      disabled={isSaved || isSaving}
+                      className="h-14 px-8 rounded-xl gap-2 shadow-lg"
+                    >
+                      {isSaving ? (
+                        <RefreshCw className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <Sparkles className="w-4 h-4" />
+                      )}
+                      {isSaved ? "저장 완료" : "상담 기록 저장하기"}
+                    </Button>
+                  )}
+                </div>
+                
+                {/* 기록 저장 안내 문구 추가 */}
+                {!error && !isLoading && !isSaved && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="flex items-start gap-3 p-4 rounded-2xl bg-primary/5 border border-primary/10 max-w-md"
+                  >
+                    <Info className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                    <div className="space-y-1">
+                      <p className="text-sm font-bold text-primary">기록을 저장하고 나의 운세 흐름을 확인해 보세요!</p>
+                      <p className="text-xs text-muted-foreground leading-relaxed">
+                        저장된 결과는 '내 타로 기록'에서 언제든 다시 볼 수 있으며, 과거의 고민과 현재의 상황을 비교하며 운의 변화를 추적할 수 있습니다.
+                      </p>
+                    </div>
+                  </motion.div>
                 )}
               </div>
             </motion.div>
