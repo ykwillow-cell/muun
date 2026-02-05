@@ -380,13 +380,28 @@ ${question}
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
                 
                 {isLoading ? (
-                  <div className="space-y-6">
-                    <Skeleton className="h-8 w-3/4 bg-white/5" />
-                    <Skeleton className="h-4 w-full bg-white/5" />
-                    <Skeleton className="h-4 w-full bg-white/5" />
-                    <Skeleton className="h-4 w-5/6 bg-white/5" />
-                    <Skeleton className="h-4 w-full bg-white/5" />
-                    <Skeleton className="h-4 w-4/5 bg-white/5" />
+                  <div className="py-12 md:py-20 flex flex-col items-center justify-center space-y-8">
+                    <div className="relative">
+                      <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+                        className="w-24 h-24 md:w-32 md:h-32 rounded-full border-2 border-dashed border-primary/30 flex items-center justify-center"
+                      >
+                        <Sparkles className="w-8 h-8 md:w-12 md:h-12 text-primary animate-pulse" />
+                      </motion.div>
+                      <motion.div
+                        animate={{ rotate: -360 }}
+                        transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                        className="absolute inset-0 w-24 h-24 md:w-32 md:h-32 rounded-full border-t-2 border-primary/60"
+                      />
+                    </div>
+                    <div className="text-center space-y-3">
+                      <h3 className="text-xl md:text-2xl font-bold text-white animate-pulse">운명의 흐름을 읽는 중입니다</h3>
+                      <p className="text-muted-foreground text-sm md:text-base">
+                        카드가 들려주는 신비로운 이야기를 정리하고 있어요.<br />
+                        잠시만 기다려 주세요...
+                      </p>
+                    </div>
                   </div>
                 ) : error ? (
                   <div className="text-center py-12 space-y-6">
