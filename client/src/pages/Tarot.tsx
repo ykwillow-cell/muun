@@ -285,7 +285,7 @@ ${question}
 
               {/* 카드 셔플 덱 - 정돈된 격자 레이아웃으로 수정 */}
               <div className="relative py-4 md:py-8 flex items-center justify-center">
-                <div className="grid grid-cols-7 md:grid-cols-11 gap-2 md:gap-4 max-w-4xl px-4">
+                <div className="grid grid-cols-4 md:grid-cols-8 gap-3 md:gap-6 max-w-4xl px-4">
                   {shuffledDeck.slice(0, 22).map((card, index) => {
                     const isSelected = selectedCards.find(c => c.id === card.id);
                     
@@ -301,7 +301,7 @@ ${question}
                         whileHover={{ y: -10, scale: 1.05, zIndex: 50 }}
                         whileTap={{ scale: 0.95 }}
                         onClick={() => handleSelectCard(card)}
-                        className={`relative w-full aspect-[2/3] rounded-xl cursor-pointer transition-all duration-300 ${
+                        className={`relative w-full min-w-[60px] md:min-w-[100px] aspect-[2/3] rounded-xl cursor-pointer transition-all duration-300 ${
                           isSelected ? "pointer-events-none" : "opacity-100"
                         } ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
                       >
