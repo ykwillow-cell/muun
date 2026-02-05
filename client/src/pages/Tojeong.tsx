@@ -108,14 +108,14 @@ export default function Tojeong() {
               <p className="text-muted-foreground text-sm md:text-base">이지함 선생의 원문 괘 계산법으로 한 해의 흐름을 읽어드립니다.</p>
             </div>
 
-            <Card className="bg-white/5 border-white/10 shadow-2xl backdrop-blur-md rounded-[2rem] overflow-hidden">
+            <Card className="glass-panel border-white/5 shadow-2xl rounded-[2rem] overflow-hidden">
               <CardHeader className="border-b border-white/5 p-6 md:p-10">
-                  <CardTitle className="text-white flex items-center gap-3 text-xl md:text-2xl">
-                    <div className="w-10 h-10 rounded-xl bg-yellow-500/20 flex items-center justify-center">
-                      <User className="w-6 h-6 text-yellow-400" />
-                    </div>
-                    운세 정보 입력
-                  </CardTitle>
+                <CardTitle className="text-white flex items-center gap-3 text-xl md:text-2xl">
+                  <div className="w-10 h-10 rounded-xl bg-yellow-500/20 flex items-center justify-center">
+                    <User className="w-6 h-6 text-yellow-400" />
+                  </div>
+                  운세 정보 입력
+                </CardTitle>
               </CardHeader>
               <CardContent className="p-6 md:p-10">
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

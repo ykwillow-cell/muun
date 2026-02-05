@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, Star, Sparkles, User, Zap, Briefcase, Share2 } from "lucide-react";
+import { ChevronLeft, Star, Sparkles, User, Zap, Briefcase, Share2, Activity, Quote, ScrollText } from "lucide-react";
 import { Link } from "wouter";
 import { shareContent } from "@/lib/share";
 
@@ -96,9 +96,17 @@ export default function YearlyFortune() {
     }
   };
 
+  const commonMaxWidth = "w-full max-w-4xl mx-auto";
+
   if (!result) {
     return (
-      <div className="min-h-screen bg-background text-foreground pb-20">
+      <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased">
+        {/* Background Effects */}
+        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px]" />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-blue-900/10 rounded-full blur-[120px]" />
+        </div>
+
         <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
           <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
             <Link href="/">
@@ -110,83 +118,96 @@ export default function YearlyFortune() {
           </div>
         </header>
 
-        <main className="container mx-auto max-w-[1280px] px-4 py-8">
+        <main className="relative z-10 container mx-auto max-w-[1280px] px-4 py-8 md:py-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="max-w-2xl mx-auto space-y-6"
+            className={`${commonMaxWidth} space-y-8`}
           >
-            <Card className="bg-card border-white/10 shadow-xl backdrop-blur-md">
-              <CardHeader>
-                <CardTitle className="text-white flex items-center gap-2">
-                  <User className="w-5 h-5 text-primary" />
-                  기본 정보 입력
+            <div className="text-center space-y-4">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-xl">
+                <ScrollText className="w-4 h-4 text-primary" />
+                <span className="text-[11px] md:text-xs font-bold tracking-widest text-primary uppercase">2026년 병오년 운세</span>
+              </div>
+              <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white">무료 신년운세</h2>
+              <p className="text-muted-foreground text-sm md:text-base">새로운 해의 기운을 미리 확인하고 당신의 한 해를 설계해보세요.</p>
+            </div>
+
+            <Card className="glass-panel border-white/5 shadow-2xl rounded-[2rem] overflow-hidden">
+              <CardHeader className="border-b border-white/5 p-6 md:p-10">
+                <CardTitle className="text-white flex items-center gap-3 text-xl md:text-2xl">
+                  <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
+                    <User className="w-6 h-6 text-primary" />
+                  </div>
+                  운세 정보 입력
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                  <div>
-                    <Label htmlFor="name" className="text-white mb-2 block">이름</Label>
-                    <Input
-                      id="name"
-                      placeholder="이름을 입력해주세요"
-                      {...form.register("name")}
-                      className="bg-white/5 border-white/10 text-white placeholder:text-white/40"
-                    />
+              <CardContent className="p-6 md:p-10">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="space-y-3">
+                      <Label htmlFor="name" className="text-white text-base font-medium ml-1">이름</Label>
+                      <Input
+                        id="name"
+                        placeholder="이름을 입력해주세요"
+                        {...form.register("name")}
+                        className="h-14 bg-white/5 border-white/10 text-white placeholder:text-white/20 rounded-2xl focus:ring-primary/50 focus:border-primary transition-all"
+                      />
+                    </div>
+
+                    <div className="space-y-3">
+                      <Label className="text-white text-base font-medium ml-1">성별</Label>
+                      <ToggleGroup
+                        type="single"
+                        value={form.watch("gender")}
+                        onValueChange={(value) => {
+                          if (value) {
+                            form.setValue("gender", value as "male" | "female");
+                            trackEvent("User Input", "Change Gender", value);
+                          }
+                        }}
+                        className="justify-start h-14 bg-white/5 p-1 rounded-2xl border border-white/10"
+                      >
+                        <ToggleGroupItem
+                          value="male"
+                          className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all"
+                        >
+                          남성
+                        </ToggleGroupItem>
+                        <ToggleGroupItem
+                          value="female"
+                          className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all"
+                        >
+                          여성
+                        </ToggleGroupItem>
+                      </ToggleGroup>
+                    </div>
                   </div>
 
-                  <div>
-                    <Label className="text-white mb-3 block">성별</Label>
-                    <ToggleGroup
-                      type="single"
-                      value={form.watch("gender")}
-                      onValueChange={(value) => {
-                        if (value) {
-                          form.setValue("gender", value as "male" | "female");
-                          trackEvent("User Input", "Change Gender", value);
-                        }
-                      }}
-                      className="justify-start"
-                    >
-                      <ToggleGroupItem
-                        value="male"
-                        className="px-8 py-3 text-base rounded-l-md border border-white/10 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white"
-                      >
-                        남성
-                      </ToggleGroupItem>
-                      <ToggleGroupItem
-                        value="female"
-                        className="px-8 py-3 text-base rounded-r-md border border-l-0 border-white/10 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white"
-                      >
-                        여성
-                      </ToggleGroupItem>
-                    </ToggleGroup>
-                  </div>
-
-                  <div className="grid grid-cols-1 gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="birthDate" className="text-white block text-base font-semibold">생년월일</Label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="space-y-3">
+                      <Label htmlFor="birthDate" className="text-white text-base font-medium ml-1">생년월일</Label>
                       <Input
                         id="birthDate"
                         type="date"
                         {...form.register("birthDate")}
-                        className="bg-white/5 border-white/10 text-white w-full appearance-none"
+                        className="h-14 bg-white/5 border-white/10 text-white rounded-2xl focus:ring-primary/50 focus:border-primary transition-all"
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="birthTime" className="text-white block text-base font-semibold">태어난 시간</Label>
+                    <div className="space-y-3">
+                      <Label htmlFor="birthTime" className="text-white text-base font-medium ml-1">태어난 시간</Label>
                       <Input
                         id="birthTime"
                         type="time"
                         {...form.register("birthTime")}
-                        className="bg-white/5 border-white/10 text-white w-full appearance-none"
+                        className="h-14 bg-white/5 border-white/10 text-white rounded-2xl focus:ring-primary/50 focus:border-primary transition-all"
                       />
                     </div>
                   </div>
 
-                  <div>
-                    <Label className="text-white mb-3 block text-base font-semibold">구분</Label>
+                  <div className="space-y-3">
+                    <Label className="text-white text-base font-medium ml-1">날짜 구분</Label>
                     <ToggleGroup
                       type="single"
                       value={form.watch("calendarType")}
@@ -196,17 +217,17 @@ export default function YearlyFortune() {
                           trackEvent("User Input", "Change Calendar Type", value);
                         }
                       }}
-                      className="justify-start"
+                      className="justify-start h-14 bg-white/5 p-1 rounded-2xl border border-white/10"
                     >
                       <ToggleGroupItem
                         value="solar"
-                        className="px-8 py-3 text-base rounded-l-md border border-white/10 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white"
+                        className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all"
                       >
                         양력
                       </ToggleGroupItem>
                       <ToggleGroupItem
                         value="lunar"
-                        className="px-8 py-3 text-base rounded-r-md border border-l-0 border-white/10 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white"
+                        className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all"
                       >
                         음력
                       </ToggleGroupItem>
@@ -215,7 +236,7 @@ export default function YearlyFortune() {
 
                   <Button 
                     type="submit" 
-                    className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white font-semibold py-6 text-lg"
+                    className="w-full h-16 bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-lg rounded-2xl shadow-lg shadow-primary/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
                   >
                     <Sparkles className="w-5 h-5 mr-2" />
                     2026년 무료 신년운세 보기
@@ -284,55 +305,76 @@ export default function YearlyFortune() {
           ))}
         </motion.div>
 
-        {/* 운세 상세 내용 */}
+        {/* 오행 분석 */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <Card className="bg-white/5 border-white/10">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center gap-2">
+                <Activity className="w-5 h-5 text-primary" />
+                오행 에너지 분석
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <SajuChart data={calculateElementBalance(result)} />
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white/5 border-white/10">
+            <CardHeader>
+              <CardTitle className="text-white flex items-center gap-2">
+                <Zap className="w-5 h-5 text-primary" />
+                나의 행운 아이템
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <LuckyItems result={result} />
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* 운세 상세 풀이 */}
         <div className="space-y-6">
-          {Object.entries(fortunes).map(([key, fortune], index) => (
-            <AnimatePresence key={key}>
-              {fortune && (
+          <AnimatePresence>
+            {(Object.keys(fortunes) as Array<keyof typeof fortunes>).map((key) => (
+              fortunes[key] && (
                 <motion.div
+                  key={key}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
+                  className="space-y-4"
                 >
-                  <Card className="bg-card border-white/10 overflow-hidden">
-                    <CardHeader className="bg-white/5 border-b border-white/5">
-                      <CardTitle className="text-white flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary">
-                          {fortuneIcons[key]}
-                        </div>
-                        {fortune.title}
+                  <Card className="bg-white/5 border-white/10 overflow-hidden">
+                    <CardHeader className="bg-primary/10 border-b border-white/5">
+                      <CardTitle className="text-primary flex items-center gap-2">
+                        {fortuneIcons[key]}
+                        {fortunes[key]?.title}
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="p-6">
-                      <div className="prose prose-invert max-w-none">
-                        <p className="text-white/90 leading-relaxed whitespace-pre-wrap">
-                          {fortune.content}
-                        </p>
+                      <div className="space-y-4">
+                        <div className="flex items-start gap-2">
+                          <Quote className="w-5 h-5 text-primary/40 mt-1 flex-shrink-0" />
+                          <p className="text-lg font-semibold text-white leading-relaxed">
+                            {fortunes[key]?.summary}
+                          </p>
+                        </div>
+                        <div className="pl-7 space-y-4">
+                          {fortunes[key]?.content.split('\n').map((para, i) => (
+                            <p key={i} className="text-white/70 leading-relaxed">
+                              {para}
+                            </p>
+                          ))}
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
                 </motion.div>
-              )}
-            </AnimatePresence>
-          ))}
+              )
+            ))}
+          </AnimatePresence>
         </div>
 
-        {/* 오행 분석 및 기타 정보 */}
-        {extraInfo && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.5 }}
-            className="space-y-8"
-          >
-            <SajuChart 
-              data={calculateElementBalance(result)} 
-              scores={extraInfo.scores} 
-            />
-            <LuckyItems lucky={extraInfo.lucky} />
-            <SajuGlossary />
-          </motion.div>
-        )}
+        <SajuGlossary />
       </main>
     </div>
   );
