@@ -207,17 +207,17 @@ export default function Compatibility() {
                           onValueChange={(value) => {
                             if (value) form.setValue("gender1", value as "male" | "female");
                           }}
-                          className="justify-start w-full h-14 bg-white/5 p-1 rounded-2xl border border-white/10"
+                          className="justify-start w-fit h-14 bg-white/5 p-1 rounded-2xl border border-white/10"
                         >
                           <ToggleGroupItem
                             value="male"
-                            className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all px-4"
+                            className="px-8 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all"
                           >
                             남성
                           </ToggleGroupItem>
                           <ToggleGroupItem
                             value="female"
-                            className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all px-4"
+                            className="px-8 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all"
                           >
                             여성
                           </ToggleGroupItem>
@@ -255,17 +255,17 @@ export default function Compatibility() {
                         onValueChange={(value) => {
                           if (value) form.setValue("calendarType1", value as "solar" | "lunar");
                         }}
-                        className="justify-start w-full h-14 bg-white/5 p-1 rounded-2xl border border-white/10"
+                        className="justify-start w-fit h-14 bg-white/5 p-1 rounded-2xl border border-white/10"
                       >
                         <ToggleGroupItem
                           value="solar"
-                          className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all px-4"
+                          className="px-8 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all"
                         >
                           양력
                         </ToggleGroupItem>
                         <ToggleGroupItem
                           value="lunar"
-                          className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all px-4"
+                          className="px-8 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all"
                         >
                           음력
                         </ToggleGroupItem>
@@ -299,17 +299,17 @@ export default function Compatibility() {
                           onValueChange={(value) => {
                             if (value) form.setValue("gender2", value as "male" | "female");
                           }}
-                          className="justify-start w-full h-14 bg-white/5 p-1 rounded-2xl border border-white/10"
+                          className="justify-start w-fit h-14 bg-white/5 p-1 rounded-2xl border border-white/10"
                         >
                           <ToggleGroupItem
                             value="male"
-                            className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all px-4"
+                            className="px-8 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all"
                           >
                             남성
                           </ToggleGroupItem>
                           <ToggleGroupItem
                             value="female"
-                            className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all px-4"
+                            className="px-8 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all"
                           >
                             여성
                           </ToggleGroupItem>
@@ -347,17 +347,17 @@ export default function Compatibility() {
                         onValueChange={(value) => {
                           if (value) form.setValue("calendarType2", value as "solar" | "lunar");
                         }}
-                        className="justify-start w-full h-14 bg-white/5 p-1 rounded-2xl border border-white/10"
+                        className="justify-start w-fit h-14 bg-white/5 p-1 rounded-2xl border border-white/10"
                       >
                         <ToggleGroupItem
                           value="solar"
-                          className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all px-4"
+                          className="px-8 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all"
                         >
                           양력
                         </ToggleGroupItem>
                         <ToggleGroupItem
                           value="lunar"
-                          className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all px-4"
+                          className="px-8 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all"
                         >
                           음력
                         </ToggleGroupItem>
