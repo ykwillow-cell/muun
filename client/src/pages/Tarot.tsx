@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import axios from "axios";
 import tarotData from "@/lib/tarot-data.json";
 import { saveTarotReading } from "@/lib/tarot-db";
+import { trackCustomEvent } from "@/lib/ga4";
 
 interface TarotCard {
   id: number;
@@ -70,6 +71,12 @@ export default function Tarot() {
       toast.error("카드 3장을 모두 선택해 주세요.");
       return;
     }
+
+    // 결과 확인 버튼 클릭 이벤트 추적 (타로 해석 시작 시점)
+    trackCustomEvent("check_fortune_result", {
+      fortune_type: "AI타로",
+      question_length: question.length
+    });
 
     setIsLoading(true);
     setStep("result");
@@ -290,44 +297,41 @@ ${question}
                   <div key={i} className="w-20 h-32 md:w-32 md:h-52 border-2 border-dashed border-white/10 rounded-2xl flex items-center justify-center relative bg-white/5">
                     {selectedCards[i] ? (
                       <motion.div
-                        initial={{ rotateY: 180, opacity: 0 }}
-                        animate={{ rotateY: 0, opacity: 1 }}
-                        className="w-full h-full bg-primary/10 rounded-2xl flex items-center justify-center border border-primary/30"
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="w-full h-full p-2"
                       >
-                        <span className="text-[10px] md:text-xs font-bold text-primary text-center px-2">{selectedCards[i].korName}</span>
+                        <div className="w-full h-full bg-primary/20 rounded-xl flex flex-col items-center justify-center text-center p-2">
+                          <span className="text-[10px] md:text-xs text-primary/60 mb-1">{i === 0 ? "과거" : i === 1 ? "현재" : "미래"}</span>
+                          <span className="text-xs md:text-sm font-bold text-white leading-tight">{selectedCards[i].korName}</span>
+                        </div>
                       </motion.div>
                     ) : (
-                      <span className="text-2xl font-bold text-white/10">{i + 1}</span>
+                      <span className="text-white/20 text-4xl font-bold">{i + 1}</span>
                     )}
                   </div>
                 ))}
               </div>
 
-              {selectedCards.length === 3 && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="flex justify-center"
+              <div className="flex justify-center">
+                <Button
+                  size="lg"
+                  disabled={selectedCards.length !== 3 || isLoading}
+                  onClick={getInterpretation}
+                  className="h-16 px-12 rounded-2xl text-lg font-bold gap-2 shadow-xl"
                 >
-                  <Button 
-                    onClick={getInterpretation}
-                    disabled={isLoading}
-                    className="px-8 h-14 rounded-2xl text-lg font-bold gap-2 shadow-[0_0_20px_rgba(255,215,0,0.2)] disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {isLoading ? (
-                      <>
-                        <RefreshCw className="w-5 h-5 animate-spin" />
-                        해석 중...
-                      </>
-                    ) : (
-                      <>
-                        <Sparkles className="w-5 h-5" />
-                        해석하기
-                      </>
-                    )}
-                  </Button>
-                </motion.div>
-              )}
+                  {isLoading ? (
+                    <>
+                      <RefreshCw className="w-5 h-5 animate-spin" />
+                      운명의 흐름을 읽는 중...
+                    </>
+                  ) : (
+                    <>
+                      해석하기 <ChevronRight className="w-5 h-5" />
+                    </>
+                  )}
+                </Button>
+              </div>
             </motion.div>
           )}
 
@@ -336,108 +340,85 @@ ${question}
               key="result"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="space-y-12"
+              className="space-y-8"
             >
-              <div className="grid grid-cols-3 gap-4 md:gap-8">
-                {selectedCards.map((card, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ rotateY: 180, opacity: 0 }}
-                    animate={{ rotateY: 0, opacity: 1 }}
-                    transition={{ delay: index * 0.2, duration: 0.8 }}
-                    className="space-y-4"
-                  >
-                    <div className="aspect-[2/3.5] rounded-2xl overflow-hidden border border-primary/30 shadow-[0_0_30px_rgba(255,215,0,0.1)] bg-white/5">
-                      <img 
-                        src={card.image} 
-                        alt={card.name} 
-                        className="w-full h-full object-cover" 
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 300'%3E%3Crect fill='%23333' width='200' height='300'/%3E%3C/svg%3E";
-                        }}
-                      />
+              <div className="grid grid-cols-3 gap-4">
+                {selectedCards.map((card, i) => (
+                  <div key={i} className="space-y-2 text-center">
+                    <div className="aspect-[2/3] bg-gradient-to-br from-primary/20 to-purple-900/20 border border-primary/30 rounded-2xl flex items-center justify-center p-4 shadow-lg">
+                      <div className="text-center">
+                        <div className="text-[10px] md:text-xs text-primary/60 mb-1">{i === 0 ? "과거" : i === 1 ? "현재" : "미래"}</div>
+                        <div className="text-xs md:text-base font-bold text-white">{card.korName}</div>
+                      </div>
                     </div>
-                    <div className="text-center">
-                      <span className="text-[10px] md:text-xs text-primary font-bold uppercase tracking-widest block mb-1">
-                        {index === 0 ? "Past / Situation" : index === 1 ? "Present / Advice" : "Future / Result"}
-                      </span>
-                      <h3 className="text-sm md:text-lg font-bold text-white">{card.korName}</h3>
-                    </div>
-                  </motion.div>
+                  </div>
                 ))}
               </div>
 
-              <div className="glass-panel p-8 md:p-12 rounded-[2.5rem] space-y-8 relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent opacity-50" />
+              <div className="glass-panel p-8 md:p-12 rounded-[2.5rem] relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
                 
-                <div className="space-y-6">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-                      <Sparkles className="w-5 h-5 text-background" />
-                    </div>
-                    <h2 className="text-xl md:text-2xl font-bold text-white">AI 상담사의 해석</h2>
+                {isLoading ? (
+                  <div className="space-y-6">
+                    <Skeleton className="h-8 w-3/4 bg-white/5" />
+                    <Skeleton className="h-4 w-full bg-white/5" />
+                    <Skeleton className="h-4 w-full bg-white/5" />
+                    <Skeleton className="h-4 w-5/6 bg-white/5" />
+                    <Skeleton className="h-4 w-full bg-white/5" />
+                    <Skeleton className="h-4 w-4/5 bg-white/5" />
                   </div>
-
-                  {isLoading ? (
-                    <div className="space-y-4">
-                      <div className="flex items-center gap-2 text-primary animate-pulse mb-4">
-                        <RefreshCw className="w-4 h-4 animate-spin" />
-                        <span className="text-sm font-medium">AI 상담사가 카드를 읽고 있습니다...</span>
-                      </div>
-                      <Skeleton className="h-4 w-full bg-white/5" />
-                      <Skeleton className="h-4 w-[90%] bg-white/5" />
-                      <Skeleton className="h-4 w-[95%] bg-white/5" />
-                      <Skeleton className="h-4 w-[80%] bg-white/5" />
+                ) : error ? (
+                  <div className="text-center py-12 space-y-6">
+                    <div className="w-20 h-20 bg-red-500/10 rounded-full flex items-center justify-center mx-auto">
+                      <AlertCircle className="w-10 h-10 text-red-500" />
                     </div>
-                  ) : (
-                    <motion.div 
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="prose prose-invert max-w-none"
-                    >
-                      {error ? (
-                        <div className="p-4 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-start gap-3 text-purple-300 space-y-3">
-                          <AlertCircle className="w-5 h-5 mt-0.5 flex-shrink-0" />
-                          <div className="space-y-3 flex-1">
-                            <p className="font-bold whitespace-pre-line">{EMOTIONAL_ERROR_MESSAGES[error.type]}</p>
-                            <Button 
-                              onClick={getInterpretation}
-                              disabled={isLoading}
-                              variant="outline"
-                              className="mt-2 border-purple-500/30 hover:bg-purple-500/10 disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                              <RefreshCw className="w-4 h-4 mr-2" /> 
-                              다시 시도하기
-                            </Button>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="text-foreground/90 leading-relaxed whitespace-pre-wrap text-base md:text-lg">
-                          {interpretation}
-                        </div>
-                      )}
-                    </motion.div>
-                  )}
-                </div>
-
-                {!isLoading && !error && (
-                  <div className="space-y-3">
+                    <div className="space-y-2">
+                      <h3 className="text-xl font-bold text-white">해석을 가져오지 못했습니다</h3>
+                      <p className="text-muted-foreground whitespace-pre-line">
+                        {EMOTIONAL_ERROR_MESSAGES[error.type]}
+                      </p>
+                    </div>
                     <Button 
-                      onClick={handleSaveReading}
-                      disabled={isSaving || isSaved}
-                      className="w-full h-14 rounded-2xl text-lg font-bold gap-2 shadow-[0_0_20px_rgba(255,215,0,0.2)] disabled:opacity-50 disabled:cursor-not-allowed"
+                      variant="outline" 
+                      onClick={getInterpretation}
+                      className="border-white/10 hover:bg-white/5"
                     >
-                      {isSaved ? "\u2713 저장됨" : isSaving ? "저장 중..." : "내 기록으로 저장하기"}
-                    </Button>
-                    <Button 
-                      onClick={resetTarot}
-                      disabled={isLoading}
-                      variant="outline"
-                      className="w-full h-14 rounded-2xl border-white/10 hover:bg-white/5"
-                    >
-                      새로운 상담 시작하기
+                      다시 시도하기
                     </Button>
                   </div>
+                ) : (
+                  <div className="prose prose-invert max-w-none">
+                    <div className="text-lg md:text-xl leading-relaxed text-white/90 whitespace-pre-wrap font-medium">
+                      {interpretation}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="flex flex-col md:flex-row gap-4 justify-center">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  onClick={resetTarot}
+                  className="h-14 px-8 rounded-xl border-white/10 hover:bg-white/5 gap-2"
+                >
+                  <RefreshCw className="w-4 h-4" />
+                  다시 상담하기
+                </Button>
+                {!error && !isLoading && (
+                  <Button
+                    size="lg"
+                    onClick={handleSaveReading}
+                    disabled={isSaved || isSaving}
+                    className="h-14 px-8 rounded-xl gap-2 shadow-lg"
+                  >
+                    {isSaving ? (
+                      <RefreshCw className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <Sparkles className="w-4 h-4" />
+                    )}
+                    {isSaved ? "저장 완료" : "상담 기록 저장하기"}
+                  </Button>
                 )}
               </div>
             </motion.div>

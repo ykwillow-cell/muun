@@ -17,7 +17,7 @@ import SajuChart from "@/components/SajuChart";
 import LuckyItems from "@/components/LuckyItems";
 import SajuGlossary from "@/components/SajuGlossary";
 import iljuData from "@/lib/ilju-data.json";
-import { trackEvent } from "@/lib/ga4";
+import { trackEvent, trackCustomEvent } from "@/lib/ga4";
 import { 
   generateYearlyFortune, 
   FortuneResult 
@@ -66,6 +66,13 @@ export default function YearlyFortune() {
   }, [form]);
 
   const onSubmit = async (data: FormValues) => {
+    // 결과 확인 버튼 클릭 이벤트 추적
+    trackCustomEvent("check_fortune_result", {
+      fortune_type: "신년운세",
+      gender: data.gender,
+      calendar_type: data.calendarType
+    });
+
     localStorage.setItem("muun_user_data", JSON.stringify(data));
     const date = new Date(`${data.birthDate}T${data.birthTime}`);
     const sajuResult = calculateSaju(date, data.gender);
@@ -208,7 +215,6 @@ export default function YearlyFortune() {
 
                   <Button 
                     type="submit" 
-                    onClick={() => trackEvent("User Action", "Click View Fortune", "Yearly Fortune")}
                     className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white font-semibold py-6 text-lg"
                   >
                     <Sparkles className="w-5 h-5 mr-2" />
@@ -278,80 +284,52 @@ export default function YearlyFortune() {
           ))}
         </motion.div>
 
-        {/* 시각화 데이터 보강 */}
-        {extraInfo && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="space-y-8"
-          >
-            <SajuChart 
-              data={calculateElementBalance(result)} 
-              scores={extraInfo.scores} 
-            />
-
-            <Card className="bg-card border-white/10 overflow-hidden">
-              <CardHeader className="border-b border-white/5">
-                <CardTitle className="text-lg flex items-center gap-2 text-primary">
-                  <Sparkles className="w-5 h-5" />
-                  핵심 기운 분석
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-8">
-                <p className="text-xl font-bold text-white mb-4">
-                  {form.getValues("name")}님은 "{extraInfo.mainElement}"의 기운이 가장 강합니다.
-                </p>
-                <p className="text-lg text-white/80 leading-relaxed mb-6">
-                  {extraInfo.summary} {extraInfo.advice}
-                </p>
-                
-                {iljuData[result.dayPillar.stem + result.dayPillar.branch as keyof typeof iljuData] && (
-                  <div className="mt-6 pt-6 border-t border-white/5">
-                    <p className="text-sm font-bold text-primary mb-3">[{result.dayPillar.stem}{result.dayPillar.branch} 일주 상세 분석]</p>
-                    <p className="text-white/70 leading-relaxed whitespace-pre-wrap">
-                      {iljuData[result.dayPillar.stem + result.dayPillar.branch as keyof typeof iljuData]}
-                    </p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-
-            <LuckyItems lucky={extraInfo.lucky} />
-          </motion.div>
-        )}
-
-        {/* 운세 섹션들 */}
+        {/* 운세 상세 내용 */}
         <div className="space-y-6">
-          <AnimatePresence>
-            {Object.entries(fortunes).map(([key, fortune], index) => (
-              fortune && (
+          {Object.entries(fortunes).map(([key, fortune], index) => (
+            <AnimatePresence key={key}>
+              {fortune && (
                 <motion.div
-                  key={key}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
+                  transition={{ duration: 0.5 }}
                 >
                   <Card className="bg-card border-white/10 overflow-hidden">
-                    <CardHeader className="border-b border-white/5">
-                      <CardTitle className="text-lg flex items-center gap-2 text-primary">
-                        {fortuneIcons[key]}
+                    <CardHeader className="bg-white/5 border-b border-white/5">
+                      <CardTitle className="text-white flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary">
+                          {fortuneIcons[key]}
+                        </div>
                         {fortune.title}
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="p-6">
-                      <p className="text-white/80 leading-relaxed whitespace-pre-wrap">
-                        {fortune.content}
-                      </p>
+                      <div className="prose prose-invert max-w-none">
+                        <p className="text-white/80 leading-relaxed whitespace-pre-wrap">
+                          {fortune.content}
+                        </p>
+                      </div>
                     </CardContent>
                   </Card>
                 </motion.div>
-              )
-            ))}
-          </AnimatePresence>
+              )}
+            </AnimatePresence>
+          ))}
         </div>
 
-        {/* 사주 용어 풀이 가이드 */}
-        <SajuGlossary />
+        {/* 오행 분석 및 기타 정보 */}
+        {extraInfo && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.5 }}
+            className="space-y-8"
+          >
+            <SajuChart sajuResult={result} />
+            <LuckyItems sajuResult={result} />
+            <SajuGlossary />
+          </motion.div>
+        )}
       </main>
     </div>
   );

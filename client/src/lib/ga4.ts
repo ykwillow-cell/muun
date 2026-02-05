@@ -17,3 +17,12 @@ export const trackEvent = (category: string, action: string, label?: string) => 
     label,
   });
 };
+
+/**
+ * GA4 맞춤 이벤트 전송 함수
+ * @param eventName 이벤트 이름 (예: 'check_fortune_result', 'select_fortune_category')
+ * @param params 이벤트와 함께 전송할 파라미터 객체
+ */
+export const trackCustomEvent = (eventName: string, params?: object) => {
+  ReactGA.event(eventName, params);
+};

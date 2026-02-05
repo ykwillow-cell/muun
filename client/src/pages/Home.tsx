@@ -1,6 +1,7 @@
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { BookOpen, Star, ShieldCheck, Info, BrainCircuit, ScrollText, Sparkles, Heart, CalendarDays, ArrowRight, Zap } from "lucide-react";
+import { trackCustomEvent } from "@/lib/ga4";
 
 export default function Home() {
   // GA 분석 기반 메뉴 순서 재배치
@@ -66,6 +67,12 @@ export default function Home() {
     },
   ];
 
+  const handleCategoryClick = (label: string) => {
+    trackCustomEvent("select_fortune_category", {
+      fortune_type: label
+    });
+  };
+
   const commonMaxWidth = "w-full max-w-4xl mx-auto";
 
   return (
@@ -101,7 +108,7 @@ export default function Home() {
           </motion.div>
 
           {/* Featured Banner - Compressed Height */}
-          <Link href="/yearly-fortune" className="w-full max-w-3xl">
+          <Link href="/yearly-fortune" onClick={() => handleCategoryClick("신년운세(배너)")} className="w-full max-w-3xl">
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -143,7 +150,7 @@ export default function Home() {
           {/* All Services - 2 Column Grid for Mobile, 3 Column for Desktop */}
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
             {menuItems.map((item, index) => (
-              <Link key={index} href={item.href}>
+              <Link key={index} href={item.href} onClick={() => handleCategoryClick(item.label)}>
                 <motion.div 
                   whileHover={{ y: -5 }}
                   className={`group relative p-4 md:p-8 rounded-[1.5rem] md:rounded-[2rem] glass-panel transition-all duration-300 cursor-pointer h-full flex flex-col gap-3 md:gap-5 min-h-[44px] ${
