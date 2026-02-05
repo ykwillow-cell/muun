@@ -83,7 +83,7 @@ export default function Home() {
         <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-purple-900/10 rounded-full blur-[120px]" />
       </div>
 
-      <main className="relative z-10 container mx-auto px-4 py-6 md:py-16 flex flex-col gap-8 md:gap-16">
+      <main className="relative z-10 container mx-auto max-w-[1280px] px-4 py-6 md:py-16 flex flex-col gap-8 md:gap-16">
         
         {/* Hero Section - Optimized for Mobile */}
         <section className={`flex flex-col items-center text-center gap-6 md:gap-12 ${commonMaxWidth}`}>

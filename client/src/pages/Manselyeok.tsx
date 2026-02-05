@@ -79,7 +79,7 @@ export default function Manselyeok() {
   return (
     <div className="min-h-screen bg-background text-foreground pb-20 antialiased">
       <header className="sticky top-0 z-50 backdrop-blur-2xl bg-background/60 border-b border-white/5">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+        <div className="container mx-auto max-w-[1280px] px-4 h-16 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <Link href="/">
               <Button variant="ghost" size="icon" className="rounded-full hover:bg-white/5">
@@ -116,7 +116,7 @@ export default function Manselyeok() {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-12 max-w-3xl">
+      <main className="container mx-auto max-w-[1280px] px-4 py-12">
         <AnimatePresence mode="wait">
           {!result ? (
             <motion.div

@@ -100,7 +100,7 @@ export default function YearlyFortune() {
     return (
       <div className="min-h-screen bg-background text-foreground pb-20">
         <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
-          <div className="container mx-auto px-4 h-14 flex items-center">
+          <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
             <Link href="/">
               <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/10">
                 <ChevronLeft className="h-6 w-6" />
@@ -110,7 +110,7 @@ export default function YearlyFortune() {
           </div>
         </header>
 
-        <main className="container mx-auto px-4 py-8">
+        <main className="container mx-auto max-w-[1280px] px-4 py-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -238,7 +238,7 @@ export default function YearlyFortune() {
   return (
     <div className="min-h-screen bg-background text-foreground pb-20">
       <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
-        <div className="container mx-auto px-4 h-14 flex items-center justify-between">
+        <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
             <Button variant="ghost" size="icon" onClick={() => setResult(null)} className="mr-2 text-white hover:bg-white/10">
               <ChevronLeft className="h-6 w-6" />
@@ -261,7 +261,7 @@ export default function YearlyFortune() {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8 space-y-8">
+      <main className="container mx-auto max-w-[1280px] px-4 py-8 space-y-8">
         {/* 사주 정보 요약 */}
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}

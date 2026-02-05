@@ -8,7 +8,7 @@ export default function About() {
   return (
     <div className="min-h-screen bg-background text-foreground pb-20 antialiased">
       <header className="sticky top-0 z-50 backdrop-blur-2xl bg-background/60 border-b border-white/5">
-        <div className="container mx-auto px-4 h-16 flex items-center">
+        <div className="container mx-auto max-w-[1280px] px-4 h-16 flex items-center">
           <Link href="/">
             <Button variant="ghost" size="icon" className="mr-4 rounded-full hover:bg-white/5">
               <ChevronLeft className="h-5 w-5" />
@@ -18,7 +18,7 @@ export default function About() {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-16 md:py-24">
+      <main className="container mx-auto max-w-[1280px] px-4 py-16 md:py-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
