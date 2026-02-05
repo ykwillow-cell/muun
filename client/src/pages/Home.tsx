@@ -85,52 +85,53 @@ export default function Home() {
 
       <main className="relative z-10 container mx-auto px-4 py-6 md:py-16 flex flex-col gap-8 md:gap-16">
         
-        {/* Hero Section - Compressed for Mobile */}
-        <section className={`flex flex-col items-center text-center gap-4 md:gap-8 ${commonMaxWidth}`}>
+        {/* Hero Section - Optimized for Mobile */}
+        <section className={`flex flex-col items-center text-center gap-6 md:gap-12 ${commonMaxWidth}`}>
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="space-y-3 md:space-y-6"
+            className="space-y-4 md:space-y-8"
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-xl">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
               </span>
-              <span className="text-[10px] md:text-xs font-bold tracking-wider text-primary uppercase">가입 없는 무료 운세</span>
+              <span className="text-[11px] md:text-xs font-bold tracking-widest text-primary uppercase">가입 없는 무료 운세</span>
             </div>
             
-            <h1 className="text-2xl md:text-6xl lg:text-7xl font-medium tracking-tight leading-tight">
+            <h1 className="text-3xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.15] md:leading-tight">
               30년 내공의 명리학,<br />
-              <span className="text-primary font-bold">운명을 읽다</span>
+              <span className="bg-gradient-to-r from-primary via-yellow-200 to-primary bg-clip-text text-transparent">운명을 읽다</span>
             </h1>
           </motion.div>
 
-          {/* Featured Banner - Compressed Height */}
-          <Link href="/yearly-fortune" onClick={() => handleCategoryClick("신년운세(배너)")} className="w-full max-w-3xl">
+          {/* Featured Banner - Mobile Enhanced */}
+          <Link href="/yearly-fortune" onClick={() => handleCategoryClick("신년운세(배너)")} className="w-full">
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="group relative w-full min-h-[140px] md:min-h-[180px] md:aspect-[3/1] rounded-[1.5rem] md:rounded-[2rem] overflow-hidden glass-panel hover:border-primary/30 transition-all duration-500 cursor-pointer"
+              className="group relative w-full min-h-[160px] md:min-h-[220px] rounded-[2rem] md:rounded-[3rem] overflow-hidden glass-panel border-white/10 hover:border-primary/40 transition-all duration-500 cursor-pointer shadow-2xl shadow-primary/5"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 group-hover:opacity-100 transition-opacity" />
-              <div className="absolute inset-0 flex items-center justify-between px-5 md:px-12 py-4 md:py-6">
-                <div className="text-left space-y-2 md:space-y-4 z-10 flex-1">
-                  <div className="inline-block px-2 py-0.5 rounded bg-primary text-[9px] md:text-[10px] font-bold text-background uppercase">로그인 없이 바로</div>
-                  <h2 className="text-base md:text-3xl font-bold text-white group-hover:text-primary transition-colors leading-tight">
-                    신년운세<br />내 한 해의 흐름 확인하기
+              <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/30 via-purple-600/20 to-primary/10 group-hover:opacity-100 transition-opacity" />
+              <div className="absolute inset-0 flex items-center justify-between px-6 md:px-16 py-6 md:py-10">
+                <div className="text-left space-y-3 md:space-y-6 z-10 flex-1">
+                  <div className="inline-block px-2.5 py-1 rounded-lg bg-primary/20 border border-primary/30 text-[10px] md:text-xs font-black text-primary uppercase tracking-tighter">LOGIN FREE</div>
+                  <h2 className="text-xl md:text-4xl font-black text-white group-hover:text-primary transition-colors leading-tight">
+                    2026 신년운세<br /><span className="text-white/70 text-sm md:text-2xl font-medium">내 한 해의 흐름 확인하기</span>
                   </h2>
-                  <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 md:px-5 md:py-2.5 rounded-full bg-primary text-background text-[11px] md:text-sm font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 min-h-[44px]">
-                    지금 바로 확인하기 <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
+                  <div className="inline-flex items-center gap-2 px-5 py-2.5 md:px-8 md:py-4 rounded-2xl bg-primary text-background text-xs md:text-lg font-black hover:bg-white transition-all shadow-xl shadow-primary/20 active:scale-95">
+                    지금 바로 확인하기 <ArrowRight className="w-4 h-4 md:w-6 md:h-6" />
                   </div>
                 </div>
-                <div className="relative w-16 h-16 md:w-48 md:h-48 flex-shrink-0">
+                <div className="relative w-24 h-24 md:w-64 md:h-64 flex-shrink-0 -mr-4 md:-mr-8">
+                  <div className="absolute inset-0 bg-primary/20 blur-[40px] rounded-full animate-pulse" />
                   <img 
                     src="/images/horse_mascot.png" 
                     alt="Mascot" 
-                    className="w-full h-full object-contain drop-shadow-2xl group-hover:scale-110 transition-transform duration-700"
+                    className="relative w-full h-full object-contain drop-shadow-[0_20px_50px_rgba(255,215,0,0.3)] group-hover:scale-110 group-hover:-rotate-6 transition-transform duration-700"
                   />
                 </div>
               </div>
@@ -147,28 +148,34 @@ export default function Home() {
             </div>
           </div>
           
-          {/* All Services - 2 Column Grid for Mobile, 3 Column for Desktop */}
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
+          {/* All Services - Premium Grid for Mobile & Desktop */}
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
             {menuItems.map((item, index) => (
               <Link key={index} href={item.href} onClick={() => handleCategoryClick(item.label)}>
                 <motion.div 
-                  whileHover={{ y: -5 }}
-                  className={`group relative p-4 md:p-8 rounded-[1.5rem] md:rounded-[2rem] glass-panel transition-all duration-300 cursor-pointer h-full flex flex-col gap-3 md:gap-5 min-h-[44px] ${
-                    item.featured ? 'border-primary/20 bg-primary/5 hover:bg-primary/10' : 'hover:bg-white/5'
+                  whileHover={{ y: -8, scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className={`group relative p-5 md:p-10 rounded-[2rem] md:rounded-[2.5rem] glass-panel transition-all duration-500 cursor-pointer h-full flex flex-col gap-4 md:gap-8 shadow-xl hover:shadow-primary/10 ${
+                    item.featured ? 'border-primary/30 bg-primary/5 hover:bg-primary/15' : 'border-white/5 hover:bg-white/10'
                   }`}
                 >
-                  <div className="flex items-center md:block gap-2">
-                    <div className={`w-8 h-8 md:w-14 md:h-14 rounded-lg md:rounded-2xl bg-gradient-to-br ${item.color} to-transparent flex items-center justify-center group-hover:scale-110 transition-transform duration-500 flex-shrink-0`}>
-                      {item.icon}
+                  <div className="flex flex-col gap-3 md:gap-6">
+                    <div className={`w-12 h-12 md:w-20 md:h-20 rounded-2xl md:rounded-[2rem] bg-gradient-to-br ${item.color} to-transparent flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-700 shadow-inner flex-shrink-0`}>
+                      {/* 아이콘 크기 모바일에서 더 크게 조정 */}
+                      {index < 3 ? (
+                        <div className="scale-125 md:scale-150">{item.icon}</div>
+                      ) : (
+                        <div className="scale-110 md:scale-125">{item.icon}</div>
+                      )}
                     </div>
-                    <h4 className="text-[13px] md:text-lg font-bold text-white group-hover:text-primary transition-colors md:mt-4">{item.label}</h4>
+                    <div className="space-y-1 md:space-y-3">
+                      <h4 className="text-base md:text-2xl font-black text-white group-hover:text-primary transition-colors tracking-tight">{item.label}</h4>
+                      <p className="text-[11px] md:text-base text-white/50 group-hover:text-white/80 leading-relaxed line-clamp-2 md:line-clamp-none transition-colors">{item.desc}</p>
+                    </div>
                   </div>
-                  <div className="hidden md:block space-y-0.5">
-                    <p className="text-[13px] md:text-[14px] text-white/70 leading-snug line-clamp-1">{item.desc}</p>
-                  </div>
-                  <div className="mt-auto pt-0 md:pt-4 flex justify-end">
-                    <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary group-hover:text-background transition-all">
-                      <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
+                  <div className="mt-auto flex justify-end">
+                    <div className="w-8 h-8 md:w-12 md:h-12 rounded-2xl bg-white/5 flex items-center justify-center group-hover:bg-primary group-hover:text-background transition-all duration-500 shadow-lg group-hover:shadow-primary/40">
+                      <ArrowRight className="w-4 h-4 md:w-6 md:h-6" />
                     </div>
                   </div>
                 </motion.div>

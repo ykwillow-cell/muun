@@ -65,14 +65,14 @@ export function GNB() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-background/60 backdrop-blur-2xl">
-      <div className="container flex h-16 items-center justify-between px-4">
-        <div className="flex items-center gap-12">
-          <Link href="/" className="flex items-center space-x-2.5 group">
-            <div className="w-9 h-9 bg-primary rounded-xl flex items-center justify-center group-hover:rotate-12 transition-all duration-500 shadow-[0_0_20px_rgba(255,215,0,0.2)]">
-              <Sparkles className="w-5 h-5 text-background" />
+    <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-background/60 backdrop-blur-3xl">
+      <div className="container flex h-16 md:h-20 items-center justify-between px-5 md:px-8">
+        <div className="flex items-center gap-16">
+          <Link href="/" className="flex items-center space-x-3 group">
+            <div className="w-10 h-10 md:w-12 md:h-12 bg-primary rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-all duration-500 shadow-[0_0_30px_rgba(255,215,0,0.3)]">
+              <Sparkles className="w-6 h-6 md:w-7 md:h-7 text-background" />
             </div>
-            <span className="text-2xl font-black tracking-tighter text-primary">
+            <span className="text-2xl md:text-3xl font-black tracking-tighter text-primary">
               MUUN
             </span>
           </Link>
