@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, RefreshCw, ChevronRight, AlertCircle } from "lucide-react";
+import { Sparkles, RefreshCw, ChevronRight, AlertCircle, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
@@ -203,7 +203,7 @@ ${question}
   return (
     <div className="min-h-screen bg-background text-foreground pb-20">
       <div className="container max-w-4xl mx-auto px-4 pt-12 md:pt-20">
-        <div className="text-center space-y-4 mb-12">
+        <div className="text-center space-y-4 mb-8 md:mb-12">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -213,7 +213,7 @@ ${question}
             <span className="text-xs font-medium tracking-wider text-primary uppercase">AI Tarot Reading</span>
           </motion.div>
           <h1 className="text-3xl md:text-5xl font-bold tracking-tight">AI 타로 상담소</h1>
-          <p className="text-muted-foreground max-w-xl mx-auto">
+          <p className="text-muted-foreground max-w-xl mx-auto text-sm md:text-base px-4">
             마음을 가다듬고 고민을 떠올려 보세요. <br className="hidden md:block" />
             신비로운 타로 카드가 당신의 길을 안내해 줄 것입니다.
           </p>
@@ -226,7 +226,7 @@ ${question}
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
-              className="glass-panel p-8 md:p-12 rounded-[2.5rem] space-y-8"
+              className="glass-panel p-6 md:p-12 rounded-[2.5rem] space-y-8"
             >
               <div className="space-y-4">
                 <label className="text-lg font-bold text-white block">어떤 고민이 있으신가요?</label>
@@ -254,65 +254,93 @@ ${question}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="space-y-12"
+              className="space-y-8 md:space-y-12"
             >
               <div className="text-center space-y-2">
-                <h2 className="text-2xl font-bold text-primary">카드를 3장 선택해 주세요</h2>
-                <p className="text-muted-foreground">가장 마음이 끌리는 카드를 순서대로 클릭하세요. ({selectedCards.length}/3)</p>
+                <h2 className="text-xl md:text-2xl font-bold text-primary">카드를 3장 선택해 주세요</h2>
+                <p className="text-muted-foreground text-xs md:text-sm">가장 마음이 끌리는 카드를 순서대로 클릭하세요. ({selectedCards.length}/3)</p>
               </div>
 
-              <div className="relative py-8 flex items-center justify-center">
-                <div className="flex flex-wrap justify-center gap-3 md:gap-4 max-w-3xl">
-                  {shuffledDeck.slice(0, 21).map((card, index) => (
-                    <motion.div
-                      key={index}
-                      whileHover={{ y: -15, scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() => handleSelectCard(card)}
-                      className={`relative w-16 h-28 md:w-24 md:h-40 rounded-xl cursor-pointer transition-all duration-300 ${
-                        selectedCards.find(c => c.id === card.id) ? "opacity-0 pointer-events-none" : "opacity-100"
-                      } ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-br from-primary/40 to-purple-900/40 border border-primary/30 rounded-xl flex items-center justify-center overflow-hidden shadow-lg">
-                        <div className="w-full h-full opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
-                        <div className="absolute inset-0 flex items-center justify-center">
-                          <div className="w-8 h-8 md:w-12 md:h-12 border-2 border-primary/30 rounded-full flex items-center justify-center">
-                            <div className="w-4 h-4 md:w-6 md:h-6 bg-primary/20 rounded-full" />
-                          </div>
-                        </div>
-                      </div>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex justify-center gap-4 md:gap-8">
+              {/* 선택된 카드 미리보기 섹션 - 모바일에서 상단 배치 */}
+              <div className="flex justify-center gap-3 md:gap-8">
                 {[0, 1, 2].map((i) => (
-                  <div key={i} className="w-20 h-32 md:w-32 md:h-48 rounded-2xl border-2 border-dashed border-white/10 flex items-center justify-center overflow-hidden">
+                  <div key={i} className="w-20 h-32 md:w-32 md:h-48 rounded-2xl border-2 border-dashed border-white/10 flex items-center justify-center overflow-hidden bg-white/5 relative">
                     {selectedCards[i] ? (
                       <motion.div
-                        initial={{ opacity: 0, scale: 0.5 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        className="w-full h-full p-2"
+                        initial={{ opacity: 0, scale: 0.5, rotateY: 180 }}
+                        animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+                        className="w-full h-full p-1"
                       >
-                        <div className="w-full h-full bg-primary/20 rounded-xl flex flex-col items-center justify-center text-center p-2">
-                          <span className="text-[10px] md:text-xs text-primary/60 mb-1">{i === 0 ? "과거" : i === 1 ? "현재" : "미래"}</span>
-                          <span className="text-xs md:text-sm font-bold text-white leading-tight">{selectedCards[i].korName}</span>
+                        <div className="w-full h-full bg-primary/20 rounded-xl flex flex-col items-center justify-center text-center p-2 border border-primary/30">
+                          <span className="text-[8px] md:text-xs text-primary font-bold mb-1 uppercase">{i === 0 ? "과거" : i === 1 ? "현재" : "미래"}</span>
+                          <span className="text-[10px] md:text-sm font-bold text-white leading-tight">{selectedCards[i].korName}</span>
                         </div>
                       </motion.div>
                     ) : (
-                      <span className="text-white/20 text-4xl font-bold">{i + 1}</span>
+                      <span className="text-white/10 text-3xl md:text-4xl font-bold">{i + 1}</span>
                     )}
                   </div>
                 ))}
               </div>
 
-              <div className="flex justify-center">
+              {/* 카드 셔플 덱 - 모바일에서 부채꼴 레이아웃 */}
+              <div className="relative py-4 md:py-8 min-h-[250px] md:min-h-[400px] flex items-center justify-center overflow-hidden md:overflow-visible">
+                <div className="flex flex-wrap justify-center gap-2 md:gap-4 max-w-3xl px-4 relative">
+                  {shuffledDeck.slice(0, 22).map((card, index) => {
+                    const isSelected = selectedCards.find(c => c.id === card.id);
+                    // 모바일용 부채꼴 계산
+                    const total = 22;
+                    const mid = total / 2;
+                    const angle = (index - mid) * (window.innerWidth < 768 ? 4 : 2);
+                    const x = (index - mid) * (window.innerWidth < 768 ? 8 : 0);
+                    
+                    return (
+                      <motion.div
+                        key={index}
+                        initial={false}
+                        animate={{
+                          rotate: window.innerWidth < 768 ? angle : 0,
+                          x: window.innerWidth < 768 ? x : 0,
+                          y: isSelected ? -100 : 0,
+                          opacity: isSelected ? 0 : 1,
+                          scale: isSelected ? 0.5 : 1
+                        }}
+                        whileHover={{ y: -20, scale: 1.1, zIndex: 50 }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={() => handleSelectCard(card)}
+                        className={`relative w-14 h-24 md:w-24 md:h-40 rounded-xl cursor-pointer transition-all duration-300 origin-bottom ${
+                          isSelected ? "pointer-events-none" : "opacity-100"
+                        } ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+                        style={{
+                          marginLeft: window.innerWidth < 768 ? "-2.5rem" : "0",
+                          zIndex: index
+                        }}
+                      >
+                        <div className="absolute inset-0 bg-gradient-to-br from-primary/40 to-purple-900/40 border border-primary/30 rounded-xl flex items-center justify-center overflow-hidden shadow-lg backdrop-blur-sm">
+                          <div className="w-full h-full opacity-20 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <div className="w-6 h-6 md:w-12 md:h-12 border-2 border-primary/30 rounded-full flex items-center justify-center">
+                              <div className="w-3 h-3 md:w-6 md:h-6 bg-primary/20 rounded-full" />
+                            </div>
+                          </div>
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* 하단 버튼 영역 - 모바일에서 플로팅 느낌으로 강조 */}
+              <div className={`flex justify-center transition-all duration-500 ${selectedCards.length === 3 ? "scale-110" : "opacity-50"}`}>
                 <Button
                   size="lg"
                   disabled={selectedCards.length !== 3 || isLoading}
                   onClick={getInterpretation}
-                  className="h-16 px-12 rounded-2xl text-lg font-bold gap-2 shadow-xl"
+                  className={`h-16 px-12 rounded-2xl text-lg font-bold gap-2 shadow-2xl transition-all duration-500 ${
+                    selectedCards.length === 3 
+                      ? "bg-primary text-primary-foreground animate-bounce-subtle" 
+                      : "bg-white/10 text-white/30"
+                  }`}
                 >
                   {isLoading ? (
                     <>
@@ -321,7 +349,7 @@ ${question}
                     </>
                   ) : (
                     <>
-                      해석하기 <ChevronRight className="w-5 h-5" />
+                      해석하기 <ArrowRight className="w-5 h-5" />
                     </>
                   )}
                 </Button>
@@ -336,7 +364,7 @@ ${question}
               animate={{ opacity: 1, y: 0 }}
               className="space-y-8"
             >
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-3 gap-3 md:gap-4">
                 {selectedCards.map((card, i) => (
                   <div key={i} className="space-y-3 text-center">
                     <div className="aspect-[2/3] relative group overflow-hidden rounded-2xl border border-primary/30 shadow-2xl transition-all duration-500 hover:border-primary/60">
@@ -347,10 +375,10 @@ ${question}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60" />
                       <div className="absolute bottom-0 left-0 w-full p-2 md:p-4 text-center">
-                        <div className="text-[10px] md:text-xs text-primary font-bold uppercase tracking-wider mb-0.5">
+                        <div className="text-[8px] md:text-xs text-primary font-bold uppercase tracking-wider mb-0.5">
                           {i === 0 ? "과거" : i === 1 ? "현재" : "미래"}
                         </div>
-                        <div className="text-xs md:text-base font-black text-white truncate">
+                        <div className="text-[10px] md:text-base font-black text-white truncate">
                           {card.korName}
                         </div>
                       </div>
@@ -359,7 +387,7 @@ ${question}
                 ))}
               </div>
 
-              <div className="glass-panel p-8 md:p-12 rounded-[2.5rem] relative overflow-hidden">
+              <div className="glass-panel p-6 md:p-12 rounded-[2.5rem] relative overflow-hidden">
                 <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
                 
                 {isLoading ? (
@@ -378,7 +406,7 @@ ${question}
                     </div>
                     <div className="space-y-2">
                       <h3 className="text-xl font-bold text-white">해석을 가져오지 못했습니다</h3>
-                      <p className="text-muted-foreground whitespace-pre-line">
+                      <p className="text-muted-foreground whitespace-pre-line text-sm">
                         {EMOTIONAL_ERROR_MESSAGES[error.type]}
                       </p>
                     </div>
@@ -392,7 +420,7 @@ ${question}
                   </div>
                 ) : (
                   <div className="prose prose-invert max-w-none">
-                    <div className="text-lg md:text-xl leading-relaxed text-white/90 whitespace-pre-wrap font-medium">
+                    <div className="text-base md:text-xl leading-relaxed text-white/90 whitespace-pre-wrap font-medium">
                       {interpretation}
                     </div>
                   </div>
