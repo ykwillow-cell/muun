@@ -9,42 +9,42 @@ export default function Home() {
       label: "신년운세", 
       icon: <Star className="w-8 h-8 text-blue-400" />, 
       color: "from-blue-500/20",
-      desc: "2026년 병오년 흐름"
+      desc: "내년엔 대박 날까? 2026년 총운 확인"
     },
     { 
       href: "/tojeong", 
       label: "토정비결", 
       icon: <ScrollText className="w-8 h-8 text-yellow-400" />, 
       color: "from-yellow-500/20",
-      desc: "전통 비결의 지혜"
+      desc: "일 년의 흐름을 한눈에 보는 지혜"
     },
     { 
       href: "/daily-fortune", 
-      label: "오늘운세", 
+      label: "오늘의 운세", 
       icon: <Zap className="w-8 h-8 text-orange-400" />, 
       color: "from-orange-500/20",
-      desc: "매일 확인하는 나의 행운"
+      desc: "오늘 나에게 행운을 줄 컬러와 숫자는?"
     },
     { 
       href: "/lifelong-saju", 
       label: "평생사주", 
       icon: <Sparkles className="w-8 h-8 text-purple-400" />, 
       color: "from-purple-500/20",
-      desc: "타고난 운명의 지도"
+      desc: "내가 타고난 기질과 직업, 재물운까지"
     },
     { 
       href: "/psychology", 
       label: "심리풀이", 
       icon: <BrainCircuit className="w-8 h-8 text-indigo-400" />, 
       color: "from-indigo-500/20",
-      desc: "나도 모르는 내 마음"
+      desc: "MBTI보다 정확한 나의 본 모습"
     },
     { 
       href: "/compatibility", 
       label: "짝궁합", 
       icon: <Heart className="w-8 h-8 text-pink-400" />, 
       color: "from-pink-500/20",
-      desc: "서로의 기운과 조화"
+      desc: "우리 둘, 정말 잘 맞을까? 찰떡궁합 확인"
     },
     { 
       href: "/astrology", 
@@ -58,7 +58,7 @@ export default function Home() {
       label: "AI 타로", 
       icon: <Sparkles className="w-8 h-8 text-yellow-400" />, 
       color: "from-yellow-500/20",
-      desc: "AI가 읽어주는 운명의 카드"
+      desc: "고민을 말해보세요, AI가 답해주는 타로"
     },
     { 
       href: "/manselyeok", 
@@ -98,12 +98,12 @@ export default function Home() {
             </div>
             
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1]">
-              <span className="text-gradient">무료 사주 및 2026년</span><br />
-              <span className="text-primary">무료 운세 서비스, 무운</span>
+              <span className="text-gradient">복잡한 가입 없이, 30년 내공의</span><br />
+              <span className="text-primary">명리학으로 읽어내는 당신의 운명</span>
             </h1>
             
             <p className="text-base md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed px-4 md:px-0">
-              복잡한 가입 절차 없이, 30년 전통의 명리학적 통찰과 현대적인 알고리즘이 결합된 고품질 운세 서비스를 제공합니다. 당신의 과거를 돌아보고 현재를 진단하며, 더 나은 미래를 설계할 수 있도록 무운이 함께하겠습니다.
+              가입의 번거로움은 덜고 분석의 깊이는 더했습니다. 지금 무운에서 당신의 오늘과 내일을 바로 확인해 보세요.
             </p>
           </motion.div>
 
@@ -118,12 +118,12 @@ export default function Home() {
               <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 group-hover:opacity-100 transition-opacity" />
               <div className="absolute inset-0 flex items-center justify-between px-6 md:px-12 py-6">
                 <div className="text-left space-y-3 z-10 flex-1">
-                  <div className="inline-block px-2 py-0.5 rounded bg-primary text-[10px] font-bold text-background uppercase">2026</div>
+                  <div className="inline-block px-2 py-0.5 rounded bg-primary text-[10px] font-bold text-background uppercase">로그인 없이 바로</div>
                   <h2 className="text-lg md:text-3xl font-bold text-white group-hover:text-primary transition-colors leading-tight">
-                    2026년 신년운세<br />미리 보는 당신의 한 해
+                    2026년 신년운세<br />나의 2026년 확인하기
                   </h2>
                   <div className="flex items-center gap-2 text-sm text-primary font-medium">
-                    지금 확인하기 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                    운세 리포트 보기 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>
                 <div className="relative w-24 h-24 md:w-48 md:h-48 flex-shrink-0">
