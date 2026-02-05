@@ -171,17 +171,17 @@ export default function LifelongSaju() {
                             trackEvent("User Input", "Change Gender", value);
                           }
                         }}
-                        className="justify-start h-14 bg-white/5 p-1 rounded-2xl border border-white/10"
+                        className="justify-start w-full h-14 bg-white/5 p-1 rounded-2xl border border-white/10"
                       >
                         <ToggleGroupItem
                           value="male"
-                          className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all"
+                          className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all px-4"
                         >
                           남성
                         </ToggleGroupItem>
                         <ToggleGroupItem
                           value="female"
-                          className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all"
+                          className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all px-4"
                         >
                           여성
                         </ToggleGroupItem>
@@ -222,17 +222,17 @@ export default function LifelongSaju() {
                             trackEvent("User Input", "Change Calendar Type", value);
                           }
                         }}
-                        className="justify-start h-14 bg-white/5 p-1 rounded-2xl border border-white/10"
+                        className="justify-start w-full h-14 bg-white/5 p-1 rounded-2xl border border-white/10"
                       >
                         <ToggleGroupItem
                           value="solar"
-                          className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all"
+                          className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all px-4"
                         >
                           양력
                         </ToggleGroupItem>
                         <ToggleGroupItem
                           value="lunar"
-                          className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all"
+                          className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all px-4"
                         >
                           음력
                         </ToggleGroupItem>
@@ -250,17 +250,17 @@ export default function LifelongSaju() {
                             trackEvent("User Input", "Change Marriage Status", value);
                           }
                         }}
-                        className="justify-start h-14 bg-white/5 p-1 rounded-2xl border border-white/10"
+                        className="justify-start w-full h-14 bg-white/5 p-1 rounded-2xl border border-white/10"
                       >
                         <ToggleGroupItem
                           value="no"
-                          className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all"
+                          className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all px-4"
                         >
                           미혼
                         </ToggleGroupItem>
                         <ToggleGroupItem
                           value="yes"
-                          className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all"
+                          className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all px-4"
                         >
                           기혼
                         </ToggleGroupItem>

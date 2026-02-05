@@ -138,10 +138,10 @@ export default function Tojeong() {
                         onValueChange={(value) => {
                           if (value) form.setValue("gender", value as "male" | "female");
                         }}
-                        className="justify-start h-14 bg-white/5 p-1 rounded-2xl border border-white/10"
+                        className="justify-start w-full h-14 bg-white/5 p-1 rounded-2xl border border-white/10"
                       >
-                        <ToggleGroupItem value="male" className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all">남성</ToggleGroupItem>
-                        <ToggleGroupItem value="female" className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all">여성</ToggleGroupItem>
+                        <ToggleGroupItem value="male" className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all px-4">남성</ToggleGroupItem>
+                        <ToggleGroupItem value="female" className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all px-4">여성</ToggleGroupItem>
                       </ToggleGroup>
                     </div>
                   </div>
@@ -164,10 +164,10 @@ export default function Tojeong() {
                       onValueChange={(value) => {
                         if (value) form.setValue("calendarType", value as "solar" | "lunar");
                       }}
-                      className="justify-start h-14 bg-white/5 p-1 rounded-2xl border border-white/10"
+                      className="justify-start w-full h-14 bg-white/5 p-1 rounded-2xl border border-white/10"
                     >
-                      <ToggleGroupItem value="solar" className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all">양력</ToggleGroupItem>
-                      <ToggleGroupItem value="lunar" className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all">음력</ToggleGroupItem>
+                      <ToggleGroupItem value="solar" className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all px-4">양력</ToggleGroupItem>
+                      <ToggleGroupItem value="lunar" className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all px-4">음력</ToggleGroupItem>
                     </ToggleGroup>
                     <div className="flex items-start gap-2 p-4 rounded-2xl bg-yellow-500/5 border border-yellow-500/10">
                       <Info className="w-4 h-4 text-yellow-400 mt-0.5 flex-shrink-0" />
