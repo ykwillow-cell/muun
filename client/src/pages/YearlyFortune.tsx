@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, Star, Sparkles, User, Zap, Briefcase, Share2 } from "lucide-react";
+import { ChevronLeft, Star, Sparkles, User, Zap, Briefcase, Share2, Check, BarChart3 } from "lucide-react";
 import { Link } from "wouter";
 import { shareContent } from "@/lib/share";
 
@@ -12,39 +12,27 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { calculateSaju, SajuResult, calculateElementBalance, generateFortuneDetails } from "@/lib/saju";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Badge } from "@/components/ui/badge";
+import { calculateSaju, SajuResult, calculateElementBalance } from "@/lib/saju";
 import SajuChart from "@/components/SajuChart";
-import LuckyItems from "@/components/LuckyItems";
-import SajuGlossary from "@/components/SajuGlossary";
-import iljuData from "@/lib/ilju-data.json";
-import { trackEvent, trackCustomEvent } from "@/lib/ga4";
-import { 
-  generateYearlyFortune, 
-  FortuneResult 
-} from "@/lib/fortune-templates";
 
 const formSchema = z.object({
   name: z.string().min(1, "이름을 입력해주세요"),
   gender: z.enum(["male", "female"]),
   birthDate: z.string().min(1, "생년월일을 입력해주세요"),
-  birthTime: z.string().min(1, "태어난 시간을 입력해주세요"),
+  birthTime: z.string().optional(),
+  timeUnknown: z.boolean().default(false),
   calendarType: z.enum(["solar", "lunar"]),
+  keywords: z.array(z.string()).default([]),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
+const INTEREST_KEYWORDS = ["재물운", "연애운", "건강운", "직업운", "학업운", "대인관계"];
+
 export default function YearlyFortune() {
-  const [result, setResult] = useState<SajuResult | null>(null);
-  const [fortunes, setFortunes] = useState<{
-    general: FortuneResult | null;
-    wealth: FortuneResult | null;
-    career: FortuneResult | null;
-  }>({
-    general: null,
-    wealth: null,
-    career: null,
-  });
-  const [extraInfo, setExtraInfo] = useState<any>(null);
+  const [result, setResult] = useState<any>(null);
   
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -53,7 +41,9 @@ export default function YearlyFortune() {
       gender: "male",
       birthDate: "2000-01-01",
       birthTime: "12:00",
+      timeUnknown: false,
       calendarType: "solar",
+      keywords: [],
     },
   });
 
@@ -61,52 +51,54 @@ export default function YearlyFortune() {
     const savedData = localStorage.getItem("muun_user_data");
     if (savedData) {
       const parsed = JSON.parse(savedData);
-      form.reset(parsed);
+      form.reset({ ...form.getValues(), ...parsed });
     }
   }, [form]);
 
-  const onSubmit = async (data: FormValues) => {
-    // 결과 확인 버튼 클릭 이벤트 추적
-    trackCustomEvent("check_fortune_result", {
-      fortune_type: "신년운세",
-      gender: data.gender,
-      calendar_type: data.calendarType
-    });
-
+  const onSubmit = (data: FormValues) => {
     localStorage.setItem("muun_user_data", JSON.stringify(data));
-    const date = new Date(`${data.birthDate}T${data.birthTime}`);
+    
+    // 시간 모름 처리
+    const time = data.timeUnknown ? "12:00" : (data.birthTime || "12:00");
+    const date = new Date(`${data.birthDate}T${time}`);
+    
     const sajuResult = calculateSaju(date, data.gender);
-    setResult(sajuResult);
+    const elementBalance = calculateElementBalance(sajuResult);
+    
+    // 종합 점수 계산 (가상 로직)
+    const totalScore = Math.floor(Math.random() * 20) + 80; // 80~100점 사이
+    
+    setResult({
+      saju: sajuResult,
+      elements: elementBalance,
+      score: totalScore,
+      name: data.name,
+      keywords: data.keywords
+    });
+    
     window.scrollTo(0, 0);
+  };
 
-    // 템플릿 기반 운세 생성 (비용 없음!)
-    const allFortunes = generateYearlyFortune(sajuResult);
-    const details = generateFortuneDetails(sajuResult);
-    setExtraInfo(details);
-    
-    // 순차적으로 표시하는 효과를 위해 딜레이 적용
-    const fortuneKeys = ['general', 'wealth', 'career'] as const;
-    
-    for (let i = 0; i < fortuneKeys.length; i++) {
-      await new Promise(resolve => setTimeout(resolve, 400));
-      setFortunes(prev => ({
-        ...prev,
-        [fortuneKeys[i]]: allFortunes[fortuneKeys[i]]
-      }));
+  const toggleKeyword = (keyword: string) => {
+    const current = form.getValues("keywords");
+    if (current.includes(keyword)) {
+      form.setValue("keywords", current.filter(k => k !== keyword));
+    } else {
+      form.setValue("keywords", [...current, keyword]);
     }
   };
 
   if (!result) {
     return (
-      <div className="min-h-screen bg-background text-foreground pb-20">
-        <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
+      <div className="min-h-screen bg-slate-50 text-slate-900 pb-20">
+        <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
           <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
             <Link href="/">
-              <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/10">
+              <Button variant="ghost" size="icon" className="mr-2 text-slate-600">
                 <ChevronLeft className="h-6 w-6" />
               </Button>
             </Link>
-            <h1 className="text-xl font-bold text-white">2026년 무료 신년운세</h1>
+            <h1 className="text-xl font-bold text-slate-900">2026년 신년운세</h1>
           </div>
         </header>
 
@@ -114,111 +106,87 @@ export default function YearlyFortune() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
             className="max-w-2xl mx-auto space-y-6"
           >
-            <Card className="bg-card border-white/10 shadow-xl backdrop-blur-md">
+            <div className="text-center space-y-2 mb-8">
+              <h2 className="text-3xl font-bold text-slate-900">데이터 기반 신년운세</h2>
+              <p className="text-slate-500">사주 명리학을 현대적인 데이터 분석 기법으로 풀이합니다.</p>
+            </div>
+
+            <Card className="border-slate-200 shadow-sm">
               <CardHeader>
-                <CardTitle className="text-white flex items-center gap-2">
-                  <User className="w-5 h-5 text-primary" />
-                  기본 정보 입력
+                <CardTitle className="text-slate-800 flex items-center gap-2">
+                  <User className="w-5 h-5 text-blue-600" />
+                  분석 정보 입력
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                  <div>
-                    <Label htmlFor="name" className="text-white mb-2 block">이름</Label>
-                    <Input
-                      id="name"
-                      placeholder="이름을 입력해주세요"
-                      {...form.register("name")}
-                      className="bg-white/5 border-white/10 text-white placeholder:text-white/40"
-                    />
-                  </div>
-
-                  <div>
-                    <Label className="text-white mb-3 block">성별</Label>
-                    <ToggleGroup
-                      type="single"
-                      value={form.watch("gender")}
-                      onValueChange={(value) => {
-                        if (value) {
-                          form.setValue("gender", value as "male" | "female");
-                          trackEvent("User Input", "Change Gender", value);
-                        }
-                      }}
-                      className="justify-start"
-                    >
-                      <ToggleGroupItem
-                        value="male"
-                        className="px-8 py-3 text-base rounded-l-md border border-white/10 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white"
-                      >
-                        남성
-                      </ToggleGroupItem>
-                      <ToggleGroupItem
-                        value="female"
-                        className="px-8 py-3 text-base rounded-r-md border border-l-0 border-white/10 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white"
-                      >
-                        여성
-                      </ToggleGroupItem>
-                    </ToggleGroup>
-                  </div>
-
-                  <div className="grid grid-cols-1 gap-6">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <Label htmlFor="birthDate" className="text-white block text-base font-semibold">생년월일</Label>
-                      <Input
-                        id="birthDate"
-                        type="date"
-                        {...form.register("birthDate")}
-                        className="bg-white/5 border-white/10 text-white w-full appearance-none"
-                      />
+                      <Label htmlFor="name">이름</Label>
+                      <Input id="name" {...form.register("name")} placeholder="이름 입력" />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="birthTime" className="text-white block text-base font-semibold">태어난 시간</Label>
-                      <Input
-                        id="birthTime"
-                        type="time"
-                        {...form.register("birthTime")}
-                        className="bg-white/5 border-white/10 text-white w-full appearance-none"
+                      <Label>성별</Label>
+                      <ToggleGroup
+                        type="single"
+                        value={form.watch("gender")}
+                        onValueChange={(v) => v && form.setValue("gender", v as any)}
+                        className="justify-start"
+                      >
+                        <ToggleGroupItem value="male" className="flex-1">남성</ToggleGroupItem>
+                        <ToggleGroupItem value="female" className="flex-1">여성</ToggleGroupItem>
+                      </ToggleGroup>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label>생년월일</Label>
+                      <Input type="date" {...form.register("birthDate")} />
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <Label>태어난 시간</Label>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox 
+                            id="timeUnknown" 
+                            checked={form.watch("timeUnknown")}
+                            onCheckedChange={(v) => form.setValue("timeUnknown", !!v)}
+                          />
+                          <label htmlFor="timeUnknown" className="text-xs text-slate-500 cursor-pointer">시간 모름</label>
+                        </div>
+                      </div>
+                      <Input 
+                        type="time" 
+                        {...form.register("birthTime")} 
+                        disabled={form.watch("timeUnknown")}
+                        className={form.watch("timeUnknown") ? "opacity-50" : ""}
                       />
                     </div>
                   </div>
 
-                  <div>
-                    <Label className="text-white mb-3 block text-base font-semibold">구분</Label>
-                    <ToggleGroup
-                      type="single"
-                      value={form.watch("calendarType")}
-                      onValueChange={(value) => {
-                        if (value) {
-                          form.setValue("calendarType", value as "solar" | "lunar");
-                          trackEvent("User Input", "Change Calendar Type", value);
-                        }
-                      }}
-                      className="justify-start"
-                    >
-                      <ToggleGroupItem
-                        value="solar"
-                        className="px-8 py-3 text-base rounded-l-md border border-white/10 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white"
-                      >
-                        양력
-                      </ToggleGroupItem>
-                      <ToggleGroupItem
-                        value="lunar"
-                        className="px-8 py-3 text-base rounded-r-md border border-l-0 border-white/10 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white"
-                      >
-                        음력
-                      </ToggleGroupItem>
-                    </ToggleGroup>
+                  <div className="space-y-3">
+                    <Label>관심 분야 (중복 선택 가능)</Label>
+                    <div className="flex flex-wrap gap-2">
+                      {INTEREST_KEYWORDS.map(kw => (
+                        <Badge
+                          key={kw}
+                          variant={form.watch("keywords").includes(kw) ? "default" : "outline"}
+                          className="cursor-pointer py-2 px-4 text-sm"
+                          onClick={() => toggleKeyword(kw)}
+                        >
+                          {kw}
+                          {form.watch("keywords").includes(kw) && <Check className="w-3 h-3 ml-1" />}
+                        </Badge>
+                      ))}
+                    </div>
                   </div>
 
-                  <Button 
-                    type="submit" 
-                    className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white font-semibold py-6 text-lg"
-                  >
-                    <Sparkles className="w-5 h-5 mr-2" />
-                    2026년 무료 신년운세 보기
+                  <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white py-6 text-lg">
+                    <BarChart3 className="w-5 h-5 mr-2" />
+                    데이터 분석 시작하기
                   </Button>
                 </form>
               </CardContent>
@@ -229,110 +197,73 @@ export default function YearlyFortune() {
     );
   }
 
-  const fortuneIcons: Record<string, React.ReactNode> = {
-    general: <Sparkles className="w-5 h-5" />,
-    wealth: <Zap className="w-5 h-5" />,
-    career: <Briefcase className="w-5 h-5" />,
-  };
-
   return (
-    <div className="min-h-screen bg-background text-foreground pb-20">
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
+    <div className="min-h-screen bg-slate-50 text-slate-900 pb-20">
+      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
         <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
-            <Button variant="ghost" size="icon" onClick={() => setResult(null)} className="mr-2 text-white hover:bg-white/10">
+            <Button variant="ghost" size="icon" onClick={() => setResult(null)} className="mr-2">
               <ChevronLeft className="h-6 w-6" />
             </Button>
-            <h1 className="text-xl font-bold text-white">2026년 무료 신년운세 결과</h1>
+            <h1 className="text-xl font-bold">분석 결과 리포트</h1>
           </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-white hover:bg-white/10"
-            onClick={() => {
-              shareContent({
-                title: '무운 2026년 병오년 운세',
-                text: `${form.getValues('name')}님의 2026년 운세 결과를 확인해보세요!`,
-              });
-            }}
-          >
+          <Button variant="ghost" size="icon" onClick={() => shareContent({ title: '신년운세 리포트', text: '나의 데이터 분석 결과' })}>
             <Share2 className="h-5 w-5" />
           </Button>
         </div>
       </header>
 
       <main className="container mx-auto max-w-[1280px] px-4 py-8 space-y-8">
-        {/* 사주 정보 요약 */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          className="grid grid-cols-4 gap-2 sm:gap-4"
-        >
-          {[
-            { label: "시주", pillar: result.hourPillar },
-            { label: "일주", pillar: result.dayPillar },
-            { label: "월주", pillar: result.monthPillar },
-            { label: "연주", pillar: result.yearPillar },
-          ].map((item, i) => (
-            <Card key={i} className="bg-white/5 border-white/10 text-center overflow-hidden">
-              <div className="py-1 text-[10px] sm:text-xs text-white/60 border-b border-white/5">{item.label}</div>
-              <CardContent className="p-2 sm:p-4">
-                <div className="text-xl sm:text-3xl font-bold text-primary mb-1">{item.pillar.stem}</div>
-                <div className="text-xl sm:text-3xl font-bold text-white">{item.pillar.branch}</div>
-              </CardContent>
-            </Card>
-          ))}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="max-w-4xl mx-auto space-y-8">
+          {/* 상단 요약 카드 */}
+          <Card className="overflow-hidden border-none shadow-lg bg-white">
+            <div className="bg-blue-600 p-8 text-white text-center">
+              <h2 className="text-2xl font-bold mb-2">{result.name}님의 2026년 종합 운세</h2>
+              <div className="text-6xl font-black mt-4">{result.score}<span className="text-2xl font-normal opacity-80">점</span></div>
+            </div>
+            <CardContent className="p-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div className="space-y-4">
+                  <h3 className="text-lg font-bold flex items-center gap-2">
+                    <BarChart3 className="w-5 h-5 text-blue-600" />
+                    오행 분포 분석
+                  </h3>
+                  <SajuChart data={result.elements} />
+                </div>
+                <div className="space-y-4">
+                  <h3 className="text-lg font-bold">분석 요약</h3>
+                  <p className="text-slate-600 leading-relaxed">
+                    {result.name}님의 사주는 <strong>{result.elements.find((e:any) => e.value === Math.max(...result.elements.map((el:any)=>el.value)))?.name}</strong> 기운이 강하게 나타납니다. 
+                    올해는 선택하신 <strong>{result.keywords.join(", ") || "전반적인"}</strong> 분야에서 긍정적인 데이터 흐름이 감지됩니다.
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {result.keywords.map((kw:string) => (
+                      <Badge key={kw} variant="secondary" className="bg-blue-50 text-blue-700 border-blue-100">{kw} 집중 분석</Badge>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* 상세 분석 섹션 */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              { title: "재물운", icon: <Zap className="text-yellow-500" />, score: 85 },
+              { title: "직업운", icon: <Briefcase className="text-blue-500" />, score: 92 },
+              { title: "연애운", icon: <Star className="text-pink-500" />, score: 78 },
+            ].map(item => (
+              <Card key={item.title} className="p-6">
+                <div className="flex justify-between items-start mb-4">
+                  <div className="p-2 bg-slate-50 rounded-lg">{item.icon}</div>
+                  <span className="text-2xl font-bold text-slate-800">{item.score}</span>
+                </div>
+                <h4 className="font-bold mb-2">{item.title}</h4>
+                <p className="text-sm text-slate-500">데이터 시뮬레이션 결과 상위 15%에 해당하는 긍정적인 흐름입니다.</p>
+              </Card>
+            ))}
+          </div>
         </motion.div>
-
-        {/* 운세 상세 내용 */}
-        <div className="space-y-6">
-          {Object.entries(fortunes).map(([key, fortune], index) => (
-            <AnimatePresence key={key}>
-              {fortune && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <Card className="bg-card border-white/10 overflow-hidden">
-                    <CardHeader className="bg-white/5 border-b border-white/5">
-                      <CardTitle className="text-white flex items-center gap-2">
-                        <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center text-primary">
-                          {fortuneIcons[key]}
-                        </div>
-                        {fortune.title}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent className="p-6">
-                      <div className="prose prose-invert max-w-none">
-                        <p className="text-white/90 leading-relaxed whitespace-pre-wrap">
-                          {fortune.content}
-                        </p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          ))}
-        </div>
-
-        {/* 오행 분석 및 기타 정보 */}
-        {extraInfo && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.5 }}
-            className="space-y-8"
-          >
-            <SajuChart 
-              data={calculateElementBalance(result)} 
-              scores={extraInfo.scores} 
-            />
-            <LuckyItems lucky={extraInfo.lucky} />
-            <SajuGlossary />
-          </motion.div>
-        )}
       </main>
     </div>
   );

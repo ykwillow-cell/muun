@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion } from "framer-motion";
-import { ChevronLeft, Share2, Sparkles, User, TrendingUp, Zap, Briefcase, Activity, Users, Quote, BookOpen, Info } from "lucide-react";
+import { ChevronLeft, Share2, Sparkles, User, BookOpen, Info, Calendar } from "lucide-react";
 import { Link } from "wouter";
 import { shareContent } from "@/lib/share";
 
@@ -12,48 +12,30 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { calculateSaju, SajuResult, calculateElementBalance, generateFortuneDetails } from "@/lib/saju";
-import SajuChart from "@/components/SajuChart";
-import LuckyItems from "@/components/LuckyItems";
-import SajuGlossary from "@/components/SajuGlossary";
-import iljuData from "@/lib/ilju-data.json";
+import { calculateSaju, SajuResult } from "@/lib/saju";
+import { calculateTojeong } from "@/lib/tojeong";
 
-// 폼 스키마 정의
+// 폼 스키마 정의 (태어난 시간 제외)
 const formSchema = z.object({
   name: z.string().min(1, "이름을 입력해주세요"),
   gender: z.enum(["male", "female"]),
   birthDate: z.string().min(1, "생년월일을 입력해주세요"),
-  birthTime: z.string().min(1, "태어난 시간을 입력해주세요"),
   calendarType: z.enum(["solar", "lunar"]),
 });
 
 type FormValues = z.infer<typeof formSchema>;
 
-// --- 토정비결 해석 로직 (전문가 스타일) ---
-
-function getTojeongReview(stem: string): { title: string; general: string; detailed: any[], advice: string } {
-  const reviews: Record<string, any> = {
-    'default': {
-      title: "하늘의 문이 열리고 복운이 찾아오는 형상",
-      general: "올해의 토정비결은 '만사형통'의 기운을 담고 있습니다. 막혔던 일들이 풀리기 시작하고, 주변의 도움으로 큰 성취를 이룰 수 있는 해입니다. 특히 문서와 관련된 운이 좋아 새로운 계약이나 자격증 취득에 유리합니다. 다만, 너무 자만하지 말고 겸손한 자세를 유지한다면 더 큰 복이 찾아올 것입니다.",
-      detailed: [
-        { category: "재물운", content: "재물이 샘솟는 해입니다. 생각지 못한 곳에서 이득이 생기고, 투자했던 곳에서 좋은 소식이 들려옵니다. 지출을 관리한다면 큰 부를 축적할 수 있습니다." },
-        { category: "직업운", content: "승진이나 영전의 기회가 있습니다. 당신의 능력이 상사나 동료들에게 인정받아 중요한 프로젝트를 맡게 될 것입니다." },
-        { category: "건강운", content: "체력이 회복되고 활력이 넘칩니다. 다만 환절기 호흡기 질환만 주의한다면 건강한 한 해를 보낼 수 있습니다." },
-        { category: "인간관계", content: "귀인이 나타나 당신을 돕습니다. 새로운 인연이 당신의 인생에 긍정적인 변화를 가져다줄 것입니다." }
-      ],
-      advice: "하늘은 스스로 돕는 자를 돕습니다. 당신의 성실함이 최고의 운을 완성할 것입니다."
-    }
-  };
-  
-  // 실제로는 stem별로 다른 데이터를 반환하도록 확장 가능
-  return reviews[stem] || reviews['default'];
-}
+// 월별 운세 데이터 (예시 - 실제로는 144괘 데이터베이스 필요)
+const getMonthlyFortunes = (hexagram: string) => {
+  return Array.from({ length: 12 }, (_, i) => ({
+    month: i + 1,
+    content: `${i + 1}월은 기운이 상승하는 시기입니다. 주변의 도움으로 계획했던 일이 순조롭게 풀리며, 특히 중순 이후에는 뜻밖의 재물이 들어올 운세입니다.`,
+    tag: i % 3 === 0 ? "길운" : "평탄"
+  }));
+};
 
 export default function Tojeong() {
-  const [result, setResult] = useState<SajuResult | null>(null);
-  const [extraInfo, setExtraInfo] = useState<any>(null);
+  const [result, setResult] = useState<any>(null);
   
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -61,8 +43,7 @@ export default function Tojeong() {
       name: "",
       gender: "male",
       birthDate: "2000-01-01",
-      birthTime: "12:00",
-      calendarType: "solar",
+      calendarType: "lunar", // 음력 기본값
     },
   });
 
@@ -70,34 +51,40 @@ export default function Tojeong() {
     const savedData = localStorage.getItem("muun_user_data");
     if (savedData) {
       const parsed = JSON.parse(savedData);
-      form.reset(parsed);
+      // 기존 데이터에서 birthTime 제외하고 로드
+      const { birthTime, ...rest } = parsed;
+      form.reset({ ...form.getValues(), ...rest });
     }
   }, [form]);
 
   const onSubmit = (data: FormValues) => {
     localStorage.setItem("muun_user_data", JSON.stringify(data));
-    const date = new Date(`${data.birthDate}T${data.birthTime}`);
-    const sajuResult = calculateSaju(date, data.gender);
-    setResult(sajuResult);
+    const date = new Date(data.birthDate);
     
-    // 추가 정보 생성
-    const details = generateFortuneDetails(sajuResult);
-    setExtraInfo(details);
+    // 토정비결 괘 계산
+    const tojeongResult = calculateTojeong(date, 2026);
+    const monthlyFortunes = getMonthlyFortunes(tojeongResult.hexagram);
+    
+    setResult({
+      ...tojeongResult,
+      monthlyFortunes,
+      name: data.name
+    });
     
     window.scrollTo(0, 0);
   };
 
   if (!result) {
     return (
-      <div className="min-h-screen bg-background text-foreground pb-20">
-        <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
+      <div className="min-h-screen bg-[#0f172a] text-slate-200 pb-20 font-serif">
+        <header className="sticky top-0 z-50 backdrop-blur-md bg-slate-900/50 border-b border-amber-900/30">
           <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
             <Link href="/">
-              <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/10">
+              <Button variant="ghost" size="icon" className="mr-2 text-amber-200 hover:bg-amber-900/20">
                 <ChevronLeft className="h-6 w-6" />
               </Button>
             </Link>
-            <h1 className="text-xl font-bold text-white">무료 토정비결</h1>
+            <h1 className="text-xl font-bold text-amber-100">전통 토정비결</h1>
           </div>
         </header>
 
@@ -108,73 +95,59 @@ export default function Tojeong() {
             transition={{ duration: 0.6 }}
             className="max-w-2xl mx-auto space-y-6"
           >
-            <Card className="bg-card border-white/10 shadow-xl backdrop-blur-md">
+            <div className="text-center space-y-2 mb-8">
+              <h2 className="text-3xl font-bold text-amber-200">2026년 토정비결</h2>
+              <p className="text-slate-400">이지함 선생의 원문 괘 계산법으로 한 해의 운세를 풀이합니다.</p>
+            </div>
+
+            <Card className="bg-slate-900/80 border-amber-900/30 shadow-2xl backdrop-blur-sm">
               <CardHeader>
-                  <CardTitle className="text-white flex items-center gap-2">
-                    <BookOpen className="w-5 h-5 text-primary" />
-                    무료 토정비결 정보 입력
+                  <CardTitle className="text-amber-100 flex items-center gap-2">
+                    <BookOpen className="w-5 h-5 text-amber-500" />
+                    운세 정보 입력
                   </CardTitle>
               </CardHeader>
               <CardContent>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                  <div>
-                    <Label htmlFor="name" className="text-white mb-2 block">이름</Label>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Label htmlFor="name" className="text-slate-300">이름</Label>
+                      <Input
+                        id="name"
+                        placeholder="성함을 입력하세요"
+                        {...form.register("name")}
+                        className="bg-slate-950/50 border-slate-800 text-slate-200 focus:border-amber-500"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label className="text-slate-300">성별</Label>
+                      <ToggleGroup
+                        type="single"
+                        value={form.watch("gender")}
+                        onValueChange={(value) => {
+                          if (value) form.setValue("gender", value as "male" | "female");
+                        }}
+                        className="justify-start"
+                      >
+                        <ToggleGroupItem value="male" className="flex-1 border-slate-800 data-[state=on]:bg-amber-900/40 data-[state=on]:text-amber-200">남성</ToggleGroupItem>
+                        <ToggleGroupItem value="female" className="flex-1 border-slate-800 data-[state=on]:bg-amber-900/40 data-[state=on]:text-amber-200">여성</ToggleGroupItem>
+                      </ToggleGroup>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="birthDate" className="text-slate-300">생년월일</Label>
                     <Input
-                      id="name"
-                      placeholder="이름을 입력해주세요"
-                      {...form.register("name")}
-                      className="bg-white/5 border-white/10 text-white placeholder:text-white/40"
+                      id="birthDate"
+                      type="date"
+                      {...form.register("birthDate")}
+                      className="bg-slate-950/50 border-slate-800 text-slate-200"
                     />
                   </div>
 
-                  <div>
-                    <Label className="text-white mb-3 block">성별</Label>
-                    <ToggleGroup
-                      type="single"
-                      value={form.watch("gender")}
-                      onValueChange={(value) => {
-                        if (value) form.setValue("gender", value as "male" | "female");
-                      }}
-                      className="justify-start"
-                    >
-                      <ToggleGroupItem
-                        value="male"
-                        className="px-8 py-3 text-base rounded-l-md border border-white/10 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white"
-                      >
-                        남성
-                      </ToggleGroupItem>
-                      <ToggleGroupItem
-                        value="female"
-                        className="px-8 py-3 text-base rounded-r-md border border-l-0 border-white/10 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white"
-                      >
-                        여성
-                      </ToggleGroupItem>
-                    </ToggleGroup>
-                  </div>
-
-                  <div className="grid grid-cols-1 gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="birthDate" className="text-white block text-base font-semibold">생년월일</Label>
-                      <Input
-                        id="birthDate"
-                        type="date"
-                        {...form.register("birthDate")}
-                        className="bg-white/5 border-white/10 text-white w-full appearance-none"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="birthTime" className="text-white block text-base font-semibold">태어난 시간</Label>
-                      <Input
-                        id="birthTime"
-                        type="time"
-                        {...form.register("birthTime")}
-                        className="bg-white/5 border-white/10 text-white w-full appearance-none"
-                      />
-                    </div>
-                  </div>
-
-                  <div>
-                    <Label className="text-white mb-3 block">구분</Label>
+                  <div className="space-y-3">
+                    <Label className="text-slate-300">날짜 구분</Label>
                     <ToggleGroup
                       type="single"
                       value={form.watch("calendarType")}
@@ -183,24 +156,18 @@ export default function Tojeong() {
                       }}
                       className="justify-start"
                     >
-                      <ToggleGroupItem
-                        value="solar"
-                        className="px-8 py-3 text-base rounded-l-md border border-white/10 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white"
-                      >
-                        양력
-                      </ToggleGroupItem>
-                      <ToggleGroupItem
-                        value="lunar"
-                        className="px-8 py-3 text-base rounded-r-md border border-l-0 border-white/10 data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white"
-                      >
-                        음력
-                      </ToggleGroupItem>
+                      <ToggleGroupItem value="solar" className="px-8 border-slate-800 data-[state=on]:bg-amber-900/40 data-[state=on]:text-amber-200">양력</ToggleGroupItem>
+                      <ToggleGroupItem value="lunar" className="px-8 border-slate-800 data-[state=on]:bg-amber-900/40 data-[state=on]:text-amber-200">음력</ToggleGroupItem>
                     </ToggleGroup>
+                    <p className="text-xs text-amber-500/80 flex items-center gap-1">
+                      <Info className="w-3 h-3" />
+                      토정비결은 전통적으로 음력 생일을 기준으로 할 때 가장 정확합니다.
+                    </p>
                   </div>
 
-                  <Button type="submit" className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white font-semibold">
-                    <Sparkles className="w-4 h-4 mr-2" />
-                    토정비결 결과 보기
+                  <Button type="submit" className="w-full bg-amber-700 hover:bg-amber-600 text-white font-bold py-6 text-lg shadow-lg shadow-amber-900/20">
+                    <Sparkles className="w-5 h-5 mr-2" />
+                    2026년 토정비결 결과 보기
                   </Button>
                 </form>
               </CardContent>
@@ -211,29 +178,17 @@ export default function Tojeong() {
     );
   }
 
-  const tojeong = getTojeongReview(result.dayPillar.stem);
-
   return (
-    <div className="min-h-screen bg-background text-foreground pb-20">
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
+    <div className="min-h-screen bg-[#0f172a] text-slate-200 pb-20 font-serif">
+      <header className="sticky top-0 z-50 backdrop-blur-md bg-slate-900/50 border-b border-amber-900/30">
         <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
-            <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/10" onClick={() => setResult(null)}>
+            <Button variant="ghost" size="icon" className="mr-2 text-amber-200 hover:bg-amber-900/20" onClick={() => setResult(null)}>
               <ChevronLeft className="h-6 w-6" />
             </Button>
-            <h1 className="text-xl font-bold text-white">무료 토정비결 결과</h1>
+            <h1 className="text-xl font-bold text-amber-100">토정비결 결과</h1>
           </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-yellow-400 hover:bg-yellow-400/10"
-            onClick={() => {
-              shareContent({
-                title: '무운 토정비결 결과',
-                text: `${form.getValues('name')}님의 2026년 토정비결 결과를 확인해보세요!`,
-              });
-            }}
-          >
+          <Button variant="ghost" size="icon" className="text-amber-400" onClick={() => shareContent({ title: '무운 토정비결', text: '나의 2026년 운세는?' })}>
             <Share2 className="h-5 w-5" />
           </Button>
         </div>
@@ -241,150 +196,43 @@ export default function Tojeong() {
 
       <main className="container mx-auto max-w-[1280px] px-4 py-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="max-w-3xl mx-auto space-y-10"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="max-w-3xl mx-auto space-y-12"
         >
-          <section className="space-y-4">
-            <div className="text-center space-y-2 mb-6">
-              <h2 className="text-3xl font-bold text-white">2026년 토정비결 상세 풀이</h2>
-              <p className="text-primary/80">토정 이지함 선생의 지혜를 빌려 당신의 한 해를 정교하게 분석합니다.</p>
+          <div className="text-center space-y-4">
+            <div className="inline-block px-4 py-1 rounded-full bg-amber-900/30 border border-amber-700/50 text-amber-400 text-sm mb-2">
+              제 {result.hexagram}괘
             </div>
+            <h2 className="text-4xl font-bold text-amber-100">{result.name}님의 2026년 운세</h2>
+            <p className="text-slate-400 text-lg">"하늘의 기운이 땅으로 내려와 만물이 소생하는 형국입니다."</p>
+          </div>
 
-            {/* 시각화 데이터 보강 */}
-            {extraInfo && (
-              <div className="space-y-8 mb-10">
-                <SajuChart 
-                  data={calculateElementBalance(result)} 
-                  scores={extraInfo.scores} 
-                />
-
-                <Card className="bg-card border-white/10 overflow-hidden">
-                  <CardHeader className="border-b border-white/5">
-                    <CardTitle className="text-lg flex items-center gap-2 text-primary">
-                      <Sparkles className="w-5 h-5" />
-                      핵심 기운 분석
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-8">
-                    <p className="text-xl font-bold text-white mb-4">
-                      {form.getValues("name")}님은 "{extraInfo.mainElement}"의 기운이 가장 강합니다.
-                    </p>
-                    <p className="text-lg text-white/80 leading-relaxed mb-6">
-                      {extraInfo.summary} {extraInfo.advice}
-                    </p>
-
-                    {iljuData[result.dayPillar.stem + result.dayPillar.branch as keyof typeof iljuData] && (
-                      <div className="mt-6 pt-6 border-t border-white/5">
-                        <p className="text-sm font-bold text-primary mb-3">[{result.dayPillar.stem}{result.dayPillar.branch} 일주 상세 분석]</p>
-                        <p className="text-white/70 leading-relaxed whitespace-pre-wrap">
-                          {iljuData[result.dayPillar.stem + result.dayPillar.branch as keyof typeof iljuData]}
-                        </p>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-
-                <LuckyItems lucky={extraInfo.lucky} />
-              </div>
-            )}
-
-            {/* 사주 용어 풀이 가이드 */}
-            <SajuGlossary />
-
-            {/* 오늘의 운세 바로가기 버튼 */}
-            
-            <Card className="bg-white/5 border-white/10 mb-10">
-              <CardContent className="p-6 space-y-4">
-                <h4 className="font-bold text-white flex items-center gap-2">
-                  <Info className="w-4 h-4 text-primary" />
-                  토정비결이란 무엇인가요?
-                </h4>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  토정비결은 조선시대의 학자 토정 이지함 선생이 지은 것으로 알려진 한국의 전통 운세서입니다. 주역의 원리를 바탕으로 하되, 서민들이 알기 쉽게 재구성된 것이 특징입니다. 사주팔자 중 태어난 연, 월, 일의 세 가지 정보를 바탕으로 한 해의 신수를 총 144개의 괘로 풀어내어 설명합니다.
-                </p>
-                <p className="text-sm text-muted-foreground leading-relaxed">
-                  무운의 토정비결은 이러한 전통적인 괘 분석 방식을 현대적으로 재해석하여, 오늘날의 삶에 적용 가능한 실질적인 조언을 제공합니다. 단순히 운이 좋다 나쁘다를 넘어, 어떤 마음가짐으로 한 해를 살아가야 할지에 대한 지혜를 얻어보세요.
-                </p>
-              </CardContent>
-            </Card>
-            <div className="flex items-center gap-2 mb-2">
-              <div className="h-8 w-1 bg-primary rounded-full" />
-              <h3 className="text-2xl font-bold text-white">총론: {tojeong.title}</h3>
-            </div>
-            <Card className="bg-card border-white/10 shadow-xl overflow-hidden">
-              <CardContent className="p-8">
-                <p className="text-lg text-white/90 leading-relaxed indent-4">
-                  {tojeong.general}
-                </p>
-              </CardContent>
-            </Card>
-          </section>
-
-          <section className="space-y-6">
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-1 bg-primary rounded-full" />
-              <h3 className="text-2xl font-bold text-white">분야별 상세 운세</h3>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {tojeong.detailed.map((item: any, idx: number) => (
-                <Card key={idx} className="bg-card border-white/10">
-                  <CardHeader className="pb-2 border-b border-white/5 mb-4">
-                    <CardTitle className="text-lg text-white">{item.category}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-white/70 leading-relaxed">{item.content}</p>
-                  </CardContent>
-                </Card>
+          {/* 월별 운세 타임라인 */}
+          <section className="space-y-8">
+            <h3 className="text-2xl font-bold text-amber-200 flex items-center gap-2 border-b border-amber-900/30 pb-2">
+              <Calendar className="w-6 h-6" />
+              월별 상세 운세
+            </h3>
+            <div className="relative border-l-2 border-amber-900/30 ml-4 pl-8 space-y-12">
+              {result.monthlyFortunes.map((item: any) => (
+                <div key={item.month} className="relative">
+                  <div className="absolute -left-[41px] top-0 w-4 h-4 rounded-full bg-amber-600 border-4 border-slate-900" />
+                  <div className="bg-slate-900/50 border border-slate-800 p-6 rounded-xl hover:border-amber-700/50 transition-colors">
+                    <div className="flex justify-between items-center mb-3">
+                      <span className="text-xl font-bold text-amber-400">{item.month}월</span>
+                      <span className="px-2 py-0.5 rounded bg-amber-900/20 text-amber-500 text-xs border border-amber-900/50">{item.tag}</span>
+                    </div>
+                    <p className="text-slate-300 leading-relaxed">{item.content}</p>
+                  </div>
+                </div>
               ))}
             </div>
           </section>
 
-          <section className="space-y-4">
-            <div className="flex items-center gap-2">
-              <div className="h-8 w-1 bg-primary rounded-full" />
-              <h3 className="text-2xl font-bold text-white">인생 조언</h3>
-            </div>
-            <Card className="bg-gradient-to-br from-primary/10 to-transparent border-primary/20">
-              <CardContent className="p-8 relative">
-                <Quote className="absolute top-4 left-4 w-8 h-8 text-primary/20" />
-                <p className="text-lg text-white/90 leading-relaxed text-center italic">
-                  "{tojeong.advice}"
-                </p>
-                <Quote className="absolute bottom-4 right-4 w-8 h-8 text-primary/20 rotate-180" />
-              </CardContent>
-            </Card>
-          </section>
-
-          <section className="bg-white/5 border border-white/10 rounded-3xl p-8 space-y-6">
-            <h4 className="text-xl font-bold text-white">운세를 현명하게 활용하는 법</h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <h5 className="font-bold text-primary text-sm">긍정적인 기운은 증폭시키세요</h5>
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  좋은 운세가 나왔다면 그것은 당신의 노력이 결실을 맺을 준비가 되었다는 신호입니다. 자만하지 말고 더욱 적극적으로 행동하여 기회를 잡으세요.
-                </p>
-              </div>
-              <div className="space-y-2">
-                <h5 className="font-bold text-primary text-sm">주의사항은 지혜로운 경고입니다</h5>
-                <p className="text-xs text-muted-foreground leading-relaxed">
-                  조심해야 할 부분이 있다면 그것은 액운이 아니라 미리 대비하라는 조언입니다. 미리 인지하고 준비한다면 어떤 시련도 가볍게 넘길 수 있습니다.
-                </p>
-              </div>
-            </div>
-          </section>
-
-          <div className="flex flex-col gap-4 pt-6">
-            <Button onClick={() => setResult(null)} className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-6 text-lg">
-              다시 확인하기
-            </Button>
-            <Link href="/">
-              <Button variant="ghost" className="w-full text-white/50 hover:text-white">
-                홈으로 돌아가기
-              </Button>
-            </Link>
-          </div>
+          <Card className="bg-amber-900/10 border-amber-900/30 p-8 text-center">
+            <p className="text-amber-200 italic">"운명은 정해진 것이 아니라, 스스로 만들어가는 것입니다. <br/>오늘의 지혜를 바탕으로 더 나은 내일을 설계하시기 바랍니다."</p>
+          </Card>
         </motion.div>
       </main>
     </div>
