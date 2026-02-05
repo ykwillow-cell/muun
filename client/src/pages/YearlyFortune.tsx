@@ -325,8 +325,11 @@ export default function YearlyFortune() {
             transition={{ delay: 1.5 }}
             className="space-y-8"
           >
-            <SajuChart sajuResult={result} />
-            <LuckyItems sajuResult={result} />
+            <SajuChart 
+              data={calculateElementBalance(result)} 
+              scores={extraInfo.scores} 
+            />
+            <LuckyItems lucky={extraInfo.lucky} />
             <SajuGlossary />
           </motion.div>
         )}
