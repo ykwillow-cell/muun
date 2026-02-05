@@ -65,7 +65,7 @@ export default function Home() {
       label: "만세력", 
       icon: <CalendarDays className="w-8 h-8 text-primary" />, 
       color: "from-primary/20",
-      desc: "정확한 사주 데이터"
+      desc: "정확한 명리학 데이터를 기반으로 한 분석"
     },
   ];
 
@@ -94,16 +94,16 @@ export default function Home() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
               </span>
-              <span className="text-xs font-medium tracking-wider text-primary uppercase">Celestial Wisdom</span>
+              <span className="text-xs font-bold tracking-wider text-primary uppercase">가입 없는 무료 운세</span>
             </div>
             
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1]">
-              <span className="text-gradient">복잡한 가입 없이, 30년 내공의</span><br />
-              <span className="text-primary">명리학으로 읽어내는 당신의 운명</span>
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-medium tracking-tight leading-[1.2]">
+              복잡한 가입 없이, 30년 내공의<br />
+              <span className="text-primary font-bold">명리학으로 읽는 당신의 운명</span>
             </h1>
             
             <p className="text-base md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed px-4 md:px-0">
-              가입의 번거로움은 덜고 분석의 깊이는 더했습니다. 지금 무운에서 당신의 오늘과 내일을 바로 확인해 보세요.
+              가입의 번거로움은 덜고 분석의 깊이는 더했습니다. 지금 바로 당신의 오늘과 내일을 확인해 보세요.
             </p>
           </motion.div>
 
@@ -113,17 +113,17 @@ export default function Home() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="group relative w-full min-h-[180px] md:aspect-[3/1] rounded-[2rem] overflow-hidden glass-panel hover:border-primary/30 transition-all duration-500"
+              className="group relative w-full min-h-[180px] md:aspect-[3/1] rounded-[2rem] overflow-hidden glass-panel hover:border-primary/30 transition-all duration-500 cursor-pointer"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 group-hover:opacity-100 transition-opacity" />
               <div className="absolute inset-0 flex items-center justify-between px-6 md:px-12 py-6">
-                <div className="text-left space-y-3 z-10 flex-1">
+                <div className="text-left space-y-4 z-10 flex-1">
                   <div className="inline-block px-2 py-0.5 rounded bg-primary text-[10px] font-bold text-background uppercase">로그인 없이 바로</div>
                   <h2 className="text-lg md:text-3xl font-bold text-white group-hover:text-primary transition-colors leading-tight">
                     2026년 신년운세<br />나의 2026년 확인하기
                   </h2>
-                  <div className="flex items-center gap-2 text-sm text-primary font-medium">
-                    운세 리포트 보기 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-background text-sm font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">
+                    내 운세 바로 확인하기 <ArrowRight className="w-4 h-4" />
                   </div>
                 </div>
                 <div className="relative w-24 h-24 md:w-48 md:h-48 flex-shrink-0">
@@ -152,14 +152,14 @@ export default function Home() {
               <Link key={index} href={item.href}>
                 <motion.div 
                   whileHover={{ y: -8 }}
-                  className="group relative p-6 md:p-8 rounded-[2rem] glass-panel hover:bg-white/5 transition-all duration-300 cursor-pointer h-full flex flex-col gap-4 md:gap-6"
+                  className="group relative p-6 md:p-8 rounded-[2rem] glass-panel hover:bg-white/5 transition-all duration-300 cursor-pointer h-full flex flex-col gap-4 md:gap-5"
                 >
                   <div className={`w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-gradient-to-br ${item.color} to-transparent flex items-center justify-center group-hover:scale-110 transition-transform duration-500`}>
                     {item.icon}
                   </div>
-                  <div className="space-y-1">
+                  <div className="space-y-0.5">
                     <h4 className="text-lg font-bold text-white group-hover:text-primary transition-colors">{item.label}</h4>
-                    <p className="text-xs text-muted-foreground leading-relaxed">{item.desc}</p>
+                    <p className="text-[13px] md:text-[14px] text-white/70 leading-snug">{item.desc}</p>
                   </div>
                   <div className="mt-auto pt-2 md:pt-4 flex justify-end">
                     <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary group-hover:text-background transition-all">
@@ -212,7 +212,7 @@ export default function Home() {
           <div className="p-10 rounded-[2.5rem] bg-white/5 border border-white/10 space-y-6">
             <h4 className="text-2xl font-bold text-white">운세를 대하는 무운의 자세</h4>
             <p className="text-muted-foreground leading-relaxed">
-              사주는 결정된 미래를 맞추는 점술이 아닙니다. 태어난 시점의 우주 에너지를 분석하여 자신의 강점과 약점을 파악하고, 다가올 시련에 대비하며 기회를 포착하는 '인생의 기상청'과 같습니다. 무운은 명리학의 본질인 '중화(中和)'의 정신을 담아, 어느 한쪽으로 치우치지 않는 균형 잡힌 시각을 제공합니다.
+              사주는 결정된 미래를 맞추는 점술이 아닙니다. 태어난 시점의 우주 에너지를 분석하여 자신의 강점과 약점을 파악하고, 다가올 시련에 대비하며 기회를 포착하는 '인생의 기상청'과 같습니다. 무운은 명리학의 본질인 '중화(중화)'의 정신을 담아, 어느 한쪽으로 치우치지 않는 균형 잡힌 시각을 제공합니다.
             </p>
             <p className="text-muted-foreground leading-relaxed">
               우리는 사용자가 자신의 운명을 스스로 개척해 나갈 수 있도록 돕는 조력자가 되고자 합니다. 무운에서 제공하는 만세력, 평생사주, 토정비결 등의 다양한 도구를 통해 당신만의 인생 지도를 그려보세요.
