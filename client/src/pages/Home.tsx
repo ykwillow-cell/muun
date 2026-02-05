@@ -79,54 +79,50 @@ export default function Home() {
         <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-purple-900/10 rounded-full blur-[120px]" />
       </div>
 
-      <main className="relative z-10 container mx-auto px-4 py-12 md:py-20 flex flex-col gap-16 md:gap-20">
+      <main className="relative z-10 container mx-auto px-4 py-8 md:py-16 flex flex-col gap-10 md:gap-16">
         
-        {/* Hero Section */}
-        <section className={`flex flex-col items-center text-center gap-8 ${commonMaxWidth}`}>
+        {/* Hero Section - Compact for Mobile */}
+        <section className={`flex flex-col items-center text-center gap-6 ${commonMaxWidth}`}>
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="space-y-6"
+            className="space-y-4"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/5 border border-white/10 backdrop-blur-md">
               <span className="relative flex h-2 w-2">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
               </span>
-              <span className="text-xs font-bold tracking-wider text-primary uppercase">가입 없는 무료 운세</span>
+              <span className="text-[10px] md:text-xs font-bold tracking-wider text-primary uppercase">가입 없는 무료 운세</span>
             </div>
             
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-medium tracking-tight leading-[1.2]">
-              복잡한 가입 없이, 30년 내공의<br />
-              <span className="text-primary font-bold">명리학으로 읽는 당신의 운명</span>
+            <h1 className="text-3xl md:text-6xl lg:text-7xl font-medium tracking-tight leading-tight">
+              30년 내공의 명리학,<br />
+              <span className="text-primary font-bold">운명을 읽다</span>
             </h1>
-            
-            <p className="text-base md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed px-4 md:px-0">
-              가입의 번거로움은 덜고 분석의 깊이는 더했습니다. 지금 바로 당신의 오늘과 내일을 확인해 보세요.
-            </p>
           </motion.div>
 
-          {/* Featured Banner */}
+          {/* Featured Banner - Moved Up */}
           <Link href="/yearly-fortune" className="w-full max-w-3xl">
             <motion.div 
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="group relative w-full min-h-[180px] md:aspect-[3/1] rounded-[2rem] overflow-hidden glass-panel hover:border-primary/30 transition-all duration-500 cursor-pointer"
+              className="group relative w-full min-h-[160px] md:aspect-[3/1] rounded-[2rem] overflow-hidden glass-panel hover:border-primary/30 transition-all duration-500 cursor-pointer"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-blue-600/20 to-purple-600/20 group-hover:opacity-100 transition-opacity" />
               <div className="absolute inset-0 flex items-center justify-between px-6 md:px-12 py-6">
-                <div className="text-left space-y-4 z-10 flex-1">
+                <div className="text-left space-y-3 z-10 flex-1">
                   <div className="inline-block px-2 py-0.5 rounded bg-primary text-[10px] font-bold text-background uppercase">로그인 없이 바로</div>
                   <h2 className="text-lg md:text-3xl font-bold text-white group-hover:text-primary transition-colors leading-tight">
-                    2026년 신년운세<br />나의 2026년 확인하기
+                    신년운세<br />내 한 해의 흐름 확인하기
                   </h2>
-                  <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-primary text-background text-sm font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">
-                    내 운세 바로 확인하기 <ArrowRight className="w-4 h-4" />
+                  <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-background text-xs md:text-sm font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">
+                    내 운세 바로 확인하기 <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
                   </div>
                 </div>
-                <div className="relative w-24 h-24 md:w-48 md:h-48 flex-shrink-0">
+                <div className="relative w-20 h-20 md:w-48 md:h-48 flex-shrink-0">
                   <img 
                     src="/images/horse_mascot.png" 
                     alt="Mascot" 
@@ -140,30 +136,30 @@ export default function Home() {
 
         {/* Services Grid */}
         <section className={commonMaxWidth}>
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 md:mb-10 gap-4 px-2 md:px-0">
-            <div className="space-y-2">
-              <h2 className="text-2xl md:text-3xl font-bold text-white">무료 사주 및 운세 카테고리</h2>
-              <p className="text-muted-foreground text-sm md:text-base">당신이 궁금한 모든 미래를 준비했습니다.</p>
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 md:mb-8 gap-2 px-2 md:px-0">
+            <div className="space-y-1">
+              <h2 className="text-xl md:text-3xl font-bold text-white">어떤 미래가 궁금하신가요?</h2>
+              <p className="text-muted-foreground text-xs md:text-base">당신이 궁금한 모든 미래를 준비했습니다.</p>
             </div>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
             {menuItems.map((item, index) => (
               <Link key={index} href={item.href}>
                 <motion.div 
                   whileHover={{ y: -8 }}
-                  className="group relative p-6 md:p-8 rounded-[2rem] glass-panel hover:bg-white/5 transition-all duration-300 cursor-pointer h-full flex flex-col gap-4 md:gap-5"
+                  className="group relative p-5 md:p-8 rounded-[2rem] glass-panel hover:bg-white/5 transition-all duration-300 cursor-pointer h-full flex flex-col gap-3 md:gap-5"
                 >
-                  <div className={`w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-gradient-to-br ${item.color} to-transparent flex items-center justify-center group-hover:scale-110 transition-transform duration-500`}>
+                  <div className={`w-10 h-10 md:w-14 md:h-14 rounded-2xl bg-gradient-to-br ${item.color} to-transparent flex items-center justify-center group-hover:scale-110 transition-transform duration-500`}>
                     {item.icon}
                   </div>
                   <div className="space-y-0.5">
-                    <h4 className="text-lg font-bold text-white group-hover:text-primary transition-colors">{item.label}</h4>
-                    <p className="text-[13px] md:text-[14px] text-white/70 leading-snug">{item.desc}</p>
+                    <h4 className="text-base md:text-lg font-bold text-white group-hover:text-primary transition-colors">{item.label}</h4>
+                    <p className="text-[12px] md:text-[14px] text-white/70 leading-snug">{item.desc}</p>
                   </div>
-                  <div className="mt-auto pt-2 md:pt-4 flex justify-end">
-                    <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary group-hover:text-background transition-all">
-                      <ArrowRight className="w-4 h-4" />
+                  <div className="mt-auto pt-1 md:pt-4 flex justify-end">
+                    <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary group-hover:text-background transition-all">
+                      <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
                     </div>
                   </div>
                 </motion.div>
@@ -172,57 +168,57 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Detailed Explanation Section */}
-        <section className={`${commonMaxWidth} space-y-12`}>
-          <div className="text-center space-y-4">
-            <h2 className="text-3xl font-bold text-white">왜 무운 무료 사주인가요?</h2>
-            <p className="text-muted-foreground">무운은 사용자에게 가장 가치 있는 통찰을 제공하기 위해 세 가지 원칙을 지킵니다.</p>
+        {/* Detailed Explanation Section - Kept for SEO and Desktop but slightly tighter */}
+        <section className={`${commonMaxWidth} space-y-10`}>
+          <div className="text-center space-y-3">
+            <h2 className="text-2xl md:text-3xl font-bold text-white">왜 무운 무료 사주인가요?</h2>
+            <p className="text-muted-foreground text-sm">무운은 사용자에게 가장 가치 있는 통찰을 제공하기 위해 세 가지 원칙을 지킵니다.</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-8 rounded-[2rem] glass-panel space-y-4 border border-white/5">
-              <div className="w-12 h-12 rounded-xl bg-yellow-400/10 flex items-center justify-center">
-                <Star className="text-yellow-400 w-6 h-6" />
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+            <div className="p-6 md:p-8 rounded-[2rem] glass-panel space-y-3 border border-white/5">
+              <div className="w-10 h-10 rounded-xl bg-yellow-400/10 flex items-center justify-center">
+                <Star className="text-yellow-400 w-5 h-5" />
               </div>
-              <h4 className="text-xl font-bold text-white">정밀한 명리 알고리즘</h4>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <h4 className="text-lg font-bold text-white">정밀한 명리 알고리즘</h4>
+              <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
                 단순한 확률 게임이 아닙니다. 30년 이상의 임상 경험을 가진 명리학 전문가의 고유 데이터를 바탕으로, 수천 가지의 사주 조합을 정밀하게 분석하는 현대적 알고리즘을 구축했습니다.
               </p>
             </div>
-            <div className="p-8 rounded-[2rem] glass-panel space-y-4 border border-white/5">
-              <div className="w-12 h-12 rounded-xl bg-green-400/10 flex items-center justify-center">
-                <ShieldCheck className="text-green-400 w-6 h-6" />
+            <div className="p-6 md:p-8 rounded-[2rem] glass-panel space-y-3 border border-white/5">
+              <div className="w-10 h-10 rounded-xl bg-green-400/10 flex items-center justify-center">
+                <ShieldCheck className="text-green-400 w-5 h-5" />
               </div>
-              <h4 className="text-xl font-bold text-white">데이터 주권과 익명성</h4>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <h4 className="text-lg font-bold text-white">데이터 주권과 익명성</h4>
+              <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
                 당신의 소중한 개인정보는 서버에 단 1초도 머물지 않습니다. 모든 계산은 사용자의 브라우저 로컬 환경에서 수행되며, 페이지를 닫는 즉시 휘발됩니다. 우리는 정보의 보안을 최우선으로 생각합니다.
               </p>
             </div>
-            <div className="p-8 rounded-[2rem] glass-panel space-y-4 border border-white/5">
-              <div className="w-12 h-12 rounded-xl bg-blue-400/10 flex items-center justify-center">
-                <Info className="text-blue-400 w-6 h-6" />
+            <div className="p-6 md:p-8 rounded-[2rem] glass-panel space-y-3 border border-white/5">
+              <div className="w-10 h-10 rounded-xl bg-blue-400/10 flex items-center justify-center">
+                <Info className="text-blue-400 w-5 h-5" />
               </div>
-              <h4 className="text-xl font-bold text-white">지속 가능한 무료 가치</h4>
-              <p className="text-sm text-muted-foreground leading-relaxed">
+              <h4 className="text-lg font-bold text-white">지속 가능한 무료 가치</h4>
+              <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
                 고품질의 운세 정보가 누구나 누릴 수 있는 보편적 가치가 되기를 바랍니다. 회원가입이나 유료 결제 유도 없이, 모든 프리미엄 콘텐츠를 투명하게 공개하여 사용자에게 실질적인 도움을 드립니다.
               </p>
             </div>
           </div>
 
-          <div className="p-10 rounded-[2.5rem] bg-white/5 border border-white/10 space-y-6">
-            <h4 className="text-2xl font-bold text-white">운세를 대하는 무운의 자세</h4>
-            <p className="text-muted-foreground leading-relaxed">
+          <div className="p-8 md:p-10 rounded-[2.5rem] bg-white/5 border border-white/10 space-y-4">
+            <h4 className="text-xl md:text-2xl font-bold text-white">운세를 대하는 무운의 자세</h4>
+            <p className="text-sm text-muted-foreground leading-relaxed">
               사주는 결정된 미래를 맞추는 점술이 아닙니다. 태어난 시점의 우주 에너지를 분석하여 자신의 강점과 약점을 파악하고, 다가올 시련에 대비하며 기회를 포착하는 '인생의 기상청'과 같습니다. 무운은 명리학의 본질인 '중화(중화)'의 정신을 담아, 어느 한쪽으로 치우치지 않는 균형 잡힌 시각을 제공합니다.
             </p>
-            <p className="text-muted-foreground leading-relaxed">
+            <p className="text-sm text-muted-foreground leading-relaxed">
               우리는 사용자가 자신의 운명을 스스로 개척해 나갈 수 있도록 돕는 조력자가 되고자 합니다. 무운에서 제공하는 만세력, 평생사주, 토정비결 등의 다양한 도구를 통해 당신만의 인생 지도를 그려보세요.
             </p>
           </div>
         </section>
 
         {/* Footer */}
-        <footer className={`${commonMaxWidth} pt-12 pb-20 border-t border-white/10`}>
-          <div className="flex flex-col md:flex-row justify-between items-start gap-12">
+        <footer className={`${commonMaxWidth} pt-10 pb-16 border-t border-white/10`}>
+          <div className="flex flex-col md:flex-row justify-between items-start gap-10">
             <div className="space-y-4">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
@@ -234,7 +230,7 @@ export default function Home() {
                 운명에 얽매이지 않고 스스로 운을 만들어가는 삶을 응원합니다.
               </p>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-12">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-10">
               <div className="space-y-4">
                 <h5 className="text-sm font-bold text-white uppercase tracking-wider">Service</h5>
                 <ul className="space-y-2 text-sm text-muted-foreground">
@@ -253,7 +249,7 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className="mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
+          <div className="mt-16 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-xs text-muted-foreground">© 2026 MUUN Celestial Services. All rights reserved.</p>
             <div className="flex gap-6">
               {/* Social Icons Placeholder */}
