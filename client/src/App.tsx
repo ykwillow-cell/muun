@@ -9,6 +9,7 @@ import { GNB } from "./components/GNB";
 import { useEffect } from "react";
 import { useLocation } from "wouter";
 import { initGA, trackPageView } from "@/lib/ga4";
+import { Analytics } from "@vercel/analytics/react";
 import Manselyeok from "./pages/Manselyeok";
 import LifelongSaju from "./pages/LifelongSaju";
 import YearlyFortune from "./pages/YearlyFortune";
@@ -65,6 +66,7 @@ function App() {
           <Toaster />
           <GNB />
           <Router />
+          <Analytics />
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>
