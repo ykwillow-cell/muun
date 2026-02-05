@@ -3,7 +3,24 @@ import { motion } from "framer-motion";
 import { BookOpen, Star, ShieldCheck, Info, BrainCircuit, ScrollText, Sparkles, Heart, CalendarDays, ArrowRight, Zap } from "lucide-react";
 
 export default function Home() {
-  const mainItems = [
+  // GA 분석 기반 메뉴 순서 재배치
+  const menuItems = [
+    { 
+      href: "/yearly-fortune", 
+      label: "신년운세", 
+      icon: <Star className="w-8 h-8 text-blue-400" />, 
+      color: "from-blue-500/20",
+      desc: "내년엔 대박 날까? 2026년 총운 확인",
+      featured: true
+    },
+    { 
+      href: "/lifelong-saju", 
+      label: "평생사주", 
+      icon: <Sparkles className="w-8 h-8 text-purple-400" />, 
+      color: "from-purple-500/20",
+      desc: "내가 타고난 기질과 직업, 재물운까지",
+      featured: true
+    },
     { 
       href: "/tarot", 
       label: "AI 타로", 
@@ -13,16 +30,12 @@ export default function Home() {
       featured: true
     },
     { 
-      href: "/yearly-fortune", 
-      label: "프리미엄 신년운세", 
-      icon: <Star className="w-8 h-8 text-blue-400" />, 
-      color: "from-blue-500/20",
-      desc: "내년엔 대박 날까? 2026년 총운 확인",
-      featured: true
-    }
-  ];
-
-  const subItems = [
+      href: "/compatibility", 
+      label: "궁합", 
+      icon: <Heart className="w-5 h-5 text-pink-400" />, 
+      color: "from-pink-500/20",
+      desc: "우리 둘, 정말 잘 맞을까? 찰떡궁합 확인"
+    },
     { 
       href: "/tojeong", 
       label: "토정비결", 
@@ -38,25 +51,11 @@ export default function Home() {
       desc: "오늘 나에게 행운을 줄 컬러와 숫자는?"
     },
     { 
-      href: "/lifelong-saju", 
-      label: "평생사주", 
-      icon: <Sparkles className="w-5 h-5 text-purple-400" />, 
-      color: "from-purple-500/20",
-      desc: "내가 타고난 기질과 직업, 재물운까지"
-    },
-    { 
       href: "/psychology", 
       label: "심리풀이", 
       icon: <BrainCircuit className="w-5 h-5 text-indigo-400" />, 
       color: "from-indigo-500/20",
       desc: "MBTI보다 정확한 나의 본 모습"
-    },
-    { 
-      href: "/compatibility", 
-      label: "짝궁합", 
-      icon: <Heart className="w-5 h-5 text-pink-400" />, 
-      color: "from-pink-500/20",
-      desc: "우리 둘, 정말 잘 맞을까? 찰떡궁합 확인"
     },
     { 
       href: "/manselyeok", 
@@ -116,7 +115,7 @@ export default function Home() {
                   <h2 className="text-base md:text-3xl font-bold text-white group-hover:text-primary transition-colors leading-tight">
                     신년운세<br />내 한 해의 흐름 확인하기
                   </h2>
-                  <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 md:px-5 md:py-2.5 rounded-full bg-primary text-background text-[11px] md:text-sm font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20">
+                  <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 md:px-5 md:py-2.5 rounded-full bg-primary text-background text-[11px] md:text-sm font-bold hover:bg-primary/90 transition-all shadow-lg shadow-primary/20 min-h-[44px]">
                     지금 바로 확인하기 <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
                   </div>
                 </div>
@@ -141,38 +140,15 @@ export default function Home() {
             </div>
           </div>
           
-          {/* Main Services - 2 Column Grid */}
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 mb-3 md:mb-6">
-            {mainItems.map((item, index) => (
-              <Link key={index} href={item.href}>
-                <motion.div 
-                  whileHover={{ y: -5 }}
-                  className="group relative p-4 md:p-8 rounded-[1.5rem] md:rounded-[2rem] glass-panel border-primary/20 bg-primary/5 hover:bg-primary/10 transition-all duration-300 cursor-pointer h-full flex flex-col gap-3 md:gap-5"
-                >
-                  <div className={`w-10 h-10 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-gradient-to-br ${item.color} to-transparent flex items-center justify-center group-hover:scale-110 transition-transform duration-500`}>
-                    {item.icon}
-                  </div>
-                  <div className="space-y-1">
-                    <h4 className="text-sm md:text-lg font-bold text-white group-hover:text-primary transition-colors">{item.label}</h4>
-                    <p className="text-[10px] md:text-[14px] text-white/60 leading-snug line-clamp-1 md:line-clamp-none">{item.desc}</p>
-                  </div>
-                  <div className="mt-auto pt-1 md:pt-4 flex justify-end">
-                    <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary group-hover:text-background transition-all">
-                      <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
-                    </div>
-                  </div>
-                </motion.div>
-              </Link>
-            ))}
-          </div>
-
-          {/* Sub Services - 2 Column Grid */}
+          {/* All Services - 2 Column Grid for Mobile, 3 Column for Desktop */}
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
-            {subItems.map((item, index) => (
+            {menuItems.map((item, index) => (
               <Link key={index} href={item.href}>
                 <motion.div 
                   whileHover={{ y: -5 }}
-                  className="group relative p-3 md:p-8 rounded-[1.2rem] md:rounded-[2rem] glass-panel hover:bg-white/5 transition-all duration-300 cursor-pointer h-full flex flex-col md:flex-col gap-2 md:gap-5"
+                  className={`group relative p-4 md:p-8 rounded-[1.5rem] md:rounded-[2rem] glass-panel transition-all duration-300 cursor-pointer h-full flex flex-col gap-3 md:gap-5 min-h-[44px] ${
+                    item.featured ? 'border-primary/20 bg-primary/5 hover:bg-primary/10' : 'hover:bg-white/5'
+                  }`}
                 >
                   <div className="flex items-center md:block gap-2">
                     <div className={`w-8 h-8 md:w-14 md:h-14 rounded-lg md:rounded-2xl bg-gradient-to-br ${item.color} to-transparent flex items-center justify-center group-hover:scale-110 transition-transform duration-500 flex-shrink-0`}>
@@ -184,7 +160,7 @@ export default function Home() {
                     <p className="text-[13px] md:text-[14px] text-white/70 leading-snug line-clamp-1">{item.desc}</p>
                   </div>
                   <div className="mt-auto pt-0 md:pt-4 flex justify-end">
-                    <div className="w-5 h-5 md:w-8 md:h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary group-hover:text-background transition-all">
+                    <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-primary group-hover:text-background transition-all">
                       <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
                     </div>
                   </div>
@@ -194,7 +170,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Detailed Explanation Section - Kept for SEO and Desktop but slightly tighter */}
+        {/* Detailed Explanation Section */}
         <section className={`${commonMaxWidth} space-y-8 md:space-y-12`}>
           <div className="text-center space-y-2 md:space-y-4">
             <h2 className="text-xl md:text-3xl font-bold text-white">왜 무운 무료 사주인가요?</h2>

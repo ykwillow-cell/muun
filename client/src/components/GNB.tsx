@@ -20,9 +20,11 @@ import {
   ChevronRight,
   Star,
   Zap,
-  History
+  History,
+  Share2
 } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 const navItems = [
   { name: "만세력", href: "/manselyeok", icon: Calendar, description: "나의 타고난 기운 확인" },
@@ -43,9 +45,28 @@ export function GNB() {
   const [location] = useLocation();
   const [isOpen, setIsOpen] = useState(false);
 
+  const handleShare = async () => {
+    const shareData = {
+      title: '무운 (MUUN) - 무료 사주 및 운세',
+      text: '회원가입 없이 바로 보는 30년 내공의 명리학 운세 서비스',
+      url: window.location.origin,
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        await navigator.clipboard.writeText(window.location.origin);
+        toast.success("링크가 클립보드에 복사되었습니다.");
+      }
+    } catch (err) {
+      console.error('Share failed:', err);
+    }
+  };
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-background/60 backdrop-blur-2xl">
-      <div className="container flex h-16 items-center justify-between">
+      <div className="container flex h-16 items-center justify-between px-4">
         <div className="flex items-center gap-12">
           <Link href="/" className="flex items-center space-x-2.5 group">
             <div className="w-9 h-9 bg-primary rounded-xl flex items-center justify-center group-hover:rotate-12 transition-all duration-500 shadow-[0_0_20px_rgba(255,215,0,0.2)]">
@@ -73,11 +94,23 @@ export function GNB() {
           </nav>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
+          {/* 공유 버튼 - 터치 영역 44px 확보 */}
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={handleShare}
+            className="text-foreground/70 hover:bg-white/5 w-11 h-11 md:w-10 md:h-10 flex items-center justify-center"
+            aria-label="Share"
+          >
+            <Share2 className="h-5 w-5" />
+          </Button>
+
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild className="md:hidden">
-              <Button variant="ghost" size="icon" className="text-primary hover:bg-primary/10 w-14 h-14">
-                <Menu className="h-10 w-10" />
+              {/* 메뉴 버튼 - 터치 영역 44px 확보 */}
+              <Button variant="ghost" size="icon" className="text-primary hover:bg-primary/10 w-11 h-11 flex items-center justify-center">
+                <Menu className="h-6 w-6" />
                 <span className="sr-only">Toggle menu</span>
               </Button>
             </SheetTrigger>
@@ -103,7 +136,7 @@ export function GNB() {
                           href={item.href}
                           onClick={() => setIsOpen(false)}
                           className={cn(
-                            "group flex items-center gap-4 p-4 rounded-xl transition-all duration-200",
+                            "group flex items-center gap-4 p-4 rounded-xl transition-all duration-200 min-h-[44px]",
                             isActive 
                               ? "bg-primary/10 text-primary" 
                               : "hover:bg-white/5 text-foreground/70 hover:text-foreground"
