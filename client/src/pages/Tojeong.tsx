@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { calculateTojeong } from "@/lib/tojeong";
+import TojeongContent from "@/components/TojeongContent";
 
 // 폼 스키마 정의 (태어난 시간 제외)
 const formSchema = z.object({
@@ -184,6 +185,9 @@ export default function Tojeong() {
                 </form>
               </CardContent>
             </Card>
+
+            {/* SEO 콘텐츠 */}
+            <TojeongContent />
           </motion.div>
         </main>
       </div>

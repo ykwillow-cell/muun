@@ -16,6 +16,7 @@ import { calculateSaju, SajuResult, calculateElementBalance, generateFortuneDeta
 import SajuChart from "@/components/SajuChart";
 import LuckyItems from "@/components/LuckyItems";
 import SajuGlossary from "@/components/SajuGlossary";
+import YearlyFortuneContent from "@/components/YearlyFortuneContent";
 import iljuData from "@/lib/ilju-data.json";
 import { trackEvent, trackCustomEvent } from "@/lib/ga4";
 import { 
@@ -244,6 +245,9 @@ export default function YearlyFortune() {
                 </form>
               </CardContent>
             </Card>
+
+            {/* SEO 콘텐츠 */}
+            <YearlyFortuneContent />
           </motion.div>
         </main>
       </div>
