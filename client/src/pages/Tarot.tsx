@@ -8,6 +8,7 @@ import axios from "axios";
 import tarotData from "@/lib/tarot-data.json";
 import { saveTarotReading } from "@/lib/tarot-db";
 import { trackCustomEvent } from "@/lib/ga4";
+import TarotContent from "@/components/TarotContent";
 
 interface TarotCard {
   id: number;
@@ -245,6 +246,8 @@ ${question}
               >
                 상담 시작하기 <ChevronRight className="w-5 h-5" />
               </Button>
+            {/* SEO 콘텐츠 */}
+              <TarotContent />
             </motion.div>
           )}
 

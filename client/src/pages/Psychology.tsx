@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, Share2, RefreshCw, BrainCircuit, Heart, Sparkles, Target } from "lucide-react";
 import { Link } from "wouter";
 import { shareContent } from "@/lib/share";
+import PsychologyContent from "@/components/PsychologyContent";
 
 // 심리 테스트 데이터
 const PSYCHOLOGY_TESTS = [
@@ -165,6 +166,9 @@ export default function Psychology() {
                   </Button>
                 </CardContent>
               </Card>
+
+              {/* SEO 콘텐츠 */}
+              <PsychologyContent />
             </motion.div>
           )}
 

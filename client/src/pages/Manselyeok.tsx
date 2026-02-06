@@ -14,6 +14,7 @@ import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { calculateSaju, SajuResult, FiveElement } from "@/lib/saju";
 import SajuGlossary from "@/components/SajuGlossary";
+import ManselyeokContent from "@/components/ManselyeokContent";
 
 // 폼 스키마 정의
 const formSchema = z.object({
@@ -228,6 +229,9 @@ export default function Manselyeok() {
                   </form>
                 </CardContent>
               </Card>
+
+              {/* SEO 콘텐츠 */}
+              <ManselyeokContent />
             </motion.div>
           ) : (
             <motion.div

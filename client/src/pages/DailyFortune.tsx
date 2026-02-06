@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getDailyFortune, DailyFortuneResult } from "@/lib/dailyFortune";
 import { shareContent } from "@/lib/share";
+import DailyFortuneContent from "@/components/DailyFortuneContent";
 
 export default function DailyFortune() {
   const [fortune, setFortune] = useState<DailyFortuneResult | null>(null);
@@ -180,6 +181,9 @@ export default function DailyFortune() {
             </Button>
           </div>
         </motion.div>
+
+        {/* SEO 콘텐츠 */}
+        <DailyFortuneContent />
       </main>
     </div>
   );

@@ -13,6 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { calculateSaju, SajuResult } from "@/lib/saju";
+import CompatibilityContent from "@/components/CompatibilityContent";
 
 // 폼 스키마 정의
 const formSchema = z.object({
@@ -375,6 +376,9 @@ export default function Compatibility() {
                 </form>
               </CardContent>
             </Card>
+
+            {/* SEO 콘텐츠 */}
+            <CompatibilityContent />
           </motion.div>
         </main>
       </div>

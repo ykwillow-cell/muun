@@ -12,6 +12,7 @@ import { MAJOR_CITIES, City } from '../lib/cities';
 import zodiacData from '../lib/zodiac-data.json';
 import { Star, Moon, Sun, Info, ChevronLeft, Sparkles, User, Compass, Zap, Shield, Globe, MapPin, Search } from 'lucide-react';
 import { Link } from "wouter";
+import AstrologyContent from "@/components/AstrologyContent";
 
 const formSchema = z.object({
   birthDate: z.string().min(1, "생년월일을 입력해주세요"),
@@ -312,6 +313,9 @@ const Astrology: React.FC = () => {
                 </form>
               </CardContent>
             </Card>
+
+            {/* SEO 콘텐츠 */}
+            <AstrologyContent />
           </motion.div>
         </main>
       </div>
