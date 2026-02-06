@@ -1,24 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Palette, Coffee, Star, MapPin, CheckCircle2, AlertCircle, Hash } from "lucide-react";
-
-interface SajuPillar {
-  stem: {
-    char: string;
-    element: string;
-  };
-  branch: {
-    char: string;
-    element: string;
-  };
-}
+import { SajuResult, STEM_ELEMENTS, BRANCH_ELEMENTS } from "@/lib/saju";
 
 interface LuckyItemsProps {
-  result: {
-    yearPillar: SajuPillar;
-    monthPillar: SajuPillar;
-    dayPillar: SajuPillar;
-    hourPillar: SajuPillar;
-  };
+  result: SajuResult;
+  extraInfo?: any;
 }
 
 // 오행별 행운 데이터 매핑
@@ -72,13 +58,13 @@ const ELEMENT_LUCKY_DATA: Record<string, {
   }
 };
 
-function getStrongestElement(result: LuckyItemsProps['result']): string {
+function getStrongestElement(result: SajuResult): string {
   const elements: Record<string, number> = { '木': 0, '火': 0, '土': 0, '金': 0, '水': 0 };
   
   const pillars = [result.yearPillar, result.monthPillar, result.dayPillar, result.hourPillar];
   pillars.forEach(pillar => {
-    if (pillar?.stem?.element) elements[pillar.stem.element]++;
-    if (pillar?.branch?.element) elements[pillar.branch.element]++;
+    if (pillar?.stemElement) elements[pillar.stemElement]++;
+    if (pillar?.branchElement) elements[pillar.branchElement]++;
   });
   
   let strongest = '木';
