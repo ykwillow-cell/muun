@@ -79,6 +79,8 @@ export default function Home() {
     });
   };
 
+  const commonMaxWidth = "max-w-4xl mx-auto";
+
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden relative antialiased">
       {/* Background Effects */}
@@ -95,7 +97,7 @@ export default function Home() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="max-w-3xl mx-auto space-y-4 md:space-y-6"
+            className={`${commonMaxWidth} space-y-4 md:space-y-6`}
           >
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/30 backdrop-blur-xl">
               <span className="relative flex h-2 w-2">
@@ -118,7 +120,7 @@ export default function Home() {
 
         {/* Quick Actions - 핵심 CTA (모바일 최적화) */}
         <section className="px-4 pb-6 md:pb-8">
-          <div className="max-w-4xl mx-auto flex flex-col md:flex-row gap-3 md:gap-4">
+          <div className={`${commonMaxWidth} flex flex-col md:flex-row gap-3 md:gap-4`}>
             <Link href="/yearly-fortune" onClick={() => handleCategoryClick("신년운세(퀵액션)")} className="flex-1">
               <motion.div 
                 initial={{ opacity: 0, y: 10 }}
@@ -167,47 +169,46 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Popular Services - 가로 스크롤 (모바일 친화적) */}
-        <section className="py-6 md:py-8">
-          <div className="max-w-4xl mx-auto px-4">
+        {/* Popular Services - 가로 스크롤 (모바일) / 그리드 (PC) */}
+        <section className="py-6 md:py-8 px-4">
+          <div className={commonMaxWidth}>
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg md:text-xl font-bold text-white flex items-center gap-2">
                 <span className="text-xl">🔥</span> 지금 인기 서비스
               </h2>
-              <span className="text-xs md:text-sm text-muted-foreground">← 스크롤 →</span>
+              <span className="text-xs md:text-sm text-muted-foreground md:hidden">← 스크롤 →</span>
             </div>
-          </div>
-          
-          <div 
-            ref={scrollContainerRef}
-            className="flex gap-3 overflow-x-auto px-4 pb-2 snap-x snap-mandatory scrollbar-hide"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
-            <div className="w-4 flex-shrink-0 md:hidden" /> {/* 왼쪽 패딩 */}
-            {popularItems.map((item, index) => (
-              <Link key={index} href={item.href} onClick={() => handleCategoryClick(item.label)}>
-                <motion.div 
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: index * 0.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="flex-shrink-0 w-[140px] md:w-[180px] snap-start p-4 md:p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-primary/30 hover:bg-white/10 transition-all cursor-pointer"
-                >
-                  <div className={`w-11 h-11 md:w-12 md:h-12 rounded-xl ${item.color} flex items-center justify-center mb-3`}>
-                    {item.icon}
-                  </div>
-                  <h3 className="text-sm md:text-base font-semibold text-white mb-1">{item.label}</h3>
-                  <p className="text-[11px] md:text-xs text-muted-foreground line-clamp-2">{item.desc}</p>
-                </motion.div>
-              </Link>
-            ))}
-            <div className="w-4 flex-shrink-0 md:hidden" /> {/* 오른쪽 패딩 */}
+            
+            {/* 모바일: 가로 스크롤 / PC: 5열 그리드 */}
+            <div 
+              ref={scrollContainerRef}
+              className="flex md:grid md:grid-cols-5 gap-3 overflow-x-auto md:overflow-x-visible pb-2 md:pb-0 snap-x snap-mandatory md:snap-none scrollbar-hide"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {popularItems.map((item, index) => (
+                <Link key={index} href={item.href} onClick={() => handleCategoryClick(item.label)} className="flex-shrink-0 md:flex-shrink">
+                  <motion.div 
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: index * 0.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="w-[140px] md:w-full snap-start p-4 md:p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-primary/30 hover:bg-white/10 transition-all cursor-pointer h-full"
+                  >
+                    <div className={`w-11 h-11 md:w-12 md:h-12 rounded-xl ${item.color} flex items-center justify-center mb-3`}>
+                      {item.icon}
+                    </div>
+                    <h3 className="text-sm md:text-base font-semibold text-white mb-1">{item.label}</h3>
+                    <p className="text-[11px] md:text-xs text-muted-foreground line-clamp-2">{item.desc}</p>
+                  </motion.div>
+                </Link>
+              ))}
+            </div>
           </div>
         </section>
 
         {/* All Services Grid - 2열 모바일 / 4열 데스크톱 */}
         <section className="px-4 py-6 md:py-8">
-          <div className="max-w-4xl mx-auto">
+          <div className={commonMaxWidth}>
             <h2 className="text-lg md:text-xl font-bold text-white mb-4">전체 서비스</h2>
             
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
@@ -234,14 +235,14 @@ export default function Home() {
 
         {/* Value Proposition - 가치 제안 */}
         <section className="px-4 py-8 md:py-12 bg-gradient-to-b from-transparent to-primary/5">
-          <div className="max-w-4xl mx-auto">
+          <div className={commonMaxWidth}>
             <div className="text-center mb-6 md:mb-8">
               <h2 className="text-lg md:text-2xl font-bold text-white mb-2">왜 무운인가요?</h2>
               <p className="text-xs md:text-sm text-muted-foreground">무운만의 세 가지 약속</p>
             </div>
             
-            <div className="flex flex-col md:flex-row gap-3 md:gap-4">
-              <div className="flex-1 p-5 md:p-6 rounded-2xl bg-white/5 border border-white/10">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
+              <div className="p-5 md:p-6 rounded-2xl bg-white/5 border border-white/10">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-10 h-10 rounded-xl bg-yellow-500/10 flex items-center justify-center">
                     <Star className="w-5 h-5 text-yellow-400" />
@@ -253,7 +254,7 @@ export default function Home() {
                 </p>
               </div>
               
-              <div className="flex-1 p-5 md:p-6 rounded-2xl bg-white/5 border border-white/10">
+              <div className="p-5 md:p-6 rounded-2xl bg-white/5 border border-white/10">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center">
                     <ShieldCheck className="w-5 h-5 text-green-400" />
@@ -265,7 +266,7 @@ export default function Home() {
                 </p>
               </div>
               
-              <div className="flex-1 p-5 md:p-6 rounded-2xl bg-white/5 border border-white/10">
+              <div className="p-5 md:p-6 rounded-2xl bg-white/5 border border-white/10">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
                     <Info className="w-5 h-5 text-blue-400" />
@@ -282,7 +283,7 @@ export default function Home() {
 
         {/* Footer */}
         <footer className="px-4 py-8 md:py-12 border-t border-white/10">
-          <div className="max-w-4xl mx-auto">
+          <div className={commonMaxWidth}>
             <div className="flex flex-col md:flex-row justify-between items-start gap-8">
               <div className="space-y-3">
                 <div className="flex items-center gap-2">
