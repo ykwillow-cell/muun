@@ -130,8 +130,8 @@ export default function Home() {
                 className="group flex items-center justify-between p-4 md:p-5 rounded-2xl bg-gradient-to-r from-primary/15 to-yellow-500/10 border border-primary/30 hover:border-primary/50 transition-all cursor-pointer"
               >
                 <div className="flex items-center gap-3 md:gap-4">
-                  <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden">
-                    <img src="/assets/icons/red-horse-v3.png" alt="2026 신년운세" className="w-full h-full object-cover" />
+                  <div className="w-12 h-12 md:w-14 md:h-14 bg-primary rounded-xl flex items-center justify-center text-2xl md:text-3xl flex-shrink-0">
+                    <img src="/assets/icons/red-horse-emoji.png" alt="2026 신년운세" className="w-8 h-8 md:w-10 md:h-10 object-contain" />
                   </div>
                   <div>
                     <h3 className="text-base md:text-lg font-bold text-white">2026 신년운세</h3>
