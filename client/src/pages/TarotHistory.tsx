@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, ChevronLeft, Trash2, Calendar, HelpCircle } from "lucide-react";
+import { Sparkles, ChevronLeft, Trash2, Calendar, HelpCircle, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
@@ -92,6 +92,23 @@ export default function TarotHistory() {
             지난 상담 기록을 다시 살펴보세요. <br className="hidden md:block" />
             신비로운 카드의 메시지가 당신을 기다리고 있습니다.
           </p>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.3 }}
+            className="flex items-start gap-3 p-4 rounded-2xl bg-primary/5 border border-primary/10 max-w-2xl mx-auto mt-6 text-left"
+          >
+            <Info className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
+            <div className="space-y-1">
+              <p className="text-sm font-bold text-primary">기록 저장 안내</p>
+              <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
+                무운은 사용자의 소중한 개인정보를 보호하기 위해 별도의 회원가입 없이 서비스를 제공합니다. 
+                타로 기록은 현재 사용 중인 브라우저의 <strong>로컬 저장소(Local Storage)</strong>에 안전하게 보관되며, 
+                브라우저를 닫아도 기록이 유지됩니다. 단, 브라우저 캐시를 삭제하거나 다른 기기를 사용하실 경우 기록이 보이지 않을 수 있으니 유의해 주세요.
+              </p>
+            </div>
+          </motion.div>
         </div>
 
         {isLoading ? (
