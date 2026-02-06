@@ -1,10 +1,23 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Palette, Coffee, Star, MapPin, CheckCircle2, AlertCircle, Hash } from "lucide-react";
 
+interface SajuPillar {
+  stem: {
+    char: string;
+    element: string;
+  };
+  branch: {
+    char: string;
+    element: string;
+  };
+}
+
 interface LuckyItemsProps {
   result: {
-    saju: any;
-    elementBalance?: any;
+    yearPillar: SajuPillar;
+    monthPillar: SajuPillar;
+    dayPillar: SajuPillar;
+    hourPillar: SajuPillar;
   };
 }
 
@@ -31,7 +44,7 @@ const ELEMENT_LUCKY_DATA: Record<string, {
     foods: ['쓴맛 나는 채소', '커피', '구운 요리'],
     directions: ['남쪽'],
     activities: ['운동', '사교 모임', '발표'],
-    avoid: ['조급함', '다툴']
+    avoid: ['조급함', '다툼']
   },
   '土': {
     colors: ['노란색', '브라운'],
@@ -59,10 +72,10 @@ const ELEMENT_LUCKY_DATA: Record<string, {
   }
 };
 
-function getStrongestElement(saju: any): string {
+function getStrongestElement(result: LuckyItemsProps['result']): string {
   const elements: Record<string, number> = { '木': 0, '火': 0, '土': 0, '金': 0, '水': 0 };
   
-  const pillars = [saju.year, saju.month, saju.day, saju.hour];
+  const pillars = [result.yearPillar, result.monthPillar, result.dayPillar, result.hourPillar];
   pillars.forEach(pillar => {
     if (pillar?.stem?.element) elements[pillar.stem.element]++;
     if (pillar?.branch?.element) elements[pillar.branch.element]++;
@@ -81,8 +94,9 @@ function getStrongestElement(saju: any): string {
 }
 
 export default function LuckyItems({ result }: LuckyItemsProps) {
-  const strongestElement = getStrongestElement(result.saju);
+  const strongestElement = getStrongestElement(result);
   const lucky = ELEMENT_LUCKY_DATA[strongestElement] || ELEMENT_LUCKY_DATA['木'];
+  
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
