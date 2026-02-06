@@ -500,6 +500,8 @@ export default function YearlyFortune() {
               shareContent({
                 title: '무운 2026년 신년운세',
                 text: `${userName}님의 2026년 신년운세 결과를 확인해보세요!`,
+                page: 'yearly_fortune',
+                buttonType: 'icon',
               });
             }}
           >
@@ -817,6 +819,8 @@ export default function YearlyFortune() {
                 shareContent({
                   title: '무운 2026년 신년운세',
                   text: `${userName}님의 2026년 신년운세 결과를 확인해보세요!`,
+                  page: 'yearly_fortune',
+                  buttonType: 'text_button',
                 });
               }}
             >

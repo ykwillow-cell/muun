@@ -262,6 +262,8 @@ export default function DailyFortune() {
               shareContent({
                 title: '무운 오늘의 운세',
                 text: `오늘 내 운세 점수는 ${fortune.score}점! 당신의 운세도 확인해보세요.`,
+                page: 'daily_fortune',
+                buttonType: 'icon',
               });
             }}
           >
@@ -391,6 +393,8 @@ export default function DailyFortune() {
                 shareContent({
                   title: '무운 오늘의 운세',
                   text: `오늘 내 운세 점수는 ${fortune.score}점! 당신의 운세도 확인해보세요.`,
+                  page: 'daily_fortune',
+                  buttonType: 'text_button',
                 });
               }}
             >

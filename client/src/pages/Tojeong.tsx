@@ -288,7 +288,7 @@ export default function Tojeong() {
             variant="ghost" 
             size="icon" 
             className="text-amber-400 min-w-[44px] min-h-[44px]" 
-            onClick={() => shareContent({ title: '무운 토정비결', text: '나의 2026년 운세는?' })}
+            onClick={() => shareContent({ title: '무운 토정비결', text: '나의 2026년 운세는?', page: 'tojeong', buttonType: 'icon' })}
           >
             <Share2 className="h-5 w-5" />
           </Button>
@@ -357,7 +357,7 @@ export default function Tojeong() {
           <div className="space-y-2 pt-2">
             <Button 
               className="w-full bg-white/5 border border-white/10 text-white hover:bg-white/10 h-11 rounded-xl font-medium text-sm"
-              onClick={() => shareContent({ title: '무운 토정비결', text: '나의 2026년 운세는?' })}
+              onClick={() => shareContent({ title: '무운 토정비결', text: '나의 2026년 운세는?', page: 'tojeong', buttonType: 'text_button' })}
             >
               친구에게 공유하기
             </Button>

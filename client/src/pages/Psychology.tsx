@@ -127,6 +127,8 @@ export default function Psychology() {
     await shareContent({
       title: '무운 데일리 심리풀이',
       text: `나의 숨겨진 성격 테스트 결과: ${finalResult.title}`,
+      page: 'psychology',
+      buttonType: 'text_button',
     });
   };
 

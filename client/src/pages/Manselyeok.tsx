@@ -115,6 +115,8 @@ export default function Manselyeok() {
                   shareContent({
                     title: '무운 만세력 결과',
                     text: `${form.getValues('name')}님의 사주팔자 만세력 결과를 확인해보세요!`,
+                    page: 'manselyeok',
+                    buttonType: 'icon',
                   });
                 }}
               >
@@ -413,6 +415,8 @@ export default function Manselyeok() {
                     shareContent({
                       title: '무운 만세력 결과',
                       text: `${form.getValues('name')}님의 사주팔자 만세력 결과를 확인해보세요!`,
+                      page: 'manselyeok',
+                      buttonType: 'text_button',
                     });
                   }}
                 >

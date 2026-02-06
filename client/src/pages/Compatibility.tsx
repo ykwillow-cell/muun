@@ -689,7 +689,7 @@ export default function Compatibility() {
             </Button>
             <h1 className="text-base md:text-lg font-bold text-white">궁합 결과</h1>
           </div>
-          <Button variant="ghost" size="icon" className="text-pink-400 min-w-[44px] min-h-[44px]" onClick={() => shareContent({ title: '무운 궁합 결과', text: `${name1} ♥ ${name2} 궁합 점수: ${scores.total}점! 우리의 궁합을 확인해보세요.` })}>
+          <Button variant="ghost" size="icon" className="text-pink-400 min-w-[44px] min-h-[44px]" onClick={() => shareContent({ title: '무운 궁합 결과', text: `${name1} ♥ ${name2} 궁합 점수: ${scores.total}점! 우리의 궁합을 확인해보세요.`, page: 'compatibility', buttonType: 'icon' })}>
             <Share2 className="h-5 w-5" />
           </Button>
         </div>
@@ -1083,7 +1083,7 @@ export default function Compatibility() {
           <div className="space-y-2 pt-4">
             <Button 
               className="w-full bg-white/5 border border-white/10 text-white hover:bg-white/10 h-11 rounded-xl font-medium text-sm"
-              onClick={() => shareContent({ title: '무운 궁합 결과', text: `${name1} ♥ ${name2} 궁합 점수: ${scores.total}점! 우리의 궁합을 확인해보세요.` })}
+              onClick={() => shareContent({ title: '무운 궁합 결과', text: `${name1} ♥ ${name2} 궁합 점수: ${scores.total}점! 우리의 궁합을 확인해보세요.`, page: 'compatibility', buttonType: 'text_button' })}
             >
               <Share2 className="w-4 h-4 mr-2" />
               친구에게 공유하기

@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
+import { trackCustomEvent } from "@/lib/ga4";
 
 const navItems = [
   { name: "만세력", href: "/manselyeok", icon: Calendar, description: "나의 타고난 기운 확인" },
@@ -52,14 +53,32 @@ export function GNB() {
       url: window.location.origin,
     };
 
+    // GA4 이벤트 추적: GNB 공유 버튼 클릭
+    try {
+      trackCustomEvent("share_click", {
+        page: 'gnb_header',
+        button_type: 'icon',
+        share_title: shareData.title,
+        share_url: shareData.url,
+      });
+    } catch (e) {
+      console.error('GA4 share tracking failed:', e);
+    }
+
     try {
       if (navigator.share) {
         await navigator.share(shareData);
+        try { trackCustomEvent("share_success", { page: 'gnb_header', method: 'native_share' }); } catch {}
       } else {
         await navigator.clipboard.writeText(window.location.origin);
         toast.success("링크가 클립보드에 복사되었습니다.");
+        try { trackCustomEvent("share_success", { page: 'gnb_header', method: 'clipboard_copy' }); } catch {}
       }
     } catch (err) {
+      if ((err as Error).name === 'AbortError') {
+        try { trackCustomEvent("share_cancel", { page: 'gnb_header' }); } catch {}
+        return;
+      }
       console.error('Share failed:', err);
     }
   };

@@ -423,6 +423,8 @@ export default function LifelongSaju() {
               shareContent({
                 title: '무운 무료 평생사주',
                 text: `${userName}님의 평생사주 결과를 확인해보세요!`,
+                page: 'lifelong_saju',
+                buttonType: 'icon',
               });
             }}
           >
@@ -765,6 +767,8 @@ export default function LifelongSaju() {
                 shareContent({
                   title: '무운 무료 평생사주',
                   text: `${userName}님의 평생사주 결과를 확인해보세요!`,
+                  page: 'lifelong_saju',
+                  buttonType: 'text_button',
                 });
               }}
             >
