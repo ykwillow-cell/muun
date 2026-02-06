@@ -101,77 +101,77 @@ export default function LifelongSaju() {
     }
   };
 
-  const commonMaxWidth = "w-full max-w-4xl mx-auto";
+  const commonMaxWidth = "w-full max-w-2xl mx-auto";
 
   if (!result) {
     return (
-      <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased">
+      <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased">
         {/* Background Effects */}
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-purple-500/10 rounded-full blur-[120px]" />
-          <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px]" />
+          <div className="absolute top-[-10%] left-[-10%] w-[400px] h-[400px] bg-purple-500/10 rounded-full blur-[100px]" />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-primary/10 rounded-full blur-[100px]" />
         </div>
 
         <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
           <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
             <Link href="/">
               <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/10 min-w-[44px] min-h-[44px]">
-                <ChevronLeft className="h-6 w-6" />
+                <ChevronLeft className="h-5 w-5" />
               </Button>
             </Link>
-            <h1 className="text-lg md:text-xl font-bold text-white">무료 평생사주 풀이</h1>
+            <h1 className="text-base md:text-lg font-bold text-white">무료 평생사주 풀이</h1>
           </div>
         </header>
 
-        <main className="relative z-10 container mx-auto max-w-[1280px] px-4 py-8 md:py-16">
+        <main className="relative z-10 container mx-auto max-w-[1280px] px-4 py-5 md:py-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className={`${commonMaxWidth} space-y-8`}
+            className={`${commonMaxWidth} space-y-5`}
           >
-            {/* Hero Section */}
-            <div className="text-center space-y-4">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 backdrop-blur-xl">
-                <Sparkles className="w-4 h-4 text-purple-400" />
-                <span className="text-[11px] md:text-xs font-bold tracking-widest text-purple-400 uppercase">인생의 흐름을 읽는 지혜</span>
+            {/* Hero Section - 컴팩트하게 */}
+            <div className="text-center space-y-2">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 backdrop-blur-xl">
+                <Sparkles className="w-3 h-3 text-purple-400" />
+                <span className="text-[10px] md:text-xs font-bold tracking-wider text-purple-400 uppercase">인생의 흐름을 읽는 지혜</span>
               </div>
-              <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white">무료 평생사주</h2>
-              <p className="text-muted-foreground text-sm md:text-base max-w-md mx-auto">
-                태어난 기운을 바탕으로 당신의 성격, 재물, 직업,<br className="md:hidden" /> 그리고 평생의 운을 분석합니다
+              <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-white">무료 평생사주</h2>
+              <p className="text-muted-foreground text-xs md:text-sm">
+                태어난 기운을 바탕으로 당신의 성격, 재물, 직업, 그리고 평생의 운을 분석합니다
               </p>
             </div>
 
-            {/* Input Form Card */}
-            <Card className="glass-panel border-white/5 shadow-2xl rounded-[2rem] overflow-hidden">
-              <CardHeader className="border-b border-white/5 p-6 md:p-10">
-                <CardTitle className="text-white flex items-center gap-3 text-xl md:text-2xl">
-                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-purple-500/20 flex items-center justify-center">
-                    <User className="w-5 h-5 md:w-6 md:h-6 text-purple-400" />
+            {/* Input Form Card - 컴팩트하게 */}
+            <Card className="glass-panel border-white/5 shadow-xl rounded-2xl overflow-hidden">
+              <CardHeader className="border-b border-white/5 px-4 py-3 md:px-6 md:py-4">
+                <CardTitle className="text-white flex items-center gap-2 text-base md:text-lg">
+                  <div className="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center">
+                    <User className="w-4 h-4 text-purple-400" />
                   </div>
                   사주 정보 입력
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-6 md:p-10">
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 md:space-y-8">
+              <CardContent className="p-4 md:p-6">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                   {/* Name & Gender Row */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-                    <div className="space-y-3">
-                      <Label htmlFor="name" className="text-white text-base font-medium ml-1 flex items-center gap-2">
-                        <User className="w-4 h-4 text-purple-400" />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <Label htmlFor="name" className="text-white text-sm font-medium flex items-center gap-1.5">
+                        <User className="w-3.5 h-3.5 text-purple-400" />
                         이름
                       </Label>
                       <Input
                         id="name"
                         placeholder="이름을 입력해주세요"
                         {...form.register("name")}
-                        className="h-14 bg-white/5 border-white/10 text-white placeholder:text-white/30 rounded-2xl focus:ring-purple-500/50 focus:border-purple-500 transition-all text-base"
+                        className="h-11 bg-white/5 border-white/10 text-white placeholder:text-white/30 rounded-xl focus:ring-purple-500/50 focus:border-purple-500 transition-all text-sm"
                       />
                     </div>
 
-                    <div className="space-y-3">
-                      <Label className="text-white text-base font-medium ml-1 flex items-center gap-2">
-                        <Sparkles className="w-4 h-4 text-purple-400" />
+                    <div className="space-y-1.5">
+                      <Label className="text-white text-sm font-medium flex items-center gap-1.5">
+                        <Sparkles className="w-3.5 h-3.5 text-purple-400" />
                         성별
                       </Label>
                       <ToggleGroup
@@ -183,17 +183,17 @@ export default function LifelongSaju() {
                             trackEvent("User Input", "Change Gender", value);
                           }
                         }}
-                        className="w-full h-14 bg-white/5 p-1.5 rounded-2xl border border-white/10"
+                        className="w-full h-11 bg-white/5 p-1 rounded-xl border border-white/10 grid grid-cols-2 gap-1"
                       >
                         <ToggleGroupItem
                           value="male"
-                          className="flex-1 h-full rounded-xl data-[state=on]:bg-purple-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-base"
+                          className="h-full rounded-lg data-[state=on]:bg-purple-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-sm"
                         >
                           남성
                         </ToggleGroupItem>
                         <ToggleGroupItem
                           value="female"
-                          className="flex-1 h-full rounded-xl data-[state=on]:bg-purple-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-base"
+                          className="h-full rounded-lg data-[state=on]:bg-purple-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-sm"
                         >
                           여성
                         </ToggleGroupItem>
@@ -202,38 +202,38 @@ export default function LifelongSaju() {
                   </div>
 
                   {/* Birth Date & Time Row */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-                    <div className="space-y-3">
-                      <Label htmlFor="birthDate" className="text-white text-base font-medium ml-1 flex items-center gap-2">
-                        <Calendar className="w-4 h-4 text-purple-400" />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <Label htmlFor="birthDate" className="text-white text-sm font-medium flex items-center gap-1.5">
+                        <Calendar className="w-3.5 h-3.5 text-purple-400" />
                         생년월일
                       </Label>
                       <Input
                         id="birthDate"
                         type="date"
                         {...form.register("birthDate")}
-                        className="h-14 bg-white/5 border-white/10 text-white rounded-2xl focus:ring-purple-500/50 focus:border-purple-500 transition-all text-base"
+                        className="h-11 bg-white/5 border-white/10 text-white rounded-xl focus:ring-purple-500/50 focus:border-purple-500 transition-all text-sm"
                       />
                     </div>
-                    <div className="space-y-3">
-                      <Label htmlFor="birthTime" className="text-white text-base font-medium ml-1 flex items-center gap-2">
-                        <Clock className="w-4 h-4 text-purple-400" />
+                    <div className="space-y-1.5">
+                      <Label htmlFor="birthTime" className="text-white text-sm font-medium flex items-center gap-1.5">
+                        <Clock className="w-3.5 h-3.5 text-purple-400" />
                         태어난 시간
                       </Label>
                       <Input
                         id="birthTime"
                         type="time"
                         {...form.register("birthTime")}
-                        className="h-14 bg-white/5 border-white/10 text-white rounded-2xl focus:ring-purple-500/50 focus:border-purple-500 transition-all text-base"
+                        className="h-11 bg-white/5 border-white/10 text-white rounded-xl focus:ring-purple-500/50 focus:border-purple-500 transition-all text-sm"
                       />
                     </div>
                   </div>
 
                   {/* Calendar Type & Marriage Status Row */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-                    <div className="space-y-3">
-                      <Label className="text-white text-base font-medium ml-1 flex items-center gap-2">
-                        <ScrollText className="w-4 h-4 text-purple-400" />
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <Label className="text-white text-sm font-medium flex items-center gap-1.5">
+                        <ScrollText className="w-3.5 h-3.5 text-purple-400" />
                         날짜 구분
                       </Label>
                       <ToggleGroup
@@ -245,26 +245,26 @@ export default function LifelongSaju() {
                             trackEvent("User Input", "Change Calendar Type", value);
                           }
                         }}
-                        className="w-full h-14 bg-white/5 p-1.5 rounded-2xl border border-white/10"
+                        className="w-full h-11 bg-white/5 p-1 rounded-xl border border-white/10 grid grid-cols-2 gap-1"
                       >
                         <ToggleGroupItem
                           value="solar"
-                          className="flex-1 h-full rounded-xl data-[state=on]:bg-purple-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-base"
+                          className="h-full rounded-lg data-[state=on]:bg-purple-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-sm"
                         >
                           양력
                         </ToggleGroupItem>
                         <ToggleGroupItem
                           value="lunar"
-                          className="flex-1 h-full rounded-xl data-[state=on]:bg-purple-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-base"
+                          className="h-full rounded-lg data-[state=on]:bg-purple-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-sm"
                         >
                           음력
                         </ToggleGroupItem>
                       </ToggleGroup>
                     </div>
 
-                    <div className="space-y-3">
-                      <Label className="text-white text-base font-medium ml-1 flex items-center gap-2">
-                        <Heart className="w-4 h-4 text-purple-400" />
+                    <div className="space-y-1.5">
+                      <Label className="text-white text-sm font-medium flex items-center gap-1.5">
+                        <Heart className="w-3.5 h-3.5 text-purple-400" />
                         결혼 유무
                       </Label>
                       <ToggleGroup
@@ -276,17 +276,17 @@ export default function LifelongSaju() {
                             trackEvent("User Input", "Change Marriage Status", value);
                           }
                         }}
-                        className="w-full h-14 bg-white/5 p-1.5 rounded-2xl border border-white/10"
+                        className="w-full h-11 bg-white/5 p-1 rounded-xl border border-white/10 grid grid-cols-2 gap-1"
                       >
                         <ToggleGroupItem
                           value="no"
-                          className="flex-1 h-full rounded-xl data-[state=on]:bg-purple-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-base"
+                          className="h-full rounded-lg data-[state=on]:bg-purple-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-sm"
                         >
                           미혼
                         </ToggleGroupItem>
                         <ToggleGroupItem
                           value="yes"
-                          className="flex-1 h-full rounded-xl data-[state=on]:bg-purple-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-base"
+                          className="h-full rounded-lg data-[state=on]:bg-purple-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-sm"
                         >
                           기혼
                         </ToggleGroupItem>
@@ -298,47 +298,47 @@ export default function LifelongSaju() {
                   <Button 
                     type="submit" 
                     onClick={() => trackEvent("User Action", "Click View Fortune", "Lifelong Saju")}
-                    className="w-full h-16 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-bold text-lg rounded-2xl shadow-lg shadow-purple-500/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                    className="w-full h-12 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white font-bold text-sm md:text-base rounded-xl shadow-lg shadow-purple-500/20 transition-all hover:scale-[1.02] active:scale-[0.98] mt-2"
                   >
-                    <Sparkles className="w-5 h-5 mr-2" />
+                    <Sparkles className="w-4 h-4 mr-2" />
                     무료 평생사주 보기
                   </Button>
                 </form>
               </CardContent>
             </Card>
 
-            {/* Feature Cards */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-              <Card className="bg-white/5 border-white/10 rounded-2xl">
-                <CardContent className="p-4 md:p-5 text-center space-y-2">
-                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-purple-500/10 flex items-center justify-center mx-auto">
-                    <User className="w-5 h-5 md:w-6 md:h-6 text-purple-400" />
+            {/* Feature Cards - 더 컴팩트하게 */}
+            <div className="grid grid-cols-4 gap-2 md:gap-3">
+              <Card className="bg-white/5 border-white/10 rounded-xl">
+                <CardContent className="p-2.5 md:p-3 text-center space-y-1">
+                  <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-purple-500/10 flex items-center justify-center mx-auto">
+                    <User className="w-4 h-4 md:w-4.5 md:h-4.5 text-purple-400" />
                   </div>
-                  <p className="text-xs md:text-sm font-medium text-white">타고난 성격</p>
+                  <p className="text-[10px] md:text-xs font-medium text-white">타고난 성격</p>
                 </CardContent>
               </Card>
-              <Card className="bg-white/5 border-white/10 rounded-2xl">
-                <CardContent className="p-4 md:p-5 text-center space-y-2">
-                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-yellow-500/10 flex items-center justify-center mx-auto">
-                    <Zap className="w-5 h-5 md:w-6 md:h-6 text-yellow-400" />
+              <Card className="bg-white/5 border-white/10 rounded-xl">
+                <CardContent className="p-2.5 md:p-3 text-center space-y-1">
+                  <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-yellow-500/10 flex items-center justify-center mx-auto">
+                    <Zap className="w-4 h-4 md:w-4.5 md:h-4.5 text-yellow-400" />
                   </div>
-                  <p className="text-xs md:text-sm font-medium text-white">재물운</p>
+                  <p className="text-[10px] md:text-xs font-medium text-white">재물운</p>
                 </CardContent>
               </Card>
-              <Card className="bg-white/5 border-white/10 rounded-2xl">
-                <CardContent className="p-4 md:p-5 text-center space-y-2">
-                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-blue-500/10 flex items-center justify-center mx-auto">
-                    <Briefcase className="w-5 h-5 md:w-6 md:h-6 text-blue-400" />
+              <Card className="bg-white/5 border-white/10 rounded-xl">
+                <CardContent className="p-2.5 md:p-3 text-center space-y-1">
+                  <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-blue-500/10 flex items-center justify-center mx-auto">
+                    <Briefcase className="w-4 h-4 md:w-4.5 md:h-4.5 text-blue-400" />
                   </div>
-                  <p className="text-xs md:text-sm font-medium text-white">직업운</p>
+                  <p className="text-[10px] md:text-xs font-medium text-white">직업운</p>
                 </CardContent>
               </Card>
-              <Card className="bg-white/5 border-white/10 rounded-2xl">
-                <CardContent className="p-4 md:p-5 text-center space-y-2">
-                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-pink-500/10 flex items-center justify-center mx-auto">
-                    <Heart className="w-5 h-5 md:w-6 md:h-6 text-pink-400" />
+              <Card className="bg-white/5 border-white/10 rounded-xl">
+                <CardContent className="p-2.5 md:p-3 text-center space-y-1">
+                  <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-pink-500/10 flex items-center justify-center mx-auto">
+                    <Heart className="w-4 h-4 md:w-4.5 md:h-4.5 text-pink-400" />
                   </div>
-                  <p className="text-xs md:text-sm font-medium text-white">연애운</p>
+                  <p className="text-[10px] md:text-xs font-medium text-white">연애운</p>
                 </CardContent>
               </Card>
             </div>
@@ -352,23 +352,23 @@ export default function LifelongSaju() {
   }
 
   const fortuneIcons: Record<string, React.ReactNode> = {
-    personality: <User className="w-5 h-5" />,
-    earlyLife: <Star className="w-5 h-5" />,
-    midLife: <TrendingUp className="w-5 h-5" />,
-    lateLife: <Heart className="w-5 h-5" />,
-    wealth: <Zap className="w-5 h-5" />,
-    career: <Briefcase className="w-5 h-5" />,
+    personality: <User className="w-4 h-4" />,
+    earlyLife: <Star className="w-4 h-4" />,
+    midLife: <TrendingUp className="w-4 h-4" />,
+    lateLife: <Heart className="w-4 h-4" />,
+    wealth: <Zap className="w-4 h-4" />,
+    career: <Briefcase className="w-4 h-4" />,
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground pb-20">
+    <div className="min-h-screen bg-background text-foreground pb-16">
       <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
         <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
             <Button variant="ghost" size="icon" onClick={() => setResult(null)} className="mr-2 text-white hover:bg-white/10 min-w-[44px] min-h-[44px]">
-              <ChevronLeft className="h-6 w-6" />
+              <ChevronLeft className="h-5 w-5" />
             </Button>
-            <h1 className="text-lg md:text-xl font-bold text-white">무료 평생사주 풀이 결과</h1>
+            <h1 className="text-base md:text-lg font-bold text-white">무료 평생사주 풀이 결과</h1>
           </div>
           <Button
             variant="ghost"
@@ -386,19 +386,19 @@ export default function LifelongSaju() {
         </div>
       </header>
 
-      <main className="relative z-10 px-4 py-6 md:py-8">
+      <main className="relative z-10 px-4 py-5 md:py-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className={`${commonMaxWidth} space-y-6 md:space-y-8`}
+          className={`${commonMaxWidth} space-y-5 md:space-y-6`}
         >
           {/* 사주팔자 차트 */}
-          <section className="space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center">
-                <ScrollText className="w-5 h-5 text-purple-400" />
+          <section className="space-y-3">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center">
+                <ScrollText className="w-4 h-4 text-purple-400" />
               </div>
-              <h2 className="text-xl md:text-2xl font-bold text-white">사주팔자</h2>
+              <h2 className="text-lg font-bold text-white">사주팔자</h2>
             </div>
             <SajuChart result={result} />
           </section>
@@ -415,19 +415,19 @@ export default function LifelongSaju() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1 }}
-                  className="space-y-4"
+                  className="space-y-3"
                 >
-                  <Card className="bg-white/5 border-white/10 overflow-hidden rounded-2xl">
-                    <CardHeader className="border-b border-white/5 p-4 md:p-6">
-                      <CardTitle className="text-base md:text-lg flex items-center gap-2 text-purple-400">
-                        <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-purple-500/20 flex items-center justify-center">
+                  <Card className="bg-white/5 border-white/10 overflow-hidden rounded-xl">
+                    <CardHeader className="border-b border-white/5 px-4 py-3">
+                      <CardTitle className="text-sm md:text-base flex items-center gap-2 text-purple-400">
+                        <div className="w-7 h-7 md:w-8 md:h-8 rounded-lg bg-purple-500/20 flex items-center justify-center">
                           {fortuneIcons[key]}
                         </div>
                         {fortune.title}
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="p-4 md:p-6">
-                      <p className="text-sm md:text-base text-white/90 leading-relaxed whitespace-pre-line">
+                    <CardContent className="p-4">
+                      <p className="text-sm text-white/90 leading-relaxed whitespace-pre-line">
                         {fortune.content}
                       </p>
                     </CardContent>
@@ -441,9 +441,9 @@ export default function LifelongSaju() {
           <SajuGlossary />
 
           {/* 다시 보기 버튼 */}
-          <div className="space-y-3 pt-2">
+          <div className="space-y-2 pt-2">
             <Button 
-              className="w-full bg-white/5 border border-white/10 text-white hover:bg-white/10 min-h-[48px] md:min-h-[56px] rounded-xl font-medium"
+              className="w-full bg-white/5 border border-white/10 text-white hover:bg-white/10 h-11 rounded-xl font-medium text-sm"
               onClick={() => {
                 shareContent({
                   title: '무운 무료 평생사주',
@@ -455,7 +455,7 @@ export default function LifelongSaju() {
             </Button>
             <Button 
               variant="ghost"
-              className="w-full text-white/60 hover:text-white hover:bg-white/5 min-h-[48px] rounded-xl font-medium"
+              className="w-full text-white/60 hover:text-white hover:bg-white/5 h-11 rounded-xl font-medium text-sm"
               onClick={() => setResult(null)}
             >
               다시 보기
