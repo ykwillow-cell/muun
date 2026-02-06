@@ -2,17 +2,87 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Palette, Coffee, Star, MapPin, CheckCircle2, AlertCircle, Hash } from "lucide-react";
 
 interface LuckyItemsProps {
-  lucky: {
-    colors: string[];
-    numbers: number[];
-    foods: string[];
-    directions: string[];
-    activities: string[];
-    avoid: string[];
+  result: {
+    saju: any;
+    elementBalance?: any;
   };
 }
 
-export default function LuckyItems({ lucky }: LuckyItemsProps) {
+// 오행별 행운 데이터 매핑
+const ELEMENT_LUCKY_DATA: Record<string, {
+  colors: string[];
+  numbers: number[];
+  foods: string[];
+  directions: string[];
+  activities: string[];
+  avoid: string[];
+}> = {
+  '木': {
+    colors: ['초록색', '청색'],
+    numbers: [3, 8],
+    foods: ['신맛 나는 과일', '채소', '곡물'],
+    directions: ['동쪽'],
+    activities: ['산책', '독서', '새로운 계획 세우기'],
+    avoid: ['지나친 음주', '충동적인 결정']
+  },
+  '火': {
+    colors: ['빨간색', '주황색'],
+    numbers: [2, 7],
+    foods: ['쓴맛 나는 채소', '커피', '구운 요리'],
+    directions: ['남쪽'],
+    activities: ['운동', '사교 모임', '발표'],
+    avoid: ['조급함', '다툴']
+  },
+  '土': {
+    colors: ['노란색', '브라운'],
+    numbers: [5, 0],
+    foods: ['단맛 나는 단호박', '고구마', '뿌리 채소'],
+    directions: ['중앙'],
+    activities: ['명상', '부동산 관련 공부', '정리정돈'],
+    avoid: ['게으름', '고집']
+  },
+  '金': {
+    colors: ['흰색', '금색', '은색'],
+    numbers: [4, 9],
+    foods: ['매운맛 나는 음식', '무', '생강'],
+    directions: ['서쪽'],
+    activities: ['정리', '결단 내리기', '금속 공예'],
+    avoid: ['냉소적인 태도', '슬픔']
+  },
+  '水': {
+    colors: ['검정색', '파란색'],
+    numbers: [1, 6],
+    foods: ['짠맛 나는 음식', '해산물', '국물'],
+    directions: ['북쪽'],
+    activities: ['수영', '여행 계획', '사색'],
+    avoid: ['우유부단', '과식']
+  }
+};
+
+function getStrongestElement(saju: any): string {
+  const elements: Record<string, number> = { '木': 0, '火': 0, '土': 0, '金': 0, '水': 0 };
+  
+  const pillars = [saju.year, saju.month, saju.day, saju.hour];
+  pillars.forEach(pillar => {
+    if (pillar?.stem?.element) elements[pillar.stem.element]++;
+    if (pillar?.branch?.element) elements[pillar.branch.element]++;
+  });
+  
+  let strongest = '木';
+  let maxCount = 0;
+  Object.entries(elements).forEach(([element, count]) => {
+    if (count > maxCount) {
+      maxCount = count;
+      strongest = element;
+    }
+  });
+  
+  return strongest;
+}
+
+export default function LuckyItems({ result }: LuckyItemsProps) {
+  const strongestElement = getStrongestElement(result.saju);
+  const lucky = ELEMENT_LUCKY_DATA[strongestElement] || ELEMENT_LUCKY_DATA['木'];
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
