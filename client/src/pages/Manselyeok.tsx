@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, Info, Share2, Sparkles, RefreshCcw, Zap, ArrowRight, User, Activity, ScrollText } from "lucide-react";
+import { ChevronLeft, Info, Share2, Sparkles, RefreshCcw, Zap, ArrowRight, User, Activity, ScrollText, Calendar, Clock } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { shareContent } from "@/lib/share";
 
@@ -83,34 +83,34 @@ export default function Manselyeok() {
     <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased">
       {/* Background Effects */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px]" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-emerald-900/10 rounded-full blur-[120px]" />
+        <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-emerald-500/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-teal-500/10 rounded-full blur-[120px]" />
       </div>
 
       <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
         <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center">
             <Link href="/">
-              <Button variant="ghost" size="icon" className="rounded-full hover:bg-white/10">
-                <ChevronLeft className="h-5 w-5" />
+              <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/10 min-w-[44px] min-h-[44px]">
+                <ChevronLeft className="h-6 w-6" />
               </Button>
             </Link>
-            <h1 className="text-xl font-bold text-white">무료 만세력</h1>
+            <h1 className="text-lg md:text-xl font-bold text-white">무료 만세력</h1>
           </div>
           {result && (
             <div className="flex gap-2">
               <Button
                 variant="ghost"
                 size="icon"
-                className="rounded-full hover:bg-white/10"
+                className="text-white hover:bg-white/10 min-w-[44px] min-h-[44px]"
                 onClick={() => setResult(null)}
               >
-                <RefreshCcw className="h-4 w-4" />
+                <RefreshCcw className="h-5 w-5" />
               </Button>
               <Button
                 variant="ghost"
                 size="icon"
-                className="rounded-full hover:bg-white/10"
+                className="text-emerald-400 min-w-[44px] min-h-[44px]"
                 onClick={() => {
                   shareContent({
                     title: '무운 만세력 결과',
@@ -118,7 +118,7 @@ export default function Manselyeok() {
                   });
                 }}
               >
-                <Share2 className="h-4 w-4" />
+                <Share2 className="h-5 w-5" />
               </Button>
             </div>
           )}
@@ -136,34 +136,42 @@ export default function Manselyeok() {
               transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
               className={`${commonMaxWidth} space-y-8`}
             >
+              {/* Hero Section */}
               <div className="text-center space-y-4">
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-xl">
-                  <Activity className="w-4 h-4 text-primary" />
-                  <span className="text-[11px] md:text-xs font-bold tracking-widest text-primary uppercase">정통 만세력 분석</span>
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 backdrop-blur-xl">
+                  <Activity className="w-4 h-4 text-emerald-400" />
+                  <span className="text-[11px] md:text-xs font-bold tracking-widest text-emerald-400 uppercase">정통 만세력 분석</span>
                 </div>
                 <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white">무료 만세력</h2>
-                <p className="text-muted-foreground text-sm md:text-base">정확한 사주팔자 분석을 위해 태어난 시간을 입력해주세요.</p>
+                <p className="text-muted-foreground text-sm md:text-base max-w-md mx-auto">
+                  정확한 사주팔자 분석을 위해<br className="md:hidden" /> 태어난 시간을 입력해주세요
+                </p>
               </div>
 
+              {/* Input Form Card */}
               <Card className="glass-panel border-white/5 shadow-2xl rounded-[2rem] overflow-hidden">
                 <CardHeader className="border-b border-white/5 p-6 md:p-10">
                   <CardTitle className="text-white flex items-center gap-3 text-xl md:text-2xl">
-                    <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
-                      <User className="w-6 h-6 text-primary" />
+                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+                      <User className="w-5 h-5 md:w-6 md:h-6 text-emerald-400" />
                     </div>
                     사용자 정보 입력
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-6 md:p-10">
-                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 md:space-y-8">
+                    {/* Name & Gender Row */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                       <div className="space-y-3">
-                        <Label htmlFor="name" className="text-white text-base font-medium ml-1">이름</Label>
+                        <Label htmlFor="name" className="text-white text-base font-medium ml-1 flex items-center gap-2">
+                          <User className="w-4 h-4 text-emerald-400" />
+                          이름
+                        </Label>
                         <Input 
                           id="name" 
-                          placeholder="이름을 입력하세요" 
+                          placeholder="이름을 입력해주세요" 
                           {...form.register("name")} 
-                          className="h-14 bg-white/5 border-white/10 text-white placeholder:text-white/20 rounded-2xl focus:ring-primary/50 focus:border-primary transition-all"
+                          className="h-14 bg-white/5 border-white/10 text-white placeholder:text-white/30 rounded-2xl focus:ring-emerald-500/50 focus:border-emerald-500 transition-all text-base"
                         />
                         {form.formState.errors.name && (
                           <p className="text-destructive text-xs font-medium ml-1">{form.formState.errors.name.message}</p>
@@ -171,64 +179,138 @@ export default function Manselyeok() {
                       </div>
 
                       <div className="space-y-3">
-                        <Label className="text-white text-base font-medium ml-1">성별</Label>
+                        <Label className="text-white text-base font-medium ml-1 flex items-center gap-2">
+                          <Sparkles className="w-4 h-4 text-emerald-400" />
+                          성별
+                        </Label>
                         <ToggleGroup
                           type="single"
                           value={form.watch("gender")}
                           onValueChange={(value) => {
                             if (value) form.setValue("gender", value as "male" | "female");
                           }}
-                          className="justify-start w-64 h-14 bg-white/5 p-1.5 rounded-2xl border border-white/10"
+                          className="w-full h-14 bg-white/5 p-1.5 rounded-2xl border border-white/10"
                         >
-                          <ToggleGroupItem value="male" className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all font-medium">남성</ToggleGroupItem>
-                          <ToggleGroupItem value="female" className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all font-medium">여성</ToggleGroupItem>
+                          <ToggleGroupItem
+                            value="male"
+                            className="flex-1 h-full rounded-xl data-[state=on]:bg-emerald-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-base"
+                          >
+                            남성
+                          </ToggleGroupItem>
+                          <ToggleGroupItem
+                            value="female"
+                            className="flex-1 h-full rounded-xl data-[state=on]:bg-emerald-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-base"
+                          >
+                            여성
+                          </ToggleGroupItem>
                         </ToggleGroup>
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {/* Birth Date & Time Row */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                       <div className="space-y-3">
-                        <Label htmlFor="birthDate" className="text-white text-base font-medium ml-1">생년월일</Label>
+                        <Label htmlFor="birthDate" className="text-white text-base font-medium ml-1 flex items-center gap-2">
+                          <Calendar className="w-4 h-4 text-emerald-400" />
+                          생년월일
+                        </Label>
                         <Input 
                           id="birthDate" 
                           type="date" 
                           {...form.register("birthDate")} 
-                          className="h-14 bg-white/5 border-white/10 text-white rounded-2xl focus:ring-primary/50 focus:border-primary transition-all"
+                          className="h-14 bg-white/5 border-white/10 text-white rounded-2xl focus:ring-emerald-500/50 focus:border-emerald-500 transition-all text-base"
                         />
                       </div>
                       <div className="space-y-3">
-                        <Label htmlFor="birthTime" className="text-white text-base font-medium ml-1">태어난 시간</Label>
+                        <Label htmlFor="birthTime" className="text-white text-base font-medium ml-1 flex items-center gap-2">
+                          <Clock className="w-4 h-4 text-emerald-400" />
+                          태어난 시간
+                        </Label>
                         <Input 
                           id="birthTime" 
                           type="time" 
                           {...form.register("birthTime")} 
-                          className="h-14 bg-white/5 border-white/10 text-white rounded-2xl focus:ring-primary/50 focus:border-primary transition-all"
+                          className="h-14 bg-white/5 border-white/10 text-white rounded-2xl focus:ring-emerald-500/50 focus:border-emerald-500 transition-all text-base"
                         />
                       </div>
                     </div>
 
+                    {/* Calendar Type */}
                     <div className="space-y-3">
-                      <Label className="text-white text-base font-medium ml-1">날짜 구분</Label>
+                      <Label className="text-white text-base font-medium ml-1 flex items-center gap-2">
+                        <ScrollText className="w-4 h-4 text-emerald-400" />
+                        날짜 구분
+                      </Label>
                       <ToggleGroup
                         type="single"
                         value={form.watch("calendarType")}
                         onValueChange={(value) => {
                           if (value) form.setValue("calendarType", value as "solar" | "lunar");
                         }}
-                        className="justify-start w-64 h-14 bg-white/5 p-1.5 rounded-2xl border border-white/10"
+                        className="w-full md:w-64 h-14 bg-white/5 p-1.5 rounded-2xl border border-white/10"
                       >
-                        <ToggleGroupItem value="solar" className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all font-medium">양력</ToggleGroupItem>
-                        <ToggleGroupItem value="lunar" className="flex-1 h-full rounded-xl data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-white transition-all font-medium">음력</ToggleGroupItem>
+                        <ToggleGroupItem
+                          value="solar"
+                          className="flex-1 h-full rounded-xl data-[state=on]:bg-emerald-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-base"
+                        >
+                          양력
+                        </ToggleGroupItem>
+                        <ToggleGroupItem
+                          value="lunar"
+                          className="flex-1 h-full rounded-xl data-[state=on]:bg-emerald-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-base"
+                        >
+                          음력
+                        </ToggleGroupItem>
                       </ToggleGroup>
                     </div>
 
-                    <Button type="submit" className="w-full h-16 bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-lg rounded-2xl shadow-lg shadow-primary/20 transition-all hover:scale-[1.02] active:scale-[0.98]">
-                      <Sparkles className="w-5 h-5 mr-2" />
+                    {/* Submit Button */}
+                    <Button 
+                      type="submit" 
+                      className="w-full h-16 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold text-lg rounded-2xl shadow-lg shadow-emerald-500/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                    >
+                      <Activity className="w-5 h-5 mr-2" />
                       무료 만세력 분석하기
                     </Button>
                   </form>
                 </CardContent>
               </Card>
+
+              {/* Feature Cards */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+                <Card className="bg-white/5 border-white/10 rounded-2xl">
+                  <CardContent className="p-4 md:p-5 text-center space-y-2">
+                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center mx-auto">
+                      <ScrollText className="w-5 h-5 md:w-6 md:h-6 text-emerald-400" />
+                    </div>
+                    <p className="text-xs md:text-sm font-medium text-white">사주팔자</p>
+                  </CardContent>
+                </Card>
+                <Card className="bg-white/5 border-white/10 rounded-2xl">
+                  <CardContent className="p-4 md:p-5 text-center space-y-2">
+                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-teal-500/10 flex items-center justify-center mx-auto">
+                      <Activity className="w-5 h-5 md:w-6 md:h-6 text-teal-400" />
+                    </div>
+                    <p className="text-xs md:text-sm font-medium text-white">오행 분석</p>
+                  </CardContent>
+                </Card>
+                <Card className="bg-white/5 border-white/10 rounded-2xl">
+                  <CardContent className="p-4 md:p-5 text-center space-y-2">
+                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-cyan-500/10 flex items-center justify-center mx-auto">
+                      <Zap className="w-5 h-5 md:w-6 md:h-6 text-cyan-400" />
+                    </div>
+                    <p className="text-xs md:text-sm font-medium text-white">대운 세운</p>
+                  </CardContent>
+                </Card>
+                <Card className="bg-white/5 border-white/10 rounded-2xl">
+                  <CardContent className="p-4 md:p-5 text-center space-y-2">
+                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-green-500/10 flex items-center justify-center mx-auto">
+                      <Info className="w-5 h-5 md:w-6 md:h-6 text-green-400" />
+                    </div>
+                    <p className="text-xs md:text-sm font-medium text-white">상세 해석</p>
+                  </CardContent>
+                </Card>
+              </div>
 
               {/* SEO 콘텐츠 */}
               <ManselyeokContent />
@@ -239,97 +321,111 @@ export default function Manselyeok() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="space-y-10"
+              className={`${commonMaxWidth} space-y-8 md:space-y-10`}
             >
+              {/* Result Header */}
               <div className="text-center space-y-3">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 text-primary text-xs font-bold uppercase tracking-widest">Analysis Complete</div>
-                <h2 className="text-3xl md:text-4xl font-bold text-white">{form.getValues("name")}님의 사주팔자</h2>
-                <p className="text-muted-foreground">
-                  {new Date(form.getValues("birthDate")).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })} {form.getValues("birthTime")} 태생
-                </p>
+                <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 backdrop-blur-xl">
+                  <span className="text-[11px] md:text-xs font-bold tracking-widest text-emerald-400 uppercase">만세력 분석 결과</span>
+                </div>
+                <h2 className="text-2xl md:text-4xl font-bold tracking-tight text-white">{form.getValues('name')}님의 사주팔자</h2>
               </div>
 
-              {/* 사주 팔자 그리드 */}
-              <div className="grid grid-cols-4 gap-3 md:gap-6">
-                {[
-                  { label: '시주', pillar: result.hourPillar },
-                  { label: '일주', pillar: result.dayPillar, isMain: true },
-                  { label: '월주', pillar: result.monthPillar },
-                  { label: '연주', pillar: result.yearPillar }
-                ].map((item, idx) => (
-                  <div key={idx} className="space-y-4">
-                    <div className="text-center text-xs font-bold text-muted-foreground uppercase tracking-widest">{item.label}</div>
-                    <div className={`flex flex-col gap-3 p-4 md:p-6 rounded-[2rem] glass-panel border-white/5 ${item.isMain ? 'ring-2 ring-primary/30 bg-primary/5' : ''}`}>
-                      {/* 천간 */}
-                      <div className="flex flex-col items-center gap-2">
-                        <div className={`w-full aspect-square rounded-2xl border flex flex-col items-center justify-center gap-1 transition-transform hover:scale-105 ${getElementColor(item.pillar.stemElement)}`}>
-                          <span className="text-2xl md:text-4xl font-black">{item.pillar.stem}</span>
-                          <span className="text-[10px] md:text-xs font-bold opacity-70">{item.pillar.stemElement}</span>
-                        </div>
-                        <span className="text-[10px] md:text-xs font-medium text-white/40">{item.pillar.tenGodStem}</span>
-                      </div>
-                      {/* 지지 */}
-                      <div className="flex flex-col items-center gap-2">
-                        <div className={`w-full aspect-square rounded-2xl border flex flex-col items-center justify-center gap-1 transition-transform hover:scale-105 ${getElementColor(item.pillar.branchElement)}`}>
-                          <span className="text-2xl md:text-4xl font-black">{item.pillar.branch}</span>
-                          <span className="text-[10px] md:text-xs font-bold opacity-70">{item.pillar.branchElement}</span>
-                        </div>
-                        <span className="text-[10px] md:text-xs font-medium text-white/40">{item.pillar.tenGodBranch}</span>
-                      </div>
+              {/* 사주팔자 테이블 */}
+              <Card className="bg-white/5 border-white/10 rounded-2xl overflow-hidden">
+                <CardHeader className="border-b border-white/5 p-4 md:p-6">
+                  <CardTitle className="text-base md:text-lg flex items-center gap-2 text-emerald-400">
+                    <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+                      <ScrollText className="w-4 h-4 md:w-5 md:h-5" />
                     </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* 상세 정보 */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Card className="glass-panel border-white/5">
-                  <CardHeader>
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      <Zap className="w-5 h-5 text-primary" />
-                      나의 일주: {result.dayPillar.stem}{result.dayPillar.branch}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <p className="text-white/80 leading-relaxed">
-                      {form.getValues("name")}님은 {result.dayPillar.stemElement}의 기운을 타고난 {result.dayPillar.stem}{result.dayPillar.branch}일주입니다. 
-                      기본적으로 {result.dayPillar.tenGodStem}의 성향이 강하게 나타나며, {result.dayPillar.branchElement}의 지지를 받고 있습니다.
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card className="glass-panel border-white/5">
-                  <CardHeader>
-                    <CardTitle className="text-lg flex items-center gap-2">
-                      <Activity className="w-5 h-5 text-primary" />
-                      오행 분포
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex justify-between items-end h-32 gap-2">
-                      {(['木', '火', '土', '金', '水'] as FiveElement[]).map((el) => {
-                        const count = [
-                          result.yearPillar.stemElement, result.yearPillar.branchElement,
-                          result.monthPillar.stemElement, result.monthPillar.branchElement,
-                          result.dayPillar.stemElement, result.dayPillar.branchElement,
-                          result.hourPillar.stemElement, result.hourPillar.branchElement,
-                        ].filter(e => e === el).length;
-                        return (
-                          <div key={el} className="flex-1 flex flex-col items-center gap-2">
-                            <div 
-                              className={`w-full rounded-t-lg transition-all duration-1000 ${getElementColor(el).split(' ')[2]}`}
-                              style={{ height: `${(count / 8) * 100}%`, minHeight: '4px' }}
-                            />
-                            <span className="text-xs font-bold text-white/60">{el}</span>
+                    사주팔자 (四柱八字)
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-4 md:p-6">
+                  <div className="grid grid-cols-4 gap-2 md:gap-4">
+                    {[
+                      { label: '시주', pillar: result.hourPillar },
+                      { label: '일주', pillar: result.dayPillar },
+                      { label: '월주', pillar: result.monthPillar },
+                      { label: '년주', pillar: result.yearPillar },
+                    ].map((item) => (
+                      <div key={item.label} className="text-center space-y-2">
+                        <p className="text-xs md:text-sm text-white/60">{item.label}</p>
+                        <div className="space-y-1">
+                          <div className={`p-2 md:p-3 rounded-xl border ${getElementColor(item.pillar.stemElement)}`}>
+                            <p className="text-lg md:text-2xl font-bold">{item.pillar.stem}</p>
+                            <p className="text-[10px] md:text-xs opacity-70">{item.pillar.stemElement}</p>
                           </div>
-                        );
-                      })}
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
+                          <div className={`p-2 md:p-3 rounded-xl border ${getElementColor(item.pillar.branchElement)}`}>
+                            <p className="text-lg md:text-2xl font-bold">{item.pillar.branch}</p>
+                            <p className="text-[10px] md:text-xs opacity-70">{item.pillar.branchElement}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
 
+              {/* 오행 분석 */}
+              <Card className="bg-white/5 border-white/10 rounded-2xl overflow-hidden">
+                <CardHeader className="border-b border-white/5 p-4 md:p-6">
+                  <CardTitle className="text-base md:text-lg flex items-center gap-2 text-emerald-400">
+                    <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-emerald-500/20 flex items-center justify-center">
+                      <Activity className="w-4 h-4 md:w-5 md:h-5" />
+                    </div>
+                    오행 분석
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-4 md:p-6">
+                  <div className="grid grid-cols-5 gap-2 md:gap-4">
+                    {(['木', '火', '土', '金', '水'] as FiveElement[]).map((element) => {
+                      const count = [
+                        result.yearPillar.stemElement,
+                        result.yearPillar.branchElement,
+                        result.monthPillar.stemElement,
+                        result.monthPillar.branchElement,
+                        result.dayPillar.stemElement,
+                        result.dayPillar.branchElement,
+                        result.hourPillar.stemElement,
+                        result.hourPillar.branchElement,
+                      ].filter(e => e === element).length;
+                      
+                      return (
+                        <div key={element} className={`text-center p-3 md:p-4 rounded-xl border ${getElementColor(element)}`}>
+                          <p className="text-lg md:text-2xl font-bold">{element}</p>
+                          <p className="text-xs md:text-sm mt-1">{count}개</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* 용어 설명 */}
               <SajuGlossary />
+
+              {/* Action Buttons */}
+              <div className="space-y-3 pt-2">
+                <Button 
+                  className="w-full bg-white/5 border border-white/10 text-white hover:bg-white/10 min-h-[48px] md:min-h-[56px] rounded-xl font-medium"
+                  onClick={() => {
+                    shareContent({
+                      title: '무운 만세력 결과',
+                      text: `${form.getValues('name')}님의 사주팔자 만세력 결과를 확인해보세요!`,
+                    });
+                  }}
+                >
+                  친구에게 공유하기
+                </Button>
+                <Button 
+                  variant="ghost"
+                  className="w-full text-white/60 hover:text-white hover:bg-white/5 min-h-[48px] rounded-xl font-medium"
+                  onClick={() => setResult(null)}
+                >
+                  다시 보기
+                </Button>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

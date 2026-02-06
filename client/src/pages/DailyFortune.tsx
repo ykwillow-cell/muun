@@ -1,40 +1,81 @@
 import { useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 import { motion } from "framer-motion";
-import { ChevronLeft, Share2, Sparkles, Star, Heart, Coffee, MapPin, Palette, Zap } from "lucide-react";
+import { ChevronLeft, Share2, Sparkles, Star, Coffee, MapPin, Palette, Zap, User, Sun, Calendar } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { getDailyFortune, DailyFortuneResult } from "@/lib/dailyFortune";
 import { shareContent } from "@/lib/share";
 import DailyFortuneContent from "@/components/DailyFortuneContent";
 
+const formSchema = z.object({
+  name: z.string().min(1, "이름을 입력해주세요"),
+  gender: z.enum(["male", "female"]),
+  birthDate: z.string().min(1, "생년월일을 입력해주세요"),
+});
+
+type FormValues = z.infer<typeof formSchema>;
+
 export default function DailyFortune() {
   const [fortune, setFortune] = useState<DailyFortuneResult | null>(null);
-  const [userData, setUserData] = useState<any>(null);
+  const [showResult, setShowResult] = useState(false);
+  const [userName, setUserName] = useState("");
+  
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: "",
+      gender: "male",
+      birthDate: "2000-01-01",
+    },
+  });
 
   useEffect(() => {
     const savedData = localStorage.getItem("muun_user_data");
     if (savedData) {
       const parsed = JSON.parse(savedData);
-      setUserData(parsed);
-      const result = getDailyFortune(new Date(parsed.birthDate), parsed.gender);
-      setFortune(result);
+      form.reset({
+        name: parsed.name || "",
+        gender: parsed.gender || "male",
+        birthDate: parsed.birthDate || "2000-01-01",
+      });
     }
-  }, []);
+  }, [form]);
 
-  const commonMaxWidth = "max-w-4xl mx-auto";
+  const onSubmit = (data: FormValues) => {
+    // 기존 데이터와 병합하여 저장
+    const existingData = localStorage.getItem("muun_user_data");
+    const existing = existingData ? JSON.parse(existingData) : {};
+    const mergedData = { ...existing, ...data };
+    localStorage.setItem("muun_user_data", JSON.stringify(mergedData));
+    
+    setUserName(data.name);
+    const result = getDailyFortune(new Date(data.birthDate), data.gender);
+    setFortune(result);
+    setShowResult(true);
+    window.scrollTo(0, 0);
+  };
 
-  if (!userData) {
+  const commonMaxWidth = "w-full max-w-4xl mx-auto";
+
+  // 입력 화면
+  if (!showResult) {
     return (
-      <div className="min-h-screen bg-background text-foreground relative antialiased">
+      <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased">
         {/* Background Effects */}
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px]" />
-          <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-green-900/10 rounded-full blur-[120px]" />
+          <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-green-500/10 rounded-full blur-[120px]" />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px]" />
         </div>
 
         <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
-          <div className={`${commonMaxWidth} px-4 h-14 flex items-center`}>
+          <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
             <Link href="/">
               <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/10 min-w-[44px] min-h-[44px]">
                 <ChevronLeft className="h-6 w-6" />
@@ -44,56 +85,179 @@ export default function DailyFortune() {
           </div>
         </header>
 
-        <main className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-56px)] p-4">
+        <main className="relative z-10 container mx-auto max-w-[1280px] px-4 py-8 md:py-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="w-full max-w-md"
+            transition={{ duration: 0.6 }}
+            className={`${commonMaxWidth} space-y-8`}
           >
-            <Card className="bg-white/5 border-white/10 text-center p-6 md:p-8 space-y-6 rounded-2xl">
-              <div className="w-16 h-16 rounded-2xl bg-primary/20 flex items-center justify-center mx-auto">
-                <Sparkles className="w-8 h-8 text-primary" />
+            {/* Hero Section */}
+            <div className="text-center space-y-4">
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-green-500/10 border border-green-500/20 backdrop-blur-xl">
+                <Sun className="w-4 h-4 text-green-400" />
+                <span className="text-[11px] md:text-xs font-bold tracking-widest text-green-400 uppercase">오늘 하루의 기운</span>
               </div>
-              <h2 className="text-xl md:text-2xl font-bold text-white">정보가 필요합니다</h2>
-              <p className="text-sm md:text-base text-muted-foreground">
-                오늘의 운세를 보려면 먼저 사주 정보를 입력해야 합니다.
+              <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white">무료 오늘의 운세</h2>
+              <p className="text-muted-foreground text-sm md:text-base max-w-md mx-auto">
+                오늘 하루의 기운을 미리 확인하고<br className="md:hidden" /> 행운을 잡아보세요
               </p>
-              <Link href="/manselyeok?redirect=daily-fortune">
-                <Button className="w-full bg-primary text-background font-bold min-h-[48px] rounded-xl">
-                  정보 입력하러 가기
-                </Button>
-              </Link>
+            </div>
+
+            {/* Input Form Card */}
+            <Card className="glass-panel border-white/5 shadow-2xl rounded-[2rem] overflow-hidden">
+              <CardHeader className="border-b border-white/5 p-6 md:p-10">
+                <CardTitle className="text-white flex items-center gap-3 text-xl md:text-2xl">
+                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-green-500/20 flex items-center justify-center">
+                    <User className="w-5 h-5 md:w-6 md:h-6 text-green-400" />
+                  </div>
+                  운세 정보 입력
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="p-6 md:p-10">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                  {/* Name & Gender Row */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+                    <div className="space-y-3">
+                      <Label htmlFor="name" className="text-white text-base font-medium ml-1 flex items-center gap-2">
+                        <User className="w-4 h-4 text-green-400" />
+                        이름
+                      </Label>
+                      <Input
+                        id="name"
+                        placeholder="이름을 입력해주세요"
+                        {...form.register("name")}
+                        className="h-14 bg-white/5 border-white/10 text-white placeholder:text-white/30 rounded-2xl focus:ring-green-500/50 focus:border-green-500 transition-all text-base"
+                      />
+                    </div>
+
+                    <div className="space-y-3">
+                      <Label className="text-white text-base font-medium ml-1 flex items-center gap-2">
+                        <Sparkles className="w-4 h-4 text-green-400" />
+                        성별
+                      </Label>
+                      <ToggleGroup
+                        type="single"
+                        value={form.watch("gender")}
+                        onValueChange={(value) => {
+                          if (value) form.setValue("gender", value as "male" | "female");
+                        }}
+                        className="w-full h-14 bg-white/5 p-1.5 rounded-2xl border border-white/10"
+                      >
+                        <ToggleGroupItem
+                          value="male"
+                          className="flex-1 h-full rounded-xl data-[state=on]:bg-green-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-base"
+                        >
+                          남성
+                        </ToggleGroupItem>
+                        <ToggleGroupItem
+                          value="female"
+                          className="flex-1 h-full rounded-xl data-[state=on]:bg-green-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-base"
+                        >
+                          여성
+                        </ToggleGroupItem>
+                      </ToggleGroup>
+                    </div>
+                  </div>
+
+                  {/* Birth Date */}
+                  <div className="space-y-3">
+                    <Label htmlFor="birthDate" className="text-white text-base font-medium ml-1 flex items-center gap-2">
+                      <Calendar className="w-4 h-4 text-green-400" />
+                      생년월일
+                    </Label>
+                    <Input
+                      id="birthDate"
+                      type="date"
+                      {...form.register("birthDate")}
+                      className="h-14 bg-white/5 border-white/10 text-white rounded-2xl focus:ring-green-500/50 focus:border-green-500 transition-all text-base"
+                    />
+                  </div>
+
+                  {/* Submit Button */}
+                  <Button 
+                    type="submit" 
+                    className="w-full h-16 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold text-lg rounded-2xl shadow-lg shadow-green-500/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                  >
+                    <Zap className="w-5 h-5 mr-2" />
+                    오늘의 운세 확인하기
+                  </Button>
+                </form>
+              </CardContent>
             </Card>
+
+            {/* Feature Cards */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+              <Card className="bg-white/5 border-white/10 rounded-2xl">
+                <CardContent className="p-4 md:p-5 text-center space-y-2">
+                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-green-500/10 flex items-center justify-center mx-auto">
+                    <Zap className="w-5 h-5 md:w-6 md:h-6 text-green-400" />
+                  </div>
+                  <p className="text-xs md:text-sm font-medium text-white">오늘의 총운</p>
+                </CardContent>
+              </Card>
+              <Card className="bg-white/5 border-white/10 rounded-2xl">
+                <CardContent className="p-4 md:p-5 text-center space-y-2">
+                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-yellow-500/10 flex items-center justify-center mx-auto">
+                    <Star className="w-5 h-5 md:w-6 md:h-6 text-yellow-400" />
+                  </div>
+                  <p className="text-xs md:text-sm font-medium text-white">행운 점수</p>
+                </CardContent>
+              </Card>
+              <Card className="bg-white/5 border-white/10 rounded-2xl">
+                <CardContent className="p-4 md:p-5 text-center space-y-2">
+                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-pink-500/10 flex items-center justify-center mx-auto">
+                    <Palette className="w-5 h-5 md:w-6 md:h-6 text-pink-400" />
+                  </div>
+                  <p className="text-xs md:text-sm font-medium text-white">행운의 컬러</p>
+                </CardContent>
+              </Card>
+              <Card className="bg-white/5 border-white/10 rounded-2xl">
+                <CardContent className="p-4 md:p-5 text-center space-y-2">
+                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-blue-500/10 flex items-center justify-center mx-auto">
+                    <MapPin className="w-5 h-5 md:w-6 md:h-6 text-blue-400" />
+                  </div>
+                  <p className="text-xs md:text-sm font-medium text-white">행운의 방향</p>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* SEO 콘텐츠 */}
+            <DailyFortuneContent />
           </motion.div>
         </main>
       </div>
     );
   }
 
+  // 결과 화면
   if (!fortune) return null;
 
   return (
     <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased">
       {/* Background Effects */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px]" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-green-900/10 rounded-full blur-[120px]" />
+        <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-green-500/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px]" />
       </div>
 
       <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
-        <div className={`${commonMaxWidth} px-4 h-14 flex items-center justify-between`}>
+        <div className={`container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between`}>
           <div className="flex items-center">
-            <Link href="/">
-              <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/10 min-w-[44px] min-h-[44px]">
-                <ChevronLeft className="h-6 w-6" />
-              </Button>
-            </Link>
-            <h1 className="text-lg md:text-xl font-bold text-white">오늘의 운세</h1>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="mr-2 text-white hover:bg-white/10 min-w-[44px] min-h-[44px]"
+              onClick={() => setShowResult(false)}
+            >
+              <ChevronLeft className="h-6 w-6" />
+            </Button>
+            <h1 className="text-lg md:text-xl font-bold text-white">오늘의 운세 결과</h1>
           </div>
           <Button
             variant="ghost"
             size="icon"
-            className="text-primary min-w-[44px] min-h-[44px]"
+            className="text-green-400 min-w-[44px] min-h-[44px]"
             onClick={() => {
               shareContent({
                 title: '무운 오늘의 운세',
@@ -142,13 +306,13 @@ export default function DailyFortune() {
                   initial={{ strokeDashoffset: 283 }}
                   animate={{ strokeDashoffset: 283 - (283 * fortune.score) / 100 }}
                   transition={{ duration: 1.5, ease: "easeOut" }}
-                  className="text-primary"
+                  className="text-green-500"
                   strokeLinecap="round"
                 />
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
                 <span className="text-4xl md:text-5xl font-black text-white">{fortune.score}</span>
-                <span className="text-xs md:text-sm text-primary font-bold">LUCKY SCORE</span>
+                <span className="text-xs md:text-sm text-green-400 font-bold">LUCKY SCORE</span>
               </div>
             </div>
             <h2 className="text-xl md:text-2xl font-bold text-white">{fortune.summary}</h2>
@@ -157,8 +321,8 @@ export default function DailyFortune() {
           {/* Detail Card */}
           <Card className="bg-white/5 border-white/10 overflow-hidden rounded-2xl">
             <CardHeader className="border-b border-white/5 p-4 md:p-6">
-              <CardTitle className="text-base md:text-lg flex items-center gap-2 text-primary">
-                <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-primary/20 flex items-center justify-center">
+              <CardTitle className="text-base md:text-lg flex items-center gap-2 text-green-400">
+                <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-green-500/20 flex items-center justify-center">
                   <Zap className="w-4 h-4 md:w-5 md:h-5" />
                 </div>
                 오늘의 총평
@@ -219,8 +383,8 @@ export default function DailyFortune() {
             </Card>
           </div>
 
-          {/* Share Button */}
-          <div className="pt-2">
+          {/* Action Buttons */}
+          <div className="space-y-3 pt-2">
             <Button 
               className="w-full bg-white/5 border border-white/10 text-white hover:bg-white/10 min-h-[48px] md:min-h-[56px] rounded-xl font-medium"
               onClick={() => {
@@ -231,6 +395,13 @@ export default function DailyFortune() {
               }}
             >
               친구에게 공유하기
+            </Button>
+            <Button 
+              variant="ghost"
+              className="w-full text-white/60 hover:text-white hover:bg-white/5 min-h-[48px] rounded-xl font-medium"
+              onClick={() => setShowResult(false)}
+            >
+              다시 보기
             </Button>
           </div>
         </motion.div>
