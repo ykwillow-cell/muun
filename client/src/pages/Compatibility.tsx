@@ -702,14 +702,14 @@ export default function Compatibility() {
           className={`${commonMaxWidth} space-y-6 md:space-y-8`}
         >
           {/* ===== 1. 궁합 점수 원형 그래프 ===== */}
-          <section className="text-center space-y-4 py-4">
+          <section className="flex flex-col items-center justify-center space-y-4 py-4">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-pink-500/10 border border-pink-500/30 backdrop-blur-xl">
               <Heart className="w-3.5 h-3.5 text-pink-400" />
               <span className="text-[10px] md:text-xs font-bold tracking-wider text-pink-400 uppercase">궁합 종합 점수</span>
             </div>
             
-            <div className="relative inline-block">
-              <svg className="w-36 h-36 md:w-44 md:h-44" viewBox="0 0 100 100">
+            <div className="relative w-36 h-36 md:w-44 md:h-44 mx-auto">
+              <svg className="w-full h-full" viewBox="0 0 100 100">
                 <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" strokeWidth="8" className="text-white/5" />
                 <motion.circle
                   cx="50" cy="50" r="45" fill="none"
