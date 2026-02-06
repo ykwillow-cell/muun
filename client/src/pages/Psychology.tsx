@@ -101,6 +101,7 @@ export default function Psychology() {
   const [finalResult, setFinalResult] = useState<any>(null);
 
   const test = PSYCHOLOGY_TESTS[0];
+  const commonMaxWidth = "max-w-4xl mx-auto";
 
   const handleStart = () => {
     setStep("quiz");
@@ -130,135 +131,166 @@ export default function Psychology() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground p-4 md:p-8">
-      <div className="max-w-2xl mx-auto">
-        <header className="flex items-center gap-4 mb-8">
+    <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased">
+      {/* Background Effects */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-purple-900/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-pink-900/10 rounded-full blur-[120px]" />
+      </div>
+
+      <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
+        <div className={`${commonMaxWidth} px-4 h-14 flex items-center`}>
           <Link href="/">
-            <Button variant="ghost" size="icon" className="rounded-full">
-              <ChevronLeft className="w-6 h-6" />
+            <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/10 min-w-[44px] min-h-[44px]">
+              <ChevronLeft className="h-6 w-6" />
             </Button>
           </Link>
-          <h1 className="text-xl font-bold">무료 심리 테스트</h1>
-        </header>
+          <h1 className="text-lg md:text-xl font-bold text-white">무료 심리 테스트</h1>
+        </div>
+      </header>
 
-        <AnimatePresence mode="wait">
-          {step === "intro" && (
-            <motion.div
-              key="intro"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="space-y-6"
-            >
-              <Card className="bg-card/40 backdrop-blur-xl border-white/10 overflow-hidden">
-                <div className="aspect-video bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center">
-                  <Sparkles className="w-20 h-20 text-white/50 animate-pulse" />
-                </div>
-                <CardContent className="p-8 text-center space-y-4">
-                  <div className="flex justify-center mb-2">{test.icon}</div>
-                  <h2 className="text-2xl font-bold text-white">{test.title}</h2>
-                  <p className="text-muted-foreground">{test.description}</p>
-                  <Button 
-                    onClick={handleStart}
-                    className="w-full py-6 text-lg font-bold bg-primary hover:bg-primary/90 mt-4"
-                  >
-                    테스트 시작하기
-                  </Button>
-                </CardContent>
-              </Card>
-
-              {/* SEO 콘텐츠 */}
-              <PsychologyContent />
-            </motion.div>
-          )}
-
-          {step === "quiz" && (
-            <motion.div
-              key="quiz"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              className="space-y-6"
-            >
-              <div className="flex justify-between items-center text-sm text-muted-foreground mb-2">
-                <span>질문 {currentQuestion + 1} / {test.questions.length}</span>
-                <div className="w-32 h-2 bg-white/10 rounded-full overflow-hidden">
-                  <div 
-                    className="h-full bg-primary transition-all duration-300" 
-                    style={{ width: `${((currentQuestion + 1) / test.questions.length) * 100}%` }}
-                  />
-                </div>
-              </div>
-              
-              <h2 className="text-xl font-bold text-white leading-relaxed mb-8">
-                {test.questions[currentQuestion].question}
-              </h2>
-
-              <div className="grid gap-4">
-                {test.questions[currentQuestion].options.map((option, idx) => (
-                  <Button
-                    key={idx}
-                    variant="outline"
-                    className="h-auto py-5 px-6 text-left justify-start bg-white/5 border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all"
-                    onClick={() => handleAnswer(option.score)}
-                  >
-                    <span className="text-base">{option.text}</span>
-                  </Button>
-                ))}
-              </div>
-            </motion.div>
-          )}
-
-          {step === "result" && (
-            <motion.div
-              key="result"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="space-y-6"
-            >
-              <Card className="bg-card/40 backdrop-blur-xl border-white/10 overflow-hidden">
-                <div className="p-8 text-center space-y-6">
-                  <div className="inline-block p-3 rounded-full bg-primary/20 text-primary mb-2">
-                    <Target className="w-8 h-8" />
+      <main className="relative z-10 px-4 py-6 md:py-8">
+        <div className={commonMaxWidth}>
+          <AnimatePresence mode="wait">
+            {step === "intro" && (
+              <motion.div
+                key="intro"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="space-y-6 md:space-y-8"
+              >
+                {/* Hero Section */}
+                <section className="text-center space-y-4 py-4 md:py-6">
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/30 backdrop-blur-xl">
+                    <BrainCircuit className="w-4 h-4 text-purple-400" />
+                    <span className="text-[11px] md:text-xs font-bold tracking-widest text-purple-400 uppercase">심리 분석</span>
                   </div>
-                  <div className="space-y-2">
-                    <p className="text-primary font-medium">당신의 심리 분석 결과</p>
-                    <h2 className="text-3xl font-bold text-white">{finalResult.title}</h2>
-                  </div>
-                  
-                  <div className="p-6 rounded-2xl bg-white/5 border border-white/10 text-left">
-                    <p className="text-muted-foreground leading-relaxed">
-                      {finalResult.desc}
-                    </p>
-                  </div>
+                  <h2 className="text-2xl md:text-4xl font-bold tracking-tight text-white">나의 숨겨진 성격 찾기</h2>
+                  <p className="text-sm md:text-base text-muted-foreground max-w-md mx-auto">
+                    평소 무심코 하는 행동 속에 숨겨진 당신의 진짜 성격은?
+                  </p>
+                </section>
 
-                  <div className="grid grid-cols-2 gap-4 pt-4">
+                <Card className="bg-white/5 border-white/10 overflow-hidden rounded-2xl">
+                  <div className="aspect-video bg-gradient-to-br from-purple-600/50 to-pink-600/50 flex items-center justify-center">
+                    <div className="w-20 h-20 md:w-24 md:h-24 rounded-3xl bg-white/10 backdrop-blur-xl flex items-center justify-center">
+                      <Sparkles className="w-10 h-10 md:w-12 md:h-12 text-white animate-pulse" />
+                    </div>
+                  </div>
+                  <CardContent className="p-6 md:p-8 text-center space-y-4">
+                    <div className="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center mx-auto">
+                      {test.icon}
+                    </div>
+                    <h3 className="text-lg md:text-xl font-bold text-white">{test.title}</h3>
+                    <p className="text-sm md:text-base text-muted-foreground">{test.description}</p>
                     <Button 
-                      variant="outline" 
-                      className="gap-2 border-white/10"
                       onClick={handleStart}
+                      className="w-full min-h-[48px] md:min-h-[56px] text-base md:text-lg font-bold bg-primary hover:bg-primary/90 rounded-xl mt-4"
                     >
-                      <RefreshCw className="w-4 h-4" /> 다시하기
+                      테스트 시작하기
                     </Button>
-                    <Button 
-                      className="gap-2"
-                      onClick={handleShare}
-                    >
-                      <Share2 className="w-4 h-4" /> 공유하기
-                    </Button>
+                  </CardContent>
+                </Card>
+
+                {/* SEO 콘텐츠 */}
+                <PsychologyContent />
+              </motion.div>
+            )}
+
+            {step === "quiz" && (
+              <motion.div
+                key="quiz"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                className="space-y-6 md:space-y-8"
+              >
+                {/* Progress */}
+                <div className="flex justify-between items-center text-sm text-muted-foreground">
+                  <span className="text-xs md:text-sm">질문 {currentQuestion + 1} / {test.questions.length}</span>
+                  <div className="w-24 md:w-32 h-2 bg-white/10 rounded-full overflow-hidden">
+                    <motion.div 
+                      className="h-full bg-primary" 
+                      initial={{ width: 0 }}
+                      animate={{ width: `${((currentQuestion + 1) / test.questions.length) * 100}%` }}
+                      transition={{ duration: 0.3 }}
+                    />
                   </div>
                 </div>
-              </Card>
+                
+                <Card className="bg-white/5 border-white/10 rounded-2xl p-6 md:p-8">
+                  <h2 className="text-lg md:text-xl font-bold text-white leading-relaxed mb-6 md:mb-8">
+                    {test.questions[currentQuestion].question}
+                  </h2>
 
-              <Link href="/">
-                <Button variant="ghost" className="w-full text-muted-foreground">
-                  홈으로 돌아가기
-                </Button>
-              </Link>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+                  <div className="grid gap-3 md:gap-4">
+                    {test.questions[currentQuestion].options.map((option, idx) => (
+                      <Button
+                        key={idx}
+                        variant="outline"
+                        className="h-auto min-h-[56px] py-4 px-5 text-left justify-start bg-white/5 border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all rounded-xl"
+                        onClick={() => handleAnswer(option.score)}
+                      >
+                        <span className="text-sm md:text-base text-white">{option.text}</span>
+                      </Button>
+                    ))}
+                  </div>
+                </Card>
+              </motion.div>
+            )}
+
+            {step === "result" && (
+              <motion.div
+                key="result"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="space-y-6 md:space-y-8"
+              >
+                <Card className="bg-white/5 border-white/10 overflow-hidden rounded-2xl">
+                  <div className="p-6 md:p-8 text-center space-y-6">
+                    <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-primary/20 flex items-center justify-center mx-auto">
+                      <Target className="w-8 h-8 md:w-10 md:h-10 text-primary" />
+                    </div>
+                    <div className="space-y-2">
+                      <p className="text-sm md:text-base text-primary font-medium">당신의 심리 분석 결과</p>
+                      <h2 className="text-2xl md:text-3xl font-bold text-white">{finalResult.title}</h2>
+                    </div>
+                    
+                    <div className="p-5 md:p-6 rounded-2xl bg-white/5 border border-white/10 text-left">
+                      <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+                        {finalResult.desc}
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3 md:gap-4 pt-4">
+                      <Button 
+                        variant="outline" 
+                        className="gap-2 border-white/10 min-h-[48px] rounded-xl"
+                        onClick={handleStart}
+                      >
+                        <RefreshCw className="w-4 h-4" /> 다시하기
+                      </Button>
+                      <Button 
+                        className="gap-2 min-h-[48px] rounded-xl"
+                        onClick={handleShare}
+                      >
+                        <Share2 className="w-4 h-4" /> 공유하기
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+
+                <Link href="/">
+                  <Button variant="ghost" className="w-full text-muted-foreground min-h-[48px]">
+                    홈으로 돌아가기
+                  </Button>
+                </Link>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </main>
     </div>
   );
 }

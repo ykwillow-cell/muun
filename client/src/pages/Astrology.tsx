@@ -221,72 +221,85 @@ const Astrology: React.FC = () => {
     window.scrollTo(0, 0);
   };
 
+  const commonMaxWidth = "max-w-4xl mx-auto";
+
   if (!result) {
     return (
-      <div className="min-h-screen bg-background text-foreground pb-20">
+      <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased">
+        {/* Background Effects */}
+        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-purple-900/10 rounded-full blur-[120px]" />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-blue-900/10 rounded-full blur-[120px]" />
+        </div>
+
         <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
-          <div className="container mx-auto px-4 h-14 flex items-center">
+          <div className={`${commonMaxWidth} px-4 h-14 flex items-center`}>
             <Link href="/">
-              <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/10">
+              <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/10 min-w-[44px] min-h-[44px]">
                 <ChevronLeft className="h-6 w-6" />
               </Button>
             </Link>
-            <h1 className="text-xl font-bold text-white">점성술 분석</h1>
+            <h1 className="text-lg md:text-xl font-bold text-white">점성술 분석</h1>
           </div>
         </header>
 
-        <main className="container mx-auto px-4 py-8">
+        <main className="relative z-10 px-4 py-6 md:py-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="max-w-2xl mx-auto space-y-6"
+            className={`${commonMaxWidth} space-y-6 md:space-y-8`}
           >
-            <div className="text-center mb-12">
-              <div className="inline-block p-3 rounded-2xl bg-primary/10 mb-4">
-                <Compass className="w-8 h-8 text-primary animate-spin-slow" />
+            {/* Hero Section */}
+            <div className="text-center space-y-4 py-4 md:py-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/30 backdrop-blur-xl">
+                <Compass className="w-4 h-4 text-purple-400" />
+                <span className="text-[11px] md:text-xs font-bold tracking-widest text-purple-400 uppercase">Birth Chart</span>
               </div>
-              <h2 className="text-4xl font-black mb-4 bg-gradient-to-r from-primary via-purple-400 to-blue-400 bg-clip-text text-transparent tracking-tight">
+              <h2 className="text-2xl md:text-4xl font-bold tracking-tight text-white">
                 당신의 탄생 차트 분석
               </h2>
-              <p className="text-foreground/60 max-w-md mx-auto">
-                태어난 순간 하늘의 행성들이 배치된 지도를 통해 당신의 성격과 운명의 흐름을 분석합니다.
+              <p className="text-sm md:text-base text-muted-foreground max-w-md mx-auto">
+                태어난 순간 하늘의 행성들이 배치된 지도를 통해<br className="hidden md:block" />
+                당신의 성격과 운명의 흐름을 분석합니다.
               </p>
             </div>
 
-            <Card className="bg-card/50 border-white/10 shadow-2xl backdrop-blur-xl relative z-10">
+            <Card className="bg-white/5 border-white/10 shadow-2xl backdrop-blur-xl relative z-10 rounded-2xl overflow-hidden">
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary/50 via-purple-500/50 to-blue-500/50" />
-              <CardHeader>
-                <CardTitle className="text-white flex items-center gap-2">
-                  <Star className="w-5 h-5 text-primary" />
+              <CardHeader className="p-4 md:p-6">
+                <CardTitle className="text-white flex items-center gap-2 text-base md:text-lg">
+                  <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-primary/20 flex items-center justify-center">
+                    <Star className="w-4 h-4 md:w-5 md:h-5 text-primary" />
+                  </div>
                   탄생 정보 입력
                 </CardTitle>
               </CardHeader>
-              <CardContent>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <CardContent className="p-4 md:p-6 pt-0">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 md:space-y-6">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                     <div className="space-y-2">
-                      <Label htmlFor="birthDate" className="text-white/70 text-sm font-medium">생년월일</Label>
+                      <Label htmlFor="birthDate" className="text-white/70 text-xs md:text-sm font-medium">생년월일</Label>
                       <Input
                         id="birthDate"
                         type="date"
                         {...form.register("birthDate")}
-                        className="bg-white/5 border-white/10 text-white h-12 focus:ring-primary/50"
+                        className="bg-white/5 border-white/10 text-white min-h-[48px] focus:ring-primary/50 rounded-xl"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="birthTime" className="text-white/70 text-sm font-medium">태어난 시간</Label>
+                      <Label htmlFor="birthTime" className="text-white/70 text-xs md:text-sm font-medium">태어난 시간</Label>
                       <Input
                         id="birthTime"
                         type="time"
                         {...form.register("birthTime")}
-                        className="bg-white/5 border-white/10 text-white h-12 focus:ring-primary/50"
+                        className="bg-white/5 border-white/10 text-white min-h-[48px] focus:ring-primary/50 rounded-xl"
                       />
                     </div>
                   </div>
 
                   <div className="space-y-2 relative z-20">
-                    <Label className="text-white/70 text-sm font-medium">태어난 도시</Label>
+                    <Label className="text-white/70 text-xs md:text-sm font-medium">태어난 도시</Label>
                     <CitySelector 
                       value={form.watch("birthCity")} 
                       onChange={(city) => form.setValue("birthCity", city)}
@@ -296,7 +309,7 @@ const Astrology: React.FC = () => {
                   <Button 
                     type="submit" 
                     disabled={loading}
-                    className="w-full h-14 bg-primary hover:bg-primary/90 text-background font-bold text-lg rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98]"
+                    className="w-full min-h-[48px] md:min-h-[56px] bg-primary hover:bg-primary/90 text-background font-bold text-base md:text-lg rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98]"
                   >
                     {loading ? (
                       <div className="flex items-center gap-2">
@@ -323,14 +336,20 @@ const Astrology: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground pb-20">
+    <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased">
+      {/* Background Effects */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-purple-900/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-blue-900/10 rounded-full blur-[120px]" />
+      </div>
+
       <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
-        <div className="container mx-auto px-4 h-14 flex items-center justify-between">
+        <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
-            <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/10" onClick={() => setResult(null)}>
+            <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/10 min-w-[44px] min-h-[44px]" onClick={() => setResult(null)}>
               <ChevronLeft className="h-6 w-6" />
             </Button>
-            <h1 className="text-xl font-bold text-white">분석 결과</h1>
+            <h1 className="text-lg md:text-xl font-bold text-white">분석 결과</h1>
           </div>
           {result.city && (
             <div className="flex items-center gap-1 text-xs text-white/50">
@@ -341,7 +360,7 @@ const Astrology: React.FC = () => {
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-8 max-w-5xl">
+      <main className="relative z-10 px-4 py-6 md:py-8 max-w-5xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* 왼쪽: 시각적 차트 */}
           <div className="lg:col-span-5 space-y-6">
