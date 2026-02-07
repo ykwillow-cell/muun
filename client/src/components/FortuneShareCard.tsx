@@ -116,16 +116,29 @@ export default function FortuneShareCard({ result, userName, type }: FortuneShar
       // 웹폰트 로딩 대기
       await document.fonts.ready;
       // 약간의 딜레이로 렌더링 안정화
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise(resolve => setTimeout(resolve, 500));
 
       const canvas = await html2canvas(cardRef.current, {
         scale: 2,
         useCORS: true,
         allowTaint: true,
-        backgroundColor: null,
+        backgroundColor: '#0a0a1a',
         logging: false,
         width: cardRef.current.offsetWidth,
         height: cardRef.current.offsetHeight,
+        onclone: (clonedDoc: Document) => {
+          // 클론된 문서에서 oklch 색상 변수를 제거하고 안전한 색상으로 대체
+          const root = clonedDoc.documentElement;
+          root.style.setProperty('--background', '#0f1729');
+          root.style.setProperty('--foreground', '#f5f5f5');
+          root.style.setProperty('--card', 'rgba(25, 30, 55, 0.7)');
+          root.style.setProperty('--card-foreground', '#f5f5f5');
+          root.style.setProperty('--primary', '#ffd700');
+          root.style.setProperty('--primary-foreground', '#0f1729');
+          root.style.setProperty('--border', 'rgba(245, 245, 245, 0.08)');
+          root.style.setProperty('--muted', 'rgba(40, 45, 70, 0.3)');
+          root.style.setProperty('--muted-foreground', '#8888aa');
+        },
       });
 
       const link = document.createElement('a');
@@ -139,7 +152,8 @@ export default function FortuneShareCard({ result, userName, type }: FortuneShar
       });
     } catch (error) {
       console.error('이미지 캡처 실패:', error);
-      alert('이미지 생성에 실패했습니다. 다시 시도해주세요.');
+      // fallback: 캔버스 대신 카드 영역 스크린샷 방식 시도
+      alert('이미지 생성에 실패했습니다. 스크린샷으로 저장해주세요.');
     } finally {
       setIsCapturing(false);
     }
@@ -151,20 +165,35 @@ export default function FortuneShareCard({ result, userName, type }: FortuneShar
 
     try {
       await document.fonts.ready;
-      await new Promise(resolve => setTimeout(resolve, 300));
+      await new Promise(resolve => setTimeout(resolve, 500));
 
       const canvas = await html2canvas(cardRef.current, {
         scale: 2,
         useCORS: true,
         allowTaint: true,
-        backgroundColor: null,
+        backgroundColor: '#0a0a1a',
         logging: false,
         width: cardRef.current.offsetWidth,
         height: cardRef.current.offsetHeight,
+        onclone: (clonedDoc: Document) => {
+          const root = clonedDoc.documentElement;
+          root.style.setProperty('--background', '#0f1729');
+          root.style.setProperty('--foreground', '#f5f5f5');
+          root.style.setProperty('--card', 'rgba(25, 30, 55, 0.7)');
+          root.style.setProperty('--card-foreground', '#f5f5f5');
+          root.style.setProperty('--primary', '#ffd700');
+          root.style.setProperty('--primary-foreground', '#0f1729');
+          root.style.setProperty('--border', 'rgba(245, 245, 245, 0.08)');
+          root.style.setProperty('--muted', 'rgba(40, 45, 70, 0.3)');
+          root.style.setProperty('--muted-foreground', '#8888aa');
+        },
       });
 
       canvas.toBlob(async (blob: Blob | null) => {
-        if (!blob) return;
+        if (!blob) {
+          setIsCapturing(false);
+          return;
+        }
         const file = new File([blob], `muun_fortune.png`, { type: 'image/png' });
 
         if (navigator.share && navigator.canShare({ files: [file] })) {
@@ -209,85 +238,154 @@ export default function FortuneShareCard({ result, userName, type }: FortuneShar
 
       {/* 모달 오버레이 */}
       {isOpen && (
-        <div className="fixed inset-0 z-[100] flex flex-col items-center bg-black/90 overflow-y-auto">
+        <div
+          style={{
+            position: 'fixed',
+            inset: 0,
+            zIndex: 100,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            backgroundColor: 'rgba(0,0,0,0.92)',
+            overflowY: 'auto',
+          }}
+        >
           {/* 상단 닫기 버튼 */}
-          <div className="w-full max-w-[420px] flex justify-between items-center p-4 sticky top-0 z-10">
-            <Button
-              variant="ghost"
-              size="icon"
+          <div
+            style={{
+              width: '100%',
+              maxWidth: '420px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              padding: '16px',
+              position: 'sticky',
+              top: 0,
+              zIndex: 10,
+            }}
+          >
+            <button
               onClick={() => setIsOpen(false)}
-              className="text-white hover:bg-white/10 min-w-[44px] min-h-[44px]"
+              style={{
+                background: 'transparent',
+                border: 'none',
+                color: '#ffffff',
+                cursor: 'pointer',
+                minWidth: '44px',
+                minHeight: '44px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: '8px',
+              }}
             >
-              <X className="h-6 w-6" />
-            </Button>
-            <span className="text-white/60 text-sm">운세 카드 미리보기</span>
-            <div className="w-[44px]" />
+              <X style={{ width: 24, height: 24 }} />
+            </button>
+            <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px' }}>운세 카드 미리보기</span>
+            <div style={{ width: '44px' }} />
           </div>
 
-          {/* 카드 미리보기 */}
-          <div className="flex-1 flex items-start justify-center px-4 pb-4">
+          {/* 카드 미리보기 - html2canvas 캡처 대상 */}
+          <div style={{ flex: 1, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '0 16px 16px' }}>
             <div
               ref={cardRef}
-              className="relative w-[360px] overflow-hidden rounded-2xl"
-              style={{ fontFamily: "'Noto Serif KR', 'Nanum Myeongjo', serif" }}
+              style={{
+                position: 'relative',
+                width: '360px',
+                overflow: 'hidden',
+                borderRadius: '16px',
+                fontFamily: "'Noto Serif KR', 'Nanum Myeongjo', serif",
+                backgroundColor: '#0a0a1a',
+              }}
             >
               {/* 배경 이미지 */}
               <img
                 src="/assets/share-card-bg.png"
                 alt=""
-                className="w-full h-auto block"
+                style={{ width: '100%', height: 'auto', display: 'block' }}
                 crossOrigin="anonymous"
               />
 
-              {/* 텍스트 오버레이 */}
-              <div className="absolute inset-0 flex flex-col items-center justify-between py-[8%] px-[10%]">
+              {/* 텍스트 오버레이 - 모든 스타일을 인라인으로 지정 (oklch 회피) */}
+              <div
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '8% 10%',
+                }}
+              >
                 {/* 상단: 로고 + 타이틀 */}
-                <div className="flex flex-col items-center gap-1 mt-[2%]">
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', marginTop: '2%' }}>
                   <span
-                    className="text-2xl font-bold tracking-[0.15em]"
-                    style={{ color: '#d4a853', fontFamily: "'Playfair Display', serif" }}
+                    style={{
+                      fontSize: '24px',
+                      fontWeight: 700,
+                      letterSpacing: '0.15em',
+                      color: '#d4a853',
+                      fontFamily: "'Playfair Display', serif",
+                    }}
                   >
                     MUUN
                   </span>
                   <h2
-                    className="text-xl font-bold mt-1"
-                    style={{ color: '#f0d78c' }}
+                    style={{
+                      fontSize: '20px',
+                      fontWeight: 700,
+                      marginTop: '4px',
+                      color: '#f0d78c',
+                    }}
                   >
                     나의 {yearLabel}
                   </h2>
                 </div>
 
                 {/* 중앙: 핵심 키워드 문구 */}
-                <div className="flex flex-col items-center gap-4 -mt-[5%]">
-                  <div className="text-center">
-                    <p className="text-white/80 text-base mb-1">{userName}님의 키워드는</p>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', marginTop: '-5%' }}>
+                  <div style={{ textAlign: 'center' }}>
+                    <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '16px', marginBottom: '4px' }}>
+                      {userName}님의 키워드는
+                    </p>
                     <p
-                      className="text-3xl font-extrabold leading-tight"
-                      style={{ color: '#ffd700', textShadow: '0 0 20px rgba(255,215,0,0.3)' }}
+                      style={{
+                        fontSize: '28px',
+                        fontWeight: 800,
+                        lineHeight: 1.2,
+                        color: '#ffd700',
+                        textShadow: '0 0 20px rgba(255,215,0,0.3)',
+                      }}
                     >
                       '{mainKeyword}'
                     </p>
-                    <p className="text-white/80 text-base mt-1">입니다.</p>
+                    <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '16px', marginTop: '4px' }}>입니다.</p>
                   </div>
 
                   {/* 오행 균형 */}
-                  <div className="text-center mt-2">
-                    <p className="text-white/70 text-sm">
-                      오행 균형: <span style={{ color: '#f0d78c' }} className="font-bold">{strongestElement}</span> 강함
+                  <div style={{ textAlign: 'center', marginTop: '8px' }}>
+                    <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '14px' }}>
+                      오행 균형: <span style={{ color: '#f0d78c', fontWeight: 700 }}>{strongestElement}</span> 강함
                     </p>
                   </div>
 
                   {/* 키워드 태그들 */}
-                  <div className="flex flex-wrap justify-center gap-2 mt-2">
+                  <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '8px', marginTop: '8px' }}>
                     {keywords.map((keyword, idx) => (
                       <span
                         key={idx}
-                        className="px-4 py-2 rounded-full text-sm font-bold"
                         style={{
+                          padding: '8px 16px',
+                          borderRadius: '9999px',
+                          fontSize: '14px',
+                          fontWeight: 700,
                           background: 'linear-gradient(135deg, rgba(212,168,83,0.3) 0%, rgba(240,215,140,0.15) 100%)',
                           border: '1px solid rgba(212,168,83,0.5)',
                           color: '#f0d78c',
-                          backdropFilter: 'blur(4px)',
                         }}
                       >
                         #{keyword}
@@ -297,34 +395,37 @@ export default function FortuneShareCard({ result, userName, type }: FortuneShar
                 </div>
 
                 {/* 하단: 요약 정보 + 푸터 */}
-                <div className="flex flex-col items-center gap-3 mb-[2%] w-full">
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', marginBottom: '2%', width: '100%' }}>
                   {/* 요약 정보 */}
                   <div
-                    className="w-full rounded-xl px-5 py-4 text-sm space-y-2"
                     style={{
+                      width: '100%',
+                      borderRadius: '12px',
+                      padding: '16px 20px',
+                      fontSize: '14px',
                       background: 'rgba(0,0,0,0.3)',
                       border: '1px solid rgba(212,168,83,0.2)',
                     }}
                   >
-                    <div className="flex items-center gap-2">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
                       <span style={{ color: '#d4a853' }}>●</span>
-                      <span className="text-white/70">행운의 색:</span>
-                      <span className="text-white font-bold">{luckyColors}</span>
+                      <span style={{ color: 'rgba(255,255,255,0.7)' }}>행운의 색:</span>
+                      <span style={{ color: '#ffffff', fontWeight: 700 }}>{luckyColors}</span>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
                       <span style={{ color: '#d4a853' }}>●</span>
-                      <span className="text-white/70">조심할 달:</span>
-                      <span className="text-white font-bold">{cautionMonths}</span>
+                      <span style={{ color: 'rgba(255,255,255,0.7)' }}>조심할 달:</span>
+                      <span style={{ color: '#ffffff', fontWeight: 700 }}>{cautionMonths}</span>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                       <span style={{ color: '#d4a853' }}>●</span>
-                      <span className="text-white/70">추천활동:</span>
-                      <span className="text-white font-bold">{recommendedActivity}</span>
+                      <span style={{ color: 'rgba(255,255,255,0.7)' }}>추천활동:</span>
+                      <span style={{ color: '#ffffff', fontWeight: 700 }}>{recommendedActivity}</span>
                     </div>
                   </div>
 
                   {/* 푸터 */}
-                  <p className="text-white/50 text-xs tracking-wide">
+                  <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '12px', letterSpacing: '0.05em' }}>
                     더 자세한 내용은 <span style={{ color: '#d4a853' }}>muunsaju.com</span>에서
                   </p>
                 </div>
@@ -333,41 +434,84 @@ export default function FortuneShareCard({ result, userName, type }: FortuneShar
           </div>
 
           {/* 하단 액션 버튼 */}
-          <div className="w-full max-w-[420px] px-4 pb-8 pt-2 flex gap-3 sticky bottom-0 bg-gradient-to-t from-black via-black/90 to-transparent">
-            <Button
+          <div
+            style={{
+              width: '100%',
+              maxWidth: '420px',
+              padding: '8px 16px 32px',
+              display: 'flex',
+              gap: '12px',
+              position: 'sticky',
+              bottom: 0,
+              background: 'linear-gradient(to top, rgba(0,0,0,1) 60%, rgba(0,0,0,0.9) 80%, transparent 100%)',
+            }}
+          >
+            <button
               onClick={handleShareImage}
               disabled={isCapturing}
-              className="flex-1 bg-white/10 hover:bg-white/20 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 min-h-[48px] border border-white/20"
+              style={{
+                flex: 1,
+                background: 'rgba(255,255,255,0.1)',
+                border: '1px solid rgba(255,255,255,0.2)',
+                color: '#ffffff',
+                fontWeight: 700,
+                padding: '12px',
+                borderRadius: '12px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                minHeight: '48px',
+                cursor: isCapturing ? 'not-allowed' : 'pointer',
+                opacity: isCapturing ? 0.6 : 1,
+                fontSize: '15px',
+              }}
             >
               {isCapturing ? (
                 <>
-                  <Loader2 className="h-5 w-5 animate-spin" />
+                  <Loader2 style={{ width: 20, height: 20, animation: 'spin 1s linear infinite' }} />
                   이미지 생성 중...
                 </>
               ) : (
                 <>
-                  <Share2 className="h-5 w-5" />
+                  <Share2 style={{ width: 20, height: 20 }} />
                   공유
                 </>
               )}
-            </Button>
-            <Button
+            </button>
+            <button
               onClick={captureAndDownload}
               disabled={isCapturing}
-              className="flex-1 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 min-h-[48px]"
+              style={{
+                flex: 1,
+                background: 'linear-gradient(to right, #7c3aed, #4f46e5)',
+                border: 'none',
+                color: '#ffffff',
+                fontWeight: 700,
+                padding: '12px',
+                borderRadius: '12px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+                minHeight: '48px',
+                cursor: isCapturing ? 'not-allowed' : 'pointer',
+                opacity: isCapturing ? 0.6 : 1,
+                fontSize: '15px',
+              }}
             >
               {isCapturing ? (
                 <>
-                  <Loader2 className="h-5 w-5 animate-spin" />
+                  <Loader2 style={{ width: 20, height: 20, animation: 'spin 1s linear infinite' }} />
                   이미지 생성 중...
                 </>
               ) : (
                 <>
-                  <Download className="h-5 w-5" />
+                  <Download style={{ width: 20, height: 20 }} />
                   저장
                 </>
               )}
-            </Button>
+            </button>
           </div>
         </div>
       )}
