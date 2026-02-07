@@ -176,10 +176,17 @@ function getCardContent(props: FortuneShareCardProps) {
     const namesDisplay = memberNames.length > 3 
       ? `${memberNames.slice(0, 3).join(' · ')} 외 ${memberNames.length - 3}명`
       : memberNames.join(' · ');
+    // 점수에 따른 짧은 키워드 생성
+    const familyGrade = overallScore >= 90 ? '완벽한 조화'
+      : overallScore >= 80 ? '최고의 가족'
+      : overallScore >= 70 ? '따뜻한 가족'
+      : overallScore >= 60 ? '성장하는 가족'
+      : overallScore >= 50 ? '다채로운 가족'
+      : '노력하는 가족';
     return {
       title: '가족사주 분석 요약',
       subtitle: namesDisplay,
-      mainKeyword: harmony || '가족의 조화',
+      mainKeyword: familyGrade,
       mainKeywordPrefix: '우리 가족의 키워드는',
       mainKeywordSuffix: '입니다.',
       middleInfo: `가족 조화 점수: ${overallScore}점`,
