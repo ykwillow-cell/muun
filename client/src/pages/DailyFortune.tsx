@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion } from "framer-motion";
 import { ChevronLeft, Share2, Sparkles, Star, Coffee, MapPin, Palette, Zap, User, Sun, Calendar } from "lucide-react";
+import DatePickerInput from "@/components/DatePickerInput";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -166,11 +167,10 @@ export default function DailyFortune() {
                       <Calendar className="w-3.5 h-3.5 text-orange-400" />
                       생년월일
                     </Label>
-                    <Input
+                    <DatePickerInput
                       id="birthDate"
-                      type="date"
                       {...form.register("birthDate")}
-                      className="h-11 bg-white/5 border-white/10 text-white rounded-xl focus:ring-orange-500/50 focus:border-orange-500 transition-all text-sm"
+                      accentColor="orange"
                     />
                   </div>
 

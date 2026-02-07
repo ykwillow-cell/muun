@@ -3,6 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, Star, Sparkles, User, Zap, Briefcase, Activity, Heart, Quote, TrendingUp, Share2, ScrollText, Calendar, Clock, Shield, Baby, Landmark, Sunset } from "lucide-react";
+import DatePickerInput from "@/components/DatePickerInput";
 import { Link } from "wouter";
 import { shareContent } from "@/lib/share";
 import { useState, useEffect } from "react";
@@ -274,11 +275,10 @@ export default function LifelongSaju() {
                         <Calendar className="w-3.5 h-3.5 text-purple-400" />
                         생년월일
                       </Label>
-                      <Input
+                      <DatePickerInput
                         id="birthDate"
-                        type="date"
                         {...form.register("birthDate")}
-                        className="h-11 bg-white/5 border-white/10 text-white rounded-xl focus:ring-purple-500/50 focus:border-purple-500 transition-all text-sm"
+                        accentColor="purple"
                       />
                     </div>
                     <div className="space-y-1.5">

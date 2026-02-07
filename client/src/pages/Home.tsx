@@ -34,6 +34,14 @@ export default function Home() {
       featured: true
     },
     { 
+      href: "/family-saju", 
+      label: "가족사주", 
+      icon: <Users className="w-5 h-5" />, 
+      color: "bg-orange-500/20 text-orange-400",
+      desc: "가족 오행 조화 분석",
+      featured: true
+    },
+    { 
       href: "/compatibility", 
       label: "궁합", 
       icon: <Heart className="w-5 h-5" />, 
@@ -62,13 +70,6 @@ export default function Home() {
       desc: "나의 진짜 성격 찾기"
     },
     { 
-      href: "/family-saju", 
-      label: "가족사주", 
-      icon: <Users className="w-5 h-5" />, 
-      color: "bg-orange-500/20 text-orange-400",
-      desc: "가족 오행 조화 분석"
-    },
-    { 
       href: "/manselyeok", 
       label: "만세력", 
       icon: <CalendarDays className="w-5 h-5" />, 
@@ -77,8 +78,8 @@ export default function Home() {
     },
   ];
 
-  // 인기 서비스 (가로 스크롤용)
-  const popularItems = menuItems.slice(0, 5);
+  // 인기 서비스 (가로 스크롤용) - featured 항목만 필터
+  const popularItems = menuItems.filter(item => item.featured);
 
   const handleCategoryClick = (label: string) => {
     trackCustomEvent("select_fortune_category", {

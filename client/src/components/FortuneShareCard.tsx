@@ -7,13 +7,45 @@ import { STEM_PERSONALITY, ELEMENT_READINGS, analyzeElementBalance } from "@/lib
 import { shareContent } from "@/lib/share";
 import { trackCustomEvent } from "@/lib/ga4";
 
-interface FortuneShareCardProps {
-  result: SajuResult;
+// ===== 공통 타입 =====
+interface BaseProps {
   userName: string;
-  type: 'yearly' | 'lifelong';
 }
 
-// 일간 오행 기반 키워드 생성
+interface YearlyProps extends BaseProps {
+  type: 'yearly';
+  result: SajuResult;
+}
+
+interface LifelongProps extends BaseProps {
+  type: 'lifelong';
+  result: SajuResult;
+}
+
+interface CompatibilityProps extends BaseProps {
+  type: 'compatibility';
+  result: SajuResult;
+  result2?: SajuResult;
+  name1: string;
+  name2: string;
+  score: number;
+  loveScore?: number;
+  familyScore?: number;
+}
+
+interface FamilyProps extends BaseProps {
+  type: 'family';
+  result: SajuResult;
+  memberNames: string[];
+  overallScore: number;
+  harmony: string;
+  luckyActivity: string;
+}
+
+type FortuneShareCardProps = YearlyProps | LifelongProps | CompatibilityProps | FamilyProps;
+
+// ===== 유틸리티 함수들 =====
+
 function generateKeywords(result: SajuResult): string[] {
   const dayElement = STEM_ELEMENTS[result.dayPillar.stem];
   const yearElement = STEM_ELEMENTS[result.yearPillar.stem];
@@ -35,7 +67,6 @@ function generateKeywords(result: SajuResult): string[] {
   const yearKeywords = keywordMap[yearElement] || [];
   const strongKeywords = keywordMap[strongest] || [];
 
-  // 일간 키워드 2개 + 세운 키워드 1개 + 강한 오행 키워드 1개 (중복 제거)
   const selected: string[] = [];
   if (keywords[0]) selected.push(keywords[0]);
   if (keywords[1]) selected.push(keywords[1]);
@@ -47,7 +78,6 @@ function generateKeywords(result: SajuResult): string[] {
   return selected.slice(0, 4);
 }
 
-// 가장 강한 오행 한글 이름
 function getStrongestElementKorean(result: SajuResult): string {
   const elementBalance = calculateElementBalance(result);
   const balanceAnalysis = analyzeElementBalance(elementBalance);
@@ -55,109 +85,192 @@ function getStrongestElementKorean(result: SajuResult): string {
   return elementKorean[balanceAnalysis.strongest] || '화(火)';
 }
 
-// 행운의 색상
 function getLuckyColors(result: SajuResult): string {
   const dayElement = STEM_ELEMENTS[result.dayPillar.stem] as FiveElement;
   const luckyData = ELEMENT_LUCKY_DATA[dayElement];
   return luckyData?.colors?.slice(0, 2).join(' & ') || '레드 & 골드';
 }
 
-// 조심할 달 (오행 상극 기반)
 function getCautionMonths(result: SajuResult): string {
   const dayElement = STEM_ELEMENTS[result.dayPillar.stem];
   const cautionMap: Record<string, string> = {
-    '木': '7월, 8월',
-    '火': '10월, 11월',
-    '土': '1월, 2월',
-    '金': '4월, 5월',
-    '水': '6월, 7월',
+    '木': '7월, 8월', '火': '10월, 11월', '土': '1월, 2월', '金': '4월, 5월', '水': '6월, 7월',
   };
   return cautionMap[dayElement] || '7월, 8월';
 }
 
-// 추천 활동
 function getRecommendedActivity(result: SajuResult): string {
   const dayElement = STEM_ELEMENTS[result.dayPillar.stem] as FiveElement;
   const luckyData = ELEMENT_LUCKY_DATA[dayElement];
   return luckyData?.activities?.[0] || '새로운 도전 시작';
 }
 
-// 일간 기반 핵심 키워드 문구
 function getMainKeywordPhrase(result: SajuResult): string {
   const dayElement = STEM_ELEMENTS[result.dayPillar.stem];
   const phraseMap: Record<string, string> = {
-    '木': '끊임없는 성장',
-    '火': '불타는 열정',
-    '土': '흔들리지 않는 안정',
-    '金': '빛나는 결실',
-    '水': '흐르는 지혜',
+    '木': '끊임없는 성장', '火': '불타는 열정', '土': '흔들리지 않는 안정', '金': '빛나는 결실', '水': '흐르는 지혜',
   };
   return phraseMap[dayElement] || '불타는 열정';
 }
 
-export default function FortuneShareCard({ result, userName, type }: FortuneShareCardProps) {
+// 궁합 키워드 생성
+function generateCompatibilityKeywords(result1: SajuResult, result2?: SajuResult): string[] {
+  const elem1 = STEM_ELEMENTS[result1.dayPillar.stem];
+  const elem2 = result2 ? STEM_ELEMENTS[result2.dayPillar.stem] : elem1;
+  
+  const compatKeywords: Record<string, Record<string, string[]>> = {
+    '木': { '木': ['동반성장', '함께 도약'], '火': ['열정적 사랑', '서로 빛나는'], '土': ['안정적 관계', '성장의 기반'], '金': ['긴장과 성장', '서로 다듬는'], '水': ['깊은 이해', '자연스러운 흐름'] },
+    '火': { '木': ['열정적 사랑', '서로 빛나는'], '火': ['뜨거운 열정', '함께 빛나는'], '土': ['따뜻한 안정', '든든한 사랑'], '金': ['극과 극의 매력', '강렬한 끌림'], '水': ['균형과 조화', '서로 채우는'] },
+    '土': { '木': ['안정적 관계', '성장의 기반'], '火': ['따뜻한 안정', '든든한 사랑'], '土': ['깊은 신뢰', '변함없는 사랑'], '金': ['풍요로운 관계', '결실의 사랑'], '水': ['유연한 조화', '서로 보완'] },
+    '金': { '木': ['긴장과 성장', '서로 다듬는'], '火': ['극과 극의 매력', '강렬한 끌림'], '土': ['풍요로운 관계', '결실의 사랑'], '金': ['단단한 유대', '함께 빛나는'], '水': ['흐르는 조화', '자연스러운 인연'] },
+    '水': { '木': ['깊은 이해', '자연스러운 흐름'], '火': ['균형과 조화', '서로 채우는'], '土': ['유연한 조화', '서로 보완'], '金': ['흐르는 조화', '자연스러운 인연'], '水': ['깊은 공감', '마음이 통하는'] },
+  };
+
+  const keywords = compatKeywords[elem1]?.[elem2] || ['서로 이해', '함께 성장'];
+  return [...keywords, '소울메이트', '운명적 만남'].slice(0, 4);
+}
+
+// 궁합 등급 텍스트
+function getCompatibilityGrade(score: number): string {
+  if (score >= 90) return '천생연분';
+  if (score >= 80) return '최고의 궁합';
+  if (score >= 70) return '좋은 궁합';
+  if (score >= 60) return '보통의 궁합';
+  if (score >= 50) return '노력이 필요한 궁합';
+  return '상극의 궁합';
+}
+
+// 가족 조화 키워드 생성
+function generateFamilyKeywords(memberNames: string[]): string[] {
+  const keywords = ['가족 화합', '오행 조화', '함께 성장', '든든한 유대'];
+  return keywords.slice(0, 4);
+}
+
+// ===== 카드 콘텐츠 생성 함수 =====
+
+function getCardContent(props: FortuneShareCardProps) {
+  const { type, result, userName } = props;
+
+  if (type === 'compatibility') {
+    const { name1, name2, score, loveScore, familyScore } = props;
+    return {
+      title: '궁합 분석 요약',
+      subtitle: `${name1} ♥ ${name2}`,
+      mainKeyword: getCompatibilityGrade(score),
+      mainKeywordPrefix: '두 사람의 궁합은',
+      mainKeywordSuffix: '입니다.',
+      middleInfo: `궁합 점수: ${score}점`,
+      keywords: generateCompatibilityKeywords(result, props.result2),
+      bottomItems: [
+        { label: '연애 궁합', value: `${loveScore || score}점` },
+        { label: '가정 궁합', value: `${familyScore || score}점` },
+        { label: '추천 활동', value: '함께 여행' },
+      ],
+      fileName: `muun_compatibility_${name1}_${name2}`,
+      gaPage: 'compatibility',
+    };
+  }
+
+  if (type === 'family') {
+    const { memberNames, overallScore, harmony, luckyActivity } = props;
+    const namesDisplay = memberNames.length > 3 
+      ? `${memberNames.slice(0, 3).join(' · ')} 외 ${memberNames.length - 3}명`
+      : memberNames.join(' · ');
+    return {
+      title: '가족사주 분석 요약',
+      subtitle: namesDisplay,
+      mainKeyword: harmony || '가족의 조화',
+      mainKeywordPrefix: '우리 가족의 키워드는',
+      mainKeywordSuffix: '입니다.',
+      middleInfo: `가족 조화 점수: ${overallScore}점`,
+      keywords: generateFamilyKeywords(memberNames),
+      bottomItems: [
+        { label: '조화 점수', value: `${overallScore}점` },
+        { label: '추천 활동', value: luckyActivity || '가족 나들이' },
+        { label: '가족 수', value: `${memberNames.length}명` },
+      ],
+      fileName: `muun_family_${memberNames.join('_')}`,
+      gaPage: 'family_saju',
+    };
+  }
+
+  // yearly / lifelong
+  const yearLabel = type === 'yearly' ? '2026년 운세 요약' : '평생 사주 요약';
+  return {
+    title: yearLabel,
+    subtitle: userName,
+    mainKeyword: getMainKeywordPhrase(result),
+    mainKeywordPrefix: `${userName}님의 키워드는`,
+    mainKeywordSuffix: '입니다.',
+    middleInfo: `오행 균형: ${getStrongestElementKorean(result)} 강함`,
+    keywords: generateKeywords(result),
+    bottomItems: [
+      { label: '행운의 색', value: getLuckyColors(result) },
+      { label: '조심할 달', value: getCautionMonths(result) },
+      { label: '추천활동', value: getRecommendedActivity(result) },
+    ],
+    fileName: `muun_${type}_${userName}`,
+    gaPage: type === 'yearly' ? 'yearly_fortune' : 'lifelong_saju',
+  };
+}
+
+// ===== 메인 컴포넌트 =====
+
+export default function FortuneShareCard(props: FortuneShareCardProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isCapturing, setIsCapturing] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
-  const keywords = generateKeywords(result);
-  const strongestElement = getStrongestElementKorean(result);
-  const luckyColors = getLuckyColors(result);
-  const cautionMonths = getCautionMonths(result);
-  const recommendedActivity = getRecommendedActivity(result);
-  const mainKeyword = getMainKeywordPhrase(result);
-  const yearLabel = type === 'yearly' ? '2026년 운세 요약' : '평생 사주 요약';
+  const content = getCardContent(props);
+
+  const html2canvasOptions = useCallback((element: HTMLDivElement) => ({
+    scale: 2,
+    useCORS: true,
+    allowTaint: true,
+    backgroundColor: '#0a0a1a',
+    logging: false,
+    width: element.offsetWidth,
+    height: element.offsetHeight,
+    onclone: (clonedDoc: Document) => {
+      const root = clonedDoc.documentElement;
+      root.style.setProperty('--background', '#0f1729');
+      root.style.setProperty('--foreground', '#f5f5f5');
+      root.style.setProperty('--card', 'rgba(25, 30, 55, 0.7)');
+      root.style.setProperty('--card-foreground', '#f5f5f5');
+      root.style.setProperty('--primary', '#ffd700');
+      root.style.setProperty('--primary-foreground', '#0f1729');
+      root.style.setProperty('--border', 'rgba(245, 245, 245, 0.08)');
+      root.style.setProperty('--muted', 'rgba(40, 45, 70, 0.3)');
+      root.style.setProperty('--muted-foreground', '#8888aa');
+    },
+  }), []);
 
   const captureAndDownload = useCallback(async () => {
     if (!cardRef.current) return;
     setIsCapturing(true);
 
     try {
-      // 웹폰트 로딩 대기
       await document.fonts.ready;
-      // 약간의 딜레이로 렌더링 안정화
       await new Promise(resolve => setTimeout(resolve, 500));
 
-      const canvas = await html2canvas(cardRef.current, {
-        scale: 2,
-        useCORS: true,
-        allowTaint: true,
-        backgroundColor: '#0a0a1a',
-        logging: false,
-        width: cardRef.current.offsetWidth,
-        height: cardRef.current.offsetHeight,
-        onclone: (clonedDoc: Document) => {
-          // 클론된 문서에서 oklch 색상 변수를 제거하고 안전한 색상으로 대체
-          const root = clonedDoc.documentElement;
-          root.style.setProperty('--background', '#0f1729');
-          root.style.setProperty('--foreground', '#f5f5f5');
-          root.style.setProperty('--card', 'rgba(25, 30, 55, 0.7)');
-          root.style.setProperty('--card-foreground', '#f5f5f5');
-          root.style.setProperty('--primary', '#ffd700');
-          root.style.setProperty('--primary-foreground', '#0f1729');
-          root.style.setProperty('--border', 'rgba(245, 245, 245, 0.08)');
-          root.style.setProperty('--muted', 'rgba(40, 45, 70, 0.3)');
-          root.style.setProperty('--muted-foreground', '#8888aa');
-        },
-      });
+      const canvas = await html2canvas(cardRef.current, html2canvasOptions(cardRef.current));
 
       const link = document.createElement('a');
-      link.download = `muun_${type}_${userName}_${Date.now()}.png`;
+      link.download = `${content.fileName}_${Date.now()}.png`;
       link.href = canvas.toDataURL('image/png');
       link.click();
 
       trackCustomEvent('share_card_download', {
-        page: type === 'yearly' ? 'yearly_fortune' : 'lifelong_saju',
-        user_name: userName,
+        page: content.gaPage,
+        user_name: props.userName,
       });
     } catch (error) {
       console.error('이미지 캡처 실패:', error);
-      // fallback: 캔버스 대신 카드 영역 스크린샷 방식 시도
       alert('이미지 생성에 실패했습니다. 스크린샷으로 저장해주세요.');
     } finally {
       setIsCapturing(false);
     }
-  }, [result, userName, type]);
+  }, [props, content, html2canvasOptions]);
 
   const handleShareImage = useCallback(async () => {
     if (!cardRef.current) return;
@@ -167,27 +280,7 @@ export default function FortuneShareCard({ result, userName, type }: FortuneShar
       await document.fonts.ready;
       await new Promise(resolve => setTimeout(resolve, 500));
 
-      const canvas = await html2canvas(cardRef.current, {
-        scale: 2,
-        useCORS: true,
-        allowTaint: true,
-        backgroundColor: '#0a0a1a',
-        logging: false,
-        width: cardRef.current.offsetWidth,
-        height: cardRef.current.offsetHeight,
-        onclone: (clonedDoc: Document) => {
-          const root = clonedDoc.documentElement;
-          root.style.setProperty('--background', '#0f1729');
-          root.style.setProperty('--foreground', '#f5f5f5');
-          root.style.setProperty('--card', 'rgba(25, 30, 55, 0.7)');
-          root.style.setProperty('--card-foreground', '#f5f5f5');
-          root.style.setProperty('--primary', '#ffd700');
-          root.style.setProperty('--primary-foreground', '#0f1729');
-          root.style.setProperty('--border', 'rgba(245, 245, 245, 0.08)');
-          root.style.setProperty('--muted', 'rgba(40, 45, 70, 0.3)');
-          root.style.setProperty('--muted-foreground', '#8888aa');
-        },
-      });
+      const canvas = await html2canvas(cardRef.current, html2canvasOptions(cardRef.current));
 
       canvas.toBlob(async (blob: Blob | null) => {
         if (!blob) {
@@ -199,20 +292,17 @@ export default function FortuneShareCard({ result, userName, type }: FortuneShar
         if (navigator.share && navigator.canShare({ files: [file] })) {
           try {
             await navigator.share({
-              title: `무운 - ${userName}님의 ${yearLabel}`,
-              text: `${userName}님의 2026년 운세 키워드를 확인해보세요!`,
+              title: `무운 - ${content.title}`,
+              text: `${content.subtitle}의 운세를 확인해보세요!`,
               files: [file],
             });
-            trackCustomEvent('share_card_native_share', {
-              page: type === 'yearly' ? 'yearly_fortune' : 'lifelong_saju',
-            });
+            trackCustomEvent('share_card_native_share', { page: content.gaPage });
           } catch (e) {
             // 사용자가 공유 취소
           }
         } else {
-          // 네이티브 공유 미지원 시 다운로드
           const link = document.createElement('a');
-          link.download = `muun_${type}_${userName}.png`;
+          link.download = `${content.fileName}.png`;
           link.href = URL.createObjectURL(blob);
           link.click();
           URL.revokeObjectURL(link.href);
@@ -223,7 +313,23 @@ export default function FortuneShareCard({ result, userName, type }: FortuneShar
       console.error('이미지 공유 실패:', error);
       setIsCapturing(false);
     }
-  }, [result, userName, type, yearLabel]);
+  }, [props, content, html2canvasOptions]);
+
+  // 카드 배경색 (타입별)
+  const getBgGradient = () => {
+    if (props.type === 'compatibility') return 'linear-gradient(135deg, #1a0a2e 0%, #2d1b4e 30%, #1a0a2e 70%, #0d0520 100%)';
+    if (props.type === 'family') return 'linear-gradient(135deg, #0a1a2e 0%, #1b2d4e 30%, #0a1a2e 70%, #05101d 100%)';
+    return '#0a0a1a';
+  };
+
+  // 강조색 (타입별)
+  const getAccentColor = () => {
+    if (props.type === 'compatibility') return '#ff6b9d';
+    if (props.type === 'family') return '#4ecdc4';
+    return '#ffd700';
+  };
+
+  const accentColor = getAccentColor();
 
   return (
     <>
@@ -295,7 +401,7 @@ export default function FortuneShareCard({ result, userName, type }: FortuneShar
                 overflow: 'hidden',
                 borderRadius: '16px',
                 fontFamily: "'Noto Serif KR', 'Nanum Myeongjo', serif",
-                backgroundColor: '#0a0a1a',
+                background: getBgGradient(),
               }}
             >
               {/* 배경 이미지 */}
@@ -306,7 +412,7 @@ export default function FortuneShareCard({ result, userName, type }: FortuneShar
                 crossOrigin="anonymous"
               />
 
-              {/* 텍스트 오버레이 - 모든 스타일을 인라인으로 지정 (oklch 회피) */}
+              {/* 텍스트 오버레이 */}
               <div
                 style={{
                   position: 'absolute',
@@ -342,7 +448,7 @@ export default function FortuneShareCard({ result, userName, type }: FortuneShar
                       color: '#f0d78c',
                     }}
                   >
-                    나의 {yearLabel}
+                    나의 {content.title}
                   </h2>
                 </div>
 
@@ -350,32 +456,32 @@ export default function FortuneShareCard({ result, userName, type }: FortuneShar
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', marginTop: '-5%' }}>
                   <div style={{ textAlign: 'center' }}>
                     <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '16px', marginBottom: '4px' }}>
-                      {userName}님의 키워드는
+                      {content.mainKeywordPrefix}
                     </p>
                     <p
                       style={{
                         fontSize: '28px',
                         fontWeight: 800,
                         lineHeight: 1.2,
-                        color: '#ffd700',
-                        textShadow: '0 0 20px rgba(255,215,0,0.3)',
+                        color: accentColor,
+                        textShadow: `0 0 20px ${accentColor}44`,
                       }}
                     >
-                      '{mainKeyword}'
+                      '{content.mainKeyword}'
                     </p>
-                    <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '16px', marginTop: '4px' }}>입니다.</p>
+                    <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '16px', marginTop: '4px' }}>{content.mainKeywordSuffix}</p>
                   </div>
 
-                  {/* 오행 균형 */}
+                  {/* 중간 정보 */}
                   <div style={{ textAlign: 'center', marginTop: '8px' }}>
                     <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '14px' }}>
-                      오행 균형: <span style={{ color: '#f0d78c', fontWeight: 700 }}>{strongestElement}</span> 강함
+                      {content.middleInfo}
                     </p>
                   </div>
 
-                  {/* 키워드 태그들 - text-align center + inline-block for html2canvas compatibility */}
+                  {/* 키워드 태그들 */}
                   <div style={{ textAlign: 'center', marginTop: '8px', lineHeight: '2.4' }}>
-                    {keywords.map((keyword, idx) => (
+                    {content.keywords.map((keyword, idx) => (
                       <span
                         key={idx}
                         style={{
@@ -384,8 +490,8 @@ export default function FortuneShareCard({ result, userName, type }: FortuneShar
                           borderRadius: '9999px',
                           fontSize: '14px',
                           fontWeight: 700,
-                          background: 'linear-gradient(135deg, rgba(212,168,83,0.3) 0%, rgba(240,215,140,0.15) 100%)',
-                          border: '1px solid rgba(212,168,83,0.5)',
+                          background: `linear-gradient(135deg, ${accentColor}33 0%, ${accentColor}18 100%)`,
+                          border: `1px solid ${accentColor}66`,
                           color: '#f0d78c',
                           margin: '0 4px',
                         }}
@@ -406,24 +512,16 @@ export default function FortuneShareCard({ result, userName, type }: FortuneShar
                       padding: '16px 20px',
                       fontSize: '14px',
                       background: 'rgba(0,0,0,0.3)',
-                      border: '1px solid rgba(212,168,83,0.2)',
+                      border: `1px solid ${accentColor}22`,
                     }}
                   >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                      <span style={{ color: '#d4a853' }}>●</span>
-                      <span style={{ color: 'rgba(255,255,255,0.7)' }}>행운의 색:</span>
-                      <span style={{ color: '#ffffff', fontWeight: 700 }}>{luckyColors}</span>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                      <span style={{ color: '#d4a853' }}>●</span>
-                      <span style={{ color: 'rgba(255,255,255,0.7)' }}>조심할 달:</span>
-                      <span style={{ color: '#ffffff', fontWeight: 700 }}>{cautionMonths}</span>
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ color: '#d4a853' }}>●</span>
-                      <span style={{ color: 'rgba(255,255,255,0.7)' }}>추천활동:</span>
-                      <span style={{ color: '#ffffff', fontWeight: 700 }}>{recommendedActivity}</span>
-                    </div>
+                    {content.bottomItems.map((item, idx) => (
+                      <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: idx < content.bottomItems.length - 1 ? '8px' : '0' }}>
+                        <span style={{ color: accentColor }}>●</span>
+                        <span style={{ color: 'rgba(255,255,255,0.7)' }}>{item.label}:</span>
+                        <span style={{ color: '#ffffff', fontWeight: 700 }}>{item.value}</span>
+                      </div>
+                    ))}
                   </div>
 
                   {/* 푸터 */}

@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion } from "framer-motion";
 import { ChevronLeft, Share2, Sparkles, User, BookOpen, Info, Calendar, ScrollText } from "lucide-react";
+import DatePickerInput from "@/components/DatePickerInput";
 import { Link } from "wouter";
 import { shareContent } from "@/lib/share";
 
@@ -175,11 +176,10 @@ export default function Tojeong() {
                         <Calendar className="w-3.5 h-3.5 text-amber-400" />
                         생년월일
                       </Label>
-                      <Input
+                      <DatePickerInput
                         id="birthDate"
-                        type="date"
                         {...form.register("birthDate")}
-                        className="h-11 bg-white/5 border-white/10 text-white rounded-xl focus:ring-amber-500/50 focus:border-amber-500 transition-all text-sm"
+                        accentColor="amber"
                       />
                     </div>
 

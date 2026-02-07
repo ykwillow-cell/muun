@@ -16,6 +16,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { calculateSaju, SajuResult, calculateElementBalance, STEM_ELEMENTS } from "@/lib/saju";
 import SajuChart from "@/components/SajuChart";
 import FortuneShareCard from "@/components/FortuneShareCard";
+import DatePickerInput from "@/components/DatePickerInput";
 import { trackEvent } from "@/lib/ga4";
 import {
   STEM_READINGS,
@@ -236,11 +237,10 @@ export default function FamilySaju() {
                         <Label className="text-white/70 text-sm flex items-center gap-1">
                           <Calendar className="w-3 h-3" /> 생년월일
                         </Label>
-                        <Input
-                          type="date"
+                        <DatePickerInput
                           value={member.birthDate}
                           onChange={(e) => updateMember(index, "birthDate", e.target.value)}
-                          className="bg-white/5 border-white/10 text-white h-10"
+                          accentColor="blue"
                         />
                       </div>
                       <div className="space-y-1.5">
@@ -539,7 +539,15 @@ export default function FamilySaju() {
         {/* 하단 버튼 */}
         <div className="space-y-2 pt-4">
           {validMembers[0]?.saju && (
-            <FortuneShareCard result={validMembers[0].saju} userName={`${validMembers.map(m => m.name).join(" · ")} 가족`} type="lifelong" />
+            <FortuneShareCard
+              result={validMembers[0].saju}
+              userName={`${validMembers.map(m => m.name).join(" · ")} 가족`}
+              type="family"
+              memberNames={validMembers.map(m => m.name)}
+              overallScore={familySummary.overallScore}
+              harmony={familySummary.harmony}
+              luckyActivity={familySummary.luckyActivity}
+            />
           )}
           <Button
             className="w-full bg-white/5 border border-white/10 text-white hover:bg-white/10 h-11 rounded-xl font-medium text-sm"

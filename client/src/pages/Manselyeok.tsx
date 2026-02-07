@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, Info, Share2, Sparkles, RefreshCcw, Zap, User, Activity, ScrollText, Calendar, Clock } from "lucide-react";
+import DatePickerInput from "@/components/DatePickerInput";
 import { Link, useLocation } from "wouter";
 import { shareContent } from "@/lib/share";
 
@@ -216,11 +217,10 @@ export default function Manselyeok() {
                           <Calendar className="w-3.5 h-3.5 text-emerald-400" />
                           생년월일
                         </Label>
-                        <Input 
-                          id="birthDate" 
-                          type="date" 
-                          {...form.register("birthDate")} 
-                          className="h-11 bg-white/5 border-white/10 text-white rounded-xl focus:ring-emerald-500/50 focus:border-emerald-500 transition-all text-sm"
+                        <DatePickerInput
+                          id="birthDate"
+                          {...form.register("birthDate")}
+                          accentColor="emerald"
                         />
                       </div>
                       <div className="space-y-1.5">

@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, Heart, Share2, Sparkles, User, Activity, Calendar, Clock, Users, Star, Zap, Briefcase, Shield, Home, ChevronDown, ChevronUp, Quote, AlertTriangle, CheckCircle2, TrendingUp } from "lucide-react";
+import DatePickerInput from "@/components/DatePickerInput";
 import { Link } from "wouter";
 import { shareContent } from "@/lib/share";
 
@@ -543,7 +544,7 @@ export default function Compatibility() {
                         <Label htmlFor="birthDate1" className="text-white text-sm font-medium flex items-center gap-1.5">
                           <Calendar className="w-3.5 h-3.5 text-pink-400" /> 생년월일
                         </Label>
-                        <Input id="birthDate1" type="date" {...form.register("birthDate1")} className="h-11 bg-white/5 border-white/10 text-white rounded-xl focus:ring-pink-500/50 focus:border-pink-500 transition-all text-sm" />
+                        <DatePickerInput id="birthDate1" {...form.register("birthDate1")} accentColor="pink" />
                       </div>
                       <div className="space-y-1.5">
                         <Label htmlFor="birthTime1" className="text-white text-sm font-medium flex items-center gap-1.5">
@@ -588,7 +589,7 @@ export default function Compatibility() {
                         <Label htmlFor="birthDate2" className="text-white text-sm font-medium flex items-center gap-1.5">
                           <Calendar className="w-3.5 h-3.5 text-red-400" /> 생년월일
                         </Label>
-                        <Input id="birthDate2" type="date" {...form.register("birthDate2")} className="h-11 bg-white/5 border-white/10 text-white rounded-xl focus:ring-red-500/50 focus:border-red-500 transition-all text-sm" />
+                        <DatePickerInput id="birthDate2" {...form.register("birthDate2")} accentColor="red" />
                       </div>
                       <div className="space-y-1.5">
                         <Label htmlFor="birthTime2" className="text-white text-sm font-medium flex items-center gap-1.5">
@@ -1083,7 +1084,17 @@ export default function Compatibility() {
           {/* ===== 하단 버튼 ===== */}
           <div className="space-y-2 pt-4">
             {saju1 && (
-              <FortuneShareCard result={saju1} userName={`${name1} ♥ ${name2}`} type="lifelong" />
+              <FortuneShareCard
+                result={saju1}
+                result2={saju2}
+                userName={`${name1} ♥ ${name2}`}
+                type="compatibility"
+                name1={name1}
+                name2={name2}
+                score={scores.total}
+                loveScore={scores.loveScore}
+                familyScore={scores.familyScore}
+              />
             )}
             <Button 
               className="w-full bg-white/5 border border-white/10 text-white hover:bg-white/10 h-11 rounded-xl font-medium text-sm"
