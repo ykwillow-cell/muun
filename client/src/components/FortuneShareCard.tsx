@@ -373,12 +373,13 @@ export default function FortuneShareCard({ result, userName, type }: FortuneShar
                     </p>
                   </div>
 
-                  {/* 키워드 태그들 */}
-                  <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '8px', marginTop: '8px' }}>
+                  {/* 키워드 태그들 - text-align center + inline-block for html2canvas compatibility */}
+                  <div style={{ textAlign: 'center', marginTop: '8px', lineHeight: '2.4' }}>
                     {keywords.map((keyword, idx) => (
                       <span
                         key={idx}
                         style={{
+                          display: 'inline-block',
                           padding: '8px 16px',
                           borderRadius: '9999px',
                           fontSize: '14px',
@@ -386,6 +387,7 @@ export default function FortuneShareCard({ result, userName, type }: FortuneShar
                           background: 'linear-gradient(135deg, rgba(212,168,83,0.3) 0%, rgba(240,215,140,0.15) 100%)',
                           border: '1px solid rgba(212,168,83,0.5)',
                           color: '#f0d78c',
+                          margin: '0 4px',
                         }}
                       >
                         #{keyword}
