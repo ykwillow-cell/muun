@@ -18,6 +18,7 @@ import LuckyItems from "@/components/LuckyItems";
 import SajuGlossary from "@/components/SajuGlossary";
 import YearlyFortuneContent from "@/components/YearlyFortuneContent";
 import iljuData from "@/lib/ilju-data.json";
+import FortuneShareCard from "@/components/FortuneShareCard";
 import { trackEvent, trackCustomEvent } from "@/lib/ga4";
 import { 
   generateYearlyFortune, 
@@ -810,6 +811,11 @@ export default function YearlyFortune() {
 
           {/* 12. 용어 설명 */}
           <SajuGlossary />
+
+          {/* 이미지 저장 카드 */}
+          <div className="pt-2">
+            <FortuneShareCard result={result} userName={userName} type="yearly" />
+          </div>
 
           {/* 하단 버튼 */}
           <div className="space-y-2 pt-2">
