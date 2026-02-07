@@ -1,7 +1,7 @@
 import { SajuResult, STEM_ELEMENTS, BRANCH_ELEMENTS, calculateElementBalance } from "./saju";
 import { STEM_PERSONALITY, ELEMENT_KOREAN, withReading, getElementRelation } from "./saju-reading";
 
-export type FamilyRole = "아버지" | "어머니" | "아들" | "딸" | "할아버지" | "할머니" | "배우자" | "기타";
+export type FamilyRole = "나" | "아버지" | "어머니" | "아들" | "딸" | "할아버지" | "할머니" | "배우자" | "기타";
 
 export interface FamilyMember {
   name: string;

@@ -33,6 +33,7 @@ import {
 } from "@/lib/family-saju";
 
 const ROLE_OPTIONS: { value: FamilyRole; label: string; icon: string }[] = [
+  { value: "나", label: "나", icon: "🙋" },
   { value: "아버지", label: "아버지", icon: "👨" },
   { value: "어머니", label: "어머니", icon: "👩" },
   { value: "아들", label: "아들", icon: "👦" },
@@ -45,7 +46,7 @@ const ROLE_OPTIONS: { value: FamilyRole; label: string; icon: string }[] = [
 
 const DEFAULT_MEMBER: () => FamilyMember = () => ({
   name: "",
-  role: "아버지" as FamilyRole,
+  role: "나" as FamilyRole,
   gender: "male" as const,
   birthDate: "",
   birthTime: "12:00",
@@ -53,7 +54,7 @@ const DEFAULT_MEMBER: () => FamilyMember = () => ({
 });
 
 export default function FamilySaju() {
-  const [members, setMembers] = useState<FamilyMember[]>([DEFAULT_MEMBER(), { ...DEFAULT_MEMBER(), role: "어머니", gender: "female" }]);
+  const [members, setMembers] = useState<FamilyMember[]>([DEFAULT_MEMBER(), { ...DEFAULT_MEMBER(), role: "아버지" as FamilyRole }]);
   const [result, setResult] = useState<FamilyMember[] | null>(null);
   const [errors, setErrors] = useState<Record<number, string>>({});
 
