@@ -10,6 +10,20 @@ export default function Home() {
   // GA 분석 기반 메뉴 순서 재배치
   const menuItems = [
     { 
+      href: "/yearly-fortune", 
+      label: "신년운세", 
+      icon: <Star className="w-5 h-5" />, 
+      color: "bg-yellow-500/20 text-yellow-400",
+      desc: "2026년 총운 확인"
+    },
+    { 
+      href: "/lifelong-saju", 
+      label: "평생사주", 
+      icon: <Sparkles className="w-5 h-5" />, 
+      color: "bg-blue-500/20 text-blue-400",
+      desc: "타고난 기질과 운명"
+    },
+    { 
       href: "/family-saju", 
       label: "가족사주", 
       icon: <Users className="w-5 h-5" />, 
@@ -24,29 +38,6 @@ export default function Home() {
       color: "bg-purple-500/20 text-purple-400",
       desc: "AI가 답하는 타로",
       featured: true
-    },
-    { 
-      href: "/compatibility", 
-      label: "궁합", 
-      icon: <Heart className="w-5 h-5" />, 
-      color: "bg-pink-500/20 text-pink-400",
-      desc: "찰떡궁합 확인",
-      featured: true
-    },
-    { 
-      href: "/yearly-fortune", 
-      label: "신년운세", 
-      icon: <Star className="w-5 h-5" />, 
-      color: "bg-yellow-500/20 text-yellow-400",
-      desc: "2026년 총운 확인",
-      featured: true
-    },
-    { 
-      href: "/lifelong-saju", 
-      label: "평생사주", 
-      icon: <Sparkles className="w-5 h-5" />, 
-      color: "bg-blue-500/20 text-blue-400",
-      desc: "타고난 기질과 운명"
     },
     { 
       href: "/tojeong", 
@@ -68,6 +59,14 @@ export default function Home() {
       icon: <BrainCircuit className="w-5 h-5" />, 
       color: "bg-pink-500/20 text-pink-400",
       desc: "나의 진짜 성격 찾기"
+    },
+    { 
+      href: "/compatibility", 
+      label: "궁합", 
+      icon: <Heart className="w-5 h-5" />, 
+      color: "bg-pink-500/20 text-pink-400",
+      desc: "찰떡궁합 확인",
+      featured: true
     },
     { 
       href: "/manselyeok", 
