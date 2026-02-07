@@ -29,16 +29,16 @@ import { toast } from "sonner";
 import { trackCustomEvent } from "@/lib/ga4";
 
 const navItems = [
-  { name: "만세력", href: "/manselyeok", icon: Calendar, description: "나의 타고난 기운 확인" },
+  { name: "신년운세", href: "/yearly-fortune", icon: Sparkles, description: "2026년 병오년 운세" },
   { name: "평생사주", href: "/lifelong-saju", icon: User, description: "인생의 전체적인 흐름" },
+  { name: "가족사주", href: "/family-saju", icon: Users, description: "가족의 오행 조화 분석" },
+  { name: "AI 타로", href: "/tarot", icon: Sparkles, description: "AI가 읽어주는 운명의 카드" },
   { name: "토정비결", href: "/tojeong", icon: BookOpen, description: "전통 방식으로 보는 운세" },
   { name: "오늘의 운세", href: "/daily-fortune", icon: Zap, description: "매일 확인하는 나의 행운" },
-  { name: "신년운세", href: "/yearly-fortune", icon: Sparkles, description: "2026년 병오년 운세" },
-  { name: "궁합", href: "/compatibility", icon: Heart, description: "상대방과의 조화" },
-  { name: "가족사주", href: "/family-saju", icon: Users, description: "가족의 오행 조화 분석" },
-  { name: "점성술", href: "/astrology", icon: Star, description: "별들이 들려주는 나의 운명" },
   { name: "심리테스트", href: "/psychology", icon: BrainCircuit, description: "나도 모르는 내 마음" },
-  { name: "AI 타로", href: "/tarot", icon: Sparkles, description: "AI가 읽어주는 운명의 카드" },
+  { name: "궁합", href: "/compatibility", icon: Heart, description: "상대방과의 조화" },
+  { name: "만세력", href: "/manselyeok", icon: Calendar, description: "나의 타고난 기운 확인" },
+  { name: "점성술", href: "/astrology", icon: Star, description: "별들이 들려주는 나의 운명" },
   { name: "내 타로 기록", href: "/tarot-history", icon: History, description: "지난 상담 기록 조회" },
   { name: "소개", href: "/about", icon: Info, description: "MUUN 서비스 이야기" },
   { name: "문의", href: "/contact", icon: Info, description: "문의 및 피드백" },
