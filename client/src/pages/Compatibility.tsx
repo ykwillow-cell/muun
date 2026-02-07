@@ -17,6 +17,7 @@ import { calculateSaju, SajuResult, calculateElementBalance, STEM_ELEMENTS, BRAN
 import SajuChart from "@/components/SajuChart";
 import SajuGlossary from "@/components/SajuGlossary";
 import CompatibilityContent from "@/components/CompatibilityContent";
+import FortuneShareCard from "@/components/FortuneShareCard";
 import { trackEvent } from "@/lib/ga4";
 import {
   STEM_READINGS,
@@ -1081,6 +1082,9 @@ export default function Compatibility() {
 
           {/* ===== 하단 버튼 ===== */}
           <div className="space-y-2 pt-4">
+            {saju1 && (
+              <FortuneShareCard result={saju1} userName={`${name1} ♥ ${name2}`} type="lifelong" />
+            )}
             <Button 
               className="w-full bg-white/5 border border-white/10 text-white hover:bg-white/10 h-11 rounded-xl font-medium text-sm"
               onClick={() => shareContent({ title: '무운 궁합 결과', text: `${name1} ♥ ${name2} 궁합 점수: ${scores.total}점! 우리의 궁합을 확인해보세요.`, page: 'compatibility', buttonType: 'text_button' })}

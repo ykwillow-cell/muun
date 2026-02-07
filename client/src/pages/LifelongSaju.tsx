@@ -17,6 +17,7 @@ import SajuChart from "@/components/SajuChart";
 import LuckyItems from "@/components/LuckyItems";
 import SajuGlossary from "@/components/SajuGlossary";
 import SajuInfoContent from "@/components/SajuInfoContent";
+import FortuneShareCard from "@/components/FortuneShareCard";
 import iljuData from "@/lib/ilju-data.json";
 import { trackEvent } from "@/lib/ga4";
 import { 
@@ -761,6 +762,9 @@ export default function LifelongSaju() {
 
           {/* 하단 버튼 */}
           <div className="space-y-2 pt-2">
+            {result && (
+              <FortuneShareCard result={result} userName={userName} type="lifelong" />
+            )}
             <Button 
               className="w-full h-12 bg-white/5 border border-white/10 text-white hover:bg-white/10 font-medium rounded-xl text-sm"
               onClick={() => {
