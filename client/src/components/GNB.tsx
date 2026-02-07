@@ -21,7 +21,8 @@ import {
   Star,
   Zap,
   History,
-  Share2
+  Share2,
+  Users
 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -34,6 +35,7 @@ const navItems = [
   { name: "오늘의 운세", href: "/daily-fortune", icon: Zap, description: "매일 확인하는 나의 행운" },
   { name: "신년운세", href: "/yearly-fortune", icon: Sparkles, description: "2026년 병오년 운세" },
   { name: "궁합", href: "/compatibility", icon: Heart, description: "상대방과의 조화" },
+  { name: "가족사주", href: "/family-saju", icon: Users, description: "가족의 오행 조화 분석" },
   { name: "점성술", href: "/astrology", icon: Star, description: "별들이 들려주는 나의 운명" },
   { name: "심리테스트", href: "/psychology", icon: BrainCircuit, description: "나도 모르는 내 마음" },
   { name: "AI 타로", href: "/tarot", icon: Sparkles, description: "AI가 읽어주는 운명의 카드" },

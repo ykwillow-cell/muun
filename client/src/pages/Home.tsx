@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import { BookOpen, Star, ShieldCheck, Info, BrainCircuit, ScrollText, Sparkles, Heart, CalendarDays, ArrowRight, Zap, ChevronRight } from "lucide-react";
+import { BookOpen, Star, ShieldCheck, Info, BrainCircuit, ScrollText, Sparkles, Heart, CalendarDays, ArrowRight, Zap, ChevronRight, Users } from "lucide-react";
 import { trackCustomEvent } from "@/lib/ga4";
 import { useRef } from "react";
 
@@ -60,6 +60,13 @@ export default function Home() {
       icon: <BrainCircuit className="w-5 h-5" />, 
       color: "bg-pink-500/20 text-pink-400",
       desc: "나의 진짜 성격 찾기"
+    },
+    { 
+      href: "/family-saju", 
+      label: "가족사주", 
+      icon: <Users className="w-5 h-5" />, 
+      color: "bg-orange-500/20 text-orange-400",
+      desc: "가족 오행 조화 분석"
     },
     { 
       href: "/manselyeok", 
@@ -304,6 +311,7 @@ export default function Home() {
                     <li><Link href="/manselyeok" className="hover:text-primary transition-colors">만세력</Link></li>
                     <li><Link href="/lifelong-saju" className="hover:text-primary transition-colors">평생사주</Link></li>
                     <li><Link href="/yearly-fortune" className="hover:text-primary transition-colors">신년운세</Link></li>
+                    <li><Link href="/family-saju" className="hover:text-primary transition-colors">가족사주</Link></li>
                   </ul>
                 </div>
                 <div className="space-y-3">
