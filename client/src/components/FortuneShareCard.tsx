@@ -1,10 +1,9 @@
 import { useState, useRef, useCallback } from "react";
 import html2canvas from "html2canvas";
-import { Download, Share2, X, Loader2, Image as ImageIcon } from "lucide-react";
+import { Download, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SajuResult, calculateElementBalance, STEM_ELEMENTS, ELEMENT_LUCKY_DATA, FiveElement } from "@/lib/saju";
 import { STEM_PERSONALITY, ELEMENT_READINGS, analyzeElementBalance } from "@/lib/saju-reading";
-import { shareContent } from "@/lib/share";
 import { trackCustomEvent } from "@/lib/ga4";
 
 // ===== 공통 타입 =====
@@ -176,7 +175,6 @@ function getCardContent(props: FortuneShareCardProps) {
     const namesDisplay = memberNames.length > 3 
       ? `${memberNames.slice(0, 3).join(' · ')} 외 ${memberNames.length - 3}명`
       : memberNames.join(' · ');
-    // 점수에 따른 짧은 키워드 생성
     const familyGrade = overallScore >= 90 ? '완벽한 조화'
       : overallScore >= 80 ? '최고의 가족'
       : overallScore >= 70 ? '따뜻한 가족'
@@ -224,7 +222,6 @@ function getCardContent(props: FortuneShareCardProps) {
 // ===== 메인 컴포넌트 =====
 
 export default function FortuneShareCard(props: FortuneShareCardProps) {
-  const [isOpen, setIsOpen] = useState(false);
   const [isCapturing, setIsCapturing] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -309,87 +306,6 @@ export default function FortuneShareCard(props: FortuneShareCardProps) {
     }
   }, [props, content, html2canvasOptions]);
 
-  const handleShareImage = useCallback(async () => {
-    if (!cardRef.current) return;
-    setIsCapturing(true);
-
-    try {
-      await document.fonts.ready;
-      await new Promise(resolve => setTimeout(resolve, 500));
-
-      const canvas = await html2canvas(cardRef.current, html2canvasOptions(cardRef.current));
-
-      canvas.toBlob(async (blob: Blob | null) => {
-        if (!blob) {
-          alert('이미지 생성에 실패했습니다.');
-          setIsCapturing(false);
-          return;
-        }
-        
-        const file = new File([blob], `${content.fileName}.png`, { type: 'image/png' });
-        const url = URL.createObjectURL(blob);
-
-        // Web Share API 지원 여부 확인 (더 정확한 체크)
-        const canShareFiles = navigator.share && typeof navigator.canShare === 'function' 
-          ? await navigator.canShare({ files: [file] }).catch(() => false)
-          : false;
-
-        if (canShareFiles) {
-          try {
-            await navigator.share({
-              title: `무운 - ${content.title}`,
-              text: `${content.subtitle}의 운세를 확인해보세요!`,
-              files: [file],
-            });
-            trackCustomEvent('share_card_native_share', { 
-              page: content.gaPage,
-              method: 'web_share_api' 
-            });
-          } catch (e: any) {
-            if (e.name !== 'AbortError') {
-              console.error('공유 실패:', e);
-            }
-          }
-        } else if (navigator.share) {
-          // 파일 공유는 안 되지만 텍스트 공유는 가능한 경우
-          try {
-            await navigator.share({
-              title: `무운 - ${content.title}`,
-              text: `${content.subtitle}의 운세를 확인해보세요! ${window.location.origin}`,
-            });
-            trackCustomEvent('share_card_native_share', { 
-              page: content.gaPage,
-              method: 'text_only' 
-            });
-            // 이미지는 별도로 다운로드
-            const link = document.createElement('a');
-            link.download = `${content.fileName}.png`;
-            link.href = url;
-            link.click();
-          } catch (e: any) {
-            if (e.name !== 'AbortError') {
-              console.error('공유 실패:', e);
-            }
-          }
-        } else {
-          // Web Share API 미지원: 다운로드로 fallback
-          const link = document.createElement('a');
-          link.download = `${content.fileName}.png`;
-          link.href = url;
-          link.click();
-          trackCustomEvent('share_card_download_fallback', { page: content.gaPage });
-        }
-        
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
-        setIsCapturing(false);
-      }, 'image/png');
-    } catch (error) {
-      console.error('이미지 공유 실패:', error);
-      alert('이미지 생성에 실패했습니다.');
-      setIsCapturing(false);
-    }
-  }, [props, content, html2canvasOptions]);
-
   // 카드 배경색 (타입별)
   const getBgGradient = () => {
     if (props.type === 'compatibility') return 'linear-gradient(135deg, #1a0a2e 0%, #2d1b4e 30%, #1a0a2e 70%, #0d0520 100%)';
@@ -407,289 +323,149 @@ export default function FortuneShareCard(props: FortuneShareCardProps) {
   const accentColor = getAccentColor();
 
   return (
-    <>
-      {/* 이미지 저장 버튼 */}
-      <Button
-        onClick={() => setIsOpen(true)}
-        className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold py-3 rounded-xl flex items-center justify-center gap-2 min-h-[48px]"
+    <div className="w-full max-w-4xl mx-auto space-y-6 py-8">
+      {/* 운세 카드 직접 노출 */}
+      <div
+        ref={cardRef}
+        style={{
+          width: '100%',
+          maxWidth: '420px',
+          margin: '0 auto',
+          aspectRatio: '9/16',
+          background: getBgGradient(),
+          borderRadius: '24px',
+          border: `2px solid ${accentColor}`,
+          boxShadow: `0 0 40px ${accentColor}40`,
+          padding: '32px 24px',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
       >
-        <ImageIcon className="h-5 w-5" />
-        운세 카드 이미지 저장
-      </Button>
-
-      {/* 모달 오버레이 */}
-      {isOpen && (
-        <div
-          style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 100,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            backgroundColor: 'rgba(0,0,0,0.92)',
-            overflowY: 'auto',
-          }}
-        >
-          {/* 상단 닫기 버튼 */}
-          <div
-            style={{
-              width: '100%',
-              maxWidth: '420px',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              padding: '16px',
-              position: 'sticky',
-              top: 0,
-              zIndex: 10,
-            }}
-          >
-            <button
-              onClick={() => setIsOpen(false)}
-              style={{
-                background: 'transparent',
-                border: 'none',
-                color: '#ffffff',
-                cursor: 'pointer',
-                minWidth: '44px',
-                minHeight: '44px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: '8px',
-              }}
-            >
-              <X style={{ width: 24, height: 24 }} />
-            </button>
-            <span style={{ color: 'rgba(255,255,255,0.6)', fontSize: '14px' }}>운세 카드 미리보기</span>
-            <div style={{ width: '44px' }} />
-          </div>
-
-          {/* 카드 미리보기 - html2canvas 캡처 대상 */}
-          <div style={{ flex: 1, display: 'flex', alignItems: 'flex-start', justifyContent: 'center', padding: '0 16px 16px' }}>
+        {/* 배경 별 효과 */}
+        <div style={{ position: 'absolute', inset: 0, opacity: 0.3, pointerEvents: 'none' }}>
+          {Array.from({ length: 30 }).map((_, i) => (
             <div
-              ref={cardRef}
+              key={i}
               style={{
-                position: 'relative',
-                width: '360px',
-                overflow: 'hidden',
-                borderRadius: '16px',
-                fontFamily: "'Noto Serif KR', 'Nanum Myeongjo', serif",
-                background: getBgGradient(),
+                position: 'absolute',
+                width: `${Math.random() * 3 + 1}px`,
+                height: `${Math.random() * 3 + 1}px`,
+                borderRadius: '50%',
+                backgroundColor: '#ffffff',
+                top: `${Math.random() * 100}%`,
+                left: `${Math.random() * 100}%`,
+                opacity: Math.random() * 0.7 + 0.3,
               }}
-            >
-              {/* 배경 이미지 */}
-              <img
-                src="/assets/share-card-bg.png"
-                alt=""
-                style={{ width: '100%', height: 'auto', display: 'block' }}
-                crossOrigin="anonymous"
-              />
+            />
+          ))}
+        </div>
 
-              {/* 텍스트 오버레이 */}
-              <div
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  padding: '8% 10%',
-                }}
-              >
-                {/* 상단: 로고 + 타이틀 */}
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', marginTop: '2%' }}>
-                  <span
-                    style={{
-                      fontSize: '24px',
-                      fontWeight: 700,
-                      letterSpacing: '0.15em',
-                      color: '#d4a853',
-                      fontFamily: "'Playfair Display', serif",
-                    }}
-                  >
-                    MUUN
-                  </span>
-                  <h2
-                    style={{
-                      fontSize: '20px',
-                      fontWeight: 700,
-                      marginTop: '4px',
-                      color: '#f0d78c',
-                    }}
-                  >
-                    나의 {content.title}
-                  </h2>
-                </div>
-
-                {/* 중앙: 핵심 키워드 문구 */}
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', marginTop: '-5%' }}>
-                  <div style={{ textAlign: 'center' }}>
-                    <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '16px', marginBottom: '4px' }}>
-                      {content.mainKeywordPrefix}
-                    </p>
-                    <p
-                      style={{
-                        fontSize: '28px',
-                        fontWeight: 800,
-                        lineHeight: 1.2,
-                        color: accentColor,
-                        textShadow: `0 0 20px ${accentColor}44`,
-                      }}
-                    >
-                      '{content.mainKeyword}'
-                    </p>
-                    <p style={{ color: 'rgba(255,255,255,0.8)', fontSize: '16px', marginTop: '4px' }}>{content.mainKeywordSuffix}</p>
-                  </div>
-
-                  {/* 중간 정보 */}
-                  <div style={{ textAlign: 'center', marginTop: '8px' }}>
-                    <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '14px' }}>
-                      {content.middleInfo}
-                    </p>
-                  </div>
-
-                  {/* 키워드 태그들 */}
-                  <div style={{ textAlign: 'center', marginTop: '8px', lineHeight: '2.4' }}>
-                    {content.keywords.map((keyword, idx) => (
-                      <span
-                        key={idx}
-                        style={{
-                          display: 'inline-block',
-                          padding: '8px 16px',
-                          borderRadius: '9999px',
-                          fontSize: '14px',
-                          fontWeight: 700,
-                          background: `linear-gradient(135deg, ${accentColor}33 0%, ${accentColor}18 100%)`,
-                          border: `1px solid ${accentColor}66`,
-                          color: '#f0d78c',
-                          margin: '0 4px',
-                        }}
-                      >
-                        #{keyword}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {/* 하단: 요약 정보 + 푸터 */}
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '12px', marginBottom: '2%', width: '100%' }}>
-                  {/* 요약 정보 */}
-                  <div
-                    style={{
-                      width: '100%',
-                      borderRadius: '12px',
-                      padding: '16px 20px',
-                      fontSize: '14px',
-                      background: 'rgba(0,0,0,0.3)',
-                      border: `1px solid ${accentColor}22`,
-                    }}
-                  >
-                    {content.bottomItems.map((item, idx) => (
-                      <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: idx < content.bottomItems.length - 1 ? '8px' : '0' }}>
-                        <span style={{ color: accentColor }}>●</span>
-                        <span style={{ color: 'rgba(255,255,255,0.7)' }}>{item.label}:</span>
-                        <span style={{ color: '#ffffff', fontWeight: 700 }}>{item.value}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* 푸터 */}
-                  <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: '12px', letterSpacing: '0.05em' }}>
-                    더 자세한 내용은 <span style={{ color: '#d4a853' }}>muunsaju.com</span>에서
-                  </p>
-                </div>
-              </div>
-            </div>
+        {/* 상단: 로고 + 제목 */}
+        <div style={{ textAlign: 'center', zIndex: 1 }}>
+          <div style={{ fontSize: '32px', fontWeight: 900, color: accentColor, marginBottom: '8px', letterSpacing: '2px' }}>
+            MUUN
           </div>
-
-          {/* 하단 액션 버튼 */}
-          <div
-            style={{
-              width: '100%',
-              maxWidth: '420px',
-              padding: '8px 16px 32px',
-              display: 'flex',
-              gap: '12px',
-              position: 'sticky',
-              bottom: 0,
-              background: 'linear-gradient(to top, rgba(0,0,0,1) 60%, rgba(0,0,0,0.9) 80%, transparent 100%)',
-            }}
-          >
-            <button
-              onClick={handleShareImage}
-              disabled={isCapturing}
-              style={{
-                flex: 1,
-                background: 'rgba(255,255,255,0.1)',
-                border: '1px solid rgba(255,255,255,0.2)',
-                color: '#ffffff',
-                fontWeight: 700,
-                padding: '12px',
-                borderRadius: '12px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-                minHeight: '48px',
-                cursor: isCapturing ? 'not-allowed' : 'pointer',
-                opacity: isCapturing ? 0.6 : 1,
-                fontSize: '15px',
-              }}
-            >
-              {isCapturing ? (
-                <>
-                  <Loader2 style={{ width: 20, height: 20, animation: 'spin 1s linear infinite' }} />
-                  이미지 생성 중...
-                </>
-              ) : (
-                <>
-                  <Share2 style={{ width: 20, height: 20 }} />
-                  공유
-                </>
-              )}
-            </button>
-            <button
-              onClick={captureAndDownload}
-              disabled={isCapturing}
-              style={{
-                flex: 1,
-                background: 'linear-gradient(to right, #7c3aed, #4f46e5)',
-                border: 'none',
-                color: '#ffffff',
-                fontWeight: 700,
-                padding: '12px',
-                borderRadius: '12px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-                minHeight: '48px',
-                cursor: isCapturing ? 'not-allowed' : 'pointer',
-                opacity: isCapturing ? 0.6 : 1,
-                fontSize: '15px',
-              }}
-            >
-              {isCapturing ? (
-                <>
-                  <Loader2 style={{ width: 20, height: 20, animation: 'spin 1s linear infinite' }} />
-                  이미지 생성 중...
-                </>
-              ) : (
-                <>
-                  <Download style={{ width: 20, height: 20 }} />
-                  저장
-                </>
-              )}
-            </button>
+          <div style={{ fontSize: '16px', fontWeight: 600, color: '#f5f5f5', opacity: 0.9 }}>
+            {content.title}
+          </div>
+          <div style={{ fontSize: '14px', color: '#aaa', marginTop: '4px' }}>
+            {content.subtitle}
           </div>
         </div>
-      )}
-    </>
+
+        {/* 중앙: 메인 키워드 */}
+        <div style={{ textAlign: 'center', zIndex: 1 }}>
+          <div style={{ fontSize: '14px', color: '#ccc', marginBottom: '12px' }}>
+            {content.mainKeywordPrefix}
+          </div>
+          <div
+            style={{
+              fontSize: '32px',
+              fontWeight: 900,
+              color: accentColor,
+              textShadow: `0 0 20px ${accentColor}`,
+              marginBottom: '12px',
+              lineHeight: 1.3,
+            }}
+          >
+            '{content.mainKeyword}'
+          </div>
+          <div style={{ fontSize: '14px', color: '#ccc' }}>
+            {content.mainKeywordSuffix}
+          </div>
+          <div style={{ fontSize: '13px', color: '#999', marginTop: '16px' }}>
+            {content.middleInfo}
+          </div>
+        </div>
+
+        {/* 키워드 태그 */}
+        <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '8px', zIndex: 1 }}>
+          {content.keywords.map((kw, idx) => (
+            <div
+              key={idx}
+              style={{
+                display: 'inline-block',
+                padding: '8px 16px',
+                borderRadius: '20px',
+                backgroundColor: `${accentColor}20`,
+                border: `1px solid ${accentColor}60`,
+                color: accentColor,
+                fontSize: '13px',
+                fontWeight: 600,
+              }}
+            >
+              #{kw}
+            </div>
+          ))}
+        </div>
+
+        {/* 하단: 상세 정보 */}
+        <div style={{ zIndex: 1 }}>
+          {content.bottomItems.map((item, idx) => (
+            <div
+              key={idx}
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                padding: '8px 0',
+                borderBottom: idx < content.bottomItems.length - 1 ? '1px solid rgba(255,255,255,0.1)' : 'none',
+              }}
+            >
+              <span style={{ fontSize: '13px', color: '#aaa' }}>🔮 {item.label}:</span>
+              <span style={{ fontSize: '13px', color: '#f5f5f5', fontWeight: 600 }}>{item.value}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* 푸터 */}
+        <div style={{ textAlign: 'center', fontSize: '11px', color: '#666', zIndex: 1 }}>
+          더 자세한 내용은 <span style={{ color: accentColor }}>muunsaju.com</span>에서
+        </div>
+      </div>
+
+      {/* 이미지 저장 버튼 */}
+      <div className="flex justify-center">
+        <Button
+          onClick={captureAndDownload}
+          disabled={isCapturing}
+          className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold py-3 px-8 rounded-xl flex items-center justify-center gap-2 min-h-[48px]"
+        >
+          {isCapturing ? (
+            <>
+              <Loader2 className="h-5 w-5 animate-spin" />
+              이미지 생성 중...
+            </>
+          ) : (
+            <>
+              <Download className="h-5 w-5" />
+              운세 카드 이미지 저장
+            </>
+          )}
+        </Button>
+      </div>
+    </div>
   );
 }
