@@ -107,17 +107,17 @@ export function GNB() {
             variant="ghost" 
             size="icon" 
             onClick={handleShare}
-            className="text-primary hover:bg-primary/10 w-11 h-11 md:w-10 md:h-10 flex items-center justify-center"
+            className="text-primary hover:bg-primary/10 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center"
             aria-label="Share"
           >
-            <Share2 className="h-6 w-6" strokeWidth={2} />
+            <Share2 className="h-7 w-7 md:h-8 md:w-8" strokeWidth={2.5} />
           </Button>
 
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
               {/* 메뉴 버튼 - 아이콘 크기 24px, 두께 2px, 색상 노란색(primary)으로 수정 */}
-              <Button variant="ghost" size="icon" className="text-primary hover:bg-primary/10 w-11 h-11 flex items-center justify-center">
-                <Menu className="h-6 w-6" strokeWidth={2} />
+              <Button variant="ghost" size="icon" className="text-primary hover:bg-primary/10 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center">
+                <Menu className="h-7 w-7 md:h-8 md:w-8" strokeWidth={2.5} />
                 <span className="sr-only">Toggle menu</span>
               </Button>
             </SheetTrigger>
