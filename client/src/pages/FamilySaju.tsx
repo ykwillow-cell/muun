@@ -378,8 +378,18 @@ export default function FamilySaju() {
     }
   }
 
+  const anyUnknownTime = result.some(m => m.birthTimeUnknown);
+
   return (
     <div className="min-h-screen bg-background">
+      {/* '시간 모름' 시 안내 라벨 */}
+      {anyUnknownTime && (
+        <div className="bg-primary/10 border-b border-primary/20 py-2 px-4 relative z-[60]">
+          <p className="text-[10px] md:text-xs text-primary text-center font-medium">
+            태어난 시간을 모르는 구성원이 포함된 삼주 분석 결과입니다
+          </p>
+        </div>
+      )}
       {/* 헤더 */}
       <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-white/5">
         <div className="max-w-2xl mx-auto px-4 h-14 flex items-center">

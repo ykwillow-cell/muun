@@ -287,6 +287,12 @@ export default function Tojeong() {
 
   return (
     <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased">
+      {/* 토정비결은 원래 삼주(연,월,일)만 사용하므로 안내 라벨 표시 */}
+      <div className="bg-amber-500/10 border-b border-amber-500/20 py-2 px-4 relative z-50">
+        <p className="text-[10px] md:text-xs text-amber-400 text-center font-medium">
+          전통 방식에 따른 연, 월, 일(삼주) 분석 결과입니다
+        </p>
+      </div>
       {/* Background Effects */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         <div className="absolute top-[-10%] left-[-10%] w-[400px] h-[400px] bg-amber-500/10 rounded-full blur-[100px]" />

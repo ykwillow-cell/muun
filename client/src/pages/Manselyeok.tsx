@@ -87,7 +87,15 @@ export default function Manselyeok() {
   const commonMaxWidth = "w-full max-w-2xl mx-auto";
 
   return (
-    <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased">
+    <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased">
+      {/* '시간 모름' 시 안내 라벨 */}
+      {form.watch("birthTimeUnknown") && (
+        <div className="bg-primary/10 border-b border-primary/20 py-2 px-4 relative z-50">
+          <p className="text-[10px] md:text-xs text-primary text-center font-medium">
+            태어난 시간을 제외한 삼주 분석 결과입니다
+          </p>
+        </div>
+      )}
       {/* Background Effects */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         <div className="absolute top-[-10%] left-[-10%] w-[400px] h-[400px] bg-emerald-500/10 rounded-full blur-[100px]" />

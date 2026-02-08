@@ -514,6 +514,14 @@ export default function YearlyFortune() {
 
   return (
     <div className="min-h-screen bg-background text-foreground pb-20">
+      {/* '시간 모름' 시 안내 라벨 */}
+      {form.watch("birthTimeUnknown") && (
+        <div className="bg-primary/10 border-b border-primary/20 py-2 px-4 relative z-50">
+          <p className="text-[10px] md:text-xs text-primary text-center font-medium">
+            태어난 시간을 제외한 삼주 분석 결과입니다
+          </p>
+        </div>
+      )}
       <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
         <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
@@ -683,7 +691,14 @@ export default function YearlyFortune() {
                 <h2 className="text-lg font-bold text-white">2026년 병오년(丙午年) 총운</h2>
               </div>
               <Card className="bg-white/5 border-white/10 rounded-2xl overflow-hidden">
-                <CardContent className="p-4">
+                <CardContent className="p-4 space-y-4">
+                  {form.watch("birthTimeUnknown") && (
+                    <div className="bg-primary/5 border border-primary/10 rounded-xl p-3 mb-2">
+                      <p className="text-xs text-primary leading-relaxed">
+                        💡 태어난 시간을 모르시는 경우, 생년월일(삼주)을 중심으로 핵심 성격과 2026년 운세를 분석해 드립니다.
+                      </p>
+                    </div>
+                  )}
                   <p className="text-sm text-white/80 leading-relaxed whitespace-pre-line">{detailedFortune.yearAnalysis}</p>
                 </CardContent>
               </Card>
