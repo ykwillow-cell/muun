@@ -90,7 +90,7 @@ export function GNB() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-background/60 backdrop-blur-3xl">
       <div className="container max-w-[1280px] flex h-16 md:h-20 items-center justify-between px-5 md:px-8">
-        <div className="flex items-center gap-16">
+        <div className="flex items-center">
           <Link href="/" className="flex items-center space-x-3 group">
             <div className="w-10 h-10 md:w-12 md:h-12 bg-primary rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-all duration-500 shadow-[0_0_30px_rgba(255,215,0,0.3)]">
               <Sparkles className="w-6 h-6 md:w-7 md:h-7 text-background" />
@@ -99,22 +99,6 @@ export function GNB() {
               MUUN
             </span>
           </Link>
-          <nav className="hidden md:flex items-center space-x-10 text-[13px] font-semibold tracking-wide">
-            {navItems.filter(item => item.name !== "소개" && item.name !== "문의").map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "relative py-1 transition-all duration-300 hover:text-primary",
-                  location === item.href
-                    ? "text-primary after:absolute after:-bottom-1 after:left-0 after:w-full after:h-0.5 after:bg-primary after:rounded-full"
-                    : "text-foreground/50"
-                )}
-              >
-                {item.name}
-              </Link>
-            ))}
-          </nav>
         </div>
 
         <div className="flex items-center gap-1">
@@ -130,7 +114,7 @@ export function GNB() {
           </Button>
 
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
-            <SheetTrigger asChild className="md:hidden">
+            <SheetTrigger asChild>
               {/* 메뉴 버튼 - 아이콘 크기 24px, 두께 2px, 색상 노란색(primary)으로 수정 */}
               <Button variant="ghost" size="icon" className="text-primary hover:bg-primary/10 w-11 h-11 flex items-center justify-center">
                 <Menu className="h-6 w-6" strokeWidth={2} />
