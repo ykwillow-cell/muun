@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { calculateSaju, SajuResult, calculateElementBalance, generateFortuneDetails, STEM_ELEMENTS, BRANCH_ELEMENTS } from "@/lib/saju";
+import { convertToSolarDate } from "@/lib/lunar-converter";
 import SajuChart from "@/components/SajuChart";
 import LuckyItems from "@/components/LuckyItems";
 import SajuGlossary from "@/components/SajuGlossary";
@@ -150,7 +151,7 @@ export default function LifelongSaju() {
 
   const onSubmit = async (data: FormValues) => {
     localStorage.setItem("muun_user_data", JSON.stringify(data));
-    const date = new Date(`${data.birthDate}T${data.birthTime}`);
+    const date = convertToSolarDate(data.birthDate, data.birthTime, data.calendarType);
     const sajuResult = calculateSaju(date, data.gender);
     setResult(sajuResult);
     window.scrollTo(0, 0);

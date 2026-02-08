@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { calculateSaju, SajuResult, calculateElementBalance, STEM_ELEMENTS } from "@/lib/saju";
+import { convertToSolarDate } from "@/lib/lunar-converter";
 import SajuChart from "@/components/SajuChart";
 import FortuneShareCard from "@/components/FortuneShareCard";
 import DatePickerInput from "@/components/DatePickerInput";
@@ -129,9 +130,7 @@ export default function FamilySaju() {
     trackEvent("family_saju_submit", "family_saju", `가족 ${members.length}명 분석`);
 
     const analyzed = members.map(m => {
-      const [year, month, day] = m.birthDate.split("-").map(Number);
-      const [hour, minute] = m.birthTime.split(":").map(Number);
-      const birthDate = new Date(year, month - 1, day, hour, minute);
+      const birthDate = convertToSolarDate(m.birthDate, m.birthTime, m.calendarType as "solar" | "lunar");
       const saju = calculateSaju(birthDate, m.gender as "male" | "female");
       return { ...m, saju };
     });

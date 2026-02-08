@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { calculateTojeong } from "@/lib/tojeong";
+import { convertToSolarDate } from "@/lib/lunar-converter";
 import TojeongContent from "@/components/TojeongContent";
 
 // 폼 스키마 정의 (태어난 시간 제외)
@@ -59,7 +60,7 @@ export default function Tojeong() {
 
   const onSubmit = (data: FormValues) => {
     localStorage.setItem("muun_user_data", JSON.stringify(data));
-    const date = new Date(data.birthDate);
+    const date = convertToSolarDate(data.birthDate, "12:00", data.calendarType);
     const tojeongResult = calculateTojeong(date, 2026);
     const monthlyFortunes = getMonthlyFortunes(tojeongResult.hexagram);
     

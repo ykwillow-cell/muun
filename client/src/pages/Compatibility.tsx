@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { calculateSaju, SajuResult, calculateElementBalance, STEM_ELEMENTS, BRANCH_ELEMENTS, STEM_YIN_YANG } from "@/lib/saju";
+import { convertToSolarDate } from "@/lib/lunar-converter";
 import SajuChart from "@/components/SajuChart";
 import SajuGlossary from "@/components/SajuGlossary";
 import CompatibilityContent from "@/components/CompatibilityContent";
@@ -454,8 +455,8 @@ export default function Compatibility() {
   }, [form]);
 
   const onSubmit = (data: FormValues) => {
-    const date1 = new Date(`${data.birthDate1}T${data.birthTime1}`);
-    const date2 = new Date(`${data.birthDate2}T${data.birthTime2}`);
+    const date1 = convertToSolarDate(data.birthDate1, data.birthTime1, data.calendarType1);
+    const date2 = convertToSolarDate(data.birthDate2, data.birthTime2, data.calendarType2);
     const saju1 = calculateSaju(date1, data.gender1);
     const saju2 = calculateSaju(date2, data.gender2);
     

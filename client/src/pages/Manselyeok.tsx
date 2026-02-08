@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { calculateSaju, SajuResult, FiveElement } from "@/lib/saju";
+import { convertToSolarDate } from "@/lib/lunar-converter";
 import SajuGlossary from "@/components/SajuGlossary";
 import ManselyeokContent from "@/components/ManselyeokContent";
 
@@ -72,7 +73,7 @@ export default function Manselyeok() {
       return;
     }
 
-    const date = new Date(`${data.birthDate}T${data.birthTime}`);
+    const date = convertToSolarDate(data.birthDate, data.birthTime, data.calendarType);
     const sajuResult = calculateSaju(date, data.gender);
     setResult(sajuResult);
     window.scrollTo({ top: 0, behavior: 'smooth' });

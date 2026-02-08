@@ -13,6 +13,7 @@ import { ChevronLeft, Heart, User, Calendar, Clock, Sparkles, Users, Brain, Star
 import DatePickerInput from "@/components/DatePickerInput";
 import FortuneShareCard from "@/components/FortuneShareCard";
 import { calculateSaju, SajuResult, STEM_ELEMENTS, calculateElementBalance } from "@/lib/saju";
+import { convertToSolarDate } from "@/lib/lunar-converter";
 import { STEM_PERSONALITY, analyzeElementBalance } from "@/lib/saju-reading";
 import { MBTIType, MBTI_TYPES, MBTI_INFO } from "@/lib/mbti-compatibility";
 import { analyzeHybridCompatibility, HybridCompatResult } from "@/lib/hybrid-compatibility";
@@ -169,8 +170,8 @@ export default function HybridCompatibility() {
   const onSubmit = (data: FormValues) => {
     const time1 = data.birthTimeUnknown1 ? "12:00" : data.birthTime1;
     const time2 = data.birthTimeUnknown2 ? "12:00" : data.birthTime2;
-    const date1 = new Date(`${data.birthDate1}T${time1}`);
-    const date2 = new Date(`${data.birthDate2}T${time2}`);
+    const date1 = convertToSolarDate(data.birthDate1, time1, data.calendarType1);
+    const date2 = convertToSolarDate(data.birthDate2, time2, data.calendarType2);
     const saju1 = calculateSaju(date1, data.gender1);
     const saju2 = calculateSaju(date2, data.gender2);
 
