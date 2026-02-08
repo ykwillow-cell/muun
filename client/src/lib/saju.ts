@@ -1,5 +1,7 @@
 // 만세력 계산 엔진
 
+import { SOLAR_TERMS_BY_YEAR } from './solar-terms-data';
+
 // 천간
 export const HEAVENLY_STEMS = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'] as const;
 export type HeavenlyStem = typeof HEAVENLY_STEMS[number];
@@ -93,8 +95,10 @@ const BASE_YEAR_STEM_INDEX = 6; // 1900년은 경자년 (庚: 6)
 const BASE_YEAR_BRANCH_INDEX = 0; // 1900년은 경자년 (子: 0)
 
 // 절기 데이터 (월주 계산용, 양력 기준)
-// 입춘, 경칩, 청명, 입하, 망종, 소서, 입추, 백로, 한로, 입동, 대설, 소한
-const SOLAR_TERMS = [
+// 연도별 정확한 절기 데이터를 사용 (solar-terms-data.ts)
+// 배열 순서: 입춘, 경칩, 청명, 입하, 망종, 소서, 입추, 백로, 한로, 입동, 대설, 소한
+// 데이터 범위 밖의 연도를 위한 기본값
+const DEFAULT_SOLAR_TERMS = [
   { month: 2, day: 4 },  // 입춘 (2월) -> 인월
   { month: 3, day: 6 },  // 경칩 (3월) -> 묘월
   { month: 4, day: 5 },  // 청명 (4월) -> 진월
@@ -109,12 +113,21 @@ const SOLAR_TERMS = [
   { month: 1, day: 6 },  // 소한 (1월) -> 축월
 ];
 
+// 연도별 절기 데이터 가져오기
+function getSolarTerms(year: number): Array<{month: number, day: number}> {
+  return SOLAR_TERMS_BY_YEAR[year] || DEFAULT_SOLAR_TERMS;
+}
+
 // 연주 계산
 function getYearPillar(date: Date): { stem: HeavenlyStem, branch: EarthlyBranch } {
   const year = date.getFullYear();
-  // 입춘 기준으로 연도가 바뀜
-  // 간단하게 2월 4일 이전이면 전년도로 계산
-  const isBeforeIpchun = (date.getMonth() + 1 < 2) || (date.getMonth() + 1 === 2 && date.getDate() < 4);
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  
+  // 입춘 기준으로 연도가 바뀜 (연도별 정확한 입춘 날짜 사용)
+  const solarTerms = getSolarTerms(year);
+  const ipchunDay = solarTerms[0].day; // 입춘은 배열의 첫 번째
+  const isBeforeIpchun = (month < 2) || (month === 2 && day < ipchunDay);
   const targetYear = isBeforeIpchun ? year - 1 : year;
 
   const stemIndex = (targetYear - 3 - 1 + 10) % 10; // 1984년 갑자년 기준 (4) -> 1984-3=1981, 1%10=1 (갑)??
@@ -136,37 +149,42 @@ function getYearPillar(date: Date): { stem: HeavenlyStem, branch: EarthlyBranch 
 
 // 월주 계산 (둔간법)
 function getMonthPillar(date: Date, yearStem: HeavenlyStem): { stem: HeavenlyStem, branch: EarthlyBranch } {
+  const year = date.getFullYear();
   const month = date.getMonth() + 1;
   const day = date.getDate();
   
+  // 연도별 정확한 절기 데이터 사용
+  // 소한(11번 인덱스)은 다음 해 1월이므로, 1월인 경우 전년도 데이터의 소한을 참조
+  const solarTerms = getSolarTerms(year);
+  // 전년도 소한 데이터 (1월에 필요)
+  const prevYearTerms = getSolarTerms(year - 1);
+  
   // 절기 기준으로 월 결정
-  let monthIndex = -1; // 0:인월, 1:묘월 ... 11:축월
-  
-  // 현재 날짜가 어떤 절기 사이에 있는지 확인
-  // 예: 2월 4일 ~ 3월 5일 -> 인월 (0)
-  
-  // 간단한 로직: 해당 월의 절기일보다 크거나 같으면 해당 월의 지지, 아니면 이전 월의 지지
-  // 주의: 1월(소한~입춘)은 축월(11), 2월(입춘~경칩)은 인월(0)
-  
-  // 절기 테이블 인덱스 찾기
-  // SOLAR_TERMS[0] = 2월 4일 (입춘) -> 인월
+  // 배열 순서: 0:입춘(2월), 1:경칩(3월), ..., 10:대설(12월), 11:소한(1월)
   
   let termIndex = -1;
-  for (let i = 0; i < 12; i++) {
-    const term = SOLAR_TERMS[i];
-    if (month === term.month) {
-      if (day >= term.day) {
-        termIndex = i;
-      } else {
-        termIndex = (i - 1 + 12) % 12;
-      }
-      break;
-    }
-  }
   
-  // 예외 처리: 1월 1일 ~ 1월 5일 (소한 전) -> 자월 (대설 이후)
-  if (month === 1 && day < 6) {
-    termIndex = 10; // 자월
+  if (month === 1) {
+    // 1월: 소한 전이면 자월(대설 이후), 소한 이후면 축월
+    const sohanDay = prevYearTerms[11].day; // 전년도 소한 = 올해 1월
+    if (day >= sohanDay) {
+      termIndex = 11; // 축월
+    } else {
+      termIndex = 10; // 자월 (전년도 대설 이후)
+    }
+  } else {
+    // 2~12월: 해당 월의 절기를 찾아서 비교
+    for (let i = 0; i < 12; i++) {
+      const term = solarTerms[i];
+      if (month === term.month) {
+        if (day >= term.day) {
+          termIndex = i;
+        } else {
+          termIndex = (i - 1 + 12) % 12;
+        }
+        break;
+      }
+    }
   }
   
   // 월지 결정 (인월부터 시작)
