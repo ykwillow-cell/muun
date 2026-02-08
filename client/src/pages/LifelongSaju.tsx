@@ -141,13 +141,18 @@ export default function LifelongSaju() {
   useEffect(() => {
     const savedData = localStorage.getItem("muun_user_data");
     if (savedData) {
-      const parsed = JSON.parse(savedData);
-      form.reset({
-        ...form.getValues(),
-        ...parsed,
-      });
+      try {
+        const parsed = JSON.parse(savedData);
+        form.reset({
+          ...form.getValues(),
+          ...parsed,
+        });
+      } catch (e) {
+        console.error("Failed to parse saved data:", e);
+      }
     }
-  }, [form]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onSubmit = async (data: FormValues) => {
     localStorage.setItem("muun_user_data", JSON.stringify(data));
