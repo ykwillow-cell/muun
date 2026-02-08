@@ -61,6 +61,29 @@ export default function FamilySaju() {
 
   useEffect(() => {
     trackEvent("page_view", "family_saju", "가족사주 페이지 방문");
+    // localStorage에서 사용자 정보 불러와 첫 번째 구성원(나)에 자동 입력
+    try {
+      const savedData = localStorage.getItem("muun_user_data");
+      if (savedData) {
+        const parsed = JSON.parse(savedData);
+        if (parsed.name && parsed.birthDate) {
+          setMembers(prev => {
+            const updated = [...prev];
+            updated[0] = {
+              ...updated[0],
+              name: parsed.name || "",
+              gender: parsed.gender || "male",
+              birthDate: parsed.birthDate || "",
+              birthTime: parsed.birthTime || "12:00",
+              calendarType: parsed.calendarType || "solar",
+            };
+            return updated;
+          });
+        }
+      }
+    } catch (e) {
+      console.error("사용자 정보 불러오기 실패:", e);
+    }
   }, []);
 
   const addMember = () => {
