@@ -16,7 +16,8 @@ import AstrologyContent from "@/components/AstrologyContent";
 
 const formSchema = z.object({
   birthDate: z.string().min(1, "생년월일을 입력해주세요"),
-  birthTime: z.string().min(1, "태어난 시간을 입력해주세요"),
+  birthTime: z.string(),
+  birthTimeUnknown: z.boolean().default(false),
   birthCity: z.string().min(1, "태어난 도시를 선택해주세요"),
 });
 
@@ -183,6 +184,7 @@ const Astrology: React.FC = () => {
     defaultValues: {
       birthDate: "2000-01-01",
       birthTime: "12:00",
+      birthTimeUnknown: false,
       birthCity: "서울",
     },
   });
@@ -210,7 +212,8 @@ const Astrology: React.FC = () => {
     const city = MAJOR_CITIES.find(c => c.name === data.birthCity);
     if (!city) return;
 
-    const date = new Date(`${data.birthDate}T${data.birthTime}`);
+    const time = data.birthTimeUnknown ? "12:00" : data.birthTime;
+    const date = new Date(`${data.birthDate}T${time}`);
     const astrologyResult = calculateAstrology(date, city.lat, city.lng);
     
     setResult({
@@ -289,12 +292,23 @@ const Astrology: React.FC = () => {
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="birthTime" className="text-white/70 text-xs md:text-sm font-medium">태어난 시간</Label>
-                      <Input
-                        id="birthTime"
-                        type="time"
-                        {...form.register("birthTime")}
-                        className="bg-white/5 border-white/10 text-white min-h-[48px] focus:ring-primary/50 rounded-xl"
-                      />
+                      <div className="space-y-2">
+                        <Input
+                          id="birthTime"
+                          type="time"
+                          {...form.register("birthTime")}
+                          disabled={form.watch("birthTimeUnknown")}
+                          className={`bg-white/5 border-white/10 text-white min-h-[48px] focus:ring-primary/50 rounded-xl ${form.watch("birthTimeUnknown") ? 'opacity-40' : ''}`}
+                        />
+                        <label className="flex items-center gap-1.5 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            {...form.register("birthTimeUnknown")}
+                            className="w-3.5 h-3.5 rounded border-white/20 bg-white/5 accent-primary"
+                          />
+                          <span className="text-[11px] text-white/60">모름</span>
+                        </label>
+                      </div>
                     </div>
                   </div>
 

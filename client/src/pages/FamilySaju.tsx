@@ -52,7 +52,9 @@ const DEFAULT_MEMBER: () => FamilyMember = () => ({
   gender: "male" as const,
   birthDate: "",
   birthTime: "12:00",
+  birthTimeUnknown: false,
   calendarType: "solar" as const,
+  isLeapMonth: false,
 });
 
 export default function FamilySaju() {
@@ -70,14 +72,16 @@ export default function FamilySaju() {
         if (parsed.name && parsed.birthDate) {
           setMembers(prev => {
             const updated = [...prev];
-            updated[0] = {
-              ...updated[0],
-              name: parsed.name || "",
-              gender: parsed.gender || "male",
-              birthDate: parsed.birthDate || "",
-              birthTime: parsed.birthTime || "12:00",
-              calendarType: parsed.calendarType || "solar",
-            };
+              updated[0] = {
+                ...updated[0],
+                name: parsed.name || "",
+                gender: parsed.gender || "male",
+                birthDate: parsed.birthDate || "",
+                birthTime: parsed.birthTime || "12:00",
+                birthTimeUnknown: parsed.birthTimeUnknown || false,
+                calendarType: parsed.calendarType || "solar",
+                isLeapMonth: parsed.isLeapMonth || false,
+              };
             return updated;
           });
         }
@@ -129,13 +133,14 @@ export default function FamilySaju() {
 
     trackEvent("family_saju_submit", "family_saju", `가족 ${members.length}명 분석`);
 
-    const analyzed = members.map(m => {
-      const birthDate = convertToSolarDate(m.birthDate, m.birthTime, m.calendarType as "solar" | "lunar");
-      const saju = calculateSaju(birthDate, m.gender as "male" | "female");
-      return { ...m, saju };
+    const resultData = members.map(member => {
+      const time = member.birthTimeUnknown ? "12:00" : member.birthTime;
+      const date = convertToSolarDate(member.birthDate, time, member.calendarType, member.isLeapMonth);
+      const saju = calculateSaju(date, member.gender);
+      return { ...member, saju };
     });
 
-    setResult(analyzed);
+    setResult(resultData);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -269,12 +274,24 @@ export default function FamilySaju() {
                         <Label className="text-white/70 text-sm flex items-center gap-1">
                           <Clock className="w-3 h-3" /> 태어난 시간
                         </Label>
-                        <Input
-                          type="time"
-                          value={member.birthTime}
-                          onChange={(e) => updateMember(index, "birthTime", e.target.value)}
-                          className="bg-white/5 border-white/10 text-white h-10"
-                        />
+                        <div className="space-y-2">
+                          <Input
+                            type="time"
+                            value={member.birthTime}
+                            onChange={(e) => updateMember(index, "birthTime", e.target.value)}
+                            disabled={member.birthTimeUnknown}
+                            className={`bg-white/5 border-white/10 text-white h-10 ${member.birthTimeUnknown ? 'opacity-40' : ''}`}
+                          />
+                          <label className="flex items-center gap-1.5 cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={member.birthTimeUnknown}
+                              onChange={(e) => updateMember(index, "birthTimeUnknown", e.target.checked)}
+                              className="w-3.5 h-3.5 rounded border-white/20 bg-white/5 accent-primary"
+                            />
+                            <span className="text-[11px] text-white/60">모름</span>
+                          </label>
+                        </div>
                       </div>
                     </div>
 
@@ -291,6 +308,21 @@ export default function FamilySaju() {
                         <ToggleGroupItem value="lunar" className="rounded-lg text-xs data-[state=on]:bg-primary/30 data-[state=on]:text-primary">음력</ToggleGroupItem>
                       </ToggleGroup>
                     </div>
+
+                    {/* 윤달 여부 (음력일 때만 표시) */}
+                    {member.calendarType === "lunar" && (
+                      <div className="flex items-center gap-2 px-1">
+                        <label className="flex items-center gap-2 cursor-pointer group">
+                          <input
+                            type="checkbox"
+                            checked={member.isLeapMonth}
+                            onChange={(e) => updateMember(index, "isLeapMonth", e.target.checked)}
+                            className="w-4 h-4 rounded border-white/20 bg-white/5 accent-primary"
+                          />
+                          <span className="text-sm text-white/80 group-hover:text-primary transition-colors">윤달(Leap Month)인 경우 체크</span>
+                        </label>
+                      </div>
+                    )}
 
                     {errors[index] && (
                       <p className="text-red-400 text-xs">{errors[index]}</p>

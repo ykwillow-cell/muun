@@ -19,6 +19,8 @@ const formSchema = z.object({
   name: z.string().min(1, "이름을 입력해주세요"),
   gender: z.enum(["male", "female"]),
   birthDate: z.string().min(1, "생년월일을 입력해주세요"),
+  calendarType: z.enum(["solar", "lunar"]).default("solar"),
+  isLeapMonth: z.boolean().default(false),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -34,6 +36,8 @@ export default function DailyFortune() {
       name: "",
       gender: "male",
       birthDate: "2000-01-01",
+      calendarType: "solar",
+      isLeapMonth: false,
     },
   });
 
@@ -57,7 +61,8 @@ export default function DailyFortune() {
     localStorage.setItem("muun_user_data", JSON.stringify(mergedData));
     
     setUserName(data.name);
-    const result = getDailyFortune(new Date(data.birthDate), data.gender);
+    const date = convertToSolarDate(data.birthDate, "12:00", data.calendarType, data.isLeapMonth);
+    const result = getDailyFortune(date, data.gender);
     setFortune(result);
     setShowResult(true);
     window.scrollTo(0, 0);
@@ -173,6 +178,43 @@ export default function DailyFortune() {
                       accentColor="orange"
                     />
                   </div>
+
+                  {/* 날짜 구분 */}
+                  <div className="space-y-1.5">
+                    <Label className="text-white text-sm font-medium flex items-center gap-1.5">
+                      <Calendar className="w-3.5 h-3.5 text-orange-400" />
+                      날짜 구분
+                    </Label>
+                    <ToggleGroup
+                      type="single"
+                      value={form.watch("calendarType")}
+                      onValueChange={(value) => {
+                        if (value) form.setValue("calendarType", value as "solar" | "lunar");
+                      }}
+                      className="w-full h-11 bg-white/5 p-1 rounded-xl border border-white/10 grid grid-cols-2 gap-1"
+                    >
+                      <ToggleGroupItem value="solar" className="h-full rounded-lg data-[state=on]:bg-orange-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-sm">
+                        양력
+                      </ToggleGroupItem>
+                      <ToggleGroupItem value="lunar" className="h-full rounded-lg data-[state=on]:bg-orange-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-sm">
+                        음력
+                      </ToggleGroupItem>
+                    </ToggleGroup>
+                  </div>
+
+                  {/* 윤달 여부 (음력일 때만 표시) */}
+                  {form.watch("calendarType") === "lunar" && (
+                    <div className="flex items-center gap-2 px-1">
+                      <label className="flex items-center gap-2 cursor-pointer group">
+                        <input
+                          type="checkbox"
+                          {...form.register("isLeapMonth")}
+                          className="w-4 h-4 rounded border-white/20 bg-white/5 accent-orange-500"
+                        />
+                        <span className="text-sm text-white/80 group-hover:text-orange-400 transition-colors">윤달(Leap Month)인 경우 체크</span>
+                      </label>
+                    </div>
+                  )}
 
                   {/* Submit Button */}
                   <Button 

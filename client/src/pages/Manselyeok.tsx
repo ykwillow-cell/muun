@@ -23,8 +23,10 @@ const formSchema = z.object({
   name: z.string().min(1, "이름을 입력해주세요"),
   gender: z.enum(["male", "female"]),
   birthDate: z.string().min(1, "생년월일을 입력해주세요"),
-  birthTime: z.string().min(1, "태어난 시간을 입력해주세요"),
+  birthTime: z.string(),
+  birthTimeUnknown: z.boolean().default(false),
   calendarType: z.enum(["solar", "lunar"]),
+  isLeapMonth: z.boolean().default(false),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -51,7 +53,9 @@ export default function Manselyeok() {
       gender: "male",
       birthDate: "2000-01-01",
       birthTime: "12:00",
+      birthTimeUnknown: false,
       calendarType: "solar",
+      isLeapMonth: false,
     },
   });
 
@@ -73,7 +77,8 @@ export default function Manselyeok() {
       return;
     }
 
-    const date = convertToSolarDate(data.birthDate, data.birthTime, data.calendarType);
+    const time = data.birthTimeUnknown ? "12:00" : data.birthTime;
+    const date = convertToSolarDate(data.birthDate, time, data.calendarType, data.isLeapMonth);
     const sajuResult = calculateSaju(date, data.gender);
     setResult(sajuResult);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -229,12 +234,23 @@ export default function Manselyeok() {
                           <Clock className="w-3.5 h-3.5 text-emerald-400" />
                           태어난 시간
                         </Label>
-                        <Input 
-                          id="birthTime" 
-                          type="time" 
-                          {...form.register("birthTime")} 
-                          className="h-11 bg-white/5 border-white/10 text-white rounded-xl focus:ring-emerald-500/50 focus:border-emerald-500 transition-all text-sm"
-                        />
+                        <div className="space-y-2">
+                          <Input 
+                            id="birthTime" 
+                            type="time" 
+                            {...form.register("birthTime")} 
+                            disabled={form.watch("birthTimeUnknown")}
+                            className={`h-11 bg-white/5 border-white/10 text-white rounded-xl focus:ring-emerald-500/50 focus:border-emerald-500 transition-all text-sm ${form.watch("birthTimeUnknown") ? 'opacity-40' : ''}`}
+                          />
+                          <label className="flex items-center gap-1.5 cursor-pointer">
+                            <input
+                              type="checkbox"
+                              {...form.register("birthTimeUnknown")}
+                              className="w-3.5 h-3.5 rounded border-white/20 bg-white/5 accent-emerald-500"
+                            />
+                            <span className="text-[11px] text-white/60">모름</span>
+                          </label>
+                        </div>
                       </div>
                     </div>
 
@@ -266,6 +282,20 @@ export default function Manselyeok() {
                         </ToggleGroupItem>
                       </ToggleGroup>
                     </div>
+
+                    {/* 윤달 여부 (음력일 때만 표시) */}
+                    {form.watch("calendarType") === "lunar" && (
+                      <div className="flex items-center gap-2 px-1">
+                        <label className="flex items-center gap-2 cursor-pointer group">
+                          <input
+                            type="checkbox"
+                            {...form.register("isLeapMonth")}
+                            className="w-4 h-4 rounded border-white/20 bg-white/5 accent-emerald-500"
+                          />
+                          <span className="text-sm text-white/80 group-hover:text-emerald-400 transition-colors">윤달(Leap Month)인 경우 체크</span>
+                        </label>
+                      </div>
+                    )}
 
                     {/* Submit Button */}
                     <Button 

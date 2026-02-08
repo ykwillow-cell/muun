@@ -23,6 +23,7 @@ const formSchema = z.object({
   gender: z.enum(["male", "female"]),
   birthDate: z.string().min(1, "생년월일을 입력해주세요"),
   calendarType: z.enum(["solar", "lunar"]),
+  isLeapMonth: z.boolean().default(false),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -46,6 +47,7 @@ export default function Tojeong() {
       gender: "male",
       birthDate: "2000-01-01",
       calendarType: "lunar", // 음력 기본값
+      isLeapMonth: false,
     },
   });
 
@@ -60,7 +62,7 @@ export default function Tojeong() {
 
   const onSubmit = (data: FormValues) => {
     localStorage.setItem("muun_user_data", JSON.stringify(data));
-    const date = convertToSolarDate(data.birthDate, "12:00", data.calendarType);
+    const date = convertToSolarDate(data.birthDate, "12:00", data.calendarType, data.isLeapMonth);
     const tojeongResult = calculateTojeong(date, 2026);
     const monthlyFortunes = getMonthlyFortunes(tojeongResult.hexagram);
     
@@ -212,6 +214,20 @@ export default function Tojeong() {
                       </ToggleGroup>
                     </div>
                   </div>
+
+                  {/* 윤달 여부 (음력일 때만 표시) */}
+                  {form.watch("calendarType") === "lunar" && (
+                    <div className="flex items-center gap-2 px-1">
+                      <label className="flex items-center gap-2 cursor-pointer group">
+                        <input
+                          type="checkbox"
+                          {...form.register("isLeapMonth")}
+                          className="w-4 h-4 rounded border-white/20 bg-white/5 accent-amber-500"
+                        />
+                        <span className="text-sm text-white/80 group-hover:text-amber-400 transition-colors">윤달(Leap Month)인 경우 체크</span>
+                      </label>
+                    </div>
+                  )}
 
                   {/* Info Box */}
                   <div className="flex items-start gap-2 p-3 rounded-xl bg-amber-500/5 border border-amber-500/10">

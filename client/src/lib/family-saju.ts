@@ -9,7 +9,9 @@ export interface FamilyMember {
   gender: "male" | "female";
   birthDate: string;
   birthTime: string;
+  birthTimeUnknown?: boolean;
   calendarType: "solar" | "lunar";
+  isLeapMonth?: boolean;
   saju?: SajuResult;
 }
 
