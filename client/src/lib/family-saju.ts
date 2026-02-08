@@ -173,15 +173,32 @@ function getRoleRelation(role1: FamilyRole, role2: FamilyRole): string {
   const parentRoles: FamilyRole[] = ["아버지", "어머니", "할아버지", "할머니"];
   const childRoles: FamilyRole[] = ["아들", "딸"];
 
+  // 부모-자녀 관계
   if (parentRoles.includes(role1) && childRoles.includes(role2)) return "부모-자녀";
   if (childRoles.includes(role1) && parentRoles.includes(role2)) return "자녀-부모";
+
+  // 배우자(나의 배우자)와 자녀 관계
+  if (role1 === "배우자" && childRoles.includes(role2)) return "부모-자녀";
+  if (childRoles.includes(role1) && role2 === "배우자") return "자녀-부모";
+
+  // "나"와 자녀 관계
+  if (role1 === "나" && childRoles.includes(role2)) return "부모-자녀";
+  if (childRoles.includes(role1) && role2 === "나") return "자녀-부모";
+
+  // "나"와 부모 관계
+  if (role1 === "나" && parentRoles.includes(role2)) return "자녀-부모";
+  if (parentRoles.includes(role1) && role2 === "나") return "부모-자녀";
+
+  // 부부 관계
   if (parentRoles.includes(role1) && parentRoles.includes(role2)) {
     if ((role1 === "아버지" && role2 === "어머니") || (role1 === "어머니" && role2 === "아버지")) return "부부";
     if ((role1 === "할아버지" && role2 === "할머니") || (role1 === "할머니" && role2 === "할아버지")) return "부부";
-    return "가족";
   }
+  if ((role1 === "나" && role2 === "배우자") || (role1 === "배우자" && role2 === "나")) return "부부";
+
+  // 형제자매 관계
   if (childRoles.includes(role1) && childRoles.includes(role2)) return "형제자매";
-  if (role1 === "배우자" || role2 === "배우자") return "부부";
+
   return "가족";
 }
 
