@@ -1,5 +1,6 @@
 import { TOJEONG_TABLE } from './tojeong-data';
 import { calculateSaju } from './saju';
+import { solarToLunar } from './lunar-converter';
 
 export interface TojeongResult {
   upper: number;
@@ -41,9 +42,11 @@ export function calculateTojeong(birthDate: Date, targetYear: number = 2026): To
   if (middle === 0) middle = 6;
 
   // 4. 하괘 계산: (태어난 날의 일진수 + 해당 일) % 3
+  // 토정비결은 음력 날짜를 기준으로 계산함
   const dayPillar = saju.dayPillar.stem + saju.dayPillar.branch;
   const ilJinSu = TOJEONG_TABLE[dayPillar]?.il || 15;
-  const dayNum = birthDate.getDate();
+  const lunarDate = solarToLunar(birthDate);
+  const dayNum = lunarDate.day;
   let lower = (ilJinSu + dayNum) % 3;
   if (lower === 0) lower = 3;
 

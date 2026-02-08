@@ -449,7 +449,25 @@ export function calculateElementBalance(saju: SajuResult) {
 }
 
 // 운세 점수 및 조합형 문장 생성 엔진
+// 단순한 해시 함수로 사주 결과에 따른 고정된 난수 생성
+function getDeterministicSeed(saju: SajuResult): number {
+  const sajuStr = JSON.stringify([
+    saju.yearPillar,
+    saju.monthPillar,
+    saju.dayPillar,
+    saju.hourPillar
+  ]);
+  let hash = 0;
+  for (let i = 0; i < sajuStr.length; i++) {
+    const char = sajuStr.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32bit integer
+  }
+  return Math.abs(hash);
+}
+
 export function generateFortuneDetails(saju: SajuResult) {
+  const seed = getDeterministicSeed(saju);
   const balance = calculateElementBalance(saju);
   const strongest = [...balance].sort((a, b) => b.value - a.value)[0];
   const weakest = [...balance].sort((a, b) => a.value - b.value)[0];
@@ -476,14 +494,14 @@ export function generateFortuneDetails(saju: SajuResult) {
   const luckyData = ELEMENT_LUCKY_DATA[strongest.name as FiveElement];
 
   return {
-    summary: summaries[strongest.name as FiveElement][Math.floor(Math.random() * 3)],
+    summary: summaries[strongest.name as FiveElement][seed % 3],
     mainElement: elementNames[strongest.name as FiveElement],
     advice: advice[weakest.name as FiveElement],
     scores: {
-      wealth: 70 + (Math.random() * 25),
-      health: 65 + (Math.random() * 30),
-      love: 60 + (Math.random() * 35),
-      career: 75 + (Math.random() * 20)
+      wealth: 70 + ((seed % 250) / 10),
+      health: 65 + (((seed >> 2) % 300) / 10),
+      love: 60 + (((seed >> 4) % 350) / 10),
+      career: 75 + (((seed >> 6) % 200) / 10)
     },
     lucky: luckyData
   };

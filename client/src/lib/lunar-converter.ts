@@ -85,3 +85,20 @@ export function hasLeapMonth(year: number, month: number): boolean {
     return false;
   }
 }
+
+/**
+ * 양력 날짜를 음력 날짜로 변환합니다.
+ * @param date Date 객체
+ * @returns 음력 날짜 정보
+ */
+export function solarToLunar(date: Date): { year: number; month: number; day: number; isLeap: boolean } {
+  const calendar = new KoreanLunarCalendar();
+  calendar.setSolarDate(date.getFullYear(), date.getMonth() + 1, date.getDate());
+  const lunar = calendar.getLunarCalendar();
+  return {
+    year: lunar.year,
+    month: lunar.month,
+    day: lunar.day,
+    isLeap: lunar.isLeap
+  };
+}
