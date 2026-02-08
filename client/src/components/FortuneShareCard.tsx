@@ -262,14 +262,44 @@ export default function FortuneShareCard(props: FortuneShareCardProps) {
 
       const canvas = await html2canvas(cardRef.current, html2canvasOptions(cardRef.current));
 
-      const link = document.createElement('a');
-      link.download = `${content.fileName}_${Date.now()}.png`;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
+      // 모바일 환경 감지
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+      if (isMobile) {
+        // 모바일: blob으로 변환 후 다운로드 또는 새 탭 열기
+        canvas.toBlob((blob) => {
+          if (!blob) {
+            alert('이미지 생성에 실패했습니다.');
+            setIsCapturing(false);
+            return;
+          }
+          
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = `${content.fileName}_${Date.now()}.png`;
+          
+          // iOS Safari는 download 속성을 지원하지 않으므로 새 탭에서 열기
+          if (/iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+            window.open(url, '_blank');
+          } else {
+            link.click();
+          }
+          
+          setTimeout(() => URL.revokeObjectURL(url), 1000);
+        }, 'image/png');
+      } else {
+        // PC: 기존 방식
+        const link = document.createElement('a');
+        link.download = `${content.fileName}_${Date.now()}.png`;
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+      }
 
       trackCustomEvent('share_card_download', {
         page: content.gaPage,
         user_name: props.userName,
+        device: isMobile ? 'mobile' : 'desktop',
       });
     } catch (error) {
       console.error('이미지 캡처 실패:', error);
@@ -291,33 +321,71 @@ export default function FortuneShareCard(props: FortuneShareCardProps) {
 
       canvas.toBlob(async (blob: Blob | null) => {
         if (!blob) {
+          alert('이미지 생성에 실패했습니다.');
           setIsCapturing(false);
           return;
         }
-        const file = new File([blob], `muun_fortune.png`, { type: 'image/png' });
+        
+        const file = new File([blob], `${content.fileName}.png`, { type: 'image/png' });
+        const url = URL.createObjectURL(blob);
 
-        if (navigator.share && navigator.canShare({ files: [file] })) {
+        // Web Share API 지원 여부 확인 (더 정확한 체크)
+        const canShareFiles = navigator.share && typeof navigator.canShare === 'function' 
+          ? await navigator.canShare({ files: [file] }).catch(() => false)
+          : false;
+
+        if (canShareFiles) {
           try {
             await navigator.share({
               title: `무운 - ${content.title}`,
               text: `${content.subtitle}의 운세를 확인해보세요!`,
               files: [file],
             });
-            trackCustomEvent('share_card_native_share', { page: content.gaPage });
-          } catch (e) {
-            // 사용자가 공유 취소
+            trackCustomEvent('share_card_native_share', { 
+              page: content.gaPage,
+              method: 'web_share_api' 
+            });
+          } catch (e: any) {
+            if (e.name !== 'AbortError') {
+              console.error('공유 실패:', e);
+            }
+          }
+        } else if (navigator.share) {
+          // 파일 공유는 안 되지만 텍스트 공유는 가능한 경우
+          try {
+            await navigator.share({
+              title: `무운 - ${content.title}`,
+              text: `${content.subtitle}의 운세를 확인해보세요! ${window.location.origin}`,
+            });
+            trackCustomEvent('share_card_native_share', { 
+              page: content.gaPage,
+              method: 'text_only' 
+            });
+            // 이미지는 별도로 다운로드
+            const link = document.createElement('a');
+            link.download = `${content.fileName}.png`;
+            link.href = url;
+            link.click();
+          } catch (e: any) {
+            if (e.name !== 'AbortError') {
+              console.error('공유 실패:', e);
+            }
           }
         } else {
+          // Web Share API 미지원: 다운로드로 fallback
           const link = document.createElement('a');
           link.download = `${content.fileName}.png`;
-          link.href = URL.createObjectURL(blob);
+          link.href = url;
           link.click();
-          URL.revokeObjectURL(link.href);
+          trackCustomEvent('share_card_download_fallback', { page: content.gaPage });
         }
+        
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
         setIsCapturing(false);
       }, 'image/png');
     } catch (error) {
       console.error('이미지 공유 실패:', error);
+      alert('이미지 생성에 실패했습니다.');
       setIsCapturing(false);
     }
   }, [props, content, html2canvasOptions]);
