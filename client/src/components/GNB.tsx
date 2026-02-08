@@ -22,7 +22,8 @@ import {
   Zap,
   History,
   Share2,
-  Users
+  Users,
+  Brain
 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -37,6 +38,7 @@ const navItems = [
   { name: "오늘의 운세", href: "/daily-fortune", icon: Zap, description: "매일 확인하는 나의 행운" },
   { name: "심리테스트", href: "/psychology", icon: BrainCircuit, description: "나도 모르는 내 마음" },
   { name: "궁합", href: "/compatibility", icon: Heart, description: "상대방과의 조화" },
+  { name: "사주xMBTI 궁합", href: "/hybrid-compatibility", icon: Brain, description: "사주와 성격, 둘 다 보는 진짜 궁합" },
   { name: "만세력", href: "/manselyeok", icon: Calendar, description: "나의 타고난 기운 확인" },
   { name: "점성술", href: "/astrology", icon: Star, description: "별들이 들려주는 나의 운명" },
   { name: "내 타로 기록", href: "/tarot-history", icon: History, description: "지난 상담 기록 조회" },

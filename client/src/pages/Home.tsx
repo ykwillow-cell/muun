@@ -1,6 +1,6 @@
 import { Link } from "wouter";
 import { motion } from "framer-motion";
-import { BookOpen, Star, ShieldCheck, Info, BrainCircuit, ScrollText, Sparkles, Heart, CalendarDays, ArrowRight, Zap, ChevronRight, Users } from "lucide-react";
+import { BookOpen, Star, ShieldCheck, Info, BrainCircuit, ScrollText, Sparkles, Heart, CalendarDays, ArrowRight, Zap, ChevronRight, Users, Brain } from "lucide-react";
 import { trackCustomEvent } from "@/lib/ga4";
 import { useRef } from "react";
 
@@ -69,6 +69,13 @@ export default function Home() {
       featured: true
     },
     { 
+      href: "/hybrid-compatibility", 
+      label: "사주xMBTI 궁합", 
+      icon: <Brain className="w-5 h-5" />, 
+      color: "bg-purple-500/20 text-purple-400",
+      desc: "사주와 성격, 둘 다 보는 궁합"
+    },
+    { 
       href: "/manselyeok", 
       label: "만세력", 
       icon: <CalendarDays className="w-5 h-5" />, 
@@ -77,8 +84,11 @@ export default function Home() {
     },
   ];
 
-  // 인기 서비스 (가로 스크롤용) - featured 항목만 필터
-  const popularItems = menuItems.filter(item => item.featured);
+  // 인기 서비스 (가로 스크롤용) - 명시적 순서 지정
+  const popularOrder = ["/family-saju", "/hybrid-compatibility", "/tarot", "/compatibility", "/yearly-fortune"];
+  const popularItems = popularOrder
+    .map(href => menuItems.find(item => item.href === href))
+    .filter((item): item is typeof menuItems[number] => !!item);
 
   const handleCategoryClick = (label: string) => {
     trackCustomEvent("select_fortune_category", {
@@ -312,6 +322,7 @@ export default function Home() {
                     <li><Link href="/lifelong-saju" className="hover:text-primary transition-colors">평생사주</Link></li>
                     <li><Link href="/yearly-fortune" className="hover:text-primary transition-colors">신년운세</Link></li>
                     <li><Link href="/family-saju" className="hover:text-primary transition-colors">가족사주</Link></li>
+                    <li><Link href="/hybrid-compatibility" className="hover:text-primary transition-colors">사주xMBTI 궁합</Link></li>
                   </ul>
                 </div>
                 <div className="space-y-3">

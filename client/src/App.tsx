@@ -25,6 +25,7 @@ import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Contact from "./pages/Contact";
 import FamilySaju from "./pages/FamilySaju";
+import HybridCompatibility from "./pages/HybridCompatibility";
 
 function Router() {
   const [location] = useLocation();
@@ -54,6 +55,7 @@ function Router() {
       <Route path="/privacy" component={Privacy} />
       <Route path="/terms" component={Terms} />
       <Route path="/family-saju" component={FamilySaju} />
+      <Route path="/hybrid-compatibility" component={HybridCompatibility} />
       <Route path="/contact" component={Contact} />
       <Route component={NotFound} />
     </Switch>
