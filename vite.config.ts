@@ -171,6 +171,10 @@ export default defineConfig({
     port: 3000,
     strictPort: false, // Will find next available port if 3000 is busy
     host: true,
+    watch: {
+      usePolling: true,
+      interval: 1000,
+    },
     allowedHosts: [
       ".manuspre.computer",
       ".manus.computer",
