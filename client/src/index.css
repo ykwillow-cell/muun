@@ -40,54 +40,59 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
-  /* Aurora Nexus Custom Colors */
-  --color-aurora-violet: oklch(0.541 0.281 293);
-  --color-aurora-cyan: oklch(0.715 0.143 215);
-  --color-aurora-gold: oklch(0.769 0.163 75);
-  --color-aurora-violet-light: oklch(0.714 0.203 293);
-  --color-aurora-cyan-light: oklch(0.785 0.115 215);
-  --color-deep-space: oklch(0.145 0.024 265);
-  --color-deep-space-lighter: oklch(0.185 0.024 265);
-  --color-glass-white-5: oklch(1 0 0 / 5%);
-  --color-glass-white-8: oklch(1 0 0 / 8%);
-  --color-glass-white-10: oklch(1 0 0 / 10%);
-  --color-glass-white-15: oklch(1 0 0 / 15%);
+  /* MUUN Brand Colors - 기존 muunsaju.com 동일 */
+  --color-muun-gold: oklch(0.795 0.16 84);
+  --color-muun-navy: oklch(0.178 0.032 264);
+  --color-muun-navy-light: oklch(0.233 0.03 260);
 }
 
+/* 기존 muunsaju.com 컬러 팔레트 (HSL 기반) */
 :root {
   --radius: 0.75rem;
-  --primary: oklch(0.541 0.281 293);
-  --primary-foreground: oklch(0.95 0.01 293);
-  --background: oklch(0.145 0.024 265);
-  --foreground: oklch(0.93 0.005 265);
-  --card: oklch(1 0 0 / 5%);
-  --card-foreground: oklch(0.93 0.005 265);
-  --popover: oklch(0.185 0.024 265);
-  --popover-foreground: oklch(0.93 0.005 265);
-  --secondary: oklch(1 0 0 / 8%);
-  --secondary-foreground: oklch(0.85 0.005 265);
-  --muted: oklch(1 0 0 / 5%);
-  --muted-foreground: oklch(0.65 0.015 265);
-  --accent: oklch(0.541 0.281 293 / 15%);
-  --accent-foreground: oklch(0.93 0.005 265);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 10%);
-  --ring: oklch(0.541 0.281 293);
-  --chart-1: oklch(0.541 0.281 293);
-  --chart-2: oklch(0.715 0.143 215);
-  --chart-3: oklch(0.769 0.163 75);
-  --chart-4: oklch(0.714 0.203 293);
-  --chart-5: oklch(0.785 0.115 215);
-  --sidebar: oklch(0.145 0.024 265);
-  --sidebar-foreground: oklch(0.93 0.005 265);
-  --sidebar-accent: oklch(1 0 0 / 8%);
-  --sidebar-accent-foreground: oklch(0.93 0.005 265);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.541 0.281 293);
-  --sidebar-primary: oklch(0.541 0.281 293);
-  --sidebar-primary-foreground: oklch(0.95 0.01 293);
+  /* Primary: Gold #ffd700 */
+  --primary: oklch(0.795 0.16 84);
+  --primary-foreground: oklch(0.178 0.032 264);
+  /* Background: Deep Navy #0f172a */
+  --background: oklch(0.178 0.032 264);
+  --foreground: oklch(0.965 0.005 265);
+  /* Card: Same as background */
+  --card: oklch(0.178 0.032 264);
+  --card-foreground: oklch(0.965 0.005 265);
+  /* Popover */
+  --popover: oklch(0.178 0.032 264);
+  --popover-foreground: oklch(0.965 0.005 265);
+  /* Secondary: Slightly lighter navy */
+  --secondary: oklch(0.233 0.03 260);
+  --secondary-foreground: oklch(0.965 0.005 265);
+  /* Muted */
+  --muted: oklch(0.233 0.03 260);
+  --muted-foreground: oklch(0.65 0.02 260);
+  /* Accent */
+  --accent: oklch(0.233 0.03 260);
+  --accent-foreground: oklch(0.965 0.005 265);
+  /* Destructive */
+  --destructive: oklch(0.45 0.2 25);
+  --destructive-foreground: oklch(0.965 0.005 265);
+  /* Border & Input: Same as secondary */
+  --border: oklch(0.233 0.03 260);
+  --input: oklch(0.233 0.03 260);
+  /* Ring: Gold */
+  --ring: oklch(0.795 0.16 84);
+  /* Charts */
+  --chart-1: oklch(0.795 0.16 84);
+  --chart-2: oklch(0.65 0.15 260);
+  --chart-3: oklch(0.55 0.2 260);
+  --chart-4: oklch(0.45 0.2 260);
+  --chart-5: oklch(0.35 0.15 260);
+  /* Sidebar */
+  --sidebar: oklch(0.178 0.032 264);
+  --sidebar-foreground: oklch(0.965 0.005 265);
+  --sidebar-accent: oklch(0.233 0.03 260);
+  --sidebar-accent-foreground: oklch(0.965 0.005 265);
+  --sidebar-border: oklch(0.233 0.03 260);
+  --sidebar-ring: oklch(0.795 0.16 84);
+  --sidebar-primary: oklch(0.795 0.16 84);
+  --sidebar-primary-foreground: oklch(0.178 0.032 264);
 }
 
 @layer base {
@@ -140,7 +145,7 @@
     }
   }
 
-  /* Glass Card */
+  /* Glass Card - 기존 muunsaju.com 스타일 */
   .glass-card {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(12px);
@@ -154,58 +159,23 @@
   }
   .glass-card-hover:hover {
     background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.15);
-    box-shadow: 0 0 20px rgba(124, 58, 237, 0.15), 0 0 40px rgba(6, 182, 212, 0.08);
+    border-color: rgba(218, 165, 32, 0.3);
+    box-shadow: 0 0 20px rgba(218, 165, 32, 0.15), 0 0 40px rgba(218, 165, 32, 0.05);
     transform: translateY(-2px);
   }
 
-  /* Neon Glow */
-  .neon-glow-violet {
-    box-shadow: 0 0 15px rgba(124, 58, 237, 0.3), 0 0 30px rgba(124, 58, 237, 0.1);
-  }
-  .neon-glow-cyan {
-    box-shadow: 0 0 15px rgba(6, 182, 212, 0.3), 0 0 30px rgba(6, 182, 212, 0.1);
-  }
+  /* Neon Glow - Gold theme */
   .neon-glow-gold {
-    box-shadow: 0 0 15px rgba(245, 158, 11, 0.3), 0 0 30px rgba(245, 158, 11, 0.1);
-  }
-
-  /* Aurora Background Animation */
-  @keyframes aurora-shift {
-    0%, 100% {
-      background-position: 0% 50%;
-    }
-    25% {
-      background-position: 50% 0%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    75% {
-      background-position: 50% 100%;
-    }
-  }
-
-  .aurora-bg {
-    background: linear-gradient(
-      135deg,
-      rgba(124, 58, 237, 0.15) 0%,
-      rgba(6, 182, 212, 0.1) 25%,
-      rgba(245, 158, 11, 0.08) 50%,
-      rgba(124, 58, 237, 0.12) 75%,
-      rgba(6, 182, 212, 0.15) 100%
-    );
-    background-size: 400% 400%;
-    animation: aurora-shift 30s ease-in-out infinite;
+    box-shadow: 0 0 15px rgba(218, 165, 32, 0.3), 0 0 30px rgba(218, 165, 32, 0.1);
   }
 
   /* Glow Pulse for CTA */
   @keyframes glow-pulse {
     0%, 100% {
-      box-shadow: 0 0 10px rgba(124, 58, 237, 0.3), 0 0 20px rgba(124, 58, 237, 0.1);
+      box-shadow: 0 0 10px rgba(218, 165, 32, 0.3), 0 0 20px rgba(218, 165, 32, 0.1);
     }
     50% {
-      box-shadow: 0 0 20px rgba(124, 58, 237, 0.5), 0 0 40px rgba(124, 58, 237, 0.2), 0 0 60px rgba(6, 182, 212, 0.1);
+      box-shadow: 0 0 20px rgba(218, 165, 32, 0.5), 0 0 40px rgba(218, 165, 32, 0.2);
     }
   }
 
@@ -252,5 +222,14 @@
   @keyframes twinkle {
     0%, 100% { opacity: 0.3; }
     50% { opacity: 1; }
+  }
+
+  /* Hide scrollbar */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
 }
