@@ -219,18 +219,7 @@ export function createArticleSchema(
  * HTML head에 Schema.org JSON-LD 스크립트 추가
  */
 export function injectSchemaTag(schema: Record<string, any>): void {
-  // 기존 schema 스크립트 제거
-  const existingScripts = document.querySelectorAll(
-    'script[type="application/ld+json"]'
-  );
-  existingScripts.forEach((script) => {
-    const scriptEl = script as HTMLScriptElement;
-    if (scriptEl.dataset?.schema === "true") {
-      scriptEl.remove();
-    }
-  });
-
-  // 새로운 schema 스크립트 추가
+  // 새로운 schema 스크립트 추가 (기존 스크립트는 유지)
   const script = document.createElement("script");
   script.type = "application/ld+json";
   script.dataset.schema = "true";
