@@ -10,7 +10,7 @@
  *   - 보조 텍스트: #94a3b8 (슬레이트 400)
  *   - 테두리: hsl(217,33%,17%) ≈ #1e293b
  */
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, useInView } from "motion/react";
 import {
   Calendar,
@@ -34,6 +34,13 @@ import {
   Coffee,
 } from "lucide-react";
 import { toast } from "sonner";
+import {
+  createOrganizationSchema,
+  createWebSiteSchema,
+  createWebPageSchema,
+  createBreadcrumbSchema,
+  injectMultipleSchemas,
+} from "@/lib/schema-tags";
 
 // ─── Brand Colors (기존 muunsaju.com 동일) ───
 const C = {
@@ -307,6 +314,27 @@ function FloatingActionButton() {
 
 // ─── Main ───
 export default function Home() {
+  useEffect(() => {
+    // Schema.org JSON-LD 구조화된 데이터 주입
+    const schemas = [
+      createOrganizationSchema(),
+      createWebSiteSchema(),
+      createWebPageSchema(
+        "무운(MUUN) - 당신의 운명을 비추는 가장 맑은 거울",
+        "https://muunsaju.com",
+        "30년 내공의 정통 명리학과 최신 AI 기술이 만나, 회원가입 없이 당신의 미래를 가장 정확하게 풀어드립니다.",
+        "https://muunsaju.com/og-image-main.png",
+        new Date().toISOString().split("T")[0],
+        new Date().toISOString().split("T")[0]
+      ),
+      createBreadcrumbSchema([
+        { name: "홈", url: "https://muunsaju.com" },
+      ]),
+    ];
+
+    injectMultipleSchemas(schemas);
+  }, []);
+
   return (
     <div className="min-h-screen" style={{ background: C.bg }}>
       <Header />
