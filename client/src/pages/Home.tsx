@@ -137,7 +137,14 @@ function HeroSection() {
   return (
     <section className="relative overflow-hidden" style={{ background: C.bg }}>
       <div className="absolute inset-0">
-        <img src={HERO_BG} alt="" className="w-full h-full object-cover opacity-20" />
+        <img 
+          src={HERO_BG} 
+          alt="" 
+          className="w-full h-full object-cover opacity-20" 
+          loading="lazy"
+          decoding="async"
+          fetchPriority="high"
+        />
         <div className="absolute inset-0" style={{ background: `linear-gradient(to bottom, ${C.bg}4d 0%, ${C.bg}b3 60%, ${C.bg} 100%)` }} />
       </div>
       <div className="relative z-10 container py-10 text-center">
