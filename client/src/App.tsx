@@ -4,6 +4,7 @@ import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import ScrollToTop from "./components/ScrollToTop";
+import SeoMetaFixer from "./components/SeoMetaFixer";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import { GNB } from "./components/GNB";
@@ -47,6 +48,7 @@ function Router() {
   return (
     <>
       <ScrollToTop />
+      <SeoMetaFixer />
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/manselyeok" component={Manselyeok} />
