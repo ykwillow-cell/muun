@@ -3,6 +3,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
+import ScrollToTop from "./components/ScrollToTop";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import { GNB } from "./components/GNB";
@@ -44,30 +45,33 @@ function Router() {
   }, [location]);
 
   return (
-    <Switch>
-      <Route path="/" component={Home} />
-      <Route path="/manselyeok" component={Manselyeok} />
-      <Route path="/lifelong-saju" component={LifelongSaju} />
-      <Route path="/yearly-fortune" component={YearlyFortune} />
-      <Route path="/yearly-fortune/:birthDate" component={YearlyFortuneDetail} />
-      <Route path="/daily-fortune" component={DailyFortune} />
-      <Route path="/compatibility" component={Compatibility} />
-      <Route path="/tojeong" component={Tojeong} />
-      <Route path="/psychology" component={Psychology} />
-      <Route path="/astrology" component={Astrology} />
-      <Route path="/tarot" component={Tarot} />
-      <Route path="/tarot-history" component={TarotHistory} />
-      <Route path="/about" component={About} />
-      <Route path="/privacy" component={Privacy} />
-      <Route path="/terms" component={Terms} />
-      <Route path="/family-saju" component={FamilySaju} />
-      <Route path="/hybrid-compatibility" component={HybridCompatibility} />
-      <Route path="/fortune-dictionary" component={FortuneDictionary} />
-      <Route path="/dictionary/:id" component={DictionaryDetail} />
-      <Route path="/lucky-lunch" component={LuckyLunch} />
-      <Route path="/contact" component={Contact} />
-      <Route component={NotFound} />
-    </Switch>
+    <>
+      <ScrollToTop />
+      <Switch>
+        <Route path="/" component={Home} />
+        <Route path="/manselyeok" component={Manselyeok} />
+        <Route path="/lifelong-saju" component={LifelongSaju} />
+        <Route path="/yearly-fortune" component={YearlyFortune} />
+        <Route path="/yearly-fortune/:birthDate" component={YearlyFortuneDetail} />
+        <Route path="/daily-fortune" component={DailyFortune} />
+        <Route path="/compatibility" component={Compatibility} />
+        <Route path="/tojeong" component={Tojeong} />
+        <Route path="/psychology" component={Psychology} />
+        <Route path="/astrology" component={Astrology} />
+        <Route path="/tarot" component={Tarot} />
+        <Route path="/tarot-history" component={TarotHistory} />
+        <Route path="/about" component={About} />
+        <Route path="/privacy" component={Privacy} />
+        <Route path="/terms" component={Terms} />
+        <Route path="/family-saju" component={FamilySaju} />
+        <Route path="/hybrid-compatibility" component={HybridCompatibility} />
+        <Route path="/fortune-dictionary" component={FortuneDictionary} />
+        <Route path="/dictionary/:id" component={DictionaryDetail} />
+        <Route path="/lucky-lunch" component={LuckyLunch} />
+        <Route path="/contact" component={Contact} />
+        <Route component={NotFound} />
+      </Switch>
+    </>
   );
 }
 
