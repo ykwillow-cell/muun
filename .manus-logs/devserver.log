@@ -6908,3 +6908,4 @@
 [2026-02-14T20:52:56.176Z] 
 [2026-02-14T20:52:56.177Z] ➜  Local:   http://localhost:3000/
 [2026-02-14T20:52:56.178Z] ➜  Network: http://169.254.0.21:3000/
+[2026-02-14T20:54:23.659Z] [baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
