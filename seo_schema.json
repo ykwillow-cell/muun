@@ -1,0 +1,37 @@
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "무운 (MuUn)",
+  "url": "https://muunsaju.com/",
+  "description": "회원가입 없는 무료 사주 및 2026년 병오년 신년 운세 서비스",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://muunsaju.com/search?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "MUUN Celestial Services",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://muunsaju.com/images/horse_mascot.png"
+    }
+  },
+  "mainEntity": [
+    {
+      "@type": "Service",
+      "name": "2026년 신년운세",
+      "description": "병오년 흐름을 분석하는 무료 신년 운세"
+    },
+    {
+      "@type": "Service",
+      "name": "무료 만세력",
+      "description": "정확한 사주 데이터를 제공하는 만세력 서비스"
+    },
+    {
+      "@type": "Service",
+      "name": "토정비결",
+      "description": "전통 비결의 지혜를 담은 운세 풀이"
+    }
+  ]
+}

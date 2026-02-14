@@ -1,0 +1,15 @@
+# robots.txt for MUUN - 무운 사주 및 운세 서비스
+# Allow all search engines to crawl the site
+
+User-agent: *
+Allow: /
+
+# Disallow private/admin pages (if any)
+Disallow: /admin
+Disallow: /api
+
+# Sitemap location
+Sitemap: https://muunsaju.com/sitemap.xml
+
+# Crawl delay (optional - helps reduce server load)
+Crawl-delay: 1
