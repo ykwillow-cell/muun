@@ -39,6 +39,8 @@ import {
   createWebSiteSchema,
   createWebPageSchema,
   createBreadcrumbSchema,
+  createArticleSchema,
+  createLocalBusinessSchema,
   injectMultipleSchemas,
 } from "@/lib/schema-tags";
 
@@ -323,6 +325,7 @@ function FloatingActionButton() {
 export default function Home() {
   useEffect(() => {
     // Schema.org JSON-LD 구조화된 데이터 주입
+    const today = new Date().toISOString().split("T")[0];
     const schemas = [
       createOrganizationSchema(),
       createWebSiteSchema(),
@@ -331,12 +334,23 @@ export default function Home() {
         "https://muunsaju.com",
         "30년 내공의 정통 명리학과 최신 AI 기술이 만나, 회원가입 없이 당신의 미래를 가장 정확하게 풀어드립니다.",
         "https://muunsaju.com/og-image-main.png",
-        new Date().toISOString().split("T")[0],
-        new Date().toISOString().split("T")[0]
+        today,
+        today
       ),
       createBreadcrumbSchema([
         { name: "홈", url: "https://muunsaju.com" },
       ]),
+      // Article Schema - 사주 가이드 콘텐츠
+      createArticleSchema(
+        "사주의 기초: 천간과 지지 이해하기",
+        "사주는 태어난 해, 월, 일, 시간의 천간과 지지로 이루어져 있습니다. 이 글에서 사주의 기본 개념을 배워보세요.",
+        "https://muunsaju.com/og-image-article.png",
+        "2026-02-01",
+        today,
+        "무운(MUUN)"
+      ),
+      // LocalBusiness Schema - 지역 비즈니스 정보
+      createLocalBusinessSchema(),
     ];
 
     injectMultipleSchemas(schemas);
