@@ -98,7 +98,7 @@ export function RelatedTermsSection({
   );
 }
 
-/**
+/*
  * 사용 예시:
  *
  * import { RelatedTermsSection } from '@/components/RelatedTermsSection';
@@ -108,7 +108,7 @@ export function RelatedTermsSection({
  *
  *   return (
  *     <div>
- *       {/* ... 기존 콘텐츠 ... */}
+ *       {* ... 기존 콘텐츠 ... *}
  *
  *       <RelatedTermsSection
  *         currentTermId={entry.id}

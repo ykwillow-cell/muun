@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useEffect } from 'react';
 import { useCanonical } from '@/lib/use-canonical';
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";

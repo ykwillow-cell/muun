@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { useEffect } from 'react';
 import { useCanonical } from '@/lib/use-canonical';
 import { setCompatibilityOGTags } from '@/lib/og-tags';
 import { useForm } from "react-hook-form";
