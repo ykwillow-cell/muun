@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "buildCommand": "pnpm build",
-  "outputDirectory": "dist",
+  "buildCommand": "vite build",
+  "outputDirectory": "dist/public",
   "headers": [
     {
       "source": "/assets/(.*)",
@@ -83,22 +83,6 @@
           "value": "public, max-age=3600, s-maxage=3600"
         }
       ]
-    }
-  ],
-  "functions": {
-    "api/index.ts": {
-      "memory": 1024,
-      "maxDuration": 60
-    }
-  },
-  "rewrites": [
-    {
-      "source": "/api/(.*)",
-      "destination": "api/index.ts"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "dist/public/$1"
     }
   ]
 }
