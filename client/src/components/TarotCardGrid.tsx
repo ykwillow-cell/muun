@@ -17,11 +17,11 @@ interface TarotCardGridProps {
 }
 
 /**
- * 극소형 타로 카드 그리드 컴포넌트
- * - 3줄 가로 스크롤 레이아웃
- * - 초소형 카드 (50px x 75px)
- * - 78장 전량 노출
- * - 모바일 한 화면 내 유지
+ * 타로 카드 그리드 컴포넌트
+ * - 3줄 배치 + 카드 겹침 효과
+ * - 선택 전: 타로카드 뒷면 무늬
+ * - 선택 후: 카드 앞면(이미지)
+ * - 모바일 한 화면에 78장 모두 노출
  */
 export default function TarotCardGrid({
   cards,
@@ -40,80 +40,158 @@ export default function TarotCardGrid({
 
   const canSelectMore = selectedCards.length < maxSelections;
 
+  // 카드를 3줄로 분배
+  const cardsPerRow = Math.ceil(cards.length / 3);
+  const rows = [
+    cards.slice(0, cardsPerRow),
+    cards.slice(cardsPerRow, cardsPerRow * 2),
+    cards.slice(cardsPerRow * 2),
+  ];
+
   return (
-    <div className="relative w-full overflow-hidden">
-      {/* 3줄 가로 스크롤 그리드 - 극소형 카드 */}
-      <div
-        className="grid gap-1 overflow-x-auto overflow-y-hidden pb-2"
-        style={{
-          gridTemplateRows: "repeat(3, minmax(75px, 1fr))",
-          gridAutoFlow: "column",
-          gridAutoColumns: "minmax(50px, auto)",
-          height: "calc(3 * 75px + 2 * 4px)", // 3줄 높이 + 간격
-          touchAction: "pan-x",
-          scrollBehavior: "smooth",
-        }}
-      >
-        {cards.map((card, index) => {
-          const isSelected = isCardSelected(card.id);
-          const canSelect = canSelectMore || isSelected;
+    <div className="relative w-full space-y-2 md:space-y-3">
+      {/* 3줄 배치 */}
+      {rows.map((rowCards, rowIndex) => (
+        <div
+          key={`row-${rowIndex}`}
+          className="flex items-center gap-0 overflow-hidden"
+          style={{
+            marginLeft: "-8px",
+            paddingRight: "8px",
+          }}
+        >
+          {/* 각 줄의 카드들 - 겹침 효과 */}
+          {rowCards.map((card, colIndex) => {
+            const isSelected = isCardSelected(card.id);
+            const canSelect = canSelectMore || isSelected;
+            const globalIndex = rowIndex * cardsPerRow + colIndex;
 
-          return (
-            <motion.button
-              key={`${card.id}-${index}`}
-              onClick={() => {
-                if (!disabled && canSelect && !isSelected) {
-                  onSelectCard(card);
-                }
-              }}
-              disabled={disabled || (!canSelect && !isSelected)}
-              initial={{ opacity: 0, scale: 0.7 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{
-                delay: Math.min(index * 0.01, 0.3), // 최대 0.3초
-                duration: 0.2,
-              }}
-              whileHover={!disabled && (canSelect || isSelected) ? { scale: 1.1, zIndex: 50 } : {}}
-              whileTap={!disabled && (canSelect || isSelected) ? { scale: 0.9 } : {}}
-              className={`
-                relative rounded-md overflow-hidden transition-all duration-150 flex-shrink-0
-                ${isSelected ? "ring-2 ring-primary shadow-md shadow-primary/50" : "ring-1 ring-white/10"}
-                ${!disabled && (canSelect || isSelected) ? "cursor-pointer hover:ring-primary/60" : "cursor-not-allowed"}
-                ${disabled || (!canSelect && !isSelected) ? "opacity-40" : ""}
-              `}
-              style={{
-                width: "50px",
-                height: "75px",
-              }}
-            >
-              {/* 카드 이미지 */}
-              <img
-                src={card.image}
-                alt={card.korName}
-                loading="lazy"
-                decoding="async"
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  // 이미지 로드 실패 시 대체 텍스트
-                  const target = e.target as HTMLImageElement;
-                  target.style.display = "none";
+            return (
+              <motion.button
+                key={`${card.id}-${rowIndex}-${colIndex}`}
+                onClick={() => {
+                  if (!disabled && canSelect && !isSelected) {
+                    onSelectCard(card);
+                  }
                 }}
-              />
+                disabled={disabled || (!canSelect && !isSelected)}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{
+                  delay: Math.min(globalIndex * 0.008, 0.2),
+                  duration: 0.3,
+                }}
+                whileHover={!disabled && (canSelect || isSelected) ? { scale: 1.08, zIndex: 50 } : {}}
+                whileTap={!disabled && (canSelect || isSelected) ? { scale: 0.95 } : {}}
+                className={`
+                  relative rounded-md overflow-hidden transition-all duration-150 flex-shrink-0
+                  ${isSelected ? "ring-2 ring-primary shadow-lg shadow-primary/50" : ""}
+                  ${!disabled && (canSelect || isSelected) ? "cursor-pointer" : "cursor-not-allowed"}
+                  ${disabled || (!canSelect && !isSelected) ? "opacity-60" : ""}
+                `}
+                style={{
+                  width: "48px",
+                  height: "72px",
+                  marginLeft: colIndex === 0 ? "8px" : "-16px",
+                  zIndex: isSelected ? 100 : colIndex,
+                }}
+              >
+                {isSelected ? (
+                  /* 선택된 카드 - 앞면 이미지 */
+                  <img
+                    src={card.image}
+                    alt={card.korName}
+                    loading="lazy"
+                    decoding="async"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  /* 선택되지 않은 카드 - 뒷면 무늬 */
+                  <div className="w-full h-full bg-gradient-to-br from-amber-900 via-amber-800 to-amber-900 border border-amber-700 relative overflow-hidden flex items-center justify-center">
+                    {/* 타로카드 뒷면 무늬 */}
+                    <svg
+                      className="absolute inset-0 w-full h-full"
+                      viewBox="0 0 100 100"
+                      preserveAspectRatio="xMidYMid slice"
+                    >
+                      <defs>
+                        {/* 동심원 패턴 */}
+                        <pattern
+                          id={`tarot-back-${card.id}`}
+                          x="0"
+                          y="0"
+                          width="50"
+                          height="50"
+                          patternUnits="userSpaceOnUse"
+                        >
+                          {/* 배경 */}
+                          <rect width="50" height="50" fill="#78350f" />
 
-              {/* 선택 표시 */}
-              {isSelected && (
-                <div className="absolute inset-0 bg-primary/30 flex items-center justify-center">
-                  <div className="text-white font-bold text-xs">✓</div>
-                </div>
-              )}
-            </motion.button>
-          );
-        })}
-      </div>
+                          {/* 중앙 다이아몬드 */}
+                          <circle cx="25" cy="25" r="12" fill="none" stroke="#fbbf24" strokeWidth="1" />
+                          <circle cx="25" cy="25" r="8" fill="none" stroke="#fcd34d" strokeWidth="0.8" />
+                          <circle cx="25" cy="25" r="4" fill="none" stroke="#fbbf24" strokeWidth="0.6" />
+                          <circle cx="25" cy="25" r="2" fill="#fcd34d" />
 
-      {/* 스크롤 힌트 (모바일) */}
-      <div className="md:hidden absolute right-1 top-1/2 transform -translate-y-1/2 pointer-events-none z-10">
-        <div className="animate-pulse text-primary text-xs font-bold">→</div>
+                          {/* 코너 장식 */}
+                          <circle cx="8" cy="8" r="1.5" fill="#fbbf24" />
+                          <circle cx="42" cy="8" r="1.5" fill="#fbbf24" />
+                          <circle cx="8" cy="42" r="1.5" fill="#fbbf24" />
+                          <circle cx="42" cy="42" r="1.5" fill="#fbbf24" />
+
+                          {/* 십자 선 */}
+                          <line x1="25" y1="5" x2="25" y2="45" stroke="#fbbf24" strokeWidth="0.4" opacity="0.5" />
+                          <line x1="5" y1="25" x2="45" y2="25" stroke="#fbbf24" strokeWidth="0.4" opacity="0.5" />
+
+                          {/* 대각선 */}
+                          <line x1="10" y1="10" x2="40" y2="40" stroke="#fbbf24" strokeWidth="0.3" opacity="0.3" />
+                          <line x1="40" y1="10" x2="10" y2="40" stroke="#fbbf24" strokeWidth="0.3" opacity="0.3" />
+                        </pattern>
+                      </defs>
+
+                      {/* 패턴 적용 */}
+                      <rect width="100" height="100" fill={`url(#tarot-back-${card.id})`} />
+
+                      {/* 테두리 강조 */}
+                      <rect
+                        x="5"
+                        y="5"
+                        width="90"
+                        height="90"
+                        fill="none"
+                        stroke="#fbbf24"
+                        strokeWidth="1.5"
+                        opacity="0.6"
+                      />
+                    </svg>
+
+                    {/* 중앙 별 장식 */}
+                    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                      <div className="text-amber-300 text-xs font-bold opacity-70">✦</div>
+                    </div>
+                  </div>
+                )}
+
+                {/* 선택 표시 (체크마크) */}
+                {isSelected && (
+                  <div className="absolute inset-0 bg-primary/20 flex items-center justify-center">
+                    <div className="text-white font-bold text-xs">✓</div>
+                  </div>
+                )}
+
+                {/* 호버 오버레이 */}
+                {!disabled && (canSelect || isSelected) && !isSelected && (
+                  <div className="absolute inset-0 bg-white/0 hover:bg-white/10 transition-colors" />
+                )}
+              </motion.button>
+            );
+          })}
+        </div>
+      ))}
+
+      {/* 선택 안내 텍스트 */}
+      <div className="text-center text-xs text-muted-foreground mt-3">
+        가장 마음이 끌리는 카드를 순서대로 {selectedCards.length}/3 선택
       </div>
     </div>
   );
