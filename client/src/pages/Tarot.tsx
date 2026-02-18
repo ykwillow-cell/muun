@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useCanonical } from '@/lib/use-canonical';
 import { setTarotOGTags } from '@/lib/og-tags';
 import { Helmet } from "react-helmet-async";
@@ -12,6 +12,7 @@ import tarotData from "@/lib/tarot-data.json";
 import { saveTarotReading } from "@/lib/tarot-db";
 import { trackCustomEvent } from "@/lib/ga4";
 import TarotContent from "@/components/TarotContent";
+import TarotCardGrid from "@/components/TarotCardGrid";
 import { getTarotInterpretation } from "@/lib/tarot-api";
 import { processAIContent } from "@/lib/content-cleaner";
 
@@ -277,10 +278,22 @@ export default function Tarot() {
                   </div>
                 </div>
 
-                {/* 카드 그리드 - 가로 방향 부채꼴 3단 배치 */}
-                <div className="relative w-full h-[450px] sm:h-[500px] md:h-[550px] flex items-end justify-center pb-8">
-                  <div className="relative w-full max-w-4xl h-full flex items-end justify-center">
-                    {shuffledDeck.slice(0, 22).map((card, index) => {
+                {/* 카드 그리드 - 3줄 가로 스크롤 */}
+                <div className="bg-white/5 border border-white/10 rounded-2xl p-5 md:p-8">
+                  <TarotCardGrid
+                    cards={shuffledDeck}
+                    selectedCards={selectedCards}
+                    onSelectCard={handleSelectCard}
+                    maxSelections={3}
+                    disabled={isLoading}
+                  />
+                </div>
+
+                {/* 기존 코드 제거 - 아래는 더 이상 사용하지 않음 */}
+                {false && (
+                  <div className="relative w-full h-[450px] sm:h-[500px] md:h-[550px] flex items-end justify-center pb-8">
+                    <div className="relative w-full max-w-4xl h-full flex items-end justify-center">
+                      {shuffledDeck.slice(0, 22).map((card, index) => {
                       const isSelected = selectedCards.find(c => c.id === card.id);
                       const selectedIndex = selectedCards.findIndex(c => c.id === card.id);
                       
@@ -405,8 +418,9 @@ export default function Tarot() {
                         </motion.button>
                       );
                     })}
+                    </div>
                   </div>
-                </div>
+                )}
 
                 {/* 선택된 카드 표시 */}
                 <div className="bg-white/5 border border-white/10 rounded-2xl p-5 md:p-8">
