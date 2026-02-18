@@ -36,6 +36,7 @@ import {
   getElementRelation,
   analyzeElementBalance,
 } from "@/lib/saju-reading";
+import { cleanAIContent } from "@/lib/content-cleaner";
 
 // 폼 스키마 정의
 const formSchema = z.object({
@@ -1077,10 +1078,10 @@ export default function Compatibility() {
                 {/* 오행 보완 분석 */}
                 <div className="border-t border-white/10 pt-4 space-y-3">
                   <p className="text-base md:text-sm text-white/90 leading-relaxed">
-                    {elementAnalysis1.analysis}
+                    {cleanAIContent(elementAnalysis1.analysis)}
                   </p>
                   <p className="text-base md:text-sm text-white/90 leading-relaxed">
-                    {elementAnalysis2.analysis}
+                    {cleanAIContent(elementAnalysis2.analysis)}
                   </p>
                   {elementAnalysis1.weakest !== elementAnalysis2.weakest && (
                     <p className="text-base md:text-sm text-pink-300 leading-relaxed">

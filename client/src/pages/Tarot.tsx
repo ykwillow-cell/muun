@@ -13,6 +13,7 @@ import { saveTarotReading } from "@/lib/tarot-db";
 import { trackCustomEvent } from "@/lib/ga4";
 import TarotContent from "@/components/TarotContent";
 import { trpc } from "@/lib/trpc";
+import { cleanAIContent, addWarmClosing } from "@/lib/content-cleaner";
 
 interface TarotCard {
   id: number;
@@ -80,7 +81,8 @@ export default function Tarot() {
 
   const interpretMutation = trpc.tarot.interpret.useMutation({
     onSuccess: (data) => {
-      setInterpretation(data.interpretation);
+      const cleanedInterpretation = addWarmClosing(cleanAIContent(data.interpretation));
+      setInterpretation(cleanedInterpretation);
     },
     onError: (error) => {
       console.error("Tarot interpretation error:", error);
@@ -411,7 +413,11 @@ export default function Tarot() {
                     <div>
                       <h3 className="text-lg md:text-xl font-bold text-primary mb-4">타로의 메시지</h3>
                       <div className="prose prose-invert max-w-none text-sm md:text-base leading-relaxed text-foreground whitespace-pre-wrap">
-                        {interpretation}
+                        {interpretation.split('\n\n').map((paragraph, index) => (
+                          <p key={index} className="mb-4">
+                            {paragraph}
+                          </p>
+                        ))}
                       </div>
                     </div>
 

@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { Link } from "wouter";
 import { shareContent } from "@/lib/share";
+import { cleanAIContent } from "@/lib/content-cleaner";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -702,12 +703,12 @@ function RelationCard({ relation, index }: {
             className="overflow-hidden"
           >
             <div className="px-6 pb-4 space-y-3 border-t border-white/5 pt-3">
-              <p className="text-base md:text-sm text-white/70 leading-relaxed">{analysis.description}</p>
+              <p className="text-base md:text-sm text-white/70 leading-relaxed">{cleanAIContent(analysis.description)}</p>
               <div className="p-3 rounded-lg bg-primary/5 border border-primary/10">
                 <p className="text-sm md:text-xs font-bold text-primary mb-1 flex items-center gap-1">
                   <Shield className="w-3 h-3" /> 관계 개선 조언
                 </p>
-                <p className="text-base md:text-sm text-white/70 leading-relaxed">{analysis.advice}</p>
+                <p className="text-base md:text-sm text-white/70 leading-relaxed">{cleanAIContent(analysis.advice)}</p>
               </div>
             </div>
           </motion.div>

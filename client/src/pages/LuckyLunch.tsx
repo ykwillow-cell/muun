@@ -17,6 +17,7 @@ import { getLuckyLunchResult } from "@/lib/luckyLunch";
 import { calculateSaju } from "@/lib/saju";
 import { convertToSolarDate } from "@/lib/lunar-converter";
 import { shareContent } from "@/lib/share";
+import { cleanAIContent } from "@/lib/content-cleaner";
 
 const formSchema = z.object({
   name: z.string().min(1, "이름을 입력해주세요"),
@@ -341,7 +342,7 @@ export default function LuckyLunch() {
                       </div>
                     </CardHeader>
                     <CardContent className="p-4 space-y-4">
-                      <p className="text-base md:text-sm text-white/70 leading-relaxed">{menu.description}</p>
+                      <p className="text-base md:text-sm text-white/70 leading-relaxed">{cleanAIContent(menu.description)}</p>
                       <div className="space-y-3">
                         <div>
                           <p className="text-sm md:text-xs font-semibold text-amber-400 mb-2">✨ 주요 효능</p>

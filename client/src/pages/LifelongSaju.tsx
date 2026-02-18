@@ -44,6 +44,7 @@ import {
   analyzeElementBalance,
   getElementRelation,
 } from "@/lib/saju-reading";
+import { cleanAIContent, addWarmClosing } from "@/lib/content-cleaner";
 
 const formSchema = z.object({
   name: z.string().min(1, "이름을 입력해주세요"),
@@ -648,7 +649,7 @@ export default function LifelongSaju() {
                 </div>
                 <Card className="bg-white/5 border-white/10 rounded-2xl overflow-hidden">
                   <CardContent className="p-4">
-                    <div className="text-base md:text-sm text-white/80 leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(fortunes.earlyLife.content)}</div>
+                    <div className="text-base md:text-sm text-white/80 leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(cleanAIContent(fortunes.earlyLife.content))}</div>
                   </CardContent>
                 </Card>
               </motion.section>
@@ -670,7 +671,7 @@ export default function LifelongSaju() {
                 </div>
                 <Card className="bg-white/5 border-white/10 rounded-2xl overflow-hidden">
                   <CardContent className="p-4">
-                    <div className="text-base md:text-sm text-white/80 leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(fortunes.midLife.content)}</div>
+                    <div className="text-base md:text-sm text-white/80 leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(cleanAIContent(fortunes.midLife.content))}</div>
                   </CardContent>
                 </Card>
               </motion.section>
@@ -692,7 +693,7 @@ export default function LifelongSaju() {
                 </div>
                 <Card className="bg-white/5 border-white/10 rounded-2xl overflow-hidden">
                   <CardContent className="p-4">
-                    <div className="text-base md:text-sm text-white/80 leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(fortunes.lateLife.content)}</div>
+                    <div className="text-base md:text-sm text-white/80 leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(cleanAIContent(fortunes.lateLife.content))}</div>
                   </CardContent>
                 </Card>
               </motion.section>
@@ -714,7 +715,7 @@ export default function LifelongSaju() {
                 </div>
                 <Card className="bg-white/5 border-white/10 rounded-2xl overflow-hidden">
                   <CardContent className="p-4">
-                    <div className="text-base md:text-sm text-white/80 leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(fortunes.wealth.content)}</div>
+                    <div className="text-base md:text-sm text-white/80 leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(cleanAIContent(fortunes.wealth.content))}</div>
                   </CardContent>
                 </Card>
               </motion.section>
@@ -736,7 +737,7 @@ export default function LifelongSaju() {
                 </div>
                 <Card className="bg-white/5 border-white/10 rounded-2xl overflow-hidden">
                   <CardContent className="p-4">
-                    <div className="text-base md:text-sm text-white/80 leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(fortunes.career.content)}</div>
+                    <div className="text-base md:text-sm text-white/80 leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(cleanAIContent(fortunes.career.content))}</div>
                   </CardContent>
                 </Card>
               </motion.section>
