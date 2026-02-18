@@ -86,7 +86,7 @@
     }
   ],
   "functions": {
-    "dist/index.js": {
+    "api/index.ts": {
       "memory": 3008,
       "maxDuration": 60
     }
@@ -94,7 +94,7 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "dist/index.js"
+      "dest": "api/index.ts"
     },
     {
       "src": "/(.*)",
