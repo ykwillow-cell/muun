@@ -31,7 +31,6 @@ import HybridCompatibility from "./pages/HybridCompatibility";
 import FortuneDictionary from "./pages/FortuneDictionary";
 import DictionaryDetail from "./pages/DictionaryDetail";
 import LuckyLunch from "./pages/LuckyLunch";
-
 function Router() {
   const [location] = useLocation();
 

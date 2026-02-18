@@ -6911,3 +6911,19 @@
 [2026-02-14T20:54:23.659Z] [baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
 [2026-02-14T21:26:08.654Z] 4:26:08 PM [vite] (client) page reload index.html
 [2026-02-14T21:26:29.731Z] 4:26:29 PM [vite] (client) page reload index.html
+[2026-02-18T00:33:40.889Z] Dev server process group stopped
+[2026-02-18T00:33:41.603Z] ELIFECYCLE  Command failed.
+[2026-02-18T00:33:41.912Z] Dev server exited with code -15
+[2026-02-18T00:33:57.213Z] Starting dev server with command: NODE_ENV=development tsx watch server/_core/index.ts
+[2026-02-18T00:33:59.264Z] Dev server process group stopped
+[2026-02-18T00:33:59.516Z] [OAuth] Initialized with baseURL: https://api.manus.im
+[2026-02-18T00:33:59.790Z] Dev server exited with code -15
+[2026-02-18T00:34:02.280Z] Starting dev server with command: NODE_ENV=development tsx watch server/_core/index.ts
+[2026-02-18T00:34:03.937Z] [OAuth] Initialized with baseURL: https://api.manus.im
+[2026-02-18T00:34:04.226Z] 7:34:04 PM [vite] (client) Re-optimizing dependencies because lockfile has changed
+[2026-02-18T00:34:04.254Z] Server running on http://localhost:3000/
+[2026-02-18T00:34:29.312Z] 7:34:29 PM [tsx] change in ./server/routers.ts Restarting...
+[2026-02-18T00:34:30.953Z] c[OAuth] Initialized with baseURL: https://api.manus.im
+[2026-02-18T00:34:31.242Z] Server running on http://localhost:3000/
+[2026-02-18T00:35:24.278Z] [baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+[2026-02-18T00:35:59.844Z] 7:35:59 PM [vite] (client) hmr update /src/pages/Home.tsx, /src/index.css

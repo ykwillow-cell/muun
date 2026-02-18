@@ -8,11 +8,11 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 import { Link } from "wouter";
-import axios from "axios";
 import tarotData from "@/lib/tarot-data.json";
 import { saveTarotReading } from "@/lib/tarot-db";
 import { trackCustomEvent } from "@/lib/ga4";
 import TarotContent from "@/components/TarotContent";
+import { trpc } from "@/lib/trpc";
 
 interface TarotCard {
   id: number;
@@ -78,8 +78,32 @@ export default function Tarot() {
     setSelectedCards(newSelected);
   };
 
+  const interpretMutation = trpc.tarot.interpret.useMutation({
+    onSuccess: (data) => {
+      setInterpretation(data.interpretation);
+    },
+    onError: (error) => {
+      console.error("Tarot interpretation error:", error);
+      let errorType: ErrorState["type"] = "unknown";
+      
+      if (error.message.includes("429")) {
+        errorType = "quota";
+      } else if (error.message.includes("FORBIDDEN") || error.message.includes("403")) {
+        errorType = "api";
+      } else if (error.message.includes("network") || error.message.includes("ERR_NETWORK")) {
+        errorType = "network";
+      }
+      
+      setError({
+        type: errorType,
+        message: error.message || "알 수 없는 오류가 발생했습니다.",
+      });
+      setIsLoading(false);
+    },
+  });
+
   const getInterpretation = async () => {
-    if (isLoading) return;
+    if (interpretMutation.isPending) return;
     if (selectedCards.length !== 3) {
       toast.error("카드 3장을 모두 선택해 주세요.");
       return;
@@ -96,36 +120,9 @@ export default function Tarot() {
     setInterpretation("");
 
     try {
-      // 백엔드 API 엔드포인트 호출
-      const response = await axios.post(
-        "/api/tarot",
-        {
-          question,
-          cards: selectedCards,
-        }
-      );
-
-      const text = response.data.interpretation;
-      if (!text) {
-        throw new Error("EMPTY_RESPONSE");
-      }
-
-      setInterpretation(text);
-    } catch (err: any) {
-      console.error("Tarot interpretation error:", err);
-      
-      let errorType: ErrorState["type"] = "unknown";
-      if (err.response?.status === 429) {
-        errorType = "quota";
-      } else if (err.response?.status) {
-        errorType = "api";
-      } else if (err.code === "ERR_NETWORK") {
-        errorType = "network";
-      }
-      
-      setError({
-        type: errorType,
-        message: err.message || "알 수 없는 오류가 발생했습니다.",
+      await interpretMutation.mutateAsync({
+        question,
+        cards: selectedCards,
       });
     } finally {
       setIsLoading(false);
