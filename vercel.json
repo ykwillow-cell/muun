@@ -1,5 +1,7 @@
 {
   "version": 2,
+  "buildCommand": "pnpm build",
+  "outputDirectory": "dist",
   "headers": [
     {
       "source": "/assets/(.*)",
@@ -83,8 +85,20 @@
       ]
     }
   ],
-  "rewrites": [
-    { "source": "/api/:path*", "destination": "/api/:path*" },
-    { "source": "/(.*)", "destination": "/index.html" }
+  "functions": {
+    "dist/index.js": {
+      "memory": 3008,
+      "maxDuration": 60
+    }
+  },
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/dist/index.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/dist/public/$1"
+    }
   ]
 }
