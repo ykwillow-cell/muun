@@ -94,11 +94,11 @@
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/dist/index.js"
+      "dest": "dist/index.js"
     },
     {
       "src": "/(.*)",
-      "dest": "/dist/public/$1"
+      "dest": "dist/public/$1"
     }
   ]
 }
