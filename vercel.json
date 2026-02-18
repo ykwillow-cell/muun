@@ -86,7 +86,7 @@
     }
   ],
   "functions": {
-    "dist/index.js": {
+    "api/index.ts": {
       "memory": 1024,
       "maxDuration": 60
     }
@@ -94,7 +94,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "dist/index.js"
+      "destination": "api/index.ts"
     },
     {
       "source": "/(.*)",
