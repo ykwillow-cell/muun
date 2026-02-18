@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useCanonical } from '@/lib/use-canonical';
 import { setLifelongSajuOGTags } from '@/lib/og-tags';
 import { zodResolver } from "@hookform/resolvers/zod";
