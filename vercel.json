@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "echo 'Using pre-built dist directory'",
+  "buildCommand": "vite build",
   "outputDirectory": "dist/public",
   "headers": [
     {
