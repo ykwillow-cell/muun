@@ -49,15 +49,15 @@ export default function TarotCardGrid({
   ];
 
   return (
-    <div className="relative w-full space-y-2 md:space-y-3">
+    <div className="relative w-full space-y-2 md:space-y-3 px-2">
       {/* 3줄 배치 */}
       {rows.map((rowCards, rowIndex) => (
         <div
           key={`row-${rowIndex}`}
-          className="flex items-center gap-0 overflow-hidden"
+          className="flex items-center gap-0 overflow-visible"
           style={{
             marginLeft: "-8px",
-            paddingRight: "8px",
+            marginRight: "-8px",
           }}
         >
           {/* 각 줄의 카드들 - 겹침 효과 */}
@@ -93,6 +93,7 @@ export default function TarotCardGrid({
                   width: "48px",
                   height: "72px",
                   marginLeft: colIndex === 0 ? "8px" : "-16px",
+                  marginRight: "0px",
                   zIndex: isSelected ? 100 : colIndex,
                 }}
               >
