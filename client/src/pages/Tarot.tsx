@@ -12,8 +12,8 @@ import tarotData from "@/lib/tarot-data.json";
 import { saveTarotReading } from "@/lib/tarot-db";
 import { trackCustomEvent } from "@/lib/ga4";
 import TarotContent from "@/components/TarotContent";
-import { trpc } from "@/lib/trpc";
-import { cleanAIContent, addWarmClosing } from "@/lib/content-cleaner";
+import { getTarotInterpretation } from "@/lib/tarot-api";
+import { processAIContent } from "@/lib/content-cleaner";
 
 interface TarotCard {
   id: number;
@@ -79,33 +79,39 @@ export default function Tarot() {
     setSelectedCards(newSelected);
   };
 
-  const interpretMutation = trpc.tarot.interpret.useMutation({
-    onSuccess: (data) => {
-      const cleanedInterpretation = addWarmClosing(cleanAIContent(data.interpretation));
-      setInterpretation(cleanedInterpretation);
-    },
-    onError: (error) => {
+  const handleInterpretation = async () => {
+    try {
+      const data = await getTarotInterpretation({
+        question,
+        cards: selectedCards,
+      });
+      setInterpretation(data.interpretation);
+    } catch (error) {
       console.error("Tarot interpretation error:", error);
-      let errorType: ErrorState["type"] = "unknown";
       
-      if (error.message.includes("429")) {
+      let errorType: ErrorState["type"] = "unknown";
+      const errorMessage = error instanceof Error ? error.message : "알 수 없는 오류가 발생했습니다.";
+      
+      if (errorMessage.includes("429")) {
         errorType = "quota";
-      } else if (error.message.includes("FORBIDDEN") || error.message.includes("403")) {
+      } else if (errorMessage.includes("FORBIDDEN") || errorMessage.includes("403")) {
         errorType = "api";
-      } else if (error.message.includes("network") || error.message.includes("ERR_NETWORK")) {
+      } else if (errorMessage.includes("network") || errorMessage.includes("ERR_NETWORK")) {
         errorType = "network";
+      } else if (errorMessage.includes("405")) {
+        errorType = "api";
       }
       
       setError({
         type: errorType,
-        message: error.message || "알 수 없는 오류가 발생했습니다.",
+        message: errorMessage,
       });
       setIsLoading(false);
-    },
-  });
+    }
+  };
 
   const getInterpretation = async () => {
-    if (interpretMutation.isPending) return;
+    if (isLoading) return;
     if (selectedCards.length !== 3) {
       toast.error("카드 3장을 모두 선택해 주세요.");
       return;
@@ -122,10 +128,7 @@ export default function Tarot() {
     setInterpretation("");
 
     try {
-      await interpretMutation.mutateAsync({
-        question,
-        cards: selectedCards,
-      });
+      await handleInterpretation();
     } finally {
       setIsLoading(false);
     }
@@ -137,10 +140,10 @@ export default function Tarot() {
     
     try {
       await saveTarotReading({
+        timestamp: Date.now(),
         question,
-        cards: selectedCards,
+        selectedCards,
         interpretation,
-        createdAt: new Date().toISOString(),
       });
       setIsSaved(true);
       toast.success("상담 기록이 저장되었습니다!");
@@ -239,103 +242,172 @@ export default function Tarot() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="space-y-6 md:space-y-8"
+                className="space-y-0"
               >
-                <div className="text-center space-y-2">
-                  <h3 className="text-lg md:text-xl font-bold text-primary">카드를 3장 선택해 주세요</h3>
-                  <p className="text-xs md:text-sm text-muted-foreground">가장 마음이 끌리는 카드를 순서대로 클릭하세요. ({selectedCards.length}/3)</p>
-                </div>
-
-                {/* 선택된 카드 미리보기 섹션 */}
-                <div className="flex justify-center gap-3 md:gap-6">
-                  {[0, 1, 2].map((i) => (
-                    <div key={i} className="w-20 h-28 md:w-28 md:h-40 rounded-xl border-2 border-dashed border-white/10 flex items-center justify-center overflow-hidden bg-white/5 relative">
-                      {selectedCards[i] ? (
-                        <motion.div
-                          initial={{ opacity: 0, scale: 0.5, rotateY: 180 }}
-                          animate={{ opacity: 1, scale: 1, rotateY: 0 }}
-                          className="w-full h-full p-1"
-                        >
-                          <img 
-                            src={selectedCards[i].image} 
-                            alt={selectedCards[i].korName}
-                            className="w-full h-full object-cover rounded-lg"
-                          />
-                        </motion.div>
-                      ) : (
-                        <div className="text-center text-muted-foreground text-xs">
-                          <div className="text-lg mb-1">?</div>
-                          <div>카드 {i + 1}</div>
-                        </div>
-                      )}
+                {/* 스티키 헤더 - 선택 슬롯 */}
+                <div className="sticky top-0 z-40 bg-background/95 backdrop-blur-sm py-4 md:py-5 border-b border-white/10 -mx-4 px-4 md:-mx-6 md:px-6 mb-6">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="space-y-2 flex-1">
+                      <h3 className="text-lg md:text-xl font-bold text-primary">카드를 3장 선택해 주세요</h3>
+                      <p className="text-sm text-muted-foreground">가장 마음이 끌리는 카드를 순서대로 클릭하세요</p>
                     </div>
-                  ))}
+                    {/* 선택된 카드 슬롯 - 상단 우측 */}
+                    <div className="flex flex-col items-end gap-2 flex-shrink-0">
+                      <div className="flex justify-end gap-2">
+                        {[0, 1, 2].map((i) => (
+                          <div key={i} className="w-12 h-16 md:w-14 md:h-20 rounded-lg border-2 border-dashed border-primary/40 flex items-center justify-center overflow-hidden bg-white/5 relative flex-shrink-0">
+                            {selectedCards[i] ? (
+                              <img 
+                                src={selectedCards[i].image} 
+                                alt={selectedCards[i].korName}
+                                className="w-full h-full object-cover rounded-md"
+                              />
+                            ) : (
+                              <div className="text-center text-muted-foreground text-xs">
+                                <div className="text-lg font-bold text-primary/40">{i + 1}</div>
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                      <div className="text-xs text-muted-foreground">
+                        {selectedCards.length}/3 선택됨
+                      </div>
+                    </div>
+                  </div>
                 </div>
 
-                {/* 카드 그리드 */}
-                <div className="grid grid-cols-3 md:grid-cols-6 gap-2 md:gap-3">
-                  {shuffledDeck.map((card) => {
-                    const isSelected = selectedCards.find(c => c.id === card.id);
-                    return (
-                      <motion.button
-                        key={card.id}
-                        onClick={() => handleSelectCard(card)}
-                        disabled={selectedCards.length >= 3 && !isSelected}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className={`relative rounded-lg overflow-hidden transition-all ${
-                          isSelected ? 'ring-2 ring-primary shadow-[0_0_10px_rgba(255,215,0,0.3)]' : ''
-                        } ${selectedCards.length >= 3 && !isSelected ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
-                      >
-                        {isSelected ? (
-                          <img 
-                            src={card.image} 
-                            alt={card.korName}
-                            className="w-full aspect-[3/4] object-cover"
-                          />
-                        ) : (
-                          <div className="w-full aspect-[3/4] bg-gradient-to-br from-primary/30 to-primary/10 flex items-center justify-center rounded-lg border border-primary/30">
-                            <div className="text-center">
-                              <div className="text-3xl font-bold text-primary mb-1">?</div>
-                              <div className="text-xs text-primary/70">Tarot</div>
+                {/* 카드 그리드 - 가로 방향 부채꼴 3단 배치 */}
+                <div className="relative w-full h-[450px] sm:h-[500px] md:h-[550px] flex items-end justify-center pb-8">
+                  <div className="relative w-full max-w-4xl h-full flex items-end justify-center">
+                    {shuffledDeck.slice(0, 22).map((card, index) => {
+                      const isSelected = selectedCards.find(c => c.id === card.id);
+                      const selectedIndex = selectedCards.findIndex(c => c.id === card.id);
+                      
+                      // 3단 가로 배치 (좌우로 펼쳐짐)
+                      const cardsPerLayer = [8, 7, 7]; // 각 단 카드 개수
+                      const layerCumulative = [0, 8, 15]; // 누적 인덱스
+                      
+                      let layer = 0;
+                      let colInLayer = index;
+                      for (let i = 0; i < layerCumulative.length; i++) {
+                        if (index >= layerCumulative[i] && index < (layerCumulative[i] + cardsPerLayer[i])) {
+                          layer = i;
+                          colInLayer = index - layerCumulative[i];
+                          break;
+                        }
+                      }
+                      
+                      // 가로 방향 부채꼴 배치: 중심축이 화면 하단 중앙
+                      const layerStartAngles = [-Math.PI * 0.25, -Math.PI * 0.22, -Math.PI * 0.2];
+                      const layerAngleRanges = [Math.PI * 0.5, Math.PI * 0.44, Math.PI * 0.4];
+                      const layerStartAngle = layerStartAngles[layer];
+                      const layerAngleRange = layerAngleRanges[layer];
+                      const anglePerCard = layerAngleRange / (cardsPerLayer[layer] - 1);
+                      const angle = layerStartAngle + anglePerCard * colInLayer;
+                      
+                      // 반지름 (각 단마다 다름 - 화면 하단에서 위로)
+                      const baseRadii = [140, 160, 180];
+                      let radius = baseRadii[layer];
+                      if (typeof window !== 'undefined') {
+                        if (window.innerWidth < 640) {
+                          radius = baseRadii[layer] * 0.6;
+                        } else if (window.innerWidth < 1024) {
+                          radius = baseRadii[layer] * 0.75;
+                        }
+                      }
+                      
+                      // X 오프셋 (3단을 매우 가깝게 배치 - 위아래 겹침)
+                      const layerYOffsets = [0, -25, -50];
+                      const layerYOffset = layerYOffsets[layer];
+                      
+                      const centerX = 0;
+                      const centerY = 0;
+                      const x = centerX + radius * Math.cos(angle);
+                      const y = centerY + radius * Math.sin(angle) + layerYOffset;
+                      
+                      // 선택된 카드는 슬롯으로 날아감
+                      const slotX = (selectedIndex - 1) * 70 - 70;
+                      const slotY = -350;
+                      
+                      return (
+                        <motion.button
+                          key={card.id}
+                          onClick={() => handleSelectCard(card)}
+                          disabled={selectedCards.length >= 3 && !isSelected}
+                          initial={{ opacity: 0, scale: 0 }}
+                          animate={{
+                            opacity: 1,
+                            scale: 1,
+                            x: isSelected ? slotX : x,
+                            y: isSelected ? slotY : y,
+                            rotate: isSelected ? 0 : angle * (180 / Math.PI),
+                            zIndex: isSelected ? 100 : 10,
+                          }}
+                          transition={{
+                            type: "spring",
+                            stiffness: isSelected ? 200 : 100,
+                            damping: isSelected ? 20 : 15,
+                            delay: index * 0.01,
+                          }}
+                          whileHover={!isSelected ? { 
+                            scale: 1.12,
+                            zIndex: 50,
+                            y: y - 30,
+                            boxShadow: "0 0 30px rgba(255,215,0,0.6)",
+                            transition: { duration: 0.2 }
+                          } : {}}
+                          whileTap={{ scale: 0.95 }}
+                          className={`absolute w-14 h-20 sm:w-16 sm:h-24 md:w-20 md:h-28 rounded-lg overflow-hidden transition-all ${
+                            isSelected ? 'ring-2 ring-primary shadow-[0_0_25px_rgba(255,215,0,0.7)]' : 'ring-1 ring-white/10'
+                          } ${selectedCards.length >= 3 && !isSelected ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:ring-primary/60'}`}
+                        >
+                          {isSelected ? (
+                            <img 
+                              src={card.image} 
+                              alt={card.korName}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-gradient-to-br from-amber-900 via-amber-800 to-amber-900 border border-primary/60 relative overflow-hidden flex items-center justify-center">
+                              {/* 카드 뒷면 - 원형 신비 패턴 */}
+                              <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
+                                <defs>
+                                  <pattern id={`mystical-pattern-${card.id}`} x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+                                    {/* 동심원 */}
+                                    <circle cx="20" cy="20" r="15" fill="none" stroke="rgba(255,215,0,0.2)" strokeWidth="0.8"/>
+                                    <circle cx="20" cy="20" r="10" fill="none" stroke="rgba(255,215,0,0.25)" strokeWidth="0.8"/>
+                                    <circle cx="20" cy="20" r="5" fill="none" stroke="rgba(255,215,0,0.3)" strokeWidth="0.8"/>
+                                    {/* 중앙 점 */}
+                                    <circle cx="20" cy="20" r="1.5" fill="rgba(255,215,0,0.4)"/>
+                                    {/* 호형 선 */}
+                                    <path d="M5,20 Q20,10 35,20" fill="none" stroke="rgba(255,215,0,0.15)" strokeWidth="0.6"/>
+                                    <path d="M5,20 Q20,30 35,20" fill="none" stroke="rgba(255,215,0,0.15)" strokeWidth="0.6"/>
+                                  </pattern>
+                                </defs>
+                                <rect width="100" height="100" fill={`url(#mystical-pattern-${card.id})`} />
+                              </svg>
+                              {/* 중앙 장식 */}
+                              <div className="absolute inset-0 flex items-center justify-center">
+                                <div className="w-5 h-5 border-2 border-primary/50 rounded-full flex items-center justify-center">
+                                  <div className="w-2 h-2 bg-primary/40 rounded-full"></div>
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        )}
-                        {isSelected && (
-                          <div className="absolute inset-0 bg-primary/20 flex items-center justify-center">
-                            <span className="text-white font-bold text-lg">{selectedCards.findIndex(c => c.id === card.id) + 1}</span>
-                          </div>
-                        )}
-                      </motion.button>
-                    );
-                  })}
+                          )}
+                          {isSelected && (
+                            <div className="absolute inset-0 bg-gradient-to-t from-primary/30 to-transparent flex items-center justify-center">
+                              <div className="w-4 h-4 md:w-5 md:h-5 rounded-full bg-primary flex items-center justify-center">
+                                <span className="text-background font-bold text-xs">{selectedCards.findIndex(c => c.id === card.id) + 1}</span>
+                              </div>
+                            </div>
+                          )}
+                        </motion.button>
+                      );
+                    })}
+                  </div>
                 </div>
 
-                {selectedCards.length === 3 && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                  >
-                    <Button 
-                      onClick={getInterpretation}
-                      disabled={isLoading}
-                      className="w-full min-h-[48px] md:min-h-[56px] rounded-xl text-base md:text-lg font-bold gap-2 shadow-[0_0_20px_rgba(255,215,0,0.2)] disabled:opacity-50"
-                    >
-                      {isLoading ? "해석 중..." : "해석하기"} <ArrowRight className="w-5 h-5" />
-                    </Button>
-                  </motion.div>
-                )}
-              </motion.div>
-            )}
-
-            {step === "result" && (
-              <motion.div
-                key="result"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                className="space-y-6 md:space-y-8"
-              >
                 {/* 선택된 카드 표시 */}
                 <div className="bg-white/5 border border-white/10 rounded-2xl p-5 md:p-8">
                   <div className="text-center mb-6">
@@ -413,11 +485,7 @@ export default function Tarot() {
                     <div>
                       <h3 className="text-lg md:text-xl font-bold text-primary mb-4">타로의 메시지</h3>
                       <div className="prose prose-invert max-w-none text-sm md:text-base leading-relaxed text-foreground whitespace-pre-wrap">
-                        {interpretation.split('\n\n').map((paragraph, index) => (
-                          <p key={index} className="mb-4">
-                            {paragraph}
-                          </p>
-                        ))}
+                        {processAIContent(interpretation)}
                       </div>
                     </div>
 

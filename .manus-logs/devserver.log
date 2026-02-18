@@ -6927,3 +6927,4 @@
 [2026-02-18T00:34:31.242Z] Server running on http://localhost:3000/
 [2026-02-18T00:35:24.278Z] [baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
 [2026-02-18T00:35:59.844Z] 7:35:59 PM [vite] (client) hmr update /src/pages/Home.tsx, /src/index.css
+[2026-02-18T08:54:12.117Z] Dev server exited with code -9
