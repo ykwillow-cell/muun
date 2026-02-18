@@ -40,6 +40,12 @@ function Router() {
 
   useEffect(() => {
     trackPageView(location);
+    // 페이지 이동 시 스크롤을 맨 위로 초기화
+    window.scrollTo(0, 0);
+    // 추가 보장: 다음 프레임에서도 스크롤 초기화
+    requestAnimationFrame(() => {
+      window.scrollTo(0, 0);
+    });
   }, [location]);
 
   return (
