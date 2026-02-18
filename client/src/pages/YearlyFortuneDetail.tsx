@@ -261,13 +261,13 @@ export default function YearlyFortuneDetail() {
         </Card>
 
         {/* 길한 물건 */}
-        {extraInfo && <LuckyItems saju={result} />}
+        {extraInfo && <LuckyItems result={result} />}
 
         {/* 사주 용어 설명 */}
         <SajuGlossary />
 
         {/* 가이드 */}
-        <SajuGuide />
+        <SajuGuide userName="" />
       </div>
     </div>
   );
