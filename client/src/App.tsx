@@ -33,6 +33,7 @@ import DictionaryDetail from "./pages/DictionaryDetail";
 import LuckyLunch from "./pages/LuckyLunch";
 import Guide from "./pages/Guide";
 import GuideDetail from "./pages/GuideDetail";
+import DreamInterpretation from "./pages/DreamInterpretation";
 import Footer from "./components/Footer";
 function Router() {
   const [location] = useLocation();
@@ -76,6 +77,7 @@ function Router() {
       <Route path="/contact" component={Contact} />
       <Route path="/guide" component={Guide} />
       <Route path="/guide/:id" component={GuideDetail} />
+      <Route path="/dream" component={DreamInterpretation} />
       <Route component={NotFound} />
     </Switch>
   );

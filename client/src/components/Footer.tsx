@@ -19,6 +19,7 @@ const Footer: React.FC = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">빠른 링크</h3>
             <ul className="space-y-2">
+              <li><Link href="/dream"><a className="text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">꿈해몽</a></Link></li>
               <li><Link href="/guide"><a className="text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">운세 가이드</a></Link></li>
               <li><Link href="/about"><a className="text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">회사 소개</a></Link></li>
               <li><Link href="/contact"><a className="text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">문의하기</a></Link></li>
