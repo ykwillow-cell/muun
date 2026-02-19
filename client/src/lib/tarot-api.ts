@@ -1,9 +1,7 @@
 /**
  * Tarot API Integration
- * AI 기반 타로 카드 해석 - 백엔드 API 호출
+ * AI 기반 타로 카드 해석 - fetch API 사용
  */
-
-import { trpc } from "./trpc";
 
 interface TarotCard {
   id: number;
@@ -28,21 +26,47 @@ export async function getTarotInterpretation(
   try {
     const { question, cards } = request;
     
-    // Call backend tRPC API
-    const result = await trpc.tarot.interpret.mutate({
-      question,
-      cards: cards.map(card => ({
-        id: card.id,
-        name: card.name,
-        korName: card.korName,
-        arcana: card.arcana,
-        image: card.image,
-      }))
+    // Call backend API using fetch
+    const response = await fetch("/api/trpc/tarot.interpret", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        json: {
+          question,
+          cards: cards.map(card => ({
+            id: card.id,
+            name: card.name,
+            korName: card.korName,
+            arcana: card.arcana,
+            image: card.image,
+          }))
+        }
+      })
     });
 
-    return {
-      interpretation: result.interpretation
-    };
+    if (!response.ok) {
+      throw new Error(`API Error: ${response.status} ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    
+    // Handle tRPC response format
+    if (data.result && data.result.data) {
+      return {
+        interpretation: data.result.data.interpretation
+      };
+    }
+    
+    // Fallback if response format is different
+    if (data.interpretation) {
+      return {
+        interpretation: data.interpretation
+      };
+    }
+
+    throw new Error("Invalid response format from API");
   } catch (error) {
     console.error('Failed to get tarot interpretation:', error);
     
