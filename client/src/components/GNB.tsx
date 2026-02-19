@@ -23,7 +23,8 @@ import {
   History,
   Share2,
   Users,
-  Brain
+  Brain,
+  CloudMoon
 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -38,12 +39,12 @@ const navItems = [
   { name: "궁합", href: "/compatibility", icon: Heart, description: "상대방과의 조화" },
   { name: "사주xMBTI 궁합", href: "/hybrid-compatibility", icon: Brain, description: "사주와 성격, 둘 다 보는 진짜 궁합" },
   { name: "만세력", href: "/manselyeok", icon: Calendar, description: "나의 타고난 기운 확인" },
+  { name: "운세 사전", href: "/fortune-dictionary", icon: BookOpen, description: "사주 용어를 쉽게 배우기" },
+  { name: "꿈해몽", href: "/dream", icon: CloudMoon, description: "어젯밤 꾼 꿈의 의미 찾기" },
   { name: "점성술", href: "/astrology", icon: Star, description: "별들이 들려주는 나의 운명" },
   { name: "오늘의 운세", href: "/daily-fortune", icon: Zap, description: "매일 확인하는 나의 행운" },
   { name: "심리테스트", href: "/psychology", icon: BrainCircuit, description: "나도 모르는 내 마음" },
   { name: "내 타로 기록", href: "/tarot-history", icon: History, description: "지난 상담 기록 조회" },
-  { name: "운세 사전", href: "/fortune-dictionary", icon: BookOpen, description: "사주 용어를 쉽게 배우기" },
-  { name: "꿈해몽", href: "/dream", icon: BrainCircuit, description: "어젯밤 꾼 꿈의 의미 찾기" },
   { name: "운세 가이드", href: "/guide", icon: BookOpen, description: "사주 명리학 가이드" },
   { name: "소개", href: "/about", icon: Info, description: "MUUN 서비스 이야기" },
   { name: "문의", href: "/contact", icon: Info, description: "문의 및 피드백" },
