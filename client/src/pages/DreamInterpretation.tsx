@@ -44,6 +44,7 @@ const DreamInterpretation: React.FC = () => {
 
   const handleSelectDream = (dream: DreamData) => {
     setSelectedDream(dream);
+    // 결과 선택 시 검색창이 가려지지 않도록 상단으로 스크롤하되, 약간의 여백을 둠
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -87,8 +88,8 @@ const DreamInterpretation: React.FC = () => {
       </section>
 
       <div className="container mx-auto px-4 max-w-4xl">
-        {/* Search Bar Section - Sticky with solid background to prevent overlap */}
-        <div className="sticky top-[64px] z-40 mb-8 py-4 bg-background/95 backdrop-blur-md border-b border-white/5 shadow-xl -mx-4 px-4">
+        {/* Search Bar Section - Removed sticky property as requested */}
+        <div className="mb-8 py-4">
           <div className="relative group">
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
               <Search className="h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
