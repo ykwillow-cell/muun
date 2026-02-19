@@ -26,10 +26,20 @@ const DreamInterpretation: React.FC = () => {
   }, []);
 
   const filteredDreams = useMemo(() => {
-    if (!searchTerm.trim()) return [];
-    return Object.keys(dreamData)
-      .filter(key => key.includes(searchTerm) || dreamData[key].keyword.includes(searchTerm))
-      .map(key => dreamData[key]);
+    const term = searchTerm.trim().toLowerCase();
+    if (!term) return [];
+    
+    // 1. 키워드와 정확히 일치하는 항목 우선
+    const exactMatches = Object.values(dreamData).filter(
+      d => d.keyword.toLowerCase() === term
+    );
+    
+    // 2. 키워드를 포함하는 항목
+    const partialMatches = Object.values(dreamData).filter(
+      d => d.keyword.toLowerCase().includes(term) && d.keyword.toLowerCase() !== term
+    );
+    
+    return [...exactMatches, ...partialMatches];
   }, [searchTerm]);
 
   const handleSelectDream = (dream: DreamData) => {
