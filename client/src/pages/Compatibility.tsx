@@ -799,10 +799,10 @@ export default function Compatibility() {
   return (
     <>
       <Helmet>
-        <title>{name1} ♥ {name2} 국합 결과 - 무운</title>
-        <meta name="description" content={`${name1}님과 ${name2}님의 사주 기반 국합 결과입니다. 총 국합 점수: ${scores.total}점`} />
-        <meta property="og:title" content={`${name1} ♥ ${name2} 국합 결과 - 무운`} />
-        <meta property="og:description" content={`${name1}님과 ${name2}님의 사주 기반 국합 결과입니다.`} />
+        <title>궁합 분석 결과 - 무운</title>
+        <meta name="description" content={`두 분의 사주를 기반으로 한 궁합 분석 결과입니다. 총 궁합 점수: ${scores.total}점`} />
+        <meta property="og:title" content="궁합 분석 결과 - 무운" />
+        <meta property="og:description" content="두 분의 사주를 기반으로 한 궁합 분석 결과입니다." />
         <meta name="keywords" content="국합, 사주 국합, 연애운, 결혼운, 무운" />
       </Helmet>
     <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased">
@@ -820,7 +820,7 @@ export default function Compatibility() {
             </Button>
             <h1 className="text-base md:text-lg font-bold text-white">궁합 결과</h1>
           </div>
-          <Button variant="ghost" size="icon" className="text-pink-400 min-w-[44px] min-h-[44px]" onClick={() => shareContent({ title: '무운 궁합 결과', text: `${name1} ♥ ${name2} 궁합 점수: ${scores.total}점! 우리의 궁합을 확인해보세요.`, page: 'compatibility', buttonType: 'icon' })}>
+          <Button variant="ghost" size="icon" className="text-pink-400 min-w-[44px] min-h-[44px]" onClick={() => shareContent({ title: '무운 궁합 결과', text: `우리 궁합 점수는 ${scores.total}점! 궁합 결과를 확인해보세요.`, page: 'compatibility', buttonType: 'icon' })}>
             <Share2 className="h-5 w-5" />
           </Button>
         </div>
@@ -1227,7 +1227,7 @@ export default function Compatibility() {
             )}
             <Button 
               className="w-full bg-white/5 border border-white/10 text-white hover:bg-white/10 h-11 rounded-xl font-medium text-base md:text-sm"
-              onClick={() => shareContent({ title: '무운 궁합 결과', text: `${name1} ♥ ${name2} 궁합 점수: ${scores.total}점! 우리의 궁합을 확인해보세요.`, page: 'compatibility', buttonType: 'text_button' })}
+              onClick={() => shareContent({ title: '무운 궁합 결과', text: `우리 궁합 점수는 ${scores.total}점! 궁합 결과를 확인해보세요.`, page: 'compatibility', buttonType: 'text_button' })}
             >
               <Share2 className="w-4 h-4 mr-2" />
               친구에게 공유하기

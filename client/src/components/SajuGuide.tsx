@@ -49,7 +49,7 @@ const SajuGuide: React.FC<SajuGuideProps> = ({ userName, theme = 'yellow' }) => 
               {/* 인트로 */}
               <p className="text-base text-white/80 leading-relaxed">
                 위에 보이는 표는 <strong className="text-white">'만세력'</strong> 또는 <strong className="text-white">'사주팔자'</strong>라고 불러요.
-                {userName}님이 태어난 생년월일시 정보를 우주의 기운을 담은 문자로 변환한, 일종의 <strong className="text-white">'인생 지도'</strong>와 같답니다.
+                태어난 생년월일시 정보를 우주의 기운을 담은 문자로 변환한, 일종의 <strong className="text-white">'인생 지도'</strong>와 같답니다.
                 앞으로 펼쳐질 모든 풀이는 바로 이 지도에 담긴 비밀을 하나씩 풀어가는 과정이에요.
               </p>
 
@@ -71,7 +71,7 @@ const SajuGuide: React.FC<SajuGuideProps> = ({ userName, theme = 'yellow' }) => 
                 </h4>
                 <p className="text-sm text-white/70 leading-relaxed">
                   4개의 기둥마다 위(<strong className="text-white/90">천간</strong>, 하늘의 기운)와 아래(<strong className="text-white/90">지지</strong>, 땅의 기운)에 글자가 하나씩, 총 8개의 글자가 새겨져 있어요.
-                  그래서 '사주팔자'라고 부른답니다. 이 8글자의 조합이 바로 {userName}님만의 고유한 기운을 나타내요.
+                  그래서 '사주팔자'라고 부른답니다. 이 8글자의 조합이 바로 나만의 고유한 기운을 나타내요.
                 </p>
               </div>
 
@@ -146,7 +146,7 @@ const SajuGuide: React.FC<SajuGuideProps> = ({ userName, theme = 'yellow' }) => 
               <div className={`${theme === 'purple' ? 'bg-purple-500/10 border-purple-500/20' : 'bg-primary/10 border-primary/20'} border rounded-xl p-3`}>
                 <p className="text-sm text-white/70 leading-relaxed">
                   <strong className={accentText}>💡 Tip:</strong> 일주(日柱)의 천간, 즉 위쪽 글자에 <span className="text-yellow-400 font-bold">'나'</span>라는 표시가 붙어 있는 것이 보이시나요?
-                  이것이 바로 {userName}님의 핵심 기운인 <strong className="text-white/90">'일간(日干)'</strong>이에요. 사주 풀이의 모든 해석은 이 글자를 중심으로 이루어진답니다!
+                  이것이 바로 핵심 기운인 <strong className="text-white/90">'일간(日干)'</strong>이에요. 사주 풀이의 모든 해석은 이 글자를 중심으로 이루어진답니다!
                 </p>
               </div>
             </div>

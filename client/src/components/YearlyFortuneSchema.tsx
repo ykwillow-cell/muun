@@ -28,8 +28,8 @@ export function YearlyFortuneSchema({ birthDate, saju, fortune }: YearlyFortuneS
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
-    "headline": `${birthDate}생 2026년 신년운세 - ${zodiacAnimal}띠 ${elementKorean}의 기운`,
-    "description": `${birthDate}생 ${zodiacAnimal}띠의 2026년 신년운세. 총운, 재물운, 직업운, 애정운 상세 분석`,
+    "headline": `2026년 신년운세 - ${zodiacAnimal}띠 ${elementKorean}의 기운`,
+    "description": `${zodiacAnimal}띠의 2026년 신년운세. 총운, 재물운, 직업운, 애정운 상세 분석`,
     "image": "https://muunsaju.com/og-image.png",
     "datePublished": today,
     "dateModified": today,
@@ -48,8 +48,8 @@ export function YearlyFortuneSchema({ birthDate, saju, fortune }: YearlyFortuneS
     },
     "mainEntity": {
       "@type": "Thing",
-      "name": `${birthDate}생 신년운세`,
-      "description": `${zodiacAnimal}띠 ${elementKorean}의 기운으로 2026년을 맞이하는 ${birthDate}생의 운세`
+      "name": "신년운세 결과",
+      "description": `${zodiacAnimal}띠 ${elementKorean}의 기운으로 2026년을 맞이하는 운세`
     }
   };
 
@@ -60,7 +60,7 @@ export function YearlyFortuneSchema({ birthDate, saju, fortune }: YearlyFortuneS
     "mainEntity": [
       {
         "@type": "Question",
-        "name": `${birthDate}생의 2026년 총운은 어떻게 되나요?`,
+        "name": "2026년 총운은 어떻게 되나요?",
         "acceptedAnswer": {
           "@type": "Answer",
           "text": fortune.overall?.summary || "2026년 운세를 확인해보세요."
@@ -68,7 +68,7 @@ export function YearlyFortuneSchema({ birthDate, saju, fortune }: YearlyFortuneS
       },
       {
         "@type": "Question",
-        "name": `${zodiacAnimal}띠 ${birthDate}생의 재물운은?`,
+        "name": `${zodiacAnimal}띠의 재물운은?`,
         "acceptedAnswer": {
           "@type": "Answer",
           "text": fortune.wealth?.summary || "재물운 정보를 확인해보세요."
@@ -76,7 +76,7 @@ export function YearlyFortuneSchema({ birthDate, saju, fortune }: YearlyFortuneS
       },
       {
         "@type": "Question",
-        "name": `${birthDate}생의 직업운과 사업운은?`,
+        "name": "직업운과 사업운은?",
         "acceptedAnswer": {
           "@type": "Answer",
           "text": fortune.career?.summary || "직업운 정보를 확인해보세요."
@@ -84,7 +84,7 @@ export function YearlyFortuneSchema({ birthDate, saju, fortune }: YearlyFortuneS
       },
       {
         "@type": "Question",
-        "name": `${birthDate}생의 애정운과 결혼운은?`,
+        "name": "애정운과 결혼운은?",
         "acceptedAnswer": {
           "@type": "Answer",
           "text": fortune.love?.summary || "애정운 정보를 확인해보세요."
@@ -92,10 +92,10 @@ export function YearlyFortuneSchema({ birthDate, saju, fortune }: YearlyFortuneS
       },
       {
         "@type": "Question",
-        "name": `${elementKorean}의 기운이 2026년에 어떤 영향을 미치나요?`,
+        "name": "오행의 기운이 2026년에 어떤 영향을 미치나요?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": `${elementKorean}의 기운은 2026년 ${birthDate}생의 운세에 중요한 영향을 미칩니다. 오행의 상생과 상극 관계를 고려하여 운세를 분석했습니다.`
+          "text": `${elementKorean}의 기운은 2026년 운세에 중요한 영향을 미칩니다. 오행의 상생과 상극 관계를 고려하여 운세를 분석했습니다.`
         }
       }
     ]
@@ -121,7 +121,7 @@ export function YearlyFortuneSchema({ birthDate, saju, fortune }: YearlyFortuneS
       {
         "@type": "ListItem",
         "position": 3,
-        "name": `${birthDate}생 신년운세`,
+        "name": "신년운세 결과",
         "item": `https://muunsaju.com/yearly-fortune/${birthDate}`
       }
     ]
@@ -146,8 +146,8 @@ export function YearlyFortuneSchema({ birthDate, saju, fortune }: YearlyFortuneS
 
       {/* Open Graph 메타 태그 */}
       <meta property="og:type" content="article" />
-      <meta property="og:title" content={`${birthDate}생 2026년 신년운세 - 무운`} />
-      <meta property="og:description" content={`${birthDate}생 ${zodiacAnimal}띠 2026년 신년운세. 총운, 재물운, 직업운, 애정운 상세 분석`} />
+      <meta property="og:title" content="2026년 신년운세 결과 - 무운" />
+      <meta property="og:description" content="2026년 신년운세 분석 결과입니다. 총운, 재물운, 직업운, 애정운 상세 분석을 확인하세요." />
       <meta property="og:url" content={`https://muunsaju.com/yearly-fortune/${birthDate}`} />
       <meta property="og:image" content="https://muunsaju.com/og-image.png" />
       <meta property="og:image:width" content="1200" />
@@ -155,12 +155,12 @@ export function YearlyFortuneSchema({ birthDate, saju, fortune }: YearlyFortuneS
 
       {/* Twitter Card */}
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={`${birthDate}생 2026년 신년운세 - 무운`} />
-      <meta name="twitter:description" content={`${birthDate}생 ${zodiacAnimal}띠 2026년 신년운세를 확인해보세요.`} />
+      <meta name="twitter:title" content="2026년 신년운세 결과 - 무운" />
+      <meta name="twitter:description" content="2026년 신년운세 분석 결과를 확인해보세요." />
       <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
 
       {/* 추가 메타 태그 */}
-      <meta name="keywords" content={`${birthDate}생 운세, ${zodiacAnimal}띠 운세, 2026년 신년운세, ${elementKorean} 운세`} />
+      <meta name="keywords" content={`${zodiacAnimal}띠 운세, 2026년 신년운세, ${elementKorean} 운세`} />
       <meta name="article:published_time" content={today} />
       <meta name="article:modified_time" content={today} />
       <meta name="article:author" content="무운(MUUN)" />
@@ -185,8 +185,8 @@ export function LifelongSajuSchema({ birthDate, saju }: LifelongSajuSchemaProps)
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "Article",
-    "headline": `${birthDate}생 평생사주 분석 - ${zodiacAnimal}띠 ${elementKorean}의 인생`,
-    "description": `${birthDate}생 ${zodiacAnimal}띠의 평생 사주 분석. 성격, 재능, 운명, 길한 방향 등 상세 분석`,
+    "headline": `평생사주 분석 - ${zodiacAnimal}띠 ${elementKorean}의 인생`,
+    "description": `${zodiacAnimal}띠의 평생 사주 분석. 성격, 재능, 운명, 길한 방향 등 상세 분석`,
     "image": "https://muunsaju.com/og-image.png",
     "datePublished": today,
     "dateModified": today,
@@ -212,12 +212,12 @@ export function LifelongSajuSchema({ birthDate, saju }: LifelongSajuSchemaProps)
       </script>
 
       <meta property="og:type" content="article" />
-      <meta property="og:title" content={`${birthDate}생 평생사주 분석 - 무운`} />
-      <meta property="og:description" content={`${birthDate}생 ${zodiacAnimal}띠의 평생 사주 분석`} />
+      <meta property="og:title" content="평생사주 분석 결과 - 무운" />
+      <meta property="og:description" content="사주팔자를 기반으로 한 평생 사주 분석 결과입니다." />
       <meta property="og:url" content={`https://muunsaju.com/lifelong-saju/${birthDate}`} />
       <meta property="og:image" content="https://muunsaju.com/og-image.png" />
 
-      <meta name="keywords" content={`${birthDate}생 사주, ${zodiacAnimal}띠 사주, 평생사주, 사주 분석`} />
+      <meta name="keywords" content={`${zodiacAnimal}띠 사주, 평생사주, 사주 분석`} />
       <meta name="article:published_time" content={today} />
       <meta name="article:modified_time" content={today} />
       <meta name="article:author" content="무운(MUUN)" />

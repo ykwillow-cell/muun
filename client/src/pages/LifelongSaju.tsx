@@ -452,10 +452,10 @@ export default function LifelongSaju() {
   return (
     <>
       <Helmet>
-        <title>{userName}님의 평생사주 - 무운</title>
-        <meta name="description" content={`${userName}님의 사주팔자를 분석한 평생사주 풀이입니다. 타고난 기질, 인생 운세, 연애운, 결혼운, 재물운 등을 확인하세요.`} />
-        <meta property="og:title" content={`${userName}님의 평생사주 - 무운`} />
-        <meta property="og:description" content={`${userName}님의 사주팔자를 분석한 평생사주 풀이입니다.`} />
+        <title>평생사주 결과 - 무운</title>
+        <meta name="description" content="사주팔자를 분석한 평생사주 풀이 결과입니다. 타고난 기질, 인생 운세, 연애운, 결혼운, 재물운 등을 확인하세요." />
+        <meta property="og:title" content="평생사주 결과 - 무운" />
+        <meta property="og:description" content="사주팔자를 분석한 평생사주 풀이 결과입니다." />
         <meta name="keywords" content="평생사주, 사주풀이, 사주팔자, 운세, 무운" />
       </Helmet>
     <div className="min-h-screen bg-background text-foreground pb-20">
@@ -474,7 +474,7 @@ export default function LifelongSaju() {
             onClick={() => {
               shareContent({
                 title: '무운 평생사주',
-                text: `${userName}님의 평생사주 결과를 확인해보세요!`,
+                text: '평생사주 결과를 확인해보세요!',
                 page: 'lifelong_saju',
                 buttonType: 'icon',
               });
@@ -840,7 +840,7 @@ export default function LifelongSaju() {
               onClick={() => {
                 shareContent({
                   title: '무운 평생사주',
-                  text: `${userName}님의 평생사주 결과를 확인해보세요!`,
+                  text: '평생사주 결과를 확인해보세요!',
                   page: 'lifelong_saju',
                   buttonType: 'text_button',
                 });

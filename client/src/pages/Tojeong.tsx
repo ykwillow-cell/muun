@@ -83,6 +83,13 @@ export default function Tojeong() {
 
   if (!result) {
     return (
+      <>
+        <Helmet>
+          <title>무료 토정비결 - 무운</title>
+          <meta name="description" content="이지함 선생의 원문 괘 계산법으로 2026년 병오년 한 해의 흐름을 읽어드립니다. 회원가입 없이 무료로 확인하세요." />
+          <meta property="og:title" content="무료 토정비결 - 무운" />
+          <meta property="og:description" content="이지함 선생의 원문 괘 계산법으로 2026년 병오년 한 해의 흐름을 읽어드립니다." />
+        </Helmet>
       <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased">
         {/* Background Effects */}
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
@@ -286,10 +293,18 @@ export default function Tojeong() {
           </motion.div>
         </main>
       </div>
+      </>
     );
   }
 
   return (
+    <>
+      <Helmet>
+        <title>2026년 토정비결 결과 - 무운</title>
+        <meta name="description" content="전통 방식에 따른 2026년 토정비결 분석 결과입니다. 한 해의 흐름과 월별 상세 운세를 확인하세요." />
+        <meta property="og:title" content="2026년 토정비결 결과 - 무운" />
+        <meta property="og:description" content="전통 방식에 따른 2026년 토정비결 분석 결과입니다." />
+      </Helmet>
     <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased">
       {/* 토정비결은 원래 삼주(연,월,일)만 사용하므로 안내 라벨 표시 */}
       <div className="bg-amber-500/10 border-b border-amber-500/20 py-2 px-4 relative z-50">
@@ -333,7 +348,7 @@ export default function Tojeong() {
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 backdrop-blur-xl">
               <span className="text-[10px] md:text-xs font-bold tracking-wider text-amber-400 uppercase">제 {result.hexagram}괘</span>
             </div>
-            <h2 className="text-xl md:text-2xl font-bold tracking-tight text-white">{result.name}님의 2026년 운세</h2>
+            <h2 className="text-xl md:text-2xl font-bold tracking-tight text-white">2026년 토정비결 결과</h2>
             <p className="text-muted-foreground text-xs md:text-sm italic">"하늘의 기운이 땅으로 내려와 만물이 소생하는 형국입니다."</p>
           </div>
 
@@ -399,5 +414,6 @@ export default function Tojeong() {
         </motion.div>
       </main>
     </div>
+    </>
   );
 }

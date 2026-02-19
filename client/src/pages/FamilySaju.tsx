@@ -394,10 +394,10 @@ export default function FamilySaju() {
   return (
     <>
       <Helmet>
-        <title>{familyNames} 가족사주 - 무운</title>
-        <meta name="description" content={`${familyNames} 가족의 사주 기반 가족 조화 분석 결과입니다. 가족 오행 단어, 구성원 간 국합 등을 확인하세요.`} />
-        <meta property="og:title" content={`${familyNames} 가족사주 - 무운`} />
-        <meta property="og:description" content={`${familyNames} 가족의 사주 기반 가족 조화 분석 결과입니다.`} />
+        <title>가족사주 분석 결과 - 무운</title>
+        <meta name="description" content="가족 구성원들의 사주를 기반으로 한 가족 조화 분석 결과입니다. 가족 오행, 구성원 간 궁합 등을 확인하세요." />
+        <meta property="og:title" content="가족사주 분석 결과 - 무운" />
+        <meta property="og:description" content="가족 구성원들의 사주를 기반으로 한 가족 조화 분석 결과입니다." />
         <meta name="keywords" content="가족사주, 가족 조화, 오행 단어, 가족 운세, 무운" />
       </Helmet>
     <div className="min-h-screen bg-background">

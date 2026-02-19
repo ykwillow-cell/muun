@@ -139,7 +139,6 @@ export default function YearlyFortuneDetail() {
       // GA4 추적
       trackCustomEvent("view_fortune_detail", {
         fortune_type: "신년운세",
-        birth_date: birthDateStr,
       });
       
       setLoading(false);
@@ -189,8 +188,8 @@ export default function YearlyFortuneDetail() {
   return (
     <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased">
       <Helmet>
-        <title>{birthDateStr}생 2026년 신년운세 - 무운</title>
-        <meta name="description" content={`${birthDateStr}생 ${zodiacAnimal}띠 2026년 신년운세. 총운, 재물운, 직업운, 애정운 상세 분석`} />
+        <title>2026년 신년운세 결과 - 무운</title>
+        <meta name="description" content="2026년 신년운세 분석 결과입니다. 총운, 재물운, 직업운, 애정운 상세 분석을 확인하세요." />
         <link rel="canonical" href={`https://muunsaju.com/yearly-fortune/${birthDateStr}`} />
       </Helmet>
       {result && fortune && <YearlyFortuneSchema birthDate={birthDateStr!} saju={result} fortune={fortune} />}
@@ -207,7 +206,7 @@ export default function YearlyFortuneDetail() {
         {/* 제목 */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
           <h1 className="text-4xl font-bold mb-2">
-            {birthDateStr}생 2026년 신년운세
+            2026년 신년운세 결과
           </h1>
           <p className="text-lg text-muted-foreground">
             {zodiacAnimal}띠 · {elementKorean}의 기운
@@ -216,8 +215,8 @@ export default function YearlyFortuneDetail() {
 
         {/* 공유 카드 */}
         <FortuneShareCard 
-          title={`${birthDateStr}생 2026년 신년운세`}
-          description={`${zodiacAnimal}띠 ${birthDateStr}생의 2026년 신년운세를 확인해보세요.`}
+          title={'2026년 신년운세 결과'}
+          description={`${zodiacAnimal}띠의 2026년 신년운세를 확인해보세요.`}
           url={`https://muunsaju.com/yearly-fortune/${birthDateStr}`}
         />
 

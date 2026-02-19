@@ -263,10 +263,10 @@ export default function LuckyLunch() {
   return (
     <>
       <Helmet>
-        <title>{userName}님의 행운의 점심 메뉴 - 무운</title>
-        <meta name="description" content={`${userName}님의 사주팔자를 기반으로 오늘의 행운의 점심 메뉴를 추천합니다. 오행 운세에 맞는 식단을 선택하세요.`} />
-        <meta property="og:title" content={`${userName}님의 행운의 점심 메뉴 - 무운`} />
-        <meta property="og:description" content={`${userName}님의 사주팔자를 기반으로 오늘의 행운의 점심 메뉴를 추천합니다.`} />
+        <title>행운의 점심 메뉴 추천 - 무운</title>
+        <meta name="description" content="사주팔자를 기반으로 오늘의 행운의 점심 메뉴를 추천합니다. 오행 운세에 맞는 식단을 선택하세요." />
+        <meta property="og:title" content="행운의 점심 메뉴 추천 - 무운" />
+        <meta property="og:description" content="사주팔자를 기반으로 오늘의 행운의 점심 메뉴를 추천합니다." />
         <meta name="keywords" content="행운의 메뉴, 오늘의 메뉴, 사주 메뉴, 운세 메뉴, 무운" />
       </Helmet>
     <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased">
@@ -290,7 +290,7 @@ export default function LuckyLunch() {
             <h1 className="text-base md:text-lg font-bold text-white">행운의 점심 메뉴</h1>
           </div>
           <Button
-            onClick={() => shareContent(`${userName}님의 행운의 점심 메뉴: ${result.recommendedMenus[0]?.name || '메뉴'}`)}
+            onClick={() => shareContent(`행운의 점심 메뉴 추천: ${result.recommendedMenus[0]?.name || '메뉴'}`)}
             variant="ghost"
             size="icon"
             className="text-white hover:bg-white/10 min-w-[44px] min-h-[44px]"
@@ -311,7 +311,7 @@ export default function LuckyLunch() {
           <div className="text-center space-y-4 mb-8">
             <div className="inline-block">
               <div className="text-5xl mb-3">☯️</div>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">{userName}님의 행운의 메뉴</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">오늘의 행운 메뉴</h2>
               <p className="text-amber-400 font-bold text-xl">{result.elementName} 기운</p>
             </div>
             <p className="text-white/80 text-base md:text-sm leading-relaxed max-w-2xl mx-auto">{result.elementDescription}</p>
