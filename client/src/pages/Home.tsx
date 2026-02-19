@@ -44,10 +44,10 @@ export default function Home() {
     },
     { 
       href: "/tarot", 
-      label: "AI 타로", 
+      label: "오늘의 타로", 
       icon: <Sparkles className="w-5 h-5" />, 
       color: "bg-purple-500/20 text-purple-400",
-      desc: "AI가 답하는 타로",
+      desc: "신비로운 타로 상담",
       featured: true
     },
     { 

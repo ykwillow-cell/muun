@@ -118,7 +118,7 @@ export default function Tarot() {
     }
 
     trackCustomEvent("check_fortune_result", {
-      fortune_type: "AI타로",
+      fortune_type: "타로",
       question_length: question.length
     });
 
@@ -179,7 +179,7 @@ export default function Tarot() {
               <ChevronLeft className="h-6 w-6" />
             </Button>
           </Link>
-          <h1 className="text-lg md:text-xl font-bold text-white">AI 타로 상담소</h1>
+          <h1 className="text-lg md:text-xl font-bold text-white">무운 타로 상담소</h1>
         </div>
       </header>
 
@@ -193,7 +193,7 @@ export default function Tarot() {
               className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-md"
             >
               <Sparkles className="w-4 h-4 text-primary" />
-              <span className="text-[11px] md:text-xs font-bold tracking-widest text-primary uppercase">AI Tarot Reading</span>
+              <span className="text-[11px] md:text-xs font-bold tracking-widest text-primary uppercase">Tarot Reading</span>
             </motion.div>
             <h2 className="text-2xl md:text-4xl font-bold tracking-tight text-white">신비로운 타로의 세계</h2>
             <p className="text-sm md:text-base text-muted-foreground max-w-md mx-auto">
@@ -535,9 +535,9 @@ export default function Tarot() {
       </main>
 
       <Helmet>
-        <title>AI 타로 상담소 | 무운(MUUN) - 온라인 운세</title>
-        <meta name="description" content="AI 타로 상담사가 당신의 고민을 해석해 드립니다. 신비로운 타로 카드로 미래를 엿보세요." />
-        <meta name="keywords" content="타로, 타로 상담, AI 타로, 운세, 타로 해석" />
+        <title>타로 상담소 | 무운(MUUN) - 온라인 운세</title>
+        <meta name="description" content="신비로운 타로 카드가 당신의 고민을 해석해 드립니다. 타로 카드로 미래를 엿보세요." />
+        <meta name="keywords" content="타로, 타로 상담, 운세, 타로 해석" />}],path:
       </Helmet>
     </div>
   );
