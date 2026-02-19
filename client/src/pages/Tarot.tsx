@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useCanonical } from '@/lib/use-canonical';
 import { setTarotOGTags } from '@/lib/og-tags';
 import { Helmet } from "react-helmet-async";
@@ -12,7 +12,6 @@ import tarotData from "@/lib/tarot-data.json";
 import { saveTarotReading } from "@/lib/tarot-db";
 import { trackCustomEvent } from "@/lib/ga4";
 import TarotContent from "@/components/TarotContent";
-import TarotCardGrid from "@/components/TarotCardGrid";
 import { getTarotInterpretation } from "@/lib/tarot-api";
 import { processAIContent } from "@/lib/content-cleaner";
 
@@ -278,24 +277,10 @@ export default function Tarot() {
                   </div>
                 </div>
 
-                {/* 카드 그리드 - 3줄 가로 스크롤 */}
-                <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
-                  <div className="p-5 md:p-8 overflow-x-auto">
-                    <TarotCardGrid
-                      cards={shuffledDeck}
-                      selectedCards={selectedCards}
-                      onSelectCard={handleSelectCard}
-                      maxSelections={3}
-                      disabled={isLoading}
-                    />
-                  </div>
-                </div>
-
-                {/* 기존 코드 제거 - 아래는 더 이상 사용하지 않음 */}
-                {false && (
-                  <div className="relative w-full h-[450px] sm:h-[500px] md:h-[550px] flex items-end justify-center pb-8">
-                    <div className="relative w-full max-w-4xl h-full flex items-end justify-center">
-                      {shuffledDeck.slice(0, 22).map((card, index) => {
+                {/* 카드 그리드 - 가로 방향 부채꼴 3단 배치 */}
+                <div className="relative w-full h-[450px] sm:h-[500px] md:h-[550px] flex items-end justify-center pb-8">
+                  <div className="relative w-full max-w-4xl h-full flex items-end justify-center">
+                    {shuffledDeck.slice(0, 22).map((card, index) => {
                       const isSelected = selectedCards.find(c => c.id === card.id);
                       const selectedIndex = selectedCards.findIndex(c => c.id === card.id);
                       
@@ -420,13 +405,12 @@ export default function Tarot() {
                         </motion.button>
                       );
                     })}
-                    </div>
                   </div>
-                )}
+                </div>
 
                 {/* 선택된 카드 표시 */}
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-5 md:p-8 space-y-6">
-                  <div className="text-center">
+                <div className="bg-white/5 border border-white/10 rounded-2xl p-5 md:p-8">
+                  <div className="text-center mb-6">
                     <h3 className="text-lg md:text-xl font-bold text-primary mb-4">당신이 선택한 카드</h3>
                     <div className="flex justify-center gap-3 md:gap-6">
                       {selectedCards.map((card, idx) => (
@@ -444,36 +428,26 @@ export default function Tarot() {
                       ))}
                     </div>
                   </div>
-
-                  {/* 해석하기 버튼 */}
-                  {selectedCards.length === 3 && !isLoading && !interpretation && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="flex gap-3"
-                    >
-                      <Button
-                        onClick={handleInterpretation}
-                        disabled={isLoading}
-                        className="flex-1 min-h-[48px] md:min-h-[56px] rounded-xl text-base md:text-lg font-bold gap-2 shadow-[0_0_20px_rgba(255,215,0,0.2)]"
-                      >
-                        <Sparkles className="w-5 h-5" />
-                        해석하기
-                      </Button>
-                      <Button
-                        onClick={() => {
-                          setSelectedCards([]);
-                          setStep("shuffle");
-                        }}
-                        variant="outline"
-                        className="flex-1 min-h-[48px] md:min-h-[56px] rounded-xl text-base md:text-lg font-bold"
-                      >
-                        <RefreshCw className="w-5 h-5" />
-                        다시 선택
-                      </Button>
-                    </motion.div>
-                  )}
                 </div>
+                {/* 액션 버튼 */}
+                {!isLoading && !error && !interpretation && selectedCards.length === 3 && (
+                  <div className="flex flex-col gap-3 md:gap-4">
+                    <Button 
+                      onClick={getInterpretation}
+                      disabled={isLoading}
+                      className="w-full min-h-[48px] md:min-h-[56px] rounded-xl text-base md:text-lg font-bold gap-2 shadow-[0_0_20px_rgba(255,215,0,0.2)]"
+                    >
+                      해석하기 <ChevronRight className="w-5 h-5" />
+                    </Button>
+                    <Button 
+                      onClick={() => setSelectedCards([])}
+                      variant="outline"
+                      className="w-full min-h-[48px] md:min-h-[56px] rounded-xl text-base md:text-lg font-bold"
+                    >
+                      다시 선택
+                    </Button>
+                  </div>
+                )}
 
                 {/* 로딩 상태 */}
                 {isLoading && (
