@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Search, BrainCircuit, Sparkles, BookOpen, Heart, CloudMoon, ArrowRight, Info } from 'lucide-react';
 import { dreamData, defaultDream, DreamData } from '../data/dream-data';
 import { Helmet } from 'react-helmet-async';
@@ -6,6 +6,20 @@ import { Helmet } from 'react-helmet-async';
 const DreamInterpretation: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDream, setSelectedDream] = useState<DreamData | null>(null);
+
+  // URL 쿼리 파라미터에서 검색어 읽기
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const query = params.get('q');
+    if (query) {
+      setSearchTerm(query);
+      // 검색어와 정확히 일치하는 데이터가 있으면 즉시 선택
+      const exactMatch = Object.values(dreamData).find(d => d.keyword === query);
+      if (exactMatch) {
+        setSelectedDream(exactMatch);
+      }
+    }
+  }, []);
 
   const filteredDreams = useMemo(() => {
     if (!searchTerm.trim()) return [];

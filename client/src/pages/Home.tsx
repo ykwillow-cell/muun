@@ -7,6 +7,7 @@ import { BookOpen, Star, ShieldCheck, Info, BrainCircuit, ScrollText, Sparkles, 
 import { trackCustomEvent } from "@/lib/ga4";
 import { useRef } from "react";
 import { TodayTermCard } from "@/components/TodayTermCard";
+import { DreamQuickSearch } from "@/components/DreamQuickSearch";
 import { OrganizationSchema, BreadcrumbListSchema } from "@/components/SchemaMarkup";
 import { fortuneGuides } from "@/lib/fortune-guide";
 
@@ -254,6 +255,9 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* Dream Quick Search Section */}
+        <DreamQuickSearch />
 
         {/* All Services Grid - 2열 모바일 / 4열 데스크톱 */}
         <section className="px-4 py-6 md:py-8">
