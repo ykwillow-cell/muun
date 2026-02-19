@@ -89,97 +89,108 @@ export function GNB() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-background/60 backdrop-blur-3xl">
-      <div className="container max-w-[1280px] flex h-16 md:h-20 items-center justify-between px-5 md:px-8">
-        <div className="flex items-center">
-          <Link href="/" className="flex items-center space-x-3 group">
-            <div className="w-10 h-10 md:w-12 md:h-12 bg-primary rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-all duration-500 shadow-[0_0_30px_rgba(255,215,0,0.3)]">
-              <Sparkles className="w-6 h-6 md:w-7 md:h-7 text-background" />
-            </div>
-            <span className="text-2xl md:text-3xl font-black tracking-tighter text-primary">
-              MUUN
-            </span>
-          </Link>
-        </div>
-
-        <div className="flex items-center gap-1">
-          {/* 공유 버튼 - 아이콘 크기 24px, 두께 2px, 색상 노란색(primary)으로 수정 */}
-          <Button 
-            variant="ghost" 
-            size="icon" 
-            onClick={handleShare}
-            className="text-primary hover:bg-primary/10 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center"
-            aria-label="Share"
-          >
-            <Share2 className="h-7 w-7 md:h-8 md:w-8" strokeWidth={2.5} />
-          </Button>
-
-          <Sheet open={isOpen} onOpenChange={setIsOpen}>
-            <SheetTrigger asChild>
-              {/* 메뉴 버튼 - 아이콘 크기 24px, 두께 2px, 색상 노란색(primary)으로 수정 */}
-              <Button variant="ghost" size="icon" className="text-primary hover:bg-primary/10 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center">
-                <Menu className="h-7 w-7 md:h-8 md:w-8" strokeWidth={2.5} />
-                <span className="sr-only">Toggle menu</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] bg-background/95 backdrop-blur-2xl border-l border-white/10 p-0">
-              <div className="flex flex-col h-full">
-                <SheetHeader className="p-6 border-b border-white/5">
-                  <SheetTitle className="text-left flex items-center gap-2">
-                    <div className="w-6 h-6 bg-primary rounded flex items-center justify-center">
-                      <Sparkles className="w-4 h-4 text-background" />
-                    </div>
-                    <span className="text-primary font-black tracking-tighter">MUUN</span>
-                  </SheetTitle>
-                </SheetHeader>
-                
-                <div className="flex-1 overflow-y-auto py-4 px-2">
-                  <div className="grid gap-1">
-                    {navItems.map((item) => {
-                      const Icon = item.icon;
-                      const isActive = location === item.href;
-                      return (
-                        <Link
-                          key={item.href}
-                          href={item.href}
-                          onClick={() => setIsOpen(false)}
-                          className={cn(
-                            "group flex items-center gap-4 p-4 rounded-xl transition-all duration-200 min-h-[44px]",
-                            isActive 
-                              ? "bg-primary/10 text-primary" 
-                              : "hover:bg-white/5 text-foreground/70 hover:text-foreground"
-                          )}
-                        >
-                          <div className={cn(
-                            "w-10 h-10 rounded-lg flex items-center justify-center transition-colors",
-                            isActive ? "bg-primary text-background" : "bg-white/5 group-hover:bg-primary/20 group-hover:text-primary"
-                          )}>
-                            <Icon className="w-5 h-5" />
-                          </div>
-                          <div className="flex-1">
-                            <div className="text-sm font-bold">{item.name}</div>
-                            <div className="text-[11px] opacity-50 font-medium">{item.description}</div>
-                          </div>
-                          <ChevronRight className={cn(
-                            "w-4 h-4 transition-transform",
-                            isActive ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0"
-                          )} />
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                <div className="p-6 border-t border-white/5 bg-white/5">
-                  <p className="text-[10px] text-center text-foreground/40 font-medium uppercase tracking-widest">
-                    © 2026 MUUN Celestial Services
-                  </p>
-                </div>
-              </div>
-            </SheetContent>
-          </Sheet>
+    <div className="w-full flex flex-col">
+      {/* 상단 신뢰 배너 - 보라색 그라데이션 적용 */}
+      <div className="w-full bg-gradient-to-r from-indigo-900/80 via-purple-900/80 to-indigo-900/80 py-2 md:py-3 border-b border-white/10 backdrop-blur-md overflow-hidden">
+        <div className="container max-w-[1280px] px-5 flex items-center justify-center gap-2 animate-in fade-in slide-in-from-top duration-1000">
+          <Sparkles className="w-3.5 h-3.5 md:w-4 md:h-4 text-purple-300 animate-pulse" />
+          <p className="text-[11px] md:text-sm font-bold text-purple-100 tracking-tight text-center">
+            회원가입 없이 1초 만에 확인하는 <span className="text-white underline decoration-purple-400/50 underline-offset-2">100% 무료</span> 운세 서비스
+          </p>
+          <Sparkles className="w-3.5 h-3.5 md:w-4 md:h-4 text-purple-300 animate-pulse" />
         </div>
       </div>
-    </header>
+
+      <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-background/60 backdrop-blur-3xl">
+        <div className="container max-w-[1280px] flex h-16 md:h-20 items-center justify-between px-5 md:px-8">
+          <div className="flex items-center">
+            <Link href="/" className="flex items-center space-x-3 group">
+              <div className="w-10 h-10 md:w-12 md:h-12 bg-primary rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-all duration-500 shadow-[0_0_30px_rgba(255,215,0,0.3)]">
+                <Sparkles className="w-6 h-6 md:w-7 md:h-7 text-background" />
+              </div>
+              <span className="text-2xl md:text-3xl font-black tracking-tighter text-primary">
+                MUUN
+              </span>
+            </Link>
+          </div>
+
+          <div className="flex items-center gap-1">
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={handleShare}
+              className="text-primary hover:bg-primary/10 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center"
+              aria-label="Share"
+            >
+              <Share2 className="h-7 w-7 md:h-8 md:w-8" strokeWidth={2.5} />
+            </Button>
+
+            <Sheet open={isOpen} onOpenChange={setIsOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="text-primary hover:bg-primary/10 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center">
+                  <Menu className="h-7 w-7 md:h-8 md:w-8" strokeWidth={2.5} />
+                  <span className="sr-only">Toggle menu</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[300px] bg-background/95 backdrop-blur-2xl border-l border-white/10 p-0">
+                <div className="flex flex-col h-full">
+                  <SheetHeader className="p-6 border-b border-white/5">
+                    <SheetTitle className="text-left flex items-center gap-2">
+                      <div className="w-6 h-6 bg-primary rounded flex items-center justify-center">
+                        <Sparkles className="w-4 h-4 text-background" />
+                      </div>
+                      <span className="text-primary font-black tracking-tighter">MUUN</span>
+                    </SheetTitle>
+                  </SheetHeader>
+                  
+                  <div className="flex-1 overflow-y-auto py-4 px-2">
+                    <div className="grid gap-1">
+                      {navItems.map((item) => {
+                        const Icon = item.icon;
+                        const isActive = location === item.href;
+                        return (
+                          <Link
+                            key={item.href}
+                            href={item.href}
+                            onClick={() => setIsOpen(false)}
+                            className={cn(
+                              "group flex items-center gap-4 p-4 rounded-xl transition-all duration-200 min-h-[44px]",
+                              isActive 
+                                ? "bg-primary/10 text-primary" 
+                                : "hover:bg-white/5 text-foreground/70 hover:text-foreground"
+                            )}
+                          >
+                            <div className={cn(
+                              "w-10 h-10 rounded-lg flex items-center justify-center transition-colors",
+                              isActive ? "bg-primary text-background" : "bg-white/5 group-hover:bg-primary/20 group-hover:text-primary"
+                            )}>
+                              <Icon className="w-5 h-5" />
+                            </div>
+                            <div className="flex-1">
+                              <div className="text-sm font-bold">{item.name}</div>
+                              <div className="text-[11px] opacity-50 font-medium">{item.description}</div>
+                            </div>
+                            <ChevronRight className={cn(
+                              "w-4 h-4 transition-transform",
+                              isActive ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0"
+                            )} />
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div className="p-6 border-t border-white/5 bg-white/5">
+                    <p className="text-[10px] text-center text-foreground/40 font-medium uppercase tracking-widest">
+                      © 2026 MUUN Celestial Services
+                    </p>
+                  </div>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
+        </div>
+      </header>
+    </div>
   );
 }
