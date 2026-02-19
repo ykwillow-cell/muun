@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useCanonical } from '@/lib/use-canonical';
 import { setTarotOGTags } from '@/lib/og-tags';
 import { Helmet } from "react-helmet-async";
@@ -51,6 +51,7 @@ export default function Tarot() {
   const [error, setError] = useState<ErrorState | null>(null);
   const [isSaved, setIsSaved] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const commonMaxWidth = "max-w-4xl mx-auto";
 
@@ -164,8 +165,15 @@ export default function Tarot() {
     setIsSaved(false);
   };
 
+  // 덱을 3줄로 나눕니다.
+  const rows = [
+    shuffledDeck.slice(0, 26),
+    shuffledDeck.slice(26, 52),
+    shuffledDeck.slice(52, 78)
+  ];
+
   return (
-    <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased">
+    <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased overflow-x-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px]" />
@@ -244,18 +252,18 @@ export default function Tarot() {
                 exit={{ opacity: 0 }}
                 className="space-y-0"
               >
-                {/* 스티키 헤더 - 선택 슬롯 */}
-                <div className="sticky top-0 z-40 bg-background/95 backdrop-blur-sm py-4 md:py-5 border-b border-white/10 -mx-4 px-4 md:-mx-6 md:px-6 mb-6">
-                  <div className="flex items-start justify-between gap-4">
-                    <div className="space-y-2 flex-1">
+                {/* 선택 정보 섹션 */}
+                <div className="bg-background/95 backdrop-blur-sm py-4 md:py-6 border-b border-white/10 -mx-4 px-4 mb-6">
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="space-y-1">
                       <h3 className="text-lg md:text-xl font-bold text-primary">카드를 3장 선택해 주세요</h3>
-                      <p className="text-sm text-muted-foreground">가장 마음이 끌리는 카드를 순서대로 클릭하세요</p>
+                      <p className="text-xs md:text-sm text-muted-foreground">마음이 끌리는 카드를 순서대로 클릭하세요</p>
                     </div>
-                    {/* 선택된 카드 슬롯 - 상단 우측 */}
+                    {/* 선택된 카드 슬롯 */}
                     <div className="flex flex-col items-end gap-2 flex-shrink-0">
-                      <div className="flex justify-end gap-2">
+                      <div className="flex justify-end gap-1.5 md:gap-3">
                         {[0, 1, 2].map((i) => (
-                          <div key={i} className="w-12 h-16 md:w-14 md:h-20 rounded-lg border-2 border-dashed border-primary/40 flex items-center justify-center overflow-hidden bg-white/5 relative flex-shrink-0">
+                          <div key={i} className="w-10 h-14 md:w-14 md:h-20 rounded-lg border-2 border-dashed border-primary/40 flex items-center justify-center overflow-hidden bg-white/5 relative flex-shrink-0">
                             {selectedCards[i] ? (
                               <img 
                                 src={selectedCards[i].image} 
@@ -263,9 +271,7 @@ export default function Tarot() {
                                 className="w-full h-full object-cover rounded-md"
                               />
                             ) : (
-                              <div className="text-center text-muted-foreground text-xs">
-                                <div className="text-lg font-bold text-primary/40">{i + 1}</div>
-                              </div>
+                              <div className="text-lg font-bold text-primary/20">{i + 1}</div>
                             )}
                           </div>
                         ))}
@@ -277,40 +283,72 @@ export default function Tarot() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-2 md:gap-4">
-                  {shuffledDeck.map((card, index) => {
-                    const isSelected = selectedCards.find(c => c.id === card.id);
-                    const selectIndex = selectedCards.findIndex(c => c.id === card.id);
-                    
-                    return (
-                      <motion.div
-                        key={card.id}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.01 }}
-                        onClick={() => handleSelectCard(card)}
-                        className={`
-                          relative aspect-[2/3] rounded-lg cursor-pointer overflow-hidden transition-all duration-300
-                          ${isSelected 
-                            ? "ring-2 ring-primary ring-offset-2 ring-offset-background opacity-40 scale-90" 
-                            : "hover:scale-105 hover:shadow-xl hover:shadow-primary/20"}
-                        `}
-                      >
-                        {/* 카드 뒷면 이미지 (실제 구현 시 뒷면 이미지 사용) */}
-                        <div className="w-full h-full bg-gradient-to-br from-indigo-900 via-purple-900 to-primary/30 flex items-center justify-center border border-white/10">
-                          <Sparkles className="w-6 h-6 text-primary/40" />
-                        </div>
-                        
-                        {isSelected && (
-                          <div className="absolute inset-0 flex items-center justify-center bg-primary/20">
-                            <div className="w-8 h-8 rounded-full bg-primary text-background flex items-center justify-center font-bold text-lg">
-                              {selectIndex + 1}
-                            </div>
-                          </div>
-                        )}
-                      </motion.div>
-                    );
-                  })}
+                {/* 카드 덱 영역 - 가로 스크롤 및 겹치기 방식 */}
+                <div className="relative space-y-4 md:space-y-8 py-4 overflow-hidden touch-action-pan-x">
+                  {rows.map((row, rowIndex) => (
+                    <div 
+                      key={rowIndex}
+                      className="flex overflow-x-auto pb-6 scrollbar-hide snap-x no-scrollbar"
+                      style={{ 
+                        WebkitOverflowScrolling: 'touch',
+                        scrollbarWidth: 'none',
+                        msOverflowStyle: 'none'
+                      }}
+                    >
+                      <div className="flex px-[10vw] md:px-[5vw]">
+                        {row.map((card, cardIndex) => {
+                          const isSelected = selectedCards.find(c => c.id === card.id);
+                          const selectIndex = selectedCards.findIndex(c => c.id === card.id);
+                          
+                          return (
+                            <motion.div
+                              key={card.id}
+                              whileTap={{ scale: 0.95 }}
+                              onClick={() => handleSelectCard(card)}
+                              className={`
+                                relative flex-shrink-0 w-[80px] h-[120px] md:w-[120px] md:h-[180px] 
+                                transition-all duration-300 snap-center
+                                ${isSelected ? "z-10" : "z-0"}
+                              `}
+                              style={{ 
+                                marginLeft: cardIndex === 0 ? 0 : '-40px', // 카드 겹치기
+                                rotate: rowIndex % 2 === 0 ? (cardIndex % 2 === 0 ? 1 : -1) : (cardIndex % 2 === 0 ? -1 : 1)
+                              }}
+                            >
+                              <div className={`
+                                w-full h-full rounded-xl overflow-hidden shadow-lg border border-white/10
+                                ${isSelected 
+                                  ? "ring-4 ring-primary ring-offset-2 ring-offset-background scale-110" 
+                                  : "hover:translate-y-[-10px]"}
+                              `}>
+                                {/* 카드 뒷면 */}
+                                <div className="w-full h-full bg-gradient-to-br from-indigo-950 via-purple-900 to-primary/40 flex items-center justify-center">
+                                  <div className="w-[85%] h-[85%] border border-primary/20 rounded-lg flex items-center justify-center">
+                                    <Sparkles className="w-6 h-6 md:w-10 md:h-10 text-primary/30" />
+                                  </div>
+                                </div>
+                                
+                                {isSelected && (
+                                  <div className="absolute inset-0 flex items-center justify-center bg-primary/20 backdrop-blur-[2px]">
+                                    <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-primary text-background flex items-center justify-center font-bold text-lg md:text-2xl shadow-xl">
+                                      {selectIndex + 1}
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                            </motion.div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* 가로 스크롤 안내 */}
+                <div className="flex justify-center items-center gap-2 text-muted-foreground/60 py-4 animate-pulse">
+                  <ChevronLeft className="w-4 h-4" />
+                  <span className="text-[10px] md:text-xs font-medium tracking-widest uppercase">Slide to find your cards</span>
+                  <ChevronRight className="w-4 h-4" />
                 </div>
 
                 {selectedCards.length === 3 && (
@@ -353,6 +391,7 @@ export default function Tarot() {
                           src={card.image} 
                           alt={card.korName}
                           className="w-full h-full object-cover"
+                          loading="lazy"
                         />
                       </div>
                       <div className="text-center">
