@@ -1,5 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Search, BrainCircuit, Sparkles, BookOpen, Heart, CloudMoon, ArrowRight, Info, ChevronRight, Quote, Zap, Star } from 'lucide-react';
+import { Search, BrainCircuit, Sparkles, BookOpen, Heart, CloudMoon, ArrowRight, Info, ChevronRight, Quote, Zap, Star, X } from 'lucide-react';
 import { dreamData, defaultDream, DreamData } from '../data/dream-data';
 import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -47,6 +47,19 @@ const DreamInterpretation: React.FC = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const handleTagClick = (tag: string) => {
+    setSearchTerm(tag);
+    const exactMatch = Object.values(dreamData).find(d => d.keyword === tag);
+    if (exactMatch) {
+      handleSelectDream(exactMatch);
+    }
+  };
+
+  const clearSearch = () => {
+    setSearchTerm('');
+    setSelectedDream(null);
+  };
+
   return (
     <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased">
       <Helmet>
@@ -65,7 +78,7 @@ const DreamInterpretation: React.FC = () => {
             <CloudMoon className="w-4 h-4 text-primary" />
             <span className="text-xs font-bold tracking-widest text-primary uppercase">신비로운 꿈의 해석</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight">무운 꿈해몽 사전</h1>
+          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-white">무운 꿈해몽 사전</h1>
           <p className="text-muted-foreground text-sm md:text-base max-w-lg mx-auto">
             어젯밤 당신의 무의식이 보내온 신호를 확인해 보세요.<br />
             방대한 데이터를 통해 가장 정확한 해몽을 제공합니다.
@@ -74,8 +87,8 @@ const DreamInterpretation: React.FC = () => {
       </section>
 
       <div className="container mx-auto px-4 max-w-4xl">
-        {/* Search Bar Section */}
-        <div className="sticky top-20 z-30 mb-8">
+        {/* Search Bar Section - Sticky with solid background to prevent overlap */}
+        <div className="sticky top-[64px] z-40 mb-8 py-4 bg-background/95 backdrop-blur-md border-b border-white/5 shadow-xl -mx-4 px-4">
           <div className="relative group">
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
               <Search className="h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
@@ -83,19 +96,34 @@ const DreamInterpretation: React.FC = () => {
             <input
               type="text"
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                if (selectedDream) setSelectedDream(null);
+              }}
               placeholder="어떤 꿈을 꾸셨나요? (예: 돼지, 물, 불)"
-              className="w-full pl-12 pr-4 py-4 bg-card/50 backdrop-blur-xl border border-white/10 rounded-2xl text-lg focus:outline-none focus:ring-2 focus:ring-primary/50 shadow-2xl transition-all"
+              className="w-full pl-12 pr-12 py-4 bg-card border border-white/10 rounded-2xl text-lg focus:outline-none focus:ring-2 focus:ring-primary/50 shadow-inner transition-all"
             />
+            {searchTerm && (
+              <button 
+                onClick={clearSearch}
+                className="absolute inset-y-0 right-0 pr-4 flex items-center text-muted-foreground hover:text-white"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            )}
           </div>
           
           {/* Quick Tags */}
-          <div className="mt-3 flex flex-wrap gap-2 overflow-x-auto pb-2 no-scrollbar">
+          <div className="mt-4 flex flex-wrap gap-2 overflow-x-auto pb-1 no-scrollbar">
             {["돼지", "물", "불", "뱀", "돈", "조상", "이빨", "대통령"].map(tag => (
               <button
                 key={tag}
-                onClick={() => setSearchTerm(tag)}
-                className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs text-muted-foreground hover:bg-primary/20 hover:text-primary transition-all whitespace-nowrap"
+                onClick={() => handleTagClick(tag)}
+                className={`px-3 py-1.5 rounded-full border text-xs transition-all whitespace-nowrap ${
+                  searchTerm === tag 
+                  ? "bg-primary border-primary text-white font-bold" 
+                  : "bg-white/5 border-white/10 text-muted-foreground hover:bg-primary/20 hover:text-primary hover:border-primary/30"
+                }`}
               >
                 #{tag}
               </button>
@@ -107,17 +135,20 @@ const DreamInterpretation: React.FC = () => {
           {selectedDream ? (
             <motion.div
               key="result"
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
               className="space-y-6"
             >
               {/* Result Header Card */}
-              <Card className="overflow-hidden border-primary/30 bg-gradient-to-br from-purple-900/20 via-card to-background shadow-2xl">
+              <Card className="overflow-hidden border-primary/30 bg-gradient-to-br from-purple-900/20 via-card to-background shadow-2xl relative">
+                <div className="absolute top-0 right-0 p-4">
+                  <Sparkles className="w-6 h-6 text-primary/40 animate-pulse" />
+                </div>
                 <CardHeader className="text-center pb-2">
                   <div className="flex justify-center mb-4">
-                    <div className="p-4 bg-primary/20 rounded-full">
-                      <Sparkles className="w-8 h-8 text-primary animate-pulse" />
+                    <div className="p-4 bg-primary/20 rounded-full border border-primary/30">
+                      <CloudMoon className="w-8 h-8 text-primary" />
                     </div>
                   </div>
                   <CardTitle className="text-3xl font-bold text-white mb-2">
@@ -125,22 +156,22 @@ const DreamInterpretation: React.FC = () => {
                   </CardTitle>
                   <p className="text-primary font-medium">당신의 무의식이 보내는 특별한 메시지</p>
                 </CardHeader>
-                <CardContent className="text-center pb-8">
-                  <div className="relative inline-block px-8 py-4 mt-4">
-                    <Quote className="absolute top-0 left-0 w-6 h-6 text-primary/30" />
+                <CardContent className="text-center pb-8 px-6">
+                  <div className="relative inline-block px-8 py-6 mt-4 bg-white/5 rounded-3xl border border-white/10 w-full">
+                    <Quote className="absolute top-4 left-4 w-6 h-6 text-primary/30" />
                     <p className="text-lg md:text-xl text-slate-200 leading-relaxed italic">
                       {selectedDream.interpretation}
                     </p>
-                    <Quote className="absolute bottom-0 right-0 w-6 h-6 text-primary/30 rotate-180" />
+                    <Quote className="absolute bottom-4 right-4 w-6 h-6 text-primary/30 rotate-180" />
                   </div>
                 </CardContent>
               </Card>
 
               {/* Detail Analysis Cards */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Card className="bg-white/5 border-white/10 hover:border-primary/30 transition-all">
+                <Card className="bg-white/5 border-white/10 hover:border-primary/30 transition-all group">
                   <CardHeader className="flex flex-row items-center gap-3 pb-2">
-                    <div className="p-2 bg-yellow-500/20 rounded-lg">
+                    <div className="p-2 bg-yellow-500/20 rounded-lg group-hover:bg-yellow-500/30 transition-colors">
                       <Star className="w-5 h-5 text-yellow-500" />
                     </div>
                     <CardTitle className="text-lg">전통적 의미</CardTitle>
@@ -152,9 +183,9 @@ const DreamInterpretation: React.FC = () => {
                   </CardContent>
                 </Card>
 
-                <Card className="bg-white/5 border-white/10 hover:border-primary/30 transition-all">
+                <Card className="bg-white/5 border-white/10 hover:border-primary/30 transition-all group">
                   <CardHeader className="flex flex-row items-center gap-3 pb-2">
-                    <div className="p-2 bg-blue-500/20 rounded-lg">
+                    <div className="p-2 bg-blue-500/20 rounded-lg group-hover:bg-blue-500/30 transition-colors">
                       <BrainCircuit className="w-5 h-5 text-blue-500" />
                     </div>
                     <CardTitle className="text-lg">심리학적 분석</CardTitle>
@@ -229,25 +260,25 @@ const DreamInterpretation: React.FC = () => {
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-8">
                   <div className="space-y-4">
-                    <h2 className="text-xl font-bold flex items-center gap-2">
+                    <h2 className="text-xl font-bold flex items-center gap-2 text-white">
                       <Zap className="w-5 h-5 text-yellow-500" /> 많이 찾는 꿈
                     </h2>
                     <div className="grid grid-cols-1 gap-2">
                       {["돼지꿈", "돈 받는 꿈", "불나는 꿈", "조상님 꿈"].map((dream, idx) => (
                         <button
                           key={idx}
-                          onClick={() => setSearchTerm(dream.replace('꿈', '').trim())}
-                          className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10 hover:border-primary/30 transition-all text-left"
+                          onClick={() => handleTagClick(dream.replace('꿈', '').trim())}
+                          className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10 hover:border-primary/30 transition-all text-left group"
                         >
-                          <span className="text-slate-300">{dream}</span>
-                          <ArrowRight className="w-4 h-4 text-muted-foreground" />
+                          <span className="text-slate-300 group-hover:text-primary transition-colors">{dream}</span>
+                          <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
                         </button>
                       ))}
                     </div>
                   </div>
                   <div className="p-8 rounded-3xl bg-gradient-to-br from-primary/20 to-transparent border border-primary/20 flex flex-col items-center justify-center text-center">
                     <BrainCircuit className="w-12 h-12 text-primary mb-4" />
-                    <h3 className="text-lg font-bold mb-2">꿈은 무의식의 거울입니다</h3>
+                    <h3 className="text-lg font-bold mb-2 text-white">꿈은 무의식의 거울입니다</h3>
                     <p className="text-sm text-slate-400 leading-relaxed">
                       우리가 자는 동안 뇌는 하루의 정보를 정리하고 감정을 처리합니다. 무운의 꿈해몽으로 당신의 내면이 보내는 메시지를 읽어보세요.
                     </p>
