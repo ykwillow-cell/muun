@@ -51,7 +51,6 @@ export default function Tarot() {
   const [error, setError] = useState<ErrorState | null>(null);
   const [isSaved, setIsSaved] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
 
   const commonMaxWidth = "max-w-4xl mx-auto";
 
@@ -194,19 +193,18 @@ export default function Tarot() {
       <main className="relative z-10 px-4 py-6 md:py-8">
         <div className={commonMaxWidth}>
           {/* Hero Section */}
-          <div className="text-center space-y-4 mb-6 md:mb-8">
+          <div className="text-center space-y-2 mb-4 md:mb-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-md"
+              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-md"
             >
-              <Sparkles className="w-4 h-4 text-primary" />
-              <span className="text-[11px] md:text-xs font-bold tracking-widest text-primary uppercase">Tarot Reading</span>
+              <Sparkles className="w-3.5 h-3.5 text-primary" />
+              <span className="text-[10px] md:text-xs font-bold tracking-widest text-primary uppercase">Tarot Reading</span>
             </motion.div>
-            <h2 className="text-2xl md:text-4xl font-bold tracking-tight text-white">신비로운 타로의 세계</h2>
-            <p className="text-sm md:text-base text-muted-foreground max-w-md mx-auto">
-              마음을 가다듬고 고민을 떠올려 보세요.<br className="hidden md:block" />
-              타로 카드가 당신의 길을 안내해 줄 것입니다.
+            <h2 className="text-xl md:text-4xl font-bold tracking-tight text-white">신비로운 타로의 세계</h2>
+            <p className="text-xs md:text-base text-muted-foreground max-w-md mx-auto">
+              마음을 가다듬고 고민을 떠올려 보세요.
             </p>
           </div>
 
@@ -252,50 +250,45 @@ export default function Tarot() {
                 exit={{ opacity: 0 }}
                 className="space-y-0"
               >
-                {/* 선택 정보 섹션 */}
-                <div className="bg-background/95 backdrop-blur-sm py-4 md:py-6 border-b border-white/10 -mx-4 px-4 mb-6">
-                  <div className="flex items-center justify-between gap-4">
-                    <div className="space-y-1">
-                      <h3 className="text-lg md:text-xl font-bold text-primary">카드를 3장 선택해 주세요</h3>
-                      <p className="text-xs md:text-sm text-muted-foreground">마음이 끌리는 카드를 순서대로 클릭하세요</p>
+                {/* 선택 정보 섹션 - 더 컴팩트하게 */}
+                <div className="bg-background/95 backdrop-blur-sm py-3 md:py-6 border-b border-white/10 -mx-4 px-4 mb-4">
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="space-y-0.5">
+                      <h3 className="text-base md:text-xl font-bold text-primary leading-tight">카드를 3장 선택해 주세요</h3>
+                      <p className="text-[10px] md:text-sm text-muted-foreground">마음이 끌리는 카드를 순서대로 클릭하세요</p>
                     </div>
-                    {/* 선택된 카드 슬롯 */}
-                    <div className="flex flex-col items-end gap-2 flex-shrink-0">
-                      <div className="flex justify-end gap-1.5 md:gap-3">
+                    {/* 선택된 카드 슬롯 - 더 작게 */}
+                    <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
+                      <div className="flex justify-end gap-1 md:gap-3">
                         {[0, 1, 2].map((i) => (
-                          <div key={i} className="w-10 h-14 md:w-14 md:h-20 rounded-lg border-2 border-dashed border-primary/40 flex items-center justify-center overflow-hidden bg-white/5 relative flex-shrink-0">
+                          <div key={i} className="w-8 h-11 md:w-14 md:h-20 rounded-md border border-dashed border-primary/40 flex items-center justify-center overflow-hidden bg-white/5 relative flex-shrink-0">
                             {selectedCards[i] ? (
                               <img 
                                 src={selectedCards[i].image} 
                                 alt={selectedCards[i].korName}
-                                className="w-full h-full object-cover rounded-md"
+                                className="w-full h-full object-cover rounded-sm"
                               />
                             ) : (
-                              <div className="text-lg font-bold text-primary/20">{i + 1}</div>
+                              <div className="text-sm font-bold text-primary/20">{i + 1}</div>
                             )}
                           </div>
                         ))}
                       </div>
-                      <div className="text-[10px] md:text-xs font-medium text-primary/60">
+                      <div className="text-[9px] md:text-xs font-medium text-primary/60">
                         {selectedCards.length} / 3 선택됨
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* 카드 덱 영역 - 가로 스크롤 및 겹치기 방식 */}
-                <div className="relative space-y-4 md:space-y-8 py-4 overflow-hidden touch-action-pan-x">
+                {/* 카드 덱 영역 - 모바일 최적화: 가로 스크롤 없이 더 촘촘하게 */}
+                <div className="relative space-y-3 md:space-y-8 py-2 overflow-hidden touch-action-pan-x">
                   {rows.map((row, rowIndex) => (
                     <div 
                       key={rowIndex}
-                      className="flex overflow-x-auto pb-6 scrollbar-hide snap-x no-scrollbar"
-                      style={{ 
-                        WebkitOverflowScrolling: 'touch',
-                        scrollbarWidth: 'none',
-                        msOverflowStyle: 'none'
-                      }}
+                      className="flex justify-center"
                     >
-                      <div className="flex px-[10vw] md:px-[5vw]">
+                      <div className="flex px-2 max-w-full">
                         {row.map((card, cardIndex) => {
                           const isSelected = selectedCards.find(c => c.id === card.id);
                           const selectIndex = selectedCards.findIndex(c => c.id === card.id);
@@ -306,31 +299,33 @@ export default function Tarot() {
                               whileTap={{ scale: 0.95 }}
                               onClick={() => handleSelectCard(card)}
                               className={`
-                                relative flex-shrink-0 w-[80px] h-[120px] md:w-[120px] md:h-[180px] 
-                                transition-all duration-300 snap-center
-                                ${isSelected ? "z-10" : "z-0"}
+                                relative flex-shrink-0 w-[45px] h-[68px] md:w-[120px] md:h-[180px] 
+                                transition-all duration-300
+                                ${isSelected ? "z-20" : "z-0"}
                               `}
                               style={{ 
-                                marginLeft: cardIndex === 0 ? 0 : '-40px', // 카드 겹치기
+                                // 모바일에서 카드 겹치기를 더 촘촘하게 (-30px)
+                                marginLeft: cardIndex === 0 ? 0 : '-32px', 
+                                // 데스크톱에서는 기존대로
                                 rotate: rowIndex % 2 === 0 ? (cardIndex % 2 === 0 ? 1 : -1) : (cardIndex % 2 === 0 ? -1 : 1)
                               }}
                             >
                               <div className={`
-                                w-full h-full rounded-xl overflow-hidden shadow-lg border border-white/10
+                                w-full h-full rounded-md md:rounded-xl overflow-hidden shadow-lg border border-white/10
                                 ${isSelected 
-                                  ? "ring-4 ring-primary ring-offset-2 ring-offset-background scale-110" 
-                                  : "hover:translate-y-[-10px]"}
+                                  ? "ring-2 md:ring-4 ring-primary ring-offset-1 md:ring-offset-2 ring-offset-background scale-110" 
+                                  : "hover:translate-y-[-5px] md:hover:translate-y-[-10px]"}
                               `}>
                                 {/* 카드 뒷면 */}
                                 <div className="w-full h-full bg-gradient-to-br from-indigo-950 via-purple-900 to-primary/40 flex items-center justify-center">
-                                  <div className="w-[85%] h-[85%] border border-primary/20 rounded-lg flex items-center justify-center">
-                                    <Sparkles className="w-6 h-6 md:w-10 md:h-10 text-primary/30" />
+                                  <div className="w-[85%] h-[85%] border border-primary/20 rounded-sm md:rounded-lg flex items-center justify-center">
+                                    <Sparkles className="w-3 h-3 md:w-10 md:h-10 text-primary/30" />
                                   </div>
                                 </div>
                                 
                                 {isSelected && (
-                                  <div className="absolute inset-0 flex items-center justify-center bg-primary/20 backdrop-blur-[2px]">
-                                    <div className="w-8 h-8 md:w-12 md:h-12 rounded-full bg-primary text-background flex items-center justify-center font-bold text-lg md:text-2xl shadow-xl">
+                                  <div className="absolute inset-0 flex items-center justify-center bg-primary/20 backdrop-blur-[1px]">
+                                    <div className="w-5 h-5 md:w-12 md:h-12 rounded-full bg-primary text-background flex items-center justify-center font-bold text-xs md:text-2xl shadow-xl">
                                       {selectIndex + 1}
                                     </div>
                                   </div>
@@ -344,13 +339,6 @@ export default function Tarot() {
                   ))}
                 </div>
 
-                {/* 가로 스크롤 안내 */}
-                <div className="flex justify-center items-center gap-2 text-muted-foreground/60 py-4 animate-pulse">
-                  <ChevronLeft className="w-4 h-4" />
-                  <span className="text-[10px] md:text-xs font-medium tracking-widest uppercase">Slide to find your cards</span>
-                  <ChevronRight className="w-4 h-4" />
-                </div>
-
                 {selectedCards.length === 3 && (
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -360,9 +348,9 @@ export default function Tarot() {
                     <Button 
                       onClick={getInterpretation}
                       size="lg"
-                      className="w-full max-w-md h-14 md:h-16 text-lg md:text-xl font-bold rounded-2xl shadow-2xl shadow-primary/40 animate-bounce"
+                      className="w-full max-w-md h-12 md:h-16 text-base md:text-xl font-bold rounded-xl md:rounded-2xl shadow-2xl shadow-primary/40 animate-bounce"
                     >
-                      해석하기 <ArrowRight className="ml-2 w-6 h-6" />
+                      해석하기 <ArrowRight className="ml-2 w-5 h-5 md:w-6 md:h-6" />
                     </Button>
                   </motion.div>
                 )}
