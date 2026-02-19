@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useCanonical } from '@/lib/use-canonical';
 import { setHomeOGTags } from '@/lib/og-tags';
 import { motion } from "framer-motion";
-import { BookOpen, Star, ShieldCheck, Info, BrainCircuit, ScrollText, Sparkles, Heart, CalendarDays, ArrowRight, Zap, ChevronRight, Users, Brain, Coffee } from "lucide-react";
+import { BookOpen, Star, ShieldCheck, Info, BrainCircuit, ScrollText, Sparkles, Heart, CalendarDays, ArrowRight, Zap, ChevronRight, Users, Brain, Coffee, CloudMoon } from "lucide-react";
 import { trackCustomEvent } from "@/lib/ga4";
 import { useRef } from "react";
 import { TodayTermCard } from "@/components/TodayTermCard";
