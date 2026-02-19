@@ -1,6 +1,6 @@
 /**
  * Tarot API Integration
- * AI 기반 타로 카드 해석 - fetch API 사용
+ * AI 기반 타로 카드 해석 - tRPC API 호출
  */
 
 interface TarotCard {
@@ -26,27 +26,27 @@ export async function getTarotInterpretation(
   try {
     const { question, cards } = request;
     
-    // Call backend API using fetch
+    // Call backend tRPC API with correct format
     const response = await fetch("/api/trpc/tarot.interpret", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        json: {
-          question,
-          cards: cards.map(card => ({
-            id: card.id,
-            name: card.name,
-            korName: card.korName,
-            arcana: card.arcana,
-            image: card.image,
-          }))
-        }
+        question,
+        cards: cards.map(card => ({
+          id: card.id,
+          name: card.name,
+          korName: card.korName,
+          arcana: card.arcana,
+          image: card.image,
+        }))
       })
     });
 
     if (!response.ok) {
+      const errorText = await response.text();
+      console.error('API Error Response:', errorText);
       throw new Error(`API Error: ${response.status} ${response.statusText}`);
     }
 
@@ -59,7 +59,7 @@ export async function getTarotInterpretation(
       };
     }
     
-    // Fallback if response format is different
+    // Handle direct response
     if (data.interpretation) {
       return {
         interpretation: data.interpretation
@@ -72,7 +72,7 @@ export async function getTarotInterpretation(
     
     // Fallback to placeholder if API fails
     const { question, cards } = request;
-    const cardNames = cards.map(card => `${card.korName}(${["과거", "현재", "미래"][cards.indexOf(card)]})`)
+    const cardNames = cards.map((card, idx) => `${card.korName}(${["과거", "현재", "미래"][idx]})`)
       .join(", ");
     
     return {
