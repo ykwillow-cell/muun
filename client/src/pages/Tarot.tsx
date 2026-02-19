@@ -430,7 +430,7 @@ export default function Tarot() {
                   </div>
                 </div>
                 {/* 액션 버튼 */}
-                {!isLoading && !error && !interpretation && selectedCards.length === 3 && (
+                {selectedCards.length === 3 && !isLoading && !interpretation && (
                   <div className="flex flex-col gap-3 md:gap-4">
                     <Button 
                       onClick={getInterpretation}
