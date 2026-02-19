@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams, Redirect } from 'wouter';
+import { useParams, Redirect, Link } from 'wouter';
 import { Helmet } from 'react-helmet-async';
 import ReactMarkdown from 'react-markdown';
 import { fortuneGuides } from '../lib/fortune-guide';

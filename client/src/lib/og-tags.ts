@@ -118,3 +118,26 @@ export const setCompatibilityOGTags = () => {
     url: "https://muunsaju.com/compatibility",
   });
 };
+
+export const setGuideOGTags = () => {
+  updateOGTags({
+    title: "운세 가이드 - 무운",
+    description: "사주 명리학의 지혜를 전해드립니다. 초보자를 위한 사주 보는 법부터 개운법까지 다양한 정보를 만나보세요.",
+    image: DEFAULT_OG_IMAGE,
+    url: "https://muunsaju.com/guide",
+  });
+};
+
+export const setGuideDetailOGTags = (title: string, description: string, id: string) => {
+  updateOGTags({
+    title: `${title} - 무운 운세 가이드`,
+    description: description,
+    image: DEFAULT_OG_IMAGE,
+    url: `https://muunsaju.com/guide/${id}`,
+  });
+};
+
+// Guide.tsx 등에서 호출하던 getOgTags의 역할을 대신하거나 호환성을 위해 추가
+export const getOgTags = (config: OGTagsConfig) => {
+  return config; // 실제 태그 업데이트는 updateOGTags에서 수행하므로 여기서는 설정값만 반환하거나 빈 함수로 둡니다.
+};
