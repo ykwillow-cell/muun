@@ -7,7 +7,27 @@ import { defineConfig } from "vite";
 import { vitePluginManusRuntime } from "vite-plugin-manus-runtime";
 import { vitePluginPrerender } from "./vite-plugin-prerender";
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginPrerender({ routes: [] })];
+const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginPrerender({ routes: [
+  '/',
+  '/manselyeok',
+  '/lifelong-saju',
+  '/yearly-fortune',
+  '/daily-fortune',
+  '/compatibility',
+  '/tojeong',
+  '/psychology',
+  '/astrology',
+  '/tarot',
+  '/tarot-history',
+  '/about',
+  '/privacy',
+  '/terms',
+  '/family-saju',
+  '/hybrid-compatibility',
+  '/fortune-dictionary',
+  '/lucky-lunch',
+  '/contact',
+] })];
 
 export default defineConfig({
   plugins,
