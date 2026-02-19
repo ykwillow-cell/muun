@@ -8,6 +8,7 @@ import { trackCustomEvent } from "@/lib/ga4";
 import { useRef } from "react";
 import { TodayTermCard } from "@/components/TodayTermCard";
 import { OrganizationSchema, BreadcrumbListSchema } from "@/components/SchemaMarkup";
+import { fortuneGuides } from "@/lib/fortune-guide";
 
 export default function Home() {
   useCanonical('/');
@@ -336,49 +337,40 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Footer */}
-        <footer className="px-4 py-8 md:py-12 border-t border-white/10">
+        {/* Fortune Guide Section - 정보성 콘텐츠 보강 */}
+        <section className="px-4 py-8 md:py-12 bg-white/5 border-t border-white/10">
           <div className={commonMaxWidth}>
-            <div className="flex flex-col md:flex-row justify-between items-start gap-8">
-              <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                    <Sparkles className="w-5 h-5 text-background" />
-                  </div>
-                  <span className="text-xl font-black tracking-tighter text-primary">MUUN</span>
-                </div>
-                <p className="text-xs md:text-sm text-muted-foreground max-w-xs">
-                  운명에 얽매이지 않고 스스로 운을 만들어가는 삶을 응원합니다.
-                </p>
+            <div className="flex justify-between items-end mb-6">
+              <div>
+                <h2 className="text-xl md:text-2xl font-bold text-white mb-2 flex items-center gap-2">
+                  <BookOpen className="w-6 h-6 text-primary" />
+                  운세 가이드
+                </h2>
+                <p className="text-xs md:text-sm text-muted-foreground">사주 명리학의 지혜를 전해드립니다</p>
               </div>
-              
-              <div className="flex gap-12 md:gap-16">
-                <div className="space-y-3">
-                  <h5 className="text-xs font-bold text-white uppercase tracking-wider">Service</h5>
-                  <ul className="space-y-2 text-xs text-muted-foreground">
-                    <li><Link href="/manselyeok" className="hover:text-primary transition-colors">만세력</Link></li>
-                    <li><Link href="/lifelong-saju" className="hover:text-primary transition-colors">평생사주</Link></li>
-                    <li><Link href="/yearly-fortune" className="hover:text-primary transition-colors">신년운세</Link></li>
-                    <li><Link href="/family-saju" className="hover:text-primary transition-colors">가족사주</Link></li>
-                    <li><Link href="/hybrid-compatibility" className="hover:text-primary transition-colors">사주xMBTI 궁합</Link></li>
-                  </ul>
-                </div>
-                <div className="space-y-3">
-                  <h5 className="text-xs font-bold text-white uppercase tracking-wider">Company</h5>
-                  <ul className="space-y-2 text-xs text-muted-foreground">
-                    <li><Link href="/about" className="hover:text-primary transition-colors">서비스 소개</Link></li>
-                    <li><Link href="/privacy" className="hover:text-primary transition-colors">개인정보처리방침</Link></li>
-                    <li><Link href="/terms" className="hover:text-primary transition-colors">이용약관</Link></li>
-                  </ul>
-                </div>
-              </div>
+              <Link href="/guide">
+                <a className="text-xs md:text-sm text-primary hover:underline flex items-center gap-1">
+                  전체보기 <ChevronRight className="w-3 h-3" />
+                </a>
+              </Link>
             </div>
             
-            <div className="mt-8 pt-6 border-t border-white/5 text-center md:text-left">
-              <p className="text-[10px] md:text-xs text-muted-foreground">© 2026 MUUN Celestial Services. All rights reserved.</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {fortuneGuides.slice(0, 3).map((guide) => (
+                <Link key={guide.id} href={`/guide/${guide.id}`}>
+                  <motion.div 
+                    whileHover={{ y: -5 }}
+                    className="p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-primary/30 transition-all cursor-pointer h-full"
+                  >
+                    <h3 className="text-sm md:text-base font-bold text-white mb-2 line-clamp-1">{guide.title}</h3>
+                    <p className="text-xs text-muted-foreground line-clamp-2 mb-3">{guide.description}</p>
+                    <span className="text-[10px] md:text-xs text-primary font-medium">자세히 보기 →</span>
+                  </motion.div>
+                </Link>
+              ))}
             </div>
           </div>
-        </footer>
+        </section>
       </main>
     </div>
   );

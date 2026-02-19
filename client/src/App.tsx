@@ -31,6 +31,9 @@ import HybridCompatibility from "./pages/HybridCompatibility";
 import FortuneDictionary from "./pages/FortuneDictionary";
 import DictionaryDetail from "./pages/DictionaryDetail";
 import LuckyLunch from "./pages/LuckyLunch";
+import Guide from "./pages/Guide";
+import GuideDetail from "./pages/GuideDetail";
+import Footer from "./components/Footer";
 function Router() {
   const [location] = useLocation();
 
@@ -71,6 +74,8 @@ function Router() {
       <Route path="/dictionary/:id" component={DictionaryDetail} />
       <Route path="/lucky-lunch" component={LuckyLunch} />
       <Route path="/contact" component={Contact} />
+      <Route path="/guide" component={Guide} />
+      <Route path="/guide/:id" component={GuideDetail} />
       <Route component={NotFound} />
     </Switch>
   );
@@ -86,6 +91,7 @@ function App() {
             <GNB />
             <Router />
             <Analytics />
+            <Footer />
           </TooltipProvider>
         </ThemeProvider>
       </HelmetProvider>
