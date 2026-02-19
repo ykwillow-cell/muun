@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useLocation } from 'wouter';
-import { Search, CloudMoon, Sparkles } from 'lucide-react';
+import { useLocation, Link } from 'wouter';
+import { Search, CloudMoon, Sparkles, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export const DreamQuickSearch: React.FC = () => {
@@ -38,10 +38,18 @@ export const DreamQuickSearch: React.FC = () => {
               <h2 className="text-2xl md:text-3xl font-bold text-white mb-3 tracking-tight">
                 어젯밤 꿈의 의미가 궁금하신가요?
               </h2>
-              <p className="text-slate-400 text-sm md:text-base leading-relaxed">
+              <p className="text-slate-400 text-sm md:text-base leading-relaxed mb-6">
                 돼지꿈, 불나는 꿈, 조상님 꿈까지!<br className="hidden md:block" />
                 무운의 방대한 데이터로 당신의 꿈을 지금 바로 해몽해 보세요.
               </p>
+              
+              {/* Added link to Dream Interpretation Main */}
+              <Link href="/dream">
+                <button className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/5 border border-white/10 text-white text-sm font-bold hover:bg-white/10 hover:border-primary/30 transition-all group">
+                  꿈해몽 사전 전체보기
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </button>
+              </Link>
             </div>
 
             <div className="w-full md:w-auto flex-shrink-0">

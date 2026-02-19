@@ -30,6 +30,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { trackCustomEvent } from "@/lib/ga4";
 
+// 메뉴 순서 가이드 준수: 신년운세, 평생사주, 가족사주, ai타로, 토정비결, 궁합, 사주xmbti궁합, 만세력, 운세사전, 점성술, 오늘의운세, 심리테스트, 내 타로 기록, 소개, 문의
 const navItems = [
   { name: "신년운세", href: "/yearly-fortune", icon: Sparkles, description: "2026년 병오년 운세" },
   { name: "평생사주", href: "/lifelong-saju", icon: User, description: "인생의 전체적인 흐름" },
@@ -45,7 +46,6 @@ const navItems = [
   { name: "오늘의 운세", href: "/daily-fortune", icon: Zap, description: "매일 확인하는 나의 행운" },
   { name: "심리테스트", href: "/psychology", icon: BrainCircuit, description: "나도 모르는 내 마음" },
   { name: "내 타로 기록", href: "/tarot-history", icon: History, description: "지난 상담 기록 조회" },
-  { name: "운세 가이드", href: "/guide", icon: BookOpen, description: "사주 명리학 가이드" },
   { name: "소개", href: "/about", icon: Info, description: "MUUN 서비스 이야기" },
   { name: "문의", href: "/contact", icon: Info, description: "문의 및 피드백" },
 ];

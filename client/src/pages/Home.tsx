@@ -109,6 +109,13 @@ export default function Home() {
       color: "bg-amber-500/20 text-amber-400",
       desc: "사주에 맞는 추천 메뉴"
     },
+    { 
+      href: "/dream", 
+      label: "꿈해몽", 
+      icon: <CloudMoon className="w-5 h-5" />, 
+      color: "bg-indigo-500/20 text-indigo-400",
+      desc: "어젯밤 꿈의 의미 찾기"
+    },
   ];
 
   // 인기 서비스 (가로 스크롤용) - 명시적 순서 지정
