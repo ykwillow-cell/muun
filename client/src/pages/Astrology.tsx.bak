@@ -177,7 +177,6 @@ const CitySelector = ({ value, onChange }: { value: string; onChange: (city: str
 };
 
 const Astrology: React.FC = () => {
-  useCanonical("/astrology");
   const [result, setResult] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [selectedCity, setSelectedCity] = useState<City | null>(null);
@@ -232,16 +231,6 @@ const Astrology: React.FC = () => {
   if (!result) {
     return (
       <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased">
-        <Helmet>
-          <title>[가입X/100%무료] 서양 점성술 - 탄생 차트 분석 및 운명 해석 | 무운(Muun)</title>
-          <meta name="description" content="가입/결제 없이 당신이 태어난 순간의 별자리와 행성 배치를 통해 성격과 운명을 분석해보세요. 무운의 전문적인 점성술 차트 분석 서비스를 제공합니다." />
-          <meta name="keywords" content="점성술, 탄생차트, 별자리운세, 무료점성술, 사주, 운세, 무운, Muun, astrology, natal chart" />
-          <meta property="og:title" content="[가입X/100%무료] 서양 점성술 - 탄생 차트 분석 및 운명 해석 | 무운(Muun)" />
-          <meta property="og:description" content="가입/결제 없이 당신이 태어난 순간의 별자리와 행성 배치를 통해 성격과 운명을 분석해보세요." />
-          <meta property="og:type" content="website" />
-          <meta property="og:url" content="https://muunsaju.com/astrology" />
-          <link rel="canonical" href="https://muunsaju.com/astrology" />
-        </Helmet>
         {/* Background Effects */}
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
           <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-purple-900/10 rounded-full blur-[120px]" />
@@ -364,13 +353,6 @@ const Astrology: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased">
-      <Helmet>
-        <title>[가입X/100%무료] {result.sun.sign.name}의 기운을 타고난 당신의 점성술 분석 결과 | 무운(Muun)</title>
-        <meta name="description" content={`${result.sun.sign.name}의 에너지를 품은 당신의 탄생 차트 분석 결과입니다. 태양, 달, 행성들의 배치를 통해 당신의 본질과 운명을 확인해보세요.`} />
-        <meta property="og:title" content={`[가입X/100%무료] ${result.sun.sign.name}의 기운을 타고난 당신의 점성술 분석 결과 | 무운`} />
-        <meta property="og:description" content={`${result.sun.sign.name}의 에너지를 품은 당신의 탄생 차트 분석 결과입니다.`} />
-        <link rel="canonical" href="https://muunsaju.com/astrology" />
-      </Helmet>
       {/* '시간 모름' 시 안내 라벨 */}
       {form.watch("birthTimeUnknown") && (
         <div className="bg-primary/10 border-b border-primary/20 py-2 px-4 relative z-50">

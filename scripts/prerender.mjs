@@ -22,7 +22,28 @@ async function run() {
   const { render } = await import(pathToFileURL(serverEntryPath).href);
   
   // 프리렌더링할 주요 라우트
-  const staticRoutes = ['/', '/yearly-fortune', '/manselyeok', '/daily-fortune', '/dream'];
+  const staticRoutes = [
+    '/', 
+    '/yearly-fortune', 
+    '/manselyeok', 
+    '/daily-fortune', 
+    '/dream',
+    '/lifelong-saju',
+    '/compatibility',
+    '/tojeong',
+    '/psychology',
+    '/astrology',
+    '/tarot',
+    '/about',
+    '/privacy',
+    '/terms',
+    '/family-saju',
+    '/hybrid-compatibility',
+    '/fortune-dictionary',
+    '/lucky-lunch',
+    '/contact',
+    '/guide'
+  ];
   
   // 동적 라우트 (운세 페이지 등) - 안정성을 위해 상위 100개만 우선 처리
   const dynamicRoutes = [];
