@@ -280,9 +280,9 @@ export default function Tarot() {
                     {rows.map((row, rowIndex) => (
                       <div 
                         key={rowIndex}
-                        className="flex items-center justify-center relative h-[64px] md:h-[80px] lg:h-[96px] xl:h-[104px] w-full md:w-auto"
+                        className="flex items-center justify-center relative h-[48px] md:h-[80px] lg:h-[96px] xl:h-[104px] w-full md:w-auto"
                       >
-                        <div className="relative" style={{ width: `${Math.max(row.length * 24 + 38, 200)}px`, height: '100%' }}>
+                        <div className="relative" style={{ width: `${Math.max(row.length * 16 + 28, 180)}px`, height: '100%' }}>
                           {row.map((card, cardIndex) => {
                             const isSelected = selectedCards.find(c => c.id === card.id);
                             const selectIndex = selectedCards.findIndex(c => c.id === card.id);
@@ -294,7 +294,7 @@ export default function Tarot() {
                                 disabled={!isSelected && selectedCards.length >= 3}
                                 whileTap={!isSelected && selectedCards.length < 3 ? { scale: 0.92 } : {}}
                                 className={`
-                                  absolute flex-shrink-0 w-[38px] h-[56px] md:w-[42px] md:h-[62px] lg:w-[48px] lg:h-[72px] xl:w-[52px] xl:h-[78px]
+                                  absolute flex-shrink-0 w-[28px] h-[42px] md:w-[42px] md:h-[62px] lg:w-[48px] lg:h-[72px] xl:w-[52px] xl:h-[78px]
                                   rounded-sm md:rounded-md overflow-hidden transition-all duration-200
                                   border border-white/20
                                   ${isSelected 
@@ -303,7 +303,7 @@ export default function Tarot() {
                                   ${!isSelected && selectedCards.length >= 3 ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
                                 `}
                                 style={{
-                                  left: `${cardIndex * 24}px`,
+                                  left: `${cardIndex * 16}px`,
                                   top: '50%',
                                   transform: 'translateY(-50%)',
                                 }}
