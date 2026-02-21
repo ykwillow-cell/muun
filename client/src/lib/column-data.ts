@@ -30,7 +30,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-02-21",
     readTime: 6,
-    thumbnail: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
     keywords: ["운 바뀌는 징조", "대운 변화", "개운법", "사주 팔자"],
     content: `<div class="prose prose-invert max-w-none"><h2>인생의 대운이 바뀌기 전, 반드시 나타나는 징조 3가지</h2><p>우리의 삶은 10년마다 큰 흐름의 변화를 맞이합니다. 이를 명리학에서는 '대운(大運)'이라고 부릅니다. 대운이 바뀌는 시기에는 마치 계절이 바뀌듯 우리 주변의 환경과 내면의 상태에 뚜렷한 변화가 나타납니다.</p></div>`,
     relatedServiceUrl: "/saju"
@@ -199,7 +199,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-02-08",
     readTime: 7,
-    thumbnail: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1521791136366-398953f03473?w=800&h=600&fit=crop",
     keywords: ["사주 건강운", "건강 취약점", "체질 분석"],
     content: `<div class="prose prose-invert max-w-none"><h2>사주에서 보는 건강운: 내 몸의 약점을 미리 알다</h2><p>40대가 되면서 건강이 점점 더 중요해집니다. 사주를 통해 내 몸의 약점을 미리 알 수 있다면 어떨까요?</p></div>`,
     relatedServiceUrl: "/saju"
@@ -212,7 +212,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-02-07",
     readTime: 7,
-    thumbnail: "https://images.unsplash.com/photo-1521791136366-398953f03473?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1521791136064-7986c29535a7?w=800&h=600&fit=crop",
     keywords: ["인성 사주", "모정 많은 사주", "배움의 기운"],
     content: `<div class="prose prose-invert max-w-none"><h2>인간관계를 좌우하는 사주의 인성: 모정과 배움의 기운</h2><p>사주에서 '인성(印星)'은 어머니, 스승, 그리고 배움을 상징합니다. 인성이 발달한 사람들의 특징을 알아봅시다.</p></div>`,
     relatedServiceUrl: "/saju"
@@ -225,7 +225,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-02-06",
     readTime: 8,
-    thumbnail: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1513519247388-193ad51cf507?w=800&h=600&fit=crop",
     keywords: ["십신 사주", "사주 에너지", "성격 분석"],
     content: `<div class="prose prose-invert max-w-none"><h2>사주의 십신: 10가지 에너지로 읽는 내 성격과 운명</h2><p>사주를 배우다 보면 '십신(十神)'이라는 개념이 나옵니다. 이는 나를 중심으로 다른 글자들과의 관계를 나타내는 10가지 에너지입니다.</p></div>`,
     relatedServiceUrl: "/saju"
@@ -238,7 +238,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-02-05",
     readTime: 6,
-    thumbnail: "https://images.unsplash.com/photo-1516589174184-c68536575960?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&h=600&fit=crop",
     keywords: ["띠별 궁합", "사주 궁합", "인간관계"],
     content: `<div class="prose prose-invert max-w-none"><h2>띠별 궁합: 나와 잘 맞는 사람은 누구일까?</h2><p>누구나 한 번쯤은 "우리 띠가 맞나요?"라는 질문을 받아본 적이 있을 겁니다. 12띠의 궁합에 대해 알아봅시다.</p></div>`,
     relatedServiceUrl: "/family-saju"
@@ -251,7 +251,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-02-04",
     readTime: 7,
-    thumbnail: "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&h=600&fit=crop",
     keywords: ["오행 상생", "납음오행", "개운법"],
     content: `<div class="prose prose-invert max-w-none"><h2>사주 납음오행: 상생의 조화로 운을 높이다</h2><p>사주에서 오행의 상생 관계를 이해하는 것은 자신의 운을 높이는 데 매우 중요합니다.</p></div>`,
     relatedServiceUrl: "/saju"
@@ -264,7 +264,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-02-03",
     readTime: 8,
-    thumbnail: "https://images.unsplash.com/photo-1454165833767-02a6ed8a68b8?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=800&h=600&fit=crop",
     keywords: ["직업 선택 사주", "적성 분석", "커리어 운"],
     content: `<div class="prose prose-invert max-w-none"><h2>명리학으로 보는 직업 선택: 내 사주에 맞는 일을 찾다</h2><p>인생의 대부분을 차지하는 직업. 내 사주에 맞는 일을 찾는다면 훨씬 더 행복하고 성공적인 커리어를 쌓을 수 있습니다.</p></div>`,
     relatedServiceUrl: "/saju"
@@ -277,7 +277,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-02-02",
     readTime: 7,
-    thumbnail: "https://images.unsplash.com/photo-1507692049790-de58290a4334?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
     keywords: ["공망 사주", "허상 기운", "극복법"],
     content: `<div class="prose prose-invert max-w-none"><h2>사주의 공망: 허상과 현실 사이의 기운을 이해하다</h2><p>사주에서 '공망'이라는 말을 들으면 왠지 불길한 느낌이 들 수 있습니다. 하지만 공망을 제대로 이해하면 오히려 큰 도움이 될 수 있습니다.</p></div>`,
     relatedServiceUrl: "/saju"
@@ -290,7 +290,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-02-01",
     readTime: 6,
-    thumbnail: "https://images.unsplash.com/photo-1513519247388-193ad51cf507?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1512314889357-e157c22f938d?w=800&h=600&fit=crop",
     keywords: ["자녀 풍수", "아이 방 꾸미기", "학업운 풍수"],
     content: `<div class="prose prose-invert max-w-none"><h2>자녀 운을 높이는 풍수: 아이의 방 꾸미기</h2><p>아이의 공부 환경은 학업 성취에 큰 영향을 미칩니다. 풍수를 고려하여 아이의 방을 꾸미는 방법을 알아봅시다.</p></div>`,
     relatedServiceUrl: "/family-saju"
@@ -303,7 +303,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-01-31",
     readTime: 8,
-    thumbnail: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800&h=600&fit=crop",
     keywords: ["대운 바뀌는 해", "인생 전환점", "운의 변화"],
     content: `<div class="prose prose-invert max-w-none"><h2>사주 대운 바뀌는 해: 인생의 전환점을 준비하다</h2><p>10년마다 찾아오는 대운의 변화. 그 시기를 미리 알고 준비한다면 인생을 더 현명하게 이끌 수 있습니다.</p></div>`,
     relatedServiceUrl: "/saju"
@@ -316,7 +316,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-01-30",
     readTime: 7,
-    thumbnail: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1508962914676-139429cf197f?w=800&h=600&fit=crop",
     keywords: ["재물 흐름", "돈 들어오는 시기", "재물운"],
     content: `<div class="prose prose-invert max-w-none"><h2>사주에서 보는 재물의 흐름: 돈이 들어오는 시기를 알다</h2><p>누구나 궁금해하는 재물운. 사주를 통해 돈이 언제 들어올지 미리 알 수 있다면 어떨까요?</p></div>`,
     relatedServiceUrl: "/saju"
@@ -342,7 +342,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-01-28",
     readTime: 8,
-    thumbnail: "https://images.unsplash.com/photo-1516589174184-c68536575960?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1454165833767-02a6ed8a68b8?w=800&h=600&fit=crop",
     keywords: ["여성 결혼운", "결혼 시기", "배우자 특징"],
     content: `<div class="prose prose-invert max-w-none"><h2>여성의 결혼운: 사주로 보는 결혼 시기와 배우자의 특징</h2><p>40대 여성분들 중에는 "내 결혼운이 좋은지 궁금해요"라고 물어보시는 분들이 많습니다. 사주로 결혼운을 어떻게 읽는지 알아봅시다.</p></div>`,
     relatedServiceUrl: "/family-saju"
@@ -355,7 +355,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-01-27",
     readTime: 7,
-    thumbnail: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1521791136064-7986c29535a7?w=800&h=600&fit=crop",
     keywords: ["사주 살", "흉한 기운", "극복법"],
     content: `<div class="prose prose-invert max-w-none"><h2>사주의 살(殺): 흉한 기운을 기회로 바꾸는 법</h2><p>사주에서 '살'이라는 말을 들으면 무섭게 느껴질 수 있습니다. 하지만 살을 제대로 이해하면 오히려 성공의 도구가 될 수 있습니다.</p></div>`,
     relatedServiceUrl: "/saju"
@@ -381,7 +381,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-01-25",
     readTime: 7,
-    thumbnail: "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1507692049790-de58290a4334?w=800&h=600&fit=crop",
     keywords: ["길성", "길한 기운", "운 높이기"],
     content: `<div class="prose prose-invert max-w-none"><h2>사주의 길성: 길한 기운을 활용하여 운을 높이다</h2><p>사주에서 길한 기운을 나타내는 '길성'을 이해하고 활용하면 자신의 운을 더욱 높일 수 있습니다.</p></div>`,
     relatedServiceUrl: "/saju"
@@ -394,7 +394,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-01-24",
     readTime: 8,
-    thumbnail: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1516589174184-c68536575960?w=800&h=600&fit=crop",
     keywords: ["인생 주기", "12년 주기", "운의 흐름"],
     content: `<div class="prose prose-invert max-w-none"><h2>명리학으로 보는 인생의 주기: 12년 주기의 의미</h2><p>인생은 일정한 주기를 가지고 반복됩니다. 이 주기를 이해하면 인생을 더 현명하게 설계할 수 있습니다.</p></div>`,
     relatedServiceUrl: "/saju"
