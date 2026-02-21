@@ -299,13 +299,13 @@ export default function Tarot() {
                               whileTap={{ scale: 0.95 }}
                               onClick={() => handleSelectCard(card)}
                               className={`
-                                relative flex-shrink-0 w-[45px] h-[68px] md:w-[80px] lg:w-[100px] xl:w-[120px] md:h-[120px] lg:h-[150px] xl:h-[180px]
+                                relative flex-shrink-0 w-[40px] h-[60px] md:w-[48px] md:h-[72px] lg:w-[56px] lg:h-[84px] xl:w-[60px] xl:h-[90px]
                                 transition-all duration-300
                                 ${isSelected ? "z-20" : "z-0"}
                               `}
                               style={{ 
-                                // 모바일에서 카드 겹치기를 더 촘촘하게 (-30px)
-                                marginLeft: cardIndex === 0 ? 0 : '-32px', 
+                                // 모바일에서 카드 겹치기를 더 촘촘하게 (-18px)
+                                marginLeft: cardIndex === 0 ? 0 : '-18px', 
                                 // 데스크톱에서는 기존대로
                                 rotate: rowIndex % 2 === 0 ? (cardIndex % 2 === 0 ? 1 : -1) : (cardIndex % 2 === 0 ? -1 : 1)
                               }}
