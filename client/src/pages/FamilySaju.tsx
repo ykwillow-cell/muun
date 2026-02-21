@@ -163,9 +163,9 @@ export default function FamilySaju() {
   };
 
   // ===== 입력 화면 =====
-  i     if (!result) {
+  if (!result) {
     return (
-      <div className="min-h-screen bg-background text-white"> {/* 헤더 */}}
+      <div className="min-h-screen bg-background text-white"> {/* 헤더 */}
         <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-white/5">
           <div className="max-w-2xl mx-auto px-4 h-14 flex items-center">
             <Link href="/">
