@@ -115,9 +115,9 @@ const CitySelector = ({ value, onChange }: { value: string; onChange: (city: str
     c.name.includes(searchTerm) || c.en.toUpperCase().includes(searchTerm.toUpperCase())
   );
 
-  return (
-    <div className="relative z-20">
-      <button
+	  return (
+	    <div className="relative z-[50]">
+	      <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
         className="w-full h-12 px-4 bg-white/5 border border-white/10 text-white rounded-lg flex items-center justify-between hover:border-primary/30 transition-colors"
@@ -133,9 +133,9 @@ const CitySelector = ({ value, onChange }: { value: string; onChange: (city: str
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          className="absolute top-full left-0 right-0 mt-2 bg-background/95 border border-white/10 rounded-lg shadow-2xl z-[100] backdrop-blur-xl"
-        >
+	          exit={{ opacity: 0, y: -10 }}
+	          className="absolute top-full left-0 right-0 mt-2 bg-slate-900 border border-white/10 rounded-lg shadow-[0_10px_40px_rgba(0,0,0,0.5)] z-[100] backdrop-blur-xl"
+	        >
           <div className="p-3 border-b border-white/10">
             <div className="flex items-center gap-2 bg-white/5 px-3 py-2 rounded-lg">
               <Search className="w-4 h-4 text-white/40" />
@@ -281,7 +281,7 @@ const Astrology: React.FC = () => {
               </p>
             </div>
 
-            <Card className="bg-white/5 border-white/10 shadow-2xl backdrop-blur-xl relative z-10 rounded-2xl overflow-hidden">
+            <Card className="bg-white/5 border-white/10 shadow-2xl backdrop-blur-xl relative z-10 rounded-2xl">
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary/50 via-purple-500/50 to-blue-500/50" />
               <CardHeader className="p-4 md:p-6">
                 <CardTitle className="text-white flex items-center gap-2 text-base md:text-lg">
