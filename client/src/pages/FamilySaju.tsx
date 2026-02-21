@@ -72,8 +72,8 @@ export default function FamilySaju() {
   const resultRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (result) {
-      window.scrollTo(0, 0);
+    if (result && resultRef.current) {
+      resultRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   }, [result]);
 
@@ -165,7 +165,7 @@ export default function FamilySaju() {
   // ===== 입력 화면 =====
   if (!result) {
     return (
-      <div className="min-h-screen bg-background">
+      <div ref={resultRef} className="min-h-screen bg-background">
         {/* 헤더 */}
         <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-white/5">
           <div className="max-w-2xl mx-auto px-4 h-14 flex items-center">
