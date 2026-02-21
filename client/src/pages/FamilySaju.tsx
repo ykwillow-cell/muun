@@ -71,6 +71,12 @@ export default function FamilySaju() {
   const [errors, setErrors] = useState<Record<number, string>>({});
 
   useEffect(() => {
+    if (result && resultRef.current) {
+      resultRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [result]);
+
+  useEffect(() => {
     trackEvent("page_view", "family_saju", "가족사주 페이지 방문");
     // localStorage에서 사용자 정보 불러와 첫 번째 구성원(나)에 자동 입력
     try {
@@ -149,9 +155,7 @@ export default function FamilySaju() {
     });
 
     setResult(resultData);
-    setTimeout(() => {
-      resultRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, 0);
+
   };
 
   // ===== 입력 화면 =====
@@ -427,7 +431,7 @@ export default function FamilySaju() {
         </div>
       </div>
 
-      <div className="max-w-2xl mx-auto px-4 py-6 space-y-6">
+      <div className="max-w-2xl mx-auto px-4 py-6 space-y-6" ref={resultRef}>
         {/* 가족 종합 점수 */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           <Card className="bg-gradient-to-br from-primary/10 to-yellow-500/5 border-primary/20 overflow-hidden">
