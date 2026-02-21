@@ -70,7 +70,7 @@ export default function FamilySaju() {
     if (result) {
       setTimeout(() => {
         window.scrollTo({ top: 0, behavior: "smooth" });
-      }, 100);
+      }, 0);
     }
   }, [result]);
   const [errors, setErrors] = useState<Record<number, string>>({});
