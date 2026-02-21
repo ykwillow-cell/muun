@@ -43,7 +43,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-02-20",
     readTime: 7,
-    thumbnail: "https://images.unsplash.com/photo-1512314889357-e157c22f938d?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop",
     keywords: ["사주 보는 법", "만세력 해석", "사주 팔자 기초"],
     content: `<div class="prose prose-invert max-w-none"><h2>내 사주팔자 스스로 보는 법: 만세력 8글자의 비밀</h2><p>사주팔자라는 말은 익숙하지만, 막상 내 사주를 보려고 하면 한자 투성이라 막막하셨죠? 사주(四柱)는 말 그대로 네 개의 기둥이고, 팔자(八字)는 여덟 개의 글자를 의미합니다.</p></div>`,
     relatedServiceUrl: "/manselyeok"
@@ -56,7 +56,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-02-19",
     readTime: 8,
-    thumbnail: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=800&h=600&fit=crop",
     keywords: ["자녀 사주", "공부운", "학업운", "문창귀인"],
     content: `<div class="prose prose-invert max-w-none"><h2>자녀의 학업운을 높여주는 사주별 공부 환경 조성법</h2><p>부모라면 누구나 자녀가 공부를 즐겁게 하고 성취를 얻길 바랍니다. 하지만 모든 아이에게 똑같은 공부 방식을 강요하는 것은 효율적이지 않습니다.</p></div>`,
     relatedServiceUrl: "/family-saju"
@@ -69,7 +69,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-02-18",
     readTime: 8,
-    thumbnail: "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1516589174184-c68536575960?w=800&h=600&fit=crop",
     keywords: ["사주 오행 분석", "오행 개운법", "목화토금수 뜻"],
     content: `<div class="prose prose-invert max-w-none"><h2>사주 오행(목화토금수) 자가 진단: 나에게 부족한 기운 찾기</h2><p>사주팔자, 어렵게만 느껴지셨나요? 오늘은 그 중에서도 가장 기본이 되는 '오행'에 대해 쉽고 따뜻하게 이야기 나눠볼까 합니다.</p></div>`,
     relatedServiceUrl: "/manselyeok"
@@ -82,7 +82,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-02-17",
     readTime: 6,
-    thumbnail: "https://images.unsplash.com/photo-1508962914676-139429cf197f?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&h=600&fit=crop",
     keywords: ["생시 모를 때", "사주 시간 확인", "태어난 시 유추"],
     content: `<div class="prose prose-invert max-w-none"><h2>태어난 시간을 모를 때, 당신의 사주를 찾아가는 길</h2><p>살면서 한 번쯤은 자신의 사주팔자에 대해 궁금증을 가져보셨을 텐데요. 사주는 태어난 연월일시, 즉 '사주(四柱)'를 바탕으로 개인의 운명을 분석하는 학문입니다.</p></div>`,
     relatedServiceUrl: "/manselyeok"
@@ -95,7 +95,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-02-16",
     readTime: 7,
-    thumbnail: "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&h=600&fit=crop",
     keywords: ["천간지지 뜻", "사주 기초 공부", "십간십이지"],
     content: `<div class="prose prose-invert max-w-none"><h2>사주, 하늘의 기운과 땅의 환경: 천간과 지지의 의미</h2><p>살면서 우리는 알게 모르게 많은 기운 속에서 살아가고 있습니다. 특히 사주팔자라는 말을 자주 듣지만, 정작 그 깊은 의미를 아는 분은 많지 않으실 텐데요.</p></div>`,
     relatedServiceUrl: "/manselyeok"
@@ -108,7 +108,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-02-15",
     readTime: 8,
-    thumbnail: "https://images.unsplash.com/photo-1454165833767-02a6ed8a68b8?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?w=800&h=600&fit=crop",
     keywords: ["관성 많은 사주", "여자 사주 관성", "직장운 사주"],
     content: `<div class="prose prose-invert max-w-none"><h2>내 사주에 관성이 많다면? 직장운과 명예운의 상관관계</h2><p>사회생활의 정점에서 커리어와 명예에 대한 고민이 깊어지는 시기, 내 사주 속 관성이 직장운에 어떤 영향을 미칠까 궁금해하는 분들이 많으실 텐데요.</p></div>`,
     relatedServiceUrl: "/saju"
@@ -121,7 +121,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-02-14",
     readTime: 7,
-    thumbnail: "https://images.unsplash.com/photo-1521791136064-7986c29535a7?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1454165833767-02a6ed8a68b8?w=800&h=600&fit=crop",
     keywords: ["비겁 강한 사주", "고집 센 사주", "비견 겁재 뜻"],
     content: `<div class="prose prose-invert max-w-none"><h2>사주 비겁이 강한 사람의 특징: 자존감과 인간관계의 지혜</h2><p>사주에서 '비겁'이라는 말을 들어보셨나요? 비겁은 나와 같은 오행을 가진 글자들을 의미합니다.</p></div>`,
     relatedServiceUrl: "/saju"
@@ -134,7 +134,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-02-13",
     readTime: 9,
-    thumbnail: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1521791136064-7986c29535a7?w=800&h=600&fit=crop",
     keywords: ["2026년 운세", "병오년 신년 운세", "띠별 운세"],
     content: `<div class="prose prose-invert max-w-none"><h2>2026년 병오년(丙午年) 신년 운세: 붉은 말의 해</h2><p>새로운 한 해가 시작되면서 올해의 운세가 어떻게 흘러갈지 궁금해하는 분들이 많으실 텐데요. 2026년은 십간십이지 중 병오(丙午)에 해당하는 해입니다.</p></div>`,
     relatedServiceUrl: "/saju"
@@ -147,7 +147,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-02-12",
     readTime: 8,
-    thumbnail: "https://images.unsplash.com/photo-1507692049790-de58290a4334?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800&h=600&fit=crop",
     keywords: ["대운 세운", "인생 황금기", "운의 흐름"],
     content: `<div class="prose prose-invert max-w-none"><h2>사주에서 보는 인생의 황금기: 대운과 세운의 조화</h2><p>사주를 배우다 보면 '대운'과 '세운'이라는 말을 자주 듣게 됩니다. 이 두 개념을 제대로 이해하는 것이 자신의 인생 흐름을 파악하는 핵심입니다.</p></div>`,
     relatedServiceUrl: "/saju"
@@ -160,7 +160,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-02-11",
     readTime: 8,
-    thumbnail: "https://images.unsplash.com/photo-1516589174184-c68536575960?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1512314889357-e157c22f938d?w=800&h=600&fit=crop",
     keywords: ["여성 사주 남편운", "배우자 운", "부부 궁합"],
     content: `<div class="prose prose-invert max-w-none"><h2>여성 사주에서 보는 남편운: 배우자 운의 흐름을 읽다</h2><p>40대 여성분들 중에는 "내 남편운이 좋은지 나쁜지 궁금해요"라고 물어보시는 분들이 많습니다. 여성의 사주에서 남편운은 매우 중요한 부분입니다.</p></div>`,
     relatedServiceUrl: "/family-saju"
@@ -173,7 +173,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-02-10",
     readTime: 7,
-    thumbnail: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1508962914676-139429cf197f?w=800&h=600&fit=crop",
     keywords: ["식상 발달 사주", "창의력 사주", "표현력 강한 사주"],
     content: `<div class="prose prose-invert max-w-none"><h2>사주의 식상이 발달한 사람: 창의력과 표현력의 힘</h2><p>사주에서 '식상(食傷)'은 내가 표현하고 창조하는 기운을 나타냅니다. 식상이 발달한 사람들은 어떤 특징을 가지고 있을까요?</p></div>`,
     relatedServiceUrl: "/saju"
@@ -186,7 +186,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-02-09",
     readTime: 7,
-    thumbnail: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1507692049790-de58290a4334?w=800&h=600&fit=crop",
     keywords: ["재물운 좋은 사주", "부자 사주", "돈복 있는 사주"],
     content: `<div class="prose prose-invert max-w-none"><h2>재물운 좋은 사주의 특징: 부자가 되는 길을 찾다</h2><p>누구나 부자가 되기를 꿈꾸지만, 사주학적으로 보면 재물을 담을 수 있는 그릇의 크기는 사람마다 다릅니다.</p></div>`,
     relatedServiceUrl: "/saju"
@@ -212,7 +212,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-02-07",
     readTime: 7,
-    thumbnail: "https://images.unsplash.com/photo-1521791136064-7986c29535a7?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&h=600&fit=crop",
     keywords: ["인성 사주", "모정 많은 사주", "배움의 기운"],
     content: `<div class="prose prose-invert max-w-none"><h2>인간관계를 좌우하는 사주의 인성: 모정과 배움의 기운</h2><p>사주에서 '인성(印星)'은 어머니, 스승, 그리고 배움을 상징합니다. 인성이 발달한 사람들의 특징을 알아봅시다.</p></div>`,
     relatedServiceUrl: "/saju"
@@ -238,7 +238,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-02-05",
     readTime: 6,
-    thumbnail: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&h=600&fit=crop",
     keywords: ["띠별 궁합", "사주 궁합", "인간관계"],
     content: `<div class="prose prose-invert max-w-none"><h2>띠별 궁합: 나와 잘 맞는 사람은 누구일까?</h2><p>누구나 한 번쯤은 "우리 띠가 맞나요?"라는 질문을 받아본 적이 있을 겁니다. 12띠의 궁합에 대해 알아봅시다.</p></div>`,
     relatedServiceUrl: "/family-saju"
@@ -251,7 +251,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-02-04",
     readTime: 7,
-    thumbnail: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
     keywords: ["오행 상생", "납음오행", "개운법"],
     content: `<div class="prose prose-invert max-w-none"><h2>사주 납음오행: 상생의 조화로 운을 높이다</h2><p>사주에서 오행의 상생 관계를 이해하는 것은 자신의 운을 높이는 데 매우 중요합니다.</p></div>`,
     relatedServiceUrl: "/saju"
@@ -264,7 +264,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-02-03",
     readTime: 8,
-    thumbnail: "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop",
     keywords: ["직업 선택 사주", "적성 분석", "커리어 운"],
     content: `<div class="prose prose-invert max-w-none"><h2>명리학으로 보는 직업 선택: 내 사주에 맞는 일을 찾다</h2><p>인생의 대부분을 차지하는 직업. 내 사주에 맞는 일을 찾는다면 훨씬 더 행복하고 성공적인 커리어를 쌓을 수 있습니다.</p></div>`,
     relatedServiceUrl: "/saju"
@@ -277,7 +277,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-02-02",
     readTime: 7,
-    thumbnail: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1507413245164-6160d8298b31?w=800&h=600&fit=crop",
     keywords: ["공망 사주", "허상 기운", "극복법"],
     content: `<div class="prose prose-invert max-w-none"><h2>사주의 공망: 허상과 현실 사이의 기운을 이해하다</h2><p>사주에서 '공망'이라는 말을 들으면 왠지 불길한 느낌이 들 수 있습니다. 하지만 공망을 제대로 이해하면 오히려 큰 도움이 될 수 있습니다.</p></div>`,
     relatedServiceUrl: "/saju"
@@ -290,7 +290,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-02-01",
     readTime: 6,
-    thumbnail: "https://images.unsplash.com/photo-1512314889357-e157c22f938d?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1516589174184-c68536575960?w=800&h=600&fit=crop",
     keywords: ["자녀 풍수", "아이 방 꾸미기", "학업운 풍수"],
     content: `<div class="prose prose-invert max-w-none"><h2>자녀 운을 높이는 풍수: 아이의 방 꾸미기</h2><p>아이의 공부 환경은 학업 성취에 큰 영향을 미칩니다. 풍수를 고려하여 아이의 방을 꾸미는 방법을 알아봅시다.</p></div>`,
     relatedServiceUrl: "/family-saju"
@@ -303,7 +303,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-01-31",
     readTime: 8,
-    thumbnail: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&h=600&fit=crop",
     keywords: ["대운 바뀌는 해", "인생 전환점", "운의 변화"],
     content: `<div class="prose prose-invert max-w-none"><h2>사주 대운 바뀌는 해: 인생의 전환점을 준비하다</h2><p>10년마다 찾아오는 대운의 변화. 그 시기를 미리 알고 준비한다면 인생을 더 현명하게 이끌 수 있습니다.</p></div>`,
     relatedServiceUrl: "/saju"
@@ -316,7 +316,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-01-30",
     readTime: 7,
-    thumbnail: "https://images.unsplash.com/photo-1508962914676-139429cf197f?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&h=600&fit=crop",
     keywords: ["재물 흐름", "돈 들어오는 시기", "재물운"],
     content: `<div class="prose prose-invert max-w-none"><h2>사주에서 보는 재물의 흐름: 돈이 들어오는 시기를 알다</h2><p>누구나 궁금해하는 재물운. 사주를 통해 돈이 언제 들어올지 미리 알 수 있다면 어떨까요?</p></div>`,
     relatedServiceUrl: "/saju"
@@ -368,7 +368,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-01-26",
     readTime: 6,
-    thumbnail: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?w=800&h=600&fit=crop",
     keywords: ["오행 식이요법", "건강 관리", "체질 음식"],
     content: `<div class="prose prose-invert max-w-none"><h2>사주로 보는 건강 관리: 오행별 식이요법</h2><p>사주의 오행을 이해하면 자신에게 맞는 음식과 식이요법을 선택할 수 있습니다.</p></div>`,
     relatedServiceUrl: "/saju"
@@ -381,7 +381,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-01-25",
     readTime: 7,
-    thumbnail: "https://images.unsplash.com/photo-1507692049790-de58290a4334?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1512314889357-e157c22f938d?w=800&h=600&fit=crop",
     keywords: ["길성", "길한 기운", "운 높이기"],
     content: `<div class="prose prose-invert max-w-none"><h2>사주의 길성: 길한 기운을 활용하여 운을 높이다</h2><p>사주에서 길한 기운을 나타내는 '길성'을 이해하고 활용하면 자신의 운을 더욱 높일 수 있습니다.</p></div>`,
     relatedServiceUrl: "/saju"
@@ -394,7 +394,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-01-24",
     readTime: 8,
-    thumbnail: "https://images.unsplash.com/photo-1516589174184-c68536575960?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1508962914676-139429cf197f?w=800&h=600&fit=crop",
     keywords: ["인생 주기", "12년 주기", "운의 흐름"],
     content: `<div class="prose prose-invert max-w-none"><h2>명리학으로 보는 인생의 주기: 12년 주기의 의미</h2><p>인생은 일정한 주기를 가지고 반복됩니다. 이 주기를 이해하면 인생을 더 현명하게 설계할 수 있습니다.</p></div>`,
     relatedServiceUrl: "/saju"
@@ -407,7 +407,7 @@ export const columns: ColumnData[] = [
     author: "무운 역술팀",
     publishedDate: "2026-01-23",
     readTime: 5,
-    thumbnail: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800&h=600&fit=crop",
+    thumbnail: "https://images.unsplash.com/photo-1507692049790-de58290a4334?w=800&h=600&fit=crop",
     keywords: ["사주 상담", "정보 준비", "상담 활용"],
     content: `<div class="prose prose-invert max-w-none"><h2>사주 상담 받기 전에: 정확한 정보 준비하기</h2><p>사주 상담을 받기 전에 정확한 정보를 준비하면 상담의 질을 크게 높일 수 있습니다.</p></div>`,
     relatedServiceUrl: "/saju"

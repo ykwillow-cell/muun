@@ -337,12 +337,19 @@ export default function Home() {
                 >
                   <Link href={`/guide/${column.id}`}>
                     <div className="group cursor-pointer bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-primary/30 hover:bg-white/10 transition-all h-full flex flex-col">
-                      <div className="aspect-video overflow-hidden bg-white/5 relative">
+                      <div className="aspect-video overflow-hidden bg-gradient-to-br from-primary/20 to-purple-500/20 relative flex items-center justify-center">
                         <img
                           src={column.thumbnail}
                           alt={column.title}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          onError={(e) => {
+                            const target = e.target as HTMLImageElement;
+                            target.style.display = 'none';
+                          }}
                         />
+                        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-purple-500/10 flex items-center justify-center text-white/30">
+                          <BookOpen className="w-12 h-12" />
+                        </div>
                         <div className="absolute top-3 left-3">
                           <span className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider backdrop-blur-md ${COLUMN_CATEGORIES[column.category as keyof typeof COLUMN_CATEGORIES]?.color || 'bg-white/10 text-white/70'}`}>
                             {column.categoryLabel}

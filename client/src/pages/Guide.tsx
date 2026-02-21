@@ -121,12 +121,19 @@ export default function Guide() {
                     <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-primary/30 hover:bg-white/10 transition-all p-6 md:p-8">
                       <div className="flex flex-col md:flex-row gap-6">
                         {/* 썸네일 */}
-                        <div className="w-full md:w-48 h-40 md:h-32 rounded-xl overflow-hidden flex-shrink-0 bg-white/5">
+                        <div className="w-full md:w-48 h-40 md:h-32 rounded-xl overflow-hidden flex-shrink-0 bg-gradient-to-br from-primary/20 to-purple-500/20 flex items-center justify-center">
                           <img
                             src={column.thumbnail}
                             alt={column.title}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.style.display = 'none';
+                            }}
                           />
+                          <div className="absolute w-full h-full bg-gradient-to-br from-primary/10 to-purple-500/10 flex items-center justify-center text-white/30 text-xs font-semibold">
+                            <BookOpen className="w-8 h-8" />
+                          </div>
                         </div>
 
                         {/* 콘텐츠 */}
