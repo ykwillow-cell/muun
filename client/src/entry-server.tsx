@@ -43,6 +43,10 @@ export async function render(options: { path: string }) {
     '/dream': {
       title: '[가입X/100%무료] 꿈해몽 사전 - 무운 (MuUn)',
       description: '어젯밤 꿈의 의미가 궁금하신가요? 방대한 데이터를 바탕으로 정확한 꿈해몽을 제공합니다.'
+    },
+    '/family-saju': {
+      title: '[가입X/100%무료] 정밀 가족 사주 분석 - 우리 가족 궁합과 조화 확인 | 무운 (MuUn)',
+      description: '회원가입/결제 없이 우리 가족의 사주 궁합과 오행 조화를 확인하세요. 부모, 자녀, 배우자와의 관계 역학을 30년 내공의 명리학으로 정밀 분석해드립니다.'
     }
   };
 

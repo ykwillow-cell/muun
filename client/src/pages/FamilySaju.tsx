@@ -168,7 +168,15 @@ export default function FamilySaju() {
   // ===== 입력 화면 =====
   if (!result) {
     return (
-      <div className="min-h-screen bg-background text-white"> {/* 헤더 */}
+      <div className="min-h-screen bg-background text-white">
+        <Helmet>
+          <title>[가입X/100%무료] 정밀 가족 사주 분석 - 우리 가족 궁합과 조화 확인 | 무운 (MuUn)</title>
+          <meta name="description" content="회원가입/결제 없이 우리 가족의 사주 궁합과 오행 조화를 확인하세요. 부모, 자녀, 배우자와의 관계 역학을 30년 내공의 명리학으로 정밀 분석해드립니다." />
+          <meta property="og:title" content="[가입X/100%무료] 정밀 가족 사주 분석 - 무운 (MuUn)" />
+          <meta property="og:description" content="가족 구성원 간의 사주 궁합과 오행 조화를 무료로 확인하세요. 가입 없이 바로 보는 정밀 가족 역학 분석." />
+          <meta name="keywords" content="가족사주, 가족궁합, 무료사주, 부모자녀궁합, 부부궁합, 오행조화, 무운" />
+        </Helmet>
+        {/* 헤더 */}
         <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-white/5">
           <div className="max-w-2xl mx-auto px-4 h-14 flex items-center">
             <Link href="/">
@@ -408,11 +416,10 @@ export default function FamilySaju() {
   return (
     <>
       <Helmet>
-        <title>가족사주 분석 결과 - 무운</title>
-        <meta name="description" content="가족 구성원들의 사주를 기반으로 한 가족 조화 분석 결과입니다. 가족 오행, 구성원 간 궁합 등을 확인하세요." />
-        <meta property="og:title" content="가족사주 분석 결과 - 무운" />
-        <meta property="og:description" content="가족 구성원들의 사주를 기반으로 한 가족 조화 분석 결과입니다." />
-        <meta name="keywords" content="가족사주, 가족 조화, 오행 단어, 가족 운세, 무운" />
+        <title>[분석완료] 우리 가족 사주 조화 분석 결과 - 무운 (MuUn)</title>
+        <meta name="description" content="가족 구성원들의 사주를 기반으로 한 정밀 조화 분석 결과입니다. 오행의 균형과 구성원 간의 특별한 관계 역학을 확인하세요." />
+        <meta property="og:title" content="우리 가족 사주 조화 분석 결과 - 무운 (MuUn)" />
+        <meta property="og:description" content="분석이 완료되었습니다. 우리 가족의 오행 균형과 관계별 궁합 결과를 확인해보세요." />
       </Helmet>
     <div className="min-h-screen bg-background" ref={resultRef}>
       {/* '시간 모름' 시 안내 라벨 */}
