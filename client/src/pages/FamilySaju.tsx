@@ -72,8 +72,11 @@ export default function FamilySaju() {
   const resultRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (result && resultRef.current) {
-      resultRef.current.scrollIntoView({ behavior: 'smooth' });
+    if (result) {
+      // 결과 화면 렌더링 후 스크롤이 확실히 적용되도록 지연 시간 추가
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 100);
     }
   }, [result]);
 
@@ -411,7 +414,7 @@ export default function FamilySaju() {
         <meta property="og:description" content="가족 구성원들의 사주를 기반으로 한 가족 조화 분석 결과입니다." />
         <meta name="keywords" content="가족사주, 가족 조화, 오행 단어, 가족 운세, 무운" />
       </Helmet>
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background" ref={resultRef}>
       {/* '시간 모름' 시 안내 라벨 */}
       {anyUnknownTime && (
         <div className="bg-primary/10 border-b border-primary/20 py-2 px-4 relative z-[60]">
