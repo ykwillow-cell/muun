@@ -18,10 +18,10 @@ interface TarotCardGridProps {
 
 /**
  * 타로 카드 그리드 컴포넌트
- * - 3줄 배치 + 카드 겹침 효과
+ * - PC: 전체 카드를 한 화면에 보이도록 자동 조정
+ * - 모바일: 3줄 배치 + 카드 겹침 효과
  * - 선택 전: 타로카드 뒷면 무늬
  * - 선택 후: 카드 앞면(이미지)
- * - 모바일 한 화면에 78장 모두 노출
  */
 export default function TarotCardGrid({
   cards,
@@ -40,7 +40,7 @@ export default function TarotCardGrid({
 
   const canSelectMore = selectedCards.length < maxSelections;
 
-  // 카드를 3줄로 분배
+  // PC에서는 카드를 3줄로 분배, 모바일에서도 동일
   const cardsPerRow = Math.ceil(cards.length / 3);
   const rows = [
     cards.slice(0, cardsPerRow),
@@ -49,12 +49,12 @@ export default function TarotCardGrid({
   ];
 
   return (
-    <div className="relative w-full space-y-2 md:space-y-3 px-2">
+    <div className="relative w-full space-y-2 md:space-y-3">
       {/* 3줄 배치 */}
       {rows.map((rowCards, rowIndex) => (
         <div
           key={`row-${rowIndex}`}
-          className="flex items-center gap-0 overflow-visible"
+          className="flex items-center justify-center md:justify-start gap-0 overflow-x-auto md:overflow-visible pb-2 md:pb-0"
           style={{
             marginLeft: "-8px",
             marginRight: "-8px",
@@ -65,6 +65,12 @@ export default function TarotCardGrid({
             const isSelected = isCardSelected(card.id);
             const canSelect = canSelectMore || isSelected;
             const globalIndex = rowIndex * cardsPerRow + colIndex;
+
+            // PC에서는 카드 크기를 동적으로 조정
+            const cardWidth = typeof window !== "undefined" && window.innerWidth >= 768 
+              ? Math.max(32, Math.min(48, (window.innerWidth - 100) / cardsPerRow * 0.4))
+              : 48;
+            const cardHeight = cardWidth * 1.5;
 
             return (
               <motion.button
@@ -90,8 +96,8 @@ export default function TarotCardGrid({
                   ${disabled || (!canSelect && !isSelected) ? "opacity-60" : ""}
                 `}
                 style={{
-                  width: "48px",
-                  height: "72px",
+                  width: `${cardWidth}px`,
+                  height: `${cardHeight}px`,
                   marginLeft: colIndex === 0 ? "8px" : "-16px",
                   marginRight: "0px",
                   zIndex: isSelected ? 100 : colIndex,

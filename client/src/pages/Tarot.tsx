@@ -282,13 +282,13 @@ export default function Tarot() {
                 </div>
 
                 {/* 카드 덱 영역 - 모바일 최적화: 가로 스크롤 없이 더 촘촘하게 */}
-                <div className="relative space-y-3 md:space-y-8 py-2 overflow-hidden touch-action-pan-x">
+                <div className="relative space-y-3 md:space-y-8 py-2 overflow-x-auto md:overflow-visible touch-action-pan-x">
                   {rows.map((row, rowIndex) => (
                     <div 
                       key={rowIndex}
-                      className="flex justify-center"
+                      className="flex justify-center md:justify-start px-2 md:px-0 min-w-full md:min-w-0"
                     >
-                      <div className="flex px-2 max-w-full">
+                      <div className="flex px-2 md:px-0 max-w-full md:max-w-none">
                         {row.map((card, cardIndex) => {
                           const isSelected = selectedCards.find(c => c.id === card.id);
                           const selectIndex = selectedCards.findIndex(c => c.id === card.id);
@@ -299,7 +299,7 @@ export default function Tarot() {
                               whileTap={{ scale: 0.95 }}
                               onClick={() => handleSelectCard(card)}
                               className={`
-                                relative flex-shrink-0 w-[45px] h-[68px] md:w-[120px] md:h-[180px] 
+                                relative flex-shrink-0 w-[45px] h-[68px] md:w-[80px] lg:w-[100px] xl:w-[120px] md:h-[120px] lg:h-[150px] xl:h-[180px]
                                 transition-all duration-300
                                 ${isSelected ? "z-20" : "z-0"}
                               `}
