@@ -256,13 +256,13 @@ export default function HybridCompatibility() {
                         <span className="text-sm font-bold">첫 번째 분</span>
                       </div>
                       <div className="space-y-4">
-                        <div className="flex flex-col md:flex-row gap-4">
-                          <div className="flex-1 space-y-1.5">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-1.5">
                             <Label className="text-white text-xs">이름</Label>
                             <Input {...form.register("name1")} placeholder="이름을 입력하세요" className={`bg-white/5 border-white/10 text-white h-11 rounded-xl ${form.formState.errors.name1 ? "border-red-500/50" : ""}`} />
                             {form.formState.errors.name1 && <p className="text-[10px] text-red-400 ml-1 font-medium">{form.formState.errors.name1.message}</p>}
                           </div>
-                          <div className="flex-1 space-y-1.5">
+                          <div className="space-y-1.5">
                             <Label className="text-white text-xs">성별</Label>
                             <ToggleGroup type="single" value={form.watch("gender1")} onValueChange={(v) => v && form.setValue("gender1", v as any)} className="bg-white/5 p-1 rounded-xl border border-white/10 h-11 w-full">
                               <ToggleGroupItem value="male" className="flex-1 rounded-lg data-[state=on]:bg-purple-500 text-white text-xs">남성</ToggleGroupItem>
@@ -270,8 +270,8 @@ export default function HybridCompatibility() {
                             </ToggleGroup>
                           </div>
                         </div>
-                        <div className="flex flex-col md:flex-row gap-4">
-                          <div className="flex-1 space-y-1.5">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-1.5">
                             <Label className="text-white text-xs">생년월일</Label>
                             <DatePickerInput 
                               value={form.watch("birthDate1")} 
@@ -280,33 +280,33 @@ export default function HybridCompatibility() {
                             />
                             {form.formState.errors.birthDate1 && <p className="text-[10px] text-red-400 ml-1 font-medium">{form.formState.errors.birthDate1.message}</p>}
                           </div>
-                          <div className="flex-1 space-y-1.5">
-                            <Label className="text-white text-xs">MBTI</Label>
-                            <MBTISelector value={form.watch("mbti1")} onChange={(v) => form.setValue("mbti1", v)} accentColor="purple" />
-                            {form.formState.errors.mbti1 && <p className="text-[10px] text-red-400 ml-1 font-medium">{form.formState.errors.mbti1.message}</p>}
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
                           <div className="space-y-1.5">
                             <Label className="text-white text-xs">날짜 구분</Label>
-                            <ToggleGroup type="single" value={form.watch("calendarType1")} onValueChange={(v) => v && form.setValue("calendarType1", v as any)} className="bg-white/5 p-1 rounded-xl border border-white/10 h-11 w-full">
-                              <ToggleGroupItem value="solar" className="flex-1 rounded-lg data-[state=on]:bg-purple-500 text-white text-xs">양력</ToggleGroupItem>
-                              <ToggleGroupItem value="lunar" className="flex-1 rounded-lg data-[state=on]:bg-purple-500 text-white text-xs">음력</ToggleGroupItem>
-                            </ToggleGroup>
-                          </div>
-                          {form.watch("calendarType1") === "lunar" && (
-                            <div className="flex items-end pb-1.5">
-                              <label className="flex items-center gap-2 cursor-pointer group">
-                                <input
-                                  type="checkbox"
-                                  checked={form.watch("isLeapMonth1")}
-                                  onChange={(e) => form.setValue("isLeapMonth1", e.target.checked)}
-                                  className="w-4 h-4 rounded border-white/20 bg-white/5 accent-purple-500"
-                                />
-                                <span className="text-xs text-white/80 group-hover:text-purple-400 transition-colors">윤달</span>
-                              </label>
+                            <div className="flex gap-2">
+                              <ToggleGroup type="single" value={form.watch("calendarType1")} onValueChange={(v) => v && form.setValue("calendarType1", v as any)} className="flex-1 h-11 bg-white/5 p-1 rounded-xl border border-white/10 grid grid-cols-2 gap-1">
+                                <ToggleGroupItem value="solar" className="h-full rounded-lg data-[state=on]:bg-purple-500 text-white text-xs">양력</ToggleGroupItem>
+                                <ToggleGroupItem value="lunar" className="h-full rounded-lg data-[state=on]:bg-purple-500 text-white text-xs">음력</ToggleGroupItem>
+                              </ToggleGroup>
+                              {form.watch("calendarType1") === "lunar" && (
+                                <div className="flex items-center px-2 bg-white/5 rounded-xl border border-white/10">
+                                  <label className="flex items-center gap-1.5 cursor-pointer group">
+                                    <input
+                                      type="checkbox"
+                                      checked={form.watch("isLeapMonth1")}
+                                      onChange={(e) => form.setValue("isLeapMonth1", e.target.checked)}
+                                      className="w-3.5 h-3.5 rounded border-white/20 bg-white/5 accent-purple-500"
+                                    />
+                                    <span className="text-[11px] text-white/80 group-hover:text-purple-400 transition-colors">윤달</span>
+                                  </label>
+                                </div>
+                              )}
                             </div>
-                          )}
+                          </div>
+                        </div>
+                        <div className="space-y-1.5">
+                          <Label className="text-white text-xs">MBTI</Label>
+                          <MBTISelector value={form.watch("mbti1")} onChange={(v) => form.setValue("mbti1", v)} accentColor="purple" />
+                          {form.formState.errors.mbti1 && <p className="text-[10px] text-red-400 ml-1 font-medium">{form.formState.errors.mbti1.message}</p>}
                         </div>
                       </div>
                     </div>
@@ -320,13 +320,13 @@ export default function HybridCompatibility() {
                         <span className="text-sm font-bold">두 번째 분</span>
                       </div>
                       <div className="space-y-4">
-                        <div className="flex flex-col md:flex-row gap-4">
-                          <div className="flex-1 space-y-1.5">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-1.5">
                             <Label className="text-white text-xs">이름</Label>
                             <Input {...form.register("name2")} placeholder="이름을 입력하세요" className={`bg-white/5 border-white/10 text-white h-11 rounded-xl ${form.formState.errors.name2 ? "border-red-500/50" : ""}`} />
                             {form.formState.errors.name2 && <p className="text-[10px] text-red-400 ml-1 font-medium">{form.formState.errors.name2.message}</p>}
                           </div>
-                          <div className="flex-1 space-y-1.5">
+                          <div className="space-y-1.5">
                             <Label className="text-white text-xs">성별</Label>
                             <ToggleGroup type="single" value={form.watch("gender2")} onValueChange={(v) => v && form.setValue("gender2", v as any)} className="bg-white/5 p-1 rounded-xl border border-white/10 h-11 w-full">
                               <ToggleGroupItem value="male" className="flex-1 rounded-lg data-[state=on]:bg-pink-500 text-white text-xs">남성</ToggleGroupItem>
@@ -334,8 +334,8 @@ export default function HybridCompatibility() {
                             </ToggleGroup>
                           </div>
                         </div>
-                        <div className="flex flex-col md:flex-row gap-4">
-                          <div className="flex-1 space-y-1.5">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-1.5">
                             <Label className="text-white text-xs">생년월일</Label>
                             <DatePickerInput 
                               value={form.watch("birthDate2")} 
@@ -344,33 +344,33 @@ export default function HybridCompatibility() {
                             />
                             {form.formState.errors.birthDate2 && <p className="text-[10px] text-red-400 ml-1 font-medium">{form.formState.errors.birthDate2.message}</p>}
                           </div>
-                          <div className="flex-1 space-y-1.5">
-                            <Label className="text-white text-xs">MBTI</Label>
-                            <MBTISelector value={form.watch("mbti2")} onChange={(v) => form.setValue("mbti2", v)} accentColor="pink" />
-                            {form.formState.errors.mbti2 && <p className="text-[10px] text-red-400 ml-1 font-medium">{form.formState.errors.mbti2.message}</p>}
-                          </div>
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
                           <div className="space-y-1.5">
                             <Label className="text-white text-xs">날짜 구분</Label>
-                            <ToggleGroup type="single" value={form.watch("calendarType2")} onValueChange={(v) => v && form.setValue("calendarType2", v as any)} className="bg-white/5 p-1 rounded-xl border border-white/10 h-11 w-full">
-                              <ToggleGroupItem value="solar" className="flex-1 rounded-lg data-[state=on]:bg-pink-500 text-white text-xs">양력</ToggleGroupItem>
-                              <ToggleGroupItem value="lunar" className="flex-1 rounded-lg data-[state=on]:bg-pink-500 text-white text-xs">음력</ToggleGroupItem>
-                            </ToggleGroup>
-                          </div>
-                          {form.watch("calendarType2") === "lunar" && (
-                            <div className="flex items-end pb-1.5">
-                              <label className="flex items-center gap-2 cursor-pointer group">
-                                <input
-                                  type="checkbox"
-                                  checked={form.watch("isLeapMonth2")}
-                                  onChange={(e) => form.setValue("isLeapMonth2", e.target.checked)}
-                                  className="w-4 h-4 rounded border-white/20 bg-white/5 accent-pink-500"
-                                />
-                                <span className="text-xs text-white/80 group-hover:text-pink-400 transition-colors">윤달</span>
-                              </label>
+                            <div className="flex gap-2">
+                              <ToggleGroup type="single" value={form.watch("calendarType2")} onValueChange={(v) => v && form.setValue("calendarType2", v as any)} className="flex-1 h-11 bg-white/5 p-1 rounded-xl border border-white/10 grid grid-cols-2 gap-1">
+                                <ToggleGroupItem value="solar" className="h-full rounded-lg data-[state=on]:bg-pink-500 text-white text-xs">양력</ToggleGroupItem>
+                                <ToggleGroupItem value="lunar" className="h-full rounded-lg data-[state=on]:bg-pink-500 text-white text-xs">음력</ToggleGroupItem>
+                              </ToggleGroup>
+                              {form.watch("calendarType2") === "lunar" && (
+                                <div className="flex items-center px-2 bg-white/5 rounded-xl border border-white/10">
+                                  <label className="flex items-center gap-1.5 cursor-pointer group">
+                                    <input
+                                      type="checkbox"
+                                      checked={form.watch("isLeapMonth2")}
+                                      onChange={(e) => form.setValue("isLeapMonth2", e.target.checked)}
+                                      className="w-3.5 h-3.5 rounded border-white/20 bg-white/5 accent-pink-500"
+                                    />
+                                    <span className="text-[11px] text-white/80 group-hover:text-pink-400 transition-colors">윤달</span>
+                                  </label>
+                                </div>
+                              )}
                             </div>
-                          )}
+                          </div>
+                        </div>
+                        <div className="space-y-1.5">
+                          <Label className="text-white text-xs">MBTI</Label>
+                          <MBTISelector value={form.watch("mbti2")} onChange={(v) => form.setValue("mbti2", v)} accentColor="pink" />
+                          {form.formState.errors.mbti2 && <p className="text-[10px] text-red-400 ml-1 font-medium">{form.formState.errors.mbti2.message}</p>}
                         </div>
                       </div>
                     </div>
