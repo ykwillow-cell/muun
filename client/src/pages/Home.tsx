@@ -10,6 +10,9 @@ import { TodayTermCard } from "@/components/TodayTermCard";
 import { DreamQuickSearch } from "@/components/DreamQuickSearch";
 import { OrganizationSchema, BreadcrumbListSchema } from "@/components/SchemaMarkup";
 import { fortuneGuides } from "@/lib/fortune-guide";
+import { getLatestColumns, COLUMN_CATEGORIES } from "@/lib/column-data";
+import { Button } from "@/components/ui/button";
+import { Clock } from "lucide-react";
 
 export default function Home() {
   useCanonical('/');
@@ -131,6 +134,7 @@ export default function Home() {
   };
 
   const commonMaxWidth = "max-w-4xl mx-auto";
+  const latestColumns = getLatestColumns(3);
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden relative antialiased">
@@ -348,37 +352,86 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Fortune Guide Section - 정보성 콘텐츠 보강 */}
-        <section className="px-4 py-8 md:py-12 bg-white/5 border-t border-white/10">
+        {/* Latest Columns Section - 전문 칼럼 보강 */}
+        <section className="px-4 py-12 md:py-16 bg-white/5 border-t border-white/10">
           <div className={commonMaxWidth}>
-            <div className="flex justify-between items-end mb-6">
+            <div className="flex justify-between items-end mb-10">
               <div>
-                <h2 className="text-xl md:text-2xl font-bold text-white mb-2 flex items-center gap-2">
-                  <BookOpen className="w-6 h-6 text-primary" />
-                  운세 가이드
+                <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg bg-primary/10 border border-primary/20 mb-3">
+                  <span className="text-[10px] font-bold tracking-widest text-primary uppercase">Insight</span>
+                </div>
+                <h2 className="text-2xl md:text-3xl font-bold text-white mb-2 flex items-center gap-2">
+                  <BookOpen className="w-7 h-7 text-primary" />
+                  최신 운세 칼럼
                 </h2>
-                <p className="text-xs md:text-sm text-muted-foreground">사주 명리학의 지혜를 전해드립니다</p>
+                <p className="text-sm md:text-base text-muted-foreground">30년 내공의 역술인이 전하는 삶의 지혜</p>
               </div>
               <Link href="/guide">
-                <a className="text-xs md:text-sm text-primary hover:underline flex items-center gap-1">
-                  전체보기 <ChevronRight className="w-3 h-3" />
-                </a>
+                <Button variant="ghost" className="text-primary hover:text-primary/80 hover:bg-primary/10 gap-1 group hidden md:flex">
+                  전체보기 <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </Button>
               </Link>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {fortuneGuides.slice(0, 3).map((guide) => (
-                <Link key={guide.id} href={`/guide/${guide.id}`}>
-                  <motion.div 
-                    whileHover={{ y: -5 }}
-                    className="p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-primary/30 transition-all cursor-pointer h-full"
-                  >
-                    <h3 className="text-sm md:text-base font-bold text-white mb-2 line-clamp-1">{guide.title}</h3>
-                    <p className="text-xs text-muted-foreground line-clamp-2 mb-3">{guide.description}</p>
-                    <span className="text-[10px] md:text-xs text-primary font-medium">자세히 보기 →</span>
-                  </motion.div>
-                </Link>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {latestColumns.map((column, index) => (
+                <motion.div
+                  key={column.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className="h-full"
+                >
+                  <Link href={`/guide/${column.id}`}>
+                    <div className="group cursor-pointer bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-primary/30 hover:bg-white/10 transition-all h-full flex flex-col">
+                      <div className="aspect-video overflow-hidden bg-white/5 relative">
+                        <img
+                          src={column.thumbnail}
+                          alt={column.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        <div className="absolute top-3 left-3">
+                          <span className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider backdrop-blur-md ${COLUMN_CATEGORIES[column.category as keyof typeof COLUMN_CATEGORIES]?.color || 'bg-white/10 text-white/70'}`}>
+                            {column.categoryLabel}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="p-5 flex-1 flex flex-col">
+                        <h3 className="text-lg font-bold text-white mb-2 group-hover:text-primary transition-colors line-clamp-2 leading-snug">
+                          {column.title}
+                        </h3>
+                        <p className="text-sm text-muted-foreground line-clamp-2 mb-4 flex-1">
+                          {column.description}
+                        </p>
+                        <div className="flex items-center justify-between mt-auto pt-4 border-t border-white/5">
+                          <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
+                            <span className="flex items-center gap-1">
+                              <CalendarDays className="w-3 h-3" />
+                              {new Date(column.publishedDate).toLocaleDateString('ko-KR')}
+                            </span>
+                            <span className="flex items-center gap-1">
+                              <Clock className="w-3 h-3" />
+                              {column.readTime}분
+                            </span>
+                          </div>
+                          <span className="text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
+                            읽어보기 <ArrowRight className="w-3 h-3" />
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                </motion.div>
               ))}
+            </div>
+
+            <div className="mt-8 md:hidden">
+              <Link href="/guide">
+                <Button variant="outline" className="w-full border-primary/30 text-primary hover:bg-primary/10 py-6 rounded-xl font-bold">
+                  전체 칼럼 보기
+                </Button>
+              </Link>
             </div>
           </div>
         </section>
