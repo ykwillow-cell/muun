@@ -93,7 +93,7 @@ export default function Home() {
     },
     { 
       href: "/daily-fortune", 
-      label: "오늘의 운세", 
+      label: "오늘의 운세 처방전", 
       icon: <Zap className="w-5 h-5" />, 
       color: "bg-green-500/20 text-green-400",
       desc: "오늘의 행운 확인"

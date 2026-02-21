@@ -1,24 +1,19 @@
 import { useState, useEffect } from "react";
-import { useCanonical } from '@/lib/use-canonical';
-import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion } from "framer-motion";
-import { ChevronLeft, Share2, Sparkles, Star, Coffee, MapPin, Palette, Zap, User, Sun, Calendar } from "lucide-react";
-import DatePickerInput from "@/components/DatePickerInput";
+import { ChevronLeft, Zap, User, Sun, Calendar } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { getDailyFortune, DailyFortuneResult } from "@/lib/dailyFortune";
+import { getDailyFortune } from "@/lib/dailyFortune";
 import { generatePrescriptionFortune, PrescriptionFortune } from "@/lib/prescriptionFortune";
-import { shareContent } from "@/lib/share";
-import { autoLinkKeywordsToJSX } from "@/lib/auto-link-keywords";
-import DailyFortuneContent from "@/components/DailyFortuneContent";
 import { convertToSolarDate } from "@/lib/lunar-converter";
+import DatePickerInput from "@/components/DatePickerInput";
 import { PrescriptionHeader } from "@/components/prescription/PrescriptionHeader";
 import { PrescriptionActions } from "@/components/prescription/PrescriptionActions";
 import { PrescriptionMissions } from "@/components/prescription/PrescriptionMissions";
@@ -35,15 +30,11 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-export default function DailyFortune() {
-  useCanonical('/daily-fortune');
-
-  const [fortune, setFortune] = useState<DailyFortuneResult | null>(null);
+export default function DailyFortunePrescription() {
   const [prescription, setPrescription] = useState<PrescriptionFortune | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [userName, setUserName] = useState("");
-  const [usePrescription, setUsePrescription] = useState(true);
-  
+
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -74,22 +65,23 @@ export default function DailyFortune() {
     const existing = existingData ? JSON.parse(existingData) : {};
     const mergedData = { ...existing, ...data };
     localStorage.setItem("muun_user_data", JSON.stringify(mergedData));
-    
+
     setUserName(data.name);
-    const date = convertToSolarDate(data.birthDate, "12:00", data.calendarType, data.isLeapMonth);
-    const result = getDailyFortune(date, data.gender);
-    setFortune(result);
-    
-    if (usePrescription) {
-      const prescriptionResult = generatePrescriptionFortune(result, data.gender);
-      setPrescription(prescriptionResult);
-    }
-    
+    const date = convertToSolarDate(
+      data.birthDate,
+      "12:00",
+      data.calendarType,
+      data.isLeapMonth
+    );
+    const basicFortune = getDailyFortune(date, data.gender);
+    const prescriptionFortune = generatePrescriptionFortune(
+      basicFortune,
+      data.gender
+    );
+    setPrescription(prescriptionFortune);
     setShowResult(true);
     window.scrollTo(0, 0);
   };
-
-  const commonMaxWidth = "w-full max-w-2xl mx-auto";
 
   // 입력 화면
   if (!showResult) {
@@ -104,11 +96,17 @@ export default function DailyFortune() {
         <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
           <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
             <Link href="/">
-              <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/10 min-w-[44px] min-h-[44px]">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="mr-2 text-white hover:bg-white/10 min-w-[44px] min-h-[44px]"
+              >
                 <ChevronLeft className="h-5 w-5" />
               </Button>
             </Link>
-            <h1 className="text-base md:text-lg font-bold text-white">오늘의 운세 처방전</h1>
+            <h1 className="text-base md:text-lg font-bold text-white">
+              오늘의 운세 처방전
+            </h1>
           </div>
         </header>
 
@@ -117,7 +115,7 @@ export default function DailyFortune() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className={commonMaxWidth + " space-y-5"}
+            className="w-full max-w-2xl mx-auto space-y-5"
           >
             {/* Hero Section */}
             <div className="text-center space-y-2">
@@ -174,7 +172,8 @@ export default function DailyFortune() {
                         type="single"
                         value={form.watch("gender")}
                         onValueChange={(value) => {
-                          if (value) form.setValue("gender", value as "male" | "female");
+                          if (value)
+                            form.setValue("gender", value as "male" | "female");
                         }}
                         className="w-full h-11 bg-white/5 p-1 rounded-xl border border-white/10 grid grid-cols-2 gap-1"
                       >
@@ -220,7 +219,8 @@ export default function DailyFortune() {
                       type="single"
                       value={form.watch("calendarType")}
                       onValueChange={(value) => {
-                        if (value) form.setValue("calendarType", value as "solar" | "lunar");
+                        if (value)
+                          form.setValue("calendarType", value as "solar" | "lunar");
                       }}
                       className="w-full h-11 bg-white/5 p-1 rounded-xl border border-white/10 grid grid-cols-2 gap-1"
                     >
@@ -272,158 +272,40 @@ export default function DailyFortune() {
     );
   }
 
-  // 처방전 모드 결과 화면
-  if (usePrescription && prescription && showResult) {
-    return (
-      <div className="min-h-screen bg-gradient-to-b from-background to-background/80 py-8 md:py-12">
-        <div className="max-w-2xl mx-auto px-4 md:px-6 space-y-8">
-          {/* 헤더 */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="flex items-center justify-between"
-          >
-            <h1 className="text-2xl md:text-3xl font-bold text-white">
-              오늘의 운세 처방전
-            </h1>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setShowResult(false)}
-              className="text-xs md:text-sm"
-            >
-              다시 입력
-            </Button>
-          </motion.div>
-
-          {/* 처방전 컴포넌트들 */}
-          <PrescriptionHeader fortune={prescription} userName={userName} />
-          <PrescriptionActions fortune={prescription} />
-          <PrescriptionMissions fortune={prescription} />
-          <PrescriptionAnalysis fortune={prescription} />
-
-          {/* 공유 버튼 */}
-          <PrescriptionShare fortune={prescription} userName={userName} />
-        </div>
-      </div>
-    );
-  }
-
-  // 기존 결과 화면 (처방전 모드 비활성화 시)
-  if (!fortune) return null;
+  // 결과 화면
+  if (!prescription) return null;
 
   return (
-    <>
-      <Helmet>
-        <title>오늘의 운세 처방전 - 무운</title>
-        <meta name="description" content={`당신의 사주팔자를 기반으로 오늘의 운세를 알아보세요. 운세 점수, 연애운, 재물운, 직업운 등을 매일 마다 업데이트합니다.`} />
-        <meta property="og:title" content="오늘의 운세 처방전 - 무운" />
-        <meta property="og:description" content="당신의 사주팔자를 기반으로 오늘의 운세를 알아보세요." />
-        <meta name="keywords" content="오늘의 운세, 라른 운세, 당신의 운세, 일일 운세, 무운" />
-      </Helmet>
-    <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased">
-      {/* Background Effects */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[-10%] left-[-10%] w-[400px] h-[400px] bg-orange-500/10 rounded-full blur-[100px]" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-primary/10 rounded-full blur-[100px]" />
-      </div>
-
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
-        <div className={`container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between`}>
-          <div className="flex items-center">
-            <Button 
-              variant="ghost" 
-              size="icon" 
-              className="mr-2 text-white hover:bg-white/10 min-w-[44px] min-h-[44px]"
-              onClick={() => setShowResult(false)}
-            >
-              <ChevronLeft className="h-5 w-5" />
-            </Button>
-            <h1 className="text-base md:text-lg font-bold text-white">오늘의 운세 처방전 결과</h1>
-          </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="text-orange-400 min-w-[44px] min-h-[44px]"
-            onClick={() => {
-              shareContent({
-                title: '무운 오늘의 운세',
-                text: `오늘 내 운세 점수는 ${fortune.score}점! 오늘의 운세를 확인해보세요.`,
-                page: 'daily_fortune',
-                buttonType: 'icon',
-              });
-            }}
-          >
-            <Share2 className="h-5 w-5" />
-          </Button>
-        </div>
-      </header>
-
-      <main className="relative z-10 container mx-auto max-w-[1280px] px-4 py-5 md:py-6">
+    <div className="min-h-screen bg-gradient-to-b from-background to-background/80 py-8 md:py-12">
+      <div className="max-w-2xl mx-auto px-4 md:px-6 space-y-8">
+        {/* 헤더 */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className={commonMaxWidth + " space-y-5 md:space-y-6"}
+          className="flex items-center justify-between"
         >
-          {/* Hero Section */}
-          <section className="flex flex-col items-center justify-center space-y-4 py-4">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/30 backdrop-blur-xl">
-              <Zap className="w-3.5 h-3.5 text-orange-400" />
-              <span className="text-[10px] md:text-sm md:text-xs font-bold tracking-wider text-orange-400 uppercase">오늘의 운세</span>
-            </div>
-            
-            {/* Score Circle */}
-            <div className="relative w-36 h-36 md:w-44 md:h-44 mx-auto">
-              <svg className="w-full h-full" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" strokeWidth="8" className="text-white/5" />
-                <motion.circle
-                  cx="50"
-                  cy="50"
-                  r="45"
-                  fill="none"
-                  stroke="url(#gradient)"
-                  strokeWidth="8"
-                  strokeDasharray={`${(fortune.score / 100) * 282.7} 282.7`}
-                  initial={{ strokeDasharray: "0 282.7", rotate: -90 }}
-                  animate={{ strokeDasharray: `${(fortune.score / 100) * 282.7} 282.7` }}
-                  transition={{ duration: 1.5, ease: "easeOut" }}
-                  strokeLinecap="round"
-                  style={{ transformOrigin: "50px 50px" }}
-                />
-                <defs>
-                  <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#f97316" />
-                    <stop offset="100%" stopColor="#ea580c" />
-                  </linearGradient>
-                </defs>
-              </svg>
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: 0.3, duration: 0.6 }}
-                className="absolute inset-0 flex flex-col items-center justify-center"
-              >
-                <div className="text-4xl md:text-5xl font-black text-white">{fortune.score}</div>
-                <div className="text-xs md:text-sm text-orange-300 font-semibold">점</div>
-              </motion.div>
-            </div>
-
-            {/* One-liner */}
-            <motion.p
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 0.6 }}
-              className="text-center text-base md:text-lg font-semibold text-white max-w-md leading-relaxed"
-            >
-              {fortune.message}
-            </motion.p>
-          </section>
-
-          {/* SEO 콘텐츠 */}
-          <DailyFortuneContent />
+          <h1 className="text-2xl md:text-3xl font-bold text-white">
+            오늘의 운세 처방전
+          </h1>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowResult(false)}
+            className="text-xs md:text-sm"
+          >
+            다시 입력
+          </Button>
         </motion.div>
-      </main>
+
+        {/* 처방전 컴포넌트들 */}
+        <PrescriptionHeader fortune={prescription} userName={userName} />
+        <PrescriptionActions fortune={prescription} />
+        <PrescriptionMissions fortune={prescription} />
+        <PrescriptionAnalysis fortune={prescription} />
+
+        {/* 공유 버튼 */}
+        <PrescriptionShare fortune={prescription} userName={userName} />
+      </div>
     </div>
-    </>
   );
 }
