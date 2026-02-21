@@ -68,8 +68,9 @@ export default function FamilySaju() {
 
   useEffect(() => {
     if (result) {
-      console.log("Result updated, attempting to scroll:", result);
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }, 100);
     }
   }, [result]);
   const [errors, setErrors] = useState<Record<number, string>>({});
@@ -152,7 +153,6 @@ export default function FamilySaju() {
       return { ...member, saju };
     });
 
-    console.log("handleSubmit called, setting result:", resultData);
     setResult(resultData);
 
   };
