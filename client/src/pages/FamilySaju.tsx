@@ -69,6 +69,13 @@ export default function FamilySaju() {
 
 
   const [errors, setErrors] = useState<Record<number, string>>({});
+  const resultRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (result) {
+      window.scrollTo(0, 0);
+    }
+  }, [result]);
 
 
 
@@ -153,7 +160,6 @@ export default function FamilySaju() {
     });
 
     setResult(resultData);
-    window.scrollTo(0, 0);
   };
 
   // ===== 입력 화면 =====
@@ -174,8 +180,8 @@ export default function FamilySaju() {
             </h1>
           </div>
         </div>
-
-       <div className="max-w-2xl mx-auto px-4 py-6 space-y-6">소개 */}
+        {/* 소개 */}
+        <div className="max-w-2xl mx-auto px-4 py-6 space-y-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -426,10 +432,8 @@ export default function FamilySaju() {
             가족사주 분석 결과
           </h1>
         </div>
-      </div>
-
-        <div className="max-w-2xl mx-auto px-4 py-6 space-y-6">
-        {/* 가족 종합 점수 */}
+      </div        {/* 소개 */}
+        <div className="max-w-2xl mx-auto px-4 py-6 space-y-6">       {/* 가족 종합 점수 */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           <Card className="bg-gradient-to-br from-primary/10 to-yellow-500/5 border-primary/20 overflow-hidden">
             <CardContent className="pt-6 pb-6 text-center space-y-4">
