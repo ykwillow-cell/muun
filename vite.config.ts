@@ -5,29 +5,9 @@ import fs from "node:fs";
 import path from "path";
 import { defineConfig } from "vite";
 import { vitePluginManusRuntime } from "vite-plugin-manus-runtime";
-import { vitePluginPrerender } from "./vite-plugin-prerender";
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginPrerender({ routes: [
-  '/',
-  '/manselyeok',
-  '/lifelong-saju',
-  '/yearly-fortune',
-  '/daily-fortune',
-  '/compatibility',
-  '/tojeong',
-  '/psychology',
-  '/astrology',
-  '/tarot',
-  '/tarot-history',
-  '/about',
-  '/privacy',
-  '/terms',
-  '/family-saju',
-  '/hybrid-compatibility',
-  '/fortune-dictionary',
-  '/lucky-lunch',
-  '/contact',
-] })];
+
+const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime()];
 
 export default defineConfig({
   plugins,
@@ -39,8 +19,9 @@ export default defineConfig({
     },
   },
   envDir: path.resolve(import.meta.dirname),
-  root: path.resolve(import.meta.dirname, "client"),
+
   publicDir: path.resolve(import.meta.dirname, "client", "public"),
+  root: path.resolve(import.meta.dirname, "client"),
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
@@ -48,10 +29,10 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          'vendor': ['react', 'react-dom', 'wouter'],
-          'ui': ['@radix-ui/react-dialog', '@radix-ui/react-select', '@radix-ui/react-tabs'],
-          'animation': ['framer-motion'],
-          'charts': ['recharts'],
+          'vendor': [],
+          'ui': [],
+          'animation': [],
+          'charts': [],
         },
       },
     },
