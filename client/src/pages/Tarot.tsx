@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from "react";
 import { useCanonical } from '@/lib/use-canonical';
 import { setTarotOGTags } from '@/lib/og-tags';
 import { Helmet } from "react-helmet-async";
@@ -98,55 +98,40 @@ export default function Tarot() {
         errorType = "api";
       } else if (errorMessage.includes("network") || errorMessage.includes("ERR_NETWORK")) {
         errorType = "network";
-      } else if (errorMessage.includes("405")) {
-        errorType = "api";
       }
       
       setError({
         type: errorType,
-        message: errorMessage,
+        message: EMOTIONAL_ERROR_MESSAGES[errorType],
       });
-      setIsLoading(false);
+      return;
     }
+    
+    setStep("result");
+    setError(null);
+    trackCustomEvent("tarot_interpretation_complete", {
+      question_length: question.length,
+      cards_selected: selectedCards.map(c => c.korName).join(", "),
+    });
   };
 
   const getInterpretation = async () => {
-    if (isLoading) return;
-    if (selectedCards.length !== 3) {
-      toast.error("카드 3장을 모두 선택해 주세요.");
-      return;
-    }
-
-    trackCustomEvent("check_fortune_result", {
-      fortune_type: "타로",
-      question_length: question.length
-    });
-
     setIsLoading(true);
-    setStep("result");
-    setError(null);
-    setInterpretation("");
-
-    try {
-      await handleInterpretation();
-    } finally {
-      setIsLoading(false);
-    }
+    await handleInterpretation();
+    setIsLoading(false);
   };
 
-  const handleSaveReading = async () => {
-    if (isSaved || isSaving) return;
+  const saveTarot = async () => {
     setIsSaving(true);
-    
     try {
       await saveTarotReading({
-        timestamp: Date.now(),
         question,
-        selectedCards,
+        cards: selectedCards,
         interpretation,
+        readAt: new Date().toISOString(),
       });
       setIsSaved(true);
-      toast.success("상담 기록이 저장되었습니다!");
+      toast.success("타로 상담 기록이 저장되었습니다.");
     } catch (err) {
       console.error("Save error:", err);
       toast.error("저장에 실패했습니다. 다시 시도해 주세요.");
@@ -182,28 +167,34 @@ export default function Tarot() {
       </div>
 
       <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
-        <div className={`${commonMaxWidth} px-4 h-14 flex items-center`}>
+        <div className={`container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between`}>
           <Link href="/">
-            <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/10 min-w-[44px] min-h-[44px]">
-              <ChevronLeft className="h-6 w-6" />
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="text-white hover:bg-white/10 min-w-[44px] min-h-[44px]"
+            >
+              <ChevronLeft className="h-5 w-5" />
             </Button>
           </Link>
-          <h1 className="text-lg md:text-xl font-bold text-white">무운 타로 상담소</h1>
+          <h1 className="text-base md:text-lg font-bold text-white">무운 타로 상담소</h1>
+          <div className="w-[44px]" />
         </div>
       </header>
 
-      <main className="relative z-10 px-4 py-6 md:py-8">
-        <div className={commonMaxWidth}>
+      <main className="relative z-10 container mx-auto max-w-[1280px] px-4 py-5 md:py-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className={commonMaxWidth + " space-y-8 md:space-y-12"}
+        >
           {/* Hero Section */}
-          <div className="text-center space-y-2 mb-4 md:mb-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-md"
-            >
+          <div className="text-center space-y-4">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 border border-primary/30 backdrop-blur-xl">
               <Sparkles className="w-3.5 h-3.5 text-primary" />
               <span className="text-[10px] md:text-xs font-bold tracking-widest text-primary uppercase">Tarot Reading</span>
-            </motion.div>
+            </div>
             <h2 className="text-xl md:text-4xl font-bold tracking-tight text-white">신비로운 타로의 세계</h2>
             <p className="text-xs md:text-base text-muted-foreground max-w-md mx-auto">
               마음을 가다듬고 고민을 떠올려 보세요.
@@ -252,14 +243,14 @@ export default function Tarot() {
                 exit={{ opacity: 0 }}
                 className="space-y-0"
               >
-                {/* 선택 정보 섹션 - 더 컴팩트하게 */}
+                {/* 선택 정보 섹션 */}
                 <div className="bg-background/95 backdrop-blur-sm py-3 md:py-6 border-b border-white/10 -mx-4 px-4 mb-4">
                   <div className="flex items-center justify-between gap-2">
                     <div className="space-y-0.5">
                       <h3 className="text-base md:text-xl font-bold text-primary leading-tight">카드를 3장 선택해 주세요</h3>
                       <p className="text-[10px] md:text-sm text-muted-foreground">마음이 끌리는 카드를 순서대로 클릭하세요</p>
                     </div>
-                    {/* 선택된 카드 슬롯 - 더 작게 */}
+                    {/* 선택된 카드 슬롯 */}
                     <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
                       <div className="flex justify-end gap-1 md:gap-3">
                         {[0, 1, 2].map((i) => (
@@ -283,62 +274,54 @@ export default function Tarot() {
                   </div>
                 </div>
 
-                {/* 카드 덱 영역 - 모바일 최적화: 가로 스크롤 없이 더 촘촘하게 */}
-                <div className="relative space-y-3 md:space-y-8 py-2 overflow-x-auto md:overflow-visible touch-action-pan-x">
-                  {rows.map((row, rowIndex) => (
-                    <div 
-                      key={rowIndex}
-                      className="flex justify-center md:justify-start px-2 md:px-0 min-w-full md:min-w-0"
-                    >
-                      <div className="flex px-2 md:px-0 max-w-full md:max-w-none">
+                {/* 카드 덱 영역 - 모바일/PC 모두 중앙 정렬 */}
+                <div className="relative w-full py-2 md:py-4 px-4 md:px-0">
+                  <div className="flex flex-col items-center gap-2 md:gap-3">
+                    {rows.map((row, rowIndex) => (
+                      <div 
+                        key={rowIndex}
+                        className="flex items-center justify-center gap-1 md:gap-1.5 flex-wrap"
+                      >
                         {row.map((card, cardIndex) => {
                           const isSelected = selectedCards.find(c => c.id === card.id);
                           const selectIndex = selectedCards.findIndex(c => c.id === card.id);
                           
                           return (
-                            <motion.div
+                            <motion.button
                               key={card.id}
-                              whileTap={{ scale: 0.95 }}
                               onClick={() => handleSelectCard(card)}
+                              disabled={!isSelected && selectedCards.length >= 3}
+                              whileTap={!isSelected && selectedCards.length < 3 ? { scale: 0.92 } : {}}
                               className={`
-                                relative flex-shrink-0 w-[32px] h-[48px] md:w-[36px] md:h-[54px] lg:w-[40px] lg:h-[60px] xl:w-[44px] xl:h-[66px]
-                                transition-all duration-300
-                                ${isSelected ? "z-20" : "z-0"}
-                              `}
-                              style={{ 
-                                // 카드를 더 촘촘하게 배치 (-10px)
-                                marginLeft: cardIndex === 0 ? 0 : '-10px', 
-                                // 데스크톱에서는 기존대로
-                                rotate: rowIndex % 2 === 0 ? (cardIndex % 2 === 0 ? 1 : -1) : (cardIndex % 2 === 0 ? -1 : 1)
-                              }}
-                            >
-                              <div className={`
-                                w-full h-full rounded-md md:rounded-xl overflow-hidden shadow-lg border border-white/10
+                                relative flex-shrink-0 w-[38px] h-[56px] md:w-[42px] md:h-[62px] lg:w-[48px] lg:h-[72px] xl:w-[52px] xl:h-[78px]
+                                rounded-sm md:rounded-md overflow-hidden transition-all duration-200
+                                border border-white/20
                                 ${isSelected 
-                                  ? "ring-2 md:ring-4 ring-primary ring-offset-1 md:ring-offset-2 ring-offset-background scale-110" 
-                                  : "hover:translate-y-[-5px] md:hover:translate-y-[-10px]"}
-                              `}>
-                                {/* 카드 뒷면 */}
-                                <div className="w-full h-full bg-gradient-to-br from-indigo-950 via-purple-900 to-primary/40 flex items-center justify-center">
-                                  <div className="w-[85%] h-[85%] border border-primary/20 rounded-sm md:rounded-lg flex items-center justify-center">
-                                    <Sparkles className="w-3 h-3 md:w-10 md:h-10 text-primary/30" />
+                                  ? "ring-2 md:ring-3 ring-primary ring-offset-1 ring-offset-background scale-110 z-20" 
+                                  : "z-0 hover:border-white/40"}
+                                ${!isSelected && selectedCards.length >= 3 ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
+                              `}
+                            >
+                              {/* 카드 뒷면 */}
+                              <div className="w-full h-full bg-gradient-to-br from-indigo-950 via-purple-900 to-primary/40 flex items-center justify-center relative">
+                                <div className="absolute inset-1 border border-primary/30 rounded-[2px]" />
+                                <Sparkles className="w-2.5 h-2.5 md:w-3.5 md:h-3.5 text-primary/40 relative z-10" />
+                              </div>
+                              
+                              {/* 선택 스티커 */}
+                              {isSelected && (
+                                <div className="absolute inset-0 flex items-center justify-center bg-primary/30 backdrop-blur-[1px]">
+                                  <div className="text-white font-bold text-xs md:text-sm">
+                                    {selectIndex + 1}
                                   </div>
                                 </div>
-                                
-                                {isSelected && (
-                                  <div className="absolute inset-0 flex items-center justify-center bg-primary/20 backdrop-blur-[1px]">
-                                    <div className="w-5 h-5 md:w-12 md:h-12 rounded-full bg-primary text-background flex items-center justify-center font-bold text-xs md:text-2xl shadow-xl">
-                                      {selectIndex + 1}
-                                    </div>
-                                  </div>
-                                )}
-                              </div>
-                            </motion.div>
+                              )}
+                            </motion.button>
                           );
                         })}
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
 
                 {selectedCards.length === 3 && (
@@ -350,9 +333,10 @@ export default function Tarot() {
                     <Button 
                       onClick={getInterpretation}
                       size="lg"
+                      disabled={isLoading}
                       className="w-full max-w-md h-12 md:h-16 text-base md:text-xl font-bold rounded-xl md:rounded-2xl shadow-2xl shadow-primary/40 animate-bounce"
                     >
-                      해석하기 <ArrowRight className="ml-2 w-5 h-5 md:w-6 md:h-6" />
+                      {isLoading ? "해석 중..." : "해석하기"} <ArrowRight className="ml-2 w-5 h-5 md:w-6 md:h-6" />
                     </Button>
                   </motion.div>
                 )}
@@ -381,105 +365,89 @@ export default function Tarot() {
                           src={card.image} 
                           alt={card.korName}
                           className="w-full h-full object-cover"
-                          loading="lazy"
                         />
                       </div>
                       <div className="text-center">
-                        <span className="text-[10px] md:text-xs text-primary font-bold uppercase tracking-wider">
-                          {["Past", "Present", "Future"][index]}
-                        </span>
-                        <h4 className="text-sm md:text-lg font-bold text-white truncate">{card.korName}</h4>
+                        <p className="text-xs md:text-sm font-semibold text-white">{card.korName}</p>
+                        <p className="text-[10px] md:text-xs text-muted-foreground">{card.arcana}</p>
                       </div>
                     </motion.div>
                   ))}
                 </div>
 
-                {isLoading ? (
-                  <div className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-10 space-y-6">
-                    <div className="flex flex-col items-center justify-center py-8 space-y-4">
-                      <div className="relative">
-                        <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
-                        <Sparkles className="absolute inset-0 m-auto w-6 h-6 text-primary animate-pulse" />
-                      </div>
-                      <div className="text-center space-y-2">
-                        <p className="text-lg font-bold text-white">카드의 목소리를 듣는 중입니다...</p>
-                        <p className="text-sm text-muted-foreground">잠시만 기다려 주세요. 정성껏 해석해 드릴게요.</p>
-                      </div>
-                    </div>
-                    <div className="space-y-3">
-                      <Skeleton className="h-4 w-full bg-white/5" />
-                      <Skeleton className="h-4 w-[90%] bg-white/5" />
-                      <Skeleton className="h-4 w-[95%] bg-white/5" />
-                      <Skeleton className="h-4 w-[85%] bg-white/5" />
-                    </div>
-                  </div>
-                ) : error ? (
+                {/* 에러 상태 */}
+                {error && (
                   <motion.div
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="bg-red-500/10 border border-red-500/20 rounded-2xl p-6 md:p-8 text-center space-y-4"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="bg-red-500/10 border border-red-500/30 rounded-xl p-4 md:p-6 space-y-3"
                   >
-                    <div className="w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center mx-auto">
-                      <AlertCircle className="w-6 h-6 text-red-500" />
-                    </div>
-                    <div className="space-y-2">
-                      <h3 className="text-lg font-bold text-white">해석을 가져오지 못했습니다</h3>
-                      <p className="text-sm text-muted-foreground whitespace-pre-wrap">
-                        {EMOTIONAL_ERROR_MESSAGES[error.type]}
-                      </p>
+                    <div className="flex items-start gap-3">
+                      <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5" />
+                      <div className="space-y-2">
+                        <p className="text-sm md:text-base text-red-200 font-semibold">해석에 실패했습니다</p>
+                        <p className="text-xs md:text-sm text-red-300 whitespace-pre-line">{error.message}</p>
+                      </div>
                     </div>
                     <Button 
-                      onClick={handleInterpretation}
+                      onClick={getInterpretation}
+                      disabled={isLoading}
                       variant="outline"
-                      className="border-red-500/30 hover:bg-red-500/10 text-red-500"
+                      className="w-full text-red-400 border-red-400/50 hover:bg-red-500/10"
                     >
-                      다시 시도하기
+                      <RefreshCw className="w-4 h-4 mr-2" />
+                      다시 시도
                     </Button>
                   </motion.div>
-                ) : (
+                )}
+
+                {/* 해석 결과 */}
+                {interpretation && !error && (
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-white/5 border border-white/10 rounded-2xl p-5 md:p-8 space-y-6"
+                    className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-8 space-y-6"
                   >
                     <div>
-                      <h3 className="text-lg md:text-xl font-bold text-primary mb-4">타로의 메시지</h3>
-                      <div className="prose prose-invert max-w-none text-sm md:text-base leading-relaxed text-foreground whitespace-pre-wrap">
-                        {processAIContent(interpretation)}
+                      <h3 className="text-lg md:text-2xl font-bold text-white mb-4">타로 해석</h3>
+                      <div className="prose prose-invert max-w-none">
+                        <p className="text-sm md:text-base text-white/90 leading-relaxed whitespace-pre-wrap">
+                          {processAIContent(interpretation)}
+                        </p>
                       </div>
                     </div>
 
                     <div className="flex flex-col gap-3">
                       <Button 
-                        onClick={handleSaveReading}
-                        disabled={isSaved || isSaving}
-                        className="w-full gap-2"
+                        onClick={saveTarot}
+                        disabled={isSaving || isSaved}
+                        className="w-full"
                       >
-                        <Info className="w-4 h-4" />
-                        {isSaved ? "저장됨" : isSaving ? "저장 중..." : "상담 기록 저장"}
+                        {isSaved ? "저장됨" : isSaving ? "저장 중..." : "결과 저장하기"}
                       </Button>
                       <Button 
                         onClick={resetTarot}
                         variant="outline"
-                        className="w-full gap-2"
+                        className="w-full"
                       >
-                        <RefreshCw className="w-4 h-4" />
-                        새로운 상담 시작
+                        다시 상담받기
                       </Button>
                     </div>
                   </motion.div>
                 )}
+
+                {/* 로딩 상태 */}
+                {isLoading && (
+                  <div className="space-y-4">
+                    <Skeleton className="h-32 w-full rounded-xl" />
+                    <Skeleton className="h-20 w-full rounded-xl" />
+                  </div>
+                )}
               </motion.div>
             )}
           </AnimatePresence>
-        </div>
+        </motion.div>
       </main>
-
-      <Helmet>
-        <title>타로 상담소 | 무운(MUUN) - 온라인 운세</title>
-        <meta name="description" content="신비로운 타로 카드가 당신의 고민을 해석해 드립니다. 타로 카드로 미래를 엿보세요." />
-        <meta name="keywords" content="타로, 타로 상담, 운세, 타로 해석" />
-      </Helmet>
     </div>
   );
 }
