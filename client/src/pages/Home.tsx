@@ -304,55 +304,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Value Proposition - 가치 제안 */}
-        <section className="px-4 py-8 md:py-12 bg-gradient-to-b from-transparent to-primary/5">
-          <div className={commonMaxWidth}>
-            <div className="text-center mb-6 md:mb-8">
-              <h2 className="text-lg md:text-2xl font-bold text-white mb-2">왜 무운인가요?</h2>
-              <p className="text-xs md:text-sm text-muted-foreground">무운만의 세 가지 약속</p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
-              <div className="p-5 md:p-6 rounded-2xl bg-white/5 border border-white/10">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-xl bg-yellow-500/10 flex items-center justify-center">
-                    <Star className="w-5 h-5 text-yellow-400" />
-                  </div>
-                  <h3 className="text-sm md:text-base font-bold text-white">정밀한 알고리즘</h3>
-                </div>
-                <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
-                  30년 경력 명리학 전문가의 데이터를 바탕으로 한 현대적 분석 시스템
-                </p>
-              </div>
-              
-              <div className="p-5 md:p-6 rounded-2xl bg-white/5 border border-white/10">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center">
-                    <ShieldCheck className="w-5 h-5 text-green-400" />
-                  </div>
-                  <h3 className="text-sm md:text-base font-bold text-white">완벽한 익명성</h3>
-                </div>
-                <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
-                  모든 계산은 브라우저에서 처리되며, 개인정보는 서버에 저장되지 않습니다
-                </p>
-              </div>
-              
-              <div className="p-5 md:p-6 rounded-2xl bg-white/5 border border-white/10">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
-                    <Info className="w-5 h-5 text-blue-400" />
-                  </div>
-                  <h3 className="text-sm md:text-base font-bold text-white">진짜 무료</h3>
-                </div>
-                <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
-                  회원가입, 결제 유도 없이 모든 프리미엄 콘텐츠를 무료로 제공합니다
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Latest Columns Section - 전문 칼럼 보강 */}
+        {/* Latest Columns Section - 전문 칼럼 보강 (순서 변경: 위로 이동) */}
         <section className="px-4 py-12 md:py-16 bg-white/5 border-t border-white/10">
           <div className={commonMaxWidth}>
             <div className="flex justify-between items-end mb-10">
@@ -432,6 +384,54 @@ export default function Home() {
                   전체 칼럼 보기
                 </Button>
               </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Value Proposition - 가치 제안 */}
+        <section className="px-4 py-8 md:py-12 bg-gradient-to-b from-transparent to-primary/5">
+          <div className={commonMaxWidth}>
+            <div className="text-center mb-6 md:mb-8">
+              <h2 className="text-lg md:text-2xl font-bold text-white mb-2">왜 무운인가요?</h2>
+              <p className="text-xs md:text-sm text-muted-foreground">무운만의 세 가지 약속</p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
+              <div className="p-5 md:p-6 rounded-2xl bg-white/5 border border-white/10">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-yellow-500/10 flex items-center justify-center">
+                    <Star className="w-5 h-5 text-yellow-400" />
+                  </div>
+                  <h3 className="text-sm md:text-base font-bold text-white">정밀한 알고리즘</h3>
+                </div>
+                <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
+                  30년 경력 명리학 전문가의 데이터를 바탕으로 한 현대적 분석 시스템
+                </p>
+              </div>
+              
+              <div className="p-5 md:p-6 rounded-2xl bg-white/5 border border-white/10">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center">
+                    <ShieldCheck className="w-5 h-5 text-green-400" />
+                  </div>
+                  <h3 className="text-sm md:text-base font-bold text-white">완벽한 익명성</h3>
+                </div>
+                <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
+                  모든 계산은 브라우저에서 처리되며, 개인정보는 서버에 저장되지 않습니다
+                </p>
+              </div>
+              
+              <div className="p-5 md:p-6 rounded-2xl bg-white/5 border border-white/10">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
+                    <Info className="w-5 h-5 text-blue-400" />
+                  </div>
+                  <h3 className="text-sm md:text-base font-bold text-white">진짜 무료</h3>
+                </div>
+                <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
+                  회원가입, 결제 유도 없이 모든 프리미엄 콘텐츠를 무료로 제공합니다
+                </p>
+              </div>
             </div>
           </div>
         </section>
