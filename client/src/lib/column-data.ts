@@ -141,7 +141,7 @@ export const columns: ColumnData[] = [
     author: '무운 역술팀',
     publishedDate: '2026-02-20',
     readTime: 7,
-    thumbnail: 'https://images.unsplash.com/photo-1502481851512-e9e2529bbbf9?w=800&h=600&fit=crop',
+    thumbnail: 'https://images.unsplash.com/photo-1512314889357-e157c22f938d?w=800&h=600&fit=crop',
     keywords: ['사주 보는 법', '만세력 해석', '사주팔자', '천간지지'],
     content: `
       <div class="prose prose-invert max-w-none">
