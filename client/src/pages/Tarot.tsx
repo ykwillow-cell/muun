@@ -275,50 +275,57 @@ export default function Tarot() {
                 </div>
 
                 {/* 카드 덱 영역 - 모바일/PC 모두 중앙 정렬 */}
-                <div className="relative w-full py-2 md:py-4 px-4 md:px-0">
-                  <div className="flex flex-col items-center gap-2 md:gap-3">
+                <div className="relative w-full py-2 md:py-4 px-2 md:px-0 overflow-x-auto md:overflow-visible">
+                  <div className="flex flex-col items-center gap-0 md:gap-0 min-w-full md:min-w-0">
                     {rows.map((row, rowIndex) => (
                       <div 
                         key={rowIndex}
-                        className="flex items-center justify-center gap-1 md:gap-1.5 flex-wrap"
+                        className="flex items-center justify-center relative h-[64px] md:h-[80px] lg:h-[96px] xl:h-[104px] w-full md:w-auto"
                       >
-                        {row.map((card, cardIndex) => {
-                          const isSelected = selectedCards.find(c => c.id === card.id);
-                          const selectIndex = selectedCards.findIndex(c => c.id === card.id);
-                          
-                          return (
-                            <motion.button
-                              key={card.id}
-                              onClick={() => handleSelectCard(card)}
-                              disabled={!isSelected && selectedCards.length >= 3}
-                              whileTap={!isSelected && selectedCards.length < 3 ? { scale: 0.92 } : {}}
-                              className={`
-                                relative flex-shrink-0 w-[38px] h-[56px] md:w-[42px] md:h-[62px] lg:w-[48px] lg:h-[72px] xl:w-[52px] xl:h-[78px]
-                                rounded-sm md:rounded-md overflow-hidden transition-all duration-200
-                                border border-white/20
-                                ${isSelected 
-                                  ? "ring-2 md:ring-3 ring-primary ring-offset-1 ring-offset-background scale-110 z-20" 
-                                  : "z-0 hover:border-white/40"}
-                                ${!isSelected && selectedCards.length >= 3 ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
-                              `}
-                            >
-                              {/* 카드 뒷면 */}
-                              <div className="w-full h-full bg-gradient-to-br from-indigo-950 via-purple-900 to-primary/40 flex items-center justify-center relative">
-                                <div className="absolute inset-1 border border-primary/30 rounded-[2px]" />
-                                <Sparkles className="w-2.5 h-2.5 md:w-3.5 md:h-3.5 text-primary/40 relative z-10" />
-                              </div>
-                              
-                              {/* 선택 스티커 */}
-                              {isSelected && (
-                                <div className="absolute inset-0 flex items-center justify-center bg-primary/30 backdrop-blur-[1px]">
-                                  <div className="text-white font-bold text-xs md:text-sm">
-                                    {selectIndex + 1}
-                                  </div>
+                        <div className="relative" style={{ width: `${Math.max(row.length * 24 + 38, 200)}px`, height: '100%' }}>
+                          {row.map((card, cardIndex) => {
+                            const isSelected = selectedCards.find(c => c.id === card.id);
+                            const selectIndex = selectedCards.findIndex(c => c.id === card.id);
+                            
+                            return (
+                              <motion.button
+                                key={card.id}
+                                onClick={() => handleSelectCard(card)}
+                                disabled={!isSelected && selectedCards.length >= 3}
+                                whileTap={!isSelected && selectedCards.length < 3 ? { scale: 0.92 } : {}}
+                                className={`
+                                  absolute flex-shrink-0 w-[38px] h-[56px] md:w-[42px] md:h-[62px] lg:w-[48px] lg:h-[72px] xl:w-[52px] xl:h-[78px]
+                                  rounded-sm md:rounded-md overflow-hidden transition-all duration-200
+                                  border border-white/20
+                                  ${isSelected 
+                                    ? "ring-2 md:ring-3 ring-primary ring-offset-1 ring-offset-background scale-110 z-50" 
+                                    : "z-0 hover:border-white/40"}
+                                  ${!isSelected && selectedCards.length >= 3 ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
+                                `}
+                                style={{
+                                  left: `${cardIndex * 24}px`,
+                                  top: '50%',
+                                  transform: 'translateY(-50%)',
+                                }}
+                              >
+                                {/* 카드 뒷면 */}
+                                <div className="w-full h-full bg-gradient-to-br from-indigo-950 via-purple-900 to-primary/40 flex items-center justify-center relative">
+                                  <div className="absolute inset-1 border border-primary/30 rounded-[2px]" />
+                                  <Sparkles className="w-2.5 h-2.5 md:w-3.5 md:h-3.5 text-primary/40 relative z-10" />
                                 </div>
-                              )}
-                            </motion.button>
-                          );
-                        })}
+                                
+                                {/* 선택 스티커 */}
+                                {isSelected && (
+                                  <div className="absolute inset-0 flex items-center justify-center bg-primary/30 backdrop-blur-[1px]">
+                                    <div className="text-white font-bold text-xs md:text-sm">
+                                      {selectIndex + 1}
+                                    </div>
+                                  </div>
+                                )}
+                              </motion.button>
+                            );
+                          })}
+                        </div>
                       </div>
                     ))}
                   </div>
