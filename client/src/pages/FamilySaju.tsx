@@ -65,6 +65,12 @@ export default function FamilySaju() {
 
   const [members, setMembers] = useState<FamilyMember[]>([DEFAULT_MEMBER(), { ...DEFAULT_MEMBER(), role: "아버지" as FamilyRole }]);
   const [result, setResult] = useState<FamilyMember[] | null>(null);
+
+  useEffect(() => {
+    if (result) {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }, [result]);
   const [errors, setErrors] = useState<Record<number, string>>({});
 
   useEffect(() => {
@@ -146,7 +152,7 @@ export default function FamilySaju() {
     });
 
     setResult(resultData);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+
   };
 
   // ===== 입력 화면 =====
