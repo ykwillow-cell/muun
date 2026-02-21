@@ -47,10 +47,37 @@ async function run() {
   
   // 칼럼 상세 페이지 라우트
   const columnRoutes = [
-    '/guide/column-001',
-    '/guide/column-002',
-    '/guide/column-003',
-  ];
+  '/guide/column-001',
+  '/guide/column-002',
+  '/guide/column-003',
+  '/guide/column-004',
+  '/guide/column-005',
+  '/guide/column-006',
+  '/guide/column-007',
+  '/guide/column-008',
+  '/guide/column-009',
+  '/guide/column-010',
+  '/guide/column-011',
+  '/guide/column-012',
+  '/guide/column-013',
+  '/guide/column-014',
+  '/guide/column-015',
+  '/guide/column-016',
+  '/guide/column-017',
+  '/guide/column-018',
+  '/guide/column-019',
+  '/guide/column-020',
+  '/guide/column-021',
+  '/guide/column-022',
+  '/guide/column-023',
+  '/guide/column-024',
+  '/guide/column-025',
+  '/guide/column-026',
+  '/guide/column-027',
+  '/guide/column-028',
+  '/guide/column-029',
+  '/guide/column-030',
+];
 
   // 동적 라우트 (운세 페이지 등) - 안정성을 위해 상위 100개만 우선 처리
   const dynamicRoutes = [];
