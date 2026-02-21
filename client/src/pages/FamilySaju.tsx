@@ -68,7 +68,9 @@ export default function FamilySaju() {
   const resultRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+    console.log("Result state changed:", result);
     if (result && resultRef.current) {
+      console.log("Scrolling to view:", resultRef.current);
       resultRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }, [result]);
