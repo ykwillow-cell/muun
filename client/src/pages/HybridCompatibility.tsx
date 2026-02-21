@@ -162,27 +162,32 @@ export default function HybridCompatibility() {
   }, [form]);
 
   const onSubmit = (data: FormValues) => {
-    const time1 = data.birthTimeUnknown1 ? "12:00" : data.birthTime1;
-    const time2 = data.birthTimeUnknown2 ? "12:00" : data.birthTime2;
-    const date1 = convertToSolarDate(data.birthDate1, time1, data.calendarType1);
-    const date2 = convertToSolarDate(data.birthDate2, time2, data.calendarType2);
-    const saju1 = calculateSaju(date1, data.gender1);
-    const saju2 = calculateSaju(date2, data.gender2);
+    try {
+      const time1 = data.birthTimeUnknown1 ? "12:00" : data.birthTime1;
+      const time2 = data.birthTimeUnknown2 ? "12:00" : data.birthTime2;
+      const date1 = convertToSolarDate(data.birthDate1, time1, data.calendarType1);
+      const date2 = convertToSolarDate(data.birthDate2, time2, data.calendarType2);
+      const saju1 = calculateSaju(date1, data.gender1);
+      const saju2 = calculateSaju(date2, data.gender2);
 
-    const hybrid = analyzeHybridCompatibility(
-      saju1, saju2,
-      data.mbti1 as MBTIType, data.mbti2 as MBTIType,
-      data.name1, data.name2
-    );
+      const hybrid = analyzeHybridCompatibility(
+        saju1, saju2,
+        data.mbti1 as MBTIType, data.mbti2 as MBTIType,
+        data.name1, data.name2
+      );
 
-    setResult({
-      saju1, saju2, hybrid,
-      name1: data.name1, name2: data.name2,
-      mbti1: data.mbti1 as MBTIType, mbti2: data.mbti2 as MBTIType,
-    });
-    window.scrollTo(0, 0);
+      setResult({
+        saju1, saju2, hybrid,
+        name1: data.name1, name2: data.name2,
+        mbti1: data.mbti1 as MBTIType, mbti2: data.mbti2 as MBTIType,
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    try { trackEvent('hybrid_compat_result', 'engagement', 'hybrid_calculated'); } catch {}
+      try { trackEvent('hybrid_compat_result', 'engagement', 'hybrid_calculated'); } catch {}
+    } catch (error) {
+      console.error("Analysis failed:", error);
+      alert("분석 중 오류가 발생했습니다. 입력 정보를 다시 확인해주세요.");
+    }
   };
 
   const commonMaxWidth = "w-full max-w-2xl mx-auto";
@@ -243,65 +248,83 @@ export default function HybridCompatibility() {
                 <CardContent className="p-4 md:p-6">
                   <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
                     {/* 첫 번째 사람 */}
-                    <div className="space-y-3">
+                    <div className="space-y-4">
                       <div className="flex items-center gap-2 text-purple-400">
                         <User className="w-4 h-4" />
                         <span className="text-sm font-bold">첫 번째 분</span>
                       </div>
-                      <div className="grid grid-cols-2 gap-3">
-                        <div className="space-y-1.5">
-                          <Label className="text-white text-xs">이름</Label>
-                          <Input {...form.register("name1")} placeholder="이름" className="bg-white/5 border-white/10 text-white h-10 rounded-xl" />
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-1.5">
+                            <Label className="text-white text-xs">이름</Label>
+                            <Input {...form.register("name1")} placeholder="이름을 입력하세요" className={`bg-white/5 border-white/10 text-white h-11 rounded-xl ${form.formState.errors.name1 ? "border-red-500/50" : ""}`} />
+                            {form.formState.errors.name1 && <p className="text-[10px] text-red-400 ml-1">{form.formState.errors.name1.message}</p>}
+                          </div>
+                          <div className="space-y-1.5">
+                            <Label className="text-white text-xs">성별</Label>
+                            <ToggleGroup type="single" value={form.watch("gender1")} onValueChange={(v) => v && form.setValue("gender1", v as any)} className="bg-white/5 p-1 rounded-xl border border-white/10 h-11">
+                              <ToggleGroupItem value="male" className="flex-1 rounded-lg data-[state=on]:bg-purple-500 text-white text-xs">남성</ToggleGroupItem>
+                              <ToggleGroupItem value="female" className="flex-1 rounded-lg data-[state=on]:bg-purple-500 text-white text-xs">여성</ToggleGroupItem>
+                            </ToggleGroup>
+                          </div>
                         </div>
-                        <div className="space-y-1.5">
-                          <Label className="text-white text-xs">성별</Label>
-                          <ToggleGroup type="single" value={form.watch("gender1")} onValueChange={(v) => v && form.setValue("gender1", v as any)} className="bg-white/5 p-1 rounded-xl border border-white/10 h-10">
-                            <ToggleGroupItem value="male" className="rounded-lg data-[state=on]:bg-purple-500 text-white text-xs">남</ToggleGroupItem>
-                            <ToggleGroupItem value="female" className="rounded-lg data-[state=on]:bg-purple-500 text-white text-xs">여</ToggleGroupItem>
-                          </ToggleGroup>
-                        </div>
-                      </div>
-                      <div className="grid grid-cols-2 gap-3">
-                        <div className="space-y-1.5">
-                          <Label className="text-white text-xs">생년월일</Label>
-                          <DatePickerInput {...form.register("birthDate1")} accentColor="purple" />
-                        </div>
-                        <div className="space-y-1.5">
-                          <Label className="text-white text-xs">MBTI</Label>
-                          <MBTISelector value={form.watch("mbti1")} onChange={(v) => form.setValue("mbti1", v)} accentColor="purple" />
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-1.5">
+                            <Label className="text-white text-xs">생년월일</Label>
+                            <DatePickerInput 
+                              value={form.watch("birthDate1")} 
+                              onChange={(v) => form.setValue("birthDate1", v)} 
+                              accentColor="purple" 
+                            />
+                            {form.formState.errors.birthDate1 && <p className="text-[10px] text-red-400 ml-1">{form.formState.errors.birthDate1.message}</p>}
+                          </div>
+                          <div className="space-y-1.5">
+                            <Label className="text-white text-xs">MBTI</Label>
+                            <MBTISelector value={form.watch("mbti1")} onChange={(v) => form.setValue("mbti1", v)} accentColor="purple" />
+                            {form.formState.errors.mbti1 && <p className="text-[10px] text-red-400 ml-1">{form.formState.errors.mbti1.message}</p>}
+                          </div>
                         </div>
                       </div>
                     </div>
 
-                    <div className="h-px bg-white/5 my-2" />
+                    <div className="h-px bg-white/5 my-4" />
 
                     {/* 두 번째 사람 */}
-                    <div className="space-y-3">
+                    <div className="space-y-4">
                       <div className="flex items-center gap-2 text-pink-400">
                         <User className="w-4 h-4" />
                         <span className="text-sm font-bold">두 번째 분</span>
                       </div>
-                      <div className="grid grid-cols-2 gap-3">
-                        <div className="space-y-1.5">
-                          <Label className="text-white text-xs">이름</Label>
-                          <Input {...form.register("name2")} placeholder="이름" className="bg-white/5 border-white/10 text-white h-10 rounded-xl" />
+                      <div className="space-y-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-1.5">
+                            <Label className="text-white text-xs">이름</Label>
+                            <Input {...form.register("name2")} placeholder="이름을 입력하세요" className={`bg-white/5 border-white/10 text-white h-11 rounded-xl ${form.formState.errors.name2 ? "border-red-500/50" : ""}`} />
+                            {form.formState.errors.name2 && <p className="text-[10px] text-red-400 ml-1">{form.formState.errors.name2.message}</p>}
+                          </div>
+                          <div className="space-y-1.5">
+                            <Label className="text-white text-xs">성별</Label>
+                            <ToggleGroup type="single" value={form.watch("gender2")} onValueChange={(v) => v && form.setValue("gender2", v as any)} className="bg-white/5 p-1 rounded-xl border border-white/10 h-11">
+                              <ToggleGroupItem value="male" className="flex-1 rounded-lg data-[state=on]:bg-pink-500 text-white text-xs">남성</ToggleGroupItem>
+                              <ToggleGroupItem value="female" className="flex-1 rounded-lg data-[state=on]:bg-pink-500 text-white text-xs">여성</ToggleGroupItem>
+                            </ToggleGroup>
+                          </div>
                         </div>
-                        <div className="space-y-1.5">
-                          <Label className="text-white text-xs">성별</Label>
-                          <ToggleGroup type="single" value={form.watch("gender2")} onValueChange={(v) => v && form.setValue("gender2", v as any)} className="bg-white/5 p-1 rounded-xl border border-white/10 h-10">
-                            <ToggleGroupItem value="male" className="rounded-lg data-[state=on]:bg-pink-500 text-white text-xs">남</ToggleGroupItem>
-                            <ToggleGroupItem value="female" className="rounded-lg data-[state=on]:bg-pink-500 text-white text-xs">여</ToggleGroupItem>
-                          </ToggleGroup>
-                        </div>
-                      </div>
-                      <div className="grid grid-cols-2 gap-3">
-                        <div className="space-y-1.5">
-                          <Label className="text-white text-xs">생년월일</Label>
-                          <DatePickerInput {...form.register("birthDate2")} accentColor="pink" />
-                        </div>
-                        <div className="space-y-1.5">
-                          <Label className="text-white text-xs">MBTI</Label>
-                          <MBTISelector value={form.watch("mbti2")} onChange={(v) => form.setValue("mbti2", v)} accentColor="pink" />
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="space-y-1.5">
+                            <Label className="text-white text-xs">생년월일</Label>
+                            <DatePickerInput 
+                              value={form.watch("birthDate2")} 
+                              onChange={(v) => form.setValue("birthDate2", v)} 
+                              accentColor="pink" 
+                            />
+                            {form.formState.errors.birthDate2 && <p className="text-[10px] text-red-400 ml-1">{form.formState.errors.birthDate2.message}</p>}
+                          </div>
+                          <div className="space-y-1.5">
+                            <Label className="text-white text-xs">MBTI</Label>
+                            <MBTISelector value={form.watch("mbti2")} onChange={(v) => form.setValue("mbti2", v)} accentColor="pink" />
+                            {form.formState.errors.mbti2 && <p className="text-[10px] text-red-400 ml-1">{form.formState.errors.mbti2.message}</p>}
+                          </div>
                         </div>
                       </div>
                     </div>
