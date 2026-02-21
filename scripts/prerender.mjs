@@ -45,13 +45,20 @@ async function run() {
     '/guide'
   ];
   
+  // 칼럼 상세 페이지 라우트
+  const columnRoutes = [
+    '/guide/column-001',
+    '/guide/column-002',
+    '/guide/column-003',
+  ];
+
   // 동적 라우트 (운세 페이지 등) - 안정성을 위해 상위 100개만 우선 처리
   const dynamicRoutes = [];
   for (let year = 1970; year <= 2020; year++) {
     dynamicRoutes.push(`/yearly-fortune/${year}-01-01`);
   }
 
-  const allRoutes = [...staticRoutes, ...dynamicRoutes];
+  const allRoutes = [...staticRoutes, ...columnRoutes, ...dynamicRoutes];
   console.log(`📦 Total routes to pre-render: ${allRoutes.length}`);
 
   let successCount = 0;
