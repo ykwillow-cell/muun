@@ -68,10 +68,8 @@ export default function FamilySaju() {
   const resultRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-    console.log("Result state changed:", result);
-    if (result && resultRef.current) {
-      console.log("Scrolling to view:", resultRef.current);
-      resultRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    if (result) {
+      window.scrollTo(0, 0);
     }
   }, [result]);
   const [errors, setErrors] = useState<Record<number, string>>({});
@@ -161,7 +159,7 @@ export default function FamilySaju() {
   // ===== 입력 화면 =====
   if (!result) {
     return (
-      <div ref={resultRef} className="min-h-screen bg-background">
+      <div className="min-h-screen bg-background">
         {/* 헤더 */}
         <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-white/5">
           <div className="max-w-2xl mx-auto px-4 h-14 flex items-center">
@@ -409,7 +407,7 @@ export default function FamilySaju() {
         <meta property="og:description" content="가족 구성원들의 사주를 기반으로 한 가족 조화 분석 결과입니다." />
         <meta name="keywords" content="가족사주, 가족 조화, 오행 단어, 가족 운세, 무운" />
       </Helmet>
-    <div ref={resultRef} className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background">
       {/* '시간 모름' 시 안내 라벨 */}
       {anyUnknownTime && (
         <div className="bg-primary/10 border-b border-primary/20 py-2 px-4 relative z-[60]">
