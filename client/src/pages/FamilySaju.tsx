@@ -67,11 +67,7 @@ export default function FamilySaju() {
   const [result, setResult] = useState<FamilyMember[] | null>(null);
   const resultRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-    if (result) {
-      window.scrollTo(0, 0);
-    }
-  }, [result]);
+
   const [errors, setErrors] = useState<Record<number, string>>({});
 
   useEffect(() => {
@@ -153,7 +149,9 @@ export default function FamilySaju() {
     });
 
     setResult(resultData);
-
+    setTimeout(() => {
+      resultRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, 0);
   };
 
   // ===== 입력 화면 =====
