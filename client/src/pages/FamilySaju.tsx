@@ -163,10 +163,9 @@ export default function FamilySaju() {
   };
 
   // ===== 입력 화면 =====
-  if (!result) {
+  i     if (!result) {
     return (
-      <div ref={resultRef} className="min-h-screen bg-background">
-        {/* 헤더 */}
+      <div className="min-h-screen bg-background text-white"> {/* 헤더 */}}
         <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-white/5">
           <div className="max-w-2xl mx-auto px-4 h-14 flex items-center">
             <Link href="/">
@@ -432,7 +431,8 @@ export default function FamilySaju() {
             가족사주 분석 결과
           </h1>
         </div>
-      </div        {/* 소개 */}
+        </div>
+        {/* 소개 */}
         <div className="max-w-2xl mx-auto px-4 py-6 space-y-6">       {/* 가족 종합 점수 */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
           <Card className="bg-gradient-to-br from-primary/10 to-yellow-500/5 border-primary/20 overflow-hidden">
