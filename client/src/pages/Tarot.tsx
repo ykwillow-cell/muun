@@ -164,11 +164,13 @@ export default function Tarot() {
     setIsSaved(false);
   };
 
-  // 덱을 3줄로 나눕니다.
+  // 덱을 4줄로 나눕니다 (78장 ÷ 4 = 약 19-20장씩)
+  const cardsPerRow = Math.ceil(shuffledDeck.length / 4);
   const rows = [
-    shuffledDeck.slice(0, 26),
-    shuffledDeck.slice(26, 52),
-    shuffledDeck.slice(52, 78)
+    shuffledDeck.slice(0, cardsPerRow),
+    shuffledDeck.slice(cardsPerRow, cardsPerRow * 2),
+    shuffledDeck.slice(cardsPerRow * 2, cardsPerRow * 3),
+    shuffledDeck.slice(cardsPerRow * 3)
   ];
 
   return (
@@ -299,13 +301,13 @@ export default function Tarot() {
                               whileTap={{ scale: 0.95 }}
                               onClick={() => handleSelectCard(card)}
                               className={`
-                                relative flex-shrink-0 w-[40px] h-[60px] md:w-[48px] md:h-[72px] lg:w-[56px] lg:h-[84px] xl:w-[60px] xl:h-[90px]
+                                relative flex-shrink-0 w-[32px] h-[48px] md:w-[36px] md:h-[54px] lg:w-[40px] lg:h-[60px] xl:w-[44px] xl:h-[66px]
                                 transition-all duration-300
                                 ${isSelected ? "z-20" : "z-0"}
                               `}
                               style={{ 
-                                // 모바일에서 카드 겹치기를 더 촘촘하게 (-18px)
-                                marginLeft: cardIndex === 0 ? 0 : '-18px', 
+                                // 카드를 더 촘촘하게 배치 (-10px)
+                                marginLeft: cardIndex === 0 ? 0 : '-10px', 
                                 // 데스크톱에서는 기존대로
                                 rotate: rowIndex % 2 === 0 ? (cardIndex % 2 === 0 ? 1 : -1) : (cardIndex % 2 === 0 ? -1 : 1)
                               }}
