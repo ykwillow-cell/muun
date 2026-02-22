@@ -123,8 +123,34 @@ const DreamInterpretation: React.FC = () => {
   return (
     <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased">
       <Helmet>
-        <title>[가입X/100%무료] 꿈해몽 검색 - 무운</title>
-        <meta name="description" content="가입/결제 없이 2,000개 이상의 방대한 데이터로 당신의 꿈을 무료로 해몽해 보세요. 길몽, 흉몽 분석과 행운 지수까지 확인 가능합니다." />
+        <title>{selectedDream ? `[가입X] ${selectedDream.keyword} 꿈해몽 무료 풀이 - 무운` : "[가입X/100%무료] 꿈해몽 검색 - 무운"}</title>
+        <meta name="description" content={selectedDream ? `${selectedDream.keyword} 꿈해몽: ${selectedDream.interpretation.slice(0, 100)}... 가입 없이 100% 무료로 확인하세요.` : "가입/결제 없이 1,000개 이상의 방대한 데이터로 당신의 꿈을 무료로 해몽해 보세요. 길몽, 흉몽 분석과 행운 지수까지 확인 가능합니다."} />
+        {selectedDream && (
+          <script type="application/ld+json">
+            {JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Article",
+              "headline": `${selectedDream.keyword} 꿈해몽 무료 풀이`,
+              "description": selectedDream.interpretation,
+              "author": {
+                "@type": "Organization",
+                "name": "무운"
+              },
+              "publisher": {
+                "@type": "Organization",
+                "name": "무운",
+                "logo": {
+                  "@type": "ImageObject",
+                  "url": "https://muunsaju.com/logo.png"
+                }
+              },
+              "mainEntityOfPage": {
+                "@type": "WebPage",
+                "@id": `https://muunsaju.com/dream?q=${encodeURIComponent(selectedDream.keyword)}`
+              }
+            })}
+          </script>
+        )}
       </Helmet>
 
       {/* Hero Section */}
