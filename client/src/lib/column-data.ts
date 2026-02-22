@@ -923,7 +923,9 @@ export const columns: ColumnData[] = [
 </div>`,
     relatedServiceUrl: "/saju"
   }
-(id: string): ColumnData | undefined {
+];
+
+export function getColumnById(id: string): ColumnData | undefined {
   return columns.find(col => col.id === id);
 }
 
