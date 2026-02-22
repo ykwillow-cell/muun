@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useCanonical } from '@/lib/use-canonical';
+import { useLocation } from 'wouter';
 
 const categories = [
   { id: 'animal', name: '동물', icon: PawPrint, color: 'text-orange-400', bg: 'bg-orange-400/10' },
@@ -90,18 +91,16 @@ const DreamInterpretation: React.FC = () => {
     return [...exactMatches, ...partialMatches];
   }, [searchTerm, activeCategory]);
 
+  const [, setLocation] = useLocation();
+
   const handleSelectDream = (dream: DreamData) => {
-    setSelectedDream(dream);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // 상세 페이지로 이동
+    setLocation(`/dream/${encodeURIComponent(dream.keyword)}`);
   };
 
   const handleTagClick = (tag: string) => {
-    setSearchTerm(tag);
-    setActiveCategory(null);
-    const exactMatch = Object.values(dreamData).find(d => d.keyword === tag);
-    if (exactMatch) {
-      handleSelectDream(exactMatch);
-    }
+    // 상세 페이지로 직접 이동
+    setLocation(`/dream/${encodeURIComponent(tag)}`);
   };
 
   const handleCategoryClick = (catId: string) => {

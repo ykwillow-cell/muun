@@ -26,7 +26,7 @@ import About from "./pages/About";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Contact from "./pages/Contact";
-import FamilySaju from "./pages/FamilySaju";
+import DreamDetail from "./pages/DreamDetail";
 import HybridCompatibility from "./pages/HybridCompatibility";
 import FortuneDictionary from "./pages/FortuneDictionary";
 import DictionaryDetail from "./pages/DictionaryDetail";
@@ -78,6 +78,7 @@ function Router() {
       <Route path="/guide" component={Guide} />
       <Route path="/guide/:id" component={GuideDetail} />
       <Route path="/dream" component={DreamInterpretation} />
+      <Route path="/dream/:keyword" component={DreamDetail} />
       <Route component={NotFound} />
     </Switch>
   );
