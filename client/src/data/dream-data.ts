@@ -1200,3 +1200,4 @@ export const defaultDream: DreamData = {
   "category": "etc",
   "grade": "good",
   "score": 50
+};
