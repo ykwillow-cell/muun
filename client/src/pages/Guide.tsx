@@ -125,15 +125,12 @@ export default function Guide() {
                           <img
                             src={column.thumbnail}
                             alt={column.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                            onError={(e) => {
-                              const target = e.target as HTMLImageElement;
-                              target.style.display = 'none';
-                            }}
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-purple-500/10 flex items-center justify-center text-white/30 text-xs font-semibold pointer-events-none">
-                            <BookOpen className="w-8 h-8" />
-                          </div>
+	                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+	                          />
+	                          <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-300" />
+	                          <div className="absolute inset-0 flex items-center justify-center text-white/10 group-hover:text-white/20 pointer-events-none">
+	                            <BookOpen className="w-12 h-12 opacity-30" />
+	                          </div>
                         </div>
 
                         {/* 콘텐츠 */}
