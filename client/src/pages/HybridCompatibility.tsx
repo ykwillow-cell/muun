@@ -135,6 +135,25 @@ export default function HybridCompatibility() {
   });
 
   const onSubmit = async (data: FormValues) => {
+    if (!form.formState.isValid) {
+      const errors = form.formState.errors;
+      let errorMessages: string[] = [];
+      
+      if (errors.name1) errorMessages.push('첫 번째 분 이름을 입력해주세요');
+      if (errors.gender1) errorMessages.push('첫 번째 분 성별을 선택해주세요');
+      if (errors.birthDate1) errorMessages.push('첫 번째 분 생년월일을 입력해주세요');
+      if (errors.mbti1) errorMessages.push('첫 번째 분 MBTI를 선택해주세요');
+      if (errors.name2) errorMessages.push('두 번째 분 이름을 입력해주세요');
+      if (errors.gender2) errorMessages.push('두 번째 분 성별을 선택해주세요');
+      if (errors.birthDate2) errorMessages.push('두 번째 분 생년월일을 입력해주세요');
+      if (errors.mbti2) errorMessages.push('두 번째 분 MBTI를 선택해주세요');
+      
+      if (errorMessages.length > 0) {
+        alert('다음 정보를 입력해주세요:\n\n' + errorMessages.join('\n'));
+        return;
+      }
+    }
+    
     try {
       let date1 = new Date(data.birthDate1);
       if (data.calendarType1 === "lunar") {
