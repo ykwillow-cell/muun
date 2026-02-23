@@ -93,13 +93,31 @@ export default function HybridCompatibilityPage() {
 
   const handleSubmit = (data: FormValues) => {
     try {
-      // 날짜 파싱
-      const [year1, month1, day1] = data.birthDate1.split('-').map(Number);
-      const [year2, month2, day2] = data.birthDate2.split('-').map(Number);
+      // 날짜 문자열 정규화 (Compatibility.tsx 패턴 사용)
+      let birthDateStr1 = data.birthDate1;
+      if (typeof birthDateStr1 !== 'string') {
+        if (birthDateStr1 instanceof Date) {
+          birthDateStr1 = birthDateStr1.toISOString().split('T')[0];
+        } else {
+          birthDateStr1 = String(birthDateStr1);
+        }
+      }
+      let birthDateStr2 = data.birthDate2;
+      if (typeof birthDateStr2 !== 'string') {
+        if (birthDateStr2 instanceof Date) {
+          birthDateStr2 = birthDateStr2.toISOString().split('T')[0];
+        } else {
+          birthDateStr2 = String(birthDateStr2);
+        }
+      }
       
+      // 날짜 파싱
+      const [year1, month1, day1] = birthDateStr1.split('-').map(Number);
+      const [year2, month2, day2] = birthDateStr2.split('-').map(Number);
       const birthDateObj1 = new Date(year1, month1 - 1, day1);
       const birthDateObj2 = new Date(year2, month2 - 1, day2);
       
+      // convertToSolarDate는 문자열 형식의 날짜를 받아야 함 (YYYY-MM-DD)
       const birthDateStrForConverter1 = `${birthDateObj1.getFullYear()}-${String(birthDateObj1.getMonth() + 1).padStart(2, '0')}-${String(birthDateObj1.getDate()).padStart(2, '0')}`;
       const birthDateStrForConverter2 = `${birthDateObj2.getFullYear()}-${String(birthDateObj2.getMonth() + 1).padStart(2, '0')}-${String(birthDateObj2.getDate()).padStart(2, '0')}`;
       
