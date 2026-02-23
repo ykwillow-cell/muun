@@ -22,6 +22,8 @@ interface DatePickerInputProps {
  */
 const DatePickerInput = forwardRef<HTMLInputElement, DatePickerInputProps>(
   ({ value, onChange, onBlur, name, id, className, placeholder, accentColor = "primary" }, ref) => {
+    // id가 없으면 name을 기반으로 생성
+    const elementId = id || name || 'date-picker-input';
     const hiddenDateRef = useRef<HTMLInputElement>(null);
     const [textValue, setTextValue] = useState(value || "");
 
@@ -113,7 +115,7 @@ const DatePickerInput = forwardRef<HTMLInputElement, DatePickerInputProps>(
           ref={ref}
           type="text"
           inputMode="numeric"
-          id={id}
+          id={elementId}
           name={name}
           value={textValue}
           onChange={handleTextChange}
