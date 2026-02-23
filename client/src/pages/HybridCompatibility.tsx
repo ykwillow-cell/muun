@@ -98,10 +98,12 @@ function MBTISelector({ value, onChange, accentColor = "purple" }: { value: stri
                 key={type}
                 type="button"
                 onClick={() => onChange(type)}
-                className={`text-xs py-1.5 px-1 rounded-lg border transition-all font-medium ${
+                className={`px-2 py-2 rounded-lg text-xs font-bold transition-all ${
                   value === type
-                    ? `bg-${accentColor}-500 border-${accentColor}-500 text-white`
-                    : 'bg-white/5 border-white/10 text-white/70 hover:border-white/20'
+                    ? accentColor === "purple"
+                      ? "bg-purple-500 text-white"
+                      : "bg-pink-500 text-white"
+                    : "bg-white/5 text-white/60 hover:bg-white/10"
                 }`}
               >
                 {type}
@@ -134,25 +136,8 @@ export default function HybridCompatibility() {
     },
   });
 
-  const onSubmit = async (data: FormValues) => {
-    if (!form.formState.isValid) {
-      const errors = form.formState.errors;
-      let errorMessages: string[] = [];
-      
-      if (errors.name1) errorMessages.push('첫 번째 분 이름을 입력해주세요');
-      if (errors.gender1) errorMessages.push('첫 번째 분 성별을 선택해주세요');
-      if (errors.birthDate1) errorMessages.push('첫 번째 분 생년월일을 입력해주세요');
-      if (errors.mbti1) errorMessages.push('첫 번째 분 MBTI를 선택해주세요');
-      if (errors.name2) errorMessages.push('두 번째 분 이름을 입력해주세요');
-      if (errors.gender2) errorMessages.push('두 번째 분 성별을 선택해주세요');
-      if (errors.birthDate2) errorMessages.push('두 번째 분 생년월일을 입력해주세요');
-      if (errors.mbti2) errorMessages.push('두 번째 분 MBTI를 선택해주세요');
-      
-      if (errorMessages.length > 0) {
-        alert('다음 정보를 입력해주세요:\n\n' + errorMessages.join('\n'));
-        return;
-      }
-    }
+  const handleSubmit = async (data: FormValues) => {
+    console.log("폼 제출 시작:", data);
     
     try {
       let date1 = new Date(data.birthDate1);
@@ -177,6 +162,8 @@ export default function HybridCompatibility() {
         date2 = new Date(solarDate.year, solarDate.month - 1, solarDate.day);
       }
 
+      console.log("날짜 변환 완료:", date1, date2);
+
       const saju1 = calculateSaju(
         date1,
         data.birthTimeUnknown1 ? "12:00" : data.birthTime1,
@@ -188,11 +175,15 @@ export default function HybridCompatibility() {
         data.gender2 === "male"
       );
 
+      console.log("사주 계산 완료:", saju1, saju2);
+
       const hybrid = analyzeHybridCompatibility(
         saju1, saju2,
         data.mbti1 as MBTIType, data.mbti2 as MBTIType,
         data.name1, data.name2
       );
+
+      console.log("하이브리드 분석 완료:", hybrid);
 
       setResult(hybrid);
       trackCustomEvent("hybrid_compatibility_analyzed", {
@@ -369,37 +360,29 @@ export default function HybridCompatibility() {
                     }`}
                     onClick={() => setExpandedSection(expandedSection === key ? null : key)}
                   >
-                    <CardHeader className="border-b border-white/5 px-4 py-3">
+                    <CardHeader className="px-4 py-3">
                       <div className="flex items-center justify-between">
-                        <CardTitle className="text-white flex items-center gap-2 text-sm">
-                          <span className="text-xs font-bold text-purple-400">{section.score}점</span>
+                        <CardTitle className="text-white text-sm flex items-center gap-2">
+                          {key === 'communication' && <MessageCircle className="w-4 h-4 text-blue-400" />}
+                          {key === 'conflictResolution' && <Shield className="w-4 h-4 text-red-400" />}
+                          {key === 'valuesAndReality' && <Lightbulb className="w-4 h-4 text-yellow-400" />}
+                          {key === 'dailyRhythm' && <Clock className="w-4 h-4 text-green-400" />}
                           {section.title}
                         </CardTitle>
-                        <ChevronDown 
-                          className={`w-4 h-4 text-white/60 transition-transform ${
-                            expandedSection === key ? 'rotate-180' : ''
-                          }`}
-                        />
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-bold text-white/60">{section.score}점</span>
+                          <ChevronDown className={`w-4 h-4 text-white/60 transition-transform ${expandedSection === key ? 'rotate-180' : ''}`} />
+                        </div>
                       </div>
                     </CardHeader>
-                    <AnimatePresence>
-                      {expandedSection === key && (
-                        <motion.div
-                          initial={{ opacity: 0, height: 0 }}
-                          animate={{ opacity: 1, height: "auto" }}
-                          exit={{ opacity: 0, height: 0 }}
-                          transition={{ duration: 0.3 }}
-                        >
-                          <CardContent className="p-4 space-y-3 border-t border-white/5">
-                            <p className="text-sm text-white/80 leading-relaxed">{section.summary}</p>
-                            <div className="p-3 rounded-lg bg-white/5 border border-white/10">
-                              <p className="text-xs font-bold text-purple-300 mb-2">💡 조언</p>
-                              <p className="text-xs text-white/70 leading-relaxed">{section.advice}</p>
-                            </div>
-                          </CardContent>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
+                    {expandedSection === key && (
+                      <CardContent className="px-4 py-3 border-t border-white/5 space-y-3">
+                        <p className="text-sm text-white/80">{section.summary}</p>
+                        <div className="p-3 rounded-lg bg-white/5 border border-white/10">
+                          <p className="text-xs text-white/70">{section.advice}</p>
+                        </div>
+                      </CardContent>
+                    )}
                   </Card>
                 ))}
               </div>
@@ -408,122 +391,63 @@ export default function HybridCompatibility() {
               <Card className="glass-panel border-white/5 shadow-xl rounded-2xl overflow-hidden">
                 <CardHeader className="border-b border-white/5 px-4 py-3">
                   <CardTitle className="text-white flex items-center gap-2 text-base">
-                    <Clock className="w-4 h-4 text-cyan-400" /> 인연 타임라인
+                    <Heart className="w-4 h-4 text-red-400" /> 인연 타임라인
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-6 space-y-4">
                   <div className="space-y-3">
-                    {[
-                      { label: '썸', score: hybrid.timeline.썸 },
-                      { label: '연애', score: hybrid.timeline.연애 },
-                      { label: '장기 안정기', score: hybrid.timeline.장기안정기 }
-                    ].map((phase, i) => (
-                      <div key={i} className="space-y-1">
-                        <div className="flex justify-between items-center text-xs">
-                          <span className="text-white/70 font-medium">{phase.label}</span>
-                          <span className="text-white font-bold">{phase.score}점</span>
-                        </div>
-                        <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
-                          <motion.div
-                            initial={{ width: 0 }}
-                            animate={{ width: `${phase.score}%` }}
-                            transition={{ duration: 1, delay: i * 0.2 }}
-                            className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"
-                          />
-                        </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-white/70">썸</span>
+                      <div className="flex-1 mx-3 h-2 bg-white/10 rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-purple-500 to-pink-500" style={{ width: `${hybrid.timeline.썸}%` }} />
                       </div>
-                    ))}
+                      <span className="text-sm font-bold text-white">{hybrid.timeline.썸}점</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-white/70">연애</span>
+                      <div className="flex-1 mx-3 h-2 bg-white/10 rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-purple-500 to-pink-500" style={{ width: `${hybrid.timeline.연애}%` }} />
+                      </div>
+                      <span className="text-sm font-bold text-white">{hybrid.timeline.연애}점</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-white/70">장기안정기</span>
+                      <div className="flex-1 mx-3 h-2 bg-white/10 rounded-full overflow-hidden">
+                        <div className="h-full bg-gradient-to-r from-purple-500 to-pink-500" style={{ width: `${hybrid.timeline.장기안정기}%` }} />
+                      </div>
+                      <span className="text-sm font-bold text-white">{hybrid.timeline.장기안정기}점</span>
+                    </div>
                   </div>
-                  <p className="text-sm text-white/70 leading-relaxed pt-2 border-t border-white/10">
-                    {hybrid.timeline.description}
-                  </p>
+                  <div className="p-3 rounded-lg bg-white/5 border border-white/10">
+                    <p className="text-sm text-white/80">{hybrid.timeline.description}</p>
+                  </div>
                 </CardContent>
               </Card>
 
               {/* ⑤ 무운의 한 줄 처방전 */}
-              <Card className="glass-panel border-white/5 shadow-xl rounded-2xl overflow-hidden bg-gradient-to-br from-amber-500/10 to-orange-500/10">
+              <Card className="glass-panel border-white/5 shadow-xl rounded-2xl overflow-hidden">
                 <CardHeader className="border-b border-white/5 px-4 py-3">
                   <CardTitle className="text-white flex items-center gap-2 text-base">
-                    <Lightbulb className="w-4 h-4 text-amber-400" /> 무운의 처방전
+                    <Sparkles className="w-4 h-4 text-yellow-400" /> 무운의 한 줄 처방전
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-6 space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="p-3 rounded-lg bg-white/5 border border-white/10">
-                      <p className="text-xs font-bold text-amber-300 mb-2">🎨 행운의 컬러</p>
-                      <p className="text-sm text-white/80">{hybrid.prescription.luckyColor}</p>
+                  <div className="space-y-3">
+                    <div className="p-3 rounded-lg bg-purple-500/10 border border-purple-500/20">
+                      <p className="text-xs text-white/60 mb-1">행운의 컬러/아이템</p>
+                      <p className="text-sm text-white">{hybrid.prescription.luckyColor}</p>
                     </div>
-                    <div className="p-3 rounded-lg bg-white/5 border border-white/10">
-                      <p className="text-xs font-bold text-amber-300 mb-2">✨ 행운의 아이템</p>
-                      <p className="text-sm text-white/80">{hybrid.prescription.luckyItem}</p>
+                    <div className="p-3 rounded-lg bg-pink-500/10 border border-pink-500/20">
+                      <p className="text-xs text-white/60 mb-1">행운의 아이템</p>
+                      <p className="text-sm text-white">{hybrid.prescription.luckyItem}</p>
                     </div>
-                    <div className="p-3 rounded-lg bg-white/5 border border-white/10">
-                      <p className="text-xs font-bold text-amber-300 mb-2">💬 대화 팁</p>
-                      <p className="text-sm text-white/80">{hybrid.prescription.tipForPartner}</p>
+                    <div className="p-3 rounded-lg bg-blue-500/10 border border-blue-500/20">
+                      <p className="text-xs text-white/60 mb-1">상대방 대하는 팁</p>
+                      <p className="text-sm text-white">{hybrid.prescription.tipForPartner}</p>
                     </div>
                   </div>
                 </CardContent>
               </Card>
-
-              {/* 최종 조언 */}
-              <Card className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 border-purple-500/20 rounded-2xl overflow-hidden">
-                <CardContent className="p-6 text-center space-y-3">
-                  <Heart className="w-8 h-8 text-pink-400 mx-auto" />
-                  <p className="text-sm text-white/90 leading-relaxed">{hybrid.finalAdvice}</p>
-                </CardContent>
-              </Card>
-
-              {/* 추천 활동 */}
-              {hybrid.recommendations.length > 0 && (
-                <Card className="glass-panel border-white/5 rounded-2xl overflow-hidden">
-                  <CardHeader className="border-b border-white/5 px-4 py-3">
-                    <CardTitle className="text-white flex items-center gap-2 text-base">
-                      <Heart className="w-4 h-4 text-pink-400" /> 추천 활동
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="p-4 space-y-2">
-                    {hybrid.recommendations.map((rec, i) => (
-                      <div key={i} className="p-3 rounded-lg bg-white/5 border border-white/10">
-                        <p className="text-sm text-white/80">· {rec}</p>
-                      </div>
-                    ))}
-                  </CardContent>
-                </Card>
-              )}
-
-              {/* 세부 점수 */}
-              <Card className="glass-panel border-white/5 rounded-2xl overflow-hidden">
-                <CardHeader className="border-b border-white/5 px-4 py-3">
-                  <CardTitle className="text-white flex items-center gap-2 text-base">
-                    <Star className="w-4 h-4 text-yellow-400" /> 세부 점수
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-4 grid grid-cols-2 gap-4">
-                  <div className="text-center">
-                    <ScoreCircle score={hybrid.detailScores.love} label="사랑" size={90} />
-                  </div>
-                  <div className="text-center">
-                    <ScoreCircle score={hybrid.detailScores.communication} label="소통" size={90} />
-                  </div>
-                  <div className="text-center">
-                    <ScoreCircle score={hybrid.detailScores.marriage} label="결혼" size={90} />
-                  </div>
-                  <div className="text-center">
-                    <ScoreCircle score={hybrid.detailScores.crisis} label="위기극복" size={90} />
-                  </div>
-                </CardContent>
-              </Card>
-
-              <div className="flex gap-3 pt-4">
-                <Button onClick={() => setResult(null)} variant="outline" className="flex-1 h-12 border-white/10 text-white hover:bg-white/5 rounded-xl">
-                  다시 분석하기
-                </Button>
-                <Link href="/" className="flex-1">
-                  <Button className="w-full h-12 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-bold rounded-xl">
-                    홈으로
-                  </Button>
-                </Link>
-              </div>
             </motion.div>
           </main>
         </div>
@@ -548,7 +472,7 @@ export default function HybridCompatibility() {
         <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
           <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
             <Link href="/">
-              <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/10 min-w-[44px] min-h-[44px]">
+              <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 min-w-[44px] min-h-[44px]">
                 <ChevronLeft className="h-5 w-5" />
               </Button>
             </Link>
@@ -561,13 +485,9 @@ export default function HybridCompatibility() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className={`${commonMaxWidth} space-y-5`}
+            className={`${commonMaxWidth} space-y-6`}
           >
-            <div className="text-center space-y-2">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 backdrop-blur-xl">
-                <Brain className="w-3 h-3 text-purple-400" />
-                <span className="text-[10px] md:text-xs font-bold tracking-wider text-purple-400 uppercase">사주 x MBTI</span>
-              </div>
+            <div className="space-y-2">
               <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-white">사주xMBTI 궁합</h2>
               <p className="text-muted-foreground text-xs md:text-sm">
                 전통 사주와 MBTI 성격 분석을 결합한 하이브리드 궁합
@@ -584,7 +504,7 @@ export default function HybridCompatibility() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-4 md:p-6">
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+                <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5">
                   {/* 첫 번째 사람 */}
                   <div className="space-y-4">
                     <div className="flex items-center gap-2 text-purple-400">
