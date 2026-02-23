@@ -185,6 +185,7 @@ export default function HybridCompatibility() {
       });
     } catch (error) {
       console.error("분석 오류:", error);
+      alert(`분석 중 오류가 발생했습니다: ${error instanceof Error ? error.message : '알 수 없는 오류'}`);
     }
   };
 
