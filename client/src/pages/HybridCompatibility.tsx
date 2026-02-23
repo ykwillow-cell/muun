@@ -515,7 +515,7 @@ export default function HybridCompatibility() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-1.5">
                           <Label className="text-white text-xs">이름</Label>
-                          <Input {...form.register("name1")} placeholder="이름을 입력하세요" className={`bg-white/5 border-white/10 text-white h-11 rounded-xl ${form.formState.errors.name1 ? "border-red-500/50" : ""}`} />
+                          <Input {...form.register("name1")} name="name1" placeholder="이름을 입력하세요" className={`bg-white/5 border-white/10 text-white h-11 rounded-xl ${form.formState.errors.name1 ? "border-red-500/50" : ""}`} />
                           {form.formState.errors.name1 && <p className="text-[10px] text-red-400 ml-1 font-medium">{form.formState.errors.name1.message}</p>}
                         </div>
                         <div className="space-y-1.5">
@@ -583,7 +583,7 @@ export default function HybridCompatibility() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="space-y-1.5">
                           <Label className="text-white text-xs">이름</Label>
-                          <Input {...form.register("name2")} placeholder="이름을 입력하세요" className={`bg-white/5 border-white/10 text-white h-11 rounded-xl ${form.formState.errors.name2 ? "border-red-500/50" : ""}`} />
+                          <Input {...form.register("name2")} name="name2" placeholder="이름을 입력하세요" className={`bg-white/5 border-white/10 text-white h-11 rounded-xl ${form.formState.errors.name2 ? "border-red-500/50" : ""}`} />
                           {form.formState.errors.name2 && <p className="text-[10px] text-red-400 ml-1 font-medium">{form.formState.errors.name2.message}</p>}
                         </div>
                         <div className="space-y-1.5">
