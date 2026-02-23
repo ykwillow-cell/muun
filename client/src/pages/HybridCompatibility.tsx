@@ -591,7 +591,11 @@ export default function HybridCompatibility() {
                           <Label className="text-white text-xs">생년월일</Label>
                           <DatePickerInput 
                             value={form.watch("birthDate1")} 
-                            onChange={(v) => form.setValue("birthDate1", v)} 
+                            onChange={(v) => {
+                              if (v && v.target && v.target.value) {
+                                form.setValue("birthDate1", v.target.value);
+                              }
+                            }}
                             accentColor="purple" 
                           />
                           {form.formState.errors.birthDate1 && <p className="text-[10px] text-red-400 ml-1 font-medium">{form.formState.errors.birthDate1.message}</p>}
@@ -655,7 +659,11 @@ export default function HybridCompatibility() {
                           <Label className="text-white text-xs">생년월일</Label>
                           <DatePickerInput 
                             value={form.watch("birthDate2")} 
-                            onChange={(v) => form.setValue("birthDate2", v)} 
+                            onChange={(v) => {
+                              if (v && v.target && v.target.value) {
+                                form.setValue("birthDate2", v.target.value);
+                              }
+                            }}
                             accentColor="pink" 
                           />
                           {form.formState.errors.birthDate2 && <p className="text-[10px] text-red-400 ml-1 font-medium">{form.formState.errors.birthDate2.message}</p>}
