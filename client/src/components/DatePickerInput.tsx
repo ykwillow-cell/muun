@@ -14,15 +14,14 @@ interface DatePickerInputProps {
 }
 
 /**
- * DatePickerInput - 키보드 직접 입력 + 캘린더 아이콘 클릭으로 날짜 선택 가능한 컴포넌트
+ * DatePickerInput - react-hook-form과 완벽 호환되는 날짜 입력 컴포넌트
  * 
  * - 텍스트 필드에 YYYY-MM-DD 형식으로 직접 입력 가능
  * - 캘린더 아이콘 클릭 시 네이티브 date picker 열림
- * - react-hook-form의 register와 호환
+ * - forwardRef로 내부 input을 직접 노출하여 react-hook-form과 완벽 호환
  */
 const DatePickerInput = forwardRef<HTMLInputElement, DatePickerInputProps>(
   ({ value, onChange, onBlur, name, id, className, placeholder, accentColor = "primary" }, ref) => {
-    // id가 없으면 name을 기반으로 생성
     const elementId = id || name || 'date-picker-input';
     const hiddenDateRef = useRef<HTMLInputElement>(null);
     const [textValue, setTextValue] = useState(value || "");
@@ -52,27 +51,35 @@ const DatePickerInput = forwardRef<HTMLInputElement, DatePickerInputProps>(
       
       setTextValue(formatted);
 
-      // YYYY-MM-DD 형식 완성 시 onChange 트리거 (00 포함 허용)
+      // YYYY-MM-DD 형식 완성 시 onChange 트리거
       if (/^\d{4}-\d{2}-\d{2}$/.test(formatted)) {
         const syntheticEvent = {
-          target: { value: formatted, name: name || "" },
+          target: { 
+            value: formatted, 
+            name: name || "",
+            id: elementId,
+          },
         } as React.ChangeEvent<HTMLInputElement>;
         onChange?.(syntheticEvent);
       }
-    }, [name, onChange]);
+    }, [name, onChange, elementId]);
 
     // 텍스트 필드 blur 시 유효성 검사 및 onChange 트리거
     const handleTextBlur = useCallback((e: React.FocusEvent<HTMLInputElement>) => {
       const val = textValue;
-      // YYYY-MM-DD 형식이면 onChange 트리거 (00 포함 허용)
+      // YYYY-MM-DD 형식이면 onChange 트리거
       if (/^\d{4}-\d{2}-\d{2}$/.test(val)) {
         const syntheticEvent = {
-          target: { value: val, name: name || "" },
+          target: { 
+            value: val, 
+            name: name || "",
+            id: elementId,
+          },
         } as React.ChangeEvent<HTMLInputElement>;
         onChange?.(syntheticEvent);
       }
-      onBlur?.(e as any);
-    }, [textValue, name, onChange, onBlur])
+      onBlur?.(e);
+    }, [textValue, name, onChange, onBlur, elementId]);
 
     // 캘린더 아이콘 클릭 → 숨겨진 date input 열기
     const handleCalendarClick = useCallback(() => {
@@ -88,11 +95,15 @@ const DatePickerInput = forwardRef<HTMLInputElement, DatePickerInputProps>(
       if (dateVal) {
         setTextValue(dateVal);
         const syntheticEvent = {
-          target: { value: dateVal, name: name || "" },
+          target: { 
+            value: dateVal, 
+            name: name || "",
+            id: elementId,
+          },
         } as React.ChangeEvent<HTMLInputElement>;
         onChange?.(syntheticEvent);
       }
-    }, [name, onChange]);
+    }, [name, onChange, elementId]);
 
     // 포커스 색상 맵
     const focusColorMap: Record<string, string> = {
@@ -110,7 +121,7 @@ const DatePickerInput = forwardRef<HTMLInputElement, DatePickerInputProps>(
 
     return (
       <div className="relative">
-        {/* 보이는 텍스트 입력 필드 */}
+        {/* 보이는 텍스트 입력 필드 - ref 직접 연결 */}
         <input
           ref={ref}
           type="text"
@@ -138,6 +149,7 @@ const DatePickerInput = forwardRef<HTMLInputElement, DatePickerInputProps>(
           onClick={handleCalendarClick}
           className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-lg hover:bg-white/10 transition-colors"
           aria-label="캘린더에서 날짜 선택"
+          tabIndex={-1}
         >
           <Calendar className="w-4 h-4 text-white/50 hover:text-white/80 transition-colors" />
         </button>
