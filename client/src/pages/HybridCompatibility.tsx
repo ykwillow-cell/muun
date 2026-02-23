@@ -639,7 +639,15 @@ export default function HybridCompatibility() {
                     </div>
                   </div>
 
-                  <Button type="submit" className="w-full h-12 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-bold rounded-xl hover:opacity-90 transition-opacity">
+                  <Button 
+                    type="submit" 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      console.log('버튼 클릭됨');
+                      form.handleSubmit(handleSubmit)();
+                    }}
+                    className="w-full h-12 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-bold rounded-xl hover:opacity-90 transition-opacity cursor-pointer"
+                  >
                     궁합 분석하기
                   </Button>
                 </form>
