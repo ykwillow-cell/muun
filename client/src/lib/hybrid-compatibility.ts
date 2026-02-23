@@ -429,12 +429,12 @@ function generateDailyRhythmSummary(saju1: SajuResult, mbti1: MBTIType, saju2: S
 
   if (p1PJ === p2PJ) {
     if (p1PJ === 'J') {
-      summary = `두 분 모두 계획적인(J) 성향이라 일상의 리듬이 체계적이고 안정적일 거예요. ${name1}님은 ${getElementRhythmStyle(saju1.dayElement.element)}이고, ${name2}님은 ${getElementRhythmStyle(saju2.dayElement.element)}이라, 미리 계획을 세우고 정해진 루틴을 따르는 것을 선호해요. 하지만, 때로는 너무 계획에 얽매여 유연성이 부족하거나, 즉흥적인 즐거움을 놓칠 수 있으니 주의하세요.`;
+      summary = `두 분 모두 계획적인(J) 성향이라 일상의 리듬이 체계적이고 안정적일 거예요. ${name1}님은 ${getElementRhythmStyle(saju1.dayPillar.stemElement)}이고, ${name2}님은 ${getElementRhythmStyle(saju2.dayPillar.stemElement)}이라, 미리 계획을 세우고 정해진 루틴을 따르는 것을 선호해요. 하지만, 때로는 너무 계획에 얽매여 유연성이 부족하거나, 즉흥적인 즐거움을 놓칠 수 있으니 주의하세요.`;
     } else {
-      summary = `두 분 모두 즉흥적인(P) 성향이라 일상의 리듬이 자유롭고 유연할 거예요. ${name1}님은 ${getElementRhythmStyle(saju1.dayElement.element)}이고, ${name2}님은 ${getElementRhythmStyle(saju2.dayElement.element)}이라, 새로운 경험을 즐기고 변화에 잘 적응하는 것을 선호해요. 하지만, 때로는 너무 즉흥적이어서 중요한 일을 놓치거나, 계획성 부족으로 어려움을 겪을 수 있으니 주의가 필요해요.`;
+      summary = `두 분 모두 즉흥적인(P) 성향이라 일상의 리듬이 자유롭고 유연할 거예요. ${name1}님은 ${getElementRhythmStyle(saju1.dayPillar.stemElement)}이고, ${name2}님은 ${getElementRhythmStyle(saju2.dayPillar.stemElement)}이라, 새로운 경험을 즐기고 변화에 잘 적응하는 것을 선호해요. 하지만, 때로는 너무 즉흥적이어서 중요한 일을 놓치거나, 계획성 부족으로 어려움을 겪을 수 있으니 주의가 필요해요.`;
     }
   } else {
-    summary = `${name1}님은 ${p1PJ === 'J' ? '계획적인(J)' : '즉흥적인(P)'} 성향이고, ${name2}님은 ${p2PJ === 'J' ? '계획적인(J)' : '즉흥적인(P)'} 성향이라 일상의 리듬에 차이가 있을 수 있어요. ${name1}님은 ${getElementRhythmStyle(saju1.dayElement.element)}이고, ${name2}님은 ${getElementRhythmStyle(saju2.dayElement.element)}이라, 서로의 라이프스타일을 이해하고 조율하는 것이 중요해요. ${p1PJ === 'J' ? name1 : name2}님이 큰 틀을 잡아주고, ${p1PJ === 'P' ? name1 : name2}님이 거기에 재미와 변화를 더해주면 완벽한 밸런스가 될 거예요.`;
+    summary = `${name1}님은 ${p1PJ === 'J' ? '계획적인(J)' : '즉흥적인(P)'} 성향이고, ${name2}님은 ${p2PJ === 'J' ? '계획적인(J)' : '즉흥적인(P)'} 성향이라 일상의 리듬에 차이가 있을 수 있어요. ${name1}님은 ${getElementRhythmStyle(saju1.dayPillar.stemElement)}이고, ${name2}님은 ${getElementRhythmStyle(saju2.dayPillar.stemElement)}이라, 서로의 라이프스타일을 이해하고 조율하는 것이 중요해요. ${p1PJ === 'J' ? name1 : name2}님이 큰 틀을 잡아주고, ${p1PJ === 'P' ? name1 : name2}님이 거기에 재미와 변화를 더해주면 완벽한 밸런스가 될 거예요.`;
   }
 
   return summary;
