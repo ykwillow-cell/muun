@@ -48,11 +48,11 @@ function getScoreColor(score: number): string {
   if (score >= 85) return '#ff6b9d';
   if (score >= 75) return '#ffd700';
   if (score >= 65) return '#4ecdc4';
-  if (score >= 55) return '#7c83ff';
-  return '#ff8c42';
+  if (score >= 50) return '#87ceeb';
+  return '#ff6b6b';
 }
 
-function ScoreCircle({ score, label, size = 120, color }: { score: number; label: string; size?: number; color?: string }) {
+function ScoreCircle({ score, size = 120, label = "", color = "" }: { score: number; size?: number; label?: string; color?: string }) {
   const circumference = 2 * Math.PI * 40;
   const offset = circumference - (score / 100) * circumference;
   const scoreColor = color || getScoreColor(score);
@@ -140,27 +140,39 @@ export default function HybridCompatibility() {
     console.log("폼 제출 시작:", data);
     
     try {
-      let date1 = new Date(data.birthDate1);
+      // YYYY-MM-DD 형식의 문자열을 파싱
+      const parseDate = (dateStr: string) => {
+        const parts = dateStr.split('-');
+        return {
+          year: parseInt(parts[0], 10),
+          month: parseInt(parts[1], 10),
+          day: parseInt(parts[2], 10)
+        };
+      };
+
+      let dateObj1 = parseDate(data.birthDate1);
       if (data.calendarType1 === "lunar") {
         const solarDate = convertToSolarDate(
-          date1.getFullYear(),
-          date1.getMonth() + 1,
-          date1.getDate(),
+          dateObj1.year,
+          dateObj1.month,
+          dateObj1.day,
           data.isLeapMonth1 || false
         );
-        date1 = new Date(solarDate.year, solarDate.month - 1, solarDate.day);
+        dateObj1 = { year: solarDate.year, month: solarDate.month, day: solarDate.day };
       }
+      const date1 = new Date(dateObj1.year, dateObj1.month - 1, dateObj1.day);
 
-      let date2 = new Date(data.birthDate2);
+      let dateObj2 = parseDate(data.birthDate2);
       if (data.calendarType2 === "lunar") {
         const solarDate = convertToSolarDate(
-          date2.getFullYear(),
-          date2.getMonth() + 1,
-          date2.getDate(),
+          dateObj2.year,
+          dateObj2.month,
+          dateObj2.day,
           data.isLeapMonth2 || false
         );
-        date2 = new Date(solarDate.year, solarDate.month - 1, solarDate.day);
+        dateObj2 = { year: solarDate.year, month: solarDate.month, day: solarDate.day };
       }
+      const date2 = new Date(dateObj2.year, dateObj2.month - 1, dateObj2.day);
 
       console.log("날짜 변환 완료:", date1, date2);
 
@@ -218,13 +230,13 @@ export default function HybridCompatibility() {
           </div>
 
           <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
-            <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
-              <button onClick={() => setResult(null)} className="mr-2">
-                <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 min-w-[44px] min-h-[44px]">
-                  <ChevronLeft className="h-5 w-5" />
-                </Button>
-              </button>
-              <h1 className="text-base md:text-lg font-bold text-white">사주xMBTI 궁합 결과</h1>
+            <div className={`${commonMaxWidth} container mx-auto px-4 py-3 md:py-4 flex items-center justify-between`}>
+              <Link href="/hybrid-compatibility" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                <ChevronLeft className="w-5 h-5" />
+                <span className="text-sm font-medium">뒤로</span>
+              </Link>
+              <h1 className="text-lg md:text-xl font-bold">궁합 결과</h1>
+              <div className="w-[60px]" />
             </div>
           </header>
 
@@ -235,219 +247,159 @@ export default function HybridCompatibility() {
               transition={{ duration: 0.6 }}
               className={`${commonMaxWidth} space-y-6`}
             >
-              {/* ① 에너지 저울 (Dynamic Scale) */}
+              {/* 에너지 저울 */}
               <Card className="glass-panel border-white/5 shadow-xl rounded-2xl overflow-hidden">
-                <CardHeader className="border-b border-white/5 px-4 py-3">
-                  <CardTitle className="text-white flex items-center gap-2 text-base">
-                    <Zap className="w-4 h-4 text-yellow-400" /> 인연의 에너지 저울
+                <CardHeader className="border-b border-white/5 px-4 py-3 md:px-6 md:py-4">
+                  <CardTitle className="text-white flex items-center gap-2 text-base md:text-lg">
+                    <div className="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center">
+                      <Sparkles className="w-4 h-4 text-purple-400" />
+                    </div>
+                    에너지 저울
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="p-6 space-y-4">
-                  <div className="flex items-center justify-between gap-4">
-                    <div className="text-center flex-1">
-                      <div className="text-sm font-bold text-white mb-2">{name1}</div>
-                      <div className="text-2xl font-bold text-purple-400">{hybrid.energyScale.person1Energy}</div>
-                      <div className="text-xs text-white/60 mt-1">에너지 지수</div>
+                <CardContent className="p-4 md:p-6">
+                  <div className="text-center space-y-4">
+                    <div className="text-sm text-muted-foreground">{hybrid.energyBalance.description}</div>
+                    <div className="flex justify-around items-end">
+                      <div className="text-center">
+                        <div className="text-xs font-bold text-purple-400 mb-2">{name1}</div>
+                        <div className="text-2xl font-bold text-purple-300">{hybrid.energyBalance.person1Role}</div>
+                      </div>
+                      <div className="flex-1 flex justify-center">
+                        <div className="text-center">
+                          <div className="text-3xl font-bold text-white mb-2">⚖️</div>
+                          <div className="text-xs text-muted-foreground">균형도</div>
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-xs font-bold text-pink-400 mb-2">{name2}</div>
+                        <div className="text-2xl font-bold text-pink-300">{hybrid.energyBalance.person2Role}</div>
+                      </div>
                     </div>
-                    
-                    {/* 저울 시각화 */}
-                    <div className="flex-1 flex justify-center">
-                      <svg width="120" height="80" viewBox="0 0 120 80" className="drop-shadow-lg">
-                        {/* 저울대 */}
-                        <line x1="60" y1="10" x2="60" y2="25" stroke="rgba(255,255,255,0.3)" strokeWidth="2" />
-                        {/* 왼쪽 팔 */}
-                        <line 
-                          x1="60" y1="25" 
-                          x2={20 + (hybrid.energyScale.balanceScore * 0.5)} 
-                          y2={25 + (Math.abs(hybrid.energyScale.balanceScore) * 0.3)} 
-                          stroke="rgba(168, 85, 247, 0.5)" 
-                          strokeWidth="3" 
-                        />
-                        {/* 오른쪽 팔 */}
-                        <line 
-                          x1="60" y1="25" 
-                          x2={100 - (hybrid.energyScale.balanceScore * 0.5)} 
-                          y2={25 + (Math.abs(hybrid.energyScale.balanceScore) * 0.3)} 
-                          stroke="rgba(236, 72, 153, 0.5)" 
-                          strokeWidth="3" 
-                        />
-                        {/* 왼쪽 추 */}
-                        <circle cx={20 + (hybrid.energyScale.balanceScore * 0.5)} cy={25 + (Math.abs(hybrid.energyScale.balanceScore) * 0.3)} r="6" fill="rgba(168, 85, 247, 0.8)" />
-                        {/* 오른쪽 추 */}
-                        <circle cx={100 - (hybrid.energyScale.balanceScore * 0.5)} cy={25 + (Math.abs(hybrid.energyScale.balanceScore) * 0.3)} r="6" fill="rgba(236, 72, 153, 0.8)" />
-                        {/* 텍스트 */}
-                        <text x="20" y="70" textAnchor="middle" fill="rgba(168, 85, 247, 0.8)" fontSize="11" fontWeight="bold">
-                          {hybrid.energyScale.charger === name1 ? '충전기' : '소비자'}
-                        </text>
-                        <text x="100" y="70" textAnchor="middle" fill="rgba(236, 72, 153, 0.8)" fontSize="11" fontWeight="bold">
-                          {hybrid.energyScale.charger === name2 ? '충전기' : '소비자'}
-                        </text>
-                      </svg>
-                    </div>
-
-                    <div className="text-center flex-1">
-                      <div className="text-sm font-bold text-white mb-2">{name2}</div>
-                      <div className="text-2xl font-bold text-pink-400">{hybrid.energyScale.person2Energy}</div>
-                      <div className="text-xs text-white/60 mt-1">에너지 지수</div>
-                    </div>
-                  </div>
-                  <div className="p-3 rounded-lg bg-white/5 border border-white/10">
-                    <p className="text-sm text-white/80">{hybrid.energyScale.description}</p>
                   </div>
                 </CardContent>
               </Card>
 
-              {/* ② 하이브리드 시너지 카드 */}
+              {/* 시너지 카드 */}
               <Card className="glass-panel border-white/5 shadow-xl rounded-2xl overflow-hidden bg-gradient-to-br from-purple-500/10 to-pink-500/10">
-                <CardContent className="p-6 space-y-4">
-                  <div className="text-center space-y-3">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20">
-                      <Sparkles className="w-3 h-3 text-yellow-400" />
-                      <span className="text-xs font-bold text-white/90">시너지 카드</span>
-                    </div>
-                    <div className="space-y-2">
-                      <div className="text-sm text-white/70">{hybrid.synergyCard.nickname1}</div>
-                      <div className="text-xs text-white/50">×</div>
-                      <div className="text-sm text-white/70">{hybrid.synergyCard.nickname2}</div>
-                    </div>
-                    <div className="pt-3 border-t border-white/10">
-                      <p className="text-lg font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
-                        {hybrid.synergyCard.combinedNickname}
-                      </p>
-                    </div>
+                <CardContent className="p-4 md:p-6">
+                  <div className="text-center space-y-4">
+                    <div className="text-sm text-muted-foreground">{hybrid.synergyCard.description}</div>
+                    <div className="text-2xl md:text-3xl font-bold text-white">{hybrid.synergyCard.nickname}</div>
+                    <ScoreCircle score={hybrid.totalScore} label="종합 시너지" color={getScoreColor(hybrid.totalScore)} />
                   </div>
-                  <div className="flex justify-center gap-2 pt-2">
-                    {hybrid.keywords.map((kw, i) => (
-                      <span key={i} className="px-2 py-1 rounded-full bg-white/10 text-xs text-white/80 border border-white/20">
-                        {kw}
-                      </span>
+                </CardContent>
+              </Card>
+
+              {/* 4대 영역 */}
+              <Card className="glass-panel border-white/5 shadow-xl rounded-2xl overflow-hidden">
+                <CardHeader className="border-b border-white/5 px-4 py-3 md:px-6 md:py-4">
+                  <CardTitle className="text-white flex items-center gap-2 text-base md:text-lg">
+                    <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                      <Brain className="w-4 h-4 text-blue-400" />
+                    </div>
+                    4대 영역 분석
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-4 md:p-6">
+                  <Accordion type="single" collapsible className="space-y-2">
+                    {[
+                      { id: 'communication', title: '대화와 소통', data: hybrid.fourAreas.communication },
+                      { id: 'conflict', title: '싸움과 화해', data: hybrid.fourAreas.conflict },
+                      { id: 'values', title: '현실과 가치관', data: hybrid.fourAreas.values },
+                      { id: 'lifestyle', title: '일상의 리듬', data: hybrid.fourAreas.lifestyle },
+                    ].map((section) => (
+                      <div key={section.id} className="border border-white/10 rounded-lg overflow-hidden">
+                        <button
+                          onClick={() => setExpandedSection(expandedSection === section.id ? null : section.id)}
+                          className="w-full p-4 flex items-center justify-between hover:bg-white/5 transition-colors"
+                        >
+                          <span className="font-semibold text-white">{section.title}</span>
+                          <ChevronDown className={`w-4 h-4 transition-transform ${expandedSection === section.id ? 'rotate-180' : ''}`} />
+                        </button>
+                        {expandedSection === section.id && (
+                          <div className="p-4 border-t border-white/10 bg-white/2 space-y-3">
+                            <div className="space-y-2">
+                              <div className="text-xs font-semibold text-purple-400">점수: {section.data.score}/100</div>
+                              <div className="w-full bg-white/10 rounded-full h-2">
+                                <div
+                                  className="bg-gradient-to-r from-purple-500 to-pink-500 h-2 rounded-full transition-all"
+                                  style={{ width: `${section.data.score}%` }}
+                                />
+                              </div>
+                            </div>
+                            <div className="text-sm text-muted-foreground leading-relaxed">{section.data.analysis}</div>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </Accordion>
+                </CardContent>
+              </Card>
+
+              {/* 인연 타임라인 */}
+              <Card className="glass-panel border-white/5 shadow-xl rounded-2xl overflow-hidden">
+                <CardHeader className="border-b border-white/5 px-4 py-3 md:px-6 md:py-4">
+                  <CardTitle className="text-white flex items-center gap-2 text-base md:text-lg">
+                    <div className="w-8 h-8 rounded-lg bg-green-500/20 flex items-center justify-center">
+                      <TrendingUp className="w-4 h-4 text-green-400" />
+                    </div>
+                    인연 타임라인
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="p-4 md:p-6">
+                  <div className="space-y-4">
+                    {hybrid.timeline.phases.map((phase, idx) => (
+                      <div key={idx} className="flex gap-4">
+                        <div className="flex flex-col items-center">
+                          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white text-xs font-bold">
+                            {idx + 1}
+                          </div>
+                          {idx < hybrid.timeline.phases.length - 1 && <div className="w-0.5 h-12 bg-white/10 mt-2" />}
+                        </div>
+                        <div className="flex-1 pt-1">
+                          <div className="font-semibold text-white text-sm">{phase.name}</div>
+                          <div className="text-xs text-muted-foreground mt-1">{phase.description}</div>
+                          <div className="text-xs text-purple-400 font-semibold mt-2">점수: {phase.score}/100</div>
+                        </div>
+                      </div>
                     ))}
                   </div>
                 </CardContent>
               </Card>
 
-              {/* 종합 점수 */}
-              <div className="grid grid-cols-2 gap-4">
-                <Card className="glass-panel border-white/5 rounded-2xl overflow-hidden">
-                  <CardContent className="p-4 flex flex-col items-center justify-center">
-                    <ScoreCircle score={hybrid.totalScore} label="종합 궁합" size={100} />
-                    <div className="text-center mt-3">
-                      <p className="text-sm font-bold text-white">{hybrid.totalGrade}</p>
-                    </div>
-                  </CardContent>
-                </Card>
-                <Card className="glass-panel border-white/5 rounded-2xl overflow-hidden">
-                  <CardContent className="p-4 space-y-2">
-                    <div className="text-xs text-white/60">사주 궁합</div>
-                    <ScoreCircle score={hybrid.sajuScore} label="" size={80} />
-                    <div className="text-xs text-white/60">MBTI 궁합</div>
-                    <ScoreCircle score={hybrid.mbtiResult.score} label="" size={80} />
-                  </CardContent>
-                </Card>
-              </div>
-
-              {/* ③ 4대 영역 하이브리드 리포트 (Accordion) */}
-              <div className="space-y-3">
-                <h3 className="text-base font-bold text-white flex items-center gap-2">
-                  <Brain className="w-4 h-4 text-purple-400" /> 4대 영역 분석
-                </h3>
-                
-                {Object.entries(hybrid.fourDimensions).map(([key, section]) => (
-                  <Card 
-                    key={key} 
-                    className={`glass-panel border-white/5 rounded-2xl overflow-hidden cursor-pointer transition-all ${
-                      expandedSection === key ? 'ring-2 ring-purple-500/50' : ''
-                    }`}
-                    onClick={() => setExpandedSection(expandedSection === key ? null : key)}
-                  >
-                    <CardHeader className="px-4 py-3">
-                      <div className="flex items-center justify-between">
-                        <CardTitle className="text-white text-sm flex items-center gap-2">
-                          {key === 'communication' && <MessageCircle className="w-4 h-4 text-blue-400" />}
-                          {key === 'conflictResolution' && <Shield className="w-4 h-4 text-red-400" />}
-                          {key === 'valuesAndReality' && <Lightbulb className="w-4 h-4 text-yellow-400" />}
-                          {key === 'dailyRhythm' && <Clock className="w-4 h-4 text-green-400" />}
-                          {section.title}
-                        </CardTitle>
-                        <div className="flex items-center gap-2">
-                          <span className="text-xs font-bold text-white/60">{section.score}점</span>
-                          <ChevronDown className={`w-4 h-4 text-white/60 transition-transform ${expandedSection === key ? 'rotate-180' : ''}`} />
-                        </div>
-                      </div>
-                    </CardHeader>
-                    {expandedSection === key && (
-                      <CardContent className="px-4 py-3 border-t border-white/5 space-y-3">
-                        <p className="text-sm text-white/80">{section.summary}</p>
-                        <div className="p-3 rounded-lg bg-white/5 border border-white/10">
-                          <p className="text-xs text-white/70">{section.advice}</p>
-                        </div>
-                      </CardContent>
-                    )}
-                  </Card>
-                ))}
-              </div>
-
-              {/* ④ 인연 타임라인 */}
+              {/* 처방전 */}
               <Card className="glass-panel border-white/5 shadow-xl rounded-2xl overflow-hidden">
-                <CardHeader className="border-b border-white/5 px-4 py-3">
-                  <CardTitle className="text-white flex items-center gap-2 text-base">
-                    <Heart className="w-4 h-4 text-red-400" /> 인연 타임라인
+                <CardHeader className="border-b border-white/5 px-4 py-3 md:px-6 md:py-4">
+                  <CardTitle className="text-white flex items-center gap-2 text-base md:text-lg">
+                    <div className="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center">
+                      <Lightbulb className="w-4 h-4 text-amber-400" />
+                    </div>
+                    무운의 한 줄 처방전
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="p-6 space-y-4">
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-white/70">썸</span>
-                      <div className="flex-1 mx-3 h-2 bg-white/10 rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-purple-500 to-pink-500" style={{ width: `${hybrid.timeline.썸}%` }} />
-                      </div>
-                      <span className="text-sm font-bold text-white">{hybrid.timeline.썸}점</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-white/70">연애</span>
-                      <div className="flex-1 mx-3 h-2 bg-white/10 rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-purple-500 to-pink-500" style={{ width: `${hybrid.timeline.연애}%` }} />
-                      </div>
-                      <span className="text-sm font-bold text-white">{hybrid.timeline.연애}점</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-white/70">장기안정기</span>
-                      <div className="flex-1 mx-3 h-2 bg-white/10 rounded-full overflow-hidden">
-                        <div className="h-full bg-gradient-to-r from-purple-500 to-pink-500" style={{ width: `${hybrid.timeline.장기안정기}%` }} />
-                      </div>
-                      <span className="text-sm font-bold text-white">{hybrid.timeline.장기안정기}점</span>
-                    </div>
+                <CardContent className="p-4 md:p-6 space-y-4">
+                  <div className="space-y-2">
+                    <div className="text-xs font-semibold text-amber-400">행운의 컬러</div>
+                    <div className="text-sm text-white">{hybrid.finalAdvice.luckyColor}</div>
                   </div>
-                  <div className="p-3 rounded-lg bg-white/5 border border-white/10">
-                    <p className="text-sm text-white/80">{hybrid.timeline.description}</p>
+                  <div className="space-y-2">
+                    <div className="text-xs font-semibold text-amber-400">행운의 아이템</div>
+                    <div className="text-sm text-white">{hybrid.finalAdvice.luckyItem}</div>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="text-xs font-semibold text-amber-400">대화 팁</div>
+                    <div className="text-sm text-muted-foreground">{hybrid.finalAdvice.communicationTip}</div>
                   </div>
                 </CardContent>
               </Card>
 
-              {/* ⑤ 무운의 한 줄 처방전 */}
-              <Card className="glass-panel border-white/5 shadow-xl rounded-2xl overflow-hidden">
-                <CardHeader className="border-b border-white/5 px-4 py-3">
-                  <CardTitle className="text-white flex items-center gap-2 text-base">
-                    <Sparkles className="w-4 h-4 text-yellow-400" /> 무운의 한 줄 처방전
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="p-6 space-y-4">
-                  <div className="space-y-3">
-                    <div className="p-3 rounded-lg bg-purple-500/10 border border-purple-500/20">
-                      <p className="text-xs text-white/60 mb-1">행운의 컬러/아이템</p>
-                      <p className="text-sm text-white">{hybrid.prescription.luckyColor}</p>
-                    </div>
-                    <div className="p-3 rounded-lg bg-pink-500/10 border border-pink-500/20">
-                      <p className="text-xs text-white/60 mb-1">행운의 아이템</p>
-                      <p className="text-sm text-white">{hybrid.prescription.luckyItem}</p>
-                    </div>
-                    <div className="p-3 rounded-lg bg-blue-500/10 border border-blue-500/20">
-                      <p className="text-xs text-white/60 mb-1">상대방 대하는 팁</p>
-                      <p className="text-sm text-white">{hybrid.prescription.tipForPartner}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              <Button
+                onClick={() => setResult(null)}
+                className="w-full h-12 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-bold rounded-xl hover:opacity-90 transition-opacity"
+              >
+                다시 분석하기
+              </Button>
             </motion.div>
           </main>
         </div>
@@ -470,13 +422,13 @@ export default function HybridCompatibility() {
         </div>
 
         <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
-          <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
-            <Link href="/">
-              <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 min-w-[44px] min-h-[44px]">
-                <ChevronLeft className="h-5 w-5" />
-              </Button>
+          <div className={`${commonMaxWidth} container mx-auto px-4 py-3 md:py-4 flex items-center justify-between`}>
+            <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+              <ChevronLeft className="w-5 h-5" />
+              <span className="text-sm font-medium">뒤로</span>
             </Link>
-            <h1 className="text-base md:text-lg font-bold text-white">사주xMBTI 궁합</h1>
+            <h1 className="text-lg md:text-xl font-bold">사주xMBTI 궁합</h1>
+            <div className="w-[60px]" />
           </div>
         </header>
 
@@ -520,9 +472,9 @@ export default function HybridCompatibility() {
                         </div>
                         <div className="space-y-1.5">
                           <Label className="text-white text-xs">성별</Label>
-                          <ToggleGroup type="single" value={form.watch("gender1")} onValueChange={(v) => v && form.setValue("gender1", v as any)} className="bg-white/5 p-1 rounded-xl border border-white/10 h-11 w-full">
-                            <ToggleGroupItem value="male" className="flex-1 rounded-lg data-[state=on]:bg-purple-500 text-white text-xs">남성</ToggleGroupItem>
-                            <ToggleGroupItem value="female" className="flex-1 rounded-lg data-[state=on]:bg-purple-500 text-white text-xs">여성</ToggleGroupItem>
+                          <ToggleGroup type="single" value={form.watch("gender1")} onValueChange={(v) => form.setValue("gender1", v as "male" | "female")} className="justify-start gap-2">
+                            <ToggleGroupItem value="male" className="data-[state=on]:bg-purple-500 data-[state=on]:text-white h-11 rounded-xl">남성</ToggleGroupItem>
+                            <ToggleGroupItem value="female" className="data-[state=on]:bg-purple-500 data-[state=on]:text-white h-11 rounded-xl">여성</ToggleGroupItem>
                           </ToggleGroup>
                         </div>
                       </div>
@@ -543,28 +495,13 @@ export default function HybridCompatibility() {
                         </div>
                         <div className="space-y-1.5">
                           <Label className="text-white text-xs">날짜 구분</Label>
-                          <div className="flex gap-2">
-                            <ToggleGroup type="single" value={form.watch("calendarType1")} onValueChange={(v) => v && form.setValue("calendarType1", v as any)} className="flex-1 h-11 bg-white/5 p-1 rounded-xl border border-white/10 grid grid-cols-2 gap-1">
-                              <ToggleGroupItem value="solar" className="h-full rounded-lg data-[state=on]:bg-purple-500 text-white text-xs">양력</ToggleGroupItem>
-                              <ToggleGroupItem value="lunar" className="h-full rounded-lg data-[state=on]:bg-purple-500 text-white text-xs">음력</ToggleGroupItem>
-                            </ToggleGroup>
-                            {form.watch("calendarType1") === "lunar" && (
-                              <div className="flex items-center px-2 bg-white/5 rounded-xl border border-white/10">
-                                <label className="flex items-center gap-1.5 cursor-pointer group">
-                                  <input
-                                    type="checkbox"
-                                    checked={form.watch("isLeapMonth1")}
-                                    onChange={(e) => form.setValue("isLeapMonth1", e.target.checked)}
-                                    className="w-3.5 h-3.5 rounded border-white/20 bg-white/5 accent-purple-500"
-                                  />
-                                  <span className="text-[11px] text-white/80 group-hover:text-purple-400 transition-colors">윤달</span>
-                                </label>
-                              </div>
-                            )}
-                          </div>
+                          <ToggleGroup type="single" value={form.watch("calendarType1")} onValueChange={(v) => form.setValue("calendarType1", v as "solar" | "lunar")} className="justify-start gap-2">
+                            <ToggleGroupItem value="solar" className="data-[state=on]:bg-purple-500 data-[state=on]:text-white h-11 rounded-xl text-xs">양력</ToggleGroupItem>
+                            <ToggleGroupItem value="lunar" className="data-[state=on]:bg-purple-500 data-[state=on]:text-white h-11 rounded-xl text-xs">음력</ToggleGroupItem>
+                          </ToggleGroup>
                         </div>
                       </div>
-                      <div className="space-y-1.5">
+                      <div className="space-y-2">
                         <Label className="text-white text-xs">MBTI</Label>
                         <MBTISelector value={form.watch("mbti1")} onChange={(v) => form.setValue("mbti1", v)} accentColor="purple" />
                         {form.formState.errors.mbti1 && <p className="text-[10px] text-red-400 ml-1 font-medium">{form.formState.errors.mbti1.message}</p>}
@@ -572,10 +509,8 @@ export default function HybridCompatibility() {
                     </div>
                   </div>
 
-                  <div className="h-px bg-white/5 my-4" />
-
                   {/* 두 번째 사람 */}
-                  <div className="space-y-4">
+                  <div className="space-y-4 pt-4 border-t border-white/10">
                     <div className="flex items-center gap-2 text-pink-400">
                       <User className="w-4 h-4" />
                       <span className="text-sm font-bold">두 번째 분</span>
@@ -589,9 +524,9 @@ export default function HybridCompatibility() {
                         </div>
                         <div className="space-y-1.5">
                           <Label className="text-white text-xs">성별</Label>
-                          <ToggleGroup type="single" value={form.watch("gender2")} onValueChange={(v) => v && form.setValue("gender2", v as any)} className="bg-white/5 p-1 rounded-xl border border-white/10 h-11 w-full">
-                            <ToggleGroupItem value="male" className="flex-1 rounded-lg data-[state=on]:bg-pink-500 text-white text-xs">남성</ToggleGroupItem>
-                            <ToggleGroupItem value="female" className="flex-1 rounded-lg data-[state=on]:bg-pink-500 text-white text-xs">여성</ToggleGroupItem>
+                          <ToggleGroup type="single" value={form.watch("gender2")} onValueChange={(v) => form.setValue("gender2", v as "male" | "female")} className="justify-start gap-2">
+                            <ToggleGroupItem value="male" className="data-[state=on]:bg-pink-500 data-[state=on]:text-white h-11 rounded-xl">남성</ToggleGroupItem>
+                            <ToggleGroupItem value="female" className="data-[state=on]:bg-pink-500 data-[state=on]:text-white h-11 rounded-xl">여성</ToggleGroupItem>
                           </ToggleGroup>
                         </div>
                       </div>
@@ -612,28 +547,13 @@ export default function HybridCompatibility() {
                         </div>
                         <div className="space-y-1.5">
                           <Label className="text-white text-xs">날짜 구분</Label>
-                          <div className="flex gap-2">
-                            <ToggleGroup type="single" value={form.watch("calendarType2")} onValueChange={(v) => v && form.setValue("calendarType2", v as any)} className="flex-1 h-11 bg-white/5 p-1 rounded-xl border border-white/10 grid grid-cols-2 gap-1">
-                              <ToggleGroupItem value="solar" className="h-full rounded-lg data-[state=on]:bg-pink-500 text-white text-xs">양력</ToggleGroupItem>
-                              <ToggleGroupItem value="lunar" className="h-full rounded-lg data-[state=on]:bg-pink-500 text-white text-xs">음력</ToggleGroupItem>
-                            </ToggleGroup>
-                            {form.watch("calendarType2") === "lunar" && (
-                              <div className="flex items-center px-2 bg-white/5 rounded-xl border border-white/10">
-                                <label className="flex items-center gap-1.5 cursor-pointer group">
-                                  <input
-                                    type="checkbox"
-                                    checked={form.watch("isLeapMonth2")}
-                                    onChange={(e) => form.setValue("isLeapMonth2", e.target.checked)}
-                                    className="w-3.5 h-3.5 rounded border-white/20 bg-white/5 accent-pink-500"
-                                  />
-                                  <span className="text-[11px] text-white/80 group-hover:text-pink-400 transition-colors">윤달</span>
-                                </label>
-                              </div>
-                            )}
-                          </div>
+                          <ToggleGroup type="single" value={form.watch("calendarType2")} onValueChange={(v) => form.setValue("calendarType2", v as "solar" | "lunar")} className="justify-start gap-2">
+                            <ToggleGroupItem value="solar" className="data-[state=on]:bg-pink-500 data-[state=on]:text-white h-11 rounded-xl text-xs">양력</ToggleGroupItem>
+                            <ToggleGroupItem value="lunar" className="data-[state=on]:bg-pink-500 data-[state=on]:text-white h-11 rounded-xl text-xs">음력</ToggleGroupItem>
+                          </ToggleGroup>
                         </div>
                       </div>
-                      <div className="space-y-1.5">
+                      <div className="space-y-2">
                         <Label className="text-white text-xs">MBTI</Label>
                         <MBTISelector value={form.watch("mbti2")} onChange={(v) => form.setValue("mbti2", v)} accentColor="pink" />
                         {form.formState.errors.mbti2 && <p className="text-[10px] text-red-400 ml-1 font-medium">{form.formState.errors.mbti2.message}</p>}
@@ -643,11 +563,6 @@ export default function HybridCompatibility() {
 
                   <Button 
                     type="submit" 
-                    onClick={(e) => {
-                      e.preventDefault();
-                      console.log('버튼 클릭됨');
-                      form.handleSubmit(handleSubmit)();
-                    }}
                     className="w-full h-12 bg-gradient-to-r from-purple-600 to-pink-500 text-white font-bold rounded-xl hover:opacity-90 transition-opacity cursor-pointer"
                   >
                     궁합 분석하기
