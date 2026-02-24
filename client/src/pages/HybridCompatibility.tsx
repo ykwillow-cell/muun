@@ -37,14 +37,16 @@ const formSchema = z.object({
   name1: z.string().min(1, "첫 번째 이름을 입력해주세요"),
   gender1: z.enum(["male", "female"]),
   birthDate1: z.string().min(1, "첫 번째 생년월일을 입력해주세요"),
-  birthTime1: z.string().min(1, "첫 번째 태어난 시간을 입력해주세요"),
+  birthTime1: z.string().default("12:30"),
+  birthTimeUnknown1: z.boolean().default(false),
   calendarType1: z.enum(["solar", "lunar"]),
   isLeapMonth1: z.boolean().optional(),
   mbti1: z.string().min(1, "첫 번째 MBTI를 선택해주세요"),
   name2: z.string().min(1, "두 번째 이름을 입력해주세요"),
   gender2: z.enum(["male", "female"]),
   birthDate2: z.string().min(1, "두 번째 생년월일을 입력해주세요"),
-  birthTime2: z.string().min(1, "두 번째 태어난 시간을 입력해주세요"),
+  birthTime2: z.string().default("12:30"),
+  birthTimeUnknown2: z.boolean().default(false),
   calendarType2: z.enum(["solar", "lunar"]),
   isLeapMonth2: z.boolean().optional(),
   mbti2: z.string().min(1, "두 번째 MBTI를 선택해주세요"),
@@ -442,13 +444,15 @@ export default function HybridCompatibilityPage() {
       name1: "",
       gender1: "male",
       birthDate1: "2000-01-01",
-      birthTime1: "12:00",
+      birthTime1: "12:30",
+      birthTimeUnknown1: false,
       calendarType1: "solar",
       mbti1: "",
       name2: "",
       gender2: "female",
       birthDate2: "2000-01-01",
-      birthTime2: "12:00",
+      birthTime2: "12:30",
+      birthTimeUnknown2: false,
       calendarType2: "solar",
       mbti2: "",
     },
@@ -477,8 +481,10 @@ export default function HybridCompatibilityPage() {
       const birthDateStrForConverter1 = `${birthDateObj1.getFullYear()}-${String(birthDateObj1.getMonth() + 1).padStart(2, '0')}-${String(birthDateObj1.getDate()).padStart(2, '0')}`;
       const birthDateStrForConverter2 = `${birthDateObj2.getFullYear()}-${String(birthDateObj2.getMonth() + 1).padStart(2, '0')}-${String(birthDateObj2.getDate()).padStart(2, '0')}`;
 
-      const date1 = convertToSolarDate(birthDateStrForConverter1, data.birthTime1, data.calendarType1);
-      const date2 = convertToSolarDate(birthDateStrForConverter2, data.birthTime2, data.calendarType2);
+      const time1 = data.birthTimeUnknown1 ? "12:00" : data.birthTime1;
+      const time2 = data.birthTimeUnknown2 ? "12:00" : data.birthTime2;
+      const date1 = convertToSolarDate(birthDateStrForConverter1, time1, data.calendarType1);
+      const date2 = convertToSolarDate(birthDateStrForConverter2, time2, data.calendarType2);
       const saju1 = calculateSaju(date1, data.gender1);
       const saju2 = calculateSaju(date2, data.gender2);
 
@@ -894,6 +900,8 @@ export default function HybridCompatibilityPage() {
                         <BirthTimeSelect
                           value={form.watch("birthTime1")}
                           onChange={(val) => form.setValue("birthTime1", val)}
+                          onUnknownChange={(isUnknown) => form.setValue("birthTimeUnknown1", isUnknown)}
+                          isUnknown={form.watch("birthTimeUnknown1")}
                           accentClass="focus:ring-purple-500/50 focus:border-purple-500"
                         />
                       </div>
@@ -988,6 +996,8 @@ export default function HybridCompatibilityPage() {
                         <BirthTimeSelect
                           value={form.watch("birthTime2")}
                           onChange={(val) => form.setValue("birthTime2", val)}
+                          onUnknownChange={(isUnknown) => form.setValue("birthTimeUnknown2", isUnknown)}
+                          isUnknown={form.watch("birthTimeUnknown2")}
                           accentClass="focus:ring-pink-500/50 focus:border-pink-500"
                         />
                       </div>

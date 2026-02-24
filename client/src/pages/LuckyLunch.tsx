@@ -24,7 +24,8 @@ const formSchema = z.object({
   name: z.string().min(1, "이름을 입력해주세요"),
   gender: z.enum(["male", "female"]),
   birthDate: z.string().min(1, "생년월일을 입력해주세요"),
-  birthTime: z.string().default("12:00"),
+  birthTime: z.string().default("12:30"),
+  birthTimeUnknown: z.boolean().default(false),
   calendarType: z.enum(["solar", "lunar"]).default("solar"),
   isLeapMonth: z.boolean().default(false),
 });
@@ -44,7 +45,8 @@ export default function LuckyLunch() {
       name: "",
       gender: "male",
       birthDate: "2000-01-01",
-      birthTime: "12:00",
+      birthTime: "12:30",
+      birthTimeUnknown: false,
       calendarType: "solar",
       isLeapMonth: false,
     },
@@ -58,7 +60,8 @@ export default function LuckyLunch() {
         name: parsed.name || "",
         gender: parsed.gender || "male",
         birthDate: parsed.birthDate || "2000-01-01",
-        birthTime: parsed.birthTime || "12:00",
+        birthTime: parsed.birthTime || "12:30",
+        birthTimeUnknown: false,
         calendarType: parsed.calendarType || "solar",
         isLeapMonth: parsed.isLeapMonth || false,
       });
@@ -72,7 +75,8 @@ export default function LuckyLunch() {
     localStorage.setItem("muun_user_data", JSON.stringify(mergedData));
 
     setUserName(data.name);
-    const date = convertToSolarDate(data.birthDate, data.birthTime, data.calendarType, data.isLeapMonth);
+    const time = data.birthTimeUnknown ? "12:00" : data.birthTime;
+    const date = convertToSolarDate(data.birthDate, time, data.calendarType, data.isLeapMonth);
     const saju = calculateSaju(date, data.gender);
     const lunchResult = getLuckyLunchResult(saju);
     setResult(lunchResult);
@@ -201,6 +205,8 @@ export default function LuckyLunch() {
                     <BirthTimeSelect
                       value={form.watch("birthTime")}
                       onChange={(val) => form.setValue("birthTime", val)}
+                      onUnknownChange={(isUnknown) => form.setValue("birthTimeUnknown", isUnknown)}
+                      isUnknown={form.watch("birthTimeUnknown")}
                       accentClass="focus:ring-amber-500/50 focus:border-amber-500"
                     />
                   </div>

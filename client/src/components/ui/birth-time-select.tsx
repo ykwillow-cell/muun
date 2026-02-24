@@ -4,7 +4,8 @@
  * - 각 시간대 선택 시 해당 시간대의 중심 시간(HH:MM)으로 자동 매핑됩니다.
  *   예) 축시(01:31~03:30) 선택 → "02:30"
  * - 마지막 옵션 '모름'을 선택하면 onUnknownChange(true)가 호출됩니다.
- * - DatePickerInput과 동일한 h-11, rounded-xl, border, text-sm 스타일을 사용합니다.
+ * - DatePickerInput과 동일한 높이(44px), rounded-xl, border, text-sm 스타일을 사용합니다.
+ * - SelectTrigger 기본 스타일(data-[size=default]:h-9)을 !important로 덮어씁니다.
  */
 
 import {
@@ -124,8 +125,8 @@ export function BirthTimeSelect({
     <Select value={selectValue} onValueChange={handleChange}>
       <SelectTrigger
         className={cn(
-          // DatePickerInput과 동일한 높이/스타일
-          "h-11 w-full rounded-xl border border-white/10 bg-white/5",
+          // SelectTrigger 기본 data-[size=default]:h-9(36px)를 !h-11(44px)로 강제 덮어씀
+          "!h-11 w-full rounded-xl border border-white/10 bg-white/5",
           "px-3 py-2 text-sm text-white",
           "ring-offset-background transition-all",
           "focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-0",
@@ -146,15 +147,13 @@ export function BirthTimeSelect({
             {option.label}
           </SelectItem>
         ))}
-        {/* '모름' 옵션 - onUnknownChange prop이 있을 때만 표시 */}
-        {onUnknownChange && (
-          <SelectItem
-            value={BIRTH_TIME_UNKNOWN_VALUE}
-            className="text-white/50 hover:bg-white/10 focus:bg-white/10 focus:text-white/70 cursor-pointer border-t border-white/10 mt-1 pt-1"
-          >
-            모름 (시간 모름)
-          </SelectItem>
-        )}
+        {/* '모름' 옵션 - 항상 표시, 구분선 없이 다른 항목과 동일한 스타일 */}
+        <SelectItem
+          value={BIRTH_TIME_UNKNOWN_VALUE}
+          className="text-white hover:bg-white/10 focus:bg-white/10 focus:text-white cursor-pointer"
+        >
+          모름 (시간 모름)
+        </SelectItem>
       </SelectContent>
     </Select>
   );

@@ -51,7 +51,8 @@ const formSchema = z.object({
   name: z.string().min(1, "이름을 입력해주세요"),
   gender: z.enum(["male", "female"]),
   birthDate: z.string().min(1, "생년월일을 입력해주세요"),
-  birthTime: z.string().min(1, "태어난 시간을 입력해주세요"),
+  birthTime: z.string().default("12:30"),
+  birthTimeUnknown: z.boolean().default(false),
   calendarType: z.enum(["solar", "lunar"]),
   isMarried: z.enum(["yes", "no"]),
 });
@@ -146,7 +147,8 @@ export default function LifelongSaju() {
       name: "",
       gender: "male",
       birthDate: "2000-01-01",
-      birthTime: "12:00",
+      birthTime: "12:30",
+      birthTimeUnknown: false,
       calendarType: "solar",
       isMarried: "no",
     },
@@ -192,9 +194,10 @@ export default function LifelongSaju() {
       is_married: data.isMarried,
     });
     localStorage.setItem("muun_user_data", JSON.stringify(data));
+    const time = data.birthTimeUnknown ? "12:00" : data.birthTime;
     // convertToSolarDate는 문자열 형식의 날짜를 받아야 함 (YYYY-MM-DD)
     const birthDateStrForConverter = `${birthDateObj.getFullYear()}-${String(birthDateObj.getMonth() + 1).padStart(2, '0')}-${String(birthDateObj.getDate()).padStart(2, '0')}`;
-    const date = convertToSolarDate(birthDateStrForConverter, data.birthTime, data.calendarType);
+    const date = convertToSolarDate(birthDateStrForConverter, time, data.calendarType);
     const sajuResult = calculateSaju(date, data.gender);
     setResult(sajuResult);
     window.scrollTo(0, 0);
@@ -333,6 +336,8 @@ export default function LifelongSaju() {
                       <BirthTimeSelect
                         value={form.watch("birthTime")}
                         onChange={(val) => form.setValue("birthTime", val)}
+                        onUnknownChange={(isUnknown) => form.setValue("birthTimeUnknown", isUnknown)}
+                        isUnknown={form.watch("birthTimeUnknown")}
                         accentClass="focus:ring-purple-500/50 focus:border-purple-500"
                       />
                     </div>
