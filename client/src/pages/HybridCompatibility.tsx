@@ -242,10 +242,10 @@ export default function HybridCompatibilityPage() {
                 <CardContent className="p-4 md:p-6">
                   <div className="space-y-2">
                     {[
-                      { id: 'communication', title: '대화와 소통', data: hybrid.fourAreas.communication },
-                      { id: 'conflict', title: '싸움과 화해', data: hybrid.fourAreas.conflict },
-                      { id: 'values', title: '현실과 가치관', data: hybrid.fourAreas.values },
-                      { id: 'lifestyle', title: '일상의 리듬', data: hybrid.fourAreas.lifestyle },
+                      { id: 'communication', title: '대화와 소통', data: hybrid.fourDimensions.communication },
+                      { id: 'conflict', title: '싸움과 화해', data: hybrid.fourDimensions.conflictResolution },
+                      { id: 'values', title: '현실과 가치관', data: hybrid.fourDimensions.valuesAndReality },
+                      { id: 'lifestyle', title: '일상의 리듬', data: hybrid.fourDimensions.dailyRhythm },
                     ].map((section) => (
                       <div key={section.id} className="border border-white/10 rounded-lg overflow-hidden">
                         <button
@@ -266,7 +266,11 @@ export default function HybridCompatibilityPage() {
                                 />
                               </div>
                             </div>
-                            <div className="text-sm text-muted-foreground leading-relaxed">{section.data.analysis}</div>
+                            <div className="text-sm text-muted-foreground leading-relaxed">{section.data.summary}</div>
+                            <div className="p-3 bg-purple-500/5 rounded-lg border border-purple-500/10">
+                              <div className="text-xs font-semibold text-purple-400 mb-1">무운의 조언</div>
+                              <div className="text-xs text-muted-foreground leading-relaxed">{section.data.advice}</div>
+                            </div>
                           </div>
                         )}
                       </div>
@@ -286,19 +290,33 @@ export default function HybridCompatibilityPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-4 md:p-6">
-                  <div className="space-y-4">
-                    {hybrid.timeline.map((point, idx) => (
-                      <div key={idx} className="flex gap-4">
-                        <div className="text-center">
-                          <div className="w-3 h-3 rounded-full bg-purple-500 mx-auto mb-2" />
-                          <div className="text-xs text-muted-foreground">{point.phase}</div>
+                  <div className="space-y-6">
+                    <div className="text-sm text-muted-foreground text-center">{hybrid.timeline.description}</div>
+                    <div className="space-y-4">
+                      {[
+                        { phase: '썸', score: hybrid.timeline.썸 },
+                        { phase: '연애', score: hybrid.timeline.연애 },
+                        { phase: '장기 안정기', score: hybrid.timeline.장기안정기 },
+                      ].map((point, idx) => (
+                        <div key={idx} className="flex gap-4">
+                          <div className="text-center w-16">
+                            <div className="w-3 h-3 rounded-full bg-purple-500 mx-auto mb-2" />
+                            <div className="text-[10px] text-muted-foreground">{point.phase}</div>
+                          </div>
+                          <div className="flex-1 pb-4 border-l border-white/10 pl-4">
+                            <div className="flex items-center justify-between mb-2">
+                              <div className="text-sm font-semibold text-white">{point.score}점</div>
+                            </div>
+                            <div className="w-full bg-white/10 rounded-full h-1.5">
+                              <div
+                                className="bg-gradient-to-r from-purple-500 to-pink-500 h-1.5 rounded-full transition-all"
+                                style={{ width: `${point.score}%` }}
+                              />
+                            </div>
+                          </div>
                         </div>
-                        <div className="flex-1 pb-4 border-l border-white/10 pl-4">
-                          <div className="text-sm font-semibold text-white mb-1">{point.score}점</div>
-                          <div className="text-xs text-muted-foreground">{point.description}</div>
-                        </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -316,15 +334,15 @@ export default function HybridCompatibilityPage() {
                 <CardContent className="p-4 md:p-6 space-y-4">
                   <div className="space-y-2">
                     <div className="text-xs font-semibold text-amber-400">행운의 컬러</div>
-                    <div className="text-sm text-white">{hybrid.finalAdvice.luckyColor}</div>
+                    <div className="text-sm text-white">{hybrid.prescription.luckyColor}</div>
                   </div>
                   <div className="space-y-2">
                     <div className="text-xs font-semibold text-amber-400">행운의 아이템</div>
-                    <div className="text-sm text-white">{hybrid.finalAdvice.luckyItem}</div>
+                    <div className="text-sm text-white">{hybrid.prescription.luckyItem}</div>
                   </div>
                   <div className="space-y-2">
                     <div className="text-xs font-semibold text-amber-400">대화 팁</div>
-                    <div className="text-sm text-muted-foreground">{hybrid.finalAdvice.communicationTip}</div>
+                    <div className="text-sm text-muted-foreground">{hybrid.prescription.tipForPartner}</div>
                   </div>
                 </CardContent>
               </Card>
