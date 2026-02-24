@@ -65,6 +65,33 @@ const ELEMENT_HANJA_READING: Record<string, string> = {
   '木': '목', '火': '화', '土': '토', '金': '금', '水': '수'
 };
 
+// 오행별 색상 매핑
+const ELEMENT_COLOR: Record<string, string> = {
+  '木': '#4ade80',
+  '火': '#f97316',
+  '土': '#d97706',
+  '金': '#94a3b8',
+  '水': '#38bdf8'
+};
+
+// 오행별 행운 컬러 텍스트
+const ELEMENT_LUCKY_COLOR: Record<string, string> = {
+  '木': '초록색 계열 (연두, 에메랄드, 올리브)',
+  '火': '붉은색 계열 (빨강, 주황, 산호)',
+  '土': '노란색·갈색 계열 (황토, 베이지, 카키)',
+  '金': '흰색·회색 계열 (실버, 아이보리, 라이트그레이)',
+  '水': '검정·파랑 계열 (네이비, 인디고, 다크블루)'
+};
+
+// 오행별 행운 아이템
+const ELEMENT_LUCKY_ITEM: Record<string, string> = {
+  '木': '나무 소재 소품(원목 인테리어, 책, 화분), 초록색 식물',
+  '火': '향초, 조명 소품, 붉은색 꽃(장미, 튤립)',
+  '土': '도자기, 황토색 쿠션·러그, 크리스탈 원석',
+  '金': '금속 액세서리(실버 반지, 목걸이), 흰색 패브릭',
+  '水': '수족관·미니 분수, 파란색 소품, 바다·강 관련 아이템'
+};
+
 // 천간 한글 읽기
 const STEM_READINGS: Record<string, { reading: string; meaning: string; nature: string }> = {
   '甲': { reading: '갑', meaning: '큰 나무', nature: '우뚝 솟은 소나무처럼 곧고 당당한 기운' },
@@ -83,6 +110,26 @@ const STEM_READINGS: Record<string, { reading: string; meaning: string; nature: 
 const GENERATING: Record<string, string> = { '木': '火', '火': '土', '土': '金', '金': '水', '水': '木' };
 // 상극 관계
 const OVERCOMING: Record<string, string> = { '木': '土', '火': '金', '土': '水', '金': '木', '水': '火' };
+
+// MBTI 별명 (하드웨어/소프트웨어 비유)
+const MBTI_HARDWARE_NICKNAME: Record<string, string> = {
+  'INTJ': '전략형 설계자',
+  'INTP': '논리형 사색가',
+  'ENTJ': '지휘형 리더',
+  'ENTP': '발명형 혁신가',
+  'INFJ': '통찰형 예언자',
+  'INFP': '이상형 중재자',
+  'ENFJ': '선도형 교육자',
+  'ENFP': '활동형 활동가',
+  'ISTJ': '청렴형 관리자',
+  'ISFJ': '수호형 보호자',
+  'ESTJ': '경영형 관리자',
+  'ESFJ': '집정관형 외교관',
+  'ISTP': '만능형 장인',
+  'ISFP': '모험형 예술가',
+  'ESTP': '사업형 기업가',
+  'ESFP': '연예인형 엔터테이너'
+};
 
 export interface HybridCompatResult {
   // 에너지 저울
@@ -134,14 +181,22 @@ export interface HybridCompatResult {
     nickname1: string;
     nickname2: string;
     combinedNickname: string;
+    description: string;
+  };
+
+  // 에너지 균형 (UI 표시용)
+  energyBalance: {
+    description: string;
+    person1Role: string;
+    person2Role: string;
   };
 
   // 4대 영역 리포트
   fourDimensions: {
-    communication: { title: string; summary: string; score: number; advice: string; };
-    conflictResolution: { title: string; summary: string; score: number; advice: string; };
-    valuesAndReality: { title: string; summary: string; score: number; advice: string; };
-    dailyRhythm: { title: string; summary: string; score: number; advice: string; };
+    communication: { title: string; summary: string; score: number; advice: string; icon: string; color: string; };
+    conflictResolution: { title: string; summary: string; score: number; advice: string; icon: string; color: string; };
+    valuesAndReality: { title: string; summary: string; score: number; advice: string; icon: string; color: string; };
+    dailyRhythm: { title: string; summary: string; score: number; advice: string; icon: string; color: string; };
   };
 
   // 인연 타임라인
@@ -150,15 +205,32 @@ export interface HybridCompatResult {
     연애: number;
     장기안정기: number;
     description: string;
+    phaseDescriptions: {
+      썸: string;
+      연애: string;
+      장기안정기: string;
+    };
   };
 
   // 무운의 한 줄 처방전
   prescription: {
     luckyColor: string;
+    luckyColorHex1: string;
+    luckyColorHex2: string;
     luckyItem: string;
     tipForPartner: string;
+    warningSign: string;
   };
 
+  // 오행 정보 (UI 표시용)
+  elementInfo: {
+    elem1: string;
+    elem2: string;
+    elem1Color: string;
+    elem2Color: string;
+    elem1Korean: string;
+    elem2Korean: string;
+  };
 }
 
 // 사주 오행 관계 분석
@@ -229,7 +301,6 @@ function analyzeCrossSynergy(element: string, mbti: MBTIType): { score: number; 
   }
   
   const avgScore = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 70;
-  // 가장 높은 시너지 설명 선택
   const bestIdx = scores.indexOf(Math.max(...scores));
   
   return {
@@ -238,10 +309,10 @@ function analyzeCrossSynergy(element: string, mbti: MBTIType): { score: number; 
   };
 }
 
-// 4대 영역 하이브리드 리포트 텍스트 생성 함수들
+// ─── 4대 영역 텍스트 생성 함수 ───────────────────────────────────────────────
 
-// 대화와 소통: MBTI(E/I) x 사주(화/수 기운) - 소통의 온도 분석
-const getElementCommunicationStyle = (element: string): string => {
+// 대화와 소통: MBTI(E/I) x 사주(화/수 기운)
+function getElementCommunicationStyle(element: string): string {
   switch (element) {
     case '木': return '새로운 아이디어를 제시하며 대화를 시작하는 스타일';
     case '火': return '열정적으로 자신의 의견을 표현하며 대화를 주도하는 스타일';
@@ -250,226 +321,248 @@ const getElementCommunicationStyle = (element: string): string => {
     case '水': return '상황에 맞춰 유연하게 공감하며 대화하는 스타일';
     default: return '';
   }
-};
+}
 
 function generateCommunicationSummary(elem1: string, mbti1: MBTIType, elem2: string, mbti2: MBTIType, name1: string, name2: string): string {
-  const getElementCommunicationStyle = (element: string): string => {
-    switch (element) {
-      case '木': return '새로운 아이디어를 제시하며 대화를 시작하는 스타일';
-      case '火': return '열정적으로 자신의 의견을 표현하며 대화를 주도하는 스타일';
-      case '土': return '상대방의 이야기를 잘 들어주고 안정감을 주는 스타일';
-      case '金': return '논리적이고 핵심을 짚는 간결한 대화 스타일';
-      case '水': return '상황에 맞춰 유연하게 공감하며 대화하는 스타일';
-      default: return '';
-    }
-  };
-
   const p1EI = mbti1[0];
   const p2EI = mbti2[0];
-
-  let summary = '';
+  const style1 = getElementCommunicationStyle(elem1);
+  const style2 = getElementCommunicationStyle(elem2);
+  const kor1 = ELEMENT_KOREAN[elem1];
+  const kor2 = ELEMENT_KOREAN[elem2];
 
   if (p1EI === p2EI) {
     if (p1EI === 'E') {
-      summary = `두 분 모두 외향적인(E) 성향으로, 만남 초반부터 활발한 대화가 오고 갈 거예요. ${name1}님은 ${getElementCommunicationStyle(elem1)}이고, ${name2}님은 ${getElementCommunicationStyle(elem2)}이라, 서로의 에너지를 북돋아주며 즐거운 소통을 이어갈 수 있어요. ${ELEMENT_KOREAN[elem1]} 기운의 ${name1}님과 ${ELEMENT_KOREAN[elem2]} 기운의 ${name2}님은 각자의 방식으로 대화에 활력을 불어넣을 거예요. 다만, 때로는 너무 많은 정보가 오가거나, 깊이 있는 대화보다는 표면적인 대화에 머무를 수 있으니 주의하세요.`;
+      return `두 분 모두 외향적인(E) 성향으로, 만남 초반부터 활발한 대화가 오고 갈 거예요. ${name1}님은 ${style1}이고, ${name2}님은 ${style2}이라, 서로의 에너지를 북돋아주며 즐거운 소통을 이어갈 수 있어요. ${kor1} 기운의 ${name1}님과 ${kor2} 기운의 ${name2}님은 각자의 방식으로 대화에 활력을 불어넣을 거예요. 두 분이 함께 있을 때는 마치 불꽃이 서로를 더 크게 타오르게 하듯, 대화 자체가 에너지의 원천이 됩니다. 다만, 때로는 너무 많은 정보가 오가거나, 깊이 있는 대화보다는 표면적인 대화에 머무를 수 있으니 주의하세요. 서로의 이야기를 경청하고, 상대방의 말 속에 담긴 감정을 읽으려는 노력이 관계를 한 단계 더 깊게 만들어줄 거예요.`;
     } else {
-      summary = `두 분 모두 내향적인(I) 성향으로, 서로의 조용함을 존중하며 편안한 대화를 나눌 수 있어요. ${name1}님은 ${getElementCommunicationStyle(elem1)}이고, ${name2}님은 ${getElementCommunicationStyle(elem2)}이라, 깊이 있는 이야기를 선호하며 서로의 내면을 이해하려는 노력을 할 거예요. ${ELEMENT_KOREAN[elem1]} 기운의 ${name1}님과 ${ELEMENT_KOREAN[elem2]} 기운의 ${name2}님은 서로의 내면을 탐구하며 깊은 유대감을 형성할 수 있습니다. 하지만, 때로는 너무 조용해서 오해가 생기거나, 중요한 이야기를 미루는 경향이 있을 수 있으니 솔직한 표현이 필요해요.`;
+      return `두 분 모두 내향적인(I) 성향으로, 서로의 조용함을 존중하며 편안한 대화를 나눌 수 있어요. ${name1}님은 ${style1}이고, ${name2}님은 ${style2}이라, 깊이 있는 이야기를 선호하며 서로의 내면을 이해하려는 노력을 할 거예요. ${kor1} 기운의 ${name1}님과 ${kor2} 기운의 ${name2}님은 서로의 내면을 탐구하며 깊은 유대감을 형성할 수 있습니다. 두 분의 대화는 양보다 질을 추구하며, 한 번의 진심 어린 대화가 수십 번의 가벼운 대화보다 더 큰 연결감을 만들어냅니다. 하지만, 때로는 너무 조용해서 오해가 생기거나, 중요한 이야기를 미루는 경향이 있을 수 있으니 솔직한 표현이 필요해요.`;
     }
   } else {
-    summary = `${name1}님은 ${p1EI === 'E' ? '외향적인(E)' : '내향적인(I)'} 성향이고, ${name2}님은 ${p2EI === 'E' ? '외향적인(E)' : '내향적인(I)'} 성향이라 서로 다른 소통 방식을 가지고 있어요. ${ELEMENT_KOREAN[elem1]} 기운의 ${name1}님과 ${ELEMENT_KOREAN[elem2]} 기운의 ${name2}님은 각자의 소통 스타일을 가지고 있어 처음에는 다소 어색할 수 있지만, 서로의 차이를 이해하고 존중하면 더욱 풍부한 대화가 가능해질 거예요. 외향적인 분은 내향적인 분에게 충분한 생각할 시간을 주고, 내향적인 분은 외향적인 분에게 먼저 다가가 표현하는 노력을 해보세요.`;
+    return `${name1}님은 ${p1EI === 'E' ? '외향적인(E)' : '내향적인(I)'} 성향이고, ${name2}님은 ${p2EI === 'E' ? '외향적인(E)' : '내향적인(I)'} 성향이라 서로 다른 소통 방식을 가지고 있어요. ${kor1} 기운의 ${name1}님은 ${style1}이고, ${kor2} 기운의 ${name2}님은 ${style2}입니다. 처음에는 이 차이가 어색하게 느껴질 수 있지만, 사실 이것은 두 분의 관계에서 가장 큰 강점이 될 수 있어요. 외향적인 분은 관계에 활력을 불어넣고, 내향적인 분은 깊이와 안정감을 제공합니다. 서로의 차이를 이해하고 존중하면 더욱 풍부하고 입체적인 대화가 가능해질 거예요. 외향적인 분은 내향적인 분에게 충분한 생각할 시간을 주고, 내향적인 분은 외향적인 분에게 먼저 다가가 표현하는 노력을 해보세요.`;
   }
-
-  return summary;
 }
 
 function calculateCommunicationScore(elem1: string, mbti1: MBTIType, elem2: string, mbti2: MBTIType): number {
   let score = 70;
   const p1EI = mbti1[0];
   const p2EI = mbti2[0];
-
-  if (p1EI === p2EI) {
-    score += 5;
-  } else {
-    score -= 5;
-  }
-
-  return Math.min(95, Math.max(50, score + Math.floor(Math.random() * 10 - 5)));
+  if (p1EI === p2EI) score += 5; else score -= 5;
+  // 화(火)/수(水) 기운 보너스
+  if ((elem1 === '火' && p1EI === 'E') || (elem2 === '火' && p2EI === 'E')) score += 5;
+  if ((elem1 === '水' && p1EI === 'I') || (elem2 === '水' && p2EI === 'I')) score += 5;
+  return Math.min(95, Math.max(50, score));
 }
 
 function generateCommunicationAdvice(elem1: string, mbti1: MBTIType, elem2: string, mbti2: MBTIType, name1: string, name2: string): string {
   const p1EI = mbti1[0];
   const p2EI = mbti2[0];
+  const kor1 = ELEMENT_KOREAN[elem1];
+  const kor2 = ELEMENT_KOREAN[elem2];
 
   if (p1EI === p2EI) {
     if (p1EI === 'E') {
-      return `두 분 모두 외향적이라 대화가 끊이지 않을 거예요. ${ELEMENT_KOREAN[elem1]} 기운의 ${name1}님과 ${ELEMENT_KOREAN[elem2]} 기운의 ${name2}님은 서로의 에너지를 북돋아주며 즐거운 소통을 이어갈 수 있습니다. 하지만 가끔은 상대방의 이야기를 끝까지 경청하고, 깊이 있는 질문을 던져보세요. 서로의 내면을 더 깊이 이해하는 계기가 될 수 있답니다.`;
+      return `두 분 모두 외향적이라 대화가 끊이지 않을 거예요. ${kor1} 기운의 ${name1}님과 ${kor2} 기운의 ${name2}님은 서로의 에너지를 북돋아주며 즐거운 소통을 이어갈 수 있습니다. 하지만 가끔은 상대방의 이야기를 끝까지 경청하고, 깊이 있는 질문을 던져보세요. "오늘 가장 힘들었던 순간은 언제야?" 같은 질문 하나가 서로의 내면을 더 깊이 이해하는 계기가 될 수 있답니다.`;
     } else {
-      return `두 분 모두 내향적이라 조용하고 편안한 대화를 선호할 거예요. ${ELEMENT_KOREAN[elem1]} 기운의 ${name1}님과 ${ELEMENT_KOREAN[elem2]} 기운의 ${name2}님은 서로의 조용함을 존중하며 편안한 대화를 나눌 수 있습니다. 하지만 중요한 감정이나 생각은 솔직하게 표현하는 연습이 필요해요. 침묵보다는 진솔한 대화가 관계를 더욱 단단하게 만들 거예요.`;
+      return `두 분 모두 내향적이라 조용하고 편안한 대화를 선호할 거예요. ${kor1} 기운의 ${name1}님과 ${kor2} 기운의 ${name2}님은 서로의 조용함을 존중하며 편안한 대화를 나눌 수 있습니다. 하지만 중요한 감정이나 생각은 솔직하게 표현하는 연습이 필요해요. 침묵이 편안함이 될 수도 있지만, 때로는 진솔한 한 마디가 관계를 더욱 단단하게 만들어줄 거예요.`;
     }
   } else {
-    return `서로 다른 소통 방식이 처음에는 어렵게 느껴질 수 있어요. 외향적인 분은 내향적인 분에게 충분한 생각할 시간을 주고, 내향적인 분은 외향적인 분에게 먼저 다가가 표현하는 노력을 해보세요. ${ELEMENT_KOREAN[elem1]} 기운의 ${name1}님과 ${ELEMENT_KOREAN[elem2]} 기운의 ${name2}님은 서로의 강점을 이해하고 활용한다면, 더욱 풍부하고 다채로운 소통을 할 수 있을 거예요.`;
+    return `서로 다른 소통 방식이 처음에는 어렵게 느껴질 수 있어요. 외향적인 분은 내향적인 분에게 "지금 어떤 생각해?"라고 먼저 물어봐 주세요. 내향적인 분은 외향적인 분에게 "나 지금 이런 생각을 하고 있어"라고 먼저 꺼내보는 연습을 해보세요. ${kor1} 기운의 ${name1}님과 ${kor2} 기운의 ${name2}님은 서로의 강점을 이해하고 활용한다면, 더욱 풍부하고 다채로운 소통을 할 수 있을 거예요.`;
   }
 }
 
-// 싸움과 화해: MBTI(T/F) x 사주(금/목 기운) - 갈등 해결 방식 분석
+// 싸움과 화해: MBTI(T/F) x 사주(금/목 기운)
 function generateConflictResolutionSummary(elem1: string, mbti1: MBTIType, elem2: string, mbti2: MBTIType, name1: string, name2: string): string {
   const p1TF = mbti1[2];
   const p2TF = mbti2[2];
-
-  let summary = '';
+  const kor1 = ELEMENT_KOREAN[elem1];
+  const kor2 = ELEMENT_KOREAN[elem2];
 
   if (p1TF === p2TF) {
     if (p1TF === 'T') {
-      summary = `두 분 모두 사고형(T)이라 갈등 상황에서 논리적이고 이성적으로 접근할 거예요. 문제의 본질을 파악하고 합리적인 해결책을 찾는 데 능숙해요. ${ELEMENT_KOREAN[elem1]} 기운의 ${name1}님과 ${ELEMENT_KOREAN[elem2]} 기운의 ${name2}님은 냉철한 분석력으로 갈등의 핵심을 꿰뚫어 볼 수 있습니다. 하지만, 때로는 감정적인 부분을 간과하거나, 상대방의 마음을 헤아리지 못해 더 큰 오해를 불러일으킬 수 있으니 주의하세요.`;
+      return `두 분 모두 사고형(T)이라 갈등 상황에서 논리적이고 이성적으로 접근할 거예요. 문제의 본질을 파악하고 합리적인 해결책을 찾는 데 능숙해요. ${kor1} 기운의 ${name1}님과 ${kor2} 기운의 ${name2}님은 냉철한 분석력으로 갈등의 핵심을 꿰뚫어 볼 수 있습니다. 두 분의 갈등 해결 방식은 마치 법정 토론처럼 논리와 근거를 중심으로 진행되며, 이는 문제를 빠르게 해결하는 데 효과적입니다. 하지만, 때로는 감정적인 부분을 간과하거나, 상대방의 마음을 헤아리지 못해 더 큰 오해를 불러일으킬 수 있으니 주의하세요. "네가 틀렸어"보다 "나는 이렇게 느꼈어"로 시작하는 대화가 갈등을 더 빨리 해소해줄 거예요.`;
     } else {
-      summary = `두 분 모두 감정형(F)이라 갈등 상황에서 서로의 감정을 이해하고 공감하려 노력할 거예요. 관계의 조화를 중요하게 생각하며, 상대방의 기분을 상하게 하지 않으려 애쓸 거예요. ${ELEMENT_KOREAN[elem1]} 기운의 ${name1}님과 ${ELEMENT_KOREAN[elem2]} 기운의 ${name2}님은 서로의 감정을 섬세하게 보듬어주며 갈등을 해결해 나갈 수 있습니다. 하지만, 때로는 갈등의 원인을 명확히 짚고 넘어가기보다 회피하거나, 감정적으로만 대응하여 문제가 해결되지 않을 수 있으니 주의하세요.`;
+      return `두 분 모두 감정형(F)이라 갈등 상황에서 서로의 감정을 이해하고 공감하려 노력할 거예요. 관계의 조화를 중요하게 생각하며, 상대방의 기분을 상하게 하지 않으려 애쓸 거예요. ${kor1} 기운의 ${name1}님과 ${kor2} 기운의 ${name2}님은 서로의 감정을 섬세하게 보듬어주며 갈등을 해결해 나갈 수 있습니다. 두 분은 갈등 상황에서도 상대방을 향한 배려를 잃지 않으며, 이것이 관계를 오래 지속시키는 힘이 됩니다. 하지만, 때로는 갈등의 원인을 명확히 짚고 넘어가기보다 회피하거나, 감정적으로만 대응하여 문제가 해결되지 않을 수 있으니 주의하세요.`;
     }
   } else {
-    summary = `${name1}님은 ${p1TF === 'T' ? '사고형(T)' : '감정형(F)'} 성향이고, ${name2}님은 ${p2TF === 'T' ? '사고형(T)' : '감정형(F)'} 성향이라 갈등 해결 방식에 차이가 있어요. ${ELEMENT_KOREAN[elem1]} 기운의 ${name1}님과 ${ELEMENT_KOREAN[elem2]} 기운의 ${name2}님은 서로에게 부족한 부분을 채워줄 수 있어요. ${p1TF === 'T' ? name1 : name2}님이 이성적인 해결책을 제시하고, ${p1TF === 'F' ? name1 : name2}님이 감정적인 지지를 보내주면 완벽한 조화를 이룰 수 있답니다.`;
+    return `${name1}님은 ${p1TF === 'T' ? '사고형(T)' : '감정형(F)'} 성향이고, ${name2}님은 ${p2TF === 'T' ? '사고형(T)' : '감정형(F)'} 성향이라 갈등 해결 방식에 차이가 있어요. ${kor1} 기운의 ${name1}님과 ${kor2} 기운의 ${name2}님은 서로에게 부족한 부분을 채워줄 수 있어요. 사고형의 분은 "왜 이런 문제가 생겼는가"를 분석하고, 감정형의 분은 "이 상황에서 우리가 어떻게 느끼는가"를 살핍니다. 이 두 가지 관점이 결합될 때, 두 분의 갈등 해결 능력은 어떤 커플보다도 강력해집니다. ${p1TF === 'T' ? name1 : name2}님이 이성적인 해결책을 제시하고, ${p1TF === 'F' ? name1 : name2}님이 감정적인 지지를 보내주면 완벽한 조화를 이룰 수 있답니다.`;
   }
-
-  return summary;
 }
 
 function calculateConflictResolutionScore(elem1: string, mbti1: MBTIType, elem2: string, mbti2: MBTIType): number {
   let score = 70;
   const p1TF = mbti1[2];
   const p2TF = mbti2[2];
-
-  if (p1TF === p2TF) {
-    score -= 5;
-  } else {
-    score += 10;
-  }
-
-  return Math.min(95, Math.max(50, score + Math.floor(Math.random() * 10 - 5)));
+  if (p1TF === p2TF) score -= 5; else score += 10;
+  // 금(金)/목(木) 기운 조합
+  if ((elem1 === '金' && p1TF === 'T') || (elem2 === '金' && p2TF === 'T')) score += 3;
+  if ((elem1 === '木' && p1TF === 'F') || (elem2 === '木' && p2TF === 'F')) score += 3;
+  return Math.min(95, Math.max(50, score));
 }
 
 function generateConflictResolutionAdvice(elem1: string, mbti1: MBTIType, elem2: string, mbti2: MBTIType, name1: string, name2: string): string {
   const p1TF = mbti1[2];
   const p2TF = mbti2[2];
+  const kor1 = ELEMENT_KOREAN[elem1];
+  const kor2 = ELEMENT_KOREAN[elem2];
 
   if (p1TF === p2TF) {
     if (p1TF === 'T') {
-      return `두 분 모두 사고형이라 논리적인 해결을 선호할 거예요. ${ELEMENT_KOREAN[elem1]} 기운의 ${name1}님과 ${ELEMENT_KOREAN[elem2]} 기운의 ${name2}님은 문제 해결에 탁월한 능력을 발휘할 수 있습니다. 하지만 갈등 상황에서는 감정적인 부분도 중요해요. 상대방의 감정을 먼저 헤아리고, 그 다음에 논리적인 해결책을 제시하는 연습을 해보세요.`;
+      return `두 분 모두 사고형이라 논리적인 해결을 선호할 거예요. ${kor1} 기운의 ${name1}님과 ${kor2} 기운의 ${name2}님은 문제 해결에 탁월한 능력을 발휘할 수 있습니다. 갈등 상황에서는 먼저 "지금 나 좀 힘들어"라고 감정을 솔직하게 표현해보세요. 논리 이전에 감정을 인정받는 것만으로도 갈등의 절반은 해소됩니다.`;
     } else {
-      return `두 분 모두 감정형이라 서로의 감정을 중요하게 생각할 거예요. ${ELEMENT_KOREAN[elem1]} 기운의 ${name1}님과 ${ELEMENT_KOREAN[elem2]} 기운의 ${name2}님은 서로에게 깊은 공감과 위로를 줄 수 있습니다. 하지만 갈등의 원인을 명확히 파악하고, 감정적인 지지뿐만 아니라 구체적인 해결 방안을 함께 모색하는 것이 중요해요. 때로는 이성적인 판단이 필요할 때도 있답니다.`;
+      return `두 분 모두 감정형이라 서로의 감정을 중요하게 생각할 거예요. ${kor1} 기운의 ${name1}님과 ${kor2} 기운의 ${name2}님은 서로에게 깊은 공감과 위로를 줄 수 있습니다. 갈등의 원인을 명확히 파악하고, 감정적인 지지뿐만 아니라 구체적인 해결 방안을 함께 모색하는 것이 중요해요. "우리 이 문제를 어떻게 해결할까?"라는 질문을 함께 던져보세요.`;
     }
   } else {
-    return `사고형의 분은 감정형의 분의 마음을 먼저 이해하려 노력하고, 감정형의 분은 사고형의 분의 논리적인 설명을 경청해 보세요. ${ELEMENT_KOREAN[elem1]} 기운의 ${name1}님과 ${ELEMENT_KOREAN[elem2]} 기운의 ${name2}님은 서로의 강점을 활용하여 갈등을 해결한다면, 더욱 단단하고 성숙한 관계로 발전할 수 있을 거예요.`;
+    return `사고형의 분은 감정형의 분의 마음을 먼저 이해하려 노력하고, 감정형의 분은 사고형의 분의 논리적인 설명을 경청해 보세요. ${kor1} 기운의 ${name1}님과 ${kor2} 기운의 ${name2}님은 서로의 강점을 활용하여 갈등을 해결한다면, 더욱 단단하고 성숙한 관계로 발전할 수 있을 거예요. 갈등 후에는 반드시 화해의 시간을 갖고, 서로에게 "고마워, 덕분에 우리가 더 성장했어"라고 말해보세요.`;
   }
 }
 
-// 현실과 가치관: MBTI(S/N) x 사주(토/재성) - 돈과 꿈의 밸런스 분석
+// 현실과 가치관: MBTI(S/N) x 사주(토/재성)
 function generateValuesAndRealitySummary(elem1: string, mbti1: MBTIType, elem2: string, mbti2: MBTIType, name1: string, name2: string): string {
   const p1SN = mbti1[1];
   const p2SN = mbti2[1];
-
-  let summary = '';
+  const kor1 = ELEMENT_KOREAN[elem1];
+  const kor2 = ELEMENT_KOREAN[elem2];
 
   if (p1SN === p2SN) {
     if (p1SN === 'S') {
-      summary = `두 분 모두 감각형(S)이라 현실적이고 실용적인 가치관을 가지고 있어요. ${ELEMENT_KOREAN[elem1]} 기운의 ${name1}님과 ${ELEMENT_KOREAN[elem2]} 기운의 ${name2}님은 눈앞의 목표를 중요하게 생각하며, 안정적인 삶을 추구할 거예요. 하지만, 때로는 새로운 가능성이나 장기적인 비전을 놓칠 수 있으니, 가끔은 큰 그림을 그려보는 것도 좋아요.`;
+      return `두 분 모두 감각형(S)이라 현실적이고 실용적인 가치관을 가지고 있어요. ${kor1} 기운의 ${name1}님과 ${kor2} 기운의 ${name2}님은 눈앞의 목표를 중요하게 생각하며, 안정적인 삶을 추구할 거예요. 두 분은 "지금 이 순간"을 소중히 여기며, 함께 구체적인 미래를 설계하는 데 탁월한 능력을 발휘합니다. 재정 계획, 주거 환경, 일상의 루틴 등 현실적인 부분에서 뛰어난 합의를 이루어낼 수 있어요. 하지만, 때로는 새로운 가능성이나 장기적인 비전을 놓칠 수 있으니, 가끔은 큰 그림을 함께 그려보는 것도 좋아요.`;
     } else {
-      summary = `두 분 모두 직관형(N)이라 이상적이고 추상적인 가치관을 가지고 있어요. ${ELEMENT_KOREAN[elem1]} 기운의 ${name1}님과 ${ELEMENT_KOREAN[elem2]} 기운의 ${name2}님은 미래의 가능성과 꿈을 중요하게 생각하며, 새로운 아이디어를 탐구하는 것을 즐길 거예요. 하지만, 때로는 현실적인 문제에 소홀하거나, 비현실적인 목표를 세울 수 있으니 주의가 필요해요.`;
+      return `두 분 모두 직관형(N)이라 이상적이고 추상적인 가치관을 가지고 있어요. ${kor1} 기운의 ${name1}님과 ${kor2} 기운의 ${name2}님은 미래의 가능성과 꿈을 중요하게 생각하며, 새로운 아이디어를 탐구하는 것을 즐길 거예요. 두 분의 대화는 언제나 "우리 언젠가 이런 걸 해보면 어떨까?"로 가득 차 있으며, 이 공상이 실제로 현실이 되는 경험을 자주 하게 될 거예요. 하지만, 때로는 현실적인 문제에 소홀하거나, 비현실적인 목표를 세울 수 있으니 주의가 필요해요.`;
     }
   } else {
-    summary = `${name1}님은 ${p1SN === 'S' ? '감각형(S)' : '직관형(N)'} 성향이고, ${name2}님은 ${p2SN === 'S' ? '감각형(S)' : '직관형(N)'} 성향이라 현실과 가치관에 대한 접근이 다를 수 있어요. ${ELEMENT_KOREAN[elem1]} 기운의 ${name1}님과 ${ELEMENT_KOREAN[elem2]} 기운의 ${name2}님은 서로에게 부족한 부분을 채워줄 수 있습니다. ${p1SN === 'S' ? name1 : name2}님이 현실적인 기반을 다져주고, ${p1SN === 'N' ? name1 : name2}님이 새로운 방향을 제시해주면 완벽한 밸런스가 가능해요.`;
+    return `${name1}님은 ${p1SN === 'S' ? '감각형(S)' : '직관형(N)'} 성향이고, ${name2}님은 ${p2SN === 'S' ? '감각형(S)' : '직관형(N)'} 성향이라 현실과 가치관에 대한 접근이 다를 수 있어요. ${kor1} 기운의 ${name1}님과 ${kor2} 기운의 ${name2}님은 서로에게 부족한 부분을 채워줄 수 있습니다. 감각형의 분이 "지금 우리에게 필요한 것"을 챙기고, 직관형의 분이 "우리가 나아가야 할 방향"을 제시한다면, 두 분은 현재와 미래를 모두 잡는 완벽한 팀이 됩니다. ${p1SN === 'S' ? name1 : name2}님이 현실적인 기반을 다져주고, ${p1SN === 'N' ? name1 : name2}님이 새로운 방향을 제시해주면 완벽한 밸런스가 가능해요.`;
   }
-
-  return summary;
 }
 
 function calculateValuesAndRealityScore(elem1: string, mbti1: MBTIType, elem2: string, mbti2: MBTIType): number {
   let score = 70;
   const p1SN = mbti1[1];
   const p2SN = mbti2[1];
-
-  if (p1SN === p2SN) {
-    score -= 5;
-  } else {
-    score += 10;
-  }
-
-  return Math.min(95, Math.max(50, score + Math.floor(Math.random() * 10 - 5)));
+  if (p1SN === p2SN) score -= 5; else score += 10;
+  // 토(土)/재성 기운 보너스
+  if ((elem1 === '土' && p1SN === 'S') || (elem2 === '土' && p2SN === 'S')) score += 3;
+  return Math.min(95, Math.max(50, score));
 }
 
 function generateValuesAndRealityAdvice(elem1: string, mbti1: MBTIType, elem2: string, mbti2: MBTIType, name1: string, name2: string): string {
   const p1SN = mbti1[1];
   const p2SN = mbti2[1];
+  const kor1 = ELEMENT_KOREAN[elem1];
+  const kor2 = ELEMENT_KOREAN[elem2];
 
   if (p1SN === p2SN) {
     if (p1SN === 'S') {
-      return `두 분 모두 감각형이라 현실적인 목표를 중요하게 생각할 거예요. ${ELEMENT_KOREAN[elem1]} 기운의 ${name1}님과 ${ELEMENT_KOREAN[elem2]} 기운의 ${name2}님은 안정적인 삶을 추구하며 현실적인 문제 해결에 강점을 보입니다. 하지만 가끔은 새로운 가능성을 탐색하고, 장기적인 비전을 함께 그려보는 시간을 가져보세요. 서로의 시야를 넓혀주는 계기가 될 수 있답니다.`;
+      return `두 분 모두 감각형이라 현실적인 목표를 중요하게 생각할 거예요. ${kor1} 기운의 ${name1}님과 ${kor2} 기운의 ${name2}님은 안정적인 삶을 추구하며 현실적인 문제 해결에 강점을 보입니다. 함께 '5년 후 우리의 모습'을 그려보는 시간을 가져보세요. 구체적인 목표를 함께 설정하고 달성해나가는 과정이 두 분의 유대감을 더욱 깊게 만들어줄 거예요.`;
     } else {
-      return `두 분 모두 직관형이라 미래의 가능성과 꿈을 중요하게 생각할 거예요. ${ELEMENT_KOREAN[elem1]} 기운의 ${name1}님과 ${ELEMENT_KOREAN[elem2]} 기운의 ${name2}님은 창의적인 아이디어와 통찰력으로 서로에게 영감을 줄 수 있습니다. 하지만 때로는 현실적인 문제에 대한 고려가 부족할 수 있어요. 서로의 아이디어를 현실에 적용할 수 있는 구체적인 계획을 세우고, 꾸준히 실행하는 노력이 필요해요.`;
+      return `두 분 모두 직관형이라 미래의 가능성과 꿈을 중요하게 생각할 거예요. ${kor1} 기운의 ${name1}님과 ${kor2} 기운의 ${name2}님은 창의적인 아이디어와 통찰력으로 서로에게 영감을 줄 수 있습니다. 아이디어를 현실에 적용할 수 있는 구체적인 실행 계획을 세우는 연습을 해보세요. 꿈을 꾸는 것만큼 중요한 것이 그 꿈을 향한 첫 발걸음이에요.`;
     }
   } else {
-    return `감각형의 분은 직관형의 분에게 현실적인 조언과 안정감을 제공하고, 직관형의 분은 감각형의 분에게 새로운 영감과 비전을 제시해 보세요. ${ELEMENT_KOREAN[elem1]} 기운의 ${name1}님과 ${ELEMENT_KOREAN[elem2]} 기운의 ${name2}님은 서로의 강점을 인정하고 존중하면, 돈과 꿈의 밸런스를 완벽하게 맞출 수 있을 거예요.`;
+    return `감각형의 분은 직관형의 분에게 현실적인 조언과 안정감을 제공하고, 직관형의 분은 감각형의 분에게 새로운 영감과 비전을 제시해 보세요. ${kor1} 기운의 ${name1}님과 ${kor2} 기운의 ${name2}님은 서로의 강점을 인정하고 존중하면, 돈과 꿈의 밸런스를 완벽하게 맞출 수 있을 거예요. 함께 '버킷 리스트'를 작성하고, 현실적인 것과 이상적인 것을 균형 있게 담아보세요.`;
   }
 }
 
-// 일상의 리듬: MBTI(P/J) x 사주(합/충) - 라이프스타일 조화도 분석
-function generateDailyRhythmSummary(saju1: SajuResult, mbti1: MBTIType, saju2: SajuResult, mbti2: MBTIType, name1: string, name2: string): string {
-  const getElementRhythmStyle = (element: string): string => {
-    switch (element) {
-      case '木': return '새로운 일을 시작하고 추진하는 데 에너지를 쏟는 경향이 있어요';
-      case '火': return '열정적으로 활동하며 주변에 활력을 불어넣는 스타일이에요';
-      case '土': return '안정적이고 꾸준하게 자신의 루틴을 지키는 것을 선호해요';
-      case '金': return '정확하고 효율적으로 시간을 관리하며 목표를 달성하는 데 집중해요';
-      case '水': return '유연하고 자유롭게 상황에 맞춰 변화하는 것을 즐겨요';
-      default: return '';
-    }
-  };
+// 일상의 리듬: MBTI(P/J) x 사주(합/충)
+function getElementRhythmStyle(element: string): string {
+  switch (element) {
+    case '木': return '새로운 일을 시작하고 추진하는 데 에너지를 쏟는 경향이 있어요';
+    case '火': return '열정적으로 활동하며 주변에 활력을 불어넣는 스타일이에요';
+    case '土': return '안정적이고 꾸준하게 자신의 루틴을 지키는 것을 선호해요';
+    case '金': return '정확하고 효율적으로 시간을 관리하며 목표를 달성하는 데 집중해요';
+    case '水': return '유연하고 자유롭게 상황에 맞춰 변화하는 것을 즐겨요';
+    default: return '';
+  }
+}
 
+function generateDailyRhythmSummary(saju1: SajuResult, mbti1: MBTIType, saju2: SajuResult, mbti2: MBTIType, name1: string, name2: string): string {
+  const elem1 = STEM_ELEMENTS[saju1.dayPillar.stem as HeavenlyStem];
+  const elem2 = STEM_ELEMENTS[saju2.dayPillar.stem as HeavenlyStem];
   const p1PJ = mbti1[3];
   const p2PJ = mbti2[3];
-
-  let summary = '';
+  const kor1 = ELEMENT_KOREAN[elem1];
+  const kor2 = ELEMENT_KOREAN[elem2];
 
   if (p1PJ === p2PJ) {
     if (p1PJ === 'J') {
-      summary = `두 분 모두 계획적인(J) 성향이라 일상의 리듬이 체계적이고 안정적일 거예요. ${name1}님은 ${getElementRhythmStyle(saju1.dayPillar.stemElement)}이고, ${name2}님은 ${getElementRhythmStyle(saju2.dayPillar.stemElement)}이라, 미리 계획을 세우고 정해진 루틴을 따르는 것을 선호해요. 하지만, 때로는 너무 계획에 얽매여 유연성이 부족하거나, 즉흥적인 즐거움을 놓칠 수 있으니 주의하세요.`;
+      return `두 분 모두 계획적인(J) 성향이라 일상의 리듬이 체계적이고 안정적일 거예요. ${name1}님은 ${getElementRhythmStyle(elem1)}이고, ${name2}님은 ${getElementRhythmStyle(elem2)}이라, 미리 계획을 세우고 정해진 루틴을 따르는 것을 선호해요. 두 분은 함께 여행 계획을 세울 때도, 맛집을 찾을 때도, 심지어 데이트 코스를 정할 때도 철저한 준비를 즐깁니다. 이러한 예측 가능한 일상은 서로에게 안정감을 주지만, 때로는 너무 계획에 얽매여 유연성이 부족하거나, 즉흥적인 즐거움을 놓칠 수 있으니 주의하세요.`;
     } else {
-      summary = `두 분 모두 즉흥적인(P) 성향이라 일상의 리듬이 자유롭고 유연할 거예요. ${name1}님은 ${getElementRhythmStyle(saju1.dayPillar.stemElement)}이고, ${name2}님은 ${getElementRhythmStyle(saju2.dayPillar.stemElement)}이라, 새로운 경험을 즐기고 변화에 잘 적응하는 것을 선호해요. 하지만, 때로는 너무 즉흥적이어서 중요한 일을 놓치거나, 계획성 부족으로 어려움을 겪을 수 있으니 주의가 필요해요.`;
+      return `두 분 모두 즉흥적인(P) 성향이라 일상의 리듬이 자유롭고 유연할 거예요. ${name1}님은 ${getElementRhythmStyle(elem1)}이고, ${name2}님은 ${getElementRhythmStyle(elem2)}이라, 새로운 경험을 즐기고 변화에 잘 적응하는 것을 선호해요. 두 분의 일상은 마치 즉흥 연주처럼, 정해진 악보 없이도 아름다운 하모니를 만들어냅니다. 갑작스러운 여행, 새로운 식당 도전, 예상치 못한 이벤트들이 두 분의 관계를 늘 신선하게 유지시켜줄 거예요. 하지만, 때로는 너무 즉흥적이어서 중요한 일을 놓치거나, 계획성 부족으로 어려움을 겪을 수 있으니 주의가 필요해요.`;
     }
   } else {
-    summary = `${name1}님은 ${p1PJ === 'J' ? '계획적인(J)' : '즉흥적인(P)'} 성향이고, ${name2}님은 ${p2PJ === 'J' ? '계획적인(J)' : '즉흥적인(P)'} 성향이라 일상의 리듬에 차이가 있을 수 있어요. ${name1}님은 ${getElementRhythmStyle(saju1.dayPillar.stemElement)}이고, ${name2}님은 ${getElementRhythmStyle(saju2.dayPillar.stemElement)}이라, 서로의 라이프스타일을 이해하고 조율하는 것이 중요해요. ${p1PJ === 'J' ? name1 : name2}님이 큰 틀을 잡아주고, ${p1PJ === 'P' ? name1 : name2}님이 거기에 재미와 변화를 더해주면 완벽한 밸런스가 될 거예요.`;
+    return `${name1}님은 ${p1PJ === 'J' ? '계획적인(J)' : '즉흥적인(P)'} 성향이고, ${name2}님은 ${p2PJ === 'J' ? '계획적인(J)' : '즉흥적인(P)'} 성향이라 일상의 리듬에 차이가 있을 수 있어요. ${name1}님은 ${getElementRhythmStyle(elem1)}이고, ${name2}님은 ${getElementRhythmStyle(elem2)}이라, 서로의 라이프스타일을 이해하고 조율하는 것이 중요해요. 계획적인 분은 "안정된 틀"을 제공하고, 즉흥적인 분은 그 틀 안에서 "생동감"을 불어넣습니다. 이 조합은 지루하지도, 혼란스럽지도 않은 완벽한 균형을 만들어낼 수 있어요. ${p1PJ === 'J' ? name1 : name2}님이 큰 틀을 잡아주고, ${p1PJ === 'P' ? name1 : name2}님이 거기에 재미와 변화를 더해주면 완벽한 밸런스가 될 거예요.`;
   }
-
-  return summary;
 }
 
 function calculateDailyRhythmScore(saju1: SajuResult, mbti1: MBTIType, saju2: SajuResult, mbti2: MBTIType): number {
   let score = 70;
   const p1PJ = mbti1[3];
   const p2PJ = mbti2[3];
-
-  if (p1PJ === p2PJ) {
-    score += 5;
-  } else {
-    score += 10;
-  }
-
-  return Math.min(95, Math.max(50, score + Math.floor(Math.random() * 10 - 5)));
+  if (p1PJ === p2PJ) score += 5; else score += 10;
+  return Math.min(95, Math.max(50, score));
 }
 
 function generateDailyRhythmAdvice(saju1: SajuResult, mbti1: MBTIType, saju2: SajuResult, mbti2: MBTIType, name1: string, name2: string): string {
+  const elem1 = STEM_ELEMENTS[saju1.dayPillar.stem as HeavenlyStem];
+  const elem2 = STEM_ELEMENTS[saju2.dayPillar.stem as HeavenlyStem];
   const p1PJ = mbti1[3];
   const p2PJ = mbti2[3];
+  const kor1 = ELEMENT_KOREAN[elem1];
+  const kor2 = ELEMENT_KOREAN[elem2];
 
   if (p1PJ === p2PJ) {
     if (p1PJ === 'J') {
-      return `두 분 모두 계획적인 성향이라 안정적인 일상을 함께 만들어갈 수 있어요. ${ELEMENT_KOREAN[saju1.dayPillar.stemElement]} 기운의 ${name1}님과 ${ELEMENT_KOREAN[saju2.dayPillar.stemElement]} 기운의 ${name2}님은 꾸준함과 성실함으로 서로에게 든든한 버팀목이 될 것입니다. 하지만 가끔은 계획에서 벗어나 즉흥적인 즐거움을 찾아보는 것도 좋아요. 예상치 못한 행복이 기다리고 있을지도 몰라요.`;
+      return `두 분 모두 계획적인 성향이라 안정적인 일상을 함께 만들어갈 수 있어요. ${kor1} 기운의 ${name1}님과 ${kor2} 기운의 ${name2}님은 꾸준함과 성실함으로 서로에게 든든한 버팀목이 될 것입니다. 한 달에 한 번, '계획 없는 날'을 정해보세요. 정해진 목적지 없이 발길 닿는 대로 움직이며 새로운 즐거움을 발견할 수 있을 거예요.`;
     } else {
-      return `두 분 모두 즉흥적인 성향이라 자유롭고 활기찬 일상을 함께할 수 있어요. ${ELEMENT_KOREAN[saju1.dayPillar.stemElement]} 기운의 ${name1}님과 ${ELEMENT_KOREAN[saju2.dayPillar.stemElement]} 기운의 ${name2}님은 새로운 경험과 변화를 두려워하지 않으며, 서로에게 신선한 자극을 줄 수 있습니다. 하지만 중요한 일이나 약속은 미리 계획하고, 서로에게 공유하는 습관을 들이는 것이 중요해요. 작은 계획이 큰 즐거움을 가져다줄 수 있답니다.`;
+      return `두 분 모두 즉흥적인 성향이라 자유롭고 활기찬 일상을 함께할 수 있어요. ${kor1} 기운의 ${name1}님과 ${kor2} 기운의 ${name2}님은 새로운 경험과 변화를 두려워하지 않으며, 서로에게 신선한 자극을 줄 수 있습니다. 중요한 약속이나 기념일은 미리 달력에 표시해두는 습관을 들여보세요. 작은 계획이 큰 즐거움을 가져다줄 수 있답니다.`;
     }
   } else {
-    return `계획적인 분은 즉흥적인 분에게 안정감을 제공하고, 즉흥적인 분은 계획적인 분에게 새로운 활력을 불어넣어 줄 수 있어요. ${ELEMENT_KOREAN[saju1.dayPillar.stemElement]} 기운의 ${name1}님과 ${ELEMENT_KOREAN[saju2.dayPillar.stemElement]} 기운의 ${name2}님은 서로의 리듬을 존중하고 조율한다면, 지루할 틈 없는 다채로운 일상을 만들어갈 수 있을 거예요.`;
+    return `계획적인 분은 즉흥적인 분에게 안정감을 제공하고, 즉흥적인 분은 계획적인 분에게 새로운 활력을 불어넣어 줄 수 있어요. ${kor1} 기운의 ${name1}님과 ${kor2} 기운의 ${name2}님은 서로의 리듬을 존중하고 조율한다면, 지루할 틈 없는 다채로운 일상을 만들어갈 수 있을 거예요. '이것만은 꼭 지키자'는 최소한의 규칙(예: 주 1회 함께 저녁 식사)을 정해두면 관계의 안정성을 높일 수 있습니다.`;
   }
 }
 
-// 하이브리드 궁합 종합 분석
+// ─── 처방전 텍스트 생성 ─────────────────────────────────────────────────────
+
+function generatePrescription(
+  elem1: string, mbti1: MBTIType,
+  elem2: string, mbti2: MBTIType,
+  strongest1: { name: string }, strongest2: { name: string }
+): { luckyColor: string; luckyColorHex1: string; luckyColorHex2: string; luckyItem: string; tipForPartner: string; warningSign: string } {
+  const kor1 = ELEMENT_KOREAN[elem1];
+  const kor2 = ELEMENT_KOREAN[elem2];
+  const color1 = ELEMENT_LUCKY_COLOR[strongest1.name] || ELEMENT_LUCKY_COLOR[elem1];
+  const color2 = ELEMENT_LUCKY_COLOR[strongest2.name] || ELEMENT_LUCKY_COLOR[elem2];
+  const item1 = ELEMENT_LUCKY_ITEM[strongest1.name] || ELEMENT_LUCKY_ITEM[elem1];
+  const item2 = ELEMENT_LUCKY_ITEM[strongest2.name] || ELEMENT_LUCKY_ITEM[elem2];
+  const hex1 = ELEMENT_COLOR[strongest1.name] || ELEMENT_COLOR[elem1];
+  const hex2 = ELEMENT_COLOR[strongest2.name] || ELEMENT_COLOR[elem2];
+
+  const hasFtype = mbti1.includes('F') || mbti2.includes('F');
+  const hasTtype = mbti1.includes('T') || mbti2.includes('T');
+  const hasEtype = mbti1.includes('E') || mbti2.includes('E');
+
+  const tip = hasFtype
+    ? `상대방에게 먼저 "오늘 어땠어?"라고 물어보세요. 감정을 먼저 공감해주는 것이 두 분의 관계를 더욱 깊게 만들어줄 거예요. 작은 칭찬과 따뜻한 말 한마디가 큰 힘이 됩니다.`
+    : hasTtype
+    ? `상대방과 대화할 때 "왜 그렇게 생각해?"라고 이유를 물어보세요. 서로의 논리를 이해하면 불필요한 갈등이 줄어들고, 더 효율적인 소통이 가능해집니다.`
+    : `상대방의 페이스에 맞춰주는 연습을 해보세요. 때로는 빠르게, 때로는 천천히 움직이며 서로의 리듬을 맞춰가는 것이 관계의 핵심입니다.`;
+
+  const warning = GENERATING[elem1] === elem2
+    ? `${kor1} 기운이 ${kor2} 기운을 너무 강하게 이끌려 할 때, 상대방이 부담을 느낄 수 있어요. 가끔은 상대방이 스스로 결정하고 성장할 공간을 주세요.`
+    : OVERCOMING[elem1] === elem2
+    ? `${kor1} 기운이 ${kor2} 기운을 제어하는 관계에서, 의도치 않게 상대방을 억누르는 느낌을 줄 수 있어요. 서로의 자율성을 존중하는 것이 중요합니다.`
+    : `두 분의 에너지가 비슷한 방향으로 흐를 때, 서로를 자극하기보다 편안함에 안주할 수 있어요. 가끔은 새로운 도전으로 관계에 활력을 불어넣어 보세요.`;
+
+  return {
+    luckyColor: `첫 번째 분: ${color1} / 두 번째 분: ${color2}. 함께 있을 때 이 색상의 소품이나 의상을 활용하면 두 분의 기운이 더욱 조화롭게 어우러집니다.`,
+    luckyColorHex1: hex1,
+    luckyColorHex2: hex2,
+    luckyItem: `첫 번째 분에게: ${item1}. 두 번째 분에게: ${item2}. 서로에게 이런 아이템을 선물하면 상대방의 기운을 북돋아줄 수 있어요.`,
+    tipForPartner: tip,
+    warningSign: warning,
+  };
+}
+
+// ─── 메인 분석 함수 ────────────────────────────────────────────────────────
+
 export function analyzeHybridCompatibility(
   saju1: SajuResult, saju2: SajuResult,
   mbti1: MBTIType, mbti2: MBTIType,
@@ -484,28 +577,19 @@ export function analyzeHybridCompatibility(
   const balance1 = calculateElementBalance(saju1);
   const balance2 = calculateElementBalance(saju2);
 
-  // 가장 강한 오행 추출
-  const strongest1 = balance1.sort((a, b) => b.value - a.value)[0];
-  const strongest2 = balance2.sort((a, b) => b.value - a.value)[0];
+  const strongest1 = [...balance1].sort((a, b) => b.value - a.value)[0];
+  const strongest2 = [...balance2].sort((a, b) => b.value - a.value)[0];
 
-  // 1. 에너지 저울 (Dynamic Scale) 로직
+  // ① 에너지 저울 로직
   let person1Energy = 0;
   let person2Energy = 0;
 
-  // 사주 오행 에너지 계산
-  if (GENERATING[strongest1.name] === strongest2.name) {
-    person1Energy += 2;
-  } else if (OVERCOMING[strongest1.name] === strongest2.name) {
-    person1Energy -= 1;
-  }
+  if (GENERATING[strongest1.name] === strongest2.name) person1Energy += 2;
+  else if (OVERCOMING[strongest1.name] === strongest2.name) person1Energy -= 1;
 
-  if (GENERATING[strongest2.name] === strongest1.name) {
-    person2Energy += 2;
-  } else if (OVERCOMING[strongest2.name] === strongest1.name) {
-    person2Energy -= 1;
-  }
+  if (GENERATING[strongest2.name] === strongest1.name) person2Energy += 2;
+  else if (OVERCOMING[strongest2.name] === strongest1.name) person2Energy -= 1;
 
-  // MBTI 배려 성향 (F, P) 에너지 계산
   if (mbti1.includes('F')) person1Energy += 1;
   if (mbti1.includes('P')) person1Energy += 1;
   if (mbti1.includes('T')) person1Energy -= 1;
@@ -535,21 +619,26 @@ export function analyzeHybridCompatibility(
     energyDescription = '두 분은 서로 에너지를 주고받는 균형 잡힌 관계예요. 어느 한쪽으로 치우치지 않고, 서로에게 긍정적인 영향을 주며 함께 성장할 수 있는 이상적인 관계입니다. 마치 춤을 추듯, 서로의 리듬에 맞춰 에너지를 교환하며 아름다운 조화를 만들어낼 거예요. 서로의 존재만으로도 큰 힘이 되며, 함께라면 어떤 어려움도 헤쳐나갈 수 있는 든든한 동반자가 될 것입니다.';
   }
 
-  const energyScale = {
-    person1Energy,
-    person2Energy,
-    balanceScore,
-    charger,
-    consumer,
-    description: energyDescription,
+  const energyScale = { person1Energy, person2Energy, balanceScore, charger, consumer, description: energyDescription };
+
+  const energyBalance = {
+    description: balanceScore > 0
+      ? `${name1}님의 ${ELEMENT_KOREAN[elem1]} 기운이 ${name2}님의 ${ELEMENT_KOREAN[elem2]} 기운을 이끌어주는 형국이에요.`
+      : balanceScore < 0
+      ? `${name2}님의 ${ELEMENT_KOREAN[elem2]} 기운이 ${name1}님의 ${ELEMENT_KOREAN[elem1]} 기운을 이끌어주는 형국이에요.`
+      : `두 분의 ${ELEMENT_KOREAN[elem1]} 기운과 ${ELEMENT_KOREAN[elem2]} 기운이 완벽한 균형을 이루고 있어요.`,
+    person1Role: balanceScore > 0 ? '에너지 충전기' : balanceScore < 0 ? '에너지 소비자' : '에너지 동반자',
+    person2Role: balanceScore < 0 ? '에너지 충전기' : balanceScore > 0 ? '에너지 소비자' : '에너지 동반자',
   };
 
-  // 2. 하이브리드 시너지 카드 로직
+  // ② 시너지 카드
   const mbtiInfo1 = MBTI_INFO[mbti1];
   const mbtiInfo2 = MBTI_INFO[mbti2];
+  const hwNick1 = MBTI_HARDWARE_NICKNAME[mbti1] || mbtiInfo1.nickname;
+  const hwNick2 = MBTI_HARDWARE_NICKNAME[mbti2] || mbtiInfo2.nickname;
 
-  const nickname1 = `${ELEMENT_KOREAN[elem1]} ${mbtiInfo1.nickname}`;
-  const nickname2 = `${ELEMENT_KOREAN[elem2]} ${mbtiInfo2.nickname}`;
+  const nickname1 = `${ELEMENT_KOREAN[elem1]} 기운의 ${hwNick1}`;
+  const nickname2 = `${ELEMENT_KOREAN[elem2]} 기운의 ${hwNick2}`;
 
   let combinedNickname = '';
   if (balanceScore > 0) {
@@ -560,77 +649,79 @@ export function analyzeHybridCompatibility(
     combinedNickname = `${ELEMENT_KOREAN[elem1]} 기운의 ${mbti1}과 ${ELEMENT_KOREAN[elem2]} 기운의 ${mbti2}의 완벽한 조화`;
   }
 
-  const energyBalance = {
-    description: balanceScore > 0 
-      ? `${name1}님의 ${ELEMENT_KOREAN[elem1]} 기운이 ${name2}님의 ${ELEMENT_KOREAN[elem2]} 기운을 이끌어주는 형국이에요.`
-      : balanceScore < 0
-      ? `${name2}님의 ${ELEMENT_KOREAN[elem2]} 기운이 ${name1}님의 ${ELEMENT_KOREAN[elem1]} 기운을 이끌어주는 형국이에요.`
-      : `두 분의 ${ELEMENT_KOREAN[elem1]} 기운과 ${ELEMENT_KOREAN[elem2]} 기운이 완벽한 균형을 이루고 있어요.`,
-    person1Role: balanceScore > 0 ? '리더' : balanceScore < 0 ? '서포터' : '동반자',
-    person2Role: balanceScore < 0 ? '리더' : balanceScore > 0 ? '서포터' : '동반자',
-  };
-
   const synergyCard = {
     nickname1,
     nickname2,
-    nickname: combinedNickname,
-    description: '두 분의 에너지가 만나 생성되는 특별한 시너지 효과예요.',
+    combinedNickname,
+    description: `사주는 하드웨어(타고난 기질), MBTI는 소프트웨어(후천적 성격). 두 분의 하드웨어와 소프트웨어가 만나 생성되는 특별한 시너지를 분석했어요.`,
   };
 
-  // 3. 4대 영역 하이브리드 리포트 (Accordion UI) 로직
+  // ③ 4대 영역
   const fourDimensions = {
     communication: {
-      title: '대화와 소통: 소통의 온도 분석',
+      title: '대화와 소통',
       summary: generateCommunicationSummary(elem1, mbti1, elem2, mbti2, name1, name2),
       score: calculateCommunicationScore(elem1, mbti1, elem2, mbti2),
       advice: generateCommunicationAdvice(elem1, mbti1, elem2, mbti2, name1, name2),
+      icon: 'MessageCircle',
+      color: 'blue',
     },
     conflictResolution: {
-      title: '싸움과 화해: 갈등 해결 방식 분석',
+      title: '싸움과 화해',
       summary: generateConflictResolutionSummary(elem1, mbti1, elem2, mbti2, name1, name2),
       score: calculateConflictResolutionScore(elem1, mbti1, elem2, mbti2),
       advice: generateConflictResolutionAdvice(elem1, mbti1, elem2, mbti2, name1, name2),
+      icon: 'Shield',
+      color: 'red',
     },
     valuesAndReality: {
-      title: '현실과 가치관: 돈과 꿈의 밸런스 분석',
+      title: '현실과 가치관',
       summary: generateValuesAndRealitySummary(elem1, mbti1, elem2, mbti2, name1, name2),
       score: calculateValuesAndRealityScore(elem1, mbti1, elem2, mbti2),
       advice: generateValuesAndRealityAdvice(elem1, mbti1, elem2, mbti2, name1, name2),
+      icon: 'TrendingUp',
+      color: 'green',
     },
     dailyRhythm: {
-      title: '일상의 리듬: 라이프스타일 조화도 분석',
+      title: '일상의 리듬',
       summary: generateDailyRhythmSummary(saju1, mbti1, saju2, mbti2, name1, name2),
       score: calculateDailyRhythmScore(saju1, mbti1, saju2, mbti2),
       advice: generateDailyRhythmAdvice(saju1, mbti1, saju2, mbti2, name1, name2),
+      icon: 'Home',
+      color: 'amber',
     },
   };
 
-  // 4. 인연 타임라인 (Visual Graph) 로직
+  // ④ 인연 타임라인
   const mbtiResult = analyzeMBTICompatibility(mbti1, mbti2, name1, name2);
   const sajuRelation = analyzeSajuRelation(elem1, elem2);
-  
-  const timeline = {
-    썸: Math.min(95, Math.max(50, Math.round(mbtiResult.score * 0.6 + sajuRelation.score * 0.4 + (Math.random() * 10 - 5)))),
-    연애: Math.min(95, Math.max(50, Math.round(mbtiResult.score * 0.5 + sajuRelation.score * 0.5 + (Math.random() * 10 - 5)))),
-    장기안정기: Math.min(95, Math.max(50, Math.round(sajuRelation.score * 0.6 + mbtiResult.score * 0.4 + (Math.random() * 10 - 5)))),
-    description: '두 분의 관계는 시간이 지남에 따라 더욱 깊어지고 안정될 가능성이 높아요. 서로의 변화를 이해하고 함께 성장한다면 아름다운 인연을 이어갈 수 있을 거예요.',
+
+  const timelineBase = {
+    썸: Math.min(95, Math.max(50, Math.round(mbtiResult.score * 0.6 + sajuRelation.score * 0.4))),
+    연애: Math.min(95, Math.max(50, Math.round(mbtiResult.score * 0.5 + sajuRelation.score * 0.5))),
+    장기안정기: Math.min(95, Math.max(50, Math.round(sajuRelation.score * 0.6 + mbtiResult.score * 0.4))),
   };
 
-  // 5. 무운의 한 줄 처방전 로직
-  const prescription = {
-    luckyColor: `두 분에게 행운을 가져다줄 색상은 ${ELEMENT_KOREAN[strongest1.name]}과 ${ELEMENT_KOREAN[strongest2.name]} 계열이에요. 함께 있을 때 이 색상의 옷이나 소품을 활용하면 좋은 기운을 더욱 북돋아 줄 거예요.`,
-    luckyItem: `서로에게 ${GENERATING[strongest1.name] === strongest2.name ? ELEMENT_KOREAN[strongest1.name] : ELEMENT_KOREAN[strongest2.name]} 기운을 가진 아이템을 선물해 보세요. 예를 들어, 나무 기운은 책이나 식물, 불 기운은 향초나 조명, 흙 기운은 도자기, 쇠 기운은 금속 액세서리, 물 기운은 수족관이나 분수 등이 있어요.`,
-    tipForPartner: `상대방을 대할 때는 ${mbti1.includes('F') || mbti2.includes('F') ? '따뜻한 감정적 공감' : '명확한 논리적 이해'}을 바탕으로 대화하는 것이 좋아요. 서로의 언어를 이해하려는 작은 노력이 큰 차이를 만들 거예요.`,
+  const timeline = {
+    ...timelineBase,
+    description: '두 분의 관계는 시간이 지남에 따라 더욱 깊어지고 안정될 가능성이 높아요. 서로의 변화를 이해하고 함께 성장한다면 아름다운 인연을 이어갈 수 있을 거예요.',
+    phaseDescriptions: {
+      썸: `첫 만남의 설렘 단계. ${ELEMENT_KOREAN[elem1]}과 ${ELEMENT_KOREAN[elem2]} 기운이 처음 교류하며 서로에게 신선한 매력을 느끼는 시기예요.`,
+      연애: `관계가 깊어지는 단계. MBTI 성향의 차이가 본격적으로 드러나며, 서로를 더 잘 이해하게 되는 시기예요.`,
+      장기안정기: `사주 오행의 근본적인 궁합이 관계의 안정성을 결정하는 단계. 두 분의 타고난 기운이 얼마나 조화로운지가 핵심이에요.`,
+    },
   };
+
+  // ⑤ 처방전
+  const prescription = generatePrescription(elem1, mbti1, elem2, mbti2, strongest1, strongest2);
 
   // 기존 로직 유지
   const sajuInterpretation: string[] = [
-    `${name1}님은 ${saju1.dayPillar.stem}(${stemInfo1.reading})${saju1.dayPillar.branch} 일주로, ${stemInfo1.meaning}의 기운을 타고났어요. ${stemInfo1.nature}을 가진 분이에요.`,
-    `${name2}님은 ${saju2.dayPillar.stem}(${stemInfo2.reading})${saju2.dayPillar.branch} 일주로, ${stemInfo2.meaning}의 기운을 타고났어요. ${stemInfo2.nature}을 가진 분이에요.`,
+    `첫 번째 분은 ${saju1.dayPillar.stem}(${stemInfo1.reading})${saju1.dayPillar.branch} 일주로, ${stemInfo1.meaning}의 기운을 타고났어요. ${stemInfo1.nature}을 가진 분이에요.`,
+    `두 번째 분은 ${saju2.dayPillar.stem}(${stemInfo2.reading})${saju2.dayPillar.branch} 일주로, ${stemInfo2.meaning}의 기운을 타고났어요. ${stemInfo2.nature}을 가진 분이에요.`,
     sajuRelation.description
   ];
 
-  // 을경합 등 천간합 체크
   const STEM_COMBINATIONS: Record<string, string> = {
     '甲己': '갑기합(甲己合) - 토(土)로 변하는 합',
     '乙庚': '을경합(乙庚合) - 금(金)으로 변하는 합',
@@ -644,27 +735,23 @@ export function analyzeHybridCompatibility(
   const stemCombination = STEM_COMBINATIONS[stemPair1] || STEM_COMBINATIONS[stemPair2];
 
   if (stemCombination) {
-    sajuInterpretation.push(`여기서 정말 특별한 게 있어요! 두 분의 일간(日干)은 ${stemCombination}이라고 해서, 사주학에서 "만나면 자연스럽게 하나가 되는 천생의 조합"이에요. 마치 자석의 N극과 S극처럼 서로 끌어당기는 힘이 있어요. 이 합(合)이 있는 커플은 처음 만났을 때 "어? 이 사람 어디서 본 것 같은데?" 하는 묘한 친숙함을 느끼는 경우가 많아요.`);
+    sajuInterpretation.push(`두 분의 일간(日干)은 ${stemCombination}이라고 해서, 사주학에서 "만나면 자연스럽게 하나가 되는 천생의 조합"이에요. 마치 자석의 N극과 S극처럼 서로 끌어당기는 힘이 있어요.`);
     sajuRelation.score = Math.min(95, sajuRelation.score + 15);
   }
 
-  // 크로스 분석
   const cross1 = analyzeCrossSynergy(elem1, mbti1);
   const cross2 = analyzeCrossSynergy(elem2, mbti2);
-
-  // 크로스 케미 해석
-  let crossChemistry: string;
   const crossScore = Math.round((cross1.score + cross2.score) / 2);
 
+  let crossChemistry: string;
   if (crossScore >= 82) {
-    crossChemistry = `여기서 정말 신기한 게 있어요. ${name1}님의 ${ELEMENT_KOREAN[elem1]}(${elem1}) 기운은 MBTI의 ${mbti1} 성격과 정확히 일치해요. ${name2}님의 ${ELEMENT_KOREAN[elem2]}(${elem2}) 기운도 ${mbti2} 성격과 딱 맞아떨어지죠. 이게 뭘 의미하냐면, 두 분은 타고난 기운과 실제 성격이 일치하는 사람들이에요. 사주가 예측한 대로 살고 있다는 뜻이고, 그만큼 두 분의 궁합 분석이 정확하게 맞아떨어질 확률이 높다는 거예요.`;
+    crossChemistry = `두 분은 타고난 기운(사주)과 실제 성격(MBTI)이 일치하는 사람들이에요. 사주가 예측한 대로 살고 있다는 뜻이고, 그만큼 두 분의 궁합 분석이 정확하게 맞아떨어질 확률이 높아요.`;
   } else if (crossScore >= 72) {
-    crossChemistry = `${name1}님의 ${ELEMENT_KOREAN[elem1]}(${elem1}) 기운과 ${mbti1} 성격이 서로 보완하며 균형을 이루고 있어요. ${name2}님도 ${ELEMENT_KOREAN[elem2]}(${elem2}) 기운과 ${mbti2} 성격이 조화롭게 어우러져 있어요. 두 분 모두 사주와 성격이 서로를 보완해주고 있어서, 관계에서도 자연스러운 밸런스가 만들어질 거예요.`;
+    crossChemistry = `두 분 모두 사주와 성격이 서로를 보완해주고 있어서, 관계에서도 자연스러운 밸런스가 만들어질 거예요.`;
   } else {
-    crossChemistry = `${name1}님의 ${ELEMENT_KOREAN[elem1]}(${elem1}) 기운과 ${mbti1} 성격 사이에 약간의 긴장감이 있어요. 이건 나쁜 게 아니라, 내면에 다양한 면모를 가지고 있다는 뜻이에요. ${name2}님도 마찬가지로 ${ELEMENT_KOREAN[elem2]}(${elem2}) 기운과 ${mbti2} 성격이 독특한 조합을 이루고 있어요. 이런 복합적인 성격의 두 사람이 만나면, 예측할 수 없는 재미있는 케미가 생겨요.`;
+    crossChemistry = `두 분 모두 복합적인 성격의 소유자로, 예측할 수 없는 재미있는 케미가 생겨요.`;
   }
 
-  // 종합 점수 계산 (사주 40%, MBTI 35%, 크로스 25%)
   const totalScore = Math.round(sajuRelation.score * 0.4 + mbtiResult.score * 0.35 + crossScore * 0.25);
 
   let totalGrade = "";
@@ -684,8 +771,8 @@ export function analyzeHybridCompatibility(
   };
 
   const keywords: string[] = [];
-  let finalAdvice = `두 분의 관계를 더욱 아름답게 만들기 위해, ${mbtiResult.loveAdvice} 또한, ${sajuRelation.relation} 관계의 특성을 이해하고, 서로의 다름을 존중하는 자세가 중요해요. ${totalScore >= 80 ? '두 분은 이미 충분히 좋은 관계이지만, 서로에게 작은 노력을 더한다면 더욱 완벽한 관계가 될 거예요.' : '서로에게 조금 더 관심을 기울이고 노력한다면, 분명 좋은 관계로 발전할 수 있을 거예요.'}`;
-  let recommendations = [...mbtiResult.dateRecommendations.slice(0, 2)];
+  const finalAdvice = `두 분의 관계를 더욱 아름답게 만들기 위해, ${mbtiResult.loveAdvice} 또한, ${sajuRelation.relation} 관계의 특성을 이해하고, 서로의 다름을 존중하는 자세가 중요해요. ${totalScore >= 80 ? '두 분은 이미 충분히 좋은 관계이지만, 서로에게 작은 노력을 더한다면 더욱 완벽한 관계가 될 거예요.' : '서로에게 조금 더 관심을 기울이고 노력한다면, 분명 좋은 관계로 발전할 수 있을 거예요.'}`;
+  const recommendations = [...mbtiResult.dateRecommendations.slice(0, 2)];
 
   if (stemCombination) keywords.push('천생연분');
   if (sajuRelation.score >= 80) keywords.push('오행 조화');
@@ -695,28 +782,18 @@ export function analyzeHybridCompatibility(
   if (detailScores.communication >= 80) keywords.push('소통의 달인');
   if (detailScores.marriage >= 80) keywords.push('결혼 적합');
   if (detailScores.crisis >= 80) keywords.push('위기 극복력');
-  
-  // 최소 4개 키워드 보장
+
   const fallbackKeywords = ['함께 성장', '서로 보완', '깊은 유대', '새로운 발견', '따뜻한 관계'];
   while (keywords.length < 4) {
     const kw = fallbackKeywords.shift();
     if (kw && !keywords.includes(kw)) keywords.push(kw);
   }
-  
-  // 추천 활동
-  if (sajuRelation.score >= 80) {
-    recommendations.push('함께 명상이나 요가 - 서로의 기운을 느끼며 더 깊은 교감을 나눠보세요');
-  }
-  if (elem1 === '木' || elem2 === '木') {
-    recommendations.push('자연 속 산책이나 등산 - 나무(木)의 기운을 충전하면 관계가 더 깊어져요');
-  }
-  if (elem1 === '火' || elem2 === '火') {
-    recommendations.push('캠프파이어나 촛불 디너 - 불(火)의 따뜻한 기운이 두 분의 사랑을 더 뜨겁게 해요');
-  }
-  if (elem1 === '水' || elem2 === '水') {
-    recommendations.push('바다나 호수 근처 데이트 - 물(水)의 기운이 마음의 평화를 가져다줘요');
-  }
-  
+
+  if (sajuRelation.score >= 80) recommendations.push('함께 명상이나 요가 - 서로의 기운을 느끼며 더 깊은 교감을 나눠보세요');
+  if (elem1 === '木' || elem2 === '木') recommendations.push('자연 속 산책이나 등산 - 나무(木)의 기운을 충전하면 관계가 더 깊어져요');
+  if (elem1 === '火' || elem2 === '火') recommendations.push('캠프파이어나 촛불 디너 - 불(火)의 따뜻한 기운이 두 분의 사랑을 더 뜨겁게 해요');
+  if (elem1 === '水' || elem2 === '水') recommendations.push('바다나 호수 근처 데이트 - 물(水)의 기운이 마음의 평화를 가져다줘요');
+
   return {
     totalScore,
     totalGrade,
@@ -740,6 +817,14 @@ export function analyzeHybridCompatibility(
     synergyCard,
     fourDimensions,
     timeline,
-    prescription
+    prescription,
+    elementInfo: {
+      elem1,
+      elem2,
+      elem1Color: ELEMENT_COLOR[elem1] || '#a78bfa',
+      elem2Color: ELEMENT_COLOR[elem2] || '#f472b6',
+      elem1Korean: ELEMENT_KOREAN[elem1],
+      elem2Korean: ELEMENT_KOREAN[elem2],
+    },
   };
 }

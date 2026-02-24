@@ -28,6 +28,10 @@ export async function render(options: { path: string }) {
       title: "[가입X/100%무료] 정밀 궁합 분석 - 무운 (MuUn)",
       description: "두 사람의 생년월일로 확인하는 정밀 사주 궁합. 연애, 결혼, 사업 파트너십까지 확인해보세요."
     },
+    '/hybrid-compatibility': {
+      title: "[가입X/100%무료] 사주×MBTI 하이브리드 궁합 - 무운 (MuUn)",
+      description: "사주 오행(하드웨어)과 MBTI(소프트웨어)를 결합한 960가지 하이브리드 궁합 분석. 에너지 저울, 4대 영역 리포트, 인연 타임라인, 처방전까지 압도적인 정보량의 전문 궁합 리포트를 무료로 제공합니다."
+    },
     '/tojeong': {
       title: "[가입X/100%무료] 2026년 토정비결 - 무운 (MuUn)",
       description: "병오년 한 해의 신수를 월별로 상세하게 풀이해드립니다. 100% 무료 토정비결 서비스."
