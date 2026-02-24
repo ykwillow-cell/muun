@@ -15,6 +15,7 @@ import { autoLinkKeywordsToJSX } from "@/lib/auto-link-keywords";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { BirthTimeSelect } from "@/components/ui/birth-time-select";
 import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -599,7 +600,11 @@ export default function Compatibility() {
                         <Label htmlFor="birthTime1" className="text-white text-base md:text-sm font-medium flex items-center gap-1.5">
                           <Clock className="w-3.5 h-3.5 text-pink-400" /> 태어난 시간
                         </Label>
-                        <Input id="birthTime1" type="time" {...form.register("birthTime1")} className="h-11 bg-white/5 border-white/10 text-white rounded-xl focus:ring-pink-500/50 focus:border-pink-500 transition-all text-base md:text-sm" />
+                        <BirthTimeSelect
+                          value={form.watch("birthTime1")}
+                          onChange={(val) => form.setValue("birthTime1", val)}
+                          accentClass="focus:ring-pink-500/50 focus:border-pink-500"
+                        />
                       </div>
                       <div className="space-y-1.5">
                         <Label className="text-white text-base md:text-sm font-medium flex items-center gap-1.5">
@@ -680,7 +685,11 @@ export default function Compatibility() {
                         <Label htmlFor="birthTime2" className="text-white text-base md:text-sm font-medium flex items-center gap-1.5">
                           <Clock className="w-3.5 h-3.5 text-red-400" /> 태어난 시간
                         </Label>
-                        <Input id="birthTime2" type="time" {...form.register("birthTime2")} className="h-11 bg-white/5 border-white/10 text-white rounded-xl focus:ring-red-500/50 focus:border-red-500 transition-all text-base md:text-sm" />
+                        <BirthTimeSelect
+                          value={form.watch("birthTime2")}
+                          onChange={(val) => form.setValue("birthTime2", val)}
+                          accentClass="focus:ring-red-500/50 focus:border-red-500"
+                        />
                       </div>
                       <div className="space-y-1.5">
                         <Label className="text-white text-base md:text-sm font-medium flex items-center gap-1.5">

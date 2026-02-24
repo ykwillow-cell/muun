@@ -11,6 +11,7 @@ import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { BirthTimeSelect } from "@/components/ui/birth-time-select";
 import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { getLuckyLunchResult } from "@/lib/luckyLunch";
@@ -197,11 +198,10 @@ export default function LuckyLunch() {
                       <Calendar className="w-3.5 h-3.5 text-amber-400" />
                       출생 시간 (선택사항)
                     </Label>
-                    <Input
-                      id="birthTime"
-                      type="time"
-                      {...form.register("birthTime")}
-                      className="h-11 bg-white/5 border-white/10 text-white rounded-xl focus:ring-amber-500/50 focus:border-amber-500 transition-all text-base md:text-sm"
+                    <BirthTimeSelect
+                      value={form.watch("birthTime")}
+                      onChange={(val) => form.setValue("birthTime", val)}
+                      accentClass="focus:ring-amber-500/50 focus:border-amber-500"
                     />
                   </div>
 

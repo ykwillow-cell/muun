@@ -17,6 +17,7 @@ import { autoLinkKeywordsToJSX } from "@/lib/auto-link-keywords";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { BirthTimeSelect } from "@/components/ui/birth-time-select";
 import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { calculateSaju, SajuResult, calculateElementBalance, generateFortuneDetails, STEM_ELEMENTS, BRANCH_ELEMENTS } from "@/lib/saju";
@@ -432,13 +433,12 @@ export default function YearlyFortune() {
                         <Clock className="w-3.5 h-3.5 text-primary" />
                         태어난 시간
                       </Label>
-                      <div className="space-y-2">
-                        <Input
-                          id="birthTime"
-                          type="time"
-                          {...form.register("birthTime")}
+                        <div className="space-y-2">
+                        <BirthTimeSelect
+                          value={form.watch("birthTime")}
+                          onChange={(val) => form.setValue("birthTime", val)}
                           disabled={form.watch("birthTimeUnknown")}
-                          className={`h-11 bg-white/5 border-white/10 text-white rounded-xl focus:ring-primary/50 focus:border-primary transition-all text-base md:text-sm ${form.watch("birthTimeUnknown") ? 'opacity-40' : ''}`}
+                          accentClass="focus:ring-primary/50 focus:border-primary"
                         />
                         <label className="flex items-center gap-1.5 cursor-pointer">
                           <input

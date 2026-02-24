@@ -15,6 +15,7 @@ import { autoLinkKeywordsToJSX } from "@/lib/auto-link-keywords";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { BirthTimeSelect } from "@/components/ui/birth-time-select";
 import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { calculateSaju, SajuResult, calculateElementBalance, generateFortuneDetails, STEM_ELEMENTS, BRANCH_ELEMENTS } from "@/lib/saju";
@@ -329,11 +330,10 @@ export default function LifelongSaju() {
                         <Clock className="w-3.5 h-3.5 text-purple-400" />
                         태어난 시간
                       </Label>
-                      <Input
-                        id="birthTime"
-                        type="time"
-                        {...form.register("birthTime")}
-                        className="h-11 bg-white/5 border-white/10 text-white rounded-xl focus:ring-purple-500/50 focus:border-purple-500 transition-all text-base md:text-sm"
+                      <BirthTimeSelect
+                        value={form.watch("birthTime")}
+                        onChange={(val) => form.setValue("birthTime", val)}
+                        accentClass="focus:ring-purple-500/50 focus:border-purple-500"
                       />
                     </div>
                   </div>

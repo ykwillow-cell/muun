@@ -13,6 +13,7 @@ import { shareContent } from "@/lib/share";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { BirthTimeSelect } from "@/components/ui/birth-time-select";
 import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { calculateSaju, SajuResult, FiveElement } from "@/lib/saju";
@@ -247,12 +248,11 @@ export default function Manselyeok() {
                           태어난 시간
                         </Label>
                         <div className="space-y-2">
-                          <Input 
-                            id="birthTime" 
-                            type="time" 
-                            {...form.register("birthTime")} 
+                          <BirthTimeSelect
+                            value={form.watch("birthTime")}
+                            onChange={(val) => form.setValue("birthTime", val)}
                             disabled={form.watch("birthTimeUnknown")}
-                            className={`h-11 bg-white/5 border-white/10 text-white rounded-xl focus:ring-emerald-500/50 focus:border-emerald-500 transition-all text-sm ${form.watch("birthTimeUnknown") ? 'opacity-40' : ''}`}
+                            accentClass="focus:ring-emerald-500/50 focus:border-emerald-500"
                           />
                           <label className="flex items-center gap-1.5 cursor-pointer">
                             <input

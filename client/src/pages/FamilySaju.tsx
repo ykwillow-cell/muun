@@ -14,6 +14,7 @@ import { cleanAIContent } from "@/lib/content-cleaner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { BirthTimeSelect } from "@/components/ui/birth-time-select";
 import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { calculateSaju, SajuResult, calculateElementBalance, STEM_ELEMENTS } from "@/lib/saju";
@@ -307,12 +308,12 @@ export default function FamilySaju() {
                           <Clock className="w-3 h-3" /> 태어난 시간
                         </Label>
                         <div className="space-y-2">
-                          <Input
-                            type="time"
+                          <BirthTimeSelect
                             value={member.birthTime}
-                            onChange={(e) => updateMember(index, "birthTime", e.target.value)}
+                            onChange={(val) => updateMember(index, "birthTime", val)}
                             disabled={member.birthTimeUnknown}
-                            className={`bg-white/5 border-white/10 text-white h-10 ${member.birthTimeUnknown ? 'opacity-40' : ''}`}
+                            className="h-10"
+                            accentClass="focus:ring-primary/50 focus:border-primary"
                           />
                           <label className="flex items-center gap-1.5 cursor-pointer">
                             <input
