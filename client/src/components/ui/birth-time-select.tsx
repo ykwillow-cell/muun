@@ -1,8 +1,10 @@
 /**
  * BirthTimeSelect - 태어난 시간을 12지지 시간대로 선택하는 드롭다운 컴포넌트
  *
- * 각 시간대 선택 시 해당 시간대의 중심 시간(HH:MM)으로 자동 매핑됩니다.
- * 예) 축시(01:31~03:30) 선택 → "02:30"
+ * - 각 시간대 선택 시 해당 시간대의 중심 시간(HH:MM)으로 자동 매핑됩니다.
+ *   예) 축시(01:31~03:30) 선택 → "02:30"
+ * - 마지막 옵션 '모름'을 선택하면 onUnknownChange(true)가 호출됩니다.
+ * - DatePickerInput과 동일한 h-11, rounded-xl, border, text-sm 스타일을 사용합니다.
  */
 
 import {
@@ -18,6 +20,9 @@ export interface SiOption {
   label: string;       // 표시 텍스트 (예: "축시 (01:31~03:30)")
   value: string;       // 중심 시간 HH:MM (예: "02:30")
 }
+
+/** '모름' 선택 시 사용하는 특수 value 상수 */
+export const BIRTH_TIME_UNKNOWN_VALUE = "__unknown__";
 
 /** 12지지 + 자시 분리 시간대 목록 */
 export const SI_OPTIONS: SiOption[] = [
@@ -66,43 +71,65 @@ export function timeToSiValue(time: string): string {
 }
 
 interface BirthTimeSelectProps {
-  /** 현재 선택된 중심 시간값 (HH:MM) */
+  /**
+   * 현재 선택된 중심 시간값 (HH:MM).
+   * '모름' 상태일 때는 BIRTH_TIME_UNKNOWN_VALUE 또는 빈 문자열을 전달하세요.
+   */
   value: string;
-  /** 값 변경 콜백 - 선택된 시간대의 중심 시간(HH:MM)을 반환 */
+  /** 시간대 선택 콜백 - 선택된 시간대의 중심 시간(HH:MM)을 반환 */
   onChange: (value: string) => void;
-  /** 비활성화 여부 */
-  disabled?: boolean;
+  /**
+   * '모름' 선택/해제 콜백.
+   * 제공하면 드롭다운에 '모름' 옵션이 표시되고, 선택 시 true가 전달됩니다.
+   * 일반 시간대 선택 시 false가 전달됩니다.
+   */
+  onUnknownChange?: (isUnknown: boolean) => void;
+  /** 현재 '모름' 상태 여부 - 드롭다운에 '모름'이 선택된 상태로 표시됩니다 */
+  isUnknown?: boolean;
   /** 추가 CSS 클래스 */
   className?: string;
-  /** 포커스 링 색상 클래스 (예: "focus:ring-primary/50") */
+  /** 포커스 링 색상 클래스 (예: "focus:ring-primary/50 focus:border-primary") */
   accentClass?: string;
 }
 
 export function BirthTimeSelect({
   value,
   onChange,
-  disabled = false,
+  onUnknownChange,
+  isUnknown = false,
   className,
   accentClass = "focus:ring-primary/50 focus:border-primary",
 }: BirthTimeSelectProps) {
-  // 현재 value가 중심 시간값인지 확인하고, 아니면 가장 가까운 시간대로 변환
-  const selectValue = SI_OPTIONS.find((o) => o.value === value)
+  // '모름' 상태이면 특수 value, 아니면 시간대 value로 표시
+  const selectValue = isUnknown
+    ? BIRTH_TIME_UNKNOWN_VALUE
+    : SI_OPTIONS.find((o) => o.value === value)
     ? value
     : value
     ? timeToSiValue(value)
     : "";
 
+  const handleChange = (val: string) => {
+    if (val === BIRTH_TIME_UNKNOWN_VALUE) {
+      // '모름' 선택
+      onUnknownChange?.(true);
+    } else {
+      // 일반 시간대 선택
+      onUnknownChange?.(false);
+      onChange(val);
+    }
+  };
+
   return (
-    <Select
-      value={selectValue}
-      onValueChange={onChange}
-      disabled={disabled}
-    >
+    <Select value={selectValue} onValueChange={handleChange}>
       <SelectTrigger
         className={cn(
-          "h-11 bg-white/5 border-white/10 text-white rounded-xl transition-all text-base md:text-sm",
+          // DatePickerInput과 동일한 높이/스타일
+          "h-11 w-full rounded-xl border border-white/10 bg-white/5",
+          "px-3 py-2 text-sm text-white",
+          "ring-offset-background transition-all",
+          "focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-0",
           accentClass,
-          disabled && "opacity-40 cursor-not-allowed",
           !selectValue && "text-white/40",
           className
         )}
@@ -119,6 +146,15 @@ export function BirthTimeSelect({
             {option.label}
           </SelectItem>
         ))}
+        {/* '모름' 옵션 - onUnknownChange prop이 있을 때만 표시 */}
+        {onUnknownChange && (
+          <SelectItem
+            value={BIRTH_TIME_UNKNOWN_VALUE}
+            className="text-white/50 hover:bg-white/10 focus:bg-white/10 focus:text-white/70 cursor-pointer border-t border-white/10 mt-1 pt-1"
+          >
+            모름 (시간 모름)
+          </SelectItem>
+        )}
       </SelectContent>
     </Select>
   );

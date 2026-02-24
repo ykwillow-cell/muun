@@ -307,24 +307,13 @@ export default function FamilySaju() {
                         <Label className="text-white/70 text-base md:text-sm flex items-center gap-1">
                           <Clock className="w-3 h-3" /> 태어난 시간
                         </Label>
-                        <div className="space-y-2">
-                          <BirthTimeSelect
-                            value={member.birthTime}
-                            onChange={(val) => updateMember(index, "birthTime", val)}
-                            disabled={member.birthTimeUnknown}
-                            className="h-10"
-                            accentClass="focus:ring-primary/50 focus:border-primary"
-                          />
-                          <label className="flex items-center gap-1.5 cursor-pointer">
-                            <input
-                              type="checkbox"
-                              checked={member.birthTimeUnknown}
-                              onChange={(e) => updateMember(index, "birthTimeUnknown", e.target.checked)}
-                              className="w-3.5 h-3.5 rounded border-white/20 bg-white/5 accent-primary"
-                            />
-                            <span className="text-[11px] text-white/60">모름</span>
-                          </label>
-                        </div>
+                        <BirthTimeSelect
+                          value={member.birthTime}
+                          onChange={(val) => updateMember(index, "birthTime", val)}
+                          onUnknownChange={(isUnknown) => updateMember(index, "birthTimeUnknown", isUnknown)}
+                          isUnknown={member.birthTimeUnknown}
+                          accentClass="focus:ring-primary/50 focus:border-primary"
+                        />
                       </div>
                     </div>
 

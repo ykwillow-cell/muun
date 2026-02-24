@@ -247,22 +247,13 @@ export default function Manselyeok() {
                           <Clock className="w-3.5 h-3.5 text-emerald-400" />
                           태어난 시간
                         </Label>
-                        <div className="space-y-2">
-                          <BirthTimeSelect
-                            value={form.watch("birthTime")}
-                            onChange={(val) => form.setValue("birthTime", val)}
-                            disabled={form.watch("birthTimeUnknown")}
-                            accentClass="focus:ring-emerald-500/50 focus:border-emerald-500"
-                          />
-                          <label className="flex items-center gap-1.5 cursor-pointer">
-                            <input
-                              type="checkbox"
-                              {...form.register("birthTimeUnknown")}
-                              className="w-3.5 h-3.5 rounded border-white/20 bg-white/5 accent-emerald-500"
-                            />
-                            <span className="text-[11px] text-white/60">모름</span>
-                          </label>
-                        </div>
+                        <BirthTimeSelect
+                          value={form.watch("birthTime")}
+                          onChange={(val) => form.setValue("birthTime", val)}
+                          onUnknownChange={(isUnknown) => form.setValue("birthTimeUnknown", isUnknown)}
+                          isUnknown={form.watch("birthTimeUnknown")}
+                          accentClass="focus:ring-emerald-500/50 focus:border-emerald-500"
+                        />
                       </div>
                     </div>
 
