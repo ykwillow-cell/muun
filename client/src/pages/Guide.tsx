@@ -1,19 +1,31 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'wouter';
 import { useCanonical } from '@/lib/use-canonical';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { ChevronLeft, Calendar, Clock, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { getAllColumns, getColumnsByCategory, COLUMN_CATEGORIES, ColumnData } from '@/lib/column-data';
+import { getAllColumns, getColumnsByCategory, COLUMN_CATEGORIES, ColumnData } from '@/lib/column-data-api';
 
 export default function Guide() {
   useCanonical('/guide');
   
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const allColumns = getAllColumns();
+  const [allColumns, setAllColumns] = useState<ColumnData[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const loadColumns = async () => {
+      setIsLoading(true);
+      const columns = await getAllColumns();
+      setAllColumns(columns);
+      setIsLoading(false);
+    };
+    loadColumns();
+  }, []);
+
   const displayedColumns = selectedCategory 
-    ? getColumnsByCategory(selectedCategory)
+    ? allColumns.filter(col => col.category === selectedCategory)
     : allColumns;
 
   const categories = Object.entries(COLUMN_CATEGORIES).map(([key, value]) => ({
@@ -108,7 +120,11 @@ export default function Guide() {
 
         {/* 칼럼 목록 */}
         <div className="space-y-4">
-          {displayedColumns.length > 0 ? (
+          {isLoading ? (
+            <div className="text-center py-12">
+              <p className="text-white/60">칼럼을 불러오는 중입니다...</p>
+            </div>
+          ) : displayedColumns.length > 0 ? (
             displayedColumns.map((column, index) => (
               <motion.div
                 key={column.id}
