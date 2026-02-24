@@ -613,7 +613,6 @@ export function analyzeHybridCompatibility(
   };
 
   // 기존 로직 유지
-  const keywords: string[] = [];
   const sajuInterpretation: string[] = [
     `${name1}님은 ${saju1.dayPillar.stem}(${stemInfo1.reading})${saju1.dayPillar.branch} 일주로, ${stemInfo1.meaning}의 기운을 타고났어요. ${stemInfo1.nature}을 가진 분이에요.`,
     `${name2}님은 ${saju2.dayPillar.stem}(${stemInfo2.reading})${saju2.dayPillar.branch} 일주로, ${stemInfo2.meaning}의 기운을 타고났어요. ${stemInfo2.nature}을 가진 분이에요.`,
