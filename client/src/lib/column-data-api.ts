@@ -1,73 +1,89 @@
 /**
- * muun-admin API에서 칼럼 데이터 가져오기
- * 이 파일은 column-data.ts를 대체합니다
+ * Supabase에서 칼럼 데이터 직접 조회
+ * muun-admin과 동일한 Supabase 프로젝트를 사용합니다.
  */
+import { createClient } from '@supabase/supabase-js';
+
+const SUPABASE_URL = 'https://vuifbmsdggnwygvgcrkj.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1aWZibXNkZ2dud3lndmNya2oiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTczOTM3MDg1MiwiZXhwIjoyMDU0OTQ2ODUyfQ.Yf9PJiCFRkFkGBKOBfMBSYhVMVGMHFdLbfaGBBqyBX4';
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 export interface ColumnData {
-  id: number;
-  slug: string;
+  id: string;
+  slug?: string;
   title: string;
+  description: string;
   content: string;
   category: string;
+  categoryLabel: string;
   author: string;
   published: boolean;
   publishedDate: string;
+  readTime: number;
+  thumbnail: string;
+  keywords: string[];
   metaTitle?: string;
   metaDescription?: string;
   canonicalUrl?: string;
-  thumbnailUrl?: string;
-  readingTime?: number;
 }
 
-// muun-admin API URL (환경변수로 설정 가능)
-const API_URL = import.meta.env.VITE_MUUN_ADMIN_API || 'https://3000-isuiaxh3c3oukpiwp91lq-5eca3185.us1.manus.computer';
+// 카테고리 정의 (muun-admin과 동기화)
+export const COLUMN_CATEGORIES: Record<string, { label: string; color: string }> = {
+  luck: { label: '개운법', color: 'bg-yellow-500/20 text-yellow-400' },
+  basic: { label: '사주 기초', color: 'bg-blue-500/20 text-blue-400' },
+  relationship: { label: '관계 & 궁합', color: 'bg-pink-500/20 text-pink-400' },
+  health: { label: '건강 & 운', color: 'bg-green-500/20 text-green-400' },
+  money: { label: '재물운', color: 'bg-purple-500/20 text-purple-400' },
+  flow: { label: '운명의 흐름', color: 'bg-indigo-500/20 text-indigo-400' },
+};
+
+function mapRow(row: any): ColumnData {
+  const category = row.category || 'luck';
+  const categoryLabel = COLUMN_CATEGORIES[category]?.label || category;
+  return {
+    id: String(row.id),
+    slug: row.slug || String(row.id),
+    title: row.title || row.name || '',
+    description: row.description || '',
+    content: row.content || '',
+    category,
+    categoryLabel,
+    author: row.author || '무운 역술팀',
+    published: row.published || false,
+    publishedDate: row.published_at || row.created_at || new Date().toISOString(),
+    readTime: row.read_time || 5,
+    thumbnail: row.thumbnail_url || '',
+    keywords: row.keywords || [],
+    metaTitle: row.meta_title || undefined,
+    metaDescription: row.meta_description || undefined,
+    canonicalUrl: row.canonical_url || undefined,
+  };
+}
 
 /**
- * 발행된 모든 칼럼 조회
+ * 발행된 모든 칼럼 조회 (최신순)
  */
 export async function getAllColumns(category?: string): Promise<ColumnData[]> {
   try {
-    const params = new URLSearchParams();
-    if (category) params.append('category', category);
-    
-    const response = await fetch(
-      `${API_URL}/api/trpc/columns.publicList?input=${encodeURIComponent(JSON.stringify({ category, limit: 100 }))}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
+    let query = supabase
+      .from('columns')
+      .select('*')
+      .eq('published', true)
+      .order('published_at', { ascending: false, nullsFirst: false });
 
-    if (!response.ok) {
-      throw new Error(`API error: ${response.status}`);
+    if (category) {
+      query = query.eq('category', category);
     }
 
-    const data = await response.json();
-    
-    // tRPC 응답 형식 처리
-    if (data.result?.data) {
-      return data.result.data.map((col: any) => ({
-        id: col.id,
-        slug: col.slug,
-        title: col.title,
-        content: col.content,
-        category: col.category,
-        author: col.author || '무운 역술팀',
-        published: col.published,
-        publishedDate: col.publishedDate || new Date().toISOString(),
-        metaTitle: col.metaTitle,
-        metaDescription: col.metaDescription,
-        canonicalUrl: col.canonicalUrl,
-        thumbnailUrl: col.thumbnailUrl,
-        readingTime: col.readingTime || 5,
-      }));
+    const { data, error } = await query.limit(100);
+    if (error) {
+      console.error('Supabase getAllColumns error:', error);
+      return [];
     }
-
-    return [];
+    return (data || []).map(mapRow);
   } catch (error) {
-    console.error('Failed to fetch columns from API:', error);
+    console.error('Failed to fetch columns from Supabase:', error);
     return [];
   }
 }
@@ -76,8 +92,30 @@ export async function getAllColumns(category?: string): Promise<ColumnData[]> {
  * 카테고리별 칼럼 조회
  */
 export async function getColumnsByCategory(category: string): Promise<ColumnData[]> {
-  const allColumns = await getAllColumns(category);
-  return allColumns.filter(col => col.category === category);
+  return getAllColumns(category);
+}
+
+/**
+ * ID로 칼럼 상세 조회
+ */
+export async function getColumnById(id: string): Promise<ColumnData | null> {
+  try {
+    const { data, error } = await supabase
+      .from('columns')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (error) {
+      if (error.code === 'PGRST116') return null;
+      console.error('Supabase getColumnById error:', error);
+      return null;
+    }
+    return data ? mapRow(data) : null;
+  } catch (error) {
+    console.error('Failed to fetch column by id:', error);
+    return null;
+  }
 }
 
 /**
@@ -85,56 +123,48 @@ export async function getColumnsByCategory(category: string): Promise<ColumnData
  */
 export async function getColumnBySlug(slug: string): Promise<ColumnData | null> {
   try {
-    const response = await fetch(
-      `${API_URL}/api/trpc/columns.publicGetBySlug?input=${encodeURIComponent(JSON.stringify(slug))}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+    const { data, error } = await supabase
+      .from('columns')
+      .select('*')
+      .eq('slug', slug)
+      .single();
+
+    if (error) {
+      if (error.code === 'PGRST116') {
+        return getColumnById(slug);
       }
-    );
-
-    if (!response.ok) {
-      if (response.status === 404) return null;
-      throw new Error(`API error: ${response.status}`);
+      console.error('Supabase getColumnBySlug error:', error);
+      return null;
     }
-
-    const data = await response.json();
-    
-    if (data.result?.data) {
-      const col = data.result.data;
-      return {
-        id: col.id,
-        slug: col.slug,
-        title: col.title,
-        content: col.content,
-        category: col.category,
-        author: col.author || '무운 역술팀',
-        published: col.published,
-        publishedDate: col.publishedDate || new Date().toISOString(),
-        metaTitle: col.metaTitle,
-        metaDescription: col.metaDescription,
-        canonicalUrl: col.canonicalUrl,
-        thumbnailUrl: col.thumbnailUrl,
-        readingTime: col.readingTime || 5,
-      };
-    }
-
-    return null;
+    return data ? mapRow(data) : null;
   } catch (error) {
     console.error('Failed to fetch column by slug:', error);
     return null;
   }
 }
 
-// 카테고리 정의 (muun-admin과 동기화)
-export const COLUMN_CATEGORIES = {
-  '운세': { label: '운세', color: 'bg-blue-500/20 text-blue-400' },
-  '풍수': { label: '풍수', color: 'bg-yellow-500/20 text-yellow-400' },
-  '별자리': { label: '별자리', color: 'bg-pink-500/20 text-pink-400' },
-  '명리학': { label: '명리학', color: 'bg-green-500/20 text-green-400' },
-};
+/**
+ * 최신 칼럼 N개 조회
+ */
+export async function getLatestColumns(limit: number = 3): Promise<ColumnData[]> {
+  try {
+    const { data, error } = await supabase
+      .from('columns')
+      .select('*')
+      .eq('published', true)
+      .order('published_at', { ascending: false, nullsFirst: false })
+      .limit(limit);
 
-// 호환성을 위한 더미 데이터 (API 호출 실패 시 폴백)
+    if (error) {
+      console.error('Supabase getLatestColumns error:', error);
+      return [];
+    }
+    return (data || []).map(mapRow);
+  } catch (error) {
+    console.error('Failed to fetch latest columns:', error);
+    return [];
+  }
+}
+
+// 호환성을 위한 더미 데이터
 export const columns: ColumnData[] = [];
