@@ -10,7 +10,8 @@ import { TodayTermCard } from "@/components/TodayTermCard";
 import { DreamQuickSearch } from "@/components/DreamQuickSearch";
 import { OrganizationSchema, BreadcrumbListSchema } from "@/components/SchemaMarkup";
 import { fortuneGuides } from "@/lib/fortune-guide";
-import { getLatestColumns, COLUMN_CATEGORIES } from "@/lib/column-data";
+import { getFeaturedColumns, COLUMN_CATEGORIES } from "@/lib/column-data-api";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Clock } from "lucide-react";
 
@@ -22,6 +23,15 @@ export default function Home() {
   }, []);
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [latestColumns, setLatestColumns] = useState<any[]>([]);
+  const [columnsLoading, setColumnsLoading] = useState(true);
+
+  useEffect(() => {
+    getFeaturedColumns()
+      .then((cols) => setLatestColumns(cols))
+      .catch(() => setLatestColumns([]))
+      .finally(() => setColumnsLoading(false));
+  }, []);
 
   // GA 분석 기반 메뉴 순서 재배치
   const menuItems = [
@@ -134,8 +144,6 @@ export default function Home() {
   };
 
   const commonMaxWidth = "max-w-4xl mx-auto";
-  const latestColumns = getLatestColumns(3);
-
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden relative antialiased">
       {/* Schema Markup */}
@@ -326,7 +334,22 @@ export default function Home() {
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {latestColumns.map((column, index) => (
+              {columnsLoading ? (
+                Array.from({ length: 3 }).map((_, i) => (
+                  <div key={i} className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden animate-pulse">
+                    <div className="aspect-video bg-white/10" />
+                    <div className="p-5 space-y-3">
+                      <div className="h-4 bg-white/10 rounded w-3/4" />
+                      <div className="h-3 bg-white/10 rounded w-full" />
+                      <div className="h-3 bg-white/10 rounded w-2/3" />
+                    </div>
+                  </div>
+                ))
+              ) : latestColumns.length === 0 ? (
+                <div className="col-span-3 text-center py-12 text-muted-foreground">
+                  등록된 칼럼이 없습니다.
+                </div>
+              ) : latestColumns.map((column, index) => (
                 <motion.div
                   key={column.id}
                   initial={{ opacity: 0, y: 20 }}

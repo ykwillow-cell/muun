@@ -166,5 +166,55 @@ export async function getLatestColumns(limit: number = 3): Promise<ColumnData[]>
   }
 }
 
+/**
+ * 메인화면 추천 칼럼 조회 (featured_columns 테이블 기반)
+ * 설정된 슬롯이 없으면 최신 칼럼으로 fallback
+ */
+export async function getFeaturedColumns(): Promise<ColumnData[]> {
+  try {
+    const { data, error } = await supabase
+      .from('featured_columns')
+      .select('position, column:columns(*)')
+      .order('position', { ascending: true });
+
+    if (error) {
+      console.error('Supabase getFeaturedColumns error:', error);
+      return getLatestColumns(3);
+    }
+
+    if (!data || data.length === 0) {
+      return getLatestColumns(3);
+    }
+
+    // position 1~3 슬롯 채우기, 빈 슬롯은 최신 칼럼으로 fallback
+    const slots: (ColumnData | null)[] = [null, null, null];
+    data.forEach((row: any) => {
+      const pos = row.position;
+      if (pos >= 1 && pos <= 3 && row.column) {
+        slots[pos - 1] = mapRow(row.column);
+      }
+    });
+
+    const hasEmpty = slots.some((s) => s === null);
+    if (hasEmpty) {
+      const latest = await getLatestColumns(3);
+      const usedIds = new Set(slots.filter(Boolean).map((s) => s!.id));
+      let latestIdx = 0;
+      return slots.map((s) => {
+        if (s !== null) return s;
+        while (latestIdx < latest.length && usedIds.has(latest[latestIdx].id)) {
+          latestIdx++;
+        }
+        return latestIdx < latest.length ? latest[latestIdx++] : null;
+      }).filter(Boolean) as ColumnData[];
+    }
+
+    return slots.filter(Boolean) as ColumnData[];
+  } catch (error) {
+    console.error('Failed to fetch featured columns:', error);
+    return getLatestColumns(3);
+  }
+}
+
 // 호환성을 위한 더미 데이터
 export const columns: ColumnData[] = [];
