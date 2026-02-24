@@ -30,7 +30,7 @@ import {
   LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   RadarChart, PolarGrid, PolarAngleAxis, Radar, Legend
 } from "recharts";
-import html2canvas from "html2canvas";
+// import html2canvas from "html2canvas";
 
 const formSchema = z.object({
   name1: z.string().min(1, "첫 번째 이름을 입력해주세요"),
@@ -417,7 +417,23 @@ export default function HybridCompatibilityPage() {
   const [result, setResult] = useState<HybridCompatResult | null>(null);
   const [expandedSection, setExpandedSection] = useState<string | null>('communication');
   const [isSaving, setIsSaving] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
   const resultRef = useRef<HTMLDivElement>(null);
+  const formTopRef = useRef<HTMLDivElement>(null);
+  const name1Ref = useRef<HTMLInputElement>(null);
+  const birthDate1Ref = useRef<HTMLDivElement>(null);
+  const mbti1Ref = useRef<HTMLDivElement>(null);
+  const name2Ref = useRef<HTMLInputElement>(null);
+  const birthDate2Ref = useRef<HTMLDivElement>(null);
+  const mbti2Ref = useRef<HTMLDivElement>(null);
+  const errorMsgRef = useRef<HTMLDivElement>(null);
+
+  // 결과 화면 진입 시 최상단으로 스크롤
+  useEffect(() => {
+    if (result) {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+  }, [result]);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -438,6 +454,8 @@ export default function HybridCompatibilityPage() {
   });
 
   const handleSubmit = (data: FormValues) => {
+    // 유효성 검사 통과 시 에러 초기화
+    setValidationErrors([]);
     try {
       let birthDateStr1 = data.birthDate1;
       if (typeof birthDateStr1 !== 'string') {
@@ -468,7 +486,7 @@ export default function HybridCompatibilityPage() {
 
       setResult(hybrid);
       setExpandedSection('communication');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // useEffect에서 result 변경 감지 후 스크롤 처리
 
       trackCustomEvent("hybrid_compatibility_analyzed", {
         mbti1: data.mbti1,
@@ -481,28 +499,59 @@ export default function HybridCompatibilityPage() {
     }
   };
 
-  // 결과 이미지 저장 (이름 마스킹)
-  const handleSaveImage = useCallback(async () => {
-    if (!resultRef.current || isSaving) return;
-    setIsSaving(true);
+  // 공유하기 기능
+  const handleShare = async () => {
+    const shareData = {
+      title: '무운 사주×MBTI 하이브리드 궁합',
+      text: `우리 궁합은 ${result?.totalScore}점! ${result?.totalGrade}이에요. 무운에서 확인해보세요.`,
+      url: window.location.href,
+    };
+
     try {
-      const canvas = await html2canvas(resultRef.current, {
-        backgroundColor: '#0f0f1a',
-        scale: 2,
-        useCORS: true,
-        logging: false,
-      });
-      const link = document.createElement('a');
-      link.download = `무운-하이브리드궁합-${result?.totalScore}점.png`;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-      trackCustomEvent("hybrid_result_saved", { score: result?.totalScore });
-    } catch (e) {
-      console.error('이미지 저장 실패:', e);
-    } finally {
-      setIsSaving(false);
+      if (navigator.share) {
+        await navigator.share(shareData);
+        trackCustomEvent("hybrid_shared_native", { score: result?.totalScore });
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+        alert('링크가 복사되었습니다. 원하는 곳에 붙여넣어 공유하세요!');
+        trackCustomEvent("hybrid_shared_clipboard", { score: result?.totalScore });
+      }
+    } catch (err) {
+      console.error('공유 실패:', err);
     }
-  }, [result, isSaving]);
+  };
+
+  // 유효성 검사 실패 핸들러
+  const handleInvalidSubmit = (errors: any) => {
+    const errorMessages: string[] = [];
+    const fieldOrder = [
+      { key: 'name1', label: '첫 번째 사람 이름', ref: name1Ref },
+      { key: 'birthDate1', label: '첫 번째 사람 생년월일', ref: birthDate1Ref },
+      { key: 'mbti1', label: '첫 번째 사람 MBTI', ref: mbti1Ref },
+      { key: 'name2', label: '두 번째 사람 이름', ref: name2Ref },
+      { key: 'birthDate2', label: '두 번째 사람 생년월일', ref: birthDate2Ref },
+      { key: 'mbti2', label: '두 번째 사람 MBTI', ref: mbti2Ref },
+    ];
+
+    let firstErrorRef: React.RefObject<any> | null = null;
+    for (const field of fieldOrder) {
+      if (errors[field.key]) {
+        errorMessages.push(field.label);
+        if (!firstErrorRef) firstErrorRef = field.ref;
+      }
+    }
+
+    setValidationErrors(errorMessages);
+
+    // 첫 번째 에러 필드로 스크롤
+    setTimeout(() => {
+      if (firstErrorRef?.current) {
+        firstErrorRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } else if (errorMsgRef.current) {
+        errorMsgRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 50);
+  };
 
   const commonMaxWidth = "w-full max-w-2xl mx-auto";
 
@@ -547,12 +596,11 @@ export default function HybridCompatibilityPage() {
               </button>
               <h1 className="text-base md:text-lg font-bold">하이브리드 궁합 리포트</h1>
               <button
-                onClick={handleSaveImage}
-                disabled={isSaving}
-                className="flex items-center gap-1.5 text-xs text-white/60 hover:text-white transition-colors disabled:opacity-50"
+                onClick={handleShare}
+                className="flex items-center gap-1.5 text-xs text-white/60 hover:text-white transition-colors"
               >
-                <Download className="w-4 h-4" />
-                {isSaving ? '저장 중...' : '저장'}
+                <Share2 className="w-4 h-4" />
+                공유
               </button>
             </div>
           </header>
@@ -715,7 +763,7 @@ export default function HybridCompatibilityPage() {
                 </Card>
               </motion.div>
 
-              {/* 저장/공유 버튼 */}
+              {/* 공유/다시분석 버튼 */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -723,13 +771,12 @@ export default function HybridCompatibilityPage() {
                 className="flex gap-3"
               >
                 <Button
-                  onClick={handleSaveImage}
-                  disabled={isSaving}
+                  onClick={handleShare}
                   className="flex-1 h-12 font-bold rounded-xl flex items-center justify-center gap-2"
                   style={{ background: 'linear-gradient(135deg, #7c3aed, #db2777)' }}
                 >
-                  <Download className="w-4 h-4" />
-                  {isSaving ? '저장 중...' : '결과 저장하기 (.png)'}
+                  <Share2 className="w-4 h-4" />
+                  결과 공유하기
                 </Button>
                 <Button
                   onClick={() => setResult(null)}
@@ -799,7 +846,7 @@ export default function HybridCompatibilityPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="p-4 md:p-6">
-                <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5">
+                <form onSubmit={form.handleSubmit(handleSubmit, handleInvalidSubmit)} className="space-y-5">
                   {/* 첫 번째 사람 */}
                   <div className="space-y-3">
                     <div className="flex items-center gap-2">
@@ -811,7 +858,10 @@ export default function HybridCompatibilityPage() {
                         <Label htmlFor="name1" className="text-white text-sm font-medium flex items-center gap-1.5">
                           <User className="w-3.5 h-3.5 text-purple-400" /> 이름
                         </Label>
-                        <Input id="name1" placeholder="이름" {...form.register("name1")} className="h-11 bg-white/5 border-white/10 text-white placeholder:text-white/30 rounded-xl focus:ring-purple-500/50 focus:border-purple-500 transition-all text-sm" />
+                        <div ref={name1Ref}>
+                        <Input id="name1" placeholder="이름" {...form.register("name1")} className={`h-11 bg-white/5 border-white/10 text-white placeholder:text-white/30 rounded-xl focus:ring-purple-500/50 focus:border-purple-500 transition-all text-sm ${form.formState.errors.name1 ? 'border-red-500/60 ring-1 ring-red-500/40' : ''}`} />
+                        {form.formState.errors.name1 && <p className="text-xs text-red-400 mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{form.formState.errors.name1.message}</p>}
+                      </div>
                       </div>
                       <div className="space-y-1.5">
                         <Label className="text-white text-sm font-medium flex items-center gap-1.5">
@@ -828,11 +878,12 @@ export default function HybridCompatibilityPage() {
                         </ToggleGroup>
                       </div>
                     </div>
-                    <div className="space-y-1.5">
+                    <div className="space-y-1.5" ref={birthDate1Ref}>
                       <Label htmlFor="birthDate1" className="text-white text-sm font-medium flex items-center gap-1.5">
                         <Calendar className="w-3.5 h-3.5 text-purple-400" /> 생년월일
                       </Label>
                       <DatePickerInput id="birthDate1" {...form.register("birthDate1")} accentColor="purple" />
+                      {form.formState.errors.birthDate1 && <p className="text-xs text-red-400 mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{form.formState.errors.birthDate1.message}</p>}
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div className="space-y-1.5">
@@ -862,18 +913,19 @@ export default function HybridCompatibilityPage() {
                         )}
                       </div>
                     </div>
-                    <div className="space-y-1.5">
+                    <div className="space-y-1.5" ref={mbti1Ref}>
                       <Label className="text-white text-sm font-medium flex items-center gap-1.5">
                         <Brain className="w-3.5 h-3.5 text-purple-400" /> MBTI
                       </Label>
-                      <div className="grid grid-cols-4 gap-2">
+                      <div className={`grid grid-cols-4 gap-2 p-2 rounded-xl transition-all ${form.formState.errors.mbti1 ? 'ring-1 ring-red-500/40 bg-red-500/5' : ''}`}>
                         {['ISTJ', 'ISFJ', 'INFJ', 'INTJ', 'ISTP', 'ISFP', 'INFP', 'INTP', 'ESTP', 'ESFP', 'ENFP', 'ENTP', 'ESTJ', 'ESFJ', 'ENFJ', 'ENTJ'].map((mbti) => (
-                          <button key={mbti} type="button" onClick={() => form.setValue("mbti1", mbti)}
+                          <button key={mbti} type="button" onClick={() => { form.setValue("mbti1", mbti); form.clearErrors("mbti1"); }}
                             className={`h-9 rounded-lg font-medium text-xs transition-all ${form.watch("mbti1") === mbti ? 'bg-purple-500 text-white' : 'bg-white/5 text-white/70 hover:bg-white/10'}`}>
                             {mbti}
                           </button>
                         ))}
                       </div>
+                      {form.formState.errors.mbti1 && <p className="text-xs text-red-400 mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{form.formState.errors.mbti1.message}</p>}
                     </div>
                   </div>
 
@@ -896,7 +948,10 @@ export default function HybridCompatibilityPage() {
                         <Label htmlFor="name2" className="text-white text-sm font-medium flex items-center gap-1.5">
                           <User className="w-3.5 h-3.5 text-pink-400" /> 이름
                         </Label>
-                        <Input id="name2" placeholder="이름" {...form.register("name2")} className="h-11 bg-white/5 border-white/10 text-white placeholder:text-white/30 rounded-xl focus:ring-pink-500/50 focus:border-pink-500 transition-all text-sm" />
+                        <div ref={name2Ref}>
+                        <Input id="name2" placeholder="이름" {...form.register("name2")} className={`h-11 bg-white/5 border-white/10 text-white placeholder:text-white/30 rounded-xl focus:ring-pink-500/50 focus:border-pink-500 transition-all text-sm ${form.formState.errors.name2 ? 'border-red-500/60 ring-1 ring-red-500/40' : ''}`} />
+                        {form.formState.errors.name2 && <p className="text-xs text-red-400 mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{form.formState.errors.name2.message}</p>}
+                      </div>
                       </div>
                       <div className="space-y-1.5">
                         <Label className="text-white text-sm font-medium flex items-center gap-1.5">
@@ -913,11 +968,12 @@ export default function HybridCompatibilityPage() {
                         </ToggleGroup>
                       </div>
                     </div>
-                    <div className="space-y-1.5">
+                    <div className="space-y-1.5" ref={birthDate2Ref}>
                       <Label htmlFor="birthDate2" className="text-white text-sm font-medium flex items-center gap-1.5">
                         <Calendar className="w-3.5 h-3.5 text-pink-400" /> 생년월일
                       </Label>
                       <DatePickerInput id="birthDate2" {...form.register("birthDate2")} accentColor="pink" />
+                      {form.formState.errors.birthDate2 && <p className="text-xs text-red-400 mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{form.formState.errors.birthDate2.message}</p>}
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div className="space-y-1.5">
@@ -947,20 +1003,36 @@ export default function HybridCompatibilityPage() {
                         )}
                       </div>
                     </div>
-                    <div className="space-y-1.5">
+                    <div className="space-y-1.5" ref={mbti2Ref}>
                       <Label className="text-white text-sm font-medium flex items-center gap-1.5">
                         <Brain className="w-3.5 h-3.5 text-pink-400" /> MBTI
                       </Label>
-                      <div className="grid grid-cols-4 gap-2">
+                      <div className={`grid grid-cols-4 gap-2 p-2 rounded-xl transition-all ${form.formState.errors.mbti2 ? 'ring-1 ring-red-500/40 bg-red-500/5' : ''}`}>
                         {['ISTJ', 'ISFJ', 'INFJ', 'INTJ', 'ISTP', 'ISFP', 'INFP', 'INTP', 'ESTP', 'ESFP', 'ENFP', 'ENTP', 'ESTJ', 'ESFJ', 'ENFJ', 'ENTJ'].map((mbti) => (
-                          <button key={mbti} type="button" onClick={() => form.setValue("mbti2", mbti)}
+                          <button key={mbti} type="button" onClick={() => { form.setValue("mbti2", mbti); form.clearErrors("mbti2"); }}
                             className={`h-9 rounded-lg font-medium text-xs transition-all ${form.watch("mbti2") === mbti ? 'bg-pink-500 text-white' : 'bg-white/5 text-white/70 hover:bg-white/10'}`}>
                             {mbti}
                           </button>
                         ))}
                       </div>
+                      {form.formState.errors.mbti2 && <p className="text-xs text-red-400 mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{form.formState.errors.mbti2.message}</p>}
                     </div>
                   </div>
+
+                  {/* 유효성 검사 에러 메시지 박스 */}
+                  {validationErrors.length > 0 && (
+                    <div ref={errorMsgRef} className="p-4 rounded-xl border border-red-500/30 bg-red-500/10 space-y-2">
+                      <div className="flex items-center gap-2">
+                        <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0" />
+                        <p className="text-sm font-semibold text-red-400">아래 항목을 입력해주세요</p>
+                      </div>
+                      <ul className="space-y-1 pl-6">
+                        {validationErrors.map((msg, i) => (
+                          <li key={i} className="text-xs text-red-300/80 list-disc">{msg}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
 
                   <Button type="submit" className="w-full h-12 font-bold rounded-xl hover:opacity-90 transition-opacity" style={{ background: 'linear-gradient(135deg, #7c3aed, #db2777)' }}>
                     하이브리드 궁합 분석하기
