@@ -560,10 +560,21 @@ export function analyzeHybridCompatibility(
     combinedNickname = `${ELEMENT_KOREAN[elem1]} 기운의 ${mbti1}과 ${ELEMENT_KOREAN[elem2]} 기운의 ${mbti2}의 완벽한 조화`;
   }
 
+  const energyBalance = {
+    description: balanceScore > 0 
+      ? `${name1}님의 ${ELEMENT_KOREAN[elem1]} 기운이 ${name2}님의 ${ELEMENT_KOREAN[elem2]} 기운을 이끌어주는 형국이에요.`
+      : balanceScore < 0
+      ? `${name2}님의 ${ELEMENT_KOREAN[elem2]} 기운이 ${name1}님의 ${ELEMENT_KOREAN[elem1]} 기운을 이끌어주는 형국이에요.`
+      : `두 분의 ${ELEMENT_KOREAN[elem1]} 기운과 ${ELEMENT_KOREAN[elem2]} 기운이 완벽한 균형을 이루고 있어요.`,
+    person1Role: balanceScore > 0 ? '리더' : balanceScore < 0 ? '서포터' : '동반자',
+    person2Role: balanceScore < 0 ? '리더' : balanceScore > 0 ? '서포터' : '동반자',
+  };
+
   const synergyCard = {
     nickname1,
     nickname2,
-    combinedNickname,
+    nickname: combinedNickname,
+    description: '두 분의 에너지가 만나 생성되는 특별한 시너지 효과예요.',
   };
 
   // 3. 4대 영역 하이브리드 리포트 (Accordion UI) 로직
@@ -725,6 +736,7 @@ export function analyzeHybridCompatibility(
     keywords: keywords.slice(0, 4),
     recommendations: recommendations.slice(0, 4),
     energyScale,
+    energyBalance,
     synergyCard,
     fourDimensions,
     timeline,
