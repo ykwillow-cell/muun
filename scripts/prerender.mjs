@@ -2,11 +2,11 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
-// Vercel Hobby 플랜 빌드 한도: 10분(600초)
+// Vercel 빌드 한도: 45분(2700초) - Hobby/Pro/Enterprise 모두 동일
 // 빌드 오버헤드(install + vite build + ssr build + server build) ~44초 예상
-// 안전 마진 25% 적용 → prerender 가용 시간: ~417초
+// 안전 마진 25% 적용 → prerender 가용 시간: ~2000초
 const BUILD_START_TIME = Date.now();
-const MAX_PRERENDER_SECONDS = 400; // 안전 마진 포함 최대 허용 시간(초)
+const MAX_PRERENDER_SECONDS = 2000; // 안전 마진 포함 최대 허용 시간(초)
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const toAbsolute = (p) => path.resolve(__dirname, p);
