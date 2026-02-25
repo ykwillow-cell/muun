@@ -59,7 +59,7 @@ function generateSitemap(slugs) {
     { url: '/', priority: 1.0, changefreq: 'weekly' },
     { url: '/fortune-dictionary', priority: 0.9, changefreq: 'weekly' },
     { url: '/yearly-fortune', priority: 0.8, changefreq: 'monthly' },
-    { url: '/lifetime-saju', priority: 0.8, changefreq: 'monthly' },
+    { url: '/lifelong-saju', priority: 0.8, changefreq: 'monthly' }, // Fix: lifetime-saju -> lifelong-saju
     { url: '/compatibility', priority: 0.8, changefreq: 'monthly' },
     { url: '/family-saju', priority: 0.7, changefreq: 'monthly' },
     { url: '/tarot', priority: 0.7, changefreq: 'monthly' },
@@ -68,6 +68,11 @@ function generateSitemap(slugs) {
     { url: '/daily-fortune', priority: 0.7, changefreq: 'daily' },
     { url: '/manselyeok', priority: 0.7, changefreq: 'monthly' },
     { url: '/hybrid-compatibility', priority: 0.7, changefreq: 'monthly' },
+    { url: '/psychology', priority: 0.7, changefreq: 'monthly' }, // Added
+    { url: '/lucky-lunch', priority: 0.6, changefreq: 'daily' },   // Added
+    { url: '/dream', priority: 0.7, changefreq: 'weekly' },        // Added
+    { url: '/guide', priority: 0.8, changefreq: 'weekly' },        // Added
+    { url: '/about', priority: 0.5, changefreq: 'monthly' },       // Added
   ];
 
   staticPages.forEach(page => {

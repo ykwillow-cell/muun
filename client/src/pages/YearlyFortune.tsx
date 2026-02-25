@@ -344,7 +344,7 @@ export default function YearlyFortune() {
                 <ChevronLeft className="h-5 w-5" />
               </Button>
             </Link>
-            <h1 className="text-base md:text-lg font-bold text-white">2026년 신년운세</h1>
+            <h2 className="text-base md:text-lg font-bold text-white">2026년 신년운세</h2>
           </div>
         </header>
 
@@ -565,6 +565,8 @@ export default function YearlyFortune() {
         <meta property="og:title" content="2026년 신년운세 결과 - 무운" />
         <meta property="og:description" content="사주팔자를 분석한 2026년 신년운세 결과입니다." />
         <meta name="keywords" content="신년운세, 2026년운세, 병오년운세, 사주, 운세, 무운" />
+        {/* 사용자 입력 기반 결과 페이지 - 개인정보 보호 및 SEO 품질 관리 */}
+        <meta name="robots" content="noindex, nofollow" />
       </Helmet>
     <div className="min-h-screen bg-background text-foreground pb-20">
       {/* '시간 모름' 시 안내 라벨 */}

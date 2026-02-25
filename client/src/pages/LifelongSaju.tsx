@@ -244,7 +244,7 @@ export default function LifelongSaju() {
                 <ChevronLeft className="h-5 w-5" />
               </Button>
             </Link>
-            <h1 className="text-base md:text-lg font-bold text-white">평생사주 풀이</h1>
+            <h2 className="text-base md:text-lg font-bold text-white">평생사주 풀이</h2>
           </div>
         </header>
 
@@ -461,6 +461,8 @@ export default function LifelongSaju() {
         <meta name="description" content="사주팔자를 분석한 평생사주 풀이 결과입니다. 타고난 기질, 인생 운세, 연애운, 결혼운, 재물운 등을 확인하세요." />
         <meta property="og:title" content="평생사주 결과 - 무운" />
         <meta property="og:description" content="사주팔자를 분석한 평생사주 풀이 결과입니다." />
+        {/* 사용자 입력 기반 결과 페이지 - 개인정보 보호 및 SEO 품질 관리 */}
+        <meta name="robots" content="noindex, nofollow" />
         <meta name="keywords" content="평생사주, 사주풀이, 사주팔자, 운세, 무운" />
       </Helmet>
     <div className="min-h-screen bg-background text-foreground pb-20">

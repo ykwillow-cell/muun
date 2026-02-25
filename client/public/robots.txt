@@ -10,6 +10,7 @@ Disallow: /api
 
 # Sitemap location
 Sitemap: https://muunsaju.com/sitemap.xml
+Sitemap: https://muunsaju.com/sitemap-yearly-fortune.xml
 
 # Crawl delay (optional - helps reduce server load)
 Crawl-delay: 1

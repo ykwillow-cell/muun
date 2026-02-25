@@ -2,6 +2,12 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
+// Vercel Hobby 플랜 빌드 한도: 10분(600초)
+// 빌드 오버헤드(install + vite build + ssr build + server build) ~44초 예상
+// 안전 마진 25% 적용 → prerender 가용 시간: ~417초
+const BUILD_START_TIME = Date.now();
+const MAX_PRERENDER_SECONDS = 400; // 안전 마진 포함 최대 허용 시간(초)
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const toAbsolute = (p) => path.resolve(__dirname, p);
 
@@ -89,7 +95,15 @@ async function run() {
   console.log(`📦 Total routes to pre-render: ${allRoutes.length}`);
 
   let successCount = 0;
+  let skippedCount = 0;
   for (const url of allRoutes) {
+    // Vercel Hobby 빌드 시간 초과 방지: 가용 시간 소진 시 조기 종료
+    const elapsedSeconds = (Date.now() - BUILD_START_TIME) / 1000;
+    if (elapsedSeconds > MAX_PRERENDER_SECONDS) {
+      console.warn(`⏱️  Build time limit approaching (${elapsedSeconds.toFixed(1)}s elapsed). Stopping prerender to avoid Vercel Hobby timeout.`);
+      skippedCount = allRoutes.length - successCount;
+      break;
+    }
     try {
       const { appHtml, head, dehydratedState } = await render({ path: url });
       
@@ -116,7 +130,11 @@ async function run() {
     }
   }
 
-  console.log(`✨ Successfully pre-rendered ${successCount} pages!`);
+  const totalElapsed = ((Date.now() - BUILD_START_TIME) / 1000).toFixed(1);
+  console.log(`✨ Successfully pre-rendered ${successCount} pages in ${totalElapsed}s!`);
+  if (skippedCount > 0) {
+    console.warn(`⚠️  Skipped ${skippedCount} pages due to build time limit. Consider reducing route count if this persists.`);
+  }
 }
 
 run().catch(console.error);

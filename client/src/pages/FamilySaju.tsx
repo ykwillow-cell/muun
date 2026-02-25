@@ -410,6 +410,8 @@ export default function FamilySaju() {
         <meta name="description" content="가족 구성원들의 사주를 기반으로 한 정밀 조화 분석 결과입니다. 오행의 균형과 구성원 간의 특별한 관계 역학을 확인하세요." />
         <meta property="og:title" content="우리 가족 사주 조화 분석 결과 - 무운 (MuUn)" />
         <meta property="og:description" content="분석이 완료되었습니다. 우리 가족의 오행 균형과 관계별 궁합 결과를 확인해보세요." />
+        {/* 사용자 입력 기반 결과 페이지 - 개인정보 보호 및 SEO 품질 관리 */}
+        <meta name="robots" content="noindex, nofollow" />
       </Helmet>
     <div className="min-h-screen bg-background" ref={resultRef}>
       {/* '시간 모름' 시 안내 라벨 */}

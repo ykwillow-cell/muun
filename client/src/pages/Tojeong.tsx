@@ -104,7 +104,7 @@ export default function Tojeong() {
                 <ChevronLeft className="h-5 w-5" />
               </Button>
             </Link>
-            <h1 className="text-base md:text-lg font-bold text-white">무료 토정비결</h1>
+            <h2 className="text-base md:text-lg font-bold text-white">무료 토정비결</h2>
           </div>
         </header>
 
@@ -304,6 +304,8 @@ export default function Tojeong() {
         <meta name="description" content="전통 방식에 따른 2026년 토정비결 분석 결과입니다. 한 해의 흐름과 월별 상세 운세를 확인하세요." />
         <meta property="og:title" content="2026년 토정비결 결과 - 무운" />
         <meta property="og:description" content="전통 방식에 따른 2026년 토정비결 분석 결과입니다." />
+        {/* 사용자 입력 기반 결과 페이지 - 개인정보 보호 및 SEO 품질 관리 */}
+        <meta name="robots" content="noindex, nofollow" />
       </Helmet>
     <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased">
       {/* 토정비결은 원래 삼주(연,월,일)만 사용하므로 안내 라벨 표시 */}
