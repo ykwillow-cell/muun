@@ -25,14 +25,14 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
-    // 성능 최적화: 코드 분할 (클라이언트 빌드 전용, SSR 빌드에서는 적용되지 않음)
+    // 코드 분할: recharts는 내부 의존성 순서 문제로 분리하지 않음
     rollupOptions: {
       output: {
-        manualChunks(id, { isEntry }) {
+        manualChunks(id) {
           // SSR 빌드에서는 manualChunks 사용 안 함
           if (process.env.VITE_SSR) return;
           if (id.includes('node_modules')) {
-            if (id.includes('recharts')) return 'vendor-charts';
+            // recharts는 내부 circular dependency로 인해 분리 시 런타임 에러 발생 → 분리 안 함
             if (id.includes('framer-motion')) return 'vendor-animation';
             if (id.includes('@tanstack/react-query')) return 'vendor-query';
             if (id.includes('react-hook-form') || id.includes('@hookform') || id.includes('/zod/')) return 'vendor-form';
