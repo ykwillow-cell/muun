@@ -25,22 +25,20 @@ export default defineConfig({
   build: {
     outDir: path.resolve(import.meta.dirname, "dist/public"),
     emptyOutDir: true,
-    // 성능 최적화: 코드 분할
+    // 성능 최적화: 코드 분할 (클라이언트 빌드 전용, SSR 빌드에서는 적용되지 않음)
     rollupOptions: {
       output: {
-        manualChunks: {
-          // React 코어 라이브러리 분리
-          'vendor-react': ['react', 'react-dom'],
-          // 라우팅 (wouter 사용)
-          'vendor-router': ['wouter'],
-          // 차트/시각화 라이브러리 분리 (용량이 큼)
-          'vendor-charts': ['recharts'],
-          // 애니메이션 라이브러리 분리
-          'vendor-animation': ['framer-motion'],
-          // 폼 및 유효성 검사
-          'vendor-form': ['react-hook-form', '@hookform/resolvers', 'zod'],
-          // 데이터 패칭
-          'vendor-query': ['@tanstack/react-query'],
+        manualChunks(id, { isEntry }) {
+          // SSR 빌드에서는 manualChunks 사용 안 함
+          if (process.env.VITE_SSR) return;
+          if (id.includes('node_modules')) {
+            if (id.includes('recharts')) return 'vendor-charts';
+            if (id.includes('framer-motion')) return 'vendor-animation';
+            if (id.includes('@tanstack/react-query')) return 'vendor-query';
+            if (id.includes('react-hook-form') || id.includes('@hookform') || id.includes('/zod/')) return 'vendor-form';
+            if (id.includes('wouter')) return 'vendor-router';
+            if (id.includes('/react-dom/') || id.includes('/react/')) return 'vendor-react';
+          }
         },
       },
     },
