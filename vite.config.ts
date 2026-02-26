@@ -30,21 +30,17 @@ export default defineConfig({
       output: {
         manualChunks: {
           // React 코어 라이브러리 분리
-          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-          // 라우팅
+          'vendor-react': ['react', 'react-dom'],
+          // 라우팅 (wouter 사용)
           'vendor-router': ['wouter'],
           // 차트/시각화 라이브러리 분리 (용량이 큼)
           'vendor-charts': ['recharts'],
           // 애니메이션 라이브러리 분리
           'vendor-animation': ['framer-motion'],
-          // UI 컴포넌트 라이브러리 분리
-          'vendor-ui': ['@radix-ui/react-dialog', '@radix-ui/react-select', '@radix-ui/react-tooltip', '@radix-ui/react-toggle-group', '@radix-ui/react-label', '@radix-ui/react-slot'],
           // 폼 및 유효성 검사
           'vendor-form': ['react-hook-form', '@hookform/resolvers', 'zod'],
           // 데이터 패칭
           'vendor-query': ['@tanstack/react-query'],
-          // SEO
-          'vendor-seo': ['react-helmet-async'],
         },
       },
     },
