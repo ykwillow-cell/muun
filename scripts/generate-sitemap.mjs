@@ -3,6 +3,7 @@
 /**
  * Sitemap 자동 생성 스크립트
  * - fortune-dictionary.ts에서 모든 용어 읽기
+ * - Supabase에서 칼럼 데이터 조회
  * - sitemap.xml 자동 생성
  * - Google Search Console에 Ping 전송
  */
@@ -10,8 +11,14 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { createClient } from '@supabase/supabase-js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// Supabase 설정
+const SUPABASE_URL = 'https://vuifbmsdggnwygvgcrkj.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1aWZibXNkZ2dud3lndmdjcmtqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE4NzY0ODYsImV4cCI6MjA4NzQ1MjQ4Nn0.PhMK66O73HH98WIPAu66qk8FuXwJLU4Z2bhDcmDCpKI';
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ============================================
 // 1. fortune-dictionary.ts 데이터 읽기
@@ -41,10 +48,36 @@ function readFortuneDictionary() {
 }
 
 // ============================================
+// 1-2. Supabase에서 칼럼 데이터 조회
+// ============================================
+
+async function fetchColumnsFromSupabase() {
+  try {
+    console.log('📡 Supabase에서 칼럼 데이터 조회 중...');
+    const { data, error } = await supabase
+      .from('columns')
+      .select('id, published_at')
+      .eq('published', true)
+      .order('published_at', { ascending: false });
+
+    if (error) {
+      console.warn('⚠️ Supabase 조회 실패:', error.message);
+      return [];
+    }
+
+    console.log(`✅ Found ${data?.length || 0} columns from Supabase`);
+    return data || [];
+  } catch (err) {
+    console.warn('⚠️ 칼럼 조회 중 오류:', err.message);
+    return [];
+  }
+}
+
+// ============================================
 // 2. Sitemap XML 생성
 // ============================================
 
-function generateSitemap(slugs) {
+function generateSitemap(slugs, columns) {
   const baseUrl = 'https://muunsaju.com';
   const currentDate = new Date().toISOString().split('T')[0];
 
@@ -59,7 +92,7 @@ function generateSitemap(slugs) {
     { url: '/', priority: 1.0, changefreq: 'weekly' },
     { url: '/fortune-dictionary', priority: 0.9, changefreq: 'weekly' },
     { url: '/yearly-fortune', priority: 0.8, changefreq: 'monthly' },
-    { url: '/lifelong-saju', priority: 0.8, changefreq: 'monthly' }, // Fix: lifetime-saju -> lifelong-saju
+    { url: '/lifelong-saju', priority: 0.8, changefreq: 'monthly' },
     { url: '/compatibility', priority: 0.8, changefreq: 'monthly' },
     { url: '/family-saju', priority: 0.7, changefreq: 'monthly' },
     { url: '/tarot', priority: 0.7, changefreq: 'monthly' },
@@ -68,11 +101,11 @@ function generateSitemap(slugs) {
     { url: '/daily-fortune', priority: 0.7, changefreq: 'daily' },
     { url: '/manselyeok', priority: 0.7, changefreq: 'monthly' },
     { url: '/hybrid-compatibility', priority: 0.7, changefreq: 'monthly' },
-    { url: '/psychology', priority: 0.7, changefreq: 'monthly' }, // Added
-    { url: '/lucky-lunch', priority: 0.6, changefreq: 'daily' },   // Added
-    { url: '/dream', priority: 0.7, changefreq: 'weekly' },        // Added
-    { url: '/guide', priority: 0.8, changefreq: 'weekly' },        // Added
-    { url: '/about', priority: 0.5, changefreq: 'monthly' },       // Added
+    { url: '/psychology', priority: 0.7, changefreq: 'monthly' },
+    { url: '/lucky-lunch', priority: 0.6, changefreq: 'daily' },
+    { url: '/dream', priority: 0.7, changefreq: 'weekly' },
+    { url: '/guide', priority: 0.8, changefreq: 'weekly' },
+    { url: '/about', priority: 0.5, changefreq: 'monthly' },
   ];
 
   staticPages.forEach(page => {
@@ -92,6 +125,18 @@ function generateSitemap(slugs) {
     <lastmod>${currentDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.75</priority>
+  </url>
+`;
+  });
+
+  // Supabase 칼럼 동적 페이지
+  columns.forEach(col => {
+    const lastmod = col.published_at ? col.published_at.split('T')[0] : currentDate;
+    xml += `  <url>
+    <loc>${baseUrl}/guide/${col.id}</loc>
+    <lastmod>${lastmod}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
 `;
   });
@@ -167,23 +212,22 @@ async function pingGoogle() {
 
 async function main() {
   console.log('🚀 Sitemap Generation Started\n');
-  console.log('=' .repeat(50));
+  console.log('='.repeat(50));
 
   // 1. Dictionary 데이터 읽기
   console.log('\n📖 Reading fortune-dictionary.ts...');
   const slugs = readFortuneDictionary();
 
-  if (slugs.length === 0) {
-    console.error('❌ No dictionary items found. Aborting.');
-    process.exit(1);
-  }
+  // 2. Supabase에서 칼럼 데이터 조회
+  console.log('\n📚 Fetching columns from Supabase...');
+  const columns = await fetchColumnsFromSupabase();
 
-  // 2. Sitemap 생성
+  // 3. Sitemap 생성
   console.log('\n📝 Generating sitemap...');
-  const xml = generateSitemap(slugs);
-  console.log(`✅ Sitemap generated with ${slugs.length} dictionary items`);
+  const xml = generateSitemap(slugs, columns);
+  console.log(`✅ Sitemap generated with ${slugs.length} dictionary items + ${columns.length} columns`);
 
-  // 3. 파일 저장
+  // 4. 파일 저장
   console.log('\n💾 Saving sitemap...');
   const saved = saveSitemap(xml);
 
@@ -192,7 +236,7 @@ async function main() {
     process.exit(1);
   }
 
-  // 4. Google Ping (선택사항)
+  // 5. Google Ping (선택사항)
   if (process.env.PING_GOOGLE === 'true') {
     await pingGoogle();
   } else {
