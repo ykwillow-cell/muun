@@ -36,6 +36,9 @@ export const COLUMN_CATEGORIES: Record<string, { label: string; color: string }>
   health: { label: '건강 & 운', color: 'bg-green-500/20 text-green-400' },
   money: { label: '재물운', color: 'bg-purple-500/20 text-purple-400' },
   flow: { label: '운명의 흐름', color: 'bg-indigo-500/20 text-indigo-400' },
+  career: { label: '취업 & 커리어', color: 'bg-orange-500/20 text-orange-400' },
+  love: { label: '연애 & 결혼', color: 'bg-rose-500/20 text-rose-400' },
+  family: { label: '가족 & 자녀', color: 'bg-teal-500/20 text-teal-400' },
 };
 
 function mapRow(row: any): ColumnData {
