@@ -41,7 +41,11 @@ export default function Guide() {
         <meta name="keywords" content="사주 칼럼, 운세 지혜, 개운법, 대운, 자녀 사주, 재물운" />
         <meta property="og:title" content="운세 칼럼 - 사주 지혜와 개운법 | 무운 (MuUn)" />
         <meta property="og:description" content="30년 내공의 역술인이 전하는 사주 지혜와 개운법. 대운 변화, 자녀 교육, 재물운 등 실생활에 도움이 되는 전문 칼럼." />
-        <link rel="canonical" href="https://muunsaju.com/guide" />
+                <meta property="og:image" content="https://muunsaju.com/og-image.png" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
+<link rel="canonical" href="https://muunsaju.com/guide" />
       </Helmet>
 
       {/* 헤더 */}

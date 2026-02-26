@@ -583,7 +583,11 @@ export default function HybridCompatibilityPage() {
           <meta name="description" content={`${elem1Korean} 기운(${mbti1})과 ${elem2Korean} 기운(${mbti2})의 하이브리드 궁합 분석. 종합 점수 ${hybrid.totalScore}점 - ${hybrid.totalGrade}`} />
           <meta property="og:title" content="사주×MBTI 하이브리드 궁합 리포트 - 무운" />
           <meta property="og:description" content={`${elem1Korean} 기운(${mbti1})과 ${elem2Korean} 기운(${mbti2})의 하이브리드 궁합. ${hybrid.totalGrade} (${hybrid.totalScore}점)`} />
-          {/* 개인정보 인덱싱 방지 */}
+                  <meta property="og:image" content="https://muunsaju.com/og-image.png" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
+{/* 개인정보 인덱싱 방지 */}
           <meta name="robots" content="noindex, nofollow" />
         </Helmet>
 

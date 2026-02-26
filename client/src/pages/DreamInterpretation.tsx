@@ -123,6 +123,20 @@ const DreamInterpretation: React.FC = () => {
   return (
     <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased">
       <Helmet>
+        <title>[가입X/100%무료] 꿈해몽 사전 - 무운 (MuUn)</title>
+        <meta name="description" content="어젯밤 꿈의 의미가 궁금하신가요? 방대한 데이터를 바탕으로 정확한 꿈해몽을 제공합니다. 회원가입 없이 무료로 이용 가능합니다." />
+        <link rel="canonical" href="https://muunsaju.com/dream" />
+        <meta property="og:title" content="[가입X/100%무료] 꿈해몽 사전 - 무운 (MuUn)" />
+        <meta property="og:description" content="어젯밤 꿈의 의미가 궁금하신가요? 방대한 데이터를 바탕으로 정확한 꿈해몽을 제공합니다. 회원가입 없이 무료로 이용 가능합니다." />
+        <meta property="og:image" content="https://muunsaju.com/og-image.png" />
+        <meta property="og:url" content="https://muunsaju.com/dream" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="[가입X/100%무료] 꿈해몽 사전 - 무운 (MuUn)" />
+        <meta name="twitter:description" content="어젯밤 꿈의 의미가 궁금하신가요? 방대한 데이터를 바탕으로 정확한 꿈해몽을 제공합니다. 회원가입 없이 무료로 이용 가능합니다." />
+        <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
+      </Helmet>
+      <Helmet>
         <title>[가입X/100%무료] 꿈해몽 검색 - 무운</title>
         <meta name="description" content="가입/결제 없이 2,000개 이상의 방대한 데이터로 당신의 꿈을 무료로 해몽해 보세요. 길몽, 흉몽 분석과 행운 지수까지 확인 가능합니다." />
       </Helmet>

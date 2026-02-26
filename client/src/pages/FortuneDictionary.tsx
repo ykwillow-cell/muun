@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useCanonical } from '@/lib/use-canonical';
 import { setDictionaryOGTags } from '@/lib/og-tags';
 import { Search, ChevronRight } from 'lucide-react';
@@ -42,6 +43,20 @@ export default function FortuneDictionary() {
 
   return (
     <div className="min-h-screen bg-black py-8 px-4">
+      <Helmet>
+        <title>사주 용어 사전 - 무운 (MuUn)</title>
+        <meta name="description" content="사주 명리학의 핵심 용어를 쉽게 풀이한 사주 용어 사전. 천간, 지지, 십신, 대운 등 사주 기초 개념을 무료로 학습하세요." />
+        <link rel="canonical" href="https://muunsaju.com/fortune-dictionary" />
+        <meta property="og:title" content="사주 용어 사전 - 무운 (MuUn)" />
+        <meta property="og:description" content="사주 명리학의 핵심 용어를 쉽게 풀이한 사주 용어 사전. 천간, 지지, 십신, 대운 등 사주 기초 개념을 무료로 학습하세요." />
+        <meta property="og:image" content="https://muunsaju.com/og-image.png" />
+        <meta property="og:url" content="https://muunsaju.com/fortune-dictionary" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="사주 용어 사전 - 무운 (MuUn)" />
+        <meta name="twitter:description" content="사주 명리학의 핵심 용어를 쉽게 풀이한 사주 용어 사전. 천간, 지지, 십신, 대운 등 사주 기초 개념을 무료로 학습하세요." />
+        <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
+      </Helmet>
       <div className="max-w-6xl mx-auto">
         {/* 헤더 */}
         <div className="mb-8">

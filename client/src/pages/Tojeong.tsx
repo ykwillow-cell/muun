@@ -89,7 +89,11 @@ export default function Tojeong() {
           <meta name="description" content="이지함 선생의 원문 괘 계산법으로 2026년 병오년 한 해의 흐름을 읽어드립니다. 회원가입 없이 무료로 확인하세요." />
           <meta property="og:title" content="무료 토정비결 - 무운" />
           <meta property="og:description" content="이지함 선생의 원문 괘 계산법으로 2026년 병오년 한 해의 흐름을 읽어드립니다." />
-        </Helmet>
+                <meta property="og:image" content="https://muunsaju.com/og-image.png" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
+</Helmet>
       <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased">
         {/* Background Effects */}
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">

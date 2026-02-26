@@ -564,7 +564,11 @@ export default function YearlyFortune() {
         <meta name="description" content="사주팔자를 분석한 2026년 신년운세 결과입니다. 병오년 운세, 월별 운세, 재물운, 직업운, 애정운 등을 확인하세요." />
         <meta property="og:title" content="2026년 신년운세 결과 - 무운" />
         <meta property="og:description" content="사주팔자를 분석한 2026년 신년운세 결과입니다." />
-        <meta name="keywords" content="신년운세, 2026년운세, 병오년운세, 사주, 운세, 무운" />
+                <meta property="og:image" content="https://muunsaju.com/og-image.png" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
+<meta name="keywords" content="신년운세, 2026년운세, 병오년운세, 사주, 운세, 무운" />
         {/* 사용자 입력 기반 결과 페이지 - 개인정보 보호 및 SEO 품질 관리 */}
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>

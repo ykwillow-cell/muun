@@ -115,8 +115,12 @@ async function run() {
           `<script>window.__REACT_QUERY_STATE__ = ${JSON.stringify(dehydratedState)}</script>`
         );
 
-      const fileName = url === '/' ? 'index.html' : `${url.replace(/^\//, '').replace(/\//g, '-')}.html`;
-      const filePath = toAbsolute(`../client/dist/public/${fileName}`);
+      // 디렉토리 기반 경로로 저장: /yearly-fortune → yearly-fortune/index.html
+      // 이렇게 하면 Vercel filesystem 핸들러가 /yearly-fortune 요청에 대해
+      // yearly-fortune/index.html을 자동으로 매칭할 수 있음
+      const filePath = url === '/'
+        ? toAbsolute('../client/dist/public/index.html')
+        : toAbsolute(`../client/dist/public${url}/index.html`);
       
       fs.mkdirSync(path.dirname(filePath), { recursive: true });
       fs.writeFileSync(filePath, html);

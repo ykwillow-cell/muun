@@ -175,7 +175,11 @@ export default function FamilySaju() {
           <meta name="description" content="회원가입/결제 없이 우리 가족의 사주 궁합과 오행 조화를 확인하세요. 부모, 자녀, 배우자와의 관계 역학을 30년 내공의 명리학으로 정밀 분석해드립니다." />
           <meta property="og:title" content="[가입X/100%무료] 정밀 가족 사주 분석 - 무운 (MuUn)" />
           <meta property="og:description" content="가족 구성원 간의 사주 궁합과 오행 조화를 무료로 확인하세요. 가입 없이 바로 보는 정밀 가족 역학 분석." />
-          <meta name="keywords" content="가족사주, 가족궁합, 무료사주, 부모자녀궁합, 부부궁합, 오행조화, 무운" />
+                  <meta property="og:image" content="https://muunsaju.com/og-image.png" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
+<meta name="keywords" content="가족사주, 가족궁합, 무료사주, 부모자녀궁합, 부부궁합, 오행조화, 무운" />
         </Helmet>
         {/* 헤더 */}
         <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-white/5">

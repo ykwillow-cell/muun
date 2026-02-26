@@ -823,7 +823,11 @@ export default function Compatibility() {
         <meta name="description" content={`두 분의 사주를 기반으로 한 궁합 분석 결과입니다. 총 궁합 점수: ${scores.total}점`} />
         <meta property="og:title" content="궁합 분석 결과 - 무운" />
         <meta property="og:description" content="두 분의 사주를 기반으로 한 궁합 분석 결과입니다." />
-        {/* 사용자 입력 기반 결과 페이지 - 개인정보 보호 및 SEO 품질 관리 */}
+                <meta property="og:image" content="https://muunsaju.com/og-image.png" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
+{/* 사용자 입력 기반 결과 페이지 - 개인정보 보호 및 SEO 품질 관리 */}
         <meta name="robots" content="noindex, nofollow" />
         <meta name="keywords" content="국합, 사주 국합, 연애운, 결혼운, 무운" />
       </Helmet>

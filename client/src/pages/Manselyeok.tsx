@@ -93,6 +93,20 @@ export default function Manselyeok() {
 
   return (
     <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased">
+      <Helmet>
+        <title>무료 만세력 분석 - 무운 (MuUn)</title>
+        <meta name="description" content="정확한 사주 데이터를 바탕으로 한 무료 만세력 분석 서비스. 생년월일시를 입력하면 사주팔자와 오행 구성을 실시간으로 확인할 수 있습니다." />
+        <link rel="canonical" href="https://muunsaju.com/manselyeok" />
+        <meta property="og:title" content="무료 만세력 분석 - 무운 (MuUn)" />
+        <meta property="og:description" content="정확한 사주 데이터를 바탕으로 한 무료 만세력 분석 서비스." />
+        <meta property="og:image" content="https://muunsaju.com/og-image.png" />
+        <meta property="og:url" content="https://muunsaju.com/manselyeok" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="무료 만세력 분석 - 무운 (MuUn)" />
+        <meta name="twitter:description" content="정확한 사주 데이터를 바탕으로 한 무료 만세력 분석 서비스." />
+        <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
+      </Helmet>
       {/* '시간 모름' 시 안내 라벨 */}
       {form.watch("birthTimeUnknown") && (
         <div className="bg-primary/10 border-b border-primary/20 py-2 px-4 relative z-50">

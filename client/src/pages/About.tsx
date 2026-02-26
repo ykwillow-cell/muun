@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useCanonical } from '@/lib/use-canonical';
 import { ChevronLeft, Info, Heart, Shield, Sparkles, ArrowRight } from "lucide-react";
 import { Link } from "wouter";
@@ -11,6 +12,20 @@ export default function About() {
 
   return (
     <div className="min-h-screen bg-background text-foreground pb-20 antialiased">
+      <Helmet>
+        <title>무운 소개 - 무운 (MuUn)</title>
+        <meta name="description" content="무운(MuUn)은 30년 경력 역술인의 전문 지식을 바탕으로 만든 무료 사주 및 운세 서비스입니다." />
+        <link rel="canonical" href="https://muunsaju.com/about" />
+        <meta property="og:title" content="무운 소개 - 무운 (MuUn)" />
+        <meta property="og:description" content="무운(MuUn)은 30년 경력 역술인의 전문 지식을 바탕으로 만든 무료 사주 및 운세 서비스입니다." />
+        <meta property="og:image" content="https://muunsaju.com/og-image.png" />
+        <meta property="og:url" content="https://muunsaju.com/about" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="무운 소개 - 무운 (MuUn)" />
+        <meta name="twitter:description" content="무운(MuUn)은 30년 경력 역술인의 전문 지식을 바탕으로 만든 무료 사주 및 운세 서비스입니다." />
+        <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
+      </Helmet>
       <header className="sticky top-0 z-50 backdrop-blur-2xl bg-background/60 border-b border-white/5">
         <div className="container mx-auto max-w-[1280px] px-4 h-16 flex items-center">
           <Link href="/">

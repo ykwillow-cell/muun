@@ -290,7 +290,11 @@ export default function DailyFortune() {
         <meta name="description" content={`당신의 사주팔자를 기반으로 오늘의 운세를 알아보세요. 운세 점수, 연애운, 재물운, 직업운 등을 매일 마다 업데이트합니다.`} />
         <meta property="og:title" content="오늘의 운세 - 무운" />
         <meta property="og:description" content="당신의 사주팔자를 기반으로 오늘의 운세를 알아보세요." />
-        <meta name="keywords" content="오늘의 운세, 라른 운세, 당신의 운세, 일일 운세, 무운" />
+                <meta property="og:image" content="https://muunsaju.com/og-image.png" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
+<meta name="keywords" content="오늘의 운세, 라른 운세, 당신의 운세, 일일 운세, 무운" />
       </Helmet>
     <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased">
       {/* Background Effects */}

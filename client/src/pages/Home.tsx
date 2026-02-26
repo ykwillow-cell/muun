@@ -1,5 +1,6 @@
 import { Link } from "wouter";
 import { useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useCanonical } from '@/lib/use-canonical';
 import { setHomeOGTags } from '@/lib/og-tags';
 import { motion } from "framer-motion";
@@ -146,6 +147,20 @@ export default function Home() {
   const commonMaxWidth = "max-w-4xl mx-auto";
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden relative antialiased">
+      <Helmet>
+        <title>무운 (MuUn) - 회원가입 없는 무료 사주 및 2026년 신년 운세</title>
+        <meta name="description" content="생년월일만으로 확인하는 무료 사주, 2026년 병오년 신년 운세, 토정비결, 궁합 서비스. 30년 경력 역술인의 전문적인 풀이를 만나보세요." />
+        <link rel="canonical" href="https://muunsaju.com/" />
+        <meta property="og:title" content="무운 (MuUn) - 회원가입 없는 무료 사주 및 2026년 신년 운세" />
+        <meta property="og:description" content="생년월일만으로 확인하는 무료 사주, 2026년 병오년 신년 운세, 토정비결, 궁합 서비스. 30년 경력 역술인의 전문적인 풀이를 만나보세요." />
+        <meta property="og:image" content="https://muunsaju.com/og-image.png" />
+        <meta property="og:url" content="https://muunsaju.com/" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="무운 (MuUn) - 회원가입 없는 무료 사주 및 2026년 신년 운세" />
+        <meta name="twitter:description" content="생년월일만으로 확인하는 무료 사주, 2026년 병오년 신년 운세, 토정비결, 궁합 서비스." />
+        <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
+      </Helmet>
       {/* Schema Markup */}
       <OrganizationSchema />
       <BreadcrumbListSchema items={[

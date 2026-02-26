@@ -139,6 +139,20 @@ export default function Psychology() {
 
   return (
     <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased">
+      <Helmet>
+        <title>[가입X/100%무료] 심리테스트 및 성격 분석 - 무운 (MuUn)</title>
+        <meta name="description" content="나의 진짜 성격과 잠재력을 찾아주는 다양한 심리테스트를 즐겨보세요. 회원가입 없이 무료로 이용 가능합니다." />
+        <link rel="canonical" href="https://muunsaju.com/psychology" />
+        <meta property="og:title" content="[가입X/100%무료] 심리테스트 및 성격 분석 - 무운 (MuUn)" />
+        <meta property="og:description" content="나의 진짜 성격과 잠재력을 찾아주는 다양한 심리테스트를 즐겨보세요. 회원가입 없이 무료로 이용 가능합니다." />
+        <meta property="og:image" content="https://muunsaju.com/og-image.png" />
+        <meta property="og:url" content="https://muunsaju.com/psychology" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="[가입X/100%무료] 심리테스트 및 성격 분석 - 무운 (MuUn)" />
+        <meta name="twitter:description" content="나의 진짜 성격과 잠재력을 찾아주는 다양한 심리테스트를 즐겨보세요. 회원가입 없이 무료로 이용 가능합니다." />
+        <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
+      </Helmet>
       {/* Background Effects */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-purple-900/10 rounded-full blur-[120px]" />

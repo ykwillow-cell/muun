@@ -369,7 +369,11 @@ const Astrology: React.FC = () => {
         <meta name="description" content={`${result.sun.sign.name}의 에너지를 품은 당신의 탄생 차트 분석 결과입니다. 태양, 달, 행성들의 배치를 통해 당신의 본질과 운명을 확인해보세요.`} />
         <meta property="og:title" content={`[가입X/100%무료] ${result.sun.sign.name}의 기운을 타고난 당신의 점성술 분석 결과 | 무운`} />
         <meta property="og:description" content={`${result.sun.sign.name}의 에너지를 품은 당신의 탄생 차트 분석 결과입니다.`} />
-        <link rel="canonical" href="https://muunsaju.com/astrology" />
+                <meta property="og:image" content="https://muunsaju.com/og-image.png" />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
+<link rel="canonical" href="https://muunsaju.com/astrology" />
       </Helmet>
       {/* '시간 모름' 시 안내 라벨 */}
       {form.watch("birthTimeUnknown") && (
