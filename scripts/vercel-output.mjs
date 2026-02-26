@@ -17,7 +17,7 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
 
-const srcDir = path.join(root, 'dist', 'public');
+const srcDir = path.join(root, 'client', 'dist', 'public');
 const outDir = path.join(root, '.vercel', 'output');
 const staticDir = path.join(outDir, 'static');
 
