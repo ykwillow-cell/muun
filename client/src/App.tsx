@@ -34,6 +34,7 @@ import LuckyLunch from "./pages/LuckyLunch";
 import Guide from "./pages/Guide";
 import GuideDetail from "./pages/GuideDetail";
 import DreamInterpretation from "./pages/DreamInterpretation";
+import DreamDetail from "./pages/DreamDetail";
 import Footer from "./components/Footer";
 function Router() {
   const [location] = useLocation();
@@ -78,6 +79,7 @@ function Router() {
       <Route path="/guide" component={Guide} />
       <Route path="/guide/:id" component={GuideDetail} />
       <Route path="/dream" component={DreamInterpretation} />
+      <Route path="/dream/:slug" component={DreamDetail} />
       <Route component={NotFound} />
     </Switch>
   );

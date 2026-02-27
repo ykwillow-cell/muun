@@ -74,10 +74,36 @@ async function fetchColumnsFromSupabase() {
 }
 
 // ============================================
+// 1-3. Supabase에서 꿈해몽 데이터 조회
+// ============================================
+
+async function fetchDreamsFromSupabase() {
+  try {
+    console.log('📡 Supabase에서 꿈해몽 데이터 조회 중...');
+    const { data, error } = await supabase
+      .from('dreams')
+      .select('slug, published_at')
+      .eq('published', true)
+      .order('published_at', { ascending: false });
+
+    if (error) {
+      console.warn('⚠️ Supabase 꿈해몽 조회 실패:', error.message);
+      return [];
+    }
+
+    console.log(`✅ Found ${data?.length || 0} dreams from Supabase`);
+    return data || [];
+  } catch (err) {
+    console.warn('⚠️ 꿈해몽 조회 중 오류:', err.message);
+    return [];
+  }
+}
+
+// ============================================
 // 2. Sitemap XML 생성
 // ============================================
 
-function generateSitemap(slugs, columns) {
+function generateSitemap(slugs, columns, dreams) {
   const baseUrl = 'https://muunsaju.com';
   const currentDate = new Date().toISOString().split('T')[0];
 
@@ -137,6 +163,19 @@ function generateSitemap(slugs, columns) {
     <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+  </url>
+`;
+  });
+
+  // Supabase 꿈해몽 동적 페이지
+  dreams.forEach(dream => {
+    if (!dream.slug) return;
+    const lastmod = dream.published_at ? dream.published_at.split('T')[0] : currentDate;
+    xml += `  <url>
+    <loc>${baseUrl}/dream/${dream.slug}</loc>
+    <lastmod>${lastmod}</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.75</priority>
   </url>
 `;
   });
@@ -222,10 +261,14 @@ async function main() {
   console.log('\n📚 Fetching columns from Supabase...');
   const columns = await fetchColumnsFromSupabase();
 
+  // 2-2. Supabase에서 꿈해몽 데이터 조회
+  console.log('\n🌙 Fetching dreams from Supabase...');
+  const dreams = await fetchDreamsFromSupabase();
+
   // 3. Sitemap 생성
   console.log('\n📝 Generating sitemap...');
-  const xml = generateSitemap(slugs, columns);
-  console.log(`✅ Sitemap generated with ${slugs.length} dictionary items + ${columns.length} columns`);
+  const xml = generateSitemap(slugs, columns, dreams);
+  console.log(`✅ Sitemap generated with ${slugs.length} dictionary items + ${columns.length} columns + ${dreams.length} dreams`);
 
   // 4. 파일 저장
   console.log('\n💾 Saving sitemap...');
