@@ -1,16 +1,19 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   Search, BrainCircuit, Sparkles, CloudMoon, ArrowRight, 
   Info, ChevronRight, Quote, Zap, Star, X, 
   PawPrint, Users, Mountain, Box, Activity, Layers,
-  Trophy, CheckCircle2, AlertCircle
+  Trophy, CheckCircle2, AlertCircle, Loader2
 } from 'lucide-react';
-import { dreamData, DreamData, DreamGrade } from '../data/dream-data';
+import { getAllDreams, searchDreams, DreamData } from '../lib/dream-data-api';
 import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useCanonical } from '@/lib/use-canonical';
+import { useNavigate } from 'react-router-dom';
+
+type DreamGrade = 'great' | 'good' | 'bad';
 
 const categories = [
   { id: 'animal', name: '동물', icon: PawPrint, color: 'text-orange-400', bg: 'bg-orange-400/10' },
@@ -18,7 +21,7 @@ const categories = [
   { id: 'nature', name: '자연/현상', icon: Mountain, color: 'text-green-400', bg: 'bg-green-400/10' },
   { id: 'object', name: '생활/사물', icon: Box, color: 'text-yellow-400', bg: 'bg-yellow-400/10' },
   { id: 'action', name: '상태/행동', icon: Activity, color: 'text-purple-400', bg: 'bg-purple-400/10' },
-  { id: 'etc', name: '기타', icon: Layers, color: 'text-slate-400', bg: 'bg-slate-400/10' },
+  { id: 'other', name: '기타', icon: Layers, color: 'text-slate-400', bg: 'bg-slate-400/10' },
 ] as const;
 
 const gradeConfig: Record<DreamGrade, { label: string; icon: any; color: string; bg: string; border: string; desc: string }> = {
@@ -38,7 +41,7 @@ const gradeConfig: Record<DreamGrade, { label: string; icon: any; color: string;
     border: 'border-blue-500/30',
     desc: '일상의 변화나 심리적 안정을 나타내는 긍정적인 꿈입니다.'
   },
-  caution: { 
+  bad: { 
     label: '보랏빛 흉몽', 
     icon: AlertCircle, 
     color: 'text-purple-400', 
@@ -48,11 +51,55 @@ const gradeConfig: Record<DreamGrade, { label: string; icon: any; color: string;
   }
 };
 
+const getGrade = (grade: string): DreamGrade => {
+  if (grade === 'great' || grade === 'good' || grade === 'bad') return grade;
+  return 'good';
+};
+
 const DreamInterpretation: React.FC = () => {
   useCanonical('/dream');
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDream, setSelectedDream] = useState<DreamData | null>(null);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [categoryDreams, setCategoryDreams] = useState<DreamData[]>([]);
+  const [searchResults, setSearchResults] = useState<DreamData[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+
+  // 카테고리 클릭 시 DB에서 해당 카테고리 꿈 조회
+  const loadCategoryDreams = useCallback(async (catId: string) => {
+    setIsLoading(true);
+    try {
+      const data = await getAllDreams(catId);
+      setCategoryDreams(data);
+    } catch (e) {
+      setCategoryDreams([]);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  // 검색어 변경 시 DB 검색
+  useEffect(() => {
+    const term = searchTerm.trim();
+    if (!term) {
+      setSearchResults([]);
+      return;
+    }
+    const timer = setTimeout(async () => {
+      setIsSearching(true);
+      try {
+        const data = await searchDreams(term);
+        setSearchResults(data);
+      } catch (e) {
+        setSearchResults([]);
+      } finally {
+        setIsSearching(false);
+      }
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
 
   // URL 쿼리 파라미터에서 검색어 읽기
   useEffect(() => {
@@ -60,57 +107,29 @@ const DreamInterpretation: React.FC = () => {
     const query = params.get('q');
     if (query) {
       setSearchTerm(query);
-      const exactMatch = Object.values(dreamData).find(d => d.keyword === query);
-      if (exactMatch) {
-        setSelectedDream(exactMatch);
-      }
     }
   }, []);
 
-  const filteredDreams = useMemo(() => {
-    const term = searchTerm.trim().toLowerCase();
-    
-    // 카테고리 필터링이 활성화된 경우
-    if (activeCategory && !term) {
-      return Object.values(dreamData).filter(d => d.category === activeCategory);
-    }
-
-    if (!term) return [];
-    
-    // 1. 키워드와 정확히 일치하는 항목 우선
-    const exactMatches = Object.values(dreamData).filter(
-      d => d.keyword.toLowerCase() === term
-    );
-    
-    // 2. 키워드를 포함하는 항목
-    const partialMatches = Object.values(dreamData).filter(
-      d => d.keyword.toLowerCase().includes(term) && d.keyword.toLowerCase() !== term
-    );
-    
-    return [...exactMatches, ...partialMatches];
-  }, [searchTerm, activeCategory]);
-
   const handleSelectDream = (dream: DreamData) => {
-    setSelectedDream(dream);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    // 상세 페이지로 이동
+    navigate(`/dream/${dream.slug}`);
   };
 
   const handleTagClick = (tag: string) => {
     setSearchTerm(tag);
     setActiveCategory(null);
-    const exactMatch = Object.values(dreamData).find(d => d.keyword === tag);
-    if (exactMatch) {
-      handleSelectDream(exactMatch);
-    }
+    setSelectedDream(null);
   };
 
   const handleCategoryClick = (catId: string) => {
     if (activeCategory === catId) {
       setActiveCategory(null);
+      setCategoryDreams([]);
     } else {
       setActiveCategory(catId);
       setSearchTerm('');
       setSelectedDream(null);
+      loadCategoryDreams(catId);
     }
   };
 
@@ -118,7 +137,12 @@ const DreamInterpretation: React.FC = () => {
     setSearchTerm('');
     setSelectedDream(null);
     setActiveCategory(null);
+    setCategoryDreams([]);
+    setSearchResults([]);
   };
+
+  const displayDreams = searchTerm.trim() ? searchResults : categoryDreams;
+  const isShowingResults = !!(searchTerm.trim() || activeCategory);
 
   return (
     <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased">
@@ -135,10 +159,6 @@ const DreamInterpretation: React.FC = () => {
         <meta name="twitter:title" content="[가입X/100%무료] 꿈해몽 사전 - 무운 (MuUn)" />
         <meta name="twitter:description" content="어젯밤 꿈의 의미가 궁금하신가요? 방대한 데이터를 바탕으로 정확한 꿈해몽을 제공합니다. 회원가입 없이 무료로 이용 가능합니다." />
         <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
-      </Helmet>
-      <Helmet>
-        <title>[가입X/100%무료] 꿈해몽 검색 - 무운</title>
-        <meta name="description" content="가입/결제 없이 2,000개 이상의 방대한 데이터로 당신의 꿈을 무료로 해몽해 보세요. 길몽, 흉몽 분석과 행운 지수까지 확인 가능합니다." />
       </Helmet>
 
       {/* Hero Section */}
@@ -165,7 +185,11 @@ const DreamInterpretation: React.FC = () => {
         <div className="mb-8 py-4">
           <div className="relative group">
             <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              <Search className="h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
+              {isSearching ? (
+                <Loader2 className="h-5 w-5 text-primary animate-spin" />
+              ) : (
+                <Search className="h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
+              )}
             </div>
             <input
               type="text"
@@ -236,186 +260,70 @@ const DreamInterpretation: React.FC = () => {
         )}
 
         <AnimatePresence mode="wait">
-          {selectedDream ? (
-            <motion.div
-              key="result"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="space-y-6"
-            >
-              {/* Premium Result Header Card */}
-              <Card className={`overflow-hidden border-2 ${gradeConfig[selectedDream.grade].border} bg-gradient-to-br ${gradeConfig[selectedDream.grade].bg} via-card to-background shadow-2xl relative`}>
-                <div className="absolute top-0 right-0 p-6">
-                  <motion.div
-                    animate={{ rotate: [0, 10, -10, 0] }}
-                    transition={{ repeat: Infinity, duration: 4 }}
-                  >
-                    <Sparkles className={`w-8 h-8 ${gradeConfig[selectedDream.grade].color} opacity-50`} />
-                  </motion.div>
+          <motion.div
+            key="search"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="space-y-6"
+          >
+            {isShowingResults ? (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between px-1">
+                  <h3 className="text-sm font-bold text-slate-400">
+                    {activeCategory && !searchTerm.trim()
+                      ? `${categories.find(c => c.id === activeCategory)?.name} 카테고리 결과` 
+                      : `'${searchTerm}' 검색 결과`}
+                    {!isLoading && !isSearching && (
+                      <span className="ml-2 text-primary">{displayDreams.length}건</span>
+                    )}
+                  </h3>
+                  <button onClick={clearSearch} className="text-xs text-slate-500 hover:text-white flex items-center gap-1">
+                    초기화 <X className="w-3 h-3" />
+                  </button>
                 </div>
                 
-                <CardHeader className="text-center pb-2 pt-10">
-                  <div className="flex justify-center mb-6">
-                    <div className={`relative p-5 rounded-full border-2 ${gradeConfig[selectedDream.grade].border} bg-background/50 backdrop-blur-md shadow-xl`}>
-                      {React.createElement(gradeConfig[selectedDream.grade].icon, {
-                        className: `w-10 h-10 ${gradeConfig[selectedDream.grade].color}`
-                      })}
-                      <motion.div 
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        className="absolute -top-2 -right-2 bg-primary text-[10px] font-bold px-2 py-1 rounded-full text-white shadow-lg"
-                      >
-                        {selectedDream.score}점
-                      </motion.div>
-                    </div>
+                {(isLoading || isSearching) ? (
+                  <div className="flex items-center justify-center py-20">
+                    <Loader2 className="w-8 h-8 text-primary animate-spin" />
                   </div>
-                  <div className="space-y-1">
-                    <span className={`text-sm font-bold tracking-widest uppercase ${gradeConfig[selectedDream.grade].color}`}>
-                      {gradeConfig[selectedDream.grade].label}
-                    </span>
-                    <CardTitle className="text-3xl md:text-4xl font-bold text-white">
-                      {selectedDream.keyword} 꿈
-                    </CardTitle>
-                  </div>
-                  <p className="text-slate-400 text-sm mt-4 max-w-xs mx-auto">
-                    {gradeConfig[selectedDream.grade].desc}
-                  </p>
-                </CardHeader>
-
-                <CardContent className="text-center pb-10 px-6">
-                  {/* Score Gauge */}
-                  <div className="max-w-xs mx-auto mb-8 mt-4">
-                    <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden border border-white/10">
-                      <motion.div 
-                        initial={{ width: 0 }}
-                        animate={{ width: `${selectedDream.score}%` }}
-                        transition={{ duration: 1, ease: "easeOut" }}
-                        className={`h-full bg-gradient-to-r ${selectedDream.grade === 'great' ? 'from-yellow-400 to-orange-500' : selectedDream.grade === 'good' ? 'from-blue-400 to-indigo-500' : 'from-purple-400 to-pink-500'}`}
-                      />
-                    </div>
-                    <div className="flex justify-between mt-2 text-[10px] font-bold text-slate-500 uppercase tracking-tighter">
-                      <span>기운 약함</span>
-                      <span>강력한 에너지</span>
-                    </div>
-                  </div>
-
-                  <div className="relative inline-block px-8 py-8 bg-white/5 rounded-3xl border border-white/10 w-full shadow-inner group">
-                    <Quote className={`absolute top-6 left-6 w-8 h-8 ${gradeConfig[selectedDream.grade].color} opacity-20`} />
-                    <p className="text-lg md:text-2xl text-slate-100 leading-relaxed font-medium">
-                      {selectedDream.interpretation}
-                    </p>
-                    <Quote className={`absolute bottom-6 right-6 w-8 h-8 ${gradeConfig[selectedDream.grade].color} opacity-20 rotate-180`} />
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Detail Analysis Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Card className="bg-white/5 border-white/10 hover:border-primary/30 transition-all group overflow-hidden">
-                  <div className="absolute top-0 left-0 w-1 h-full bg-yellow-500/50" />
-                  <CardHeader className="flex flex-row items-center gap-3 pb-2">
-                    <div className="p-2 bg-yellow-500/20 rounded-lg group-hover:bg-yellow-500/30 transition-colors">
-                      <Star className="w-5 h-5 text-yellow-500" />
-                    </div>
-                    <CardTitle className="text-lg">전통적 의미</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-slate-400 leading-relaxed">
-                      {selectedDream.traditionalMeaning}
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card className="bg-white/5 border-white/10 hover:border-primary/30 transition-all group overflow-hidden">
-                  <div className="absolute top-0 left-0 w-1 h-full bg-blue-500/50" />
-                  <CardHeader className="flex flex-row items-center gap-3 pb-2">
-                    <div className="p-2 bg-blue-500/20 rounded-lg group-hover:bg-blue-500/30 transition-colors">
-                      <BrainCircuit className="w-5 h-5 text-blue-500" />
-                    </div>
-                    <CardTitle className="text-lg">심리학적 분석</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-slate-400 leading-relaxed">
-                      {selectedDream.psychologicalMeaning}
-                    </p>
-                  </CardContent>
-                </Card>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3 pt-4">
-                <Button 
-                  onClick={() => setSelectedDream(null)}
-                  variant="outline" 
-                  className="flex-1 h-14 rounded-2xl border-white/10 hover:bg-white/5 text-lg"
-                >
-                  다른 꿈 검색하기
-                </Button>
-                <Button 
-                  className="flex-1 h-14 rounded-2xl bg-primary hover:bg-primary/90 text-lg font-bold shadow-lg shadow-primary/20"
-                >
-                  결과 공유하기
-                </Button>
-              </div>
-            </motion.div>
-          ) : (
-            <motion.div
-              key="search"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="space-y-6"
-            >
-              {searchTerm.trim() || activeCategory ? (
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between px-1">
-                    <h3 className="text-sm font-bold text-slate-400">
-                      {activeCategory 
-                        ? `${categories.find(c => c.id === activeCategory)?.name} 카테고리 결과` 
-                        : `'${searchTerm}' 검색 결과`}
-                      <span className="ml-2 text-primary">{filteredDreams.length}건</span>
-                    </h3>
-                    {(searchTerm || activeCategory) && (
-                      <button onClick={clearSearch} className="text-xs text-slate-500 hover:text-white flex items-center gap-1">
-                        초기화 <X className="w-3 h-3" />
-                      </button>
-                    )}
-                  </div>
-                  
+                ) : (
                   <div className="grid grid-cols-1 gap-3">
-                    {filteredDreams.length > 0 ? (
-                      filteredDreams.map((dream, idx) => (
-                        <motion.div
-                          key={idx}
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: idx * 0.03 }}
-                          onClick={() => handleSelectDream(dream)}
-                          className="group flex items-center justify-between p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-primary/50 hover:bg-white/10 transition-all cursor-pointer"
-                        >
-                          <div className="flex items-center gap-4">
-                            <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors ${gradeConfig[dream.grade].bg} border ${gradeConfig[dream.grade].border}`}>
-                              {React.createElement(gradeConfig[dream.grade].icon, {
-                                className: `w-6 h-6 ${gradeConfig[dream.grade].color}`
-                              })}
-                            </div>
-                            <div>
-                              <div className="flex items-center gap-2">
-                                <h3 className="text-lg font-bold text-white group-hover:text-primary transition-colors">
-                                  {dream.keyword} 꿈
-                                </h3>
-                                <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded bg-white/5 border border-white/10 ${gradeConfig[dream.grade].color}`}>
-                                  {gradeConfig[dream.grade].label}
-                                </span>
+                    {displayDreams.length > 0 ? (
+                      displayDreams.map((dream, idx) => {
+                        const grade = getGrade(dream.grade);
+                        return (
+                          <motion.div
+                            key={dream.id}
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: idx * 0.03 }}
+                            onClick={() => handleSelectDream(dream)}
+                            className="group flex items-center justify-between p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-primary/50 hover:bg-white/10 transition-all cursor-pointer"
+                          >
+                            <div className="flex items-center gap-4">
+                              <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors ${gradeConfig[grade].bg.replace('from-', 'bg-').replace('/20 to-transparent', '/20')} border ${gradeConfig[grade].border}`}>
+                                {React.createElement(gradeConfig[grade].icon, {
+                                  className: `w-6 h-6 ${gradeConfig[grade].color}`
+                                })}
                               </div>
-                              <p className="text-sm text-muted-foreground line-clamp-1">
-                                {dream.interpretation}
-                              </p>
+                              <div>
+                                <div className="flex items-center gap-2">
+                                  <h3 className="text-lg font-bold text-white group-hover:text-primary transition-colors">
+                                    {dream.keyword} 꿈
+                                  </h3>
+                                  <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded bg-white/5 border border-white/10 ${gradeConfig[grade].color}`}>
+                                    {gradeConfig[grade].label}
+                                  </span>
+                                </div>
+                                <p className="text-sm text-muted-foreground line-clamp-1">
+                                  {dream.interpretation}
+                                </p>
+                              </div>
                             </div>
-                          </div>
-                          <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-all" />
-                        </motion.div>
-                      ))
+                            <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-all" />
+                          </motion.div>
+                        );
+                      })
                     ) : (
                       <div className="text-center py-20 bg-white/5 rounded-3xl border border-dashed border-white/10">
                         <Info className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
@@ -424,42 +332,42 @@ const DreamInterpretation: React.FC = () => {
                       </div>
                     )}
                   </div>
-                </div>
-              ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
-                  <div className="space-y-4">
-                    <h2 className="text-xl font-bold flex items-center gap-2 text-white">
-                      <Zap className="w-5 h-5 text-yellow-500" /> 많이 찾는 꿈
-                    </h2>
-                    <div className="grid grid-cols-1 gap-2">
-                      {[
-                        { label: "돼지꿈", key: "돼지" },
-                        { label: "돈 받는 꿈", key: "돈" },
-                        { label: "불나는 꿈", key: "불이 나는 꿈" },
-                        { label: "조상님 꿈", key: "조상" }
-                      ].map((item, idx) => (
-                        <button
-                          key={idx}
-                          onClick={() => handleTagClick(item.key)}
-                          className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10 hover:border-primary/30 transition-all text-left group"
-                        >
-                          <span className="text-slate-300 group-hover:text-primary transition-colors">{item.label}</span>
-                          <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                  <div className="p-8 rounded-3xl bg-gradient-to-br from-primary/20 to-transparent border border-primary/20 flex flex-col items-center justify-center text-center">
-                    <BrainCircuit className="w-12 h-12 text-primary mb-4" />
-                    <h3 className="text-lg font-bold mb-2 text-white">꿈은 무의식의 거울입니다</h3>
-                    <p className="text-sm text-slate-400 leading-relaxed">
-                      우리가 자는 동안 뇌는 하루의 정보를 정리하고 감정을 처리합니다. 무운의 꿈해몽으로 당신의 내면이 보내는 메시지를 읽어보세요.
-                    </p>
+                )}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+                <div className="space-y-4">
+                  <h2 className="text-xl font-bold flex items-center gap-2 text-white">
+                    <Zap className="w-5 h-5 text-yellow-500" /> 많이 찾는 꿈
+                  </h2>
+                  <div className="grid grid-cols-1 gap-2">
+                    {[
+                      { label: "돼지꿈", key: "돼지" },
+                      { label: "돈 받는 꿈", key: "돈" },
+                      { label: "불나는 꿈", key: "불" },
+                      { label: "조상님 꿈", key: "조상" }
+                    ].map((item, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => handleTagClick(item.key)}
+                        className="flex items-center justify-between p-4 rounded-xl bg-white/5 border border-white/10 hover:border-primary/30 transition-all text-left group"
+                      >
+                        <span className="text-slate-300 group-hover:text-primary transition-colors">{item.label}</span>
+                        <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                      </button>
+                    ))}
                   </div>
                 </div>
-              )}
-            </motion.div>
-          )}
+                <div className="p-8 rounded-3xl bg-gradient-to-br from-primary/20 to-transparent border border-primary/20 flex flex-col items-center justify-center text-center">
+                  <BrainCircuit className="w-12 h-12 text-primary mb-4" />
+                  <h3 className="text-lg font-bold mb-2 text-white">꿈은 무의식의 거울입니다</h3>
+                  <p className="text-sm text-slate-400 leading-relaxed">
+                    우리가 자는 동안 뇌는 하루의 정보를 정리하고 감정을 처리합니다. 무운의 꿈해몽으로 당신의 내면이 보내는 메시지를 읽어보세요.
+                  </p>
+                </div>
+              </div>
+            )}
+          </motion.div>
         </AnimatePresence>
       </div>
     </div>
