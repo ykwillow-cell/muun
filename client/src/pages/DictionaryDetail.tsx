@@ -2,6 +2,7 @@ import { useParams, useLocation } from 'wouter';
 import { Helmet } from 'react-helmet-async';
 import { ChevronLeft, ArrowRight } from 'lucide-react';
 import { fortuneDictionary } from '@/lib/fortune-dictionary';
+import CallToAction from '@/components/CallToAction';
 import { Button } from '@/components/ui/button';
 
 export default function DictionaryDetail() {
@@ -108,6 +109,12 @@ export default function DictionaryDetail() {
               </section>
             )}
           </div>
+
+          {/* CTA - 무료 운세 전환 유도 */}
+          <CallToAction
+            message="오늘 나의 운세도 확인해 보세요"
+            targetPath="/daily-fortune"
+          />
 
           {/* 관련 서비스 링크 */}
           <div className="mt-12 pt-8 border-t border-slate-800">

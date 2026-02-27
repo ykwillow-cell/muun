@@ -26,6 +26,7 @@ import SajuChart from "@/components/SajuChart";
 import LuckyItems from "@/components/LuckyItems";
 import SajuGlossary from "@/components/SajuGlossary";
 import YearlyFortuneContent from "@/components/YearlyFortuneContent";
+import RecommendedContent from "@/components/RecommendedContent";
 import SajuGuide from "@/components/SajuGuide";
 import { iljuData } from "@/lib/ilju-data";
 import { convertToHanja } from "@/lib/hanja-converter";
@@ -965,6 +966,8 @@ export default function YearlyFortune() {
               다른 정보로 다시 보기
             </Button>
           </div>
+          {/* 콘텐츠 추천 섹션 */}
+          <RecommendedContent />
         </motion.div>
       </main>
     </div>

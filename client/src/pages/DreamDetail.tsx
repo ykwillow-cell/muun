@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from 'wouter';
 import { getDreamBySlug, getLatestDreams, DREAM_CATEGORIES, type DreamData } from '@/lib/dream-data-api';
+import CallToAction from '@/components/CallToAction';
 
 const gradeConfig: Record<string, { label: string; icon: any; color: string; bg: string; border: string; desc: string }> = {
   great: {
@@ -311,7 +312,10 @@ export default function DreamDetail() {
           </Button>
         </motion.div>
 
-        {/* 관련 꿈해몽 */}
+        {/* CTA - 무료 운세 전환 유도 */}
+        <CallToAction />
+
+        {/* 관련 꼬해떉 */}
         {relatedDreams.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}

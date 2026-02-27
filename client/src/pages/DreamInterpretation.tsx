@@ -228,29 +228,37 @@ const DreamInterpretation: React.FC = () => {
           </div>
         </div>
 
-        {/* Category Navigation */}
+        {/* Category Navigation - 칩(Chip) 스타일 */}
         {!selectedDream && (
-          <div className="mb-10">
+          <div className="mb-8">
             <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-widest mb-4 px-1 flex items-center gap-2">
               <Layers className="w-4 h-4" /> 카테고리로 찾기
             </h2>
-            <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
+            {/* 칩 형태 카테고리 필터 */}
+            <div className="flex flex-wrap gap-2">
+              <button
+                onClick={() => { setActiveCategory(null); setCategoryDreams([]); }}
+                className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold border transition-all min-h-[40px] ${
+                  activeCategory === null
+                  ? 'bg-primary border-primary text-white shadow-md shadow-primary/20'
+                  : 'bg-white/5 border-white/10 text-slate-400 hover:bg-white/10 hover:text-white hover:border-white/20'
+                }`}
+              >
+                <Layers className="w-3.5 h-3.5" />
+                전체
+              </button>
               {categories.map((cat) => (
                 <button
                   key={cat.id}
                   onClick={() => handleCategoryClick(cat.id)}
-                  className={`flex flex-col items-center gap-3 p-4 rounded-2xl border transition-all ${
+                  className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold border transition-all min-h-[40px] active:scale-[0.97] ${
                     activeCategory === cat.id
-                    ? "bg-primary/20 border-primary shadow-lg shadow-primary/10"
-                    : "bg-white/5 border-white/5 hover:border-white/20 hover:bg-white/10"
+                    ? 'bg-primary border-primary text-white shadow-md shadow-primary/20'
+                    : 'bg-white/5 border-white/10 text-slate-400 hover:bg-white/10 hover:text-white hover:border-white/20'
                   }`}
                 >
-                  <div className={`p-3 rounded-xl ${cat.bg}`}>
-                    <cat.icon className={`w-6 h-6 ${cat.color}`} />
-                  </div>
-                  <span className={`text-xs font-medium ${activeCategory === cat.id ? 'text-white' : 'text-slate-400'}`}>
-                    {cat.name}
-                  </span>
+                  <cat.icon className={`w-3.5 h-3.5 ${activeCategory === cat.id ? 'text-white' : cat.color}`} />
+                  {cat.name}
                 </button>
               ))}
             </div>
@@ -292,9 +300,10 @@ const DreamInterpretation: React.FC = () => {
                         return (
                           <motion.div
                             key={dream.id}
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: idx * 0.03 }}
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.3, delay: idx * 0.04 }}
+                            whileTap={{ scale: 0.98 }}
                             onClick={() => handleSelectDream(dream)}
                             className="group flex items-center justify-between p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-primary/50 hover:bg-white/10 transition-all cursor-pointer"
                           >

@@ -6,6 +6,7 @@ import { motion } from 'framer-motion';
 import { ChevronLeft, Calendar, Clock, Share2, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { getColumnById, getLatestColumns, COLUMN_CATEGORIES, type ColumnData } from '@/lib/column-data-api';
+import CallToAction from '@/components/CallToAction';
 import { Link } from 'wouter';
 
 export default function GuideDetail() {
@@ -156,6 +157,12 @@ export default function GuideDetail() {
           transition={{ delay: 0.2 }}
           className="prose prose-invert max-w-none mb-12 [&_p]:mb-5 [&_p]:leading-relaxed [&_h2]:mt-8 [&_h2]:mb-4 [&_h3]:mt-6 [&_h3]:mb-3 [&_ul]:mb-5 [&_ol]:mb-5 [&_li]:mb-2 [&_blockquote]:my-6 [&_hr]:my-8 [&_strong]:font-bold [&_em]:italic"
           dangerouslySetInnerHTML={{ __html: column.content }}
+        />
+
+        {/* CTA - 무료 운세 전환 유도 */}
+        <CallToAction
+          message="오늘 나의 운세도 확인해 보세요"
+          targetPath="/daily-fortune"
         />
 
         {/* 관련 칼럼 */}

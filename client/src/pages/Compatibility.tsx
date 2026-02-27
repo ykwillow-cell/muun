@@ -24,6 +24,7 @@ import { convertToSolarDate } from "@/lib/lunar-converter";
 import SajuChart from "@/components/SajuChart";
 import SajuGlossary from "@/components/SajuGlossary";
 import CompatibilityContent from "@/components/CompatibilityContent";
+import RecommendedContent from "@/components/RecommendedContent";
 import FortuneShareCard from "@/components/FortuneShareCard";
 import { trackEvent, trackCustomEvent } from "@/lib/ga4";
 import {
@@ -1266,6 +1267,8 @@ export default function Compatibility() {
               다른 정보로 다시 보기
             </Button>
           </div>
+          {/* 콘텐츠 추천 섹션 */}
+          <RecommendedContent />
         </motion.div>
       </main>
     </div>

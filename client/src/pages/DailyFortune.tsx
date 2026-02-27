@@ -21,6 +21,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { getDailyFortune, DailyFortuneResult } from "@/lib/dailyFortune";
 import { shareContent } from "@/lib/share";
 import DailyFortuneContent from "@/components/DailyFortuneContent";
+import RecommendedContent from "@/components/RecommendedContent";
 import { convertToSolarDate } from "@/lib/lunar-converter";
 
 const formSchema = z.object({
@@ -1141,6 +1142,9 @@ export default function DailyFortune() {
             </motion.div>
 
           </div>
+
+          {/* 콘텐츠 추천 섹션 */}
+          <RecommendedContent />
 
           {/* SEO 콘텐츠 */}
           <div className="w-full max-w-2xl mx-auto mt-8">

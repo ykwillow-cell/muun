@@ -12,6 +12,7 @@ import tarotData from "@/lib/tarot-data.json";
 import { saveTarotReading } from "@/lib/tarot-db";
 import { trackCustomEvent } from "@/lib/ga4";
 import TarotContent from "@/components/TarotContent";
+import RecommendedContent from "@/components/RecommendedContent";
 import { getTarotInterpretation } from "@/lib/tarot-api";
 import { processAIContent } from "@/lib/content-cleaner";
 
@@ -484,6 +485,8 @@ export default function Tarot() {
               </motion.div>
             )}
           </AnimatePresence>
+          {/* 콘텐츠 추천 섹션 */}
+          <RecommendedContent />
         </div>
       </main>
 

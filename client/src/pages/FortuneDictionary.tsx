@@ -5,6 +5,7 @@ import { useCanonical } from '@/lib/use-canonical';
 import { setDictionaryOGTags } from '@/lib/og-tags';
 import { Search, ChevronRight } from 'lucide-react';
 import { useLocation } from 'wouter';
+import { motion } from 'framer-motion';
 import { fortuneDictionary, getAllCategories, searchDictionary, type DictionaryEntry } from '@/lib/fortune-dictionary';
 
 export default function FortuneDictionary() {
@@ -80,15 +81,15 @@ export default function FortuneDictionary() {
           </div>
         </div>
 
-        {/* 카테고리 필터 */}
+        {/* 카테고리 필터 - 칩(Chip) 스타일 */}
         <div className="mb-8">
           <div className="flex flex-wrap gap-2">
             <button
               onClick={() => setSelectedCategory(null)}
-              className={`px-4 py-2 rounded-full font-medium transition ${
+              className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold border transition-all min-h-[40px] active:scale-[0.97] ${
                 selectedCategory === null
-                  ? 'bg-purple-600 text-white'
-                  : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                  ? 'bg-primary border-primary text-white shadow-md shadow-primary/20'
+                  : 'bg-white/5 border-white/10 text-slate-400 hover:bg-white/10 hover:text-white hover:border-white/20'
               }`}
             >
               전체
@@ -97,10 +98,10 @@ export default function FortuneDictionary() {
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`px-4 py-2 rounded-full font-medium transition ${
+                className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold border transition-all min-h-[40px] active:scale-[0.97] ${
                   selectedCategory === category.id
-                    ? 'bg-purple-600 text-white'
-                    : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
+                    ? 'bg-primary border-primary text-white shadow-md shadow-primary/20'
+                    : 'bg-white/5 border-white/10 text-slate-400 hover:bg-white/10 hover:text-white hover:border-white/20'
                 }`}
               >
                 {category.label}
@@ -109,30 +110,34 @@ export default function FortuneDictionary() {
           </div>
         </div>
 
-        {/* 결과 표시 */}
+        {/* 결과 표시 - 피드 스타일 */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {filteredEntries.length > 0 ? (
-            filteredEntries.map((entry) => (
-              <button
+            filteredEntries.map((entry, idx) => (
+              <motion.button
                 key={entry.id}
-                onClick={() => navigate(`/dictionary/${entry.id}`)}
-                className="text-left p-4 bg-slate-800/60 border border-slate-700 rounded-lg hover:bg-slate-700 hover:border-purple-500 transition group"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: idx * 0.03 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => navigate(`/dictionary/${entry.slug || entry.id}`)}
+                className="text-left p-5 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 hover:border-primary/40 transition-all group"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-white group-hover:text-purple-400 transition">
+                    <h3 className="text-base font-bold text-white group-hover:text-primary transition">
                       {entry.title}
                     </h3>
                     {entry.subtitle && (
-                      <p className="text-sm text-slate-400 mt-1">{entry.subtitle}</p>
+                      <p className="text-xs text-slate-400 mt-1">{entry.subtitle}</p>
                     )}
-                    <p className="text-sm text-slate-500 mt-2 line-clamp-2">
+                    <p className="text-sm text-slate-500 mt-2 line-clamp-2 leading-relaxed">
                       {entry.modernInterpretation}
                     </p>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-purple-400 transition mt-1 flex-shrink-0" />
+                  <ChevronRight className="w-5 h-5 text-slate-500 group-hover:text-primary transition mt-0.5 flex-shrink-0" />
                 </div>
-              </button>
+              </motion.button>
             ))
           ) : (
             <div className="col-span-full text-center py-12">

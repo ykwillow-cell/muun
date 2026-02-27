@@ -99,10 +99,10 @@ export default function Guide() {
         >
           <button
             onClick={() => setSelectedCategory(null)}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+            className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold border transition-all min-h-[40px] active:scale-[0.97] ${
               selectedCategory === null
-                ? 'bg-primary text-background'
-                : 'bg-white/5 text-white/70 hover:bg-white/10'
+                ? 'bg-primary border-primary text-white shadow-md shadow-primary/20'
+                : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10 hover:text-white hover:border-white/20'
             }`}
           >
             전체 ({allColumns.length})
@@ -111,10 +111,10 @@ export default function Guide() {
             <button
               key={cat.id}
               onClick={() => setSelectedCategory(cat.id)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+              className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold border transition-all min-h-[40px] active:scale-[0.97] ${
                 selectedCategory === cat.id
-                  ? 'bg-primary text-background'
-                  : 'bg-white/5 text-white/70 hover:bg-white/10'
+                  ? 'bg-primary border-primary text-white shadow-md shadow-primary/20'
+                  : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10 hover:text-white hover:border-white/20'
               }`}
             >
               {cat.label}
@@ -137,7 +137,11 @@ export default function Guide() {
                 transition={{ delay: index * 0.05 }}
               >
                 <Link href={`/guide/${column.id}`}>
-                  <div className="group cursor-pointer">
+                  <motion.div
+                    className="group cursor-pointer"
+                    whileTap={{ scale: 0.99 }}
+                    transition={{ duration: 0.15 }}
+                  >
                     <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-primary/30 hover:bg-white/10 transition-all p-6 md:p-8">
                       <div className="flex flex-col md:flex-row gap-6">
                         {/* 썸네일 */}
@@ -195,7 +199,7 @@ export default function Guide() {
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 </Link>
               </motion.div>
             ))

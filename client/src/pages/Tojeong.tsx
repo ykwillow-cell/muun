@@ -18,6 +18,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { calculateTojeong } from "@/lib/tojeong";
 import { convertToSolarDate } from "@/lib/lunar-converter";
 import TojeongContent from "@/components/TojeongContent";
+import RecommendedContent from "@/components/RecommendedContent";
 
 // 폼 스키마 정의 (태어난 시간 제외)
 const formSchema = z.object({
@@ -417,6 +418,8 @@ export default function Tojeong() {
               다시 보기
             </Button>
           </div>
+          {/* 콘텐츠 추천 섹션 */}
+          <RecommendedContent />
         </motion.div>
       </main>
     </div>
