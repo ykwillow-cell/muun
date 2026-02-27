@@ -1,17 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { 
-  Search, BrainCircuit, Sparkles, CloudMoon, ArrowRight, 
-  Info, ChevronRight, Quote, Zap, Star, X, 
+  Search, BrainCircuit, CloudMoon, ArrowRight, 
+  Info, ChevronRight, Zap, X, 
   PawPrint, Users, Mountain, Box, Activity, Layers,
   Trophy, CheckCircle2, AlertCircle, Loader2
 } from 'lucide-react';
 import { getAllDreams, searchDreams, DreamData } from '../lib/dream-data-api';
 import { Helmet } from 'react-helmet-async';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { useCanonical } from '@/lib/use-canonical';
-import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'wouter';
 
 type DreamGrade = 'great' | 'good' | 'bad';
 
@@ -58,7 +56,7 @@ const getGrade = (grade: string): DreamGrade => {
 
 const DreamInterpretation: React.FC = () => {
   useCanonical('/dream');
-  const navigate = useNavigate();
+  const [, navigate] = useLocation();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedDream, setSelectedDream] = useState<DreamData | null>(null);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
