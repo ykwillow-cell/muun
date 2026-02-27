@@ -307,7 +307,7 @@ const DreamInterpretation: React.FC = () => {
                               <div>
                                 <div className="flex items-center gap-2">
                                   <h3 className="text-lg font-bold text-white group-hover:text-primary transition-colors">
-                                    {dream.keyword} 꿈
+                                    {dream.keyword}
                                   </h3>
                                   <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded bg-white/5 border border-white/10 ${gradeConfig[grade].color}`}>
                                     {gradeConfig[grade].label}
