@@ -1,16 +1,36 @@
 import { useParams, useLocation } from 'wouter';
 import { Helmet } from 'react-helmet-async';
 import { ChevronLeft, ArrowRight } from 'lucide-react';
-import { fortuneDictionary } from '@/lib/fortune-dictionary';
+import { useEffect, useState } from 'react';
+import { fetchDictionaryEntryBySlug, type DictionaryEntry } from '@/lib/fortune-dictionary';
 import CallToAction from '@/components/CallToAction';
 import { Button } from '@/components/ui/button';
 
 export default function DictionaryDetail() {
   const { id } = useParams<{ id: string }>();
   const [, navigate] = useLocation();
+  const [entry, setEntry] = useState<DictionaryEntry | null | undefined>(undefined);
 
-  // URL에서 slug 추출 (예: /dictionary/dohwa-sal) 또는 id 기반 호환성 유지
-  const entry = fortuneDictionary.find((e) => e.slug === id || e.id === id);
+  useEffect(() => {
+    if (!id) {
+      setEntry(null);
+      return;
+    }
+    fetchDictionaryEntryBySlug(id).then((data) => {
+      setEntry(data);
+    });
+  }, [id]);
+
+  // 로딩 중
+  if (entry === undefined) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-slate-400 text-lg">불러오는 중...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (!entry) {
     return (
@@ -28,11 +48,11 @@ export default function DictionaryDetail() {
   return (
     <>
       <Helmet>
-        <title>{entry.title} - {entry.summary} | 무운(Muun) 사주 사전</title>
-        <meta name="description" content={`${entry.title}이 내 사주에 있다면 어떤 의미일까요? 20년 경력 역술가의 깊이 있는 통찰로 ${entry.title}의 현대적 해석과 대처법을 확인해 보세요.`} />
-        <meta property="og:title" content={`${entry.title} - ${entry.summary} | 무운`} />
-        <meta property="og:description" content={`${entry.title}이 내 사주에 있다면 어떤 의미일까요? 20년 경력 역술가의 깊이 있는 통찰로 ${entry.title}의 현대적 해석과 대처법을 확인해 보세요.`} />
-        <meta name="keywords" content={`${entry.title}, ${entry.summary}, ${entry.categoryLabel}, 사주, 운세, ${entry.tags?.join(', ')}`} />
+        <title>{entry.metaTitle || `${entry.title} - ${entry.summary} | 무운(Muun) 사주 사전`}</title>
+        <meta name="description" content={entry.metaDescription || `${entry.title}이 내 사주에 있다면 어떤 의미일까요? 20년 경력 역술가의 깊이 있는 통찰로 ${entry.title}의 현대적 해석과 대처법을 확인해 보세요.`} />
+        <meta property="og:title" content={entry.metaTitle || `${entry.title} - ${entry.summary} | 무운`} />
+        <meta property="og:description" content={entry.metaDescription || `${entry.title}이 내 사주에 있다면 어떤 의미일까요? 20년 경력 역술가의 깊이 있는 통찰로 ${entry.title}의 현대적 해석과 대처법을 확인해 보세요.`} />
+        <meta name="keywords" content={`${entry.title}, ${entry.summary}, ${entry.categoryLabel}, 사주, 운세, ${(entry.tags || []).join(', ')}`} />
         <meta property="og:type" content="article" />
         <meta property="og:url" content={`https://muunsaju.com/dictionary/${entry.slug}`} />
         <link rel="canonical" href={`https://muunsaju.com/dictionary/${entry.slug}`} />

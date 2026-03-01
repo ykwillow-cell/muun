@@ -1,16 +1,20 @@
-import React, { useState, useMemo } from 'react';
-import { useEffect } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useCanonical } from '@/lib/use-canonical';
 import { setDictionaryOGTags } from '@/lib/og-tags';
 import { Search, ChevronRight } from 'lucide-react';
 import { useLocation } from 'wouter';
 import { motion } from 'framer-motion';
-import { fortuneDictionary, getAllCategories, searchDictionary, type DictionaryEntry } from '@/lib/fortune-dictionary';
+import {
+  fetchFortuneDictionary,
+  getAllCategories,
+  searchDictionary,
+  type DictionaryEntry,
+} from '@/lib/fortune-dictionary';
 
 export default function FortuneDictionary() {
   useCanonical('/fortune-dictionary');
-  
+
   useEffect(() => {
     setDictionaryOGTags();
   }, []);
@@ -19,28 +23,33 @@ export default function FortuneDictionary() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedEntry, setSelectedEntry] = useState<DictionaryEntry | null>(null);
+  const [entries, setEntries] = useState<DictionaryEntry[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const categories = getAllCategories();
 
+  // Supabase에서 데이터 로드
+  useEffect(() => {
+    fetchFortuneDictionary().then((data) => {
+      setEntries(data);
+      setLoading(false);
+    });
+  }, []);
+
   // 검색 및 필터링된 항목들
   const filteredEntries = useMemo(() => {
-    let results = fortuneDictionary;
-
-    // 카테고리 필터
+    let results = entries;
     if (selectedCategory) {
       results = results.filter((entry) => entry.category === selectedCategory);
     }
-
-    // 검색 필터
     if (searchQuery.trim()) {
-      results = searchDictionary(searchQuery);
+      results = searchDictionary(searchQuery, entries);
       if (selectedCategory) {
         results = results.filter((entry) => entry.category === selectedCategory);
       }
     }
-
     return results;
-  }, [selectedCategory, searchQuery]);
+  }, [selectedCategory, searchQuery, entries]);
 
   return (
     <div className="min-h-screen bg-black py-8 px-4">
@@ -69,7 +78,6 @@ export default function FortuneDictionary() {
             사주 명리학의 어려운 용어들을 쉽고 따뜻하게 설명해드립니다.
           </p>
         </div>
-
         {/* 검색창 */}
         <div className="mb-8">
           <div className="relative">
@@ -83,7 +91,6 @@ export default function FortuneDictionary() {
             />
           </div>
         </div>
-
         {/* 카테고리 필터 - 칩(Chip) 스타일 */}
         <div className="mb-8">
           <div className="flex flex-wrap gap-2">
@@ -112,22 +119,31 @@ export default function FortuneDictionary() {
             ))}
           </div>
         </div>
-
         {/* 결과 표시 - 피드 스타일 */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {filteredEntries.length > 0 ? (
+          {loading ? (
+            <div className="col-span-full text-center py-12">
+              <p className="text-slate-400 text-lg">사전 데이터를 불러오는 중...</p>
+            </div>
+          ) : filteredEntries.length > 0 ? (
             filteredEntries.map((entry, idx) => (
               <motion.button
                 key={entry.id}
-                initial={{ opacity: 0, y: 10 }}
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: idx * 0.03 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => navigate(`/dictionary/${entry.slug || entry.id}`)}
-                className="text-left p-5 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 hover:border-primary/40 transition-all group"
+                transition={{ delay: idx * 0.03 }}
+                onClick={() => {
+                  navigate(`/dictionary/${entry.slug}`);
+                }}
+                className="w-full text-left p-5 bg-slate-800/50 border border-slate-700 rounded-xl hover:border-purple-500/50 hover:bg-slate-800 transition-all group cursor-pointer"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="inline-block px-2 py-0.5 bg-purple-600/20 border border-purple-500/30 rounded-full text-purple-400 text-xs font-semibold">
+                        {entry.categoryLabel}
+                      </span>
+                    </div>
                     <h3 className="text-base font-bold text-white group-hover:text-primary transition">
                       {entry.title}
                     </h3>
@@ -135,7 +151,7 @@ export default function FortuneDictionary() {
                       <p className="text-xs text-slate-400 mt-1">{entry.subtitle}</p>
                     )}
                     <p className="text-sm text-slate-500 mt-2 line-clamp-2 leading-relaxed">
-                      {entry.modernInterpretation}
+                      {entry.summary}
                     </p>
                   </div>
                   <ChevronRight className="w-5 h-5 text-slate-500 group-hover:text-primary transition mt-0.5 flex-shrink-0" />
@@ -149,7 +165,6 @@ export default function FortuneDictionary() {
             </div>
           )}
         </div>
-
         {/* 상세 보기 모달 */}
         {selectedEntry && (
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
@@ -174,7 +189,6 @@ export default function FortuneDictionary() {
                   ✕
                 </button>
               </div>
-
               {/* 모달 콘텐츠 */}
               <div className="p-6 space-y-6">
                 {/* 원래 의미 */}
@@ -186,7 +200,6 @@ export default function FortuneDictionary() {
                     {selectedEntry.originalMeaning}
                   </p>
                 </div>
-
                 {/* 현대적 재해석 */}
                 <div>
                   <h3 className="text-sm font-semibold text-purple-400 uppercase tracking-wide mb-2">
@@ -196,7 +209,6 @@ export default function FortuneDictionary() {
                     {selectedEntry.modernInterpretation}
                   </p>
                 </div>
-
                 {/* 무운의 한마디 */}
                 <div className="bg-gradient-to-r from-purple-600/10 to-blue-600/10 border border-purple-500/20 rounded-lg p-4">
                   <h3 className="text-sm font-semibold text-purple-400 uppercase tracking-wide mb-2">
@@ -206,7 +218,6 @@ export default function FortuneDictionary() {
                     {selectedEntry.muunAdvice}
                   </p>
                 </div>
-
                 {/* 태그 */}
                 {selectedEntry.tags && selectedEntry.tags.length > 0 && (
                   <div>
@@ -226,7 +237,6 @@ export default function FortuneDictionary() {
                   </div>
                 )}
               </div>
-
               {/* 모달 푸터 */}
               <div className="sticky bottom-0 bg-slate-800 border-t border-slate-700 p-4 flex justify-end">
                 <button

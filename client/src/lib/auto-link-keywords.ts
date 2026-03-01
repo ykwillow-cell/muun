@@ -3,6 +3,7 @@
 
 import React from 'react';
 import { fortuneDictionary } from './fortune-dictionary';
+import { fortuneDictionary50Complete } from './fortune-dictionary-50-complete';
 
 export interface KeywordMatch {
   keyword: string;
