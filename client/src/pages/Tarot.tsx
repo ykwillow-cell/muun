@@ -175,18 +175,20 @@ export default function Tarot() {
   return (
     <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased overflow-x-hidden">
       <Helmet>
-        <title>[가입X/100%무료] 오늘의 타로 상담 - 무운 (MuUn)</title>
-        <meta name="description" content="신비로운 타로 카드가 전하는 오늘의 메시지. 고민되는 문제에 대한 해답을 찾아보세요. 회원가입 없이 무료로 이용 가능합니다." />
+        <title>무료 AI 타로 상담 - 회원가입 없이 오늘의 타로 | 무운 (MuUn)</title>
+        <meta name="description" content="회원가입 없이 바로 시작하는 무료 AI 타로 상담. 고민되는 문제에 대한 해답을 개인정보 저장 없이 100% 무료로 확인하세요. 매일 새로운 타로 메시지를 받아보세요." />
         <link rel="canonical" href="https://muunsaju.com/tarot" />
-        <meta property="og:title" content="[가입X/100%무료] 오늘의 타로 상담 - 무운 (MuUn)" />
-        <meta property="og:description" content="신비로운 타로 카드가 전하는 오늘의 메시지. 고민되는 문제에 대한 해답을 찾아보세요. 회원가입 없이 무료로 이용 가능합니다." />
-        <meta property="og:image" content="https://muunsaju.com/og-image.png" />
+        <meta property="og:title" content="무료 AI 타로 상담 - 회원가입 없이 오늘의 타로 | 무운 (MuUn)" />
+        <meta property="og:description" content="회원가입 없이 바로 시작하는 무료 AI 타로 상담. 고민되는 문제에 대한 해답을 개인정보 저장 없이 100% 무료로 확인하세요. 매일 새로운 타로 메시지를 받아보세요." />
+        <meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png" />
         <meta property="og:url" content="https://muunsaju.com/tarot" />
         <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="무운 (MuUn)" />
+        <meta property="og:locale" content="ko_KR" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="[가입X/100%무료] 오늘의 타로 상담 - 무운 (MuUn)" />
-        <meta name="twitter:description" content="신비로운 타로 카드가 전하는 오늘의 메시지. 고민되는 문제에 대한 해답을 찾아보세요. 회원가입 없이 무료로 이용 가능합니다." />
-        <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
+        <meta name="twitter:title" content="무료 AI 타로 상담 - 회원가입 없이 오늘의 타로 | 무운 (MuUn)" />
+        <meta name="twitter:description" content="회원가입 없이 바로 시작하는 무료 AI 타로 상담. 고민되는 문제에 대한 해답을 개인정보 저장 없이 100% 무료로 확인하세요. 매일 새로운 타로 메시지를 받아보세요." />
+        <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
       </Helmet>
       {/* Background Effects */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
@@ -493,7 +495,7 @@ export default function Tarot() {
       <Helmet>
         <title>타로 상담소 | 무운(MUUN) - 온라인 운세</title>
         <meta name="description" content="신비로운 타로 카드가 당신의 고민을 해석해 드립니다. 타로 카드로 미래를 엿보세요." />
-        <meta name="keywords" content="타로, 타로 상담, 운세, 타로 해석" />
+        <meta name="keywords" content="타로, 무료타로, AI타로, 오늘의타로, 타로상담, 무료타로점, 타로카드, 온라인타로" />
       </Helmet>
     </div>
   );

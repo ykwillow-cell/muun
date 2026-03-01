@@ -14,17 +14,20 @@ export default function Terms() {
     <div className="min-h-screen bg-background text-foreground pb-20">
       <Helmet>
         <title>이용약관 - 무운 (MuUn)</title>
-        <meta name="description" content="무운(MuUn) 서비스의 이용약관입니다." />
+        <meta name="description" content="무운(MuUn) 서비스의 이용약관입니다. 회원가입 없이 이용 가능한 무료 사주·운세 서비스의 이용 조건을 확인하세요." />
+        <meta name="keywords" content="이용약관, 무운이용약관, 서비스약관" />
         <link rel="canonical" href="https://muunsaju.com/terms" />
         <meta property="og:title" content="이용약관 - 무운 (MuUn)" />
-        <meta property="og:description" content="무운(MuUn) 서비스의 이용약관입니다." />
-        <meta property="og:image" content="https://muunsaju.com/og-image.png" />
+        <meta property="og:description" content="무운(MuUn) 서비스의 이용약관입니다. 회원가입 없이 이용 가능한 무료 사주·운세 서비스의 이용 조건을 확인하세요." />
+        <meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png" />
         <meta property="og:url" content="https://muunsaju.com/terms" />
         <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="무운 (MuUn)" />
+        <meta property="og:locale" content="ko_KR" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="이용약관 - 무운 (MuUn)" />
-        <meta name="twitter:description" content="무운(MuUn) 서비스의 이용약관입니다." />
-        <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
+        <meta name="twitter:description" content="무운(MuUn) 서비스의 이용약관입니다. 회원가입 없이 이용 가능한 무료 사주·운세 서비스의 이용 조건을 확인하세요." />
+        <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
       </Helmet>
       <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
         <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">

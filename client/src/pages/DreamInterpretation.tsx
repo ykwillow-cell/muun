@@ -145,18 +145,21 @@ const DreamInterpretation: React.FC = () => {
   return (
     <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased">
       <Helmet>
-        <title>[가입X/100%무료] 꿈해몽 사전 - 무운 (MuUn)</title>
-        <meta name="description" content="어젯밤 꿈의 의미가 궁금하신가요? 방대한 데이터를 바탕으로 정확한 꿈해몽을 제공합니다. 회원가입 없이 무료로 이용 가능합니다." />
+        <title>무료 꿈해몽 사전 - 회원가입 없이 꿈 풀이 확인 | 무운 (MuUn)</title>
+        <meta name="description" content="어젯밤 꿈의 의미가 궁금하신가요? 회원가입 없이 바로 검색하는 무료 꿈해몽 사전. 방대한 데이터를 바탕으로 정확한 꿈 풀이를 개인정보 저장 없이 100% 무료로 제공합니다." />
+        <meta name="keywords" content="꿈해몽, 무료꿈해몽, 꿈풀이, 꿈해석, 꿈사전, 길몽, 흉몽, 태몽, 돼지꿈, 뱀꿈" />
         <link rel="canonical" href="https://muunsaju.com/dream" />
-        <meta property="og:title" content="[가입X/100%무료] 꿈해몽 사전 - 무운 (MuUn)" />
-        <meta property="og:description" content="어젯밤 꿈의 의미가 궁금하신가요? 방대한 데이터를 바탕으로 정확한 꿈해몽을 제공합니다. 회원가입 없이 무료로 이용 가능합니다." />
-        <meta property="og:image" content="https://muunsaju.com/og-image.png" />
+        <meta property="og:title" content="무료 꿈해몽 사전 - 회원가입 없이 꿈 풀이 확인 | 무운 (MuUn)" />
+        <meta property="og:description" content="어젯밤 꿈의 의미가 궁금하신가요? 회원가입 없이 바로 검색하는 무료 꿈해몽 사전. 방대한 데이터를 바탕으로 정확한 꿈 풀이를 개인정보 저장 없이 100% 무료로 제공합니다." />
+        <meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png" />
         <meta property="og:url" content="https://muunsaju.com/dream" />
         <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="무운 (MuUn)" />
+        <meta property="og:locale" content="ko_KR" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="[가입X/100%무료] 꿈해몽 사전 - 무운 (MuUn)" />
-        <meta name="twitter:description" content="어젯밤 꿈의 의미가 궁금하신가요? 방대한 데이터를 바탕으로 정확한 꿈해몽을 제공합니다. 회원가입 없이 무료로 이용 가능합니다." />
-        <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
+        <meta name="twitter:title" content="무료 꿈해몽 사전 - 회원가입 없이 꿈 풀이 확인 | 무운 (MuUn)" />
+        <meta name="twitter:description" content="어젯밤 꿈의 의미가 궁금하신가요? 회원가입 없이 바로 검색하는 무료 꿈해몽 사전. 방대한 데이터를 바탕으로 정확한 꿈 풀이를 개인정보 저장 없이 100% 무료로 제공합니다." />
+        <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
       </Helmet>
 
       {/* Hero Section */}

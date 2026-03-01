@@ -269,15 +269,18 @@ export default function LuckyLunch() {
   return (
     <>
       <Helmet>
-        <title>행운의 점심 메뉴 추천 - 무운</title>
-        <meta name="description" content="사주팔자를 기반으로 오늘의 행운의 점심 메뉴를 추천합니다. 오행 운세에 맞는 식단을 선택하세요." />
-        <meta property="og:title" content="행운의 점심 메뉴 추천 - 무운" />
-        <meta property="og:description" content="사주팔자를 기반으로 오늘의 행운의 점심 메뉴를 추천합니다." />
-                <meta property="og:image" content="https://muunsaju.com/og-image.png" />
+        <title>행운의 점심 메뉴 추천 - 사주 오행 기반 무료 추천 | 무운</title>
+        <meta name="description" content="사주팔자 오행을 기반으로 오늘의 행운의 점심 메뉴를 추천합니다. 회원가입 없이 100% 무료로 나에게 맞는 음식을 확인하세요." />
+        <meta property="og:title" content="행운의 점심 메뉴 추천 - 사주 오행 기반 무료 추천 | 무운" />
+        <meta property="og:description" content="사주팔자 오행을 기반으로 오늘의 행운의 점심 메뉴를 추천합니다. 회원가입 없이 100% 무료로 나에게 맞는 음식을 확인하세요." />
+                <meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png" />
         <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="무운 (MuUn)" />
+        <meta property="og:locale" content="ko_KR" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
-<meta name="keywords" content="행운의 메뉴, 오늘의 메뉴, 사주 메뉴, 운세 메뉴, 무운" />
+        <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
+<meta name="keywords" content="행운의점심, 점심메뉴추천, 오행음식, 사주음식, 행운음식, 오늘점심, 무료추천" />
+        <link rel="canonical" href="https://muunsaju.com/lucky-lunch" />
       </Helmet>
     <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased">
       {/* Background Effects */}

@@ -80,6 +80,13 @@ export default function TarotHistory() {
 
   return (
     <div className="min-h-screen bg-background text-foreground pb-20">
+      <Helmet>
+        <title>내 타로 기록 - 무운 (MuUn)</title>
+        <meta name="description" content="무운에서 진행한 타로 상담 기록을 확인하세요. 회원가입 없이 이용한 무료 타로 상담 결과를 다시 볼 수 있습니다." />
+        <meta name="keywords" content="타로기록, 타로상담기록, 무료타로, 타로결과" />
+        <link rel="canonical" href="https://muunsaju.com/tarot-history" />
+        <meta name="robots" content="noindex, follow" />
+      </Helmet>
       <div className="container max-w-6xl mx-auto px-4 pt-12 md:pt-20">
         {/* 헤더 */}
         <div className="text-center space-y-4 mb-12">

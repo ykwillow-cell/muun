@@ -820,17 +820,20 @@ export default function Compatibility() {
   return (
     <>
       <Helmet>
-        <title>궁합 분석 결과 - 무운</title>
+        <title>무료 궁합 보기 - 회원가입 없이 사주 궁합 분석 | 무운 (MuUn)</title>
         <meta name="description" content={`두 분의 사주를 기반으로 한 궁합 분석 결과입니다. 총 궁합 점수: ${scores.total}점`} />
-        <meta property="og:title" content="궁합 분석 결과 - 무운" />
-        <meta property="og:description" content="두 분의 사주를 기반으로 한 궁합 분석 결과입니다." />
-                <meta property="og:image" content="https://muunsaju.com/og-image.png" />
+        <meta property="og:title" content="무료 궁합 보기 - 회원가입 없이 사주 궁합 분석 | 무운 (MuUn)" />
+        <meta property="og:description" content="회원가입 없이 두 사람의 생년월일만으로 바로 확인하는 무료 사주 궁합. 오행 궁합, 성격 궁합, 연애 궁합을 개인정보 저장 없이 100% 무료로 분석합니다." />
+                <meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png" />
         <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="무운 (MuUn)" />
+        <meta property="og:locale" content="ko_KR" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
+        <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
 {/* 사용자 입력 기반 결과 페이지 - 개인정보 보호 및 SEO 품질 관리 */}
         <meta name="robots" content="noindex, nofollow" />
-        <meta name="keywords" content="국합, 사주 국합, 연애운, 결혼운, 무운" />
+        <meta name="keywords" content="궁합, 무료궁합, 사주궁합, 연애궁합, 결혼궁합, 오행궁합, 무료궁합보기, 커플궁합" />
+        <link rel="canonical" href="https://muunsaju.com/compatibility" />
       </Helmet>
     <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased">
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">

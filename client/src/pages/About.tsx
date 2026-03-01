@@ -13,18 +13,21 @@ export default function About() {
   return (
     <div className="min-h-screen bg-background text-foreground pb-20 antialiased">
       <Helmet>
-        <title>무운 소개 - 무운 (MuUn)</title>
-        <meta name="description" content="무운(MuUn)은 30년 경력 역술인의 전문 지식을 바탕으로 만든 무료 사주 및 운세 서비스입니다." />
+        <title>무운 소개 - 회원가입 없는 100% 무료 사주·운세 서비스 | 무운 (MuUn)</title>
+        <meta name="description" content="무운(MuUn)은 회원가입 없이, 개인정보를 저장하지 않는 100% 무료 사주 및 운세 서비스입니다. 누구나 부담 없이 사주, 운세, 타로, 꿈해몽을 이용할 수 있습니다." />
+        <meta name="keywords" content="무운, MuUn, 무료사주, 무료운세, 사주서비스, 운세서비스, 회원가입없는사주" />
         <link rel="canonical" href="https://muunsaju.com/about" />
-        <meta property="og:title" content="무운 소개 - 무운 (MuUn)" />
-        <meta property="og:description" content="무운(MuUn)은 30년 경력 역술인의 전문 지식을 바탕으로 만든 무료 사주 및 운세 서비스입니다." />
-        <meta property="og:image" content="https://muunsaju.com/og-image.png" />
+        <meta property="og:title" content="무운 소개 - 회원가입 없는 100% 무료 사주·운세 서비스 | 무운 (MuUn)" />
+        <meta property="og:description" content="무운(MuUn)은 회원가입 없이, 개인정보를 저장하지 않는 100% 무료 사주 및 운세 서비스입니다. 누구나 부담 없이 사주, 운세, 타로, 꿈해몽을 이용할 수 있습니다." />
+        <meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png" />
         <meta property="og:url" content="https://muunsaju.com/about" />
         <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="무운 (MuUn)" />
+        <meta property="og:locale" content="ko_KR" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="무운 소개 - 무운 (MuUn)" />
-        <meta name="twitter:description" content="무운(MuUn)은 30년 경력 역술인의 전문 지식을 바탕으로 만든 무료 사주 및 운세 서비스입니다." />
-        <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
+        <meta name="twitter:title" content="무운 소개 - 회원가입 없는 100% 무료 사주·운세 서비스 | 무운 (MuUn)" />
+        <meta name="twitter:description" content="무운(MuUn)은 회원가입 없이, 개인정보를 저장하지 않는 100% 무료 사주 및 운세 서비스입니다. 누구나 부담 없이 사주, 운세, 타로, 꿈해몽을 이용할 수 있습니다." />
+        <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
       </Helmet>
       <header className="sticky top-0 z-50 backdrop-blur-2xl bg-background/60 border-b border-white/5">
         <div className="container mx-auto max-w-[1280px] px-4 h-16 flex items-center">

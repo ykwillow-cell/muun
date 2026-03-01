@@ -5,9 +5,9 @@ export async function render(options: { path: string }) {
   // SEO를 위한 메타 데이터 정의
   const metaData: Record<string, { title: string, description: string, h1?: string, services?: { href: string, label: string }[] }> = {
     '/': {
-      title: "무운 (MuUn) - 회원가입 없는 무료 사주 및 2026년 신년 운세",
-      description: "생년월일만으로 확인하는 무료 사주, 2026년 병오년 신년 운세, 토정비결, 궁합 서비스. 30년 경력 역술인의 전문적인 풀이를 만나보세요.",
-      h1: "무운 (MuUn) - 회원가입 없는 무료 사주",
+      title: "무료 사주 무운 (MuUn) - 회원가입 없는 100% 무료 사주풀이 및 2026년 운세",
+      description: "회원가입 없이, 개인정보 저장 없이, 생년월일만으로 바로 확인하는 100% 무료 사주풀이. 2026년 병오년 신년운세, 토정비결, 궁합, 타로, 꿈해몽까지 모든 서비스가 완전 무료입니다.",
+      h1: "무료 사주 무운 (MuUn) - 회원가입 없는 100% 무료 사주풀이",
       services: [
         { href: '/yearly-fortune', label: '2026년 신년운세' },
         { href: '/manselyeok', label: '무료 만세력' },
@@ -20,9 +20,9 @@ export async function render(options: { path: string }) {
       ]
     },
     '/yearly-fortune': {
-      title: "2026년 신년운세 - 무운 (MuUn)",
-      description: "2026년 병오년, 당신의 한 해 운세는 어떨까요? 무료로 확인하는 정밀 신년운세 서비스.",
-      h1: "2026년 신년운세",
+      title: "2026년 무료 신년운세 - 회원가입 없이 바로 확인 | 무운",
+      description: "회원가입 없이 생년월일만 입력하면 바로 확인하는 2026년 병오년 무료 신년운세. 월별 운세, 재물운, 직업운, 애정운까지 개인정보 저장 없이 100% 무료로 제공합니다.",
+      h1: "2026년 무료 신년운세",
       services: [
         { href: '/manselyeok', label: '만세력 분석' },
         { href: '/lifelong-saju', label: '평생 사주' },
@@ -30,9 +30,9 @@ export async function render(options: { path: string }) {
       ]
     },
     '/manselyeok': {
-      title: "무료 만세력 분석 - 무운 (MuUn)",
-      description: "정확한 사주 데이터를 바탕으로 한 무료 만세력 분석 서비스.",
-      h1: "무료 만세력 분석",
+      title: "무료 만세력 조회 - 회원가입 없이 사주팔자 확인 | 무운 (MuUn)",
+      description: "회원가입 없이 생년월일시만 입력하면 바로 확인하는 무료 만세력 분석. 사주팔자, 오행 구성, 천간지지를 개인정보 저장 없이 100% 무료로 제공합니다.",
+      h1: "무료 만세력 조회",
       services: [
         { href: '/yearly-fortune', label: '신년운세' },
         { href: '/lifelong-saju', label: '평생 사주' },
@@ -57,9 +57,9 @@ export async function render(options: { path: string }) {
       ]
     },
     '/lifelong-saju': {
-      title: "[가입X/100%무료] 평생 사주 분석 - 무운 (MuUn)",
-      description: "당신의 타고난 기질과 운명의 흐름을 30년 내공의 명리학으로 분석해드립니다.",
-      h1: "평생 사주 분석",
+      title: "무료 평생사주 풀이 - 회원가입 없이 타고난 운명 분석 | 무운",
+      description: "회원가입·개인정보 저장 없이 확인하는 무료 평생사주 풀이. 타고난 기질, 인생 운세, 연애운, 결혼운, 재물운을 100% 무료로 분석해드립니다.",
+      h1: "무료 평생사주 풀이",
       services: [
         { href: '/yearly-fortune', label: '신년운세' },
         { href: '/compatibility', label: '궁합 분석' },
@@ -67,9 +67,9 @@ export async function render(options: { path: string }) {
       ]
     },
     '/compatibility': {
-      title: "[가입X/100%무료] 정밀 궁합 분석 - 무운 (MuUn)",
-      description: "두 사람의 생년월일로 확인하는 정밀 사주 궁합. 연애, 결혼, 사업 파트너십까지 확인해보세요.",
-      h1: "정밀 궁합 분석",
+      title: "무료 궁합 보기 - 회원가입 없이 사주 궁합 분석 | 무운 (MuUn)",
+      description: "회원가입 없이 두 사람의 생년월일만으로 바로 확인하는 무료 사주 궁합. 오행 궁합, 성격 궁합, 연애 궁합을 개인정보 저장 없이 100% 무료로 분석합니다.",
+      h1: "무료 궁합 보기",
       services: [
         { href: '/hybrid-compatibility', label: '사주×MBTI 하이브리드 궁합' },
         { href: '/family-saju', label: '가족 사주 분석' },
@@ -85,9 +85,9 @@ export async function render(options: { path: string }) {
       ]
     },
     '/tojeong': {
-      title: "[가입X/100%무료] 2026년 토정비결 - 무운 (MuUn)",
-      description: "병오년 한 해의 신수를 월별로 상세하게 풀이해드립니다. 100% 무료 토정비결 서비스.",
-      h1: "2026년 토정비결",
+      title: "2026년 무료 토정비결 - 회원가입 없이 한 해 운세 확인 | 무운",
+      description: "이지함 선생의 원문 괎 계산법으로 보는 2026년 병오년 무료 토정비결. 회원가입·개인정보 저장 없이 한 해의 흐름을 100% 무료로 확인하세요.",
+      h1: "2026년 무료 토정비결",
       services: [
         { href: '/yearly-fortune', label: '신년운세' },
         { href: '/lifelong-saju', label: '평생 사주' },
@@ -103,18 +103,18 @@ export async function render(options: { path: string }) {
       ]
     },
     '/tarot': {
-      title: "[가입X/100%무료] 오늘의 타로 상담 - 무운 (MuUn)",
-      description: "신비로운 타로 카드가 전하는 오늘의 메시지. 고민되는 문제에 대한 해답을 찾아보세요.",
-      h1: "오늘의 타로 상담",
+      title: "무료 AI 타로 상담 - 회원가입 없이 오늘의 타로 | 무운 (MuUn)",
+      description: "회원가입 없이 바로 시작하는 무료 AI 타로 상담. 고민되는 문제에 대한 해답을 개인정보 저장 없이 100% 무료로 확인하세요.",
+      h1: "무료 AI 타로 상담",
       services: [
         { href: '/psychology', label: '심리테스트' },
         { href: '/dream', label: '꿈해몽 사전' },
       ]
     },
     '/dream': {
-      title: "[가입X/100%무료] 꿈해몽 사전 - 무운 (MuUn)",
-      description: "어젯밤 꿈의 의미가 궁금하신가요? 방대한 데이터를 바탕으로 정확한 꿈해몽을 제공합니다.",
-      h1: "꿈해몽 사전",
+      title: "무료 꿈해몽 사전 - 회원가입 없이 꿈 풀이 확인 | 무운 (MuUn)",
+      description: "어젯밤 꿈의 의미가 궁금하신가요? 회원가입 없이 바로 검색하는 무료 꿈해몽 사전. 방대한 데이터를 바탕으로 정확한 꿈 풀이를 개인정보 저장 없이 100% 무료로 제공합니다.",
+      h1: "무료 꿈해몽 사전",
       services: [
         { href: '/tarot', label: '타로 상담' },
         { href: '/psychology', label: '심리테스트' },
@@ -401,7 +401,7 @@ export async function render(options: { path: string }) {
         <h1>${currentMeta.h1 || currentMeta.title}</h1>
         <p>${currentMeta.description}</p>
         ${serviceLinksHtml ? `<nav aria-label="관련 서비스"><ul>${serviceLinksHtml}</ul></nav>` : ''}
-        <p>무운(MuUn)은 회원가입 없이 무료로 사주, 운세, 타로, 꿈해몽 등 다양한 서비스를 제공합니다.</p>
+        <p>무운(MuUn)은 회원가입 없이, 개인정보를 저장하지 않는 100% 무료 사주·운세·타로·꿈해몽 서비스입니다. 생년월일만 입력하면 바로 확인할 수 있습니다.</p>
       </main>
       <footer>
         <nav aria-label="푸터 메뉴">
@@ -415,11 +415,41 @@ export async function render(options: { path: string }) {
     </div>
   `;
 
+  // 페이지별 키워드 매핑
+  const keywordsMap: Record<string, string> = {
+    '/': '무료사주, 무료운세, 2026년운세, 사주풀이, 무료사주풀이, 신년운세, 토정비결, 궁합, 만세력, 타로, 꿈해몽, 회원가입없는사주',
+    '/yearly-fortune': '2026년운세, 신년운세, 무료신년운세, 병오년운세, 2026년신년운세, 무료운세',
+    '/lifelong-saju': '평생사주, 무료사주, 사주풀이, 무료사주풀이, 사주분석, 운명분석',
+    '/compatibility': '궁합, 사주궁합, 무료궁합, 연애궁합, 결혼궁합, 궁합보기',
+    '/tojeong': '토정비결, 2026년토정비결, 무료토정비결, 병오년토정비결',
+    '/manselyeok': '만세력, 무료만세력, 사주팔자, 만세력조회',
+    '/tarot': '타로, 무료타로, AI타로, 오늘의타로, 타로상담',
+    '/dream': '꿈해몽, 무료꿈해몽, 꿈풀이, 꿈해몽사전',
+    '/daily-fortune': '오늘의운세, 무료오늘의운세, 오늘운세, 매일운세',
+    '/psychology': '심리테스트, 무료심리테스트, 성격분석, 심리분석',
+    '/astrology': '점성술, 별자리운세, 탄생차트, 서양점성술',
+  };
+  const keywords = keywordsMap[options.path] || '무료사주, 무료운세, 사주풀이, 무운';
+
   return {
     appHtml,
     head: {
       title: `<title>${currentMeta.title}</title>`,
-      meta: `<meta name="description" content="${currentMeta.description}">`,
+      meta: [
+        `<meta name="description" content="${currentMeta.description}">`,
+        `<meta name="keywords" content="${keywords}">`,
+        `<meta name="robots" content="index, follow">`,
+        `<meta property="og:title" content="${currentMeta.title}">`,
+        `<meta property="og:description" content="${currentMeta.description}">`,
+        `<meta property="og:url" content="${canonicalUrl}">`,
+        `<meta property="og:type" content="website">`,
+        `<meta property="og:site_name" content="무운 (MuUn)">`,
+        `<meta property="og:locale" content="ko_KR">`,
+        `<meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png">`,
+        `<meta name="twitter:card" content="summary_large_image">`,
+        `<meta name="twitter:title" content="${currentMeta.title}">`,
+        `<meta name="twitter:description" content="${currentMeta.description}">`,
+      ].join('\n    '),
       link: `<link rel="canonical" href="${canonicalUrl}">`,
     },
     dehydratedState: {},

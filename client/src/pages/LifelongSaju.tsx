@@ -458,17 +458,20 @@ export default function LifelongSaju() {
   return (
     <>
       <Helmet>
-        <title>평생사주 결과 - 무운</title>
-        <meta name="description" content="사주팔자를 분석한 평생사주 풀이 결과입니다. 타고난 기질, 인생 운세, 연애운, 결혼운, 재물운 등을 확인하세요." />
-        <meta property="og:title" content="평생사주 결과 - 무운" />
-        <meta property="og:description" content="사주팔자를 분석한 평생사주 풀이 결과입니다." />
-                <meta property="og:image" content="https://muunsaju.com/og-image.png" />
+        <title>무료 평생사주 풀이 - 회원가입 없이 타고난 운명 분석 | 무운</title>
+        <meta name="description" content="회원가입·개인정보 저장 없이 확인하는 무료 평생사주 풀이. 타고난 기질, 인생 운세, 연애운, 결혼운, 재물운을 100% 무료로 분석해드립니다." />
+        <meta property="og:title" content="무료 평생사주 풀이 - 회원가입 없이 타고난 운명 분석 | 무운" />
+        <meta property="og:description" content="회원가입·개인정보 저장 없이 확인하는 무료 평생사주 풀이. 타고난 기질, 인생 운세, 연애운, 결혼운, 재물운을 100% 무료로 분석해드립니다." />
+                <meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png" />
         <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="무운 (MuUn)" />
+        <meta property="og:locale" content="ko_KR" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
+        <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
 {/* 사용자 입력 기반 결과 페이지 - 개인정보 보호 및 SEO 품질 관리 */}
         <meta name="robots" content="noindex, nofollow" />
-        <meta name="keywords" content="평생사주, 사주풀이, 사주팔자, 운세, 무운" />
+        <meta name="keywords" content="평생사주, 무료사주풀이, 사주분석, 타고난운명, 연애운, 결혼운, 재물운, 무료사주" />
+        <link rel="canonical" href="https://muunsaju.com/lifelong-saju" />
       </Helmet>
     <div className="min-h-screen bg-background text-foreground pb-20">
       <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">

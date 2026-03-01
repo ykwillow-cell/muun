@@ -606,15 +606,18 @@ export default function DailyFortune() {
   return (
     <>
       <Helmet>
-        <title>오늘의 운세 - 무운</title>
+        <title>오늘의 무료 운세 - 회원가입 없이 매일 확인 | 무운 (MuUn)</title>
         <meta name="description" content={`당신의 사주팔자를 기반으로 오늘의 운세를 알아보세요. 운세 점수, 연애운, 재물운, 직업운 등을 매일 마다 업데이트합니다.`} />
-        <meta property="og:title" content="오늘의 운세 - 무운" />
-        <meta property="og:description" content="당신의 사주팔자를 기반으로 오늘의 운세를 알아보세요." />
-        <meta property="og:image" content="https://muunsaju.com/og-image.png" />
+        <meta property="og:title" content="오늘의 무료 운세 - 회원가입 없이 매일 확인 | 무운 (MuUn)" />
+        <meta property="og:description" content="회원가입 없이 생년월일만 입력하면 바로 확인하는 오늘의 무료 운세. 사주팔자 기반 일일 운세를 개인정보 저장 없이 매일 100% 무료로 제공합니다." />
+        <meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png" />
         <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="무운 (MuUn)" />
+        <meta property="og:locale" content="ko_KR" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
-        <meta name="keywords" content="오늘의 운세, 사주 운세, 당신의 운세, 일일 운세, 무운" />
+        <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
+        <meta name="keywords" content="오늘의운세, 무료운세, 일일운세, 오늘운세, 무료오늘의운세, 데일리운세, 매일운세" />
+        <link rel="canonical" href="https://muunsaju.com/daily-fortune" />
       </Helmet>
 
       <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased">

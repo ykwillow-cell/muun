@@ -94,18 +94,21 @@ export default function Manselyeok() {
   return (
     <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased">
       <Helmet>
-        <title>무료 만세력 분석 - 무운 (MuUn)</title>
-        <meta name="description" content="정확한 사주 데이터를 바탕으로 한 무료 만세력 분석 서비스. 생년월일시를 입력하면 사주팔자와 오행 구성을 실시간으로 확인할 수 있습니다." />
+        <title>무료 만세력 조회 - 회원가입 없이 사주팔자 확인 | 무운 (MuUn)</title>
+        <meta name="description" content="회원가입 없이 생년월일시만 입력하면 바로 확인하는 무료 만세력 분석. 사주팔자, 오행 구성, 천간지지를 개인정보 저장 없이 100% 무료로 제공합니다." />
+        <meta name="keywords" content="만세력, 무료만세력, 사주팔자, 오행분석, 천간지지, 무료사주, 만세력조회, 사주보기" />
         <link rel="canonical" href="https://muunsaju.com/manselyeok" />
-        <meta property="og:title" content="무료 만세력 분석 - 무운 (MuUn)" />
-        <meta property="og:description" content="정확한 사주 데이터를 바탕으로 한 무료 만세력 분석 서비스." />
-        <meta property="og:image" content="https://muunsaju.com/og-image.png" />
+        <meta property="og:title" content="무료 만세력 조회 - 회원가입 없이 사주팔자 확인 | 무운 (MuUn)" />
+        <meta property="og:description" content="회원가입 없이 생년월일시만 입력하면 바로 확인하는 무료 만세력 분석. 사주팔자, 오행 구성, 천간지지를 개인정보 저장 없이 100% 무료로 제공합니다." />
+        <meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png" />
         <meta property="og:url" content="https://muunsaju.com/manselyeok" />
         <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="무운 (MuUn)" />
+        <meta property="og:locale" content="ko_KR" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="무료 만세력 분석 - 무운 (MuUn)" />
-        <meta name="twitter:description" content="정확한 사주 데이터를 바탕으로 한 무료 만세력 분석 서비스." />
-        <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
+        <meta name="twitter:title" content="무료 만세력 조회 - 회원가입 없이 사주팔자 확인 | 무운 (MuUn)" />
+        <meta name="twitter:description" content="회원가입 없이 생년월일시만 입력하면 바로 확인하는 무료 만세력 분석. 사주팔자, 오행 구성, 천간지지를 개인정보 저장 없이 100% 무료로 제공합니다." />
+        <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
       </Helmet>
       {/* '시간 모름' 시 안내 라벨 */}
       {form.watch("birthTimeUnknown") && (

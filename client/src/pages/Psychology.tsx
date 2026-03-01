@@ -140,18 +140,21 @@ export default function Psychology() {
   return (
     <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased">
       <Helmet>
-        <title>[가입X/100%무료] 심리테스트 및 성격 분석 - 무운 (MuUn)</title>
-        <meta name="description" content="나의 진짜 성격과 잠재력을 찾아주는 다양한 심리테스트를 즐겨보세요. 회원가입 없이 무료로 이용 가능합니다." />
+        <title>무료 심리테스트 - 회원가입 없이 성격 분석 | 무운 (MuUn)</title>
+        <meta name="description" content="회원가입 없이 바로 시작하는 무료 심리테스트. 나의 진짜 성격과 잠재력을 개인정보 저장 없이 100% 무료로 분석해드립니다." />
+        <meta name="keywords" content="심리테스트, 무료심리테스트, 성격분석, 성격테스트, MBTI, 심리분석, 무료성격테스트" />
         <link rel="canonical" href="https://muunsaju.com/psychology" />
-        <meta property="og:title" content="[가입X/100%무료] 심리테스트 및 성격 분석 - 무운 (MuUn)" />
-        <meta property="og:description" content="나의 진짜 성격과 잠재력을 찾아주는 다양한 심리테스트를 즐겨보세요. 회원가입 없이 무료로 이용 가능합니다." />
-        <meta property="og:image" content="https://muunsaju.com/og-image.png" />
+        <meta property="og:title" content="무료 심리테스트 - 회원가입 없이 성격 분석 | 무운 (MuUn)" />
+        <meta property="og:description" content="회원가입 없이 바로 시작하는 무료 심리테스트. 나의 진짜 성격과 잠재력을 개인정보 저장 없이 100% 무료로 분석해드립니다." />
+        <meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png" />
         <meta property="og:url" content="https://muunsaju.com/psychology" />
         <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="무운 (MuUn)" />
+        <meta property="og:locale" content="ko_KR" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="[가입X/100%무료] 심리테스트 및 성격 분석 - 무운 (MuUn)" />
-        <meta name="twitter:description" content="나의 진짜 성격과 잠재력을 찾아주는 다양한 심리테스트를 즐겨보세요. 회원가입 없이 무료로 이용 가능합니다." />
-        <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
+        <meta name="twitter:title" content="무료 심리테스트 - 회원가입 없이 성격 분석 | 무운 (MuUn)" />
+        <meta name="twitter:description" content="회원가입 없이 바로 시작하는 무료 심리테스트. 나의 진짜 성격과 잠재력을 개인정보 저장 없이 100% 무료로 분석해드립니다." />
+        <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
       </Helmet>
       {/* Background Effects */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">

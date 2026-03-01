@@ -9,7 +9,7 @@ import { trackCustomEvent } from "@/lib/ga4";
 import { useRef } from "react";
 import { TodayTermCard } from "@/components/TodayTermCard";
 import { DreamQuickSearch } from "@/components/DreamQuickSearch";
-import { OrganizationSchema, BreadcrumbListSchema } from "@/components/SchemaMarkup";
+import { OrganizationSchema, BreadcrumbListSchema, WebApplicationSchema, SiteNavigationSchema } from "@/components/SchemaMarkup";
 import { fortuneGuides } from "@/lib/fortune-guide";
 import { getFeaturedColumns, COLUMN_CATEGORIES } from "@/lib/column-data-api";
 import { useState } from "react";
@@ -148,21 +148,27 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden relative antialiased">
       <Helmet>
-        <title>무운 (MuUn) - 회원가입 없는 무료 사주 및 2026년 신년 운세</title>
-        <meta name="description" content="생년월일만으로 확인하는 무료 사주, 2026년 병오년 신년 운세, 토정비결, 궁합 서비스. 30년 경력 역술인의 전문적인 풀이를 만나보세요." />
+        <title>무료 사주 무운 (MuUn) - 회원가입 없는 100% 무료 사주풀이 및 2026년 운세</title>
+        <meta name="description" content="회원가입 없이, 개인정보 저장 없이, 생년월일만으로 바로 확인하는 100% 무료 사주풀이. 2026년 병오년 신년운세, 토정비결, 궁합, 타로, 꿈해몽까지 모든 서비스가 완전 무료입니다." />
+        <meta name="keywords" content="무료사주, 무료운세, 2026년운세, 사주풀이, 무료사주풀이, 신년운세, 병오년운세, 토정비결, 궁합, 만세력, 타로, 꿈해몽, 회원가입없는사주, 무료사주사이트" />
         <link rel="canonical" href="https://muunsaju.com/" />
-        <meta property="og:title" content="무운 (MuUn) - 회원가입 없는 무료 사주 및 2026년 신년 운세" />
-        <meta property="og:description" content="생년월일만으로 확인하는 무료 사주, 2026년 병오년 신년 운세, 토정비결, 궁합 서비스. 30년 경력 역술인의 전문적인 풀이를 만나보세요." />
-        <meta property="og:image" content="https://muunsaju.com/og-image.png" />
+        <meta property="og:title" content="무료 사주 무운 (MuUn) - 회원가입 없는 100% 무료 사주풀이" />
+        <meta property="og:description" content="회원가입 없이, 개인정보 저장 없이, 생년월일만으로 바로 확인하는 100% 무료 사주풀이. 2026년 신년운세, 토정비결, 궁합, 타로까지 모두 무료!" />
+        <meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png" />
         <meta property="og:url" content="https://muunsaju.com/" />
         <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="무운 (MuUn)" />
+        <meta property="og:locale" content="ko_KR" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="무운 (MuUn) - 회원가입 없는 무료 사주 및 2026년 신년 운세" />
-        <meta name="twitter:description" content="생년월일만으로 확인하는 무료 사주, 2026년 병오년 신년 운세, 토정비결, 궁합 서비스." />
-        <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
+        <meta name="twitter:title" content="무료 사주 무운 (MuUn) - 회원가입 없는 100% 무료 사주풀이" />
+        <meta name="twitter:description" content="회원가입 없이, 개인정보 저장 없이, 생년월일만으로 바로 확인하는 100% 무료 사주풀이 서비스." />
+        <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
+        <meta name="robots" content="index, follow" />
       </Helmet>
       {/* Schema Markup */}
       <OrganizationSchema />
+      <WebApplicationSchema />
+      <SiteNavigationSchema />
       <BreadcrumbListSchema items={[
         { name: "홈", url: "https://muunsaju.com" },
       ]} />
@@ -215,7 +221,7 @@ export default function Home() {
               >
                 <div className="flex items-center gap-3 md:gap-4">
                   <div className="w-12 h-12 md:w-14 md:h-14 bg-primary rounded-xl flex items-center justify-center text-2xl md:text-3xl flex-shrink-0">
-                    <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663329919991/ADofygAMfynBhdKC.png" alt="2026 신년운세" className="w-8 h-8 md:w-10 md:h-10 object-contain" />
+                    <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663329919991/ADofygAMfynBhdKC.png" alt="2026년 무료 신년운세 - 무운" className="w-8 h-8 md:w-10 md:h-10 object-contain" loading="lazy" width="40" height="40" />
                   </div>
                   <div>
                     <h3 className="text-base md:text-lg font-bold text-white">2026 신년운세</h3>

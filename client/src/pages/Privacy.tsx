@@ -14,17 +14,20 @@ export default function Privacy() {
     <div className="min-h-screen bg-background text-foreground pb-20">
       <Helmet>
         <title>개인정보처리방침 - 무운 (MuUn)</title>
-        <meta name="description" content="무운(MuUn) 서비스의 개인정보처리방침입니다." />
+        <meta name="description" content="무운(MuUn)은 사용자의 개인정보를 저장하지 않습니다. 무운 서비스의 개인정보처리방침을 확인하세요." />
+        <meta name="keywords" content="개인정보처리방침, 개인정보보호, 무운개인정보" />
         <link rel="canonical" href="https://muunsaju.com/privacy" />
         <meta property="og:title" content="개인정보처리방침 - 무운 (MuUn)" />
-        <meta property="og:description" content="무운(MuUn) 서비스의 개인정보처리방침입니다." />
-        <meta property="og:image" content="https://muunsaju.com/og-image.png" />
+        <meta property="og:description" content="무운(MuUn)은 사용자의 개인정보를 저장하지 않습니다. 무운 서비스의 개인정보처리방침을 확인하세요." />
+        <meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png" />
         <meta property="og:url" content="https://muunsaju.com/privacy" />
         <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="무운 (MuUn)" />
+        <meta property="og:locale" content="ko_KR" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="개인정보처리방침 - 무운 (MuUn)" />
-        <meta name="twitter:description" content="무운(MuUn) 서비스의 개인정보처리방침입니다." />
-        <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
+        <meta name="twitter:description" content="무운(MuUn)은 사용자의 개인정보를 저장하지 않습니다. 무운 서비스의 개인정보처리방침을 확인하세요." />
+        <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
       </Helmet>
       <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
         <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">

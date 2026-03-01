@@ -86,14 +86,18 @@ export default function Tojeong() {
     return (
       <>
         <Helmet>
-          <title>무료 토정비결 - 무운</title>
-          <meta name="description" content="이지함 선생의 원문 괘 계산법으로 2026년 병오년 한 해의 흐름을 읽어드립니다. 회원가입 없이 무료로 확인하세요." />
-          <meta property="og:title" content="무료 토정비결 - 무운" />
-          <meta property="og:description" content="이지함 선생의 원문 괘 계산법으로 2026년 병오년 한 해의 흐름을 읽어드립니다." />
-                <meta property="og:image" content="https://muunsaju.com/og-image.png" />
+          <title>2026년 무료 토정비결 - 회원가입 없이 한 해 운세 확인 | 무운</title>
+          <meta name="description" content="이지함 선생의 원문 괘 계산법으로 보는 2026년 병오년 무료 토정비결. 회원가입·개인정보 저장 없이 한 해의 흐름을 100% 무료로 확인하세요." />
+        <meta name="keywords" content="토정비결, 무료토정비결, 2026년토정비결, 병오년토정비결, 무료운세, 한해운세, 토정비결무료" />
+        <link rel="canonical" href="https://muunsaju.com/tojeong" />
+          <meta property="og:title" content="2026년 무료 토정비결 - 회원가입 없이 한 해 운세 확인 | 무운" />
+          <meta property="og:description" content="이지함 선생의 원문 괘 계산법으로 보는 2026년 병오년 무료 토정비결. 회원가입·개인정보 저장 없이 한 해의 흐름을 100% 무료로 확인하세요." />
+                <meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png" />
         <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="무운 (MuUn)" />
+        <meta property="og:locale" content="ko_KR" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
+        <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
 </Helmet>
       <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased">
         {/* Background Effects */}
@@ -307,8 +311,8 @@ export default function Tojeong() {
       <Helmet>
         <title>2026년 토정비결 결과 - 무운</title>
         <meta name="description" content="전통 방식에 따른 2026년 토정비결 분석 결과입니다. 한 해의 흐름과 월별 상세 운세를 확인하세요." />
-        <meta property="og:title" content="2026년 토정비결 결과 - 무운" />
-        <meta property="og:description" content="전통 방식에 따른 2026년 토정비결 분석 결과입니다." />
+        <meta property="og:title" content="2026년 무료 토정비결 - 회원가입 없이 한 해 운세 확인 | 무운" />
+        <meta property="og:description" content="이지함 선생의 원문 괘 계산법으로 보는 2026년 병오년 무료 토정비결. 회원가입·개인정보 저장 없이 한 해의 흐름을 100% 무료로 확인하세요." />
         {/* 사용자 입력 기반 결과 페이지 - 개인정보 보호 및 SEO 품질 관리 */}
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>

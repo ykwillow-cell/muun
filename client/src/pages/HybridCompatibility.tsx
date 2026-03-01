@@ -579,14 +579,16 @@ export default function HybridCompatibilityPage() {
       <>
         {/* SEO: 개인정보(이름) 절대 노출 금지 - 메타태그에 일주+MBTI 코드만 사용 */}
         <Helmet>
-          <title>사주×MBTI 하이브리드 궁합 리포트 - 무운</title>
+          <title>사주×MBTI 하이브리드 궁합 - 회원가입 없이 무료 분석 | 무운</title>
           <meta name="description" content={`${elem1Korean} 기운(${mbti1})과 ${elem2Korean} 기운(${mbti2})의 하이브리드 궁합 분석. 종합 점수 ${hybrid.totalScore}점 - ${hybrid.totalGrade}`} />
-          <meta property="og:title" content="사주×MBTI 하이브리드 궁합 리포트 - 무운" />
+          <meta property="og:title" content="사주×MBTI 하이브리드 궁합 - 회원가입 없이 무료 분석 | 무운" />
           <meta property="og:description" content={`${elem1Korean} 기운(${mbti1})과 ${elem2Korean} 기운(${mbti2})의 하이브리드 궁합. ${hybrid.totalGrade} (${hybrid.totalScore}점)`} />
-                  <meta property="og:image" content="https://muunsaju.com/og-image.png" />
+                  <meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png" />
         <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="무운 (MuUn)" />
+        <meta property="og:locale" content="ko_KR" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
+        <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
 {/* 개인정보 인덱싱 방지 */}
           <meta name="robots" content="noindex, nofollow" />
         </Helmet>
@@ -810,9 +812,10 @@ export default function HybridCompatibilityPage() {
     <>
       <Helmet>
         <title>사주×MBTI 하이브리드 궁합 - 무운</title>
-        <meta name="description" content="전통 사주 오행과 MBTI 성격 유형을 결합한 하이브리드 궁합 분석. 에너지 저울, 4대 영역 리포트, 인연 타임라인까지 압도적인 정보량의 전문 궁합 리포트를 무료로 제공합니다." />
-        <meta property="og:title" content="사주×MBTI 하이브리드 궁합 - 무운" />
-        <meta property="og:description" content="사주 오행(하드웨어)과 MBTI(소프트웨어)를 결합한 960가지 하이브리드 궁합 분석. 에너지 저울, 타임라인 그래프, 처방전까지." />
+        <meta name="description" content="전통 사주 오행과 MBTI 성격 유형을 결합한 하이브리드 궁합 분석. 회원가입·개인정보 저장 없이 100% 무료로 제공합니다." />
+        <meta name="keywords" content="사주MBTI궁합, 하이브리드궁합, MBTI궁합, 사주궁합, 성격궁합, 무료궁합, 오행MBTI" />
+        <meta property="og:title" content="사주×MBTI 하이브리드 궁합 - 회원가입 없이 무료 분석 | 무운" />
+        <meta property="og:description" content="전통 사주 오행과 MBTI 성격 유형을 결합한 하이브리드 궁합 분석. 회원가입·개인정보 저장 없이 100% 무료로 제공합니다." />
         <link rel="canonical" href="https://muunsaju.com/hybrid-compatibility" />
       </Helmet>
       <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased">

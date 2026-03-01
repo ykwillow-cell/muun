@@ -171,15 +171,18 @@ export default function FamilySaju() {
     return (
       <div className="min-h-screen bg-background text-white">
         <Helmet>
-          <title>[가입X/100%무료] 정밀 가족 사주 분석 - 우리 가족 궁합과 조화 확인 | 무운 (MuUn)</title>
-          <meta name="description" content="회원가입/결제 없이 우리 가족의 사주 궁합과 오행 조화를 확인하세요. 부모, 자녀, 배우자와의 관계 역학을 30년 내공의 명리학으로 정밀 분석해드립니다." />
-          <meta property="og:title" content="[가입X/100%무료] 정밀 가족 사주 분석 - 무운 (MuUn)" />
-          <meta property="og:description" content="가족 구성원 간의 사주 궁합과 오행 조화를 무료로 확인하세요. 가입 없이 바로 보는 정밀 가족 역학 분석." />
-                  <meta property="og:image" content="https://muunsaju.com/og-image.png" />
+          <title>무료 가족사주 분석 - 회원가입 없이 가족 오행 조화 확인 | 무운</title>
+          <meta name="description" content="회원가입 없이 가족 구성원의 사주를 분석하는 무료 가족사주. 가족 간 오행 조화와 관계를 개인정보 저장 없이 100% 무료로 확인하세요." />
+          <meta property="og:title" content="무료 가족사주 분석 - 회원가입 없이 가족 오행 조화 확인 | 무운" />
+          <meta property="og:description" content="회원가입 없이 가족 구성원의 사주를 분석하는 무료 가족사주. 가족 간 오행 조화와 관계를 개인정보 저장 없이 100% 무료로 확인하세요." />
+                  <meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png" />
         <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="무운 (MuUn)" />
+        <meta property="og:locale" content="ko_KR" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
-<meta name="keywords" content="가족사주, 가족궁합, 무료사주, 부모자녀궁합, 부부궁합, 오행조화, 무운" />
+        <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
+<meta name="keywords" content="가족사주, 무료가족사주, 가족궁합, 오행조화, 부모자녀궁합, 가족운세, 무료사주" />
+        <link rel="canonical" href="https://muunsaju.com/family-saju" />
         </Helmet>
         {/* 헤더 */}
         <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-white/5">
@@ -412,8 +415,8 @@ export default function FamilySaju() {
       <Helmet>
         <title>[분석완료] 우리 가족 사주 조화 분석 결과 - 무운 (MuUn)</title>
         <meta name="description" content="가족 구성원들의 사주를 기반으로 한 정밀 조화 분석 결과입니다. 오행의 균형과 구성원 간의 특별한 관계 역학을 확인하세요." />
-        <meta property="og:title" content="우리 가족 사주 조화 분석 결과 - 무운 (MuUn)" />
-        <meta property="og:description" content="분석이 완료되었습니다. 우리 가족의 오행 균형과 관계별 궁합 결과를 확인해보세요." />
+        <meta property="og:title" content="무료 가족사주 분석 - 회원가입 없이 가족 오행 조화 확인 | 무운" />
+        <meta property="og:description" content="회원가입 없이 가족 구성원의 사주를 분석하는 무료 가족사주. 가족 간 오행 조화와 관계를 개인정보 저장 없이 100% 무료로 확인하세요." />
         {/* 사용자 입력 기반 결과 페이지 - 개인정보 보호 및 SEO 품질 관리 */}
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>

@@ -45,18 +45,21 @@ export default function FortuneDictionary() {
   return (
     <div className="min-h-screen bg-black py-8 px-4">
       <Helmet>
-        <title>사주 용어 사전 - 무운 (MuUn)</title>
-        <meta name="description" content="사주 명리학의 핵심 용어를 쉽게 풀이한 사주 용어 사전. 천간, 지지, 십신, 대운 등 사주 기초 개념을 무료로 학습하세요." />
+        <title>사주 용어 사전 - 사주 기초 개념 무료 학습 | 무운 (MuUn)</title>
+        <meta name="description" content="사주 명리학의 핵심 용어를 쉽게 풀이한 무료 사주 용어 사전. 천간, 지지, 십신, 대운, 오행 등 사주 기초 개념을 회원가입 없이 무료로 학습하세요." />
+        <meta name="keywords" content="사주용어, 사주사전, 천간지지, 십신, 대운, 오행, 사주기초, 명리학용어, 사주공부" />
         <link rel="canonical" href="https://muunsaju.com/fortune-dictionary" />
-        <meta property="og:title" content="사주 용어 사전 - 무운 (MuUn)" />
-        <meta property="og:description" content="사주 명리학의 핵심 용어를 쉽게 풀이한 사주 용어 사전. 천간, 지지, 십신, 대운 등 사주 기초 개념을 무료로 학습하세요." />
-        <meta property="og:image" content="https://muunsaju.com/og-image.png" />
+        <meta property="og:title" content="사주 용어 사전 - 사주 기초 개념 무료 학습 | 무운 (MuUn)" />
+        <meta property="og:description" content="사주 명리학의 핵심 용어를 쉽게 풀이한 무료 사주 용어 사전. 천간, 지지, 십신, 대운, 오행 등 사주 기초 개념을 회원가입 없이 무료로 학습하세요." />
+        <meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png" />
         <meta property="og:url" content="https://muunsaju.com/fortune-dictionary" />
         <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="무운 (MuUn)" />
+        <meta property="og:locale" content="ko_KR" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="사주 용어 사전 - 무운 (MuUn)" />
-        <meta name="twitter:description" content="사주 명리학의 핵심 용어를 쉽게 풀이한 사주 용어 사전. 천간, 지지, 십신, 대운 등 사주 기초 개념을 무료로 학습하세요." />
-        <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
+        <meta name="twitter:title" content="사주 용어 사전 - 사주 기초 개념 무료 학습 | 무운 (MuUn)" />
+        <meta name="twitter:description" content="사주 명리학의 핵심 용어를 쉽게 풀이한 무료 사주 용어 사전. 천간, 지지, 십신, 대운, 오행 등 사주 기초 개념을 회원가입 없이 무료로 학습하세요." />
+        <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
       </Helmet>
       <div className="max-w-6xl mx-auto">
         {/* 헤더 */}

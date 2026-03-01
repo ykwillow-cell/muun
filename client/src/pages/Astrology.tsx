@@ -234,12 +234,14 @@ const Astrology: React.FC = () => {
     return (
       <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased">
         <Helmet>
-          <title>[가입X/100%무료] 서양 점성술 - 탄생 차트 분석 및 운명 해석 | 무운(Muun)</title>
-          <meta name="description" content="가입/결제 없이 당신이 태어난 순간의 별자리와 행성 배치를 통해 성격과 운명을 분석해보세요. 무운의 전문적인 점성술 차트 분석 서비스를 제공합니다." />
-          <meta name="keywords" content="점성술, 탄생차트, 별자리운세, 무료점성술, 사주, 운세, 무운, Muun, astrology, natal chart" />
-          <meta property="og:title" content="[가입X/100%무료] 서양 점성술 - 탄생 차트 분석 및 운명 해석 | 무운(Muun)" />
-          <meta property="og:description" content="가입/결제 없이 당신이 태어난 순간의 별자리와 행성 배치를 통해 성격과 운명을 분석해보세요." />
+          <title>무료 점성술 운세 - 회원가입 없이 별자리 운세 확인 | 무운 (MuUn)</title>
+          <meta name="description" content="회원가입 없이 확인하는 무료 점성술 운세. 별자리와 행성 배치로 보는 나의 운명을 개인정보 저장 없이 100% 무료로 분석합니다." />
+          <meta name="keywords" content="점성술, 무료점성술, 별자리운세, 별자리, 행성운세, 무료별자리, 점성술무료" />
+          <meta property="og:title" content="무료 점성술 운세 - 회원가입 없이 별자리 운세 확인 | 무운 (MuUn)" />
+          <meta property="og:description" content="회원가입 없이 확인하는 무료 점성술 운세. 별자리와 행성 배치로 보는 나의 운명을 개인정보 저장 없이 100% 무료로 분석합니다." />
           <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="무운 (MuUn)" />
+        <meta property="og:locale" content="ko_KR" />
           <meta property="og:url" content="https://muunsaju.com/astrology" />
           <link rel="canonical" href="https://muunsaju.com/astrology" />
         </Helmet>
@@ -370,10 +372,10 @@ const Astrology: React.FC = () => {
         <meta name="description" content={`${result.sun.sign.name}의 에너지를 품은 당신의 탄생 차트 분석 결과입니다. 태양, 달, 행성들의 배치를 통해 당신의 본질과 운명을 확인해보세요.`} />
         <meta property="og:title" content={`[가입X/100%무료] ${result.sun.sign.name}의 기운을 타고난 당신의 점성술 분석 결과 | 무운`} />
         <meta property="og:description" content={`${result.sun.sign.name}의 에너지를 품은 당신의 탄생 차트 분석 결과입니다.`} />
-                <meta property="og:image" content="https://muunsaju.com/og-image.png" />
+                <meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
+        <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
 <link rel="canonical" href="https://muunsaju.com/astrology" />
       </Helmet>
       {/* '시간 모름' 시 안내 라벨 */}

@@ -45,17 +45,20 @@ export default function Contact() {
     <div className="min-h-screen bg-background text-foreground pb-20">
       <Helmet>
         <title>문의하기 - 무운 (MuUn)</title>
-        <meta name="description" content="무운 서비스에 대한 문의, 제안, 피드백을 남겨주세요." />
+        <meta name="description" content="무운 서비스에 대한 문의, 제안, 피드백을 남겨주세요. 더 나은 무료 사주·운세 서비스를 위해 소중한 의견을 기다립니다." />
+        <meta name="keywords" content="무운문의, 무운피드백, 사주서비스문의, 운세서비스문의" />
         <link rel="canonical" href="https://muunsaju.com/contact" />
         <meta property="og:title" content="문의하기 - 무운 (MuUn)" />
-        <meta property="og:description" content="무운 서비스에 대한 문의, 제안, 피드백을 남겨주세요." />
-        <meta property="og:image" content="https://muunsaju.com/og-image.png" />
+        <meta property="og:description" content="무운 서비스에 대한 문의, 제안, 피드백을 남겨주세요. 더 나은 무료 사주·운세 서비스를 위해 소중한 의견을 기다립니다." />
+        <meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png" />
         <meta property="og:url" content="https://muunsaju.com/contact" />
         <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="무운 (MuUn)" />
+        <meta property="og:locale" content="ko_KR" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="문의하기 - 무운 (MuUn)" />
-        <meta name="twitter:description" content="무운 서비스에 대한 문의, 제안, 피드백을 남겨주세요." />
-        <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
+        <meta name="twitter:description" content="무운 서비스에 대한 문의, 제안, 피드백을 남겨주세요. 더 나은 무료 사주·운세 서비스를 위해 소중한 의견을 기다립니다." />
+        <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
       </Helmet>
       <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
         <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">

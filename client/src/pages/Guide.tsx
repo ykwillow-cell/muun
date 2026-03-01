@@ -36,15 +36,17 @@ export default function Guide() {
   return (
     <div className="min-h-screen bg-background text-white">
       <Helmet>
-        <title>운세 칼럼 - 사주 지혜와 개운법 | 무운 (MuUn)</title>
-        <meta name="description" content="30년 내공의 역술인이 전하는 사주 지혜와 개운법. 대운 변화, 자녀 교육, 재물운 등 실생활에 도움이 되는 전문 칼럼을 무료로 읽어보세요." />
-        <meta name="keywords" content="사주 칼럼, 운세 지혜, 개운법, 대운, 자녀 사주, 재물운" />
-        <meta property="og:title" content="운세 칼럼 - 사주 지혜와 개운법 | 무운 (MuUn)" />
-        <meta property="og:description" content="30년 내공의 역술인이 전하는 사주 지혜와 개운법. 대운 변화, 자녀 교육, 재물운 등 실생활에 도움이 되는 전문 칼럼." />
-                <meta property="og:image" content="https://muunsaju.com/og-image.png" />
+        <title>운세 칼럼 - 사주 전문가의 깊이 있는 운세 이야기 | 무운 (MuUn)</title>
+        <meta name="description" content="사주 기초부터 개운법, 재물운, 자녀운, 인연까지. 40대 여성을 위한 깊이 있는 사주 칼럼을 회원가입 없이 100% 무료로 읽어보세요." />
+        <meta name="keywords" content="사주칼럼, 운세칼럼, 사주이야기, 개운법, 재물운, 자녀운, 인연, 사주기초, 사주공부" />
+        <meta property="og:title" content="운세 칼럼 - 사주 전문가의 깊이 있는 운세 이야기 | 무운 (MuUn)" />
+        <meta property="og:description" content="사주 기초부터 개운법, 재물운, 자녀운, 인연까지. 40대 여성을 위한 깊이 있는 사주 칼럼을 회원가입 없이 100% 무료로 읽어보세요." />
+                <meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png" />
         <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="무운 (MuUn)" />
+        <meta property="og:locale" content="ko_KR" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
+        <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
 <link rel="canonical" href="https://muunsaju.com/guide" />
       </Helmet>
 

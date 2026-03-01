@@ -31,9 +31,9 @@ interface ServiceSchemaProps {
  */
 export function OrganizationSchema({
   name = "무운 (MUUN)",
-  description = "AI 기반 사주, 타로, 운세 분석 플랫폼",
+  description = "회원가입 없이, 개인정보 저장 없이 이용하는 100% 무료 사주, 타로, 운세 분석 서비스",
   url = "https://muunsaju.com",
-  logo = "https://muunsaju.com/logo.png",
+  logo = "https://muunsaju.com/images/horse_mascot.png",
   sameAs = [],
 }: OrganizationSchemaProps) {
   const schema = {
@@ -42,12 +42,18 @@ export function OrganizationSchema({
     name,
     description,
     url,
-    logo,
+    logo: {
+      "@type": "ImageObject",
+      url: logo,
+      width: 512,
+      height: 512,
+    },
     sameAs,
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "Customer Support",
       url: "https://muunsaju.com/contact",
+      availableLanguage: "Korean",
     },
   };
 
@@ -102,6 +108,12 @@ export function ServiceSchema({
     url,
     image,
     serviceType,
+    isRelatedTo: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "KRW",
+      description: "회원가입 없이 이용 가능한 100% 무료 서비스",
+    },
     provider: {
       "@type": "Organization",
       name: "무운 (MUUN)",
@@ -178,6 +190,81 @@ export function FAQSchema({
     "@context": "https://schema.org",
     "@type": "FAQPage",
     mainEntity,
+  };
+
+  return (
+    <Helmet>
+      <script type="application/ld+json">{JSON.stringify(schema)}</script>
+    </Helmet>
+  );
+}
+
+/**
+ * WebApplication Schema Markup
+ * 무운 서비스를 웹 애플리케이션으로 구조화된 데이터 제공
+ */
+export function WebApplicationSchema() {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "무운 (MuUn) - 무료 사주 및 운세",
+    description: "회원가입 없이, 개인정보 저장 없이 이용하는 100% 무료 사주풀이, 운세, 타로, 궁합, 꿈해몽 서비스",
+    url: "https://muunsaju.com",
+    applicationCategory: "LifestyleApplication",
+    operatingSystem: "All",
+    browserRequirements: "Requires JavaScript",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "KRW",
+    },
+    featureList: [
+      "무료 사주풀이",
+      "2026년 신년운세",
+      "무료 토정비결",
+      "무료 궁합",
+      "AI 타로 상담",
+      "무료 만세력",
+      "꿈해몽 사전",
+      "심리테스트",
+      "오늘의 운세",
+      "점성술",
+    ],
+    screenshot: "https://muunsaju.com/images/horse_mascot.png",
+    author: {
+      "@type": "Organization",
+      name: "MUUN Celestial Services",
+    },
+  };
+
+  return (
+    <Helmet>
+      <script type="application/ld+json">{JSON.stringify(schema)}</script>
+    </Helmet>
+  );
+}
+
+/**
+ * SiteNavigationElement Schema Markup
+ * 사이트 내비게이션 구조를 검색엔진에 전달
+ */
+export function SiteNavigationSchema() {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "무운 주요 서비스",
+    itemListElement: [
+      { "@type": "SiteNavigationElement", position: 1, name: "신년운세", url: "https://muunsaju.com/yearly-fortune" },
+      { "@type": "SiteNavigationElement", position: 2, name: "평생사주", url: "https://muunsaju.com/lifelong-saju" },
+      { "@type": "SiteNavigationElement", position: 3, name: "토정비결", url: "https://muunsaju.com/tojeong" },
+      { "@type": "SiteNavigationElement", position: 4, name: "궁합", url: "https://muunsaju.com/compatibility" },
+      { "@type": "SiteNavigationElement", position: 5, name: "AI 타로", url: "https://muunsaju.com/tarot" },
+      { "@type": "SiteNavigationElement", position: 6, name: "만세력", url: "https://muunsaju.com/manselyeok" },
+      { "@type": "SiteNavigationElement", position: 7, name: "꿈해몽", url: "https://muunsaju.com/dream" },
+      { "@type": "SiteNavigationElement", position: 8, name: "오늘의 운세", url: "https://muunsaju.com/daily-fortune" },
+      { "@type": "SiteNavigationElement", position: 9, name: "심리테스트", url: "https://muunsaju.com/psychology" },
+      { "@type": "SiteNavigationElement", position: 10, name: "운세 칼럼", url: "https://muunsaju.com/guide" },
+    ],
   };
 
   return (
