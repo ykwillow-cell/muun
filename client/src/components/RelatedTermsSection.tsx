@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { Link } from 'wouter';
-import { fortuneDictionary50Complete } from '@/lib/fortune-dictionary-50-complete';
+import { fetchFortuneDictionary, type DictionaryEntry } from '@/lib/fortune-dictionary';
 
 interface RelatedTermsSectionProps {
   currentTermId: string;
@@ -17,13 +17,20 @@ export function RelatedTermsSection({
   currentTags = [],
   maxItems = 5,
 }: RelatedTermsSectionProps) {
+  const [allEntries, setAllEntries] = useState<DictionaryEntry[]>([]);
+
+  useEffect(() => {
+    fetchFortuneDictionary().then(setAllEntries);
+  }, []);
+
   const relatedTerms = useMemo(() => {
+    if (!allEntries.length) return [];
     if (!currentTags || currentTags.length === 0) {
       return [];
     }
 
     // 현재 용어를 제외한 다른 용어들 중에서 공통 태그를 가진 것들 찾기
-    const related = fortuneDictionary50Complete
+    const related = allEntries
       .filter((entry) => entry.id !== currentTermId)
       .map((entry) => {
         // 공통 태그 개수 계산
@@ -40,16 +47,16 @@ export function RelatedTermsSection({
 
     // 공통 태그가 없으면 같은 카테고리의 용어들 추천
     if (related.length === 0) {
-      const currentEntry = fortuneDictionary50Complete.find((e) => e.id === currentTermId);
+      const currentEntry = allEntries.find((e) => e.id === currentTermId);
       if (currentEntry) {
-        return fortuneDictionary50Complete
+        return allEntries
           .filter((entry) => entry.id !== currentTermId && entry.category === currentEntry.category)
           .slice(0, maxItems);
       }
     }
 
     return related;
-  }, [currentTermId, currentTags, maxItems]);
+  }, [currentTermId, currentTags, maxItems, allEntries]);
 
   if (relatedTerms.length === 0) {
     return null;

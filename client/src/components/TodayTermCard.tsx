@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { BookOpen, ArrowRight, Sparkles } from 'lucide-react';
-import { fortuneDictionary } from '@/lib/fortune-dictionary';
+import { fetchFortuneDictionary, type DictionaryEntry } from '@/lib/fortune-dictionary';
 import { Link } from 'wouter';
 
 /**
@@ -9,16 +9,31 @@ import { Link } from 'wouter';
  * 매일 다른 용어를 보여줍니다.
  */
 export function TodayTermCard() {
+  const [entries, setEntries] = useState<DictionaryEntry[]>([]);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    fetchFortuneDictionary().then((data) => {
+      setEntries(data);
+      setLoaded(true);
+    });
+  }, []);
+
   // 오늘 날짜를 기반으로 일관된 용어를 선택 (매일 바뀜)
   const todayTerm = useMemo(() => {
+    if (!entries.length) return null;
     const today = new Date();
     const dayOfYear = Math.floor(
       (today.getTime() - new Date(today.getFullYear(), 0, 0).getTime()) / 86400000
     );
-    // fortuneDictionary의 길이로 나눈 나머지를 인덱스로 사용
-    const index = dayOfYear % fortuneDictionary.length;
-    return fortuneDictionary[index];
-  }, []);
+    const index = dayOfYear % entries.length;
+    return entries[index];
+  }, [entries]);
+
+  // 로딩 중이거나 데이터 없으면 렌더링 안 함
+  if (!loaded || !todayTerm) {
+    return null;
+  }
 
   return (
     <motion.div
