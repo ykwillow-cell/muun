@@ -205,7 +205,7 @@ export default function DreamDetail() {
                   {grade.label}
                 </span>
                 <CardTitle className="text-3xl md:text-4xl font-bold text-white">
-                  {dream.keyword} 꿈
+                  {dream.keyword}
                 </CardTitle>
               </div>
               <div className="flex justify-center gap-2 mt-3">
@@ -336,7 +336,7 @@ export default function DreamDetail() {
                         </div>
                         <div>
                           <h3 className="font-bold text-white group-hover:text-primary transition-colors">
-                            {related.keyword} 꿈
+                            {related.keyword}
                           </h3>
                           <span className={`text-[10px] font-bold ${relatedGrade.color}`}>
                             {relatedGrade.label}

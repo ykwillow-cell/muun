@@ -170,7 +170,7 @@ export default function RecommendedContent() {
                         <span className="text-[10px] font-bold text-purple-400 uppercase tracking-wider">꿈해몽</span>
                       </div>
                       <p className="text-xs font-semibold text-white/90 line-clamp-2 leading-snug">
-                        {item.data.keyword} 꿈
+                        {item.data.keyword}
                       </p>
                       <p className="text-[10px] text-white/50 mt-1 line-clamp-2 leading-snug">
                         {item.data.interpretation}
