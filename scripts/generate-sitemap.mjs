@@ -2,8 +2,9 @@
 
 /**
  * Sitemap 자동 생성 스크립트
- * - fortune-dictionary.ts에서 모든 용어 읽기
+ * - Supabase fortune_dictionary 테이블에서 슬러그 읽기
  * - Supabase에서 칼럼 데이터 조회
+ * - Supabase에서 꿈해몽 데이터 조회
  * - sitemap.xml 자동 생성
  * - Google Search Console에 Ping 전송
  */
@@ -21,28 +22,28 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ============================================
-// 1. fortune-dictionary.ts 데이터 읽기
+// 1. Supabase에서 fortune_dictionary 슬러그 조회
 // ============================================
 
-function readFortuneDictionary() {
-  const dictionaryPath = path.join(
-    __dirname,
-    '../client/src/lib/fortune-dictionary.ts'
-  );
-
+async function fetchDictionarySlugsFromSupabase() {
   try {
-    const content = fs.readFileSync(dictionaryPath, 'utf-8');
+    console.log('📡 Supabase에서 운세 사전 슬러그 조회 중...');
+    const { data, error } = await supabase
+      .from('fortune_dictionary')
+      .select('slug')
+      .eq('published', true)
+      .order('created_at', { ascending: true });
 
-    // 정규식으로 slug 추출
-    const slugMatches = content.match(/slug:\s*['"]([^'"]+)['"]/g);
-    const slugs = slugMatches
-      ? slugMatches.map(m => m.match(/['"]([^'"]+)['"]/)[1])
-      : [];
+    if (error) {
+      console.warn('⚠️ Supabase fortune_dictionary 조회 실패:', error.message);
+      return [];
+    }
 
-    console.log(`✅ Found ${slugs.length} dictionary items`);
+    const slugs = (data || []).map(row => row.slug).filter(Boolean);
+    console.log(`✅ Found ${slugs.length} dictionary items from Supabase`);
     return slugs;
-  } catch (error) {
-    console.error('❌ Error reading fortune-dictionary.ts:', error.message);
+  } catch (err) {
+    console.warn('⚠️ 운세 사전 슬러그 조회 중 오류:', err.message);
     return [];
   }
 }
@@ -253,9 +254,9 @@ async function main() {
   console.log('🚀 Sitemap Generation Started\n');
   console.log('='.repeat(50));
 
-  // 1. Dictionary 데이터 읽기
-  console.log('\n📖 Reading fortune-dictionary.ts...');
-  const slugs = readFortuneDictionary();
+  // 1. Supabase에서 Dictionary 슬러그 조회
+  console.log('\n📖 Fetching dictionary slugs from Supabase...');
+  const slugs = await fetchDictionarySlugsFromSupabase();
 
   // 2. Supabase에서 칼럼 데이터 조회
   console.log('\n📚 Fetching columns from Supabase...');
