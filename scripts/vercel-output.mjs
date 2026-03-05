@@ -84,7 +84,7 @@ const config = {
   routes: [
     // 0. 삭제된 페이지 리다이렉트 (301 Moved Permanently)
     ...deletedUrls.map(url => ({
-      src: url,
+      src: `^${url}$`,
       status: 301,
       headers: { 'Location': '/' }
     })),
@@ -128,7 +128,7 @@ const config = {
     { handle: 'filesystem' },
     // 8. 없으면 SPA index.html로 폴백 (클라이언트 사이드 라우팅)
     {
-      src: '/(.*)',
+      src: '/.*',
       dest: '/index.html'
     }
   ]
