@@ -84,7 +84,7 @@ const config = {
   routes: [
     // 0. 삭제된 페이지 리다이렉트 (301 Moved Permanently)
     ...deletedUrls.map(url => ({
-      src: `^${url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`,
+      src: url,
       status: 301,
       headers: { 'Location': '/' }
     })),
