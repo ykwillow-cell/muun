@@ -125,10 +125,10 @@ export default function Home() {
     },
     { 
       href: "/dream", 
-      label: "껼해먽", 
+      label: "꿈해몽", 
       icon: <CloudMoon className="w-5 h-5" />, 
       color: "bg-indigo-500/20 text-indigo-400",
-      desc: "어젟밤 껼의 의미 찾기"
+      desc: "어젯밤 꿈의 의미 찾기"
     },
     { 
       href: "/past-life", 
