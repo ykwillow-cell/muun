@@ -78,19 +78,26 @@ const deletedUrls = [
   '/dream/화내는 꿈', '/dream/화산폭발', '/dream/화해하는 꿈', '/dream/흙', '/dream/TV'
 ];
 
+// 정규식 특수문자 이스케이프 함수
+function escapeRegex(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 // 모든 리다이렉트 규칙 생성 (원본 + 인코딩 버전)
 const redirectRoutes = deletedUrls.flatMap(url => {
+  const escapedUrl = escapeRegex(url);
   const routes = [{
-    src: `^${url}$`,
+    src: `^${escapedUrl}$`,
     status: 301,
     headers: { 'Location': '/' }
   }];
   
-  // 한글이 도함면 인코딩 버전도 추가
+  // 한글이 포함되면 인코딩 버전도 추가
   const encoded = encodeURI(url);
   if (encoded !== url) {
+    const escapedEncoded = escapeRegex(encoded);
     routes.push({
-      src: `^${encoded}$`,
+      src: `^${escapedEncoded}$`,
       status: 301,
       headers: { 'Location': '/' }
     });
