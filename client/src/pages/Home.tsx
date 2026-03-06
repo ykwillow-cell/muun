@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { useCanonical } from '@/lib/use-canonical';
 import { setHomeOGTags } from '@/lib/og-tags';
 import { motion } from "framer-motion";
-import { BookOpen, Star, ShieldCheck, Info, BrainCircuit, ScrollText, Sparkles, Heart, CalendarDays, ArrowRight, Zap, ChevronRight, Users, Brain, Coffee, CloudMoon } from "lucide-react";
+import { BookOpen, Star, ShieldCheck, Info, BrainCircuit, ScrollText, Sparkles, Heart, CalendarDays, ArrowRight, Zap, ChevronRight, Users, Brain, Coffee, CloudMoon, Scroll } from "lucide-react";
 import { trackCustomEvent } from "@/lib/ga4";
 import { useRef } from "react";
 import { TodayTermCard } from "@/components/TodayTermCard";
@@ -125,10 +125,18 @@ export default function Home() {
     },
     { 
       href: "/dream", 
-      label: "꿈해몽", 
+      label: "껼해먽", 
       icon: <CloudMoon className="w-5 h-5" />, 
       color: "bg-indigo-500/20 text-indigo-400",
-      desc: "어젯밤 꿈의 의미 찾기"
+      desc: "어젟밤 껼의 의미 찾기"
+    },
+    { 
+      href: "/past-life", 
+      label: "전생 체험", 
+      icon: <Scroll className="w-5 h-5" />, 
+      color: "bg-violet-500/20 text-violet-400",
+      desc: "AI로 알아보는 나의 전생",
+      featured: true
     },
   ];
 
