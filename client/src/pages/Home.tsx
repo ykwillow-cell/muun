@@ -60,7 +60,7 @@ export default function Home() {
     },
     { 
       href: "/tarot", 
-      label: "오늘의 타로", 
+      label: "타로", 
       icon: <Sparkles className="w-5 h-5" />, 
       color: "bg-purple-500/20 text-purple-400",
       desc: "신비로운 타로 상담",

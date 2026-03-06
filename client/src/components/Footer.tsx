@@ -25,7 +25,7 @@ const Footer: React.FC = () => {
               <li><Link href="/compatibility" className="text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">궁합 보기</Link></li>
               <li><Link href="/manselyeok" className="text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">만세력 조회</Link></li>
               <li><Link href="/daily-fortune" className="text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">오늘의 운세</Link></li>
-              <li><Link href="/tarot" className="text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">AI 타로 상담</Link></li>
+              <li><Link href="/tarot" className="text-sm hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">타로</Link></li>
             </ul>
           </div>
 
@@ -59,7 +59,7 @@ const Footer: React.FC = () => {
         <div className="mt-8 pt-6 border-t border-gray-300 dark:border-gray-700">
           <p className="text-xs text-gray-500 dark:text-gray-500 leading-relaxed text-center max-w-3xl mx-auto">
             무운(MuUn)은 회원가입 없이, 개인정보를 저장하지 않는 100% 무료 사주·운세 서비스입니다.
-            무료 사주풀이, 2026년 신년운세, 토정비결, 궁합, AI 타로, 만세력, 꿈해몽, 심리테스트 등
+            무료 사주풀이, 2026년 신년운세, 토정비결, 궁합, 타로, 만세력, 꿈해몽, 심리테스트 등
             다양한 운명학 콘텐츠를 제공합니다.
           </p>
         </div>

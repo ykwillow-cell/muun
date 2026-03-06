@@ -103,9 +103,9 @@ export async function render(options: { path: string }) {
       ]
     },
     '/tarot': {
-      title: "무료 AI 타로 상담 - 회원가입 없이 오늘의 타로 | 무운 (MuUn)",
-      description: "회원가입 없이 바로 시작하는 무료 AI 타로 상담. 고민되는 문제에 대한 해답을 개인정보 저장 없이 100% 무료로 확인하세요.",
-      h1: "무료 AI 타로 상담",
+      title: "무료 타로 - 회원가입 없이 무료로 | 무운 (MuUn)",
+      description: "회원가입 없이 바로 시작하는 무료 타로 상담. 고민되는 문제에 대한 해답을 개인정보 저장 없이 100% 무료로 확인하세요.",
+      h1: "무료 타로 상담",
       services: [
         { href: '/psychology', label: '심리테스트' },
         { href: '/dream', label: '꿈해몽 사전' },
@@ -447,7 +447,7 @@ export async function render(options: { path: string }) {
     '/compatibility': '궁합, 사주궁합, 무료궁합, 연애궁합, 결혼궁합, 궁합보기',
     '/tojeong': '토정비결, 2026년토정비결, 무료토정비결, 병오년토정비결',
     '/manselyeok': '만세력, 무료만세력, 사주팔자, 만세력조회',
-    '/tarot': '타로, 무료타로, AI타로, 오늘의타로, 타로상담',
+    '/tarot': '타로, 무료타로, 타로상담, 타로카드, 온라인타로',
     '/dream': '꿈해몽, 무료꿈해몽, 꿈풀이, 꿈해몽사전',
     '/daily-fortune': '오늘의운세, 무료오늘의운세, 오늘운세, 매일운세',
     '/psychology': '심리테스트, 무료심리테스트, 성격분석, 심리분석',

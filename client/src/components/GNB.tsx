@@ -30,12 +30,12 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { trackCustomEvent } from "@/lib/ga4";
 
-// 메뉴 순서 가이드 준수: 신년운세, 평생사주, 가족사주, ai타로, 토정비결, 궁합, 사주xmbti궁합, 만세력, 운세사전, 점성술, 오늘의운세, 심리테스트, 내 타로 기록, 소개, 문의
+// 메뉴 순서 가이드 준수: 신년운세, 평생사주, 가족사주, 타로, 토정비결, 궁합, 사주xmbti궁합, 만세력, 운세사전, 점성술, 오늘의운세, 심리테스트, 내 타로 기록, 소개, 문의
 const navItems = [
   { name: "신년운세", href: "/yearly-fortune", icon: Sparkles, description: "2026년 병오년 운세" },
   { name: "평생사주", href: "/lifelong-saju", icon: User, description: "인생의 전체적인 흐름" },
   { name: "가족사주", href: "/family-saju", icon: Users, description: "가족의 오행 조화 분석" },
-  { name: "AI 타로", href: "/tarot", icon: Sparkles, description: "AI가 읽어주는 운명의 카드" },
+  { name: "타로", href: "/tarot", icon: Sparkles, description: "운명의 카드를 통한 인사이트" },
   { name: "토정비결", href: "/tojeong", icon: BookOpen, description: "전통 방식으로 보는 운세" },
   { name: "궁합", href: "/compatibility", icon: Heart, description: "상대방과의 조화" },
   { name: "사주xMBTI 궁합", href: "/hybrid-compatibility", icon: Brain, description: "사주와 성격, 둘 다 보는 진짜 궁합" },

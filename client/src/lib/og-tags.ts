@@ -86,7 +86,7 @@ export const setDictionaryOGTags = () => {
 export const setTarotOGTags = () => {
   updateOGTags({
     title: "타로 상담 - 무운",
-    description: "AI 타로 상담으로 당신의 미래를 엿보세요. 생년월일로 개인 맞춤 타로 해석을 받을 수 있습니다.",
+    description: "타로 상담으로 당신의 미래를 엿보세요. 고민에 대한 답을 카드를 통해 확인해 보세요.",
     image: TAROT_OG_IMAGE,
     url: "https://muunsaju.com/tarot",
   });

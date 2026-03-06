@@ -185,8 +185,8 @@ export default function DictionaryDetail() {
               >
                 <div className="flex items-center justify-between">
                   <div className="text-left">
-                    <h4 className="font-semibold text-white group-hover:text-purple-400 transition">AI 타로</h4>
-                    <p className="text-sm text-slate-400">AI가 답하는 타로</p>
+                    <h4 className="font-semibold text-white group-hover:text-purple-400 transition">타로</h4>
+                    <p className="text-sm text-slate-400">카드가 전하는 인사이트</p>
                   </div>
                   <ArrowRight className="w-5 h-5 text-slate-600 group-hover:text-purple-400 transition" />
                 </div>
