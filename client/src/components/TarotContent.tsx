@@ -41,7 +41,7 @@ const TarotContent = () => {
                 <Sparkles className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="font-semibold text-foreground">24시간 언제든 가능</h3>
-                  <p className="text-foreground/70">시간과 장소에 구애받지 않고, 마음이 복잡할 때 언제든 타로 상담을 받아볼 수 있습니다.</p>>
+                  <p className="text-foreground/70">시간과 장소에 구애받지 않고, 마음이 복잡할 때 언제든 타로 상담을 받아볼 수 있습니다.</p>
                 </div>
               </li>
               <li className="flex items-start space-x-3">
