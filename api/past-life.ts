@@ -18,10 +18,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { birthYear, birthMonth, birthDay, gender } = req.body;
+  // 데이터 추출 (문자열/숫자 혼용 대응)
+  const body = req.body || {};
+  const birthYear = body.birthYear;
+  const birthMonth = body.birthMonth;
+  const birthDay = body.birthDay;
+  const gender = body.gender;
 
   if (!birthYear || !birthMonth || !birthDay) {
-    return res.status(400).json({ error: '생년월일을 모두 입력해주세요.' });
+    console.error('[PastLife API] Missing fields:', { birthYear, birthMonth, birthDay });
+    return res.status(400).json({ 
+      error: '생년월일 정보가 부족합니다.',
+      received: { birthYear, birthMonth, birthDay }
+    });
   }
 
   const apiKey = process.env.GEMINI_API_KEY;
@@ -98,7 +107,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         if (fallbackResponse.ok) {
           const data = await fallbackResponse.json();
           const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
-          return res.status(200).json(JSON.parse(rawText));
+          try {
+            return res.status(200).json(JSON.parse(rawText));
+          } catch {
+             const cleanJson = rawText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+             return res.status(200).json(JSON.parse(cleanJson));
+          }
         }
       }
 
