@@ -44,7 +44,6 @@ copyDir(srcDir, staticDir);
 console.log(`✅ Copied dist/public → .vercel/output/static`);
 
 // 삭제된 페이지 URL 리다이렉트 규칙 생성
-// 한글 URL은 원본 및 인코딩 버전 모두 동등하게 처리
 const deletedUrls = [
   // Dictionary 페이지
   '/dictionary/baekho-sal', '/dictionary/bi-gyeop', '/dictionary/byeong-hwa',
@@ -79,7 +78,7 @@ const deletedUrls = [
   '/dream/화내는 꿈', '/dream/화산폭발', '/dream/화해하는 꿈', '/dream/흙', '/dream/TV'
 ];
 
-// 한글 URL을 인코딩된 단로로 모든 리다이렉트 규칙 생성
+// 모든 리다이렉트 규칙 생성 (원본 + 인코딩 버전)
 const redirectRoutes = deletedUrls.flatMap(url => {
   const routes = [{
     src: `^${url}$`,
