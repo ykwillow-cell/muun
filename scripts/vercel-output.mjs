@@ -44,6 +44,7 @@ copyDir(srcDir, staticDir);
 console.log(`✅ Copied dist/public → .vercel/output/static`);
 
 // 삭제된 페이지 URL 리다이렉트 규칙 생성
+// 한글 URL은 원본 및 인코딩 버전 모두 동등하게 처리
 const deletedUrls = [
   // Dictionary 페이지
   '/dictionary/baekho-sal', '/dictionary/bi-gyeop', '/dictionary/byeong-hwa',
@@ -78,16 +79,33 @@ const deletedUrls = [
   '/dream/화내는 꿈', '/dream/화산폭발', '/dream/화해하는 꿈', '/dream/흙', '/dream/TV'
 ];
 
+// 한글 URL을 인코딩된 단로로 모든 리다이렉트 규칙 생성
+const redirectRoutes = deletedUrls.flatMap(url => {
+  const routes = [{
+    src: `^${url}$`,
+    status: 301,
+    headers: { 'Location': '/' }
+  }];
+  
+  // 한글이 도함면 인코딩 버전도 추가
+  const encoded = encodeURI(url);
+  if (encoded !== url) {
+    routes.push({
+      src: `^${encoded}$`,
+      status: 301,
+      headers: { 'Location': '/' }
+    });
+  }
+  
+  return routes;
+});
+
 // config.json 생성 (SPA 라우팅 + 캐시 헤더 설정)
 const config = {
   version: 3,
   routes: [
     // 0. 삭제된 페이지 리다이렉트 (301 Moved Permanently)
-    ...deletedUrls.map(url => ({
-      src: `^${url}$`,
-      status: 301,
-      headers: { 'Location': '/' }
-    })),
+    ...redirectRoutes,
     // 1. 정적 에셋 (assets/) - 1년 캐시
     {
       src: '/assets/(.*)',
