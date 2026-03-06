@@ -58,7 +58,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 매번 다양하고 흥미로운 전생을 만들어주세요. 한국, 중국, 일본, 유럽, 중동 등 다양한 배경을 활용하세요.`;
 
   try {
-    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
+    // v1 엔드포인트와 정적 모델명 사용
+    const geminiUrl = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
     const response = await fetch(geminiUrl, {
       method: 'POST',
@@ -78,10 +79,33 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     if (!response.ok) {
       const errText = await response.text();
       console.error('[PastLife API] Gemini error:', response.status, errText);
-      if (response.status === 429) {
-        return res.status(429).json({ error: 'API 요청 한도를 초과했습니다. 잠시 후 다시 시도해주세요.' });
+      
+      // 404 에러인 경우 v1beta로 재시도 로직 (Fallback)
+      if (response.status === 404) {
+        const fallbackUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+        const fallbackResponse = await fetch(fallbackUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt }] }],
+            generationConfig: {
+              temperature: 0.9,
+              response_mime_type: "application/json"
+            },
+          }),
+        });
+        
+        if (fallbackResponse.ok) {
+          const data = await fallbackResponse.json();
+          const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
+          return res.status(200).json(JSON.parse(rawText));
+        }
       }
-      return res.status(500).json({ error: `Gemini API 오류: ${response.status}` });
+
+      if (response.status === 429) {
+        return res.status(429).json({ error: '현재 요청이 너무 많습니다. 잠시 후 다시 시도해주세요.' });
+      }
+      return res.status(response.status).json({ error: `Gemini API 오류 (${response.status}): 서비스 지역 제한 또는 일시적 오류일 수 있습니다.` });
     }
 
     const data = await response.json();
@@ -91,23 +115,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(500).json({ error: '전생 데이터를 받을 수 없습니다.' });
     }
 
-    // 마크다운 코드블록 제거 후 JSON 파싱
-    const jsonStr = rawText
-      .replace(/```json\n?/g, '')
-      .replace(/```\n?/g, '')
-      .trim();
-
+    // JSON 모드이므로 바로 파싱 시도
     let result;
     try {
-      result = JSON.parse(jsonStr);
+      result = JSON.parse(rawText);
     } catch {
-      console.error('[PastLife API] JSON parse error. Raw:', rawText.substring(0, 200));
-      return res.status(500).json({ error: '응답 파싱 실패. 다시 시도해주세요.' });
+      // 혹시 모를 마크다운 코드블록 제거 후 재시도
+      const cleanJson = rawText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+      result = JSON.parse(cleanJson);
     }
 
     return res.status(200).json(result);
   } catch (error: any) {
     console.error('[PastLife API] Unexpected error:', error);
-    return res.status(500).json({ error: '전생 탐색 중 오류가 발생했습니다.' });
+    return res.status(500).json({ error: '전생 탐색 중 서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.' });
   }
 }
