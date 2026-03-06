@@ -399,9 +399,33 @@ export async function render(options: { path: string }) {
       </header>
       <main>
         <h1>${currentMeta.h1 || currentMeta.title}</h1>
-        <p>${currentMeta.description}</p>
-        ${serviceLinksHtml ? `<nav aria-label="관련 서비스"><ul>${serviceLinksHtml}</ul></nav>` : ''}
-        <p>무운(MuUn)은 회원가입 없이, 개인정보를 저장하지 않는 100% 무료 사주·운세·타로·꿈해몽 서비스입니다. 생년월일만 입력하면 바로 확인할 수 있습니다.</p>
+        ${options.path === '/privacy' ? `
+          <section>
+            <h2>1. 개인정보의 처리 목적</h2>
+            <p>'무운'(이하 '서비스')은 사용자가 입력한 생년월일, 태어난 시간, 성별 등의 정보를 오직 사주 및 운세 결과 계산을 위한 목적으로만 처리합니다. 본 서비스는 회원가입을 요구하지 않으며, 입력된 정보는 서버에 영구적으로 저장되지 않습니다.</p>
+            <h2>2. 처리하는 개인정보 항목</h2>
+            <ul>
+              <li>필수항목: 이름(별칭), 성별, 생년월일, 태어난 시간</li>
+              <li>자동수집항목: 접속 로그, 쿠키, 접속 IP 정보, 행태정보(클릭, 스크롤, 마우스 움직임 등)</li>
+            </ul>
+            <h2>3. 개인정보의 보유 및 이용기간</h2>
+            <p>사용자가 입력한 사주 정보는 브라우저의 로컬 스토리지(Local Storage)에 임시 저장되어 사용자의 편의를 돕습니다. 서버에는 어떠한 개인 식별 정보도 저장되지 않으며, 브라우저 캐시를 삭제하거나 서비스를 종료하면 정보는 더 이상 이용되지 않습니다.</p>
+            <h2>4. 제3자 제공 및 위탁</h2>
+            <p>서비스는 사용자의 개인정보를 외부에 제공하거나 처리를 위탁하지 않습니다. 다만, 구글 애드센스 등 광고 서비스 이용 시 비식별화된 통계 정보가 활용될 수 있습니다.</p>
+            <h3>4-1. Google AdSense 및 쿠키 사용 고지</h3>
+            <p>본 서비스는 수익 창출 및 서비스 운영을 위해 Google AdSense 광고를 게재합니다. 상세 내용은 <a href="https://policies.google.com/technologies/ads">Google 광고 정책</a>을 확인하시기 바랍니다.</p>
+            <h3>4-2. Microsoft Clarity 분석 도구 사용 고지</h3>
+            <p>본 서비스는 이용자의 서비스 이용 행태 분석 및 서비스 최적화를 위해 Microsoft Clarity 분석 도구를 사용합니다. 상세 내용은 <a href="https://clarity.microsoft.com/terms">Microsoft Clarity 이용약관</a> 및 <a href="https://privacy.microsoft.com/ko-kr/privacystatement">Microsoft 개인정보처리방침</a>을 확인하시기 바랍니다.</p>
+            <h2>5. 개인정보 보호책임자</h2>
+            <p>이메일: ykwillow1@naver.com</p>
+            <h2>6. 시행일</h2>
+            <p>본 개인정보처리방침은 2026년 3월 6일부터 시행됩니다.</p>
+          </section>
+        ` : `
+          <p>${currentMeta.description}</p>
+          ${serviceLinksHtml ? `<nav aria-label="관련 서비스"><ul>${serviceLinksHtml}</ul></nav>` : ''}
+          <p>무운(MuUn)은 회원가입 없이, 개인정보를 저장하지 않는 100% 무료 사주·운세·타로·꿈해몽 서비스입니다. 생년월일만 입력하면 바로 확인할 수 있습니다.</p>
+        `}
       </main>
       <footer>
         <nav aria-label="푸터 메뉴">
