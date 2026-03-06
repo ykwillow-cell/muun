@@ -8,7 +8,6 @@ import {
   ChevronLeft,
   Scroll,
   Globe,
-  User,
   Flame,
   BookOpen,
   Link2,
@@ -17,7 +16,6 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
-import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import { trackCustomEvent } from "@/lib/ga4";
 
@@ -69,27 +67,9 @@ export default function PastLife() {
   const [gender, setGender] = useState<"male" | "female" | "unknown">("unknown");
   const [result, setResult] = useState<PastLifeResult | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const revealMutation = trpc.pastLife.reveal.useMutation({
-    onSuccess: (data) => {
-      setResult(data);
-      setErrorMsg(null);
-      trackCustomEvent("past_life_reveal", { gender });
-    },
-    onError: (err) => {
-      const msg = err.message ?? "알 수 없는 오류가 발생했습니다.";
-      if (msg.includes("429")) {
-        setErrorMsg(
-          "현재 전생 탐색 요청이 너무 많습니다.\n잠시 후 다시 시도해주세요."
-        );
-      } else {
-        setErrorMsg("전생의 기억을 불러오는 데 실패했습니다.\n다시 시도해주세요.");
-      }
-      toast.error("전생 탐색에 실패했습니다.");
-    },
-  });
-
-  const handleReveal = () => {
+  const handleReveal = async () => {
     setErrorMsg(null);
     const y = parseInt(birthYear);
     const m = parseInt(birthMonth);
@@ -112,24 +92,45 @@ export default function PastLife() {
       return;
     }
 
-    revealMutation.mutate({
-      birthYear: y,
-      birthMonth: m,
-      birthDay: d,
-      gender,
-    });
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/past-life", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ birthYear: y, birthMonth: m, birthDay: d, gender }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        const msg = data?.error ?? "전생 탐색에 실패했습니다.";
+        if (response.status === 429) {
+          setErrorMsg("현재 전생 탐색 요청이 너무 많습니다.\n잠시 후 다시 시도해주세요.");
+        } else {
+          setErrorMsg(msg);
+        }
+        toast.error("전생 탐색에 실패했습니다.");
+        return;
+      }
+
+      setResult(data);
+      trackCustomEvent("past_life_reveal", { gender });
+    } catch {
+      setErrorMsg("네트워크 오류가 발생했습니다. 다시 시도해주세요.");
+      toast.error("네트워크 오류가 발생했습니다.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleReset = () => {
     setResult(null);
     setErrorMsg(null);
-    revealMutation.reset();
   };
 
-  const isLoading = revealMutation.isPending;
-  const bgClass = result ? ELEMENT_BG[result.element] ?? ELEMENT_BG["수"] : "";
-  const borderClass = result ? ELEMENT_BORDER[result.element] ?? ELEMENT_BORDER["수"] : "";
-  const elementEmoji = result ? ELEMENT_EMOJI[result.element] ?? "✨" : "";
+  const bgClass = result ? (ELEMENT_BG[result.element] ?? ELEMENT_BG["수"]) : "";
+  const borderClass = result ? (ELEMENT_BORDER[result.element] ?? ELEMENT_BORDER["수"]) : "";
+  const elementEmoji = result ? (ELEMENT_EMOJI[result.element] ?? "✨") : "";
 
   return (
     <div className="min-h-screen bg-background">
