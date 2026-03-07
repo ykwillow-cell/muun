@@ -45,7 +45,7 @@ const navItems = [
   { name: "꿈해몽", href: "/dream", icon: CloudMoon, description: "어젯밤 꾼 꿈의 의미 찾기" },
   { name: "점성술", href: "/astrology", icon: Star, description: "별들이 들려주는 나의 운명" },
   { name: "오늘의 운세", href: "/daily-fortune", icon: Zap, description: "매일 확인하는 나의 행운" },
-  { name: "전생 체험", href: "/past-life", icon: Scroll, description: "AI로 알아보는 나의 전생" },
+
   { name: "심리테스트", href: "/psychology", icon: BrainCircuit, description: "나도 모르는 내 마음" },
   { name: "내 타로 기록", href: "/tarot-history", icon: History, description: "지난 상담 기록 조회" },
   { name: "소개", href: "/about", icon: Info, description: "MUUN 서비스 이야기" },

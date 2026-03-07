@@ -130,14 +130,7 @@ export default function Home() {
       color: "bg-indigo-500/20 text-indigo-400",
       desc: "어젯밤 꿈의 의미 찾기"
     },
-    { 
-      href: "/past-life", 
-      label: "전생 체험", 
-      icon: <Scroll className="w-5 h-5" />, 
-      color: "bg-violet-500/20 text-violet-400",
-      desc: "AI로 알아보는 나의 전생",
-      featured: true
-    },
+
   ];
 
   // 인기 서비스 (가로 스크롤용) - 명시적 순서 지정
