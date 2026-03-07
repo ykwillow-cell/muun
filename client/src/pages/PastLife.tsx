@@ -94,10 +94,21 @@ export default function PastLife() {
 
     setIsLoading(true);
     try {
+      // 명시적으로 JSON 문자열로 변환하고 Accept 헤더 추가
+      const payload = {
+        birthYear: Number(y),
+        birthMonth: Number(m),
+        birthDay: Number(d),
+        gender: gender || 'unknown'
+      };
+
       const response = await fetch("/api/past-life", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ birthYear: y, birthMonth: m, birthDay: d, gender }),
+        headers: { 
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(payload),
       });
 
       const data = await response.json();
