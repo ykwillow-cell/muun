@@ -1,7 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // CORS 설정
+  // CORS 및 기본 헤더 설정
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST');
@@ -18,54 +18,36 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  let body = req.body;
+  // 데이터 추출 및 정규화
+  let birthYear, birthMonth, birthDay, gender;
   
-  // Vercel에서 body가 제대로 파싱되지 않았을 경우를 대비한 수동 파싱 시도
-  if (typeof body === 'string') {
-    try {
-      body = JSON.parse(body);
-    } catch (e) {
-      console.error('[PastLife API] Body string parse error:', e);
-    }
+  try {
+    const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
+    birthYear = body?.birthYear;
+    birthMonth = body?.birthMonth;
+    birthDay = body?.birthDay;
+    gender = body?.gender;
+  } catch (e) {
+    console.error('[PastLife API] Request body parse error:', e);
+    return res.status(400).json({ error: '잘못된 요청 형식입니다. JSON 데이터를 확인해주세요.' });
   }
 
-  // 데이터 추출 (다양한 데이터 형식 대응)
-  const birthYear = body?.birthYear;
-  const birthMonth = body?.birthMonth;
-  const birthDay = body?.birthDay;
-  const gender = body?.gender;
-
-  // 디버깅을 위한 상세 로깅 (개인정보 보호를 위해 값은 제외하고 존재 여부만 확인)
-  console.log('[PastLife API] Request data check:', {
-    hasYear: !!birthYear,
-    hasMonth: !!birthMonth,
-    hasDay: !!birthDay,
-    hasGender: !!gender,
-    bodyType: typeof body,
-    rawBodyKeys: body ? Object.keys(body) : []
-  });
-
+  // 필수 필드 검증 (유연하게)
   if (!birthYear || !birthMonth || !birthDay) {
+    console.error('[PastLife API] Validation failed:', { birthYear, birthMonth, birthDay });
     return res.status(400).json({ 
-      error: '생년월일 정보가 부족합니다. 모든 필드를 입력했는지 확인해주세요.',
-      debug: { 
-        received: { 
-          birthYear: !!birthYear, 
-          birthMonth: !!birthMonth, 
-          birthDay: !!birthDay 
-        } 
-      }
+      error: '생년월일을 모두 입력해주세요.',
+      details: 'Year, Month, Day fields are required.'
     });
   }
 
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
     console.error('[PastLife API] GEMINI_API_KEY not set');
-    return res.status(500).json({ error: 'API 키가 설정되지 않았습니다.' });
+    return res.status(500).json({ error: '서버 설정 오류: API 키가 없습니다.' });
   }
 
-  const genderLabel =
-    gender === 'male' ? '남성' : gender === 'female' ? '여성' : '미상';
+  const genderLabel = gender === 'male' ? '남성' : gender === 'female' ? '여성' : '미상';
 
   const prompt = `당신은 동양 사주와 전생 철학에 정통한 신비로운 영매사입니다.
 아래 생년월일을 바탕으로 이 사람의 전생을 생생하게 묘사해주세요.
@@ -101,9 +83,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         contents: [{ parts: [{ text: prompt }] }],
         generationConfig: {
           temperature: 0.9,
-          topK: 40,
-          topP: 0.95,
-          maxOutputTokens: 1024,
           response_mime_type: "application/json"
         },
       }),
@@ -113,6 +92,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const errText = await response.text();
       console.error('[PastLife API] Gemini error:', response.status, errText);
       
+      // Fallback to v1beta if v1 fails with 404
       if (response.status === 404) {
         const fallbackUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
         const fallbackResponse = await fetch(fallbackUrl, {
@@ -130,39 +110,25 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         if (fallbackResponse.ok) {
           const data = await fallbackResponse.json();
           const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
-          try {
-            return res.status(200).json(JSON.parse(rawText));
-          } catch {
-             const cleanJson = rawText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-             return res.status(200).json(JSON.parse(cleanJson));
-          }
+          return res.status(200).json(JSON.parse(rawText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()));
         }
       }
 
-      if (response.status === 429) {
-        return res.status(429).json({ error: '현재 요청이 너무 많습니다. 잠시 후 다시 시도해주세요.' });
-      }
-      return res.status(response.status).json({ error: `Gemini API 오류 (${response.status})` });
+      return res.status(response.status).json({ error: `외부 API 오류 (${response.status})` });
     }
 
     const data = await response.json();
-    const rawText: string = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
+    const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
 
     if (!rawText) {
-      return res.status(500).json({ error: '전생 데이터를 받을 수 없습니다.' });
+      return res.status(500).json({ error: '응답 데이터를 생성할 수 없습니다.' });
     }
 
-    let result;
-    try {
-      result = JSON.parse(rawText);
-    } catch {
-      const cleanJson = rawText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-      result = JSON.parse(cleanJson);
-    }
+    const cleanJson = rawText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+    return res.status(200).json(JSON.parse(cleanJson));
 
-    return res.status(200).json(result);
   } catch (error: any) {
-    console.error('[PastLife API] Unexpected error:', error);
-    return res.status(500).json({ error: '전생 탐색 중 서버 오류가 발생했습니다.' });
+    console.error('[PastLife API] Critical error:', error);
+    return res.status(500).json({ error: '전생 탐색 중 예상치 못한 오류가 발생했습니다.' });
   }
 }

@@ -2,6 +2,12 @@
   "version": 2,
   "buildCommand": "pnpm run build",
   "outputDirectory": ".vercel/output",
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/$1"
+    }
+  ],
   "headers": [
     {
       "source": "/assets/(.*)",
