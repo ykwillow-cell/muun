@@ -102,7 +102,7 @@ export default function PastLife() {
         gender: gender || 'unknown'
       };
 
-      const response = await fetch("/api/past-life", {
+      const response = await fetch("/api/reveal-past-life", {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",

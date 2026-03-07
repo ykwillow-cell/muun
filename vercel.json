@@ -4,8 +4,8 @@
   "outputDirectory": ".vercel/output",
   "rewrites": [
     {
-      "source": "/api/(.*)",
-      "destination": "/api/$1"
+      "source": "/api/reveal-past-life",
+      "destination": "/api/reveal-past-life"
     }
   ],
   "headers": [
