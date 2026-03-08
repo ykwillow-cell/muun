@@ -1416,6 +1416,7 @@ const metaData: Record<string, { title: string, description: string, h1?: string
         `<meta name="twitter:card" content="summary_large_image">`,
         `<meta name="twitter:title" content="${currentMeta.title}">`,
         `<meta name="twitter:description" content="${currentMeta.description}">`,
+        `<link rel="alternate" type="application/rss+xml" title="무운 (MuUn) RSS" href="https://muunsaju.com/rss.xml">`,
         schemaScript,
         faqScript,
       ].filter(Boolean).join('\n    '),

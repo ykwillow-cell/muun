@@ -11,9 +11,6 @@ Disallow: /api
 Sitemap: https://muunsaju.com/sitemap.xml
 Sitemap: https://muunsaju.com/sitemap-yearly-fortune.xml
 
-# RSS Feed location (Naver Search Advisor)
-RSS: https://muunsaju.com/rss.xml
-
 # 네이버봇 명시적 허용
 User-agent: Yeti
 Allow: /
