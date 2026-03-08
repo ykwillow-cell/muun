@@ -357,6 +357,125 @@ const dreamKeywordMap: Record<string, { keyword: string; metaTitle: string }> = 
   "zombie-attack-dream-meaning": { keyword: "좀비가 나타나 습격하는 꿈", metaTitle: "좀비 꿈 해몽 | 극심한 스트레스의 경고등 | 무운" }
 };
 
+const dictionaryKeywordMap: Record<string, { title: string; categoryLabel: string; metaTitle: string; metaDescription: string }> = {
+  "gap-ja": { title: "갑자(甲子)", categoryLabel: "사주 기초", metaTitle: "갑자(甲子) 뜻과 사주 해석: 새로운 시작의 리더십", metaDescription: "육십갑자의 시작인 갑자의 사주적 의미와 현대적 성공 전략을 확인하세요. 새로운 시작을 꿈꾸는 당신을 위한 가이드." },
+  "yeok-ma-sal": { title: "역마살(驛馬煞)", categoryLabel: "운세 개념", metaTitle: "역마살 사주 풀이: 떠돌이 팔자? 아니, 글로벌 인재!", metaDescription: "이동과 변화의 상징 역마살! 현대 사회에서 역마살을 성공의 기회로 바꾸는 법과 직업 추천을 담았습니다." },
+  "do-hwa-sal": { title: "도화살(桃花煞)", categoryLabel: "관계 & 궁합", metaTitle: "도화살 뜻과 특징: 나도 혹시 연예인 사주?", metaDescription: "매력 자본의 시대, 도화살은 강력한 무기입니다. 사주에 숨겨진 나의 인기 비결과 활용법을 알아보세요." },
+  "baek-ho-sal": { title: "백호살(白虎煞)", categoryLabel: "운세 개념", metaTitle: "백호살 사주 해석: 무서운 살이 성공의 열쇠로?", metaDescription: "강한 카리스마의 상징 백호살! 위기를 기회로 바꾸는 백호살 사주의 특징과 직업적 성공 비결을 공개합니다." },
+  "bi-gyeon": { title: "비견(比肩)", categoryLabel: "십신", metaTitle: "사주 십신 비견(比肩) 해석: 자존감과 인간관계", metaDescription: "내 사주에 비견이 많다면? 자아 성찰과 대인관계의 핵심 키워드인 비견의 의미를 쉽게 풀이해 드립니다." },
+  "sang-gwan": { title: "상관(傷官)", categoryLabel: "십신", metaTitle: "사주 상관(傷官) 뜻: 천재성인가 반항심인가?", metaDescription: "예술가와 혁신가의 사주, 상관! 조직 생활 팁과 당신의 재능을 꽃피울 수 있는 방법을 알아보세요." },
+  "jeong-jae": { title: "정재(正財)", categoryLabel: "재물 & 직업", metaTitle: "정재(正財) 사주와 재물운: 부자되는 습관", metaDescription: "차곡차곡 쌓이는 부의 기운, 정재! 안정적인 재테크와 직장 생활에서 성공하는 법을 사주학적으로 분석합니다." },
+  "pyeon-in": { title: "편인(偏印)", categoryLabel: "십신", metaTitle: "사주 편인(偏印) 해석: 독특한 재능과 전문성", metaDescription: "남다른 직관과 예술적 감각의 편인! 고독을 지혜로 바꾸는 방법과 편인 사주의 성공 공식을 알려드립니다." },
+  "goe-gang-sal": { title: "괴강살(魁罡煞)", categoryLabel: "운세 개념", metaTitle: "괴강살 사주: 여장부와 리더의 카리스마", metaDescription: "북두칠성의 정기를 받은 괴강살! 인생의 파고를 넘어 정상에 서는 법과 괴강살 사주의 특징을 분석합니다." },
+  "hong-yeom-sal": { title: "홍염살(紅艶煞)", categoryLabel: "관계 & 궁합", metaTitle: "홍염살과 도화살 차이점: 나만의 숨은 매력 찾기", metaDescription: "은근한 매력의 소유자 홍염살! 사람을 끌어당기는 사주 속 홍염살의 특징과 연애운을 높이는 법을 확인하세요." },
+  "cheon-eul-gwi-in": { title: "천을귀인(天乙貴人)", categoryLabel: "운세 개념", metaTitle: "천을귀인(天乙貴人) 뜻: 내 사주에 수호천사가?", metaDescription: "위기를 기회로 바꾸는 최고의 길신, 천을귀인! 내 사주 속 귀인의 존재와 복을 부르는 법을 확인하세요." },
+  "pyeon-gwan": { title: "편관(偏官)", categoryLabel: "십신", metaTitle: "사주 편관(偏官) 해석: 카리스마와 명예의 상징", metaDescription: "나를 단련시키는 강한 기운 편관! 조직 내에서의 성공 비결과 편관 사주의 스트레스 관리법을 공개합니다." },
+  "sik-sin": { title: "식신(食神)", categoryLabel: "십신", metaTitle: "식신(食神) 사주: 평생 먹을 복과 재능", metaDescription: "인생의 즐거움을 아는 식신! 타고난 재능을 돈으로 바꾸는 법과 건강한 삶을 위한 사주 조언을 담았습니다." },
+  "hwa-gae-sal": { title: "화개살(華蓋煞)", categoryLabel: "운세 개념", metaTitle: "화개살 뜻과 특징: 예술가와 종교인의 사주", metaDescription: "고독을 예술로 승화시키는 화개살! 내면의 깊이를 더하고 잠재력을 깨우는 사주 풀이를 만나보세요." },
+  "yang-in-sal": { title: "양인살(羊刃煞)", categoryLabel: "운세 개념", metaTitle: "양인살 사주: 성공을 부르는 강한 의지력", metaDescription: "인생의 승부사 양인살! 강한 성격을 다스려 성공으로 이끄는 비결과 적합한 직업군을 제안합니다." },
+  "jeong-in": { title: "정인(正印)", categoryLabel: "십신", metaTitle: "사주 정인(正印) 뜻: 공부운과 인덕의 결합", metaDescription: "사랑과 학문의 별 정인! 합격운을 높이는 법과 인품으로 성공하는 정인 사주의 특징을 알아봅니다." },
+  "geop-jae": { title: "겁재(劫財)", categoryLabel: "십신", metaTitle: "겁재(劫財) 사주 해석: 경쟁심을 성공으로 바꾸는 법", metaDescription: "돈을 잃는 사주라고요? 아니요! 현대 사회에서 겁재가 가진 강력한 경쟁력과 부의 쟁취 전략을 확인하세요." },
+  "won-jin-sal": { title: "원진살(元嗔煞)", categoryLabel: "관계 & 궁합", metaTitle: "원진살 뜻과 궁합: 애증의 관계를 푸는 열쇠", metaDescription: "자꾸만 부딪히는 우리, 혹시 원진살? 원진살의 원인과 관계를 회복하는 지혜로운 소통법을 제안합니다." },
+  "mun-chang-gwi-in": { title: "문창귀인(文昌貴人)", categoryLabel: "사주 기초", metaTitle: "문창귀인 뜻: 공부 잘하는 사주와 글재주", metaDescription: "지혜의 상징 문창귀인! 학업 성취도를 높이고 창의적인 글쓰기 능력을 발휘하는 법을 알아봅니다." },
+  "sam-jae": { title: "삼재(三災)", categoryLabel: "운세 개념", metaTitle: "삼재 뜻과 계산법: 두려움 대신 대비하는 지혜", metaDescription: "삼재라고 무조건 안 좋을까요? 들삼재, 눌삼재, 날삼재의 의미와 삼재를 무사히 넘기는 마음가짐을 공유합니다." },
+  "sang-gwan-pae-in": { title: "상관패인(傷官佩印)", categoryLabel: "십신", metaTitle: "상관패인 뜻: 천재적 재능에 날개를 다는 법", metaDescription: "파격과 논리의 결합, 상관패인! 사주에 숨겨진 최고의 엘리트 코스와 성공 전략을 분석합니다." },
+  "jae-saeng-gwan": { title: "재생관(財生官)", categoryLabel: "재물 & 직업", metaTitle: "재생관 사주: 부와 명예를 동시에 거머쥐는 운", metaDescription: "재물운이 명예운으로 이어지는 재생관의 원리! 직장 내 승진운과 사업적 성공의 상관관계를 알아봅니다." },
+  "gong-mang": { title: "공망(空亡)", categoryLabel: "운세 개념", metaTitle: "사주 공망(空亡) 뜻과 해석: 비어있음의 미학", metaDescription: "공망이라고 실망하지 마세요! 세속적 성공을 넘어 정신적 풍요를 찾는 공망 사주의 특별한 활용법." },
+  "gwan-in-sang-saeng": { title: "관인상생(官印相生)", categoryLabel: "재물 & 직업", metaTitle: "관인상생 사주: 직장 운과 승진의 비밀", metaDescription: "조직에서 사랑받는 비결은? 관인상생의 흐름을 통해 보는 안정적인 커리어 성공 공식과 인간관계 팁." },
+  "hyeon-chim-sal": { title: "현침살(懸針殺)", categoryLabel: "건강 & 신체", metaTitle: "현침살 사주: 날카로운 재능과 전문 기술의 상징", metaDescription: "바늘처럼 예리한 현침살! 정밀한 기술과 분석력으로 성공하는 현침살 사주의 특징과 직업 추천." },
+  "sik-sin-je-sal": { title: "식신제살(食神制殺)", categoryLabel: "십신", metaTitle: "식신제살 뜻: 위기를 해결하는 최고의 지략가", metaDescription: "내 사주에 해결사의 기운이? 식신제살의 원리와 어려움을 극복하고 성공하는 사주 풀이를 만나보세요." },
+  "cheon-mun-seong": { title: "천문성(天文星)", categoryLabel: "기타", metaTitle: "천문성 사주: 사람의 마음을 읽는 특별한 직관", metaDescription: "남다른 예지력과 공감 능력의 비밀, 천문성! 활인업(活人業) 사주의 특징과 타고난 영적 재능을 알아보세요." },
+  "chak-sal": { title: "양착살/음착살(陽錯殺/陰錯殺)", categoryLabel: "관계 & 궁합", metaTitle: "양착살 음착살 해석: 관계의 어긋남을 극복하는 법", metaDescription: "자꾸만 엇갈리는 인연 때문에 고민인가요? 착살의 의미를 현대적으로 풀이하고 행복한 인간관계를 맺는 지혜를 전합니다." },
+  "gwi-mun-gwan-sal": { title: "귀문관살(鬼門關殺)", categoryLabel: "운세 개념", metaTitle: "귀문관살 사주: 천재와 예민함 사이의 한 끗 차이", metaDescription: "집착을 집중으로 바꾸는 법! 귀문관살 사주의 독특한 매력과 정신적 에너지를 관리하는 노하우를 공개합니다." },
+  "gan-yeo-ji-dong": { title: "간여지동(干與支同)", categoryLabel: "사주 기초", metaTitle: "간여지동 사주 특징: 고집일까, 뚝심일까?", metaDescription: "내 사주 기둥이 같은 오행이라면? 강한 자아를 가진 간여지동 사주의 장단점과 성공적인 사회생활 팁을 전해드립니다." },
+  "geum-su-ssang-cheong": { title: "금수쌍청(金水雙淸)", categoryLabel: "사주 기초", metaTitle: "금수쌍청 사주: 맑은 지성과 미모의 결합", metaDescription: "금과 수의 기운이 만났을 때 생기는 특별한 총명함! 사주 속 금수쌍청의 의미와 성공 공식을 풀어드립니다." },
+  "do-se-ju-ok": { title: "도세주옥(淘洗珠玉)", categoryLabel: "사주 기초", metaTitle: "도세주옥(淘洗珠玉) 해석: 나를 빛내는 최고의 운", metaDescription: "보석이 물을 만나는 사주, 도세주옥! 나의 재능을 세상에 화려하게 데뷔시키는 비결을 알아보세요." },
+  "sang-gwan-saeng-jae": { title: "상관생재(傷官生財)", categoryLabel: "재물 & 직업", metaTitle: "상관생재 사주: 아이디어로 부자 되는 법", metaDescription: "천재성과 재물운의 만남! 상관생재 사주가 가진 독보적인 사업 수완과 성공 키워드를 정리해 드립니다." },
+  "sal-in-sang-saeng": { title: "살인상생(殺印相生)", categoryLabel: "십신", metaTitle: "살인상생 뜻: 역경을 딛고 리더가 되는 사주", metaDescription: "힘든 상황을 성공의 발판으로 만드는 살인상생의 힘! 위기를 기회로 바꾸는 사주학적 조언을 담았습니다." },
+  "baek-ho-dae-sal": { title: "백호대살(白虎大煞)", categoryLabel: "운세 개념", metaTitle: "백호대살 사주: 무서운 살? 아니, 강력한 성공의 힘!", metaDescription: "백호대살 사주가 가진 압도적인 추진력과 카리스마! 현대 사회에서 성공을 쟁취하는 백호대살 활용법." },
+  "cheon-ui-seong": { title: "천의성(天醫星)", categoryLabel: "기타", metaTitle: "천의성 사주: 사람을 살리고 치유하는 천직", metaDescription: "하늘의 의사라는 뜻의 천의성! 사주에 천의성이 있을 때 어울리는 직업과 삶의 태도를 알아봅니다." },
+  "go-ran-sal": { title: "고란살(孤鸞煞)", categoryLabel: "관계 & 궁합", metaTitle: "고란살 뜻: 외로운 사주일까, 당당한 독립일까?", metaDescription: "고란살 사주의 특징과 연애 고민 해결법! 혼자서도 잘 해내는 멋진 당신을 위한 사주 카운슬링." },
+  "cheon-mun-gwi-in": { title: "천문귀인(天門貴人)", categoryLabel: "사주 기초", metaTitle: "천문귀인 사주: 미래를 예측하는 탁월한 통찰력", metaDescription: "지혜와 예견력을 가진 사주 속 귀인, 천문귀인! 나의 타고난 지적 재능을 극대화하는 방법을 제안합니다." },
+  "je-wang": { title: "제왕(帝旺)", categoryLabel: "운세 개념", metaTitle: "십이운성 제왕(帝旺): 사주에서 가장 강력한 성공 기운", metaDescription: "내 사주에 제왕의 기운이 있다면? 최고의 권력과 성공을 거머쥐는 제왕 사주의 운용 전략." },
+  "jae-da-sin-yak": { title: "재다신약(財多身弱)", categoryLabel: "재물 & 직업", metaTitle: "재다신약 사주 탈출법: 재물을 내 것으로 만드는 비결", metaDescription: "돈은 많은데 내 주머니엔 안 들어온다면? 재다신약 사주가 부자가 되기 위해 필요한 마음가짐과 실천 팁." },
+  "mok-hwa-tong-myeong": { title: "목화통명(木火通明)", categoryLabel: "사주 기초", metaTitle: "목화통명 사주: 천재성과 명예의 조화", metaDescription: "지혜가 밝게 빛나는 사주, 목화통명! 글재주와 학문으로 성공하는 사주적 특징과 현대적 성공 전략을 분석합니다." },
+  "su-hwa-gi-je": { title: "수화기제(水火旣濟)", categoryLabel: "운세 개념", metaTitle: "수화기제 뜻: 완벽한 균형과 성공의 마침표", metaDescription: "갈등을 넘어 조화로! 수화기제 사주가 가진 안정감과 인생의 전성기를 유지하는 비결을 공유합니다." },
+  "sik-sin-saeng-jae": { title: "식신생재(食神生財)", categoryLabel: "재물 & 직업", metaTitle: "식신생재 사주: 즐겁게 돈 버는 '덕업일치' 비결", metaDescription: "내가 잘하는 일이 돈이 되는 식신생재! 평생 재물운이 마르지 않는 사주 특징과 직업 추천을 담았습니다." },
+  "hyeong-sal": { title: "형살(刑殺)", categoryLabel: "운세 개념", metaTitle: "형살 사주 풀이: 갈등을 이기는 전문 기술", metaDescription: "무서운 살이 아니라 특별한 능력! 인사신, 축술미 삼형살의 의미와 이를 직업적 성공으로 승화시키는 법." },
+  "jeong-gwan": { title: "정관(正官)", categoryLabel: "십신", metaTitle: "사주 정관(正官) 해석: 명예와 신뢰를 얻는 법", metaDescription: "바른 길을 걷는 정관 사주! 안정적인 직장 운과 사회적 지위를 높이는 정관의 특징을 쉽게 설명해 드립니다." },
+  "am-rok": { title: "암록(暗祿)", categoryLabel: "재물 & 직업", metaTitle: "암록(暗祿) 뜻: 평생 돈 걱정 없는 숨은 재복", metaDescription: "보이지 않는 곳에서 나를 돕는 귀인, 암록! 사주에 숨겨진 재물운과 위기 탈출의 비결을 확인하세요." },
+  "do-sik": { title: "도식(倒食)", categoryLabel: "운세 개념", metaTitle: "사주 도식(倒食) 해석: 위기를 기회로 바꾸는 휴식", metaDescription: "잘 나가던 일에 제동이 걸렸다면? 도식의 의미를 이해하고 지혜롭게 슬럼프를 극복하는 법을 알려드립니다." },
+  "cheon-deok-gwi-in": { title: "천덕귀인(天德貴人)", categoryLabel: "운세 개념", metaTitle: "천덕귀인 사주: 하늘이 돕는 천운의 소유자", metaDescription: "모든 재앙을 막아주는 최고의 길신 천덕귀인! 내 사주 속 천덕귀인을 찾는 법과 복을 누리는 지혜를 전합니다." },
+  "geon-rok": { title: "건록(建祿)", categoryLabel: "재물 & 직업", metaTitle: "사주 건록(建祿) 특징: 성공하는 자수성가 사주", metaDescription: "스스로 부를 창조하는 힘, 건록! 독립심과 강한 운을 가진 건록 사주의 성공 방정식과 직업적 조언." },
+  "hap": { title: "합(合)", categoryLabel: "관계 & 궁합", metaTitle: "사주 합(合)의 의미: 인연과 협업의 비밀", metaDescription: "사주에 합이 많으면 다정하다? 천간합과 지지합을 통해 보는 나의 인간관계 성향과 궁합의 원리." },
+  "gyeong-guk-ji-saek-meaning": { title: "경국지색(傾國之色)의 매력과 현대적 영향력 관리법", categoryLabel: "관계 & 궁합", metaTitle: "경국지색 뜻과 현대적 의미: 매력을 권력으로 만드는 법", metaDescription: "경국지색의 유래와 현대적 해석을 알아봅니다. 독보적인 매력을 사회적 영향력으로 전환하는 개운법을 확인하세요." },
+  "geum-sang-cheom-hwa-synergy": { title: "금상첨화(錦上添花)의 운세 활용과 시너지 극대화 전략", categoryLabel: "운세 개념", metaTitle: "금상첨화의 뜻과 운세 시너지: 좋은 운을 두 배로 쓰는 법", metaDescription: "좋은 일이 겹치는 금상첨화의 원리와 현대적 적용법을 설명합니다. 행운의 시기를 놓치지 않는 마음가짐을 배워보세요." },
+  "dae-gi-man-seong-success": { title: "대기만성(大器晩成)형 사주의 특징과 인내의 가치", categoryLabel: "재물 & 직업", metaTitle: "대기만성 사주 풀이: 늦게 피는 꽃이 더 아름다운 이유", metaDescription: "큰 그릇을 만드는 인내의 시간, 대기만성의 명리학적 의미를 분석합니다. 후반전 성공을 위한 마음가짐을 확인하세요." },
+  "deung-ra-gye-gap-meaning": { title: "등라계갑(藤蘿繫甲)의 대인관계 전략과 상생의 기술", categoryLabel: "관계 & 궁합", metaTitle: "등라계갑의 지혜: 귀인을 만나 성공의 사다리를 타는 법", metaDescription: "넝쿨이 나무를 타고 오르는 등라계갑의 원리와 현대적 인맥 관리법을 소개합니다. 상생을 통한 성공 전략을 확인하세요." },
+  "myeong-gyeong-ji-su-mindset": { title: "명경지수(明鏡止水)의 마음 다스림과 명료한 의사결정", categoryLabel: "건강 & 신체", metaTitle: "명경지수의 개운법: 혼란한 운을 다스리는 고요한 힘", metaDescription: "맑은 거울 같은 마음, 명경지수의 의미와 현대적 실천법을 알아봅니다. 흔들리지 않는 판단력을 기르는 비결을 확인하세요." },
+  "mu-so-bul-wi-power": { title: "무소불위(無所不爲)의 추진력과 책임 있는 권력 관리", categoryLabel: "재물 & 직업", metaTitle: "무소불위의 운세 활용: 강력한 힘을 다스리는 리더의 지혜", metaDescription: "무엇이든 이룰 수 있는 무소불위의 에너지와 그 부작용을 막는 법을 알아봅니다. 성공적인 리더를 위한 명리 가이드를 확인하세요." },
+  "sa-pil-gwi-jeong-karma": { title: "사필귀정(事必歸正)과 운의 인과응보 원리", categoryLabel: "운세 개념", metaTitle: "사필귀정과 인과응보: 당신의 노력이 배신당하지 않는 이유", metaDescription: "모든 것이 제자리를 찾는 사필귀정의 원리를 명리학적으로 풀이합니다. 정직한 노력의 가치와 개운법을 확인하세요." },
+  "sal-sin-seong-in-spirit": { title: "살신성인(殺身成仁)의 헌신과 활인업(活人業)의 공덕", categoryLabel: "재물 & 직업", metaTitle: "살신성인의 현대적 해석: 타인을 돕는 삶이 가져오는 복록", metaDescription: "자신을 내어줌으로써 더 큰 운을 얻는 살신성인의 원리를 알아봅니다. 활인업과 공덕이 인생에 미치는 영향을 확인하세요." },
+  "yu-bi-mu-hwan-strategy": { title: "유비무환(有備無환)의 자산 관리와 위기 대응 기술", categoryLabel: "재물 & 직업", metaTitle: "유비무환의 명리 전략: 위기를 기회로 바꾸는 사전 준비", metaDescription: "평소의 준비가 근심을 없애는 유비무환의 지혜를 알아봅니다. 운의 리듬에 맞춘 자산 및 인생 관리법을 확인하세요." },
+  "jeon-hwa-wi-bok-transformation": { title: "전화위복(轉禍爲福)의 위기 돌파와 운명 전환의 법칙", categoryLabel: "운세 개념", metaTitle: "전화위복의 개운법: 고난을 행운으로 바꾸는 운명 반전술", metaDescription: "화가 복이 되는 전화위복의 원리와 위기 대처법을 알아봅니다. 역경을 딛고 일어서는 명리적 지혜를 확인하세요." },
+  "gyeol-ja-hae-ji-resolution": { title: "결자해지(結者解之)의 관계 회복과 운의 정화법", categoryLabel: "관계 & 궁합", metaTitle: "결자해지의 지혜: 꼬인 인간관계를 풀고 운을 여는 법", metaDescription: "스스로 맺은 매듭을 푸는 결자해지의 원리를 알아봅니다. 갈등 해결을 통한 운의 정화와 개운법을 확인하세요." },
+  "go-jin-gam-rae-reward": { title: "고진감래(苦盡甘來)의 인내와 성공의 달콤한 열매", categoryLabel: "운세 개념", metaTitle: "고진감래 사주 풀이: 힘든 시기를 버티면 반드시 복이 온다", metaDescription: "고생 끝에 낙이 오는 고진감래의 의미와 운의 흐름을 분석합니다. 시련을 희망으로 바꾸는 명리적 조언을 확인하세요." },
+  "gwa-yu-bul-geup-balance": { title: "과유불급(過猶不及)의 균형 잡기와 중용의 처세술", categoryLabel: "사주 기초", metaTitle: "과유불급의 개운법: 사주의 중화를 돕는 절제의 힘", metaDescription: "지나침이 화를 부르는 이유를 명리학적으로 풀이합니다. 과유불급의 태도로 인생의 균형을 되찾는 법을 확인하세요." },
+  "gun-gye-il-hak-talent": { title: "군계일학(群鷄一鶴)의 개성과 독보적인 재능 발현법", categoryLabel: "재물 & 직업", metaTitle: "군계일학 사주: 독보적인 존재감으로 세상을 리드하는 법", metaDescription: "평범함을 거부하는 강력한 재능, 군계일학의 기운을 분석합니다. 자신만의 차별화된 매력을 발산하는 비결을 확인하세요." },
+  "gwon-bul-sip-nyeon-modesty": { title: "권불십년(權不十年)의 명예 관리와 겸손의 미학", categoryLabel: "관계 & 궁합", metaTitle: "권불십년의 경고: 잘 나갈 때 운을 지키는 비결", metaDescription: "권력의 덧없음과 겸손의 중요성을 명리학적으로 풀이합니다. 성공의 정점에서 운의 하락기를 대비하는 법을 확인하세요." },
+  "gi-go-man-jang-control": { title: "기고만장(氣高萬丈)의 에너지 조절과 감정 컨트롤", categoryLabel: "건강 & 신체", metaTitle: "기고만장한 기운의 활용법: 열정을 성과로 바꾸는 조절력", metaDescription: "넘치는 기운이 독이 되지 않게 하는 명리적 조언을 담았습니다. 기고만장한 에너지를 다스려 성공을 거머쥐는 법을 확인하세요." },
+  "nan-hyeong-nan-je-rival": { title: "난형난제(難兄難弟)의 경쟁 관계와 동반 성장 전략", categoryLabel: "관계 & 궁합", metaTitle: "난형난제의 경쟁학: 유능한 라이벌과 함께 성공하는 법", metaDescription: "우열을 가리기 힘든 난형난제 관계의 명리적 이점을 분석합니다. 경쟁을 성장의 동력으로 바꾸는 상생 전략을 확인하세요." },
+  "no-ik-jang-vitality": { title: "노익장(老益壯)의 지속 가능한 활동력과 자기 관리", categoryLabel: "건강 & 신체", metaTitle: "노익장 사주: 나이가 들수록 운이 트이는 사람들의 특징", metaDescription: "중년 이후 더 강력해지는 활동력, 노익장의 기운을 알아봅니다. 평생 현역으로 살 수 있는 명리적 비결을 확인하세요." },
+  "da-da-ik-seon-growth": { title: "다다익선(多多益善)의 자원 활용과 확장 전략", categoryLabel: "재물 & 직업", metaTitle: "다다익선의 운세 전략: 내 그릇을 키워 더 많은 복을 담는 법", metaDescription: "많을수록 좋은 다다익선의 원리와 이를 감당하는 사주적 조건을 분석합니다. 성공적인 확장을 위한 명리 가이드를 확인하세요." },
+  "dan-sa-pyo-eum-happiness": { title: "단사표음(簞食瓢飮)의 소박한 행복과 안빈낙도", categoryLabel: "기타", metaTitle: "단사표음의 행복론: 부족함 속에서 풍요를 찾는 마음 공부", metaDescription: "소박한 삶의 아름다움, 단사표음의 현대적 의미를 알아봅니다. 정신적 만족을 통해 평온한 운을 만드는 법을 확인하세요." },
+  "il-chwi-wol-jang-growth": { title: "일취월장(日就月將)의 성장 정체기 돌파와 자기 계발법", categoryLabel: "재물 & 직업", metaTitle: "일취월장의 기운: 매일 성장하는 사주와 성공의 임계점", metaDescription: "나날이 발전하는 일취월장의 명리적 원리를 분석합니다. 정체기를 극복하고 폭발적인 성장을 이끄는 개운법을 확인하세요." },
+  "yu-gu-mu-eon-silence": { title: "유구무언(有口無言)의 구설수 방어와 침묵의 처세술", categoryLabel: "관계 & 궁합", metaTitle: "유구무언의 개운법: 구설수를 잠재우는 침묵의 힘", metaDescription: "입을 닫아 운을 지키는 유구무언의 지혜를 알아봅니다. 상관견관 등 갈등의 시기에 필요한 명리적 처세를 확인하세요." },
+  "ja-gang-bul-sik-discipline": { title: "자강불식(自強不息)의 자기 주도적 삶과 성공의 루틴", categoryLabel: "사주 기초", metaTitle: "자강불식의 의지: 스스로 운명을 바꾸는 성실함의 힘", metaDescription: "쉬지 않고 정진하는 자강불식의 명리적 의미를 분석합니다. 자기 주도적 삶을 통해 성공을 일구는 비결을 확인하세요." },
+  "go-seong-nak-il-resilience": { title: "고성낙일(孤城落日)의 고독한 운세와 재기의 지혜", categoryLabel: "운세 개념", metaTitle: "고성낙일의 시기를 지나는 법: 고립을 성찰로 바꾸는 지혜", metaDescription: "세력이 저물고 홀로 남겨진 고성낙일의 명리적 의미를 풀이합니다. 운의 하락기에서 다시 일어설 에너지를 찾는 법을 확인하세요." },
+  "geum-gwa-ok-jo-values": { title: "금과옥조(金科玉條)의 원칙 수립과 신뢰 자본 쌓기", categoryLabel: "사주 기초", metaTitle: "금과옥조의 가치관: 흔들리지 않는 원칙으로 운을 다스리는 법", metaDescription: "인생의 소중한 규칙, 금과옥조의 명리적 가치를 분석합니다. 확고한 신념이 가져오는 사회적 성공과 신뢰의 비결을 확인하세요." },
+  "cheon-jin-nan-man-charisma": { title: "천진난만(天眞爛漫)의 순수성과 창의적 에너지 발현", categoryLabel: "관계 & 궁합", metaTitle: "천진난만한 사주의 매력: 순수함으로 대중의 마음을 훔치는 법", metaDescription: "가식 없는 맑음, 천진난만의 명리적 분석과 현대적 활용법을 알아봅니다. 진정성 있는 태도로 운을 열어보세요." },
+  "on-go-ji-sin-insight": { title: "온고지신(溫故知新)의 지혜와 과거 경험의 자산화", categoryLabel: "사주 기초", metaTitle: "온고지신의 통찰력: 과거의 경험을 황금으로 바꾸는 법", metaDescription: "옛것을 배워 새 길을 여는 온고지신의 명리적 활용법을 소개합니다. 경험을 자산으로 만드는 지혜로운 개운법을 확인하세요." },
+  "oe-yu-nae-gang-resilience": { title: "외유내강(外柔內剛)의 유연한 리더십과 내면 관리", categoryLabel: "관계 & 궁합", metaTitle: "외유내강 사주의 비밀: 부드러움 속에 감춰진 강력한 성공 에너지", metaDescription: "겉은 유연하고 속은 단단한 외유내강의 명리적 분석을 담았습니다. 진정한 내면의 힘을 기르는 개운법을 확인하세요." },
+  "su-jeok-seok-cheon-persistence": { title: "수적석천(水滴石穿)의 끈기와 운의 임계점 돌파", categoryLabel: "운세 개념", metaTitle: "수적석천의 지혜: 물방울 같은 꾸준함이 돌 같은 운명을 바꾼다", metaDescription: "작은 노력의 반복이 가져오는 거대한 변화, 수적석천의 명리적 의미를 분석합니다. 꾸준함으로 개운하는 법을 확인하세요." },
+  "go-jin-gam-rae-victory": { title: "고진감래(苦盡甘來)의 인내와 성공의 달콤한 보상", categoryLabel: "운세 개념", metaTitle: "고진감래 사주: 힘든 시기를 버텨낸 당신에게 올 큰 복", metaDescription: "고난 뒤에 찾아오는 행복, 고진감래의 명리적 원리를 알아봅니다. 시련을 견디고 찬란한 보상을 받는 비결을 확인하세요." },
+  "go-jin-gam-rae-success": { title: "고진감래(苦盡甘래)의 인내와 성공의 달콤한 열매", categoryLabel: "운세 개념", metaTitle: "고진감래 사주 풀이: 힘든 시기를 버티면 반드시 복이 온다", metaDescription: "고생 끝에 낙이 오는 고진감래의 의미와 운의 흐름을 분석합니다. 시련을 희망으로 바꾸는 명리적 조언을 확인하세요." },
+  "gwal-mok-sang-dae-growth": { title: "괄목상대(刮目相對)의 급격한 성장과 반전의 운명", categoryLabel: "재물 & 직업", metaTitle: "괄목상대의 개운법: 주변을 놀라게 할 대역전의 비결", metaDescription: "짧은 시간에 비약적으로 발전하는 괄목상대의 원리를 알아봅니다. 정체기를 깨고 도약하는 명리적 지혜를 확인하세요." },
+  "gwon-to-jung-rae-comeback": { title: "권토중래(捲土重來)의 재기와 불굴의 도전 정신", categoryLabel: "운세 개념", metaTitle: "권토중래의 비결: 실패를 성공의 발판으로 바꾸는 법", metaDescription: "다시 일어서는 힘, 권토중래의 의미와 재기를 돕는 운세 활용법을 소개합니다. 불굴의 투지로 인생의 2막을 여는 법을 확인하세요." },
+  "geum-ji-ok-yeop-value": { title: "금지옥엽(金枝玉葉)의 귀한 인연과 자존감 보호", categoryLabel: "관계 & 궁합", metaTitle: "금지옥엽 사주: 타고난 귀함과 자존감을 지키는 법", metaDescription: "귀한 존재를 뜻하는 금지옥엽의 명리적 의미를 풀이합니다. 스스로를 귀하게 여겨 운을 높이는 자존감 개운법을 확인하세요." },
+  "nak-hwa-yu-su-flow": { title: "낙화유수(落花流水)의 순응과 자연스러운 운의 흐름", categoryLabel: "운세 개념", metaTitle: "낙화유수의 지혜: 집착을 버리고 운의 흐름에 맡기는 법", metaDescription: "순리를 따르는 낙화유수의 의미와 정서적 평온을 찾는 법을 알아봅니다. 억지스러운 노력을 멈추고 운을 따르는 비결을 확인하세요." },
+  "ma-i-dong-pung-focus": { title: "마이동풍(馬耳東風)의 소신 경영과 부정적 기운 차단", categoryLabel: "사주 기초", metaTitle: "마이동풍의 처세술: 주변의 소음을 이겨내고 성공하는 법", metaDescription: "타인의 비난을 흘려보내는 마이동풍의 지혜를 알아봅니다. 강한 멘탈로 자신의 신념을 지키는 개운법을 확인하세요." },
+  "myeong-bul-heo-jeon-reputation": { title: "명불허전(名不虛傳)의 실력 쌓기와 브랜드 가치", categoryLabel: "재물 & 직업", metaTitle: "명불허전의 가치: 이름값을 실력으로 증명하는 법", metaDescription: "명성에 합당한 능력을 뜻하는 명불허전의 의미를 분석합니다. 실질적인 전문성을 통해 브랜드 가치를 높이는 법을 확인하세요." },
+  "baek-jeon-bul-tae-strategy": { title: "백전불태(百戰不殆)의 전략적 사고와 자기 객관화", categoryLabel: "사주 기초", metaTitle: "백전불태의 인생 전략: 사주 분석으로 실패를 예방하는 법", metaDescription: "나를 알고 적을 아는 지혜, 백전불태의 현대적 해석을 알아봅니다. 자기 객관화를 통해 위태롭지 않은 성공을 거두는 비결을 확인하세요." },
+  "hwa-ryong-jeom-jeong-peak": { title: "화룡점정(畫龍點睛)의 마무리와 성과 극대화 기술", categoryLabel: "재물 & 직업", metaTitle: "화룡점정의 마무리 비법: 일의 완성도를 높여 운을 잡는 법", metaDescription: "핵심을 찌르는 완벽한 마무리, 화룡점정의 의미와 성과 극대화 전략을 알아봅니다. 인생의 정점을 찍는 명리적 조언을 확인하세요." },
+  "gae-gwa-cheon-seon-reform": { title: "개과천선(改過遷善)의 운명 교정과 자기 혁신법", categoryLabel: "운세 개념", metaTitle: "개과천선의 개운법: 과거를 지우고 새로운 운명을 쓰는 지혜", metaDescription: "잘못을 고쳐 선으로 나아가는 개과천선의 명리적 의미를 분석합니다. 자기 혁신을 통해 운의 흐름을 바꾸는 법을 확인하세요." },
+  "gyeon-ri-sa-ui-wealth": { title: "견리사의(見利思義)의 재물 철학과 지속 가능한 부", categoryLabel: "재물 & 직업", metaTitle: "견리사의의 재물운 관리: 부와 명예를 동시에 거머쥐는 법", metaDescription: "이익 앞에서 의로움을 먼저 생각하는 견리사의의 명리적 해석을 담았습니다. 올바른 재물관으로 운을 지키는 비결을 확인하세요." },
+  "go-rip-mu-won-solitude": { title: "고립무원(孤立無援)의 고독한 시기와 내면의 자립", categoryLabel: "관계 & 궁합", metaTitle: "고립무원의 시기를 지나는 법: 외로움을 자립의 동력으로", metaDescription: "도움받을 곳 없는 고립무원의 명리적 의미를 분석합니다. 고독한 운의 흐름 속에서 내면의 성취를 이루는 개운법을 확인하세요." },
+  "dong-byeong-sang-ryeon-empathy": { title: "동병상련(同病相憐)의 공감 능력과 치유의 인연", categoryLabel: "관계 & 궁합", metaTitle: "동병상련의 치유학: 아픔을 나누어 복을 만드는 인연의 신비", metaDescription: "같은 처지의 사람끼리 돕는 동병상련의 명리적 가치를 알아봅니다. 공감을 통해 악연을 선연으로 바꾸는 법을 확인하세요." },
+  "ma-bu-jak-chim-grit": { title: "마부작침(磨斧作針)의 장인 정신과 대운의 완성", categoryLabel: "재물 & 직업", metaTitle: "마부작침의 성공학: 꾸준함으로 바위를 뚫고 운을 얻는 법", metaDescription: "도끼를 갈아 바늘을 만드는 마부작침의 명리적 해석을 전합니다. 포기하지 않는 끈기가 어떻게 대운을 완성하는지 확인하세요." },
+  "sa-myeon-cho-ga-crisis": { title: "사면초가(四面楚歌)의 위기 관리와 운명의 탈출구", categoryLabel: "운세 개념", metaTitle: "사면초가의 위기 돌파: 막막한 운명에서 탈출구를 찾는 법", metaDescription: "사방이 막힌 사면초가 상황의 명리적 대처법을 소개합니다. 고립된 운의 흐름을 깨고 다시 일어나는 법을 확인하세요." },
+  "su-su-bang-gwan-patience": { title: "수수방관(袖手傍觀)의 절제와 관조의 미학", categoryLabel: "관계 & 궁합", metaTitle: "수수방관의 처세: 불필요한 갈등을 피하고 운을 지키는 법", metaDescription: "팔짱 끼고 지켜보는 수수방관의 명리적 역설을 알아봅니다. 개입하지 않음으로써 얻는 평온과 지혜로운 기다림을 확인하세요." },
+  "yeok-ji-sa-ji-empathy": { title: "역지사지(易地思之)의 공감과 인간관계 개운법", categoryLabel: "관계 & 궁합", metaTitle: "역지사지의 지혜: 인간관계의 갈등을 풀고 인덕을 쌓는 비결", metaDescription: "처지를 바꿔 생각하는 역지사지의 명리적 효능을 분석합니다. 타인의 입장을 헤아려 악연을 선연으로 바꾸는 법을 확인하세요." },
+  "yu-jong-ui-mi-completion": { title: "유종의 미(有終之美)와 운의 결실을 맺는 법", categoryLabel: "운세 개념", metaTitle: "유종의 미를 거두는 법: 완벽한 마무리로 운의 결실을 맺는 비결", metaDescription: "끝맺음의 중요성을 뜻하는 유종의 미를 명리학적으로 풀이합니다. 인생의 단계를 아름답게 마무리하고 새 운을 맞는 법을 확인하세요." },
+  "cheon-jae-il-u-opportunity": { title: "천재일우(千載一遇)의 기회 포착과 운의 타이밍", categoryLabel: "사주 기초", metaTitle: "천재일우의 기회 포착: 인생의 대운이 열릴 때 비상하는 법", metaDescription: "좀처럼 오기 힘든 절호의 기회, 천재일우의 명리적 배경을 알아봅니다. 운명의 골든타임을 포착하여 성공을 거머쥐는 비결을 확인하세요." },
+  "gyeok-hwa-so-yang-solution": { title: "격화소양(隔靴搔痒)의 답답함과 용신 찾기 전략", categoryLabel: "사주 기초", metaTitle: "격화소양의 운세: 헛수고를 멈추고 인생의 핵심을 찾는 법", metaDescription: "애써도 성과 없는 격화소양의 상황을 명리학적으로 분석합니다. 노력의 방향을 수정하여 개운하는 비결을 확인하세요." },
+  "go-jang-nan-myeong-partnership": { title: "고장난명(孤掌難鳴)의 협력 전략과 상생 인프라", categoryLabel: "관계 & 궁합", metaTitle: "고장난명의 지혜: 독불장군을 벗어나 협력으로 개운하는 법", metaDescription: "혼자서는 소리를 낼 수 없는 고장난명의 원리를 명리학적으로 풀이합니다. 파트너십을 통해 운을 극대화하는 법을 확인하세요." },
+  "geum-gwa-ok-jo-principle": { title: "금과옥조(金科玉條)의 원칙 수립과 신뢰 자본 구축", categoryLabel: "사주 기초", metaTitle: "금과옥조의 처세: 흔들리지 않는 원칙으로 명예를 쌓는 법", metaDescription: "인생의 소중한 규칙을 뜻하는 금과옥조의 명리학적 가치를 분석합니다. 원칙을 지켜 운을 강화하는 비결을 확인하세요." },
+  "nang-jung-ji-chu-talent": { title: "낭중지추(囊中之錐)의 재능 발현과 자연스러운 성공", categoryLabel: "재물 & 직업", metaTitle: "낭중지추 사주: 숨길 수 없는 재능으로 성공을 쟁취하는 법", metaDescription: "주머니 속 송곳 같은 비범한 재능, 낭중지추의 명리적 의미를 풀이합니다. 자신의 가치를 세상에 드러내는 개운법을 확인하세요." },
+  "no-sim-cho-sa-anxiety": { title: "노심초사(勞心焦思)의 에너지 소모와 불안 관리", categoryLabel: "건강 & 신체", metaTitle: "노심초사의 굴레에서 벗어나는 법: 불안을 실행력으로 전환하기", metaDescription: "과도한 걱정이 운세에 미치는 영향, 노심초사의 명리적 해석을 전합니다. 마음의 평온을 되찾고 운을 틔우는 법을 확인하세요." },
+  "da-sa-da-nan-resilience": { title: "다사다난(多事多難)의 시련 극복과 회복 탄력성", categoryLabel: "운세 개념", metaTitle: "다사다난한 운을 축복으로 바꾸는 법: 시련 속의 성장 전략", metaDescription: "일도 많고 탈도 많은 다사다난의 시기를 지혜롭게 넘기는 법을 알아봅니다. 명리학적으로 위기를 기회로 전환하는 법을 확인하세요." },
+  "dae-dong-so-i-harmony": { title: "대동소이(大同小異)의 차이 극복과 화합의 기술", categoryLabel: "관계 & 궁합", metaTitle: "대동소이의 화합법: 작은 차이를 넘어 큰 인연을 맺는 법", metaDescription: "같음 속의 다름을 인정하는 대동소이의 명리적 해석을 전합니다. 인간관계의 갈등을 해소하고 상생하는 비결을 확인하세요." },
+  "dong-go-dong-rak-teamwork": { title: "동고동락(同苦同樂)의 팀워크와 성공의 공유", categoryLabel: "관계 & 궁합", metaTitle: "동고동락의 인적 자산: 고난을 함께하고 성공을 나누는 운의 힘", metaDescription: "즐거움과 괴로움을 공유하는 동고동락의 가치를 명리학적으로 분석합니다. 진정한 내 편을 만들어 대운을 잡는 법을 확인하세요." },
+  "ma-cheon-ru-ambition": { title: "마천루(摩天樓)의 야망과 균형 잡힌 성공", categoryLabel: "재물 & 직업", metaTitle: "마천루 사주: 거대한 성공을 일구고 유지하는 비결", metaDescription: "하늘을 찌르는 야망, 마천루의 명리적 의미와 성공 전략을 알아봅니다. 높은 성취 뒤의 위기를 관리하는 법을 확인하세요." },
+  "man-sa-hyeong-tong-flow": { title: "만사형통(萬事亨通)의 순행과 복록의 선순환", categoryLabel: "운세 개념", metaTitle: "만사형통의 운세 관리: 모든 일이 풀리는 황금기를 활용하는 법", metaDescription: "만사가 순조로운 만사형통의 명리적 배경과 실천법을 알아봅니다. 운의 선순환을 유지하고 확장하는 비결을 확인하세요." },
+  "sa-myeon-cho-ga-strategy": { title: "사면초가(四面楚歌)의 위기 관리와 운명의 탈출구", categoryLabel: "운세 개념", metaTitle: "사면초가의 위기 대처법: 사주상 고립을 돌파구로 바꾸는 법", metaDescription: "사방이 막힌 사면초가 상황의 명리적 의미와 탈출 전략을 알아봅니다. 극한의 위기를 기회로 바꾸는 마음가짐을 확인하세요." },
+  "pung-jeon-deung-hwa-resilience": { title: "풍전등화(風前燈火)의 위기와 내면의 중심 잡기", categoryLabel: "운세 개념", metaTitle: "풍전등화의 위기 극복: 흔들리는 운명 속에서 중심을 잡는 법", metaDescription: "위태로운 상황을 뜻하는 풍전등화의 명리적 대처법을 알아봅니다. 거센 운명의 바람 속에서 나를 지키는 법을 확인하세요." },
+  "ham-gu-mu-eon-silence": { title: "함구무언(緘口無言)의 구설수 차단과 기운 보존법", categoryLabel: "관계 & 궁합", metaTitle: "함구무언의 개운법: 구설수를 잠재우고 내면의 힘을 기르는 법", metaDescription: "말을 아껴 화를 피하는 함구무언의 명리적 지혜를 알아봅니다. 침묵을 통해 운의 흐름을 정화하는 비결을 확인하세요." },
+  "hyeong-hyeong-saek-saek-uniqueness": { title: "형형색색(形形色色)의 개성 발휘와 다양성의 가치", categoryLabel: "사주 기초", metaTitle: "형형색색 사주 풀이: 자신만의 고유한 개성으로 성공하는 법", metaDescription: "다양성과 개성을 뜻하는 형형색색의 명리적 의미를 알아봅니다. 사주에 숨겨진 다채로운 재능을 발굴하고 활용하는 법을 확인하세요." },
+  "ho-yeon-ji-gi-spirit": { title: "호연지기(浩然之氣)의 기개와 대운을 담는 그릇", categoryLabel: "사주 기초", metaTitle: "호연지기의 개운법: 대범한 기개로 인생의 큰 운을 잡는 법", metaDescription: "넓고 큰 기운을 뜻하는 호연지기의 명리적 의미를 알아봅니다. 내면의 그릇을 키워 대운을 맞이하는 비결을 확인하세요." },
+  "hwa-mu-sip-il-hong-modesty": { title: "화무십일홍(花無十日紅)의 겸손과 변화의 수용", categoryLabel: "운세 개념", metaTitle: "화무십일홍의 교훈: 전성기에 겸손하고 하락기를 대비하는 법", metaDescription: "화려함의 덧없음과 변화를 뜻하는 화무십일홍의 명리적 해석을 전합니다. 운의 리듬에 맞춰 인생을 경영하는 법을 확인하세요." },
+  "heung-jin-bi-rae-balance": { title: "흥진비래(興盡悲來)의 균형 감각과 위기 관리", categoryLabel: "운세 개념", metaTitle: "흥진비래의 지혜: 인생의 기복 속에서 평정심을 유지하는 법", metaDescription: "즐거움 뒤에 오는 슬픔을 뜻하는 흥진비래의 명리적 의미를 알아봅니다. 운의 순환을 이해하고 마음의 평화를 찾는 법을 확인하세요." }
+};
+
 const metaData: Record<string, { title: string, description: string, h1?: string, services?: { href: string, label: string }[], bodyContent?: string }> = {
     '/': {
       title: "무료 사주 무운 (MuUn) - 회원가입 없는 100% 무료 사주풀이 및 2026년 운세",
@@ -1115,6 +1234,7 @@ const metaData: Record<string, { title: string, description: string, h1?: string
     const yearlyFortuneMatch = options.path.match(/^\/yearly-fortune\/(\d{4}-\d{2}-\d{2})$/);
     const dreamMatch = options.path.match(/^\/dream\/([a-z0-9-]+)$/);
     const guideSlugMatch = options.path.match(/^\/guide\/([a-z0-9-]+)$/);
+    const dictionarySlugMatch = options.path.match(/^\/dictionary\/([a-z0-9-]+)$/);
     
     if (yearlyFortuneMatch) {
       const birthDate = yearlyFortuneMatch[1];
@@ -1165,6 +1285,29 @@ const metaData: Record<string, { title: string, description: string, h1?: string
         services: [
           { href: '/guide', label: '운세 칼럼 목록' },
           { href: '/lifelong-saju', label: '평생 사주' },
+        ]
+      };
+    } else if (dictionarySlugMatch) {
+      // 운세 사전 개별 페이지 동적 메타 (SEO 최적화)
+      const dictSlug = dictionarySlugMatch[1];
+      const dictInfo = dictionaryKeywordMap[dictSlug];
+      const dictTitle = dictInfo?.title || dictSlug.replace(/-/g, ' ');
+      const dictCategory = dictInfo?.categoryLabel || '운세 사전';
+      const dictMetaTitle = dictInfo?.metaTitle || `${dictTitle} - 사주팔자 ${dictCategory} 의미와 특성`;
+      const dictMetaDesc = dictInfo?.metaDescription || `${dictTitle}의 사주적 의미와 특성을 해설합니다. 무운 운세 사전에서 무료로 확인하세요.`;
+      currentMeta = {
+        title: `${dictMetaTitle} - 무운 운세 사전`,
+        description: dictMetaDesc,
+        h1: `${dictTitle} - ${dictCategory}`,
+        bodyContent: `
+          <section>
+            <h2>${dictTitle}</h2>
+            <p>${dictMetaDesc} 무운 운세 사전에서 사주팔자의 핵심 개념을 회원가입 없이 100% 무료로 확인하세요.</p>
+          </section>
+        `,
+        services: [
+          { href: '/fortune-dictionary', label: '운세 사전 목록' },
+          { href: '/lifelong-saju', label: '평생 사주 분석' },
         ]
       };
     } else {
@@ -1282,6 +1425,7 @@ const metaData: Record<string, { title: string, description: string, h1?: string
   // Schema.org 구조화 데이터 생성
   const isDreamPage = /^\/dream\/[a-z0-9-]+$/.test(options.path);
   const isGuidePage = /^\/guide\/[a-z0-9-]+$/.test(options.path);
+  const isDictionaryPage = /^\/dictionary\/[a-z0-9-]+$/.test(options.path);
 
   let schemaData: object;
   if (isDreamPage) {
@@ -1315,6 +1459,28 @@ const metaData: Record<string, { title: string, description: string, h1?: string
         "logo": { "@type": "ImageObject", "url": "https://muunsaju.com/images/horse_mascot.png" }
       },
       "mainEntityOfPage": { "@type": "WebPage", "@id": canonicalUrl },
+      "inLanguage": "ko-KR"
+    };
+  } else if (isDictionaryPage) {
+    const dictSlugForSchema = options.path.replace('/dictionary/', '');
+    const dictInfoForSchema = dictionaryKeywordMap[dictSlugForSchema];
+    schemaData = {
+      "@context": "https://schema.org",
+      "@type": "DefinedTerm",
+      "name": dictInfoForSchema?.title || currentMeta.h1 || currentMeta.title,
+      "description": currentMeta.description,
+      "url": canonicalUrl,
+      "inDefinedTermSet": {
+        "@type": "DefinedTermSet",
+        "name": "무운 운세 사전",
+        "url": "https://muunsaju.com/fortune-dictionary"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "무운 (MuUn)",
+        "url": "https://muunsaju.com",
+        "logo": { "@type": "ImageObject", "url": "https://muunsaju.com/images/horse_mascot.png" }
+      },
       "inLanguage": "ko-KR"
     };
   } else if (options.path === '/') {
@@ -1409,7 +1575,7 @@ const metaData: Record<string, { title: string, description: string, h1?: string
         `<meta property="og:title" content="${currentMeta.title}">`,
         `<meta property="og:description" content="${currentMeta.description}">`,
         `<meta property="og:url" content="${canonicalUrl}">`,
-        `<meta property="og:type" content="${isGuidePage ? 'article' : 'website'}">`,
+        `<meta property="og:type" content="${(isGuidePage || isDictionaryPage || isDreamPage) ? 'article' : 'website'}">`,
         `<meta property="og:site_name" content="무운 (MuUn)">`,
         `<meta property="og:locale" content="ko_KR">`,
         `<meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png">`,
