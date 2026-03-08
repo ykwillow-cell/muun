@@ -452,6 +452,18 @@ async function run() {
   '/dream/white-shining-teeth-dream',
   '/dream/white-tiger-riding-dream',
   '/dream/zombie-attack-dream-meaning',
+  '/dream/catch-big-carp-clear-water-dream',
+  '/dream/colorful-bird-flies-into-house-dream',
+  '/dream/dark-muddy-water-dream',
+  '/dream/death-dream-family-dies-corpse-dream',
+  '/dream/front-tooth-falls-out-no-blood-dream',
+  '/dream/golden-pig-enters-house-dream',
+  '/dream/golden-poop-toilet-dream',
+  '/dream/lost-road-familiar-place-dream',
+  '/dream/pig-dream-lucky-money-dream',
+  '/dream/poop-toilet-wealth-dream',
+  '/dream/sunshine-after-rain-dream',
+  '/dream/toes-grow-longer-dream',
   ];
 
   // 동적 라우트 (신년운세 - 연도별)
