@@ -452,7 +452,7 @@ export async function render(options: { path: string }) {
       title: "꿈해몽 베스트 10: 조상 꿈, 불 꿈, 돼지 꿈이 의미하는 길몽 | 무운 (MuUn)",
       description: "꿈해몽 베스트 10: 조상 꿈, 불 꿈, 돼지 꿈이 의미하는 길몽에 대한 전문적인 사주 풀이와 지혜를 만나보세요. 30년 내공의 역술인이 전하는 개운의 기술.",
       h1: "꿈해몽 베스트 10: 조상 꿈, 불 꿈, 돼지 꿈이 의미하는 길몽"
-    }
+    },
     '/guide/family-family-communication-90b3867b': {
       title: "가족 갈등 해결 사주 처방: 비겁의 충돌과 화합의 기술 | 무운 (MuUn)",
       description: "집에서 느끼는 소외감과 잦은 다툼, 사주 속 비겁의 경쟁 때문일 수 있습니다. 식상을 활용한 소통법과 거실 풍수로 화목한 가정을 만드세요.",
@@ -768,12 +768,12 @@ export async function render(options: { path: string }) {
         title: `${keyword} 꿈해몽 - 꿈의 의미와 해석 | 무운 꿈해몽 사전`,
         description: `${keyword}에 관한 꿈의 의미와 해석을 알아보세요. 무운 꿈해몽 사전에서 350가지 꿈의 상징과 길흉을 무료로 확인하세요.`,
         h1: `${keyword} 꿈해몽`,
-        bodyContent: \`
+        bodyContent: `
           <section>
-            <h2>\${keyword} 꿈의 의미</h2>
-            <p>\${keyword}에 관한 꿈은 다양한 의미를 담고 있습니다. 무운 꿈해몽 사전에서 꿈의 상징과 길흉을 자세히 확인하세요.</p>
+            <h2>${keyword} 꿈의 의미</h2>
+            <p>${keyword}에 관한 꿈은 다양한 의미를 담고 있습니다. 무운 꿈해몽 사전에서 꿈의 상징과 길흉을 자세히 확인하세요.</p>
           </section>
-        \`,
+        `,
         services: [
           { href: '/dream', label: '꿈해몽 사전' },
           { href: '/yearly-fortune', label: '신년운세' },
