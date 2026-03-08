@@ -57,7 +57,7 @@ async function fetchColumnsFromSupabase() {
     console.log('📡 Supabase에서 칼럼 데이터 조회 중...');
     const { data, error } = await supabase
       .from('columns')
-      .select('id, published_at')
+      .select('id, slug, published_at')
       .eq('published', true)
       .order('published_at', { ascending: false });
 
@@ -160,7 +160,7 @@ function generateSitemap(slugs, columns, dreams) {
   columns.forEach(col => {
     const lastmod = col.published_at ? col.published_at.split('T')[0] : currentDate;
     xml += `  <url>
-    <loc>${baseUrl}/guide/${col.id}</loc>
+    <loc>${baseUrl}/guide/${col.slug || col.id}</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>

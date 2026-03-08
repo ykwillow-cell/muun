@@ -441,169 +441,307 @@ export async function render(options: { path: string }) {
         </section>
       `,
       services: [
-        { href: '/guide/column-001', label: '인생의 대운이 바뀌기 전, 반드시 나타나는 징조 3가지' },
-        { href: '/guide/column-002', label: '내 사주팔자 스스로 보는 법: 만세력 8글자의 비밀' },
-        { href: '/guide/column-003', label: '자녀의 학업운을 높여주는 사주별 공부 환경 조성법' },
-        { href: '/guide/column-004', label: '사주 오행(목화토금수) 자가 진단: 나에게 부족한 기운 찾기' },
-        { href: '/guide/column-005', label: '태어난 시간 모를 때 사주 보는 법' },
+        { href: '/guide/luck-2026-daeun-change-b0d87c9e', label: '2026년 대운 변화: 당신의 운명이 바뀌는 시기를 미리 알아보세요' },
+        { href: '/guide/luck-fortune-breakthrough-cef1d14a', label: '막혔던 운의 고속도로를 뻥 뚫어주는 세 가지 마법의 습관' },
+        { href: '/guide/fortune-flow-2026-second-half-caution-e347d445', label: '2026년 하반기, \'이것\' 세 가지만 조심하면 평안합니다' },
+        { href: '/guide/luck-room-cleaning-83c59830', label: '내 방 청소만 잘해도 막힌 운이 술술 풀리는 이유' },
+        { href: '/guide/luck-fortune-secret-307e549f', label: '메마른 땅에 단비가 내리듯 당신의 인생을 촉촉하게 적셔줄 운의 비밀' },
       ]
-    },
-    '/guide/column-001': {
-      title: "인생의 대운이 바뀌기 전, 반드시 나타나는 징조 3가지 | 무운 (MuUn)",
-      description: "인생의 대운이 바뀌기 전, 반드시 나타나는 징조 3가지에 대한 전문적인 사주 풀이와 지혜를 만나보세요. 30년 내공의 역술인이 전하는 개운의 기술.",
-      h1: "인생의 대운이 바뀌기 전, 반드시 나타나는 징조 3가지"
-    },
-    '/guide/column-002': {
-      title: "내 사주팔자 스스로 보는 법: 만세력 8글자의 비밀 | 무운 (MuUn)",
-      description: "사주의 기본이 되는 8글자(년월일시)의 의미를 알면, 자신의 사주를 훨씬 더 깊이 있게 이해할 수 있습니다.",
-      h1: "내 사주팔자 스스로 보는 법: 만세력 8글자의 비밀"
-    },
-    '/guide/column-003': {
-      title: "자녀의 학업운을 높여주는 사주별 공부 환경 조성법 | 무운 (MuUn)",
-      description: "자녀의 학업운을 높여주는 사주별 공부 환경 조성법에 대한 전문적인 사주 풀이와 지혜를 만나보세요. 30년 내공의 역술인이 전하는 개운의 기술.",
-      h1: "자녀의 학업운을 높여주는 사주별 공부 환경 조성법"
-    },
-    '/guide/column-004': {
-      title: "사주 오행(목화토금수) 자가 진단: 나에게 부족한 기운 찾기 | 무운 (MuUn)",
-      description: "사주 오행(목화토금수) 자가 진단: 나에게 부족한 기운 찾기에 대한 전문적인 사주 풀이와 지혜를 만나보세요. 30년 내공의 역술인이 전하는 개운의 기술.",
-      h1: "사주 오행(목화토금수) 자가 진단: 나에게 부족한 기운 찾기"
-    },
-    '/guide/column-005': {
-      title: "태어난 시간 모를 때 사주 보는 법: 특징으로 유추하는 생시 | 무운 (MuUn)",
-      description: "태어난 시간 모를 때 사주 보는 법: 특징으로 유추하는 생시에 대한 전문적인 사주 풀이와 지혜를 만나보세요. 30년 내공의 역술인이 전하는 개운의 기술.",
-      h1: "태어난 시간 모를 때 사주 보는 법: 특징으로 유추하는 생시"
-    },
-    '/guide/column-006': {
-      title: "사주 천간과 지지의 의미: 하늘의 기운과 땅의 환경 | 무운 (MuUn)",
-      description: "사주 천간과 지지의 의미: 하늘의 기운과 땅의 환경에 대한 전문적인 사주 풀이와 지혜를 만나보세요. 30년 내공의 역술인이 전하는 개운의 기술.",
-      h1: "사주 천간과 지지의 의미: 하늘의 기운과 땅의 환경"
-    },
-    '/guide/column-007': {
-      title: "내 사주에 '관성'이 많다면? 직장운과 명예운의 상관관계 | 무운 (MuUn)",
-      description: "내 사주에 '관성'이 많다면? 직장운과 명예운의 상관관계에 대한 전문적인 사주 풀이와 지혜를 만나보세요. 30년 내공의 역술인이 전하는 개운의 기술.",
-      h1: "내 사주에 '관성'이 많다면? 직장운과 명예운의 상관관계"
-    },
-    '/guide/column-008': {
-      title: "사주 '비겁'이 강한 사람의 특징: 자존감과 인간관계의 지혜 | 무운 (MuUn)",
-      description: "사주 '비겁'이 강한 사람의 특징: 자존감과 인간관계의 지혜에 대한 전문적인 사주 풀이와 지혜를 만나보세요. 30년 내공의 역술인이 전하는 개운의 기술.",
-      h1: "사주 '비겁'이 강한 사람의 특징: 자존감과 인간관계의 지혜"
-    },
-    '/guide/column-009': {
-      title: "올해 대운이 바뀌는 나이, 어떻게 알 수 있을까? | 무운 (MuUn)",
-      description: "올해 대운이 바뀌는 나이, 어떻게 알 수 있을까?에 대한 전문적인 사주 풀이와 지혜를 만나보세요. 30년 내공의 역술인이 전하는 개운의 기술.",
-      h1: "올해 대운이 바뀌는 나이, 어떻게 알 수 있을까?"
-    },
-    '/guide/column-010': {
-      title: "삼재(三災)를 기회로 바꾸는 법: 복삼재와 개운의 기술 | 무운 (MuUn)",
-      description: "삼재(三災)를 기회로 바꾸는 법: 복삼재와 개운의 기술에 대한 전문적인 사주 풀이와 지혜를 만나보세요. 30년 내공의 역술인이 전하는 개운의 기술.",
-      h1: "삼재(三災)를 기회로 바꾸는 법: 복삼재와 개운의 기술"
-    },
-    '/guide/column-011': {
-      title: "매일 아침 실천하는 운 좋아지는 습관 5가지 | 무운 (MuUn)",
-      description: "매일 아침 실천하는 운 좋아지는 습관 5가지에 대한 전문적인 사주 풀이와 지혜를 만나보세요. 30년 내공의 역술인이 전하는 개운의 기술.",
-      h1: "매일 아침 실천하는 운 좋아지는 습관 5가지"
-    },
-    '/guide/column-012': {
-      title: "이름이 운명에 미치는 영향: 성명학으로 보는 개명 효과 | 무운 (MuUn)",
-      description: "이름이 운명에 미치는 영향: 성명학으로 보는 개명 효과에 대한 전문적인 사주 풀이와 지혜를 만나보세요. 30년 내공의 역술인이 전하는 개운의 기술.",
-      h1: "이름이 운명에 미치는 영향: 성명학으로 보는 개명 효과"
-    },
-    '/guide/column-013': {
-      title: "나쁜 운을 피해가는 법: '기신'운을 현명하게 보내는 자세 | 무운 (MuUn)",
-      description: "나쁜 운을 피해가는 법: '기신'운을 현명하게 보내는 자세에 대한 전문적인 사주 풀이와 지혜를 만나보세요. 30년 내공의 역술인이 전하는 개운의 기술.",
-      h1: "나쁜 운을 피해가는 법: '기신'운을 현명하게 보내는 자세"
-    },
-    '/guide/column-014': {
-      title: "타고난 재물복 확인하기: 부자가 되는 사주의 특징 | 무운 (MuUn)",
-      description: "타고난 재물복 확인하기: 부자가 되는 사주의 특징에 대한 전문적인 사주 풀이와 지혜를 만나보세요. 30년 내공의 역술인이 전하는 개운의 기술.",
-      h1: "타고난 재물복 확인하기: 부자가 되는 사주의 특징"
-    },
-    '/guide/column-015': {
-      title: "사주에 '식신생재'가 있다면? 스스로 돈을 벌어들이는 능력 | 무운 (MuUn)",
-      description: "사주에 '식신생재'가 있다면? 스스로 돈을 벌어들이는 능력에 대한 전문적인 사주 풀이와 지혜를 만나보세요. 30년 내공의 역술인이 전하는 개운의 기술.",
-      h1: "사주에 '식신생재'가 있다면? 스스로 돈을 벌어들이는 능력"
-    },
-    '/guide/column-016': {
-      title: "로또 당첨자들의 사주 특징? 횡재수와 편재운의 비밀 | 무운 (MuUn)",
-      description: "로또 당첨자들의 사주 특징? 횡재수와 편재운의 비밀에 대한 전문적인 사주 풀이와 지혜를 만나보세요. 30년 내공의 역술인이 전하는 개운의 기술.",
-      h1: "로또 당첨자들의 사주 특징? 횡재수와 편재운의 비밀"
-    },
-    '/guide/column-017': {
-      title: "지갑 색상으로 재물운 높이기: 사주 오행별 행운의 컬러 | 무운 (MuUn)",
-      description: "지갑 색상으로 재물운 높이기: 사주 오행별 행운의 컬러에 대한 전문적인 사주 풀이와 지혜를 만나보세요. 30년 내공의 역술인이 전하는 개운의 기술.",
-      h1: "지갑 색상으로 재물운 높이기: 사주 오행별 행운의 컬러"
-    },
-    '/guide/column-018': {
-      title: "내 사주에 맞는 직업 찾기: 적성에 맞는 오행별 직무 가이드 | 무운 (MuUn)",
-      description: "내 사주에 맞는 직업 찾기: 적성에 맞는 오행별 직무 가이드에 대한 전문적인 사주 풀이와 지혜를 만나보세요. 30년 내공의 역술인이 전하는 개운의 기술.",
-      h1: "내 사주에 맞는 직업 찾기: 적성에 맞는 오행별 직무 가이드"
-    },
-    '/guide/column-019': {
-      title: "사주로 보는 자녀와의 궁합: 갈등을 줄이고 소통하는 법 | 무운 (MuUn)",
-      description: "사주로 보는 자녀와의 궁합: 갈등을 줄이고 소통하는 법에 대한 전문적인 사주 풀이와 지혜를 만나보세요. 30년 내공의 역술인이 전하는 개운의 기술.",
-      h1: "사주로 보는 자녀와의 궁합: 갈등을 줄이고 소통하는 법"
-    },
-    '/guide/column-020': {
-      title: "우리 아이 진로 고민, 사주 속 '인성'과 '식상'에 답이 있다 | 무운 (MuUn)",
-      description: "우리 아이 진로 고민, 사주 속 '인성'과 '식상'에 답이 있다에 대한 전문적인 사주 풀이와 지혜를 만나보세요. 30년 내공의 역술인이 전하는 개운의 기술.",
-      h1: "우리 아이 진로 고민, 사주 속 '인성'과 '식상'에 답이 있다"
-    },
-    '/guide/column-021': {
-      title: "가족 간의 오행 조화: 집안의 기운을 살리는 가족 사주 배치 | 무운 (MuUn)",
-      description: "가족 간의 오행 조화: 집안의 기운을 살리는 가족 사주 배치에 대한 전문적인 사주 풀이와 지혜를 만나보세요. 30년 내공의 역술인이 전하는 개운의 기술.",
-      h1: "가족 간의 오행 조화: 집안의 기운을 살리는 가족 사주 배치"
-    },
-    '/guide/column-022': {
-      title: "효도하는 자녀 사주는 따로 있을까? 사주로 보는 고부 갈등과 효도 | 무운 (MuUn)",
-      description: "효도하는 자녀 사주는 따로 있을까? 사주로 보는 고부 갈등과 효도에 대한 전문적인 사주 풀이와 지혜를 만나보세요. 30년 내공의 역술인이 전하는 개운의 기술.",
-      h1: "효도하는 자녀 사주는 따로 있을까? 사주로 보는 고부 갈등과 효도"
-    },
-    '/guide/column-023': {
-      title: "부부 갈등의 원인과 해결: 사주로 보는 관계의 지혜 | 무운 (MuUn)",
-      description: "부부 갈등의 원인과 해결: 사주로 보는 관계의 지혜에 대한 전문적인 사주 풀이와 지혜를 만나보세요. 30년 내공의 역술인이 전하는 개운의 기술.",
-      h1: "부부 갈등의 원인과 해결: 사주로 보는 관계의 지혜"
-    },
-    '/guide/column-024': {
-      title: "나를 도와줄 '귀인'은 어떤 사람일까? 사주 속 '천을귀인' | 무운 (MuUn)",
-      description: "나를 도와줄 '귀인'은 어떤 사람일까? 사주 속 '천을귀인'에 대한 전문적인 사주 풀이와 지혜를 만나보세요. 30년 내공의 역술인이 전하는 개운의 기술.",
-      h1: "나를 도와줄 '귀인'은 어떤 사람일까? 사주 속 '천을귀인'"
-    },
-    '/guide/column-025': {
-      title: "도화살과 홍염살의 차이: 사람을 끄는 매력의 비밀 | 무운 (MuUn)",
-      description: "도화살과 홍염살의 차이: 사람을 끄는 매력의 비밀에 대한 전문적인 사주 풀이와 지혜를 만나보세요. 30년 내공의 역술인이 전하는 개운의 기술.",
-      h1: "도화살과 홍염살의 차이: 사람을 끄는 매력의 비밀"
-    },
-    '/guide/column-026': {
-      title: "늦게 결혼해야 잘 사는 사주? 만혼(晩婚)이 유리한 특징 | 무운 (MuUn)",
-      description: "늦게 결혼해야 잘 사는 사주? 만혼(晩婚)이 유리한 특징에 대한 전문적인 사주 풀이와 지혜를 만나보세요. 30년 내공의 역술인이 전하는 개운의 기술.",
-      h1: "늦게 결혼해야 잘 사는 사주? 만혼(晩婚)이 유리한 특징"
-    },
-    '/guide/column-027': {
-      title: "집안에 두면 복이 들어오는 풍수 인테리어 소품 가이드 | 무운 (MuUn)",
-      description: "집안에 두면 복이 들어오는 풍수 인테리어 소품 가이드에 대한 전문적인 사주 풀이와 지혜를 만나보세요. 30년 내공의 역술인이 전하는 개운의 기술.",
-      h1: "집안에 두면 복이 들어오는 풍수 인테리어 소품 가이드"
-    },
-    '/guide/column-028': {
-      title: "사주 오행의 균형으로 알아보는 40대 이후 건강 관리 | 무운 (MuUn)",
-      description: "사주 오행의 균형으로 알아보는 40대 이후 건강 관리에 대한 전문적인 사주 풀이와 지혜를 만나보세요. 30년 내공의 역술인이 전하는 개운의 기술.",
-      h1: "사주 오행의 균형으로 알아보는 40대 이후 건강 관리"
-    },
-    '/guide/column-029': {
-      title: "침대 머리 방향과 숙면의 관계: 사주별 최적의 잠자리 위치 | 무운 (MuUn)",
-      description: "침대 머리 방향과 숙면의 관계: 사주별 최적의 잠자리 위치에 대한 전문적인 사주 풀이와 지혜를 만나보세요. 30년 내공의 역술인이 전하는 개운의 기술.",
-      h1: "침대 머리 방향과 숙면의 관계: 사주별 최적의 잠자리 위치"
     },
     '/guide/column-030': {
       title: "꿈해몽 베스트 10: 조상 꿈, 불 꿈, 돼지 꿈이 의미하는 길몽 | 무운 (MuUn)",
       description: "꿈해몽 베스트 10: 조상 꿈, 불 꿈, 돼지 꿈이 의미하는 길몽에 대한 전문적인 사주 풀이와 지혜를 만나보세요. 30년 내공의 역술인이 전하는 개운의 기술.",
       h1: "꿈해몽 베스트 10: 조상 꿈, 불 꿈, 돼지 꿈이 의미하는 길몽"
     }
+    '/guide/family-family-communication-90b3867b': {
+      title: "가족 갈등 해결 사주 처방: 비겁의 충돌과 화합의 기술 | 무운 (MuUn)",
+      description: "집에서 느끼는 소외감과 잦은 다툼, 사주 속 비겁의 경쟁 때문일 수 있습니다. 식상을 활용한 소통법과 거실 풍수로 화목한 가정을 만드세요.",
+      h1: "가족 간의 대화가 단절되고 고립감을 느낄 때 점검해야 할 비겁의 충돌"
+    },
+    '/guide/money-new-business-d972ab00': {
+      title: "사업 확장 전 필수 사주 체크: 식신생재와 대운의 흐름 | 무운 (MuUn)",
+      description: "사업을 키워야 할 때와 멈춰야 할 때를 명확히 구분하세요. 사주 속 식신과 재성의 관계를 통해 본 성공적인 사업 확장 전략.",
+      h1: "신규 사업이나 확장을 고민할 때 반드시 살펴야 할 식신생재의 동력"
+    },
+    '/guide/fortune-flow-gossip-slander-bc420b12': {
+      title: "구설수 퇴치 사주 비결: 상관의 살성을 잠재우는 법 | 무운 (MuUn)",
+      description: "억울한 비난과 오해로 힘드시나요? 사주 속 상관과 관성의 충돌을 이해하고, 구설을 막아주는 인성 개운법으로 명예를 지키세요.",
+      h1: "구설수와 비방이 끊이지 않을 때 확인해야 할 상관의 돌출과 대처법"
+    },
+    '/guide/money-contract-deal-7ce3dbac': {
+      title: "집 안 팔릴 때 보는 사주: 매매운과 문서운 강화법 | 무운 (MuUn)",
+      description: "부동산 매매와 계약이 자꾸 미뤄지시나요? 사주 속 인성의 상태를 확인하고 막힌 매매운을 뚫어주는 명리학적 처방을 확인하세요.",
+      h1: "문서 계약이나 매매가 자꾸 성사되지 않을 때 점검해야 할 인성의 고립"
+    },
+    '/guide/relation-bad-relationship-da1a0ab3': {
+      title: "악연을 끊고 귀인을 만나는 사주 비법: 인맥 개운 전략 | 무운 (MuUn)",
+      description: "주변 사람 때문에 힘들다면 사주 궁합을 확인하세요. 나를 돕는 귀인을 부르고 악연을 정리하는 명리학적 인연 관리법.",
+      h1: "새로운 인연이 자꾸 나를 힘들게 할 때 점검해야 할 악연의 사주 구조"
+    },
+    '/guide/career-exam-failure-e55e0eda': {
+      title: "시험 합격 사주 비결: 관인상생과 재극인 방지법 | 무운 (MuUn)",
+      description: "공부한 만큼 성적이 안 나오시나요? 사주 속 합격의 기운인 관성과 인성을 체크하고, 집중력을 높여주는 명리학적 개운법을 확인하세요.",
+      h1: "시험이나 자격증 취득이 자꾸 미끄러질 때 확인해야 할 관인상생의 단절"
+    },
+    '/guide/fortune-flow-project-failure-56c631ee': {
+      title: "일이 자꾸 엎어질 때: 사주 공망과 파살 극복 전략 | 무운 (MuUn)",
+      description: "노력해도 성과가 없는 이유, 혹시 공망운 때문인가요? 허무한 실패를 막고 마무리를 성공으로 이끄는 명리학적 대안.",
+      h1: "공들인 프로젝트가 막판에 엎어질 때 확인해야 할 공망과 파살"
+    },
+    '/guide/health-baekhosal-yangsal-b9d9fef4': {
+      title: "갑작스러운 질병과 사고 예방: 사주 살성 다스리는 법 | 무운 (MuUn)",
+      description: "건강 운이 꺾이는 시기, 내 사주 속 백호살과 양인살을 체크하세요. 식신을 활용한 건강 회복법과 오행 생활 수칙.",
+      h1: "유독 건강이 악화되는 해에 점검해야 할 백호살과 양인살의 준동"
+    },
+    '/guide/relation-couple-personality-93c37cd5': {
+      title: "부부 싸움 멈추는 사주 처방: 일지 충과 형 다스리기 | 무운 (MuUn)",
+      description: "성격 차이로 힘든 부부를 위한 명리학 가이드. 지지 충의 충돌을 완화하고 오행의 조화로 화목한 가정을 만드는 비결.",
+      h1: "부부의 성격 차이가 극한으로 치달을 때 확인해야 할 일지 충과 형"
+    },
+    '/guide/money-wealth-leak-2ab03b7e': {
+      title: "재물운 높이는 지갑 개운법: 사주 쟁재 현상 방어하기 | 무운 (MuUn)",
+      description: "벌어도 돈이 안 모이는 사주라면? 군겁쟁재를 막고 재물을 지키는 문서화 전략과 오행 맞춤 지갑 선택법을 공개합니다.",
+      h1: "재물운이 새나가는 쟁재(爭財) 현상을 막는 지갑 관리와 오행 보완법"
+    },
+    '/guide/career-promotion-blocked-727184d9': {
+      title: "승진운 사주 분석: 직장 내 명예운 높이는 개운 비결 | 무운 (MuUn)",
+      description: "실적은 좋은데 승진만 안 된다면? 사주 속 관성과 인성의 조화를 체크하세요. 명예운을 부르는 사무실 풍수와 오행 처방법.",
+      h1: "승진 기회에서 번번이 밀릴 때 확인해야 할 관성과 인성의 불균형"
+    },
+    '/guide/health-menopause-depression-ba837dd6': {
+      title: "갱년기 우울증 극복을 위한 사주 조후 상담 | 무운 (MuUn)",
+      description: "무기력하고 우울한 마음, 내 사주의 계절이 바뀌고 있기 때문입니다. 오행의 조화를 통한 심리 회복과 실전 개운법.",
+      h1: "갱년기 우울증과 무기력증이 깊어질 때의 명리학적 조후 처방"
+    },
+    '/guide/family-children-career-10175e9d': {
+      title: "자녀 진로 상담: 사주 격국과 월령으로 찾는 천직 | 무운 (MuUn)",
+      description: "자녀의 적성이 고민되시나요? 사주 원국의 격과 월령을 분석하여 아이가 가장 잘 할 수 있는 성공의 길을 열어주세요.",
+      h1: "자녀의 진로 결정이 막막할 때 참고해야 할 월령과 격국의 힘"
+    },
+    '/guide/relation-business-partner-conflict-ca1d4df6': {
+      title: "동업자 갈등 해결법: 사주 형살과 원진살 중재하기 | 무운 (MuUn)",
+      description: "파트너와의 반복되는 싸움, 사주 지지의 형살 때문일 수 있습니다. 명리학으로 분석하는 상생의 협력 모델과 갈등 해소 전략.",
+      h1: "사업 파트너와 사사건건 부딪힐 때 점검해야 할 지지 형살과 원진"
+    },
+    '/guide/career-startup-item-d1cb52ab': {
+      title: "나에게 맞는 창업 아이템 찾기: 오행별 추천 업종 분석 | 무운 (MuUn)",
+      description: "창업 전 필수 체크! 사주 오행에 맞는 사업 아이템으로 성공 확률을 높이세요. 대운에 따른 사업 확장 시기와 개운 전략 공개.",
+      h1: "창업 아이템 선정이 고민될 때 확인해야 할 본인의 오행과 직업운"
+    },
+    '/guide/family-inheritance-conflict-0440c2eb': {
+      title: "상속 분쟁과 형제 갈등: 사주 겁재를 다스리는 법 | 무운 (MuUn)",
+      description: "유산 상속 후 깨진 형제 우애, 사주 속 겁재의 영향 때문일까요? 명리학으로 푸는 재산 분쟁 해결책과 가족운 회복 비결.",
+      h1: "상속이나 증여 후 형제간의 불화가 깊어지는 명리학적 원인과 처방"
+    },
+    '/guide/money-pyeonjae-f34b5d66': {
+      title: "주식 투자 실패 사주로 분석하기: 편재와 정재의 차이 | 무운 (MuUn)",
+      description: "반복되는 투자 손실, 내 사주에 돈을 지키는 힘이 부족한 걸까요? 편재의 위험성과 정재의 안정감을 활용한 자산 관리 개운법.",
+      h1: "투자 손실이 반복될 때 점검해야 할 편재의 허망함과 정재의 안정감"
+    },
+    '/guide/love-marriage-boredom-f6ab0c92': {
+      title: "부부 권태기 극복 사주 비법: 원진살과 애정운 회복 | 무운 (MuUn)",
+      description: "이유 없는 부부 갈등과 권태기, 사주 속 원진살 때문일 수 있습니다. 오행의 조화와 풍수 처방으로 다시 설레는 부부 관계를 만드세요.",
+      h1: "결혼 생활의 권태기가 유독 길어질 때 확인해야 할 일지 원진살"
+    },
+    '/guide/money-inheritance-complex-caf5b63a': {
+      title: "상속 분쟁 피하는 사주 분석: 편인과 겁재 다스리기 | 무운 (MuUn)",
+      description: "유산 상속이나 증여가 꼬이는 명리학적 이유. 편인의 도식과 겁재의 쟁재를 막아 소중한 재산을 지키는 개운법을 확인하세요.",
+      h1: "유독 상속이나 증여 문제가 복잡하게 꼬이는 사주상 편인과 겁재의 작용"
+    },
+    '/guide/career-workplace-relationship-d5779d29': {
+      title: "직장 구설수 탈출법: 사주 비겁과 관성 다스리기 | 무운 (MuUn)",
+      description: "동료와의 갈등과 시기 질투, 사주 속 비겁의 혼잡이 원인일 수 있습니다. 관성과 인성을 활용해 평온한 직장 생활을 만드는 비결.",
+      h1: "직장 내 인간관계가 꼬일 때 점검해야 할 비겁의 쟁투와 관성의 유무"
+    },
+    '/guide/family-children-study-c0e4bb92': {
+      title: "공부 안 하는 아이 사주 분석: 재극인 탈출과 집중력 강화 | 무운 (MuUn)",
+      description: "자녀 성적 정체의 명리학적 이유. 사주 속 인성과 재성의 충돌을 해결하고 아이에게 맞는 최적의 학습 환경을 만들어주세요.",
+      h1: "공부 효율이 오르지 않는 자녀를 위한 사주상 인성과 식상의 조절"
+    },
+    '/guide/money-partnership-money-c818fa3e': {
+      title: "동업 사주 궁합: 실패하지 않는 비즈니스 파트너 찾기 | 무운 (MuUn)",
+      description: "동업할 때 꼭 봐야 할 사주 특징. 비겁의 유불리와 재물 분배의 흐름을 분석하여 성공적인 사업 파트너십을 구축하세요.",
+      h1: "동업을 고민 중이라면 반드시 확인해야 할 비겁과 재성의 관계"
+    },
+    '/guide/love-short-relationship-097407a0': {
+      title: "금방 끝나는 연애, 내 사주 속 이별 살이 원인일까? | 무운 (MuUn)",
+      description: "반복되는 이별의 명리학적 이유. 사주 일지의 충과 식상 과다를 다스려 안정적인 연애와 결혼 운을 여는 법을 알려드립니다.",
+      h1: "연애가 매번 짧게 끝날 때 점검해야 할 일지와 식상의 과다"
+    },
+    '/guide/luck-new-home-moving-2ae23407': {
+      title: "이사 후 재수 없는 이유? 사주 방위와 살성 확인법 | 무운 (MuUn)",
+      description: "새집 이사 후 계속되는 우환, 혹시 이사 방향이 잘못된 건 아닐까요? 명리학으로 푸는 방위 개운법과 흉운 차단 비결.",
+      h1: "새집 이사 후 우환이 겹칠 때 체크해야 할 방위와 합충의 변화"
+    },
+    '/guide/health-retirement-preparation-d266d217': {
+      title: "평안한 노후를 위한 명리학 가이드: 인성과 식상의 조화 | 무운 (MuUn)",
+      description: "노후 불안을 해소하는 사주 분석법. 인성의 안정감과 식상의 생명력을 높여 건강하고 풍요로운 노년을 준비하세요.",
+      h1: "노후 준비가 불안할 때 확인해야 할 인성과 식상의 노년기 흐름"
+    },
+    '/guide/relation-jaengjae-e7afb912': {
+      title: "부부 돈 싸움 해결법: 군겁쟁재 사주 극복하기 | 무운 (MuUn)",
+      description: "벌어도 돈이 모이지 않는 부부라면? 사주 속 군겁쟁재 현상을 파악하고 재물운을 지키는 명리학적 대안을 확인하세요.",
+      h1: "부부 사이의 경제적 갈등을 해결하는 사주상 군겁쟁재 다스리기"
+    },
+    '/guide/career-reemployment-blocked-51b24cc7': {
+      title: "재취업 성공을 위한 명리 분석: 관인상생과 이직운 | 무운 (MuUn)",
+      description: "계속되는 취업 낙방, 사주 속 관성과 인성의 조화를 체크하세요. 합격운을 높이는 오행 개운법과 면접 팁을 공개합니다.",
+      h1: "재취업이나 이직이 자꾸 어긋날 때 점검해야 할 관성과 인성의 균형"
+    },
+    '/guide/family-children-conflict-045f10df': {
+      title: "자녀 갈등 해결을 위한 명리 분석: 상관견관 다스리기 | 무운 (MuUn)",
+      description: "자녀와의 반복되는 싸움, 사주 속 상관과 관성의 충돌이 원인일 수 있습니다. 오행의 원리로 푸는 자녀 교육과 관계 회복 비법.",
+      h1: "자녀와의 갈등이 심해질 때 확인해야 할 사주상 상관견관의 원리"
+    },
+    '/guide/health-pyeongwan-pressure-4cef87ed': {
+      title: "무기력증과 만성피로, 사주 속 편관을 다스리는 법 | 무운 (MuUn)",
+      description: "이유 없는 몸의 통증과 스트레스는 사주상 편관의 공격 때문일 수 있습니다. 인성과 식신을 활용한 건강 회복 개운법을 확인하세요.",
+      h1: "갑자기 몸이 무겁고 무기력할 때 의심해야 할 편관의 압박과 극복법"
+    },
+    '/guide/money-self-employed-sales-c67535fb': {
+      title: "자영업 불황 극복을 위한 명리학적 매출 상승 비결 | 무운 (MuUn)",
+      description: "갑자기 떨어진 매출, 사주 속 식상과 재성의 흐름만 바꿔도 살아납니다. 실전 개운법으로 사업 운을 전환하세요.",
+      h1: "자영업 매출이 급격히 줄어들 때 점검해야 할 식상과 재성의 흐름"
+    },
+    '/guide/family-children-late-blessing-d737dc22': {
+      title: "자식운 사주 풀이, 말년에 자식 덕 보는 팔자 특징 | 무운 (MuUn)",
+      description: "자녀 문제로 고민하는 4060 세대를 위한 명리 전문가의 따뜻한 조언. 늦게 피는 자식 복과 부모 자식 간의 운명을 쉽게 풀어드립니다.",
+      h1: "자식운 사주 풀이, 말년에 자식 덕 보는 팔자 특징"
+    },
+    '/guide/money-empty-wallet-13d60396': {
+      title: "돈 복 터지는 사주 특징과 재물운 높이는 확실한 방법 5가지 | 무운 (MuUn)",
+      description: "나만 왜 돈이 안 모일까 고민이라면? 30년 경력 마스터 역술인이 알려주는 재물운 좋아지는 법과 사주 속 부자 되는 시기를 알아보세요.",
+      h1: "텅 빈 지갑이 두둑해지는 비결, 내 사주에 숨어있는 황금 열쇠 찾기"
+    },
+    '/guide/love-late-love-40s-5a0ac9d7': {
+      title: "중년 재혼운과 연애운, 50대 60대에게도 다시 봄날이 올까요? | 무운 (MuUn)",
+      description: "늦은 나이라고 포기하지 마세요. 30년 경력 역술인이 알려주는 중년 연애와 결혼운의 비밀, 내 진정한 짝을 만나는 법을 쉽고 다정하게 들려드립니다.",
+      h1: "늦게 찾아온 인연이 더 아름다운 이유, 마흔 이후에 시작되는 진짜 사랑 이야기"
+    },
+    '/guide/money-wealth-control-63d84616': {
+      title: "돈 들어오는 사주 따로 있다? 재물운 높이는 풍수와 개운법 총정리 | 무운 (MuUn)",
+      description: "재물운이 궁금하신가요? 사주 명리학으로 본 돈을 부르는 징조와 지갑 관리법 등 일상에서 바로 실천할 수 있는 재테크 개운법을 알려드립니다.",
+      h1: "돈이 새나가는 사주가 따로 있을까요? 재물운을 꽉 잡는 그릇 키우기"
+    },
+    '/guide/fortune-flow-late-bloom-fortune-9f61d4e0': {
+      title: "말년 복 터지는 사주 특징, 인생 후반기 운세가 좋아지는 비결 3가지 | 무운 (MuUn)",
+      description: "고생 끝에 낙이 온다는 말, 사실일까요? 30년 역술인이 알려주는 노년 운세 좋아지는 법과 말년 복을 부르는 마음가짐을 지금 확인해보세요.",
+      h1: "젊어서 고생은 사서도 한다지만, 진짜 복은 인생 후반전에 터집니다"
+    },
+    '/guide/fortune-flow-treasure-map-1024440d': {
+      title: "내 인생 대운 언제 바뀔까? 사주로 보는 운세 흐름과 대박 징조 3가지 | 무운 (MuUn)",
+      description: "인생이 답답하고 막막한 분들을 위한 사주 명리 멘토링. 대운이 바뀌는 징조를 확인하고 내 사주에 맞는 개운법으로 행운을 불러오는 비결을 알려드립니다.",
+      h1: "막막한 인생길, 내 사주의 보물 지도를 펼칠 시간입니다"
+    },
+    '/guide/love-restart-love-e5d27e20': {
+      title: "중년 재혼운과 새로운 인연, 사주로 풀어보는 늦복 터지는 비결 | 무운 (MuUn)",
+      description: "다시 사랑하고 싶은 5060을 위한 명리 전문가의 조언. 사주에 숨겨진 만혼운을 찾고, 상처를 치유하며 진정한 동반자를 만나는 법을 알려드립니다.",
+      h1: "다시 시작하는 사랑이 더 단단한 이유, 당신의 인연은 이제부터 진짜입니다"
+    },
+    '/guide/love-late-love-276233a2': {
+      title: "내 인연 언제 나타날까? 사주로 보는 결혼운과 진정한 짝 찾는 법 | 무운 (MuUn)",
+      description: "인연이 닿지 않아 고민인 분들을 위한 명리 전문가의 다정한 조언. 늦게 만나는 인연이 더 행복한 이유와 내 사주에 맞는 배우자 특징을 확인하세요.",
+      h1: "혼자가 편하다가도 문득 외로운 당신에게, 늦게 찾아오는 인연이 진짜 명작입니다"
+    },
+    '/guide/career-job-success-efcff2d4': {
+      title: "취업운 언제 들어올까? 사주 명리로 확인하는 합격 비결과 개운법 | 무운 (MuUn)",
+      description: "계속되는 취업 실패로 지친 당신을 위한 사주 명리 조언. 합격운이 들어오는 신호와 면접에서 승리하는 기운 관리법을 알려드립니다.",
+      h1: "간절한 취업 소식, 사주로 풀어보는 합격의 문이 열리는 징조"
+    },
+    '/guide/career-career-change-b57094ba': {
+      title: "이직 고민 해결! 사주로 보는 나에게 딱 맞는 취업운과 이직 시기 | 무운 (MuUn)",
+      description: "퇴사하고 싶을 때, 이직 운이 있는지 궁금하시죠? 30년 경력 역술인이 알려주는 성공적인 이직 타이밍과 취업운 좋아지는 비법을 확인하세요.",
+      h1: "답답한 직장 생활, 이직이 답일까요? 내 운의 때를 찾는 지혜"
+    },
+    '/guide/fortune-flow-children-blessing-late-231b77df': {
+      title: "남편 복 자식 복 사주 극복하기, 5060 여성을 위한 말년 운 개운법 | 무운 (MuUn)",
+      description: "가족에게 헌신하느라 지친 어머님들을 위한 사주 명리 멘토링. 자식 복과 남편 복에 연연하지 않고 내 인생의 진정한 복을 찾는 방법을 전합니다.",
+      h1: "남편 복 자식 복 없다는 말에 상처받지 마세요, 말년 운이 귀인을 부릅니다"
+    },
+    '/guide/fortune-flow-late-bloom-golden-ef7596ef': {
+      title: "50대 여성 사주 운세 대운 바뀌는 징조와 인생 황금기 찾는 법 | 무운 (MuUn)",
+      description: "4050 여성들을 위한 명리 전문가의 따뜻한 조언. 늦게 피는 인생의 황금기와 대운이 들어올 때 나타나는 변화를 확인하고 희망찬 미래를 설계해 보세요.",
+      h1: "늦게 피는 꽃이 더 아름답듯 쉰 살 넘어 찾아오는 제2의 인생 황금기 운세"
+    },
+    '/guide/family-f16e40e9': {
+      title: "자식운 사주 풀이와 자녀 고민 해결하는 개운법 | 무운 (MuUn)",
+      description: "자녀가 취업이나 결혼이 늦어져 고민이신가요? 30년 경력의 역술인이 전하는 자식 복이 늦게 터지는 사주 이야기와 마음가짐을 확인해보세요.",
+      h1: "자식 복이 늦게 터지는 사주, 지금 고생은 보석을 닦는 과정입니다"
+    },
+    '/guide/health-children-fortune-words-c388f667': {
+      title: "자녀 운 터지는 엄마의 습관, 4060 주부를 위한 복 부르는 풍수와 개운법 | 무운 (MuUn)",
+      description: "자녀가 안 풀려 고민인가요? 30년 경력 역술인이 알려드리는 집안 운 높이는 비결과 자녀 운을 틔워주는 다정한 조언을 만나보세요.",
+      h1: "자녀 운이 풀리는 엄마의 말 한마디, 집안에 복을 부르는 다정한 개운법"
+    },
+    '/guide/relation-children-education-60781ebe': {
+      title: "자녀 사주 풀이와 기운을 살려주는 자녀 교육법 | 무운 (MuUn)",
+      description: "30년 경력 역술인이 전하는 자녀 사주 해석과 성향별 교육 비법입니다. 아이의 타고난 기운을 이해하고 복을 부르는 환경 만드는 법을 쉽게 설명해 드립니다.",
+      h1: "내 아이의 그릇을 키우는 부모의 지혜, 사주로 보는 자녀 교육의 비밀"
+    },
+    '/guide/relation-children-fortune-parent-331e43a6': {
+      title: "자녀운을 높이는 부모의 지혜와 사주 소통법 | 무운 (MuUn)",
+      description: "아이의 타고난 기운을 이해하고 부모와의 갈등을 해소하는 역술적 해법을 담았습니다. 자녀의 재능을 꽃피우고 행복한 관계를 만드는 실질적인 조언을 확인해 보세요.",
+      h1: "우리 아이라는 귀한 손님, 자녀운을 꽃피우는 부모의 마음 그릇"
+    },
+    '/guide/health-body-revival-0659b745': {
+      title: "사주로 보는 건강운과 몸의 기운 관리법 | 무운 (MuUn)",
+      description: "타고난 체질과 사주 기운을 조율하여 건강을 지키는 비결을 알려드립니다. 오행의 원리를 활용한 음식, 생활 습관, 마음가짐으로 활력을 되찾는 쉬운 가이드입니다.",
+      h1: "내 몸의 시든 꽃을 다시 피우는 법, 기운을 살리는 건강 관리"
+    },
+    '/guide/fortune-flow-fate-spring-db760b73': {
+      title: "운이 좋아지는 징조와 대박 운 들어오는 신호 4가지 | 무운 (MuUn)",
+      description: "인생의 흐름이 바뀌고 대박 운이 들어오기 직전에 나타나는 사람 관계, 환경, 마음가짐의 변화를 30년 경력 역술인의 시선으로 쉽게 풀어드립니다.",
+      h1: "내 운명의 겨울이 끝나고 따스한 봄바람이 불어오는 신호"
+    },
+    '/guide/fortune-flow-winter-to-spring-90b79a03': {
+      title: "대운 들어오는 징조와 운의 흐름 바꾸는 법 | 무운 (MuUn)",
+      description: "30년 경력 역술인이 알려주는 운이 좋아질 때 나타나는 5가지 확실한 신호와 일상에서 행운을 부르는 마음가짐을 쉽게 설명해 드립니다.",
+      h1: "내 인생의 겨울이 가고 봄이 오는 신호, 운의 흐름을 읽는 지혜"
+    },
+    '/guide/health-body-energy-fortune-30d117b4': {
+      title: "건강과 운세의 상관관계 쉬운 개운법 | 무운 (MuUn)",
+      description: "내 몸의 컨디션이 좋아져야 들어오는 복도 잡을 수 있습니다. 일상 속 작은 습관으로 운의 흐름을 바꾸는 건강 개운법을 30년 경력 역술인이 쉽게 알려드립니다.",
+      h1: "내 몸의 기운을 살려야 운이 들어올 자리가 생깁니다"
+    },
+    '/guide/money-wealth-golden-9cb42942': {
+      title: "내 인생의 곳간을 황금빛으로 가득 채우는 신비로운 재물운의 비밀 | 무운 (MuUn)",
+      description: "30년 경력 역술인이 전하는 재물운을 높이는 3가지 핵심 비결. 지갑 정리부터 말투, 베풂의 지혜를 통해 막혔던 금전의 흐름을 뚫는 구체적인 개운법을 소개합니다.",
+      h1: "내 인생의 곳간을 황금빛으로 가득 채우는 신비로운 재물운의 비밀"
+    },
+    '/guide/relation-golden-age-timing-86759dff': {
+      title: "사주 대운이 들어오는 징조와 인생 타이밍 잡는 법 | 무운 (MuUn)",
+      description: "인생의 황금기를 맞이하기 위해 꼭 알아야 할 운의 흐름과 징조를 30년 전문가가 쉽게 설명합니다. 내 인생의 계절을 파악하고 기회를 잡는 지혜를 배워보세요.",
+      h1: "당신이 몰랐던 인생의 황금기를 부르는 \'운의 타이밍\'"
+    },
+    '/guide/fortune-flow-fate-magnifier-5ee9d8b5': {
+      title: "내 인생의 운을 바꾸는 쉬운 사주 풀이와 개운법 | 무운 (MuUn)",
+      description: "30년 경력의 역술인이 알려주는 인생 운 흐름 파악하기. 내 타고난 기운을 이해하고 삶의 매듭을 푸는 지혜를 일상적인 비유로 쉽게 설명합니다.",
+      h1: "꽉 막힌 인생의 매듭을 술술 풀이해 주는 운명의 돋보기"
+    },
+    '/guide/luck-life-habits-7945bc54': {
+      title: "운명 바꾸는 법과 막힌 운을 푸는 쉬운 개운법 | 무운 (MuUn)",
+      description: "30년 경력 역술인이 알려주는 인생이 풀리는 법. 청소, 말버릇, 표정 관리 등 일상 속에서 바로 실천할 수 있는 쉬운 개운법으로 막힌 운을 뚫어보세요.",
+      h1: "막혔던 인생의 매듭을 술술 풀이하는 마법 같은 마음 습관"
+    },
+    '/guide/saju-basic-saju-study-d9f2e703': {
+      title: "사주 기초 공부, 나를 이해하는 인생 나침반 활용법 | 무운 (MuUn)",
+      description: "사주팔자를 어렵게 느끼는 분들을 위해 사주 공부가 왜 내 삶을 바꾸는 도구가 되는지 설명합니다. 나라는 사람의 기질을 알고 활용하는 지혜를 배워보세요.",
+      h1: "어색했던 사주 공부가 나를 바꾸는 마법 같은 도구가 될 때"
+    },
+    '/guide/luck-fortune-signs-d70daba9': {
+      title: "인생이 잘 풀릴 때 나타나는 징조와 대운 맞이하는 법 | 무운 (MuUn)",
+      description: "운이 좋아지기 직전 우리 주변에서 일어나는 신비로운 변화 세 가지를 소개합니다. 청소, 인간관계, 안색의 변화를 통해 내 인생의 황금기를 미리 알아차리는 법을 쉽게 설명해 드립니다.",
+      h1: "인생이 잘 풀릴 때 나타나는 징조와 대운 맞이하는 법"
+    },
   };
 
   // 동적 라우트 처리: /yearly-fortune/:birthDate
   let currentMeta = metaData[options.path];
   if (!currentMeta) {
     const yearlyFortuneMatch = options.path.match(/^\/yearly-fortune\/(\d{4}-\d{2}-\d{2})$/);
+    const dreamMatch = options.path.match(/^\/dream\/([a-z0-9-]+)$/);
+    const guideSlugMatch = options.path.match(/^\/guide\/([a-z0-9-]+)$/);
+    
     if (yearlyFortuneMatch) {
       const birthDate = yearlyFortuneMatch[1];
       const year = birthDate.split('-')[0];
@@ -620,6 +758,37 @@ export async function render(options: { path: string }) {
         services: [
           { href: '/yearly-fortune', label: '신년운세 홈' },
           { href: '/lifelong-saju', label: '평생 사주 분석' },
+        ]
+      };
+    } else if (dreamMatch) {
+      // 꿈해몽 개별 페이지 동적 메타
+      const dreamSlug = dreamMatch[1];
+      const keyword = dreamSlug.replace(/-dream$/, '').replace(/-/g, ' ');
+      currentMeta = {
+        title: `${keyword} 꿈해몽 - 꿈의 의미와 해석 | 무운 꿈해몽 사전`,
+        description: `${keyword}에 관한 꿈의 의미와 해석을 알아보세요. 무운 꿈해몽 사전에서 350가지 꿈의 상징과 길흉을 무료로 확인하세요.`,
+        h1: `${keyword} 꿈해몽`,
+        bodyContent: \`
+          <section>
+            <h2>\${keyword} 꿈의 의미</h2>
+            <p>\${keyword}에 관한 꿈은 다양한 의미를 담고 있습니다. 무운 꿈해몽 사전에서 꿈의 상징과 길흉을 자세히 확인하세요.</p>
+          </section>
+        \`,
+        services: [
+          { href: '/dream', label: '꿈해몽 사전' },
+          { href: '/yearly-fortune', label: '신년운세' },
+        ]
+      };
+    } else if (guideSlugMatch) {
+      // 칼럼 slug 기반 페이지 동적 메타 (metaData에 없는 경우 폴백)
+      const guideSlug = guideSlugMatch[1];
+      currentMeta = {
+        title: `사주 칼럼 - ${guideSlug.replace(/-/g, ' ')} | 무운 (MuUn)`,
+        description: `무운의 사주 칼럼에서 전문적인 운세 풀이와 개운법을 확인하세요. 30년 내공의 역술인이 전하는 지혜입니다.`,
+        h1: guideSlug.replace(/-/g, ' '),
+        services: [
+          { href: '/guide', label: '운세 칼럼 목록' },
+          { href: '/lifelong-saju', label: '평생 사주' },
         ]
       };
     } else {
@@ -734,6 +903,72 @@ export async function render(options: { path: string }) {
   };
   const keywords = keywordsMap[options.path] || '무료사주, 무료운세, 사주풀이, 무운';
 
+  // Schema.org 구조화 데이터 생성
+  const isDreamPage = /^\/dream\/[a-z0-9-]+$/.test(options.path);
+  const isGuidePage = /^\/guide\/[a-z0-9-]+$/.test(options.path);
+
+  let schemaData: object;
+  if (isDreamPage) {
+    schemaData = {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": currentMeta.title,
+      "description": currentMeta.description,
+      "url": canonicalUrl,
+      "publisher": {
+        "@type": "Organization",
+        "name": "무운 (MuUn)",
+        "url": "https://muunsaju.com",
+        "logo": { "@type": "ImageObject", "url": "https://muunsaju.com/images/horse_mascot.png" }
+      },
+      "mainEntityOfPage": { "@type": "WebPage", "@id": canonicalUrl },
+      "inLanguage": "ko-KR"
+    };
+  } else if (isGuidePage) {
+    schemaData = {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": currentMeta.h1 || currentMeta.title,
+      "description": currentMeta.description,
+      "url": canonicalUrl,
+      "author": { "@type": "Organization", "name": "무운 (MuUn)" },
+      "publisher": {
+        "@type": "Organization",
+        "name": "무운 (MuUn)",
+        "url": "https://muunsaju.com",
+        "logo": { "@type": "ImageObject", "url": "https://muunsaju.com/images/horse_mascot.png" }
+      },
+      "mainEntityOfPage": { "@type": "WebPage", "@id": canonicalUrl },
+      "inLanguage": "ko-KR"
+    };
+  } else if (options.path === '/') {
+    schemaData = {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "무운 (MuUn)",
+      "url": "https://muunsaju.com",
+      "description": currentMeta.description,
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": { "@type": "EntryPoint", "urlTemplate": "https://muunsaju.com/dream?q={search_term_string}" },
+        "query-input": "required name=search_term_string"
+      },
+      "inLanguage": "ko-KR"
+    };
+  } else {
+    schemaData = {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": currentMeta.title,
+      "description": currentMeta.description,
+      "url": canonicalUrl,
+      "publisher": { "@type": "Organization", "name": "무운 (MuUn)", "url": "https://muunsaju.com" },
+      "inLanguage": "ko-KR"
+    };
+  }
+
+  const schemaScript = `<script type="application/ld+json">${JSON.stringify(schemaData)}</script>`;
+
   return {
     appHtml,
     head: {
@@ -745,13 +980,14 @@ export async function render(options: { path: string }) {
         `<meta property="og:title" content="${currentMeta.title}">`,
         `<meta property="og:description" content="${currentMeta.description}">`,
         `<meta property="og:url" content="${canonicalUrl}">`,
-        `<meta property="og:type" content="website">`,
+        `<meta property="og:type" content="${isGuidePage ? 'article' : 'website'}">`,
         `<meta property="og:site_name" content="무운 (MuUn)">`,
         `<meta property="og:locale" content="ko_KR">`,
         `<meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png">`,
         `<meta name="twitter:card" content="summary_large_image">`,
         `<meta name="twitter:title" content="${currentMeta.title}">`,
         `<meta name="twitter:description" content="${currentMeta.description}">`,
+        schemaScript,
       ].join('\n    '),
       link: `<link rel="canonical" href="${canonicalUrl}">`,
     },

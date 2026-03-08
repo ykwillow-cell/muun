@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { ChevronLeft, Calendar, Clock, Share2, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { getColumnById, getLatestColumns, COLUMN_CATEGORIES, type ColumnData } from '@/lib/column-data-api';
+import { getColumnBySlug, getLatestColumns, COLUMN_CATEGORIES, type ColumnData } from '@/lib/column-data-api';
 import CallToAction from '@/components/CallToAction';
 import { Link } from 'wouter';
 
@@ -21,11 +21,11 @@ export default function GuideDetail() {
       setIsLoading(true);
       if (id) {
         const [col, latest] = await Promise.all([
-          getColumnById(id),
+          getColumnBySlug(id),
           getLatestColumns(4),
         ]);
         setColumn(col);
-        setRelatedColumns(latest.filter(c => c.id !== id).slice(0, 3));
+        setRelatedColumns(latest.filter(c => c.slug !== id && c.id !== id).slice(0, 3));
       }
       setIsLoading(false);
     };
@@ -69,7 +69,7 @@ export default function GuideDetail() {
         <meta property="og:type" content="article" />
         <meta property="article:published_time" content={column.publishedDate} />
         <meta property="article:author" content={column.author} />
-        <link rel="canonical" href={`https://muunsaju.com/guide/${column.id}`} />
+        <link rel="canonical" href={`https://muunsaju.com/guide/${column.slug || column.id}`} />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
@@ -175,7 +175,7 @@ export default function GuideDetail() {
             <h2 className="text-2xl font-bold mb-6">관련 칼럼</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {relatedColumns.map((relatedColumn) => (
-                <Link key={relatedColumn.id} href={`/guide/${relatedColumn.id}`}>
+                <Link key={relatedColumn.id} href={`/guide/${relatedColumn.slug || relatedColumn.id}`}>
                   <div className="group cursor-pointer bg-white/5 border border-white/10 rounded-xl overflow-hidden hover:border-primary/30 hover:bg-white/10 transition-all h-full">
                     {relatedColumn.thumbnail && (
                       <div className="aspect-video overflow-hidden bg-white/5">

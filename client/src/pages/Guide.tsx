@@ -138,7 +138,7 @@ export default function Guide() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
               >
-                <Link href={`/guide/${column.id}`}>
+                <Link href={`/guide/${column.slug || column.id}`}>
                   <motion.div
                     className="group cursor-pointer"
                     whileTap={{ scale: 0.99 }}
