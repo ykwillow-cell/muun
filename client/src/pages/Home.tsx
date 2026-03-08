@@ -380,7 +380,7 @@ export default function Home() {
                   transition={{ delay: index * 0.1 }}
                   className="h-full"
                 >
-                  <Link href={`/guide/${column.id}`}>
+                  <Link href={`/guide/${column.slug || column.id}`}>
                     <div className="group cursor-pointer bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-primary/30 hover:bg-white/10 transition-all h-full flex flex-col">
                       <div className="aspect-video overflow-hidden bg-gradient-to-br from-primary/20 to-purple-500/20 relative flex items-center justify-center">
                         <img

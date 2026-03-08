@@ -12,5 +12,10 @@ Disallow: /api
 Sitemap: https://muunsaju.com/sitemap.xml
 Sitemap: https://muunsaju.com/sitemap-yearly-fortune.xml
 
-# Crawl delay (optional - helps reduce server load)
-Crawl-delay: 1
+# 네이버봇 명시적 허용
+User-agent: Yeti
+Allow: /
+
+# 구글봇 명시적 허용
+User-agent: Googlebot
+Allow: /

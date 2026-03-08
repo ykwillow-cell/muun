@@ -1345,6 +1345,59 @@ const metaData: Record<string, { title: string, description: string, h1?: string
 
   const schemaScript = `<script type="application/ld+json">${JSON.stringify(schemaData)}</script>`;
 
+  // FAQPage 구조화 데이터 (페이지별 맞춤 FAQ)
+  const faqMap: Record<string, Array<{question: string; answer: string}>> = {
+    '/': [
+      { question: '무운 사주는 무료인가요?', answer: '네, 무운(MuUn)의 모든 운세 서비스는 100% 무료입니다. 평생사주, 신년운세, 오늘의 운세, 궁합, 토정비결, 타로, 꿈해몽까지 회원가입 없이 무료로 이용하실 수 있습니다.' },
+      { question: '회원가입 없이 사주를 볼 수 있나요?', answer: '네, 무운은 회원가입이 전혀 필요 없습니다. 생년월일만 입력하면 바로 사주풀이를 확인할 수 있습니다. 개인정보 저장도 하지 않습니다.' },
+      { question: '무운 사주는 어떤 서비스를 제공하나요?', answer: '무운은 평생사주, 신년운세, 오늘의 운세, 사주 궁합, 토정비결, 타로, 꿈해몽 사전, 운세 칼럼, 사주 용어 사전, 만세력 등 다양한 운세 서비스를 무료로 제공합니다.' },
+      { question: '사주 결과는 얼마나 정확한가요?', answer: '무운은 전통 명리학(사주팔자)을 기반으로 생년월일시를 분석합니다. 사주는 타고난 기운과 운의 흐름을 파악하는 도구로, 참고 자료로 활용하시기를 권장합니다.' },
+      { question: '개인정보는 안전한가요?', answer: '무운은 입력하신 생년월일 정보를 서버에 저장하지 않습니다. 모든 분석은 입력 즉시 처리되며 별도로 보관되지 않아 개인정보 유출 걱정이 없습니다.' }
+    ],
+    '/lifelong-saju': [
+      { question: '평생사주 풀이는 무료인가요?', answer: '네, 무운의 평생사주 풀이는 완전 무료입니다. 회원가입 없이 생년월일시만 입력하면 바로 확인하실 수 있습니다.' },
+      { question: '평생사주를 보려면 무엇이 필요한가요?', answer: '생년월일과 출생 시간이 필요합니다. 출생 시간을 모르는 경우에도 시간 없이 분석이 가능합니다.' },
+      { question: '평생사주와 신년운세의 차이는 무엇인가요?', answer: '평생사주는 타고난 사주팔자(四柱八字)를 분석하여 평생의 성격, 재물운, 직업운, 건강운 등을 파악합니다. 신년운세는 해당 연도의 운의 흐름을 분석합니다.' }
+    ],
+    '/yearly-fortune': [
+      { question: '2026년 신년운세는 무료인가요?', answer: '네, 무운의 2026년 신년운세는 완전 무료입니다. 회원가입 없이 생년월일만 입력하면 바로 확인하실 수 있습니다.' },
+      { question: '신년운세는 언제 보는 것이 좋나요?', answer: '신년운세는 양력 1월 1일 또는 음력 설날 이후에 보는 것이 일반적입니다. 사주 명리학에서는 입춘(2월 4일경)을 새해의 시작으로 보기도 합니다.' },
+      { question: '신년운세에서 무엇을 알 수 있나요?', answer: '2026년 한 해의 전반적인 운의 흐름, 월별 운세, 재물운, 직업운, 애정운, 건강운 등을 확인하실 수 있습니다.' }
+    ],
+    '/compatibility': [
+      { question: '사주 궁합은 무료인가요?', answer: '네, 무운의 사주 궁합 분석은 완전 무료입니다. 두 사람의 생년월일을 입력하면 회원가입 없이 바로 궁합을 확인하실 수 있습니다.' },
+      { question: '궁합이 나쁘면 결혼하면 안 되나요?', answer: '궁합은 두 사람의 기운이 어떻게 조화를 이루는지 파악하는 참고 자료입니다. 궁합이 좋지 않더라도 서로 이해하고 노력하면 좋은 관계를 만들 수 있습니다.' },
+      { question: '사주 궁합과 MBTI 궁합의 차이는 무엇인가요?', answer: '사주 궁합은 생년월일을 기반으로 오행의 조화를 분석하는 전통 방식이고, MBTI 궁합은 성격 유형을 기반으로 합니다. 무운에서는 두 가지를 결합한 하이브리드 궁합도 제공합니다.' }
+    ],
+    '/dream': [
+      { question: '꿈해몽은 무료인가요?', answer: '네, 무운의 꿈해몽 사전은 완전 무료입니다. 350개 이상의 꿈 해석을 회원가입 없이 바로 확인하실 수 있습니다.' },
+      { question: '꿈해몽은 얼마나 정확한가요?', answer: '꿈해몽은 전통적인 해몽 방식을 기반으로 합니다. 꿈의 의미는 개인의 상황과 심리 상태에 따라 다를 수 있으므로 참고 자료로 활용하시기를 권장합니다.' },
+      { question: '돼지꿈을 꾸면 복권을 사야 하나요?', answer: '돼지꿈은 전통적으로 재물운과 행운을 상징합니다. 특히 황금 돼지꿈이나 돼지가 집에 들어오는 꿈은 길몽으로 여겨집니다. 다만 꿈해몽은 참고 자료이므로 과도한 기대는 삼가세요.' }
+    ],
+    '/tojeong': [
+      { question: '토정비결은 무료인가요?', answer: '네, 무운의 토정비결은 완전 무료입니다. 회원가입 없이 생년월일만 입력하면 2026년 토정비결을 바로 확인하실 수 있습니다.' },
+      { question: '토정비결이란 무엇인가요?', answer: '토정비결은 조선시대 이지함 선생이 만든 것으로 전해지는 한 해의 운세를 예측하는 방법입니다. 생년월일을 기반으로 그 해의 길흉화복을 64괘로 풀이합니다.' }
+    ]
+  };
+
+  const faqItems = faqMap[options.path];
+  let faqScript = '';
+  if (faqItems && faqItems.length > 0) {
+    const faqSchema = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": faqItems.map(item => ({
+        "@type": "Question",
+        "name": item.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": item.answer
+        }
+      }))
+    };
+    faqScript = `<script type="application/ld+json">${JSON.stringify(faqSchema)}</script>`;
+  }
+
   return {
     appHtml,
     head: {
@@ -1364,7 +1417,8 @@ const metaData: Record<string, { title: string, description: string, h1?: string
         `<meta name="twitter:title" content="${currentMeta.title}">`,
         `<meta name="twitter:description" content="${currentMeta.description}">`,
         schemaScript,
-      ].join('\n    '),
+        faqScript,
+      ].filter(Boolean).join('\n    '),
       link: `<link rel="canonical" href="${canonicalUrl}">`,
     },
     dehydratedState: {},
