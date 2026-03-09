@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { useCanonical } from '@/lib/use-canonical';
 import { setHomeOGTags } from '@/lib/og-tags';
 import { motion } from "framer-motion";
-import { BookOpen, Star, ShieldCheck, Info, BrainCircuit, ScrollText, Sparkles, Heart, CalendarDays, ArrowRight, Zap, ChevronRight, Users, Brain, Coffee, CloudMoon, Scroll } from "lucide-react";
+import { BookOpen, Star, ShieldCheck, Info, BrainCircuit, ScrollText, Sparkles, Heart, CalendarDays, ArrowRight, Zap, ChevronRight, Users, Brain, Coffee, CloudMoon, Scroll, PenLine } from "lucide-react";
 import { trackCustomEvent } from "@/lib/ga4";
 import { useRef } from "react";
 import { TodayTermCard } from "@/components/TodayTermCard";
@@ -130,6 +130,14 @@ export default function Home() {
       color: "bg-indigo-500/20 text-indigo-400",
       desc: "어젯밤 꿈의 의미 찾기"
     },
+    { 
+      href: "/naming", 
+      label: "작명소", 
+      icon: <PenLine className="w-5 h-5" />, 
+      color: "bg-emerald-500/20 text-emerald-400",
+      desc: "81수리 기반 무료 작명",
+      isNew: true
+    },
 
   ];
 
@@ -235,6 +243,32 @@ export default function Home() {
               </motion.div>
             </Link>
             
+            <Link href="/naming" onClick={() => handleCategoryClick("작명소(퀵액션)")} className="flex-1">
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.15 }}
+                whileTap={{ scale: 0.98 }}
+                className="group flex items-center justify-between p-4 md:p-5 rounded-2xl bg-gradient-to-r from-emerald-500/15 to-green-500/10 border border-emerald-500/30 hover:border-emerald-500/50 transition-all cursor-pointer"
+              >
+                <div className="flex items-center gap-3 md:gap-4">
+                  <div className="w-12 h-12 md:w-14 md:h-14 bg-emerald-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                    <PenLine className="w-6 h-6 md:w-7 md:h-7 text-white" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2 mb-0.5">
+                      <h3 className="text-base md:text-lg font-bold text-white">무운 작명소</h3>
+                      <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 uppercase tracking-wider">NEW</span>
+                    </div>
+                    <p className="text-xs md:text-sm text-muted-foreground">81수리 기반 무료 이름 짓기</p>
+                  </div>
+                </div>
+                <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/10 flex items-center justify-center text-emerald-400 group-hover:bg-emerald-500 group-hover:text-white transition-all flex-shrink-0">
+                  <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
+                </div>
+              </motion.div>
+            </Link>
+
             <Link href="/lifelong-saju" onClick={() => handleCategoryClick("평생사주(퀵액션)")} className="flex-1">
               <motion.div 
                 initial={{ opacity: 0, y: 10 }}
@@ -318,7 +352,12 @@ export default function Home() {
                     <div className={`w-10 h-10 md:w-11 md:h-11 rounded-xl ${item.color} flex items-center justify-center mb-3`}>
                       {item.icon}
                     </div>
-                    <h3 className="text-sm md:text-base font-semibold text-white group-hover:text-primary transition-colors mb-1">{item.label}</h3>
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <h3 className="text-sm md:text-base font-semibold text-white group-hover:text-primary transition-colors">{item.label}</h3>
+                      {(item as any).isNew && (
+                        <span className="px-1 py-0.5 rounded text-[8px] font-bold bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 uppercase tracking-wider">NEW</span>
+                      )}
+                    </div>
                     <p className="text-[11px] md:text-xs text-muted-foreground line-clamp-2">{item.desc}</p>
                   </motion.div>
                 </Link>
