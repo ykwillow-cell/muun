@@ -1,4 +1,5 @@
 import { BookOpen, Star, Sparkles, TrendingUp, Calendar, Zap, Target } from "lucide-react";
+import RelatedServices from "@/components/RelatedServices";
 
 export default function YearlyFortuneContent() {
   return (
@@ -171,5 +172,34 @@ export default function YearlyFortuneContent() {
         </div>
       </section>
     </article>
+    <RelatedServices
+      title="신년운세와 함께 보면 좋은 서비스"
+      services={[
+        {
+          href: "/lifelong-saju",
+          label: "무료 평생사주 풀이",
+          description: "올해 운세를 넘어 평생의 타고난 운명과 인생 흐름을 분석합니다.",
+          emoji: "🔮",
+        },
+        {
+          href: "/manselyeok",
+          label: "만세력",
+          description: "내 사주팔자 원국과 대운·세운의 흐름을 한눈에 확인합니다.",
+          emoji: "📖",
+        },
+        {
+          href: "/compatibility",
+          label: "무료 궁합 보기",
+          description: "사랑하는 사람과의 오행 궁합을 무료로 분석합니다.",
+          emoji: "💕",
+        },
+        {
+          href: "/daily-fortune",
+          label: "오늘의 운세",
+          description: "연간 운세를 확인했다면, 오늘 하루의 운세도 확인해보세요.",
+          emoji: "☀️",
+        },
+      ]}
+    />
   );
 }

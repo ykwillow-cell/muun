@@ -116,7 +116,7 @@ function generateHealthFortune(saju: SajuResult): { title: string; content: stri
 }
 
 export default function LifelongSaju() {
-  useCanonical('/lifetime-saju');
+  useCanonical('/lifelong-saju');
   
   useEffect(() => {
     setLifelongSajuOGTags();

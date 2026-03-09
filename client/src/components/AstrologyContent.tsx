@@ -1,6 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Sun, Moon, Star } from "lucide-react";
+import RelatedServices from "@/components/RelatedServices";
 
 const AstrologyContent = () => {
   return (
@@ -63,6 +64,35 @@ const AstrologyContent = () => {
         </CardContent>
       </Card>
     </div>
+    <RelatedServices
+      title="점성술과 함께 보면 좋은 서비스"
+      services={[
+        {
+          href: "/lifelong-saju",
+          label: "무료 평생사주 풀이",
+          description: "동양의 명리학으로 타고난 운명과 인생 흐름을 분석합니다.",
+          emoji: "🔮",
+        },
+        {
+          href: "/psychology",
+          label: "심리테스트",
+          description: "나를 더 잘 이해하는 심리 테스트로 자아를 탐구해보세요.",
+          emoji: "🧠",
+        },
+        {
+          href: "/tarot",
+          label: "AI 타로 상담",
+          description: "점성술으로 얻은 통찰을 타로로 더 깊이 탐구해보세요.",
+          emoji: "🃏",
+        },
+        {
+          href: "/compatibility",
+          label: "무료 궁합 보기",
+          description: "두 사람의 사주팔자를 비교하여 오행 궁합을 분석합니다.",
+          emoji: "💕",
+        },
+      ]}
+    />
   );
 };
 

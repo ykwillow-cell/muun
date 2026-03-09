@@ -1,6 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle } from "lucide-react";
+import RelatedServices from "@/components/RelatedServices";
 
 const DailyFortuneContent = () => {
   return (
@@ -63,6 +64,35 @@ const DailyFortuneContent = () => {
         </CardContent>
       </Card>
     </div>
+    <RelatedServices
+      title="오늘의 운세와 함께 보면 좋은 서비스"
+      services={[
+        {
+          href: "/lifelong-saju",
+          label: "무료 평생사주 풀이",
+          description: "타고난 기질과 인생 전체의 운세 흐름을 사주팔자로 분석합니다.",
+          emoji: "🔮",
+        },
+        {
+          href: "/yearly-fortune",
+          label: "2026년 신년운세",
+          description: "병오년 한 해의 총운, 재물운, 연애운을 미리 확인하세요.",
+          emoji: "📅",
+        },
+        {
+          href: "/manselyeok",
+          label: "만세력",
+          description: "내 사주팔자 원국과 대운·세운의 흐름을 한눈에 확인합니다.",
+          emoji: "📖",
+        },
+        {
+          href: "/tarot",
+          label: "AI 타로 상담",
+          description: "오늘 마음속 고민을 타로 카드로 풀어보세요.",
+          emoji: "🃏",
+        },
+      ]}
+    />
   );
 };
 

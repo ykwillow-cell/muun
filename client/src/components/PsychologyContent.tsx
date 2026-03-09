@@ -1,6 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BrainCircuit } from "lucide-react";
+import RelatedServices from "@/components/RelatedServices";
 
 const PsychologyContent = () => {
   return (
@@ -56,6 +57,35 @@ const PsychologyContent = () => {
         </CardContent>
       </Card>
     </div>
+    <RelatedServices
+      title="심리테스트와 함께 보면 좋은 서비스"
+      services={[
+        {
+          href: "/tarot",
+          label: "AI 타로 상담",
+          description: "심리테스트로 얻은 자아 통찰을 타로로 더 깊이 탐구해보세요.",
+          emoji: "🃏",
+        },
+        {
+          href: "/lifelong-saju",
+          label: "무료 평생사주 풀이",
+          description: "타고난 기질과 성격을 사주팔자로 심층 분석합니다.",
+          emoji: "🔮",
+        },
+        {
+          href: "/compatibility",
+          label: "무료 궁합 보기",
+          description: "사랑하는 사람과의 성격 궁합을 분석합니다.",
+          emoji: "💕",
+        },
+        {
+          href: "/dream",
+          label: "꿈해몽 사전",
+          description: "무의식이 담긴 꿈의 의미를 탐구해보세요.",
+          emoji: "🌙",
+        },
+      ]}
+    />
   );
 };
 

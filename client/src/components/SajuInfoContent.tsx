@@ -1,4 +1,5 @@
 import { BookOpen, Star, Sparkles, TrendingUp, Heart, Briefcase, Zap } from "lucide-react";
+import RelatedServices from "@/components/RelatedServices";
 
 export default function SajuInfoContent() {
   return (
@@ -154,5 +155,34 @@ export default function SajuInfoContent() {
         </div>
       </section>
     </article>
+    <RelatedServices
+      title="평생사주와 함께 보면 좋은 서비스"
+      services={[
+        {
+          href: "/yearly-fortune",
+          label: "2026년 신년운세",
+          description: "평생의 흐름과 함께 올해 운세도 확인해보세요.",
+          emoji: "📅",
+        },
+        {
+          href: "/manselyeok",
+          label: "만세력",
+          description: "내 사주팔자 원국과 대운·세운의 흐름을 한눈에 확인합니다.",
+          emoji: "📖",
+        },
+        {
+          href: "/compatibility",
+          label: "무료 궁합 보기",
+          description: "두 사람의 사주팔자를 비교하여 오행 궁합을 분석합니다.",
+          emoji: "💕",
+        },
+        {
+          href: "/daily-fortune",
+          label: "오늘의 운세",
+          description: "오늘 하루의 기운과 주의사항을 명리학으로 확인합니다.",
+          emoji: "☀️",
+        },
+      ]}
+    />
   );
 }

@@ -12,6 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from 'wouter';
 import { getDreamBySlug, getLatestDreams, DREAM_CATEGORIES, type DreamData } from '@/lib/dream-data-api';
 import CallToAction from '@/components/CallToAction';
+import RelatedServices from '@/components/RelatedServices';
 
 const gradeConfig: Record<string, { label: string; icon: any; color: string; bg: string; border: string; desc: string }> = {
   great: {
@@ -314,6 +315,37 @@ export default function DreamDetail() {
 
         {/* CTA - 무료 운세 전환 유도 */}
         <CallToAction />
+
+        {/* 관련 서비스 내부 링크 */}
+        <RelatedServices
+          title="꿈해몽과 함께 보면 좋은 서비스"
+          services={[
+            {
+              href: "/lifelong-saju",
+              label: "무료 평생사주 풀이",
+              description: "타고난 기질과 인생 전체의 운세 흐름을 사주팔자로 분석합니다.",
+              emoji: "🔮",
+            },
+            {
+              href: "/daily-fortune",
+              label: "오늘의 운세",
+              description: "꿈의 신호를 오늘 하루의 운세로 확인해보세요.",
+              emoji: "☀️",
+            },
+            {
+              href: "/tarot",
+              label: "AI 타로 상담",
+              description: "꿈에서 얻은 신호를 타로로 더 깊이 탐구해보세요.",
+              emoji: "🃏",
+            },
+            {
+              href: "/yearly-fortune",
+              label: "2026년 신년운세",
+              description: "병오년 한 해의 운세 흐름을 미리 확인하세요.",
+              emoji: "📅",
+            },
+          ]}
+        />
 
         {/* 관련 꼬해떉 */}
         {relatedDreams.length > 0 && (

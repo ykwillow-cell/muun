@@ -1,6 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Sparkles } from "lucide-react";
+import RelatedServices from "@/components/RelatedServices";
 
 const TarotContent = () => {
   return (
@@ -63,6 +64,35 @@ const TarotContent = () => {
         </CardContent>
       </Card>
     </div>
+    <RelatedServices
+      title="타로와 함께 보면 좋은 서비스"
+      services={[
+        {
+          href: "/lifelong-saju",
+          label: "무료 평생사주 풀이",
+          description: "타로로 얻은 통찰을 사주팔자로 더 깊이 확인해 보세요.",
+          emoji: "🔮",
+        },
+        {
+          href: "/daily-fortune",
+          label: "오늘의 운세",
+          description: "오늘 하루의 기운과 주의사항을 명리학으로 확인합니다.",
+          emoji: "☀️",
+        },
+        {
+          href: "/psychology",
+          label: "심리테스트",
+          description: "나를 더 잘 이해하는 심리 테스트로 자아를 탐구해보세요.",
+          emoji: "🧠",
+        },
+        {
+          href: "/dream",
+          label: "꿈해몽 사전",
+          description: "지난밤 꿈의 의미를 1만여 건의 꿈해몽 사전에서 찾아보세요.",
+          emoji: "🌙",
+        },
+      ]}
+    />
   );
 };
 

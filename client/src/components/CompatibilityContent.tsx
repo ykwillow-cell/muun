@@ -1,6 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Heart } from "lucide-react";
+import RelatedServices from "@/components/RelatedServices";
 
 const CompatibilityContent = () => {
   return (
@@ -63,6 +64,35 @@ const CompatibilityContent = () => {
         </CardContent>
       </Card>
     </div>
+    <RelatedServices
+      title="궁합과 함께 보면 좋은 서비스"
+      services={[
+        {
+          href: "/lifelong-saju",
+          label: "무료 평생사주 풀이",
+          description: "상대의 타고난 기질을 사주팔자로 더 깊이 이해해보세요.",
+          emoji: "🔮",
+        },
+        {
+          href: "/yearly-fortune",
+          label: "2026년 신년운세",
+          description: "두 사람의 올해 운세를 비교해보세요.",
+          emoji: "📅",
+        },
+        {
+          href: "/manselyeok",
+          label: "만세력",
+          description: "두 사람의 사주팔자 원국을 정확하게 확인합니다.",
+          emoji: "📖",
+        },
+        {
+          href: "/tarot",
+          label: "AI 타로 상담",
+          description: "연애와 관계에 대한 고민을 타로 카드로 풀어보세요.",
+          emoji: "🃏",
+        },
+      ]}
+    />
   );
 };
 

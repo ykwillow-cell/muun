@@ -1,4 +1,5 @@
 import { BookOpen, Star, Sparkles, Calendar, History, Scroll } from "lucide-react";
+import RelatedServices from "@/components/RelatedServices";
 
 export default function TojeongContent() {
   return (
@@ -140,5 +141,34 @@ export default function TojeongContent() {
         </div>
       </section>
     </article>
+    <RelatedServices
+      title="토정비결과 함께 보면 좋은 서비스"
+      services={[
+        {
+          href: "/yearly-fortune",
+          label: "2026년 신년운세",
+          description: "사주팔자 기반의 더 정밀한 연간 운세를 확인해보세요.",
+          emoji: "📅",
+        },
+        {
+          href: "/lifelong-saju",
+          label: "무료 평생사주 풀이",
+          description: "올해를 넘어 평생의 타고난 운명과 인생 흐름을 분석합니다.",
+          emoji: "🔮",
+        },
+        {
+          href: "/manselyeok",
+          label: "만세력",
+          description: "내 사주팔자 원국과 대운·세운의 흐름을 한눈에 확인합니다.",
+          emoji: "📖",
+        },
+        {
+          href: "/daily-fortune",
+          label: "오늘의 운세",
+          description: "연간 운세를 확인했다면, 오늘 하루의 운세도 확인해보세요.",
+          emoji: "☀️",
+        },
+      ]}
+    />
   );
 }

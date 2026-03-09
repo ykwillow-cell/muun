@@ -7,6 +7,7 @@ import { ChevronLeft, Calendar, Clock, Share2, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { getColumnBySlug, getLatestColumns, COLUMN_CATEGORIES, type ColumnData } from '@/lib/column-data-api';
 import CallToAction from '@/components/CallToAction';
+import RelatedServices from '@/components/RelatedServices';
 import { Link } from 'wouter';
 
 export default function GuideDetail() {
@@ -163,6 +164,36 @@ export default function GuideDetail() {
         <CallToAction
           message="오늘 나의 운세도 확인해 보세요"
           targetPath="/daily-fortune"
+        />
+        {/* 관련 서비스 내부 링크 */}
+        <RelatedServices
+          title="칼럼과 함께 보면 좋은 서비스"
+          services={[
+            {
+              href: "/lifelong-saju",
+              label: "무료 평생사주 풀이",
+              description: "타고난 기질과 인생 전체의 운세 흐름을 사주팔자로 분석합니다.",
+              emoji: "🔮",
+            },
+            {
+              href: "/yearly-fortune",
+              label: "2026년 신년운세",
+              description: "병오년 한 해의 운세 흐름을 미리 확인하세요.",
+              emoji: "📅",
+            },
+            {
+              href: "/manselyeok",
+              label: "만세력",
+              description: "내 사주팔자 원국과 대운·세운의 흐름을 한눈에 확인합니다.",
+              emoji: "📖",
+            },
+            {
+              href: "/dream",
+              label: "꿈해몽 사전",
+              description: "1만여 건의 꿈 해석을 무료로 찾아보세요.",
+              emoji: "🌙",
+            },
+          ]}
         />
 
         {/* 관련 칼럼 */}

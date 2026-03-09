@@ -1,6 +1,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BookOpen } from "lucide-react";
+import RelatedServices from "@/components/RelatedServices";
 
 const ManselyeokContent = () => {
   return (
@@ -70,6 +71,35 @@ const ManselyeokContent = () => {
         </CardContent>
       </Card>
     </div>
+    <RelatedServices
+      title="만세력과 함께 보면 좋은 서비스"
+      services={[
+        {
+          href: "/lifelong-saju",
+          label: "무료 평생사주 풀이",
+          description: "만세력으로 확인한 사주를 바탕으로 평생의 운세 흐름을 분석합니다.",
+          emoji: "🔮",
+        },
+        {
+          href: "/yearly-fortune",
+          label: "2026년 신년운세",
+          description: "대운·세운 흐름을 확인했다면, 올해 운세도 확인해보세요.",
+          emoji: "📅",
+        },
+        {
+          href: "/compatibility",
+          label: "무료 궁합 보기",
+          description: "두 사람의 사주팔자를 비교하여 오행 궁합을 분석합니다.",
+          emoji: "💕",
+        },
+        {
+          href: "/daily-fortune",
+          label: "오늘의 운세",
+          description: "세운의 흐름을 매일 일운 단위로 확인합니다.",
+          emoji: "☀️",
+        },
+      ]}
+    />
   );
 };
 
