@@ -17,6 +17,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Sparkles,
   ChevronLeft,
+  ChevronDown,
+  ChevronUp,
   PenLine,
   User,
   Calendar,
@@ -29,6 +31,9 @@ import {
   Loader2,
   Star,
   BookOpen,
+  Globe,
+  CheckCircle2,
+  Lightbulb,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -55,6 +60,7 @@ import {
   SURI_TABLE,
 } from "@/lib/naming-engine";
 import { saveNamingHistory } from "@/lib/naming-api";
+import { type EnglishNameSuggestion } from "@/lib/english-name-matcher";
 import { trackCustomEvent } from "@/lib/ga4";
 
 // ──────────────────────────────────────────────
@@ -89,19 +95,190 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 // ──────────────────────────────────────────────
+// 4격 쉬운 풀이 맵 (일반인 언어)
+// ──────────────────────────────────────────────
+const GYEOK_EASY_EXPLAIN: Record<string, Record<number, string>> = {
+  won: {
+    1: "타고난 건강과 밝은 기운으로 어린 시절을 활기차게 보냅니다.",
+    3: "창의력과 표현력이 넘쳐 어릴 때부터 주변의 사랑을 받습니다.",
+    5: "안정적인 가정 환경 속에서 믿음직한 성격으로 자랍니다.",
+    6: "따뜻한 마음씨와 배려심으로 가족과 친구들에게 사랑받습니다.",
+    7: "독립심이 강하고 자기 주관이 뚜렷한 아이로 성장합니다.",
+    8: "성실하고 끈기 있는 성격으로 무엇이든 꾸준히 해냅니다.",
+    11: "직관력이 뛰어나고 감수성이 풍부한 어린 시절을 보냅니다.",
+    13: "지혜롭고 총명하여 학업에서 두각을 나타냅니다.",
+    15: "온화하고 덕스러운 성품으로 주변 사람들과 잘 어울립니다.",
+    16: "리더십이 있고 책임감이 강해 친구들 사이에서 중심이 됩니다.",
+    17: "강한 의지와 추진력으로 목표를 향해 나아갑니다.",
+    18: "부지런하고 실력 있는 아이로 성장해 성공의 기반을 닦습니다.",
+    21: "독창적인 아이디어와 리더십으로 어릴 때부터 두각을 나타냅니다.",
+    23: "진취적인 기상과 열정으로 새로운 도전을 두려워하지 않습니다.",
+    24: "노력한 만큼 결실을 거두는 복된 어린 시절을 보냅니다.",
+    25: "안정 속에서도 새로운 것을 탐구하는 호기심 많은 아이입니다.",
+    29: "지혜와 재능이 뛰어나 어릴 때부터 주목받습니다.",
+    31: "사람을 이끄는 매력과 따뜻한 인품으로 인기를 얻습니다.",
+    32: "유연한 사고와 친화력으로 어디서든 잘 적응합니다.",
+    33: "활발하고 긍정적인 에너지로 주변을 밝게 만듭니다.",
+    35: "학문과 예술에 재능이 있어 다양한 분야에서 빛납니다.",
+    37: "신뢰받는 성품과 강한 의지로 어릴 때부터 인정받습니다.",
+    38: "예술적 감각과 창의성이 뛰어나 독특한 재능을 발휘합니다.",
+    39: "지혜롭고 통찰력이 있어 어릴 때부터 어른스러운 면모를 보입니다.",
+    41: "덕망 있고 신뢰받는 성품으로 자연스럽게 리더가 됩니다.",
+    45: "지혜와 인내로 어떤 어려움도 극복하는 강한 아이입니다.",
+    47: "성실하고 정직한 성품으로 주변의 믿음을 얻습니다.",
+    48: "지혜와 덕망을 겸비하여 어릴 때부터 존경받습니다.",
+    52: "의지가 강하고 목표 지향적인 성격으로 꿈을 향해 나아갑니다.",
+    57: "강한 의지와 끈기로 어떤 역경도 이겨내는 아이입니다.",
+    61: "따뜻한 마음과 강한 의지로 주변 사람들에게 힘이 됩니다.",
+    63: "안정적이고 화목한 가정 환경 속에서 행복하게 자랍니다.",
+    65: "온화하고 덕스러운 성품으로 어릴 때부터 사랑받습니다.",
+    67: "성실하고 꾸준한 노력으로 목표를 이루는 아이입니다.",
+    68: "지혜롭고 성실하여 학업과 생활 모두에서 좋은 결과를 냅니다.",
+    81: "최고의 기운을 타고나 어릴 때부터 특별한 재능을 발휘합니다.",
+  },
+  hyung: {
+    1: "사회에 나가 능력을 인정받고 빠르게 성공의 길을 걷습니다.",
+    3: "창의적인 아이디어와 표현력으로 사업과 직장에서 두각을 나타냅니다.",
+    5: "안정적인 직장과 사업 기반을 다지며 꾸준히 성장합니다.",
+    6: "인간관계가 좋아 협력을 통해 사업과 직장에서 성공합니다.",
+    7: "독립적인 사업 능력으로 자신만의 길을 개척합니다.",
+    8: "성실한 노력으로 직장과 사업에서 탄탄한 기반을 쌓습니다.",
+    11: "직관력과 감수성을 살려 창의적인 분야에서 성공합니다.",
+    13: "총명한 두뇌로 전문직이나 학문 분야에서 인정받습니다.",
+    15: "원만한 인간관계로 어디서든 환영받으며 성공합니다.",
+    16: "리더십을 발휘하여 조직을 이끌고 큰 성과를 냅니다.",
+    17: "강한 추진력으로 목표를 달성하고 사업에서 성공합니다.",
+    18: "부지런한 노력으로 직장과 사업에서 빠르게 성장합니다.",
+    21: "독창적인 아이디어로 새로운 분야를 개척하고 성공합니다.",
+    23: "도전 정신과 열정으로 사업과 직장에서 빠르게 성공합니다.",
+    24: "꾸준한 노력이 결실을 맺어 안정적인 성공을 이룹니다.",
+    25: "안정과 도전을 균형 있게 추구하며 성공합니다.",
+    29: "뛰어난 재능과 지혜로 전문 분야에서 두각을 나타냅니다.",
+    31: "사람을 이끄는 능력으로 조직에서 중요한 역할을 합니다.",
+    32: "유연한 사고로 변화에 잘 적응하며 성공합니다.",
+    33: "활발한 에너지와 긍정적인 태도로 사업에서 성공합니다.",
+    35: "학문과 예술 분야에서 뛰어난 성과를 냅니다.",
+    37: "신뢰받는 성품으로 직장과 사업에서 오래 인정받습니다.",
+    38: "예술적 재능을 살려 창의적인 분야에서 성공합니다.",
+    39: "통찰력과 지혜로 중요한 결정을 잘 내리고 성공합니다.",
+    41: "덕망과 신뢰로 조직의 리더가 되어 큰 성과를 냅니다.",
+    45: "인내와 지혜로 어떤 어려움도 극복하고 성공합니다.",
+    47: "정직하고 성실한 태도로 직장과 사업에서 신뢰를 쌓습니다.",
+    48: "지혜와 덕망으로 조직에서 존경받는 리더가 됩니다.",
+    52: "강한 의지로 목표를 향해 나아가 성공을 이룹니다.",
+    57: "끈기 있는 노력으로 어떤 역경도 이겨내고 성공합니다.",
+    61: "따뜻한 리더십으로 조직을 이끌고 성공합니다.",
+    63: "안정적인 환경 속에서 꾸준히 성장하여 성공합니다.",
+    65: "온화한 성품으로 협력을 이끌어 성공합니다.",
+    67: "성실한 노력으로 직장과 사업에서 인정받습니다.",
+    68: "지혜와 성실함으로 직장과 사업에서 좋은 결과를 냅니다.",
+    81: "최고의 운으로 사업과 직장에서 큰 성공을 이룹니다.",
+  },
+  i: {
+    1: "배우자와 깊은 신뢰를 쌓고 사회적으로도 인정받습니다.",
+    3: "밝고 창의적인 성격으로 사회 활동에서 인기를 얻습니다.",
+    5: "안정적인 가정과 원만한 사회생활을 함께 누립니다.",
+    6: "따뜻한 가정을 이루고 사회에서도 신뢰받습니다.",
+    7: "독립적인 성격으로 자신만의 삶을 주체적으로 이끕니다.",
+    8: "성실한 노력으로 가정과 사회 모두에서 안정을 이룹니다.",
+    11: "감수성이 풍부하여 가족과 깊은 유대를 형성합니다.",
+    13: "지혜로운 판단으로 가정과 사회에서 중요한 역할을 합니다.",
+    15: "원만한 성격으로 가정과 사회 어디서든 사랑받습니다.",
+    16: "책임감 있는 태도로 가정과 사회에서 신뢰를 얻습니다.",
+    17: "강한 의지로 가정과 사회에서 자신의 역할을 다합니다.",
+    18: "부지런함으로 가정을 안정시키고 사회에서도 인정받습니다.",
+    21: "독창적인 아이디어로 사회에서 주목받고 가정도 화목합니다.",
+    23: "활발한 사회 활동으로 인맥을 넓히고 가정도 행복합니다.",
+    24: "노력의 결실로 가정과 사회 모두에서 풍요로움을 누립니다.",
+    25: "균형 잡힌 삶으로 가정과 사회 모두에서 안정을 이룹니다.",
+    29: "뛰어난 재능으로 사회에서 인정받고 가정도 화목합니다.",
+    31: "따뜻한 인품으로 가정과 사회에서 중심적인 역할을 합니다.",
+    32: "유연한 성격으로 가정과 사회 어디서든 잘 적응합니다.",
+    33: "긍정적인 에너지로 가정과 사회를 밝게 만듭니다.",
+    35: "다재다능한 능력으로 가정과 사회에서 빛납니다.",
+    37: "신뢰받는 성품으로 가정과 사회에서 오래 인정받습니다.",
+    38: "예술적 감각으로 가정과 사회에서 독특한 존재감을 발휘합니다.",
+    39: "통찰력으로 가정과 사회에서 현명한 결정을 내립니다.",
+    41: "덕망으로 가정과 사회에서 자연스럽게 리더가 됩니다.",
+    45: "인내와 지혜로 가정과 사회에서 안정을 이룹니다.",
+    47: "정직한 성품으로 가정과 사회에서 신뢰를 쌓습니다.",
+    48: "지혜와 덕망으로 가정과 사회에서 존경받습니다.",
+    52: "강한 의지로 가정과 사회에서 자신의 역할을 다합니다.",
+    57: "끈기 있는 노력으로 가정과 사회에서 안정을 이룹니다.",
+    61: "따뜻한 마음으로 가정과 사회에서 사랑받습니다.",
+    63: "화목한 가정을 이루고 사회에서도 안정을 찾습니다.",
+    65: "온화한 성품으로 가정과 사회에서 사랑받습니다.",
+    67: "성실한 노력으로 가정과 사회에서 인정받습니다.",
+    68: "지혜와 성실함으로 가정과 사회에서 좋은 결과를 냅니다.",
+    81: "최고의 운으로 가정과 사회 모두에서 행복을 누립니다.",
+  },
+  jung: {
+    1: "한 평생 건강하고 활기찬 삶을 누립니다.",
+    3: "창의적이고 표현력 있는 삶으로 많은 이들에게 기억됩니다.",
+    5: "안정적이고 평화로운 삶을 살며 주변에 좋은 영향을 줍니다.",
+    6: "따뜻한 인간관계 속에서 행복하고 풍요로운 삶을 삽니다.",
+    7: "자신만의 길을 개척하며 독립적이고 당당한 삶을 삽니다.",
+    8: "성실한 노력으로 안정적이고 풍요로운 삶을 이룹니다.",
+    11: "감수성 풍부한 삶 속에서 깊은 인간관계를 맺습니다.",
+    13: "총명한 두뇌로 학문과 전문 분야에서 업적을 남깁니다.",
+    15: "덕스러운 삶으로 주변 사람들에게 오래 기억됩니다.",
+    16: "리더로서 많은 사람들에게 긍정적인 영향을 미칩니다.",
+    17: "강한 의지로 큰 목표를 이루고 의미 있는 삶을 삽니다.",
+    18: "부지런한 노력으로 풍요롭고 안정적인 삶을 이룹니다.",
+    21: "독창적인 업적으로 사회에 큰 기여를 합니다.",
+    23: "도전적인 삶으로 새로운 길을 개척하고 성공합니다.",
+    24: "꾸준한 노력의 결실로 풍요롭고 행복한 삶을 삽니다.",
+    25: "균형 잡힌 삶으로 안정과 성취를 함께 누립니다.",
+    29: "뛰어난 재능으로 전문 분야에서 큰 업적을 남깁니다.",
+    31: "따뜻한 인품으로 많은 사람들에게 사랑받는 삶을 삽니다.",
+    32: "유연한 삶의 태도로 어떤 상황에서도 행복을 찾습니다.",
+    33: "긍정적인 에너지로 주변을 밝히며 행복한 삶을 삽니다.",
+    35: "다재다능한 능력으로 다양한 분야에서 성과를 냅니다.",
+    37: "신뢰받는 삶으로 오래도록 존경받습니다.",
+    38: "예술적 감각으로 아름다운 삶의 흔적을 남깁니다.",
+    39: "통찰력 있는 삶으로 중요한 결정을 잘 내리고 성공합니다.",
+    41: "덕망 있는 삶으로 많은 사람들에게 존경받습니다.",
+    45: "인내와 지혜로 어떤 어려움도 극복하고 성공적인 삶을 삽니다.",
+    47: "정직하고 성실한 삶으로 오래도록 신뢰받습니다.",
+    48: "지혜와 덕망으로 사회에 큰 기여를 하고 존경받습니다.",
+    52: "강한 의지로 큰 목표를 이루고 의미 있는 삶을 삽니다.",
+    57: "끈기 있는 노력으로 어떤 역경도 이겨내고 성공합니다.",
+    61: "따뜻한 마음으로 많은 사람들에게 사랑받는 삶을 삽니다.",
+    63: "안정적이고 화목한 삶 속에서 행복을 누립니다.",
+    65: "온화하고 덕스러운 삶으로 주변에 좋은 영향을 줍니다.",
+    67: "성실한 노력으로 안정적이고 풍요로운 삶을 이룹니다.",
+    68: "지혜와 성실함으로 풍요롭고 행복한 삶을 삽니다.",
+    81: "최고의 총운으로 한 평생 행복하고 성공적인 삶을 삽니다.",
+  },
+};
+
+/** 4격 유형에 따른 기본 쉬운 풀이 (수리 테이블에 없을 때 fallback) */
+function getEasyExplain(gyeokType: 'won' | 'hyung' | 'i' | 'jung', number: number, isGil: boolean): string {
+  const map = GYEOK_EASY_EXPLAIN[gyeokType];
+  if (map[number]) return map[number];
+  const suriInfo = SURI_TABLE[number];
+  if (!suriInfo) return isGil ? "좋은 기운이 함께합니다." : "주의가 필요한 기운입니다.";
+  if (isGil) return `${suriInfo.keyword}의 기운으로 좋은 운을 맞이합니다.`;
+  return `${suriInfo.keyword}의 기운으로 주의가 필요합니다.`;
+}
+
+// ──────────────────────────────────────────────
 // 4격 카드 컴포넌트
 // ──────────────────────────────────────────────
 function GyeokCard({
   label,
   number,
   description,
+  gyeokType,
 }: {
   label: string;
   number: number;
   description: string;
+  gyeokType: 'won' | 'hyung' | 'i' | 'jung';
 }) {
   const suriInfo = SURI_TABLE[number];
   const isGil = suriInfo?.judgment === "길";
+  const easyExplain = getEasyExplain(gyeokType, number, isGil ?? false);
 
   return (
     <div
@@ -137,9 +314,21 @@ function GyeokCard({
         <p className="text-sm font-bold text-white">{suriInfo?.name}</p>
         <p className="text-xs text-white/50">{suriInfo?.keyword}</p>
       </div>
-      <p className="text-xs text-white/40 leading-relaxed">
-        {suriInfo?.description}
-      </p>
+      {/* 쉬운 풀이 */}
+      <div className={`rounded-lg p-2.5 ${
+        isGil ? "bg-amber-500/8" : "bg-red-500/8"
+      }`}>
+        <div className="flex items-start gap-1.5">
+          <Lightbulb className={`w-3 h-3 mt-0.5 flex-shrink-0 ${
+            isGil ? "text-amber-400" : "text-red-400"
+          }`} />
+          <p className={`text-xs leading-relaxed ${
+            isGil ? "text-amber-200/80" : "text-red-200/80"
+          }`}>
+            {easyExplain}
+          </p>
+        </div>
+      </div>
       <p className="text-[11px] text-white/30 italic">{description}</p>
     </div>
   );
@@ -161,93 +350,99 @@ function CandidateCard({
   onSelect: (c: NameCandidate) => void;
   isSelected: boolean;
 }) {
-  const { char1, char2, suri, hangulName, hanjaName } = candidate;
+  const { char1, char2, suri, hangulName, hanjaName, englishNames } = candidate;
+  // 이름 한 줄 요약: 한자 의미 키워드 추출
+  const meaningKeywords = [char1.meaning, char2.meaning]
+    .map(m => m.split(/[,\s·]+/)[0])
+    .filter(Boolean)
+    .join(' · ');
+  // 영어 이름 첫 번째
+  const firstEnglish = englishNames?.[0];
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`rounded-xl border p-4 cursor-pointer transition-all duration-200 ${
+      className={`rounded-xl border cursor-pointer transition-all duration-200 overflow-hidden ${
         isSelected
           ? "bg-amber-500/10 border-amber-500/40 shadow-lg shadow-amber-500/10"
-          : "bg-white/5 border-white/10 hover:bg-white/8 hover:border-white/20"
+          : "bg-white/5 border-white/10 hover:bg-white/8 hover:border-amber-500/20"
       }`}
       onClick={() => onSelect(candidate)}
     >
       {/* 이름 헤더 */}
-      <div className="flex items-center justify-between mb-3">
-        <div>
-          <span className="text-xl font-black text-white">
-            {surnameHangul}
-            {hangulName}
+      <div className="flex items-center justify-between p-4 pb-3">
+        <div className="flex items-baseline gap-2">
+          <span className="text-2xl font-black text-white">
+            {surnameHangul}{hangulName}
           </span>
-          <span className="ml-2 text-sm text-white/40">
-            {surnameHanja}
-            {hanjaName}
+          <span className="text-sm text-white/40">
+            {surnameHanja}{hanjaName}
           </span>
         </div>
-        {isSelected && (
-          <Badge className="bg-amber-500/20 text-amber-300 border-amber-500/30 text-xs">
-            선택됨
+        <div className="flex items-center gap-2">
+          {isSelected ? (
+            <Badge className="bg-amber-500/20 text-amber-300 border-amber-500/30 text-xs">
+              <CheckCircle2 className="w-3 h-3 mr-1" />선택됨
+            </Badge>
+          ) : (
+            <span className="text-[11px] text-amber-400/70 flex items-center gap-0.5">
+              상세보기 <ChevronDown className="w-3.5 h-3.5" />
+            </span>
+          )}
+        </div>
+      </div>
+
+      {/* 한 줄 요약: 의미 + 영어 이름 */}
+      <div className="px-4 pb-3 flex items-center justify-between gap-2">
+        <p className="text-xs text-white/50">
+          <span className="text-white/70">{char1.hanja}</span> {char1.hangul}({meaningKeywords.split(' · ')[0]}) ·{" "}
+          <span className="text-white/70">{char2.hanja}</span> {char2.hangul}({meaningKeywords.split(' · ')[1] ?? char2.meaning.split(/[,\s·]+/)[0]})
+        </p>
+        {firstEnglish && (
+          <Badge className="bg-blue-500/15 text-blue-300 border-blue-500/20 text-[10px] flex-shrink-0">
+            <Globe className="w-2.5 h-2.5 mr-1" />{firstEnglish.name}
           </Badge>
         )}
       </div>
 
-      {/* 한자 정보 */}
-      <div className="grid grid-cols-2 gap-2 mb-3">
-        {[char1, char2].map((ch, idx) => (
-          <div
-            key={idx}
-            className={`rounded-lg border p-2 ${ELEMENT_BG[ch.element] ?? "bg-white/5 border-white/10"}`}
-          >
-            <div className="flex items-center gap-1.5">
-              <span className="text-lg font-black text-white">{ch.hanja}</span>
-              <span className="text-xs text-white/50">{ch.hangul}</span>
-              <span
-                className={`text-xs font-bold ml-auto ${ELEMENT_COLOR[ch.element] ?? "text-white/50"}`}
-              >
-                {ch.element}
-              </span>
+      {/* 4격 수리 및 한자 오행 요약 */}
+      <div className="px-4 pb-4 space-y-2">
+        {/* 4격 요약 바 */}
+        <div className="grid grid-cols-4 gap-1">
+          {[
+            { label: "원격", val: suri.won, j: suri.wonJudgment },
+            { label: "형격", val: suri.hyung, j: suri.hyungJudgment },
+            { label: "이격", val: suri.i, j: suri.iJudgment },
+            { label: "정격", val: suri.jung, j: suri.jungJudgment },
+          ].map((g) => (
+            <div
+              key={g.label}
+              className={`rounded-lg p-1.5 text-center ${
+                g.j === "길"
+                  ? "bg-amber-500/10 border border-amber-500/20"
+                  : "bg-red-500/10 border border-red-500/20"
+              }`}
+            >
+              <p className="text-[10px] text-white/40">{g.label}</p>
+              <p className={`text-sm font-black ${ g.j === "길" ? "text-amber-300" : "text-red-300" }`}>{g.val}</p>
+              <p className={`text-[10px] font-bold ${ g.j === "길" ? "text-amber-400" : "text-red-400" }`}>{g.j}</p>
             </div>
-            <p className="text-[11px] text-white/40 mt-0.5">{ch.meaning}</p>
-            <p className="text-[10px] text-white/30">{ch.strokes}획</p>
-          </div>
-        ))}
-      </div>
-
-      {/* 4격 요약 */}
-      <div className="grid grid-cols-4 gap-1">
-        {[
-          { label: "원격", val: suri.won, j: suri.wonJudgment },
-          { label: "형격", val: suri.hyung, j: suri.hyungJudgment },
-          { label: "이격", val: suri.i, j: suri.iJudgment },
-          { label: "정격", val: suri.jung, j: suri.jungJudgment },
-        ].map((g) => (
-          <div
-            key={g.label}
-            className={`rounded-lg p-1.5 text-center ${
-              g.j === "길"
-                ? "bg-amber-500/10 border border-amber-500/20"
-                : "bg-red-500/10 border border-red-500/20"
-            }`}
-          >
-            <p className="text-[10px] text-white/40">{g.label}</p>
-            <p
-              className={`text-sm font-black ${
-                g.j === "길" ? "text-amber-300" : "text-red-300"
-              }`}
-            >
-              {g.val}
-            </p>
-            <p
-              className={`text-[10px] font-bold ${
-                g.j === "길" ? "text-amber-400" : "text-red-400"
-              }`}
-            >
-              {g.j}
-            </p>
-          </div>
-        ))}
+          ))}
+        </div>
+        {/* 한자 오행 표시 */}
+        <div className="flex gap-2">
+          {[char1, char2].map((ch, idx) => (
+            <div key={idx} className={`flex-1 rounded-lg border p-2 ${ ELEMENT_BG[ch.element] ?? "bg-white/5 border-white/10" }`}>
+              <div className="flex items-center gap-1">
+                <span className="text-base font-black text-white">{ch.hanja}</span>
+                <span className="text-[11px] text-white/50">{ch.hangul}</span>
+                <span className={`text-[11px] font-bold ml-auto ${ ELEMENT_COLOR[ch.element] ?? "text-white/50" }`}>{ch.element}({ch.strokes}획)</span>
+              </div>
+              <p className="text-[10px] text-white/40 mt-0.5 leading-relaxed">{ch.meaning}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </motion.div>
   );
@@ -842,22 +1037,66 @@ export default function Naming() {
                         label="원격 (元格) — 초년운"
                         number={selectedCandidate.suri.won}
                         description="이름 두 글자의 합 / 초년·건강·가정운"
+                        gyeokType="won"
                       />
                       <GyeokCard
                         label="형격 (亨格) — 청년운"
                         number={selectedCandidate.suri.hyung}
                         description="성 + 이름 첫째자 / 청년·성공·사업운"
+                        gyeokType="hyung"
                       />
                       <GyeokCard
                         label="이격 (利格) — 장년운"
                         number={selectedCandidate.suri.i}
                         description="성 + 이름 둘째자 / 장년·부부·사회운"
+                        gyeokType="i"
                       />
                       <GyeokCard
                         label="정격 (貞格) — 총운"
                         number={selectedCandidate.suri.jung}
                         description="성 + 이름 전체 / 노년·총운"
+                        gyeokType="jung"
                       />
+                    </div>
+
+                    {/* 이 이름을 추천하는 이유 */}
+                    <div className="rounded-xl bg-emerald-500/5 border border-emerald-500/15 p-4 space-y-3">
+                      <div className="flex items-center gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+                        <p className="text-sm font-bold text-emerald-300">이 이름을 추천하는 이유</p>
+                      </div>
+                      <ul className="space-y-2">
+                        <li className="flex items-start gap-2">
+                          <span className="text-emerald-400 text-xs mt-0.5 flex-shrink-0">✓</span>
+                          <p className="text-xs text-white/70 leading-relaxed">
+                            <span className="text-white font-semibold">원격 {selectedCandidate.suri.won}수</span>는 ‘{SURI_TABLE[selectedCandidate.suri.won]?.name ?? ''}’로, {getEasyExplain('won', selectedCandidate.suri.won, true)}
+                          </p>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-emerald-400 text-xs mt-0.5 flex-shrink-0">✓</span>
+                          <p className="text-xs text-white/70 leading-relaxed">
+                            <span className="text-white font-semibold">형격 {selectedCandidate.suri.hyung}수</span>는 ‘{SURI_TABLE[selectedCandidate.suri.hyung]?.name ?? ''}’로, {getEasyExplain('hyung', selectedCandidate.suri.hyung, true)}
+                          </p>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-emerald-400 text-xs mt-0.5 flex-shrink-0">✓</span>
+                          <p className="text-xs text-white/70 leading-relaxed">
+                            <span className="text-white font-semibold">이격 {selectedCandidate.suri.i}수</span>는 ‘{SURI_TABLE[selectedCandidate.suri.i]?.name ?? ''}’로, {getEasyExplain('i', selectedCandidate.suri.i, true)}
+                          </p>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-emerald-400 text-xs mt-0.5 flex-shrink-0">✓</span>
+                          <p className="text-xs text-white/70 leading-relaxed">
+                            <span className="text-white font-semibold">정격 {selectedCandidate.suri.jung}수</span>는 ‘{SURI_TABLE[selectedCandidate.suri.jung]?.name ?? ''}’로, {getEasyExplain('jung', selectedCandidate.suri.jung, true)}
+                          </p>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-emerald-400 text-xs mt-0.5 flex-shrink-0">✓</span>
+                          <p className="text-xs text-white/70 leading-relaxed">
+                            <span className="text-white font-semibold">{selectedCandidate.char1.hanja}({selectedCandidate.char1.hangul})</span>는 ‘{selectedCandidate.char1.meaning}’의 뜻을 담고 <span className={`font-semibold ${ELEMENT_COLOR[selectedCandidate.char1.element] ?? ''}`}>{selectedCandidate.char1.element}오행</span>을 품고 있으며, <span className="text-white font-semibold">{selectedCandidate.char2.hanja}({selectedCandidate.char2.hangul})</span>는 ‘{selectedCandidate.char2.meaning}’의 뜻을 담고 <span className={`font-semibold ${ELEMENT_COLOR[selectedCandidate.char2.element] ?? ''}`}>{selectedCandidate.char2.element}오행</span>을 품고 있어 이름에 깊은 의미를 더합니다.
+                          </p>
+                        </li>
+                      </ul>
                     </div>
 
                     {/* 한자 상세 */}
@@ -896,6 +1135,31 @@ export default function Naming() {
                         ))}
                       </div>
                     </div>
+
+                    {/* 영어 이름 추천 */}
+                    {selectedCandidate.englishNames && selectedCandidate.englishNames.length > 0 && (
+                      <div className="rounded-xl bg-blue-500/5 border border-blue-500/15 p-4 space-y-3">
+                        <div className="flex items-center gap-2">
+                          <Globe className="w-4 h-4 text-blue-400" />
+                          <p className="text-sm font-bold text-blue-300">영어 이름 추천</p>
+                          <span className="text-[11px] text-white/30 ml-auto">한자 의미 · 발음 기반</span>
+                        </div>
+                        <div className="grid grid-cols-3 gap-2">
+                          {selectedCandidate.englishNames.map((en, idx) => (
+                            <div key={idx} className="rounded-lg bg-blue-500/10 border border-blue-500/20 p-3 text-center">
+                              <p className="text-base font-black text-white">{en.name}</p>
+                              <p className="text-[10px] text-blue-300/70 mt-0.5">{en.reason}</p>
+                              {en.keyword && (
+                                <p className="text-[10px] text-white/30 mt-0.5">‘{en.keyword}’ 의미</p>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                        <p className="text-[11px] text-white/30 leading-relaxed">
+                          한자 이름의 의미와 발음을 바탕으로 어울리는 영어 이름을 추천합니다. 국제적인 환경에서도 자연스러운 이름으로 불릴 수 있습니다.
+                        </p>
+                      </div>
+                    )}
 
                     {/* PDF 저장 버튼 */}
                     <Button
@@ -959,9 +1223,12 @@ export default function Naming() {
                   </div>
                 ) : (
                   <div className="space-y-3">
-                    <p className="text-xs text-white/40 mb-2">
-                      이름을 클릭하면 4격 상세 분석을 볼 수 있습니다.
-                    </p>
+                    <div className="rounded-lg bg-amber-500/5 border border-amber-500/10 p-3 flex items-start gap-2 mb-2">
+                      <Info className="w-3.5 h-3.5 text-amber-400 flex-shrink-0 mt-0.5" />
+                      <p className="text-xs text-amber-300/80 leading-relaxed">
+                        아래 이름을 클릭하면 ‘이 이름을 추천하는 이유’와 한자 풀이, 영어 이름 추천이 표시됩니다.
+                      </p>
+                    </div>
                     {candidates.map((c, idx) => (
                       <CandidateCard
                         key={`${c.hanjaName}-${idx}`}
@@ -980,15 +1247,7 @@ export default function Naming() {
             </Card>
           </motion.div>
 
-          {/* 다시 분석 버튼 */}
-          <Button
-            variant="outline"
-            onClick={handleReset}
-            className="w-full h-11 border-white/20 text-white hover:bg-white/10 rounded-xl gap-2 print:hidden"
-          >
-            <RefreshCw className="w-4 h-4" />
-            다른 성씨로 다시 분석하기
-          </Button>
+          {/* 다시 분석 버튼 (성씨 변경 불가 안내 제거) */}
         </div>
       </main>
 
