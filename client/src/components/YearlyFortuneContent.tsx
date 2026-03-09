@@ -3,6 +3,7 @@ import RelatedServices from "@/components/RelatedServices";
 
 export default function YearlyFortuneContent() {
   return (
+    <>
     <article className="prose prose-invert max-w-none">
       {/* 신년운세란? */}
       <section className="mb-12">
@@ -201,5 +202,6 @@ export default function YearlyFortuneContent() {
         },
       ]}
     />
+    </>
   );
 }

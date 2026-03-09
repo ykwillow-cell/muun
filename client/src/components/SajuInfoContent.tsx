@@ -3,6 +3,7 @@ import RelatedServices from "@/components/RelatedServices";
 
 export default function SajuInfoContent() {
   return (
+    <>
     <article className="prose prose-invert max-w-none">
       {/* 평생사주란 무엇인가? */}
       <section className="mb-12">
@@ -184,5 +185,6 @@ export default function SajuInfoContent() {
         },
       ]}
     />
+    </>
   );
 }

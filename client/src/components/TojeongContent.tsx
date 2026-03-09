@@ -3,6 +3,7 @@ import RelatedServices from "@/components/RelatedServices";
 
 export default function TojeongContent() {
   return (
+    <>
     <article className="prose prose-invert max-w-none">
       {/* 토정비결이란? */}
       <section className="mb-12">
@@ -170,5 +171,6 @@ export default function TojeongContent() {
         },
       ]}
     />
+    </>
   );
 }
