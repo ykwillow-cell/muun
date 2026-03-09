@@ -21,6 +21,8 @@
 
 import { SajuResult, calculateElementBalance } from './saju';
 import { getHanjaByStrokesAndElements, HanjaQueryResult } from './naming-api';
+import { passesPhoneticFilter, calculatePhoneticScore, PhoneticScore } from './phonetics';
+import { suggestEnglishNames, EnglishNameSuggestion } from './english-name-matcher';
 
 // ──────────────────────────────────────────────
 // 1. 81수리 길흉 판별 테이블
@@ -356,6 +358,10 @@ export interface NameCandidate {
   hangulName: string;
   /** 한자 이름 (예: "智賢") */
   hanjaName: string;
+  /** 음운 검토 결과 */
+  phoneticScore?: PhoneticScore;
+  /** 영어 이름 추천 */
+  englishNames?: EnglishNameSuggestion[];
 }
 
 // ──────────────────────────────────────────────
@@ -371,6 +377,12 @@ export interface GenerateNamesOptions {
    * false로 설정하면 오행 조건 없이 81수리만으로 탐색
    */
   prioritizeWeakElements?: boolean;
+  /** 음운 필터 적용 여부 (기본: true) */
+  applyPhoneticFilter?: boolean;
+  /** 성씨 한글 (음운 검토용, 예: "김") */
+  surnameHangul?: string;
+  /** 성별 (영어 이름 추천용) */
+  gender?: 'male' | 'female';
 }
 
 /**
@@ -432,6 +444,12 @@ export async function generateNames(
     hanjaByStrokes.get(hanja.strokes)!.push(hanja);
   }
 
+  const {
+    applyPhoneticFilter = true,
+    surnameHangul = '',
+    gender = 'male',
+  } = options;
+
   // Step 5: 후보 생성
   const candidates: NameCandidate[] = [];
 
@@ -444,14 +462,36 @@ export async function generateNames(
         // 같은 한자 중복 방지
         if (char1.hanja === char2.hanja) continue;
 
+        const name1Hangul = char1.hangul;
+        const name2Hangul = char2.hangul;
+
+        // 음운 필터 적용
+        if (applyPhoneticFilter && surnameHangul) {
+          if (!passesPhoneticFilter(surnameHangul, name1Hangul, name2Hangul)) {
+            continue;
+          }
+        }
+
         const suri = calculate4Gyeok(familyStrokes, char1.strokes, char2.strokes);
+        const hangulName = name1Hangul + name2Hangul;
+
+        // 음운 점수 산출
+        const phoneticScore = surnameHangul
+          ? calculatePhoneticScore(surnameHangul, name1Hangul, name2Hangul)
+          : undefined;
+
+        // 영어 이름 추천
+        const meanings = [char1.meaning, char2.meaning];
+        const englishNames = suggestEnglishNames(hangulName, meanings, gender, 3);
 
         candidates.push({
           char1,
           char2,
           suri,
-          hangulName: char1.hangul + char2.hangul,
+          hangulName,
           hanjaName: char1.hanja + char2.hanja,
+          phoneticScore,
+          englishNames,
         });
 
         if (candidates.length >= maxResults) break outer;
