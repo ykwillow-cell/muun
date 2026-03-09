@@ -2,7 +2,7 @@
  * 무운 작명소 - 메인 페이지 (Naming.tsx)
  *
  * 기능:
- * 1. 성씨 선택 (주요 한국 성씨 원획수 자동 매핑)
+ * 1. 성씨 선택 (한글 자동완성 Combobox + 동음이의 한자 선택)
  * 2. 사주 정보 입력 (생년월일, 시간, 성별, 양/음력)
  * 3. 81수리 4격(원·형·이·정격) 계산 및 결과 표시
  * 4. 길수 이름 후보 목록 (Supabase 한자 사전 연동)
@@ -24,7 +24,6 @@ import {
   ScrollText,
   Download,
   RefreshCw,
-  CheckCircle2,
   XCircle,
   Info,
   Loader2,
@@ -45,6 +44,7 @@ import { z } from "zod";
 
 import DatePickerInput from "@/components/DatePickerInput";
 import { BirthTimeSelect } from "@/components/ui/birth-time-select";
+import SurnameCombobox from "@/components/SurnameCombobox";
 import { calculateSaju } from "@/lib/saju";
 import { convertToSolarDate } from "@/lib/lunar-converter";
 import {
@@ -56,105 +56,6 @@ import {
 } from "@/lib/naming-engine";
 import { saveNamingHistory } from "@/lib/naming-api";
 import { trackCustomEvent } from "@/lib/ga4";
-
-// ──────────────────────────────────────────────
-// 주요 한국 성씨 원획수 데이터
-// 원획수(原劃數) 기준 - 변형 부수 보정 포함
-// ──────────────────────────────────────────────
-const FAMILY_STROKES: Record<string, number> = {
-  "공(孔)": 4, "문(文)": 4, "방(方)": 4, "왕(王)": 4, "윤(尹)": 4,
-  "민(閔)": 5, "백(白)": 5, "석(石)": 5,
-  "강(姜)": 9, "곽(郭)": 15,
-  "김(金)": 8, "박(朴)": 6, "안(安)": 6, "임(林)": 8, "주(朱)": 6,
-  "권(權)": 22,
-  "류(柳)": 9, "신(申)": 5, "오(吳)": 7, "이(李)": 7, "장(張)": 11,
-  "정(鄭)": 15, "조(趙)": 14, "차(車)": 7, "최(崔)": 11,
-  "구(具)": 8, "남(南)": 9, "노(盧)": 16, "배(裵)": 14, "서(徐)": 10,
-  "송(宋)": 7, "심(沈)": 8, "양(梁)": 11, "유(劉)": 15,
-  "진(陳)": 11, "채(蔡)": 14, "한(韓)": 17, "허(許)": 11, "홍(洪)": 10,
-  "고(高)": 10, "성(成)": 7, "손(孫)": 10, "신(辛)": 7,
-  "엄(嚴)": 20, "연(延)": 7, "황(黃)": 12,
-  "나(羅)": 20, "마(馬)": 10, "변(卞)": 5,
-  "봉(奉)": 8, "원(元)": 4, "위(魏)": 18, "전(全)": 6, "지(池)": 7,
-  "도(都)": 12, "어(魚)": 11, "여(呂)": 7, "옥(玉)": 5, "용(龍)": 16,
-  "우(禹)": 9, "인(印)": 6, "임(任)": 6, "천(千)": 3, "추(秋)": 9,
-  "탁(卓)": 8, "피(皮)": 5, "하(河)": 9, "함(咸)": 9,
-  "맹(孟)": 8, "현(玄)": 5, "길(吉)": 6,
-};
-
-// 성씨별 한자 표기 및 획수 (간단 버전 - 자주 쓰는 성씨 중심)
-const COMMON_SURNAMES = [
-  { name: "김(金)", strokes: 8 },
-  { name: "이(李)", strokes: 7 },
-  { name: "박(朴)", strokes: 6 },
-  { name: "최(崔)", strokes: 11 },
-  { name: "정(鄭)", strokes: 15 },
-  { name: "강(姜)", strokes: 9 },
-  { name: "조(趙)", strokes: 14 },
-  { name: "윤(尹)", strokes: 4 },
-  { name: "장(張)", strokes: 11 },
-  { name: "임(林)", strokes: 8 },
-  { name: "한(韓)", strokes: 17 },
-  { name: "오(吳)", strokes: 7 },
-  { name: "서(徐)", strokes: 10 },
-  { name: "신(申)", strokes: 5 },
-  { name: "권(權)", strokes: 22 },
-  { name: "황(黃)", strokes: 12 },
-  { name: "안(安)", strokes: 6 },
-  { name: "송(宋)", strokes: 7 },
-  { name: "류(柳)", strokes: 9 },
-  { name: "전(全)", strokes: 6 },
-  { name: "홍(洪)", strokes: 10 },
-  { name: "고(高)", strokes: 10 },
-  { name: "문(文)", strokes: 4 },
-  { name: "양(梁)", strokes: 11 },
-  { name: "손(孫)", strokes: 10 },
-  { name: "배(裵)", strokes: 14 },
-  { name: "백(白)", strokes: 5 },
-  { name: "허(許)", strokes: 11 },
-  { name: "유(劉)", strokes: 15 },
-  { name: "남(南)", strokes: 9 },
-  { name: "심(沈)", strokes: 8 },
-  { name: "노(盧)", strokes: 16 },
-  { name: "하(河)", strokes: 9 },
-  { name: "전(田)", strokes: 5 },
-  { name: "곽(郭)", strokes: 15 },
-  { name: "성(成)", strokes: 7 },
-  { name: "차(車)", strokes: 7 },
-  { name: "주(朱)", strokes: 6 },
-  { name: "우(禹)", strokes: 9 },
-  { name: "구(具)", strokes: 8 },
-  { name: "신(辛)", strokes: 7 },
-  { name: "임(任)", strokes: 6 },
-  { name: "나(羅)", strokes: 20 },
-  { name: "진(陳)", strokes: 11 },
-  { name: "엄(嚴)", strokes: 20 },
-  { name: "원(元)", strokes: 4 },
-  { name: "채(蔡)", strokes: 14 },
-  { name: "천(千)", strokes: 3 },
-  { name: "방(方)", strokes: 4 },
-  { name: "공(孔)", strokes: 4 },
-  { name: "민(閔)", strokes: 5 },
-  { name: "탁(卓)", strokes: 8 },
-  { name: "추(秋)", strokes: 9 },
-  { name: "도(都)", strokes: 12 },
-  { name: "어(魚)", strokes: 11 },
-  { name: "여(呂)", strokes: 7 },
-  { name: "연(延)", strokes: 7 },
-  { name: "맹(孟)", strokes: 8 },
-  { name: "봉(奉)", strokes: 8 },
-  { name: "왕(王)", strokes: 4 },
-  { name: "마(馬)", strokes: 10 },
-  { name: "현(玄)", strokes: 5 },
-  { name: "함(咸)", strokes: 9 },
-  { name: "피(皮)", strokes: 5 },
-  { name: "석(昔)", strokes: 8 },
-  { name: "길(吉)", strokes: 6 },
-  { name: "인(印)", strokes: 6 },
-  { name: "옥(玉)", strokes: 5 },
-  { name: "용(龍)", strokes: 16 },
-  { name: "기타(직접입력)", strokes: 0 },
-];
 
 // ──────────────────────────────────────────────
 // 오행 스타일 맵
@@ -178,13 +79,12 @@ const ELEMENT_BG: Record<string, string> = {
 // 폼 스키마
 // ──────────────────────────────────────────────
 const formSchema = z.object({
-  surname: z.string().min(1, "성씨를 선택해주세요"),
-  customStrokes: z.string().optional(),
   gender: z.enum(["male", "female"]),
   birthDate: z.string().min(1, "생년월일을 입력해주세요"),
   birthTime: z.string(),
   birthTimeUnknown: z.boolean(),
   calendarType: z.enum(["solar", "lunar"]),
+  customStrokes: z.string().optional(),
 });
 type FormValues = z.infer<typeof formSchema>;
 
@@ -194,48 +94,39 @@ type FormValues = z.infer<typeof formSchema>;
 function GyeokCard({
   label,
   number,
-  info,
   description,
 }: {
   label: string;
   number: number;
-  info: ReturnType<typeof SURI_TABLE[number]["judgment"] extends string ? () => (typeof SURI_TABLE)[number] : never>;
   description: string;
 }) {
-  const suriInfo = SURI_TABLE[number <= 81 ? number : number % 81 || 81];
-  const isLucky = suriInfo?.judgment === "길";
+  const suriInfo = SURI_TABLE[number];
+  const isGil = suriInfo?.judgment === "길";
 
   return (
     <div
-      className={`rounded-xl border p-4 space-y-2 ${
-        isLucky
-          ? "bg-amber-500/5 border-amber-500/20"
-          : "bg-red-500/5 border-red-500/20"
+      className={`rounded-xl border p-3 space-y-2 ${
+        isGil
+          ? "bg-amber-500/8 border-amber-500/20"
+          : "bg-red-500/8 border-red-500/20"
       }`}
     >
       <div className="flex items-center justify-between">
-        <span className="text-xs font-bold text-white/60 uppercase tracking-wider">
-          {label}
-        </span>
-        <div className="flex items-center gap-1.5">
-          {isLucky ? (
-            <CheckCircle2 className="w-4 h-4 text-amber-400" />
-          ) : (
-            <XCircle className="w-4 h-4 text-red-400" />
-          )}
-          <span
-            className={`text-xs font-bold ${
-              isLucky ? "text-amber-400" : "text-red-400"
-            }`}
-          >
-            {isLucky ? "길(吉)" : "흉(凶)"}
-          </span>
-        </div>
+        <p className="text-[11px] text-white/50">{label}</p>
+        <Badge
+          className={`text-[10px] px-1.5 py-0 ${
+            isGil
+              ? "bg-amber-500/20 text-amber-300 border-amber-500/30"
+              : "bg-red-500/20 text-red-300 border-red-500/30"
+          }`}
+        >
+          {isGil ? "길" : "흉"}
+        </Badge>
       </div>
-      <div className="flex items-end gap-2">
+      <div className="flex items-end gap-1">
         <span
           className={`text-3xl font-black ${
-            isLucky ? "text-amber-300" : "text-red-300"
+            isGil ? "text-amber-300" : "text-red-300"
           }`}
         >
           {number}
@@ -259,17 +150,18 @@ function GyeokCard({
 // ──────────────────────────────────────────────
 function CandidateCard({
   candidate,
-  surname,
+  surnameHangul,
+  surnameHanja,
   onSelect,
   isSelected,
 }: {
   candidate: NameCandidate;
-  surname: string;
+  surnameHangul: string;
+  surnameHanja: string;
   onSelect: (c: NameCandidate) => void;
   isSelected: boolean;
 }) {
   const { char1, char2, suri, hangulName, hanjaName } = candidate;
-  const surnameHangul = surname.match(/^([가-힣]+)/)?.[1] ?? "";
 
   return (
     <motion.div
@@ -290,7 +182,7 @@ function CandidateCard({
             {hangulName}
           </span>
           <span className="ml-2 text-sm text-white/40">
-            {surname.match(/\(([^)]+)\)/)?.[1] ?? ""}
+            {surnameHanja}
             {hanjaName}
           </span>
         </div>
@@ -372,54 +264,74 @@ export default function Naming() {
   const [candidates, setCandidates] = useState<NameCandidate[]>([]);
   const [selectedCandidate, setSelectedCandidate] =
     useState<NameCandidate | null>(null);
-  const [suriResult, setSuriResult] = useState<SuriResult | null>(null);
-  const [currentSurname, setCurrentSurname] = useState("");
-  const [currentFamilyStrokes, setCurrentFamilyStrokes] = useState(0);
   const [noResultReason, setNoResultReason] = useState("");
   const resultRef = useRef<HTMLDivElement>(null);
+
+  // 성씨 상태 (Combobox에서 관리)
+  const [surnameHangul, setSurnameHangul] = useState("");
+  const [surnameHanja, setSurnameHanja] = useState("");
+  const [surnameStrokes, setSurnameStrokes] = useState(0);
+  const [surnameError, setSurnameError] = useState("");
+
+  // 결과 저장용
+  const [currentSurnameHangul, setCurrentSurnameHangul] = useState("");
+  const [currentSurnameHanja, setCurrentSurnameHanja] = useState("");
+  const [currentFamilyStrokes, setCurrentFamilyStrokes] = useState(0);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      surname: "",
-      customStrokes: "",
       gender: "male",
       birthDate: "2000-01-01",
       birthTime: "12:00",
       birthTimeUnknown: false,
       calendarType: "solar",
+      customStrokes: "",
     },
   });
 
-  const selectedSurname = form.watch("surname");
-  const selectedSurnameData = COMMON_SURNAMES.find(
-    (s) => s.name === selectedSurname
-  );
-  const isCustom = selectedSurname === "기타(직접입력)";
+  // 직접 입력 모드 (목록에 없는 성씨)
+  const isCustomSurname = surnameHanja === "?";
 
   const onSubmit = async (data: FormValues) => {
+    // 성씨 유효성 검사
+    if (!surnameHangul) {
+      setSurnameError("성씨를 입력해주세요");
+      return;
+    }
+    setSurnameError("");
+
+    let familyStrokes = surnameStrokes;
+
+    // 직접 입력 모드: 획수 별도 입력
+    if (isCustomSurname) {
+      familyStrokes = parseInt(data.customStrokes ?? "0") || 0;
+      if (familyStrokes <= 0) {
+        toast.error("성씨 원획수를 입력해주세요.");
+        return;
+      }
+    }
+
+    if (familyStrokes <= 0) {
+      setSurnameError("성씨를 선택해주세요");
+      return;
+    }
+
     setIsLoading(true);
     setNoResultReason("");
     try {
-      // 성씨 획수 결정
-      let familyStrokes = selectedSurnameData?.strokes ?? 0;
-      if (isCustom) {
-        familyStrokes = parseInt(data.customStrokes ?? "0") || 0;
-      }
-      if (familyStrokes <= 0) {
-        toast.error("성씨 획수를 입력해주세요.");
-        setIsLoading(false);
-        return;
-      }
-
       // 사주 계산
       const time = data.birthTimeUnknown ? "12:00" : data.birthTime;
-      const birthDateObj = convertToSolarDate(data.birthDate, time, data.calendarType);
+      const birthDateObj = convertToSolarDate(
+        data.birthDate,
+        time,
+        data.calendarType
+      );
       const saju = calculateSaju(birthDateObj, data.gender);
 
       // GA4 이벤트
       trackCustomEvent("naming_request", {
-        surname: data.surname,
+        surname: `${surnameHangul}(${surnameHanja})`,
         family_strokes: familyStrokes,
         gender: data.gender,
         calendar_type: data.calendarType,
@@ -431,7 +343,8 @@ export default function Naming() {
         prioritizeWeakElements: true,
       });
 
-      setCurrentSurname(data.surname);
+      setCurrentSurnameHangul(surnameHangul);
+      setCurrentSurnameHanja(surnameHanja === "?" ? "" : surnameHanja);
       setCurrentFamilyStrokes(familyStrokes);
 
       if (result.length === 0) {
@@ -470,15 +383,19 @@ export default function Naming() {
 
   const handleSelectCandidate = (c: NameCandidate) => {
     setSelectedCandidate(c);
-    const surnameHangul = currentSurname.match(/^([가-힣]+)/)?.[1] ?? "";
     // 이력 저장 (fire-and-forget)
     saveNamingHistory(
-      surnameHangul,
-      surnameHangul + c.hangulName + "(" + c.hanjaName + ")"
+      currentSurnameHangul,
+      currentSurnameHangul +
+        c.hangulName +
+        "(" +
+        currentSurnameHanja +
+        c.hanjaName +
+        ")"
     ).catch(() => {});
     trackCustomEvent("naming_select", {
-      name: surnameHangul + c.hangulName,
-      hanja: c.hanjaName,
+      name: currentSurnameHangul + c.hangulName,
+      hanja: currentSurnameHanja + c.hanjaName,
     });
   };
 
@@ -493,8 +410,11 @@ export default function Naming() {
     setStep("form");
     setCandidates([]);
     setSelectedCandidate(null);
-    setSuriResult(null);
     setNoResultReason("");
+    setSurnameHangul("");
+    setSurnameHanja("");
+    setSurnameStrokes(0);
+    setSurnameError("");
     form.reset();
     window.scrollTo(0, 0);
   };
@@ -576,40 +496,32 @@ export default function Naming() {
                   onSubmit={form.handleSubmit(onSubmit)}
                   className="space-y-5"
                 >
-                  {/* 성씨 선택 */}
+                  {/* 성씨 입력 (Combobox) */}
                   <div className="space-y-1.5">
                     <Label className="text-white text-sm font-medium flex items-center gap-1.5">
                       <BookOpen className="w-3.5 h-3.5 text-amber-400" />
-                      성씨 (원획수 자동 적용)
+                      성씨
                     </Label>
-                    <select
-                      {...form.register("surname")}
-                      className="w-full h-11 bg-white/5 border border-white/10 text-white rounded-xl px-3 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all"
-                    >
-                      <option value="" className="bg-background text-white/50">
-                        성씨를 선택해주세요
-                      </option>
-                      {COMMON_SURNAMES.map((s) => (
-                        <option
-                          key={s.name}
-                          value={s.name}
-                          className="bg-background text-white"
-                        >
-                          {s.name}
-                          {s.strokes > 0 ? ` — ${s.strokes}획` : ""}
-                        </option>
-                      ))}
-                    </select>
-                    {form.formState.errors.surname && (
-                      <p className="text-xs text-red-400">
-                        {form.formState.errors.surname.message}
-                      </p>
-                    )}
+                    <SurnameCombobox
+                      value={
+                        surnameHangul && surnameHanja && surnameHanja !== "?"
+                          ? `${surnameHangul}(${surnameHanja})`
+                          : surnameHangul
+                      }
+                      strokes={surnameStrokes}
+                      onChange={(hangul, hanja, strokes) => {
+                        setSurnameHangul(hangul);
+                        setSurnameHanja(hanja);
+                        setSurnameStrokes(strokes);
+                        setSurnameError("");
+                      }}
+                      error={surnameError}
+                    />
                   </div>
 
-                  {/* 직접 입력 (기타 선택 시) */}
+                  {/* 직접 입력 모드: 획수 입력 */}
                   <AnimatePresence>
-                    {isCustom && (
+                    {isCustomSurname && (
                       <motion.div
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: "auto" }}
@@ -623,14 +535,15 @@ export default function Naming() {
                         <Input
                           type="number"
                           min={1}
-                          max={30}
+                          max={40}
                           placeholder="예: 8 (金=8획)"
                           {...form.register("customStrokes")}
                           className="h-11 bg-white/5 border-white/10 text-white placeholder:text-white/30 rounded-xl focus:ring-amber-500/50 focus:border-amber-500 transition-all"
                         />
-                        <p className="text-[11px] text-white/40">
-                          원획수(原劃數) 기준으로 입력해주세요. 변형 부수(氵→水
-                          4획, 灬→火 4획 등)는 원래 획수로 계산합니다.
+                        <p className="text-[11px] text-white/40 leading-relaxed">
+                          원획수(原劃數) 기준으로 입력해주세요.
+                          변형 부수(氵→水 4획, 灬→火 4획 등)는 원래 획수로
+                          계산합니다.
                         </p>
                       </motion.div>
                     )}
@@ -792,9 +705,6 @@ export default function Naming() {
   }
 
   // ── 결과 단계 ──────────────────────────────────
-  const surnameHangul = currentSurname.match(/^([가-힣]+)/)?.[1] ?? "";
-  const surnameHanja = currentSurname.match(/\(([^)]+)\)/)?.[1] ?? "";
-
   return (
     <div
       className="min-h-screen bg-background text-foreground pb-16 relative antialiased"
@@ -869,9 +779,13 @@ export default function Naming() {
                     <p className="text-xs text-white/40 mb-1">분석 대상 성씨</p>
                     <div className="flex items-center gap-2">
                       <span className="text-3xl font-black text-amber-300">
-                        {surnameHangul}
+                        {currentSurnameHangul}
                       </span>
-                      <span className="text-lg text-white/40">{surnameHanja}</span>
+                      {currentSurnameHanja && (
+                        <span className="text-lg text-white/40">
+                          {currentSurnameHanja}
+                        </span>
+                      )}
                       <Badge className="bg-amber-500/20 text-amber-300 border-amber-500/30">
                         {currentFamilyStrokes}획
                       </Badge>
@@ -913,11 +827,11 @@ export default function Naming() {
                     {/* 이름 헤더 */}
                     <div className="text-center py-2">
                       <p className="text-4xl font-black text-white">
-                        {surnameHangul}
+                        {currentSurnameHangul}
                         {selectedCandidate.hangulName}
                       </p>
                       <p className="text-lg text-white/40 mt-1">
-                        {surnameHanja}
+                        {currentSurnameHanja}
                         {selectedCandidate.hanjaName}
                       </p>
                     </div>
@@ -927,25 +841,21 @@ export default function Naming() {
                       <GyeokCard
                         label="원격 (元格) — 초년운"
                         number={selectedCandidate.suri.won}
-                        info={null as any}
                         description="이름 두 글자의 합 / 초년·건강·가정운"
                       />
                       <GyeokCard
                         label="형격 (亨格) — 청년운"
                         number={selectedCandidate.suri.hyung}
-                        info={null as any}
                         description="성 + 이름 첫째자 / 청년·성공·사업운"
                       />
                       <GyeokCard
                         label="이격 (利格) — 장년운"
                         number={selectedCandidate.suri.i}
-                        info={null as any}
                         description="성 + 이름 둘째자 / 장년·부부·사회운"
                       />
                       <GyeokCard
                         label="정격 (貞格) — 총운"
                         number={selectedCandidate.suri.jung}
-                        info={null as any}
                         description="성 + 이름 전체 / 노년·총운"
                       />
                     </div>
@@ -1056,7 +966,8 @@ export default function Naming() {
                       <CandidateCard
                         key={`${c.hanjaName}-${idx}`}
                         candidate={c}
-                        surname={currentSurname}
+                        surnameHangul={currentSurnameHangul}
+                        surnameHanja={currentSurnameHanja}
                         onSelect={handleSelectCandidate}
                         isSelected={
                           selectedCandidate?.hanjaName === c.hanjaName
