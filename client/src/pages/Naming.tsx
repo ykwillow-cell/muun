@@ -350,7 +350,7 @@ function CandidateCard({
   onSelect: (c: NameCandidate) => void;
   isSelected: boolean;
 }) {
-  const { char1, char2, suri, hangulName, hanjaName, englishNames } = candidate;
+  const { char1, char2, suri, hangulName, hanjaName, englishNames, fitnessScore } = candidate;
   // 이름 한 줄 요약: 한자 의미 키워드 추출
   const meaningKeywords = [char1.meaning, char2.meaning]
     .map(m => m.split(/[,\s·]+/)[0])
@@ -381,6 +381,15 @@ function CandidateCard({
           </span>
         </div>
         <div className="flex items-center gap-2">
+          {/* 적합도 점수 배지 */}
+          <div className={`flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-bold ${
+            fitnessScore >= 90 ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' :
+            fitnessScore >= 80 ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' :
+            'bg-white/10 text-white/50 border border-white/10'
+          }`}>
+            <Star className="w-2.5 h-2.5" />
+            {fitnessScore.toFixed(1)}점
+          </div>
           {isSelected ? (
             <Badge className="bg-amber-500/20 text-amber-300 border-amber-500/30 text-xs">
               <CheckCircle2 className="w-3 h-3 mr-1" />선택됨
@@ -1019,15 +1028,44 @@ export default function Naming() {
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="p-4 md:p-6 space-y-4">
-                    {/* 이름 헤더 */}
-                    <div className="text-center py-2">
-                      <p className="text-4xl font-black text-white">
-                        {currentSurnameHangul}
-                        {selectedCandidate.hangulName}
-                      </p>
-                      <p className="text-lg text-white/40 mt-1">
-                        {currentSurnameHanja}
-                        {selectedCandidate.hanjaName}
+                    {/* 이름 헤더 — 한자 대형 시각화 */}
+                    <div className="text-center py-4 space-y-3">
+                      {/* 한자 대형 표시 */}
+                      <div className="flex items-center justify-center gap-1">
+                        {/* 성씨 한자 */}
+                        <div className="flex flex-col items-center">
+                          <span className="text-5xl md:text-7xl font-black text-white/30 leading-none">{currentSurnameHanja}</span>
+                          <span className="text-xs text-white/25 mt-1">{currentSurnameHangul}</span>
+                        </div>
+                        <span className="text-3xl text-white/10 mx-1">·</span>
+                        {/* 이름 첫째 한자 */}
+                        <div className={`flex flex-col items-center rounded-2xl px-4 py-2 ${ ELEMENT_BG[selectedCandidate.char1.element] ?? 'bg-white/5' }`}>
+                          <span className="text-5xl md:text-7xl font-black text-white leading-none">{selectedCandidate.char1.hanja}</span>
+                          <span className="text-xs text-white/60 mt-1">{selectedCandidate.char1.hangul}</span>
+                        </div>
+                        {/* 이름 둘째 한자 */}
+                        <div className={`flex flex-col items-center rounded-2xl px-4 py-2 ${ ELEMENT_BG[selectedCandidate.char2.element] ?? 'bg-white/5' }`}>
+                          <span className="text-5xl md:text-7xl font-black text-white leading-none">{selectedCandidate.char2.hanja}</span>
+                          <span className="text-xs text-white/60 mt-1">{selectedCandidate.char2.hangul}</span>
+                        </div>
+                      </div>
+                      {/* 한글 이름 + 적합도 점수 */}
+                      <div className="flex items-center justify-center gap-3">
+                        <p className="text-2xl font-black text-white">
+                          {currentSurnameHangul}{selectedCandidate.hangulName}
+                        </p>
+                        <div className={`flex items-center gap-1 rounded-full px-3 py-1 text-sm font-bold ${
+                          selectedCandidate.fitnessScore >= 90 ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' :
+                          selectedCandidate.fitnessScore >= 80 ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' :
+                          'bg-white/10 text-white/50 border border-white/10'
+                        }`}>
+                          <Star className="w-3.5 h-3.5" />
+                          적합도 {selectedCandidate.fitnessScore.toFixed(1)}점
+                        </div>
+                      </div>
+                      {/* 점수 설명 */}
+                      <p className="text-[11px] text-white/30">
+                        81수리 4격 길수 기본 70점 + 음운 조화 + 오행 보완 점수 반영
                       </p>
                     </div>
 
@@ -1098,6 +1136,71 @@ export default function Naming() {
                         </li>
                       </ul>
                     </div>
+
+                    {/* 음양 균형 분석 */}
+                    {(() => {
+                      // 한글 모음 음양 분류 (성명학 기준)
+                      // 陽(양): ㅏ ㅑ ㅗ ㅛ ㅐ ㅒ — 밝고 적극적인 소리
+                      // 陰(음): ㅓ ㅕ ㅜ ㅠ ㅡ ㅣ ㅔ ㅖ ㅚ ㅘ ㅙ ㅝ ㅞ ㅟ ㅢ — 어둡고 내향적인 소리
+                      const YANG_VOWELS = new Set(['ㅏ','ㅑ','ㅗ','ㅛ','ㅐ','ㅒ']);
+                      const getYinYang = (hangul: string): '양' | '음' | '중' => {
+                        const code = hangul.charCodeAt(0) - 0xAC00;
+                        if (code < 0 || code > 11171) return '중';
+                        const jungIdx = Math.floor(code / 28) % 21;
+                        const JUNGSEONG = ['ㅏ','ㅐ','ㅑ','ㅒ','ㅓ','ㅔ','ㅕ','ㅖ','ㅗ','ㅘ','ㅙ','ㅚ','ㅛ','ㅜ','ㅝ','ㅞ','ㅟ','ㅠ','ㅡ','ㅢ','ㅣ'];
+                        const vowel = JUNGSEONG[jungIdx];
+                        return YANG_VOWELS.has(vowel) ? '양' : '음';
+                      };
+                      const surnameYY = getYinYang(currentSurnameHangul.slice(-1));
+                      const name1YY  = getYinYang(selectedCandidate.char1.hangul);
+                      const name2YY  = getYinYang(selectedCandidate.char2.hangul);
+                      const yangCount = [surnameYY, name1YY, name2YY].filter(y => y === '양').length;
+                      const yinCount  = [surnameYY, name1YY, name2YY].filter(y => y === '음').length;
+                      const isBalanced = Math.abs(yangCount - yinCount) <= 1;
+                      const chars = [
+                        { hangul: currentSurnameHangul.slice(-1), hanja: currentSurnameHanja.slice(-1), label: '성', yy: surnameYY },
+                        { hangul: selectedCandidate.char1.hangul, hanja: selectedCandidate.char1.hanja, label: '이름1', yy: name1YY },
+                        { hangul: selectedCandidate.char2.hangul, hanja: selectedCandidate.char2.hanja, label: '이름2', yy: name2YY },
+                      ];
+                      return (
+                        <div className="rounded-xl bg-purple-500/5 border border-purple-500/15 p-4 space-y-3">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <div className="w-4 h-4 rounded-full bg-gradient-to-br from-white to-gray-800 border border-white/20" />
+                              <p className="text-sm font-bold text-purple-300">음양 균형 분석</p>
+                            </div>
+                            <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${
+                              isBalanced ? 'bg-emerald-500/20 text-emerald-300' : 'bg-orange-500/20 text-orange-300'
+                            }`}>
+                              {isBalanced ? '균형 좋음' : '편중 주의'}
+                            </span>
+                          </div>
+                          <div className="flex gap-2">
+                            {chars.map((ch, idx) => (
+                              <div key={idx} className={`flex-1 rounded-xl border p-3 text-center ${
+                                ch.yy === '양' ? 'bg-orange-500/10 border-orange-500/20' : 'bg-blue-500/10 border-blue-500/20'
+                              }`}>
+                                <p className="text-2xl font-black text-white">{ch.hanja}</p>
+                                <p className="text-xs text-white/50 mt-0.5">{ch.hangul}</p>
+                                <div className={`mt-1.5 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-bold ${
+                                  ch.yy === '양' ? 'bg-orange-500/20 text-orange-300' : 'bg-blue-500/20 text-blue-300'
+                                }`}>
+                                  {ch.yy === '양' ? '☀ 양(陽)' : '☾ 음(陰)'}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                          <p className="text-[11px] text-white/40 leading-relaxed">
+                            {isBalanced
+                              ? `양(陽) ${yangCount}자 · 음(陰) ${yinCount}자로 음양이 균형을 이루어 조화로운 이름입니다. 밝고 활발한 기운과 차분하고 깊은 기운이 어우러집니다.`
+                              : yangCount > yinCount
+                                ? `양(陽) ${yangCount}자 · 음(陰) ${yinCount}자로 양기가 강합니다. 활발하고 적극적인 성격을 지니나 차분함을 보완하면 더욱 좋습니다.`
+                                : `음(陰) ${yinCount}자 · 양(陽) ${yangCount}자로 음기가 강합니다. 내향적이고 섬세한 성격을 지니나 활발함을 보완하면 더욱 좋습니다.`
+                            }
+                          </p>
+                        </div>
+                      );
+                    })()}
 
                     {/* 한자 상세 */}
                     <div className="rounded-xl bg-white/3 border border-white/5 p-4 space-y-3">

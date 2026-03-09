@@ -362,6 +362,15 @@ export interface NameCandidate {
   phoneticScore?: PhoneticScore;
   /** 영어 이름 추천 */
   englishNames?: EnglishNameSuggestion[];
+  /**
+   * 적합도 점수 (0~100, 소수점 1자리)
+   * 계산 기준:
+   * - 4격 모두 길수 충족: 기본 70점
+   * - 음운 점수 반영: phoneticScore.score * 0.3
+   * - 오행 보완 한자 포함 여부: +5점
+   * - 최종 범위: 0~100
+   */
+  fitnessScore: number;
 }
 
 // ──────────────────────────────────────────────
@@ -484,6 +493,21 @@ export async function generateNames(
         const meanings = [char1.meaning, char2.meaning];
         const englishNames = suggestEnglishNames(hangulName, meanings, gender, 3);
 
+        // 적합도 점수 계산
+        // 기본 70점 (4격 모두 길수 충족은 이미 필터링됨)
+        let fitnessScore = 70;
+        // 음운 점수 반영 (0~100 범위의 30% 반영)
+        if (phoneticScore) {
+          fitnessScore += phoneticScore.score * 0.3;
+        }
+        // 오행 보완 한자 포함 여부 (+5점)
+        const hasWeakElement = weakElements.some(
+          (el) => char1.element === el || char2.element === el
+        );
+        if (hasWeakElement) fitnessScore += 5;
+        // 0~100 범위 클램핑, 소수점 1자리
+        fitnessScore = Math.round(Math.min(100, Math.max(0, fitnessScore)) * 10) / 10;
+
         candidates.push({
           char1,
           char2,
@@ -492,6 +516,7 @@ export async function generateNames(
           hanjaName: char1.hanja + char2.hanja,
           phoneticScore,
           englishNames,
+          fitnessScore,
         });
 
         if (candidates.length >= maxResults) break outer;

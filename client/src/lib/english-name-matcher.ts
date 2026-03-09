@@ -287,8 +287,11 @@ export interface EnglishNameSuggestion {
 /**
  * 한글 이름과 한자 의미를 기반으로 영어 이름을 추천
  *
- * @param hangulName  이름 한글 (예: "지현")
- * @param meanings    이름 한자들의 의미 배열 (예: ["지혜", "어질고 현명함"])
+ * 전략: 이름 두 글자를 각각 개별 분석하여 글자마다 다른 영어 이름 후보를 도출,
+ * 조합하여 이름별로 고유한 추천 결과를 제공합니다.
+ *
+ * @param hangulName  이름 한글 (예: "지현") — 두 글자
+ * @param meanings    이름 한자들의 의미 배열 (예: ["지혜 지", "어질 현"])
  * @param gender      성별
  * @param maxResults  최대 추천 수 (기본: 3)
  */
@@ -301,49 +304,97 @@ export function suggestEnglishNames(
   const suggestions: EnglishNameSuggestion[] = [];
   const usedNames = new Set<string>();
 
-  // 1순위: 의미 기반 매칭
-  const combinedMeaning = meanings.join(' ');
-  for (const [keyword, names] of Object.entries(MEANING_TO_ENGLISH)) {
-    if (combinedMeaning.includes(keyword)) {
-      const nameList = names[gender];
-      for (const name of nameList) {
-        if (!usedNames.has(name)) {
-          suggestions.push({ name, reason: '의미 기반', keyword });
-          usedNames.add(name);
-          if (suggestions.length >= maxResults) return suggestions;
+  // 이름 두 글자를 각각 개별 분석
+  const chars = Array.from(hangulName); // 예: ['지', '현']
+
+  // 각 글자별로 의미 기반 + 발음 기반 후보 수집
+  const perCharCandidates: EnglishNameSuggestion[][] = chars.map((char, idx) => {
+    const charCandidates: EnglishNameSuggestion[] = [];
+    const charUsed = new Set<string>();
+    const meaning = meanings[idx] ?? '';
+
+    // 1순위: 해당 글자의 한자 의미 기반 매칭
+    for (const [keyword, names] of Object.entries(MEANING_TO_ENGLISH)) {
+      if (meaning.includes(keyword)) {
+        const nameList = names[gender];
+        for (const name of nameList) {
+          if (!charUsed.has(name)) {
+            charCandidates.push({ name, reason: '의미 기반', keyword });
+            charUsed.add(name);
+            if (charCandidates.length >= 4) break;
+          }
         }
+        if (charCandidates.length >= 4) break;
+      }
+    }
+
+    // 2순위: 해당 글자의 발음 기반 매칭
+    if (charCandidates.length < 4) {
+      const roman = hangulToRoman(char).toLowerCase();
+      for (const { pattern, male, female } of PHONETIC_ENGLISH_NAMES) {
+        if (pattern.test(roman)) {
+          const nameList = gender === 'male' ? male : female;
+          for (const name of nameList) {
+            if (!charUsed.has(name)) {
+              charCandidates.push({ name, reason: '발음 기반' });
+              charUsed.add(name);
+              if (charCandidates.length >= 4) break;
+            }
+          }
+          if (charCandidates.length >= 4) break;
+        }
+      }
+    }
+
+    return charCandidates;
+  });
+
+  // 글자1 후보 → 글자2 후보 순으로 번갈아 채우기 (다양성 확보)
+  const maxPerChar = Math.ceil(maxResults / chars.length);
+  for (let i = 0; i < maxPerChar; i++) {
+    for (const charCandidates of perCharCandidates) {
+      if (suggestions.length >= maxResults) break;
+      const candidate = charCandidates[i];
+      if (candidate && !usedNames.has(candidate.name)) {
+        suggestions.push(candidate);
+        usedNames.add(candidate.name);
       }
     }
   }
 
-  // 2순위: 발음 기반 매칭
-  const roman = hangulToRoman(hangulName).toLowerCase();
-  for (const { pattern, male, female } of PHONETIC_ENGLISH_NAMES) {
-    if (pattern.test(roman)) {
-      const nameList = gender === 'male' ? male : female;
-      for (const name of nameList) {
-        if (!usedNames.has(name)) {
-          suggestions.push({ name, reason: '발음 기반' });
-          usedNames.add(name);
-          if (suggestions.length >= maxResults) return suggestions;
+  // 부족분은 전체 이름 발음 기반으로 보충
+  if (suggestions.length < maxResults) {
+    const roman = hangulToRoman(hangulName).toLowerCase();
+    for (const { pattern, male, female } of PHONETIC_ENGLISH_NAMES) {
+      if (pattern.test(roman)) {
+        const nameList = gender === 'male' ? male : female;
+        for (const name of nameList) {
+          if (!usedNames.has(name)) {
+            suggestions.push({ name, reason: '발음 기반' });
+            usedNames.add(name);
+            if (suggestions.length >= maxResults) break;
+          }
         }
+        if (suggestions.length >= maxResults) break;
       }
     }
   }
 
-  // 3순위: 인기 이름 Fallback
-  const popularList = POPULAR_ENGLISH_NAMES[gender];
-  // 이름 첫 글자 로마자로 시작하는 인기 이름 우선
-  const firstRoman = roman.charAt(0);
-  const sorted = [
-    ...popularList.filter(n => n.toLowerCase().startsWith(firstRoman)),
-    ...popularList.filter(n => !n.toLowerCase().startsWith(firstRoman)),
-  ];
-  for (const name of sorted) {
-    if (!usedNames.has(name)) {
-      suggestions.push({ name, reason: '인기 이름' });
-      usedNames.add(name);
-      if (suggestions.length >= maxResults) return suggestions;
+  // 최종 fallback: 인기 이름
+  if (suggestions.length < maxResults) {
+    const roman = hangulToRoman(hangulName).toLowerCase();
+    const popularList = POPULAR_ENGLISH_NAMES[gender];
+    const firstRoman = roman.charAt(0);
+    const sorted = [
+      ...popularList.filter(n => n.toLowerCase().startsWith(firstRoman)),
+      ...popularList.filter(n => !n.toLowerCase().startsWith(firstRoman)),
+    ];
+    for (const name of sorted) {
+      if (!usedNames.has(name)) {
+        suggestions.push({ name, reason: '인기 이름' });
+        usedNames.add(name);
+        if (suggestions.length >= maxResults) break;
+      }
     }
   }
 
