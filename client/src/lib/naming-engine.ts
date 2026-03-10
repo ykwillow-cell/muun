@@ -1028,6 +1028,7 @@ export const HANJA_BLACKLIST = new Set<string>([
   '焦', // 탈 초 (이름에 부적절)
   '灰', // 재 회 (이름에 부적절)
   '笨', // 거칠 분 (어리석고 거칠다는 의미, 이름에 부적절)
+  '辛', // 매울 신 (고통·신랄함을 뜻함, 이름에 부적절)
 
   // ── C. 식물 (이름에 쓰기 어색한 식물 명칭) ──
   //
@@ -1305,11 +1306,17 @@ export async function generateNames(
   // ── Step 6: 첫 글자 × 두 번째 글자 전체 조합 생성 ──
   // ── Step 7: 각 조합에 81수리 4격 검사 필터 적용 ──
   const candidates: NameCandidate[] = [];
+  // 동일한 한자 쌍이 candidates에 중복 삽입되지 않도록 사전 차단
+  const seenPairs = new Set<string>();
 
   for (const char1 of char1Candidates) {
     for (const char2 of char2Candidates) {
       // 같은 한자 중복 방지
       if (char1.hanja === char2.hanja) continue;
+      // 동일 조합 중복 방지
+      const pairKey = char1.hanja + '｜' + char2.hanja;
+      if (seenPairs.has(pairKey)) continue;
+      seenPairs.add(pairKey);
 
       // 81수리 4격 모두 길수 검사
       if (!isAll4GyeokLucky(familyStrokes, char1.strokes, char2.strokes)) continue;
@@ -1371,11 +1378,10 @@ export async function generateNames(
         if (char1.hanja === char2.hanja) continue;
         if (!isAll4GyeokLucky(familyStrokes, char1.strokes, char2.strokes)) continue;
 
-        // 이미 있는 후보와 중복 방지
-        const alreadyExists = candidates.some(
-          (c) => c.char1.hanja === char1.hanja && c.char2.hanja === char2.hanja
-        );
-        if (alreadyExists) continue;
+        // 이미 있는 후보와 중복 방지 (seenPairs Set으로 O(1) 검사)
+        const extPairKey = char1.hanja + '｜' + char2.hanja;
+        if (seenPairs.has(extPairKey)) continue;
+        seenPairs.add(extPairKey);
 
         const name1Hangul = char1.hangul;
         const name2Hangul = char2.hangul;
@@ -1420,10 +1426,12 @@ export async function generateNames(
     }
   }
 
-  // ── Step 8: 두 번째 글자 독점 방지 — char2 기준 중복 제거 ──
+  // ── Step 8: 다양성 보장 — char2 중복 제거 + char1 최대 2회 제한 ──
   //
-  // 동일한 두 번째 글자가 여러 조합에 등장하면 결과가 특정 글자로 끝나는 현상이 발생합니다.
-  // 동일 char2를 가진 조합에서 점수 최상위 1개만 유지하여 다양성을 보장합니다.
+  // ① 동일한 두 번째 글자가 여러 조합에 등장하면 결과가 특정 글자로 끝나는 현상 발생.
+  //    동일 char2를 가진 조합에서 점수 최상위 1개만 유지.
+  // ② 동일한 첫 번째 글자는 결과 전체에서 최대 2회까지만 허용.
+  //    (완전 1회 제한은 후보 부족 시 결과 수 감소를 유발하므로 2회로 완화)
   const deduplicatedByChar2: NameCandidate[] = [];
   const seenChar2 = new Set<string>();
   // 점수 내림차순으로 먼저 정렬하여 각 char2의 최상위 후보만 유지
@@ -1435,12 +1443,14 @@ export async function generateNames(
     }
   }
 
-  // 동일한 첫 번째 글자도 중복 제거 (첫 글자 독점 방지)
+  // 동일한 첫 번째 글자는 최대 2회까지 허용 (3회 이상 차단)
+  const MAX_CHAR1_REPEAT = 2;
   const deduplicatedByBoth: NameCandidate[] = [];
-  const seenChar1 = new Set<string>();
+  const char1Count = new Map<string, number>();
   for (const c of deduplicatedByChar2) {
-    if (!seenChar1.has(c.char1.hanja)) {
-      seenChar1.add(c.char1.hanja);
+    const count = char1Count.get(c.char1.hanja) ?? 0;
+    if (count < MAX_CHAR1_REPEAT) {
+      char1Count.set(c.char1.hanja, count + 1);
       deduplicatedByBoth.push(c);
     }
   }
