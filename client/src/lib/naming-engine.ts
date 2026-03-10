@@ -718,10 +718,13 @@ export function calculate4Gyeok(
   name1Strokes: number,
   name2Strokes: number
 ): SuriResult {
-  const won  = name1Strokes + name2Strokes;
-  const hyung = familyStrokes + name1Strokes;
-  const i    = familyStrokes + name2Strokes;
-  const jung  = familyStrokes + name1Strokes + name2Strokes;
+  // normalizeSuri를 적용하여 81 초과 합산값을 정규화합니다.
+  // 프론트엔드에서 SURI_TABLE[won]으로 직접 조회하므로,
+  // raw 합산값이 81을 넘으면 undefined가 되어 흥으로 표시되는 버그가 발생합니다.
+  const won  = normalizeSuri(name1Strokes + name2Strokes);
+  const hyung = normalizeSuri(familyStrokes + name1Strokes);
+  const i    = normalizeSuri(familyStrokes + name2Strokes);
+  const jung  = normalizeSuri(familyStrokes + name1Strokes + name2Strokes);
 
   const wonInfo   = judgeSuri(won);
   const hyungInfo = judgeSuri(hyung);
@@ -1455,15 +1458,24 @@ export async function generateNames(
     }
   }
 
-  // 중복 제거 후 후보가 maxResults보다 적으면, 중복을 허용하여 나머지를 점수순으로 채움
+  // 중복 제거 후 후보가 maxResults보다 적으면, char1 2회 제한을 유지하면서 나머지를 채움
   if (deduplicatedByBoth.length >= maxResults) {
     return deduplicatedByBoth.slice(0, maxResults);
   }
 
-  // 부족한 자리는 중복 허용 후보로 채움 (점수순)
+  // 부족한 자리는 char1 2회 제한을 유지하면서 중복 허용 후보로 채움
+  // (extras를 그대로 붙이면 char1Count 제한이 무력화되므로, 동일한 char1Count Map을 재사용)
   const usedPairs = new Set(deduplicatedByBoth.map((c) => c.char1.hanja + '｜' + c.char2.hanja));
   const extras = candidates.filter((c) => !usedPairs.has(c.char1.hanja + '｜' + c.char2.hanja));
-  const result = [...deduplicatedByBoth, ...extras].slice(0, maxResults);
+  const result = [...deduplicatedByBoth];
+  for (const c of extras) {
+    if (result.length >= maxResults) break;
+    const count = char1Count.get(c.char1.hanja) ?? 0;
+    if (count < MAX_CHAR1_REPEAT) {
+      char1Count.set(c.char1.hanja, count + 1);
+      result.push(c);
+    }
+  }
 
   // ── Step 9: 점수 내림차순 정렬 후 maxResults개 반환 ──
   result.sort((a, b) => b.fitnessScore - a.fitnessScore);
