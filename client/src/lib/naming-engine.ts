@@ -1032,6 +1032,8 @@ export const HANJA_BLACKLIST = new Set<string>([
   '灰', // 재 회 (이름에 부적절)
   '笨', // 거칠 분 (어리석고 거칠다는 의미, 이름에 부적절)
   '辛', // 매울 신 (고통·신랄함을 뜻함, 이름에 부적절)
+  '坑', // 구덩이 갱 (구덩이·함정을 뜻함, 이름에 부적절)
+  '忡', // 근심할 충 (근심·불안을 뜻함, 이름에 부적절)
 
   // ── C. 식물 (이름에 쓰기 어색한 식물 명칭) ──
   //
@@ -1429,50 +1431,43 @@ export async function generateNames(
     }
   }
 
-  // ── Step 8: 다양성 보장 — char2 중복 제거 + char1 최대 2회 제한 ──
+  // ── Step 8: 다양성 보장 — char1·char2 모두 최대 2회 제한 ──
   //
-  // ① 동일한 두 번째 글자가 여러 조합에 등장하면 결과가 특정 글자로 끝나는 현상 발생.
-  //    동일 char2를 가진 조합에서 점수 최상위 1개만 유지.
-  // ② 동일한 첫 번째 글자는 결과 전체에서 최대 2회까지만 허용.
-  //    (완전 1회 제한은 후보 부족 시 결과 수 감소를 유발하므로 2회로 완화)
-  const deduplicatedByChar2: NameCandidate[] = [];
-  const seenChar2 = new Set<string>();
-  // 점수 내림차순으로 먼저 정렬하여 각 char2의 최상위 후보만 유지
+  // char1(첫 글자)과 char2(두 번째 글자) 모두 결과 전체에서 최대 2회까지만 허용.
+  // 1회 완전 제한은 후보 부족 시 결과 수 감소를 유발하므로 2회로 완화.
+  // 보충 단계(extras)에서도 동일한 Count Map을 재사용하여 제한이 무력화되지 않도록 함.
+  const MAX_REPEAT = 2;
   candidates.sort((a, b) => b.fitnessScore - a.fitnessScore);
-  for (const c of candidates) {
-    if (!seenChar2.has(c.char2.hanja)) {
-      seenChar2.add(c.char2.hanja);
-      deduplicatedByChar2.push(c);
-    }
-  }
 
-  // 동일한 첫 번째 글자는 최대 2회까지 허용 (3회 이상 차단)
-  const MAX_CHAR1_REPEAT = 2;
   const deduplicatedByBoth: NameCandidate[] = [];
   const char1Count = new Map<string, number>();
-  for (const c of deduplicatedByChar2) {
-    const count = char1Count.get(c.char1.hanja) ?? 0;
-    if (count < MAX_CHAR1_REPEAT) {
-      char1Count.set(c.char1.hanja, count + 1);
+  const char2Count = new Map<string, number>();
+  for (const c of candidates) {
+    const c1 = char1Count.get(c.char1.hanja) ?? 0;
+    const c2 = char2Count.get(c.char2.hanja) ?? 0;
+    if (c1 < MAX_REPEAT && c2 < MAX_REPEAT) {
+      char1Count.set(c.char1.hanja, c1 + 1);
+      char2Count.set(c.char2.hanja, c2 + 1);
       deduplicatedByBoth.push(c);
     }
   }
 
-  // 중복 제거 후 후보가 maxResults보다 적으면, char1 2회 제한을 유지하면서 나머지를 채움
+  // 제한 적용 후 후보가 maxResults 이상이면 바로 반환
   if (deduplicatedByBoth.length >= maxResults) {
     return deduplicatedByBoth.slice(0, maxResults);
   }
 
-  // 부족한 자리는 char1 2회 제한을 유지하면서 중복 허용 후보로 채움
-  // (extras를 그대로 붙이면 char1Count 제한이 무력화되므로, 동일한 char1Count Map을 재사용)
+  // 부족한 자리는 char1·char2 2회 제한을 유지하면서 나머지 후보로 채움
   const usedPairs = new Set(deduplicatedByBoth.map((c) => c.char1.hanja + '｜' + c.char2.hanja));
   const extras = candidates.filter((c) => !usedPairs.has(c.char1.hanja + '｜' + c.char2.hanja));
   const result = [...deduplicatedByBoth];
   for (const c of extras) {
     if (result.length >= maxResults) break;
-    const count = char1Count.get(c.char1.hanja) ?? 0;
-    if (count < MAX_CHAR1_REPEAT) {
-      char1Count.set(c.char1.hanja, count + 1);
+    const c1 = char1Count.get(c.char1.hanja) ?? 0;
+    const c2 = char2Count.get(c.char2.hanja) ?? 0;
+    if (c1 < MAX_REPEAT && c2 < MAX_REPEAT) {
+      char1Count.set(c.char1.hanja, c1 + 1);
+      char2Count.set(c.char2.hanja, c2 + 1);
       result.push(c);
     }
   }
