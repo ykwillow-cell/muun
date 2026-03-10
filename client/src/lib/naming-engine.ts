@@ -879,6 +879,7 @@ export const HANJA_BLACKLIST = new Set<string>([
   '焚', // 불사를 분
   '焦', // 탈 초 (이름에 부적절)
   '灰', // 재 회 (이름에 부적절)
+  '笨', // 거칠 분 (어리석고 거칠다는 의미, 이름에 부적절)
 
   // ── C. 식물 (이름에 쓰기 어색한 식물 명칭) ──
   //
@@ -1099,8 +1100,9 @@ export async function generateNames(
   } = options;
 
   // 첫 글자와 두 번째 글자 후보를 각각 몇 개씩 선발할지 설정
-  // 10 × 10 = 100개 조합 → 81수리 필터 후 충분한 후보 확보
-  const POOL_SIZE = 10;
+  // 30 × 30 = 900개 조합 → 81수리 필터 후 충분한 후보 확보
+  // 성씨에 따라 통과 가능한 획수 조합이 제한적이므로 10개로는 부족 발생
+  const POOL_SIZE = 30;
 
   // ── Step 1: 부족 오행 독출 ──
   const weakElements = prioritizeWeakElements ? getWeakElements(saju) : [];
@@ -1212,7 +1214,7 @@ export async function generateNames(
   // 후보가 부족하면 풀 크기를 늘려 재시도
   // (POOL_SIZE × POOL_SIZE 조합에서 81수리 통과한 것이 maxResults보다 적을 때)
   if (candidates.length < maxResults) {
-    const EXTENDED_POOL_SIZE = POOL_SIZE * 3; // 30 × 30 = 900개 조합
+    const EXTENDED_POOL_SIZE = POOL_SIZE * 2; // 60 × 60 = 3600개 조합 (확장 재시도)
     const char1Extended = weightedTopK(hanjaPool, EXTENDED_POOL_SIZE);
     const char2Extended = weightedTopK(hanjaPool, EXTENDED_POOL_SIZE);
 
@@ -1270,7 +1272,42 @@ export async function generateNames(
     }
   }
 
-  // ── Step 8: 점수 내림차순 정렬 후 maxResults개 반환 ──
+  // ── Step 8: 두 번째 글자 독점 방지 — char2 기준 중복 제거 ──
+  //
+  // 동일한 두 번째 글자가 여러 조합에 등장하면 결과가 특정 글자로 끝나는 현상이 발생합니다.
+  // 동일 char2를 가진 조합에서 점수 최상위 1개만 유지하여 다양성을 보장합니다.
+  const deduplicatedByChar2: NameCandidate[] = [];
+  const seenChar2 = new Set<string>();
+  // 점수 내림차순으로 먼저 정렬하여 각 char2의 최상위 후보만 유지
   candidates.sort((a, b) => b.fitnessScore - a.fitnessScore);
-  return candidates.slice(0, maxResults);
+  for (const c of candidates) {
+    if (!seenChar2.has(c.char2.hanja)) {
+      seenChar2.add(c.char2.hanja);
+      deduplicatedByChar2.push(c);
+    }
+  }
+
+  // 동일한 첫 번째 글자도 중복 제거 (첫 글자 독점 방지)
+  const deduplicatedByBoth: NameCandidate[] = [];
+  const seenChar1 = new Set<string>();
+  for (const c of deduplicatedByChar2) {
+    if (!seenChar1.has(c.char1.hanja)) {
+      seenChar1.add(c.char1.hanja);
+      deduplicatedByBoth.push(c);
+    }
+  }
+
+  // 중복 제거 후 후보가 maxResults보다 적으면, 중복을 허용하여 나머지를 점수순으로 채움
+  if (deduplicatedByBoth.length >= maxResults) {
+    return deduplicatedByBoth.slice(0, maxResults);
+  }
+
+  // 부족한 자리는 중복 허용 후보로 채움 (점수순)
+  const usedPairs = new Set(deduplicatedByBoth.map((c) => c.char1.hanja + '｜' + c.char2.hanja));
+  const extras = candidates.filter((c) => !usedPairs.has(c.char1.hanja + '｜' + c.char2.hanja));
+  const result = [...deduplicatedByBoth, ...extras].slice(0, maxResults);
+
+  // ── Step 9: 점수 내림차순 정렬 후 maxResults개 반환 ──
+  result.sort((a, b) => b.fitnessScore - a.fitnessScore);
+  return result;
 }
