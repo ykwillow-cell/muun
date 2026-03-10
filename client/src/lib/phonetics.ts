@@ -300,10 +300,88 @@ export function calculatePhoneticScore(
 // ──────────────────────────────────────────────
 
 /**
+ * 종성(받침)이 초성으로 연결될 때 발음이 어색한 조합을 판별
+ *
+ * 한국어 음운 규칙에서 첫 글자의 받침이 다음 글자의 초성과 동일한 자음일 때
+ * 연음화되어 발음이 어색하게 들립니다.
+ * 예: 림 + 리(→ 림-니 연음), 민 + 니(→ 민-니 연음)
+ *
+ * 필터링 대상: 종성 ↔ 초성 매핑 테이블 기준
+ * - 종성 γ(ᄀ), γγ(ᄁ), γγ(ᄃ) → 초성 γ(ᄀ), γγ(ᄁ)
+ * - η(ᄂ) → η(ᄂ)
+ * - δ(ᄃ), δδ(ᄇ) → δ(ᄃ), δδ(ᄄ)
+ * - λ(ᄅ) → λ(ᄅ)
+ * - μ(ᄆ) → μ(ᄆ)
+ * - β(ᄇ), ββ(ᄈ) → β(ᄇ), ββ(ᄈ)
+ * - σ(ᄉ), σσ(ᄊ) → σ(ᄉ), σσ(ᄊ)
+ * - ζ(ᄌ), ζζ(ᄍ) → ζ(ᄌ), ζζ(ᄍ)
+ * - χ(ᄎ) → χ(ᄎ)
+ * - κ(ᄏ) → κ(ᄏ)
+ * - τ(ᄐ) → τ(ᄐ)
+ * - φ(ᄑ) → φ(ᄑ)
+ * - ηη(ᄒ) → ηη(ᄒ)
+ * - ε(ᄋ) → ε(ᄋ) (연음으로 사용되므로 필터 제외)
+ *
+ * @param name1Hangul 이름 첫째자 한글
+ * @param name2Hangul 이름 둘째자 한글
+ * @returns true이면 발음이 어색한 조합 (필터링 대상)
+ */
+export function hasRedundantJongseong(
+  name1Hangul: string,
+  name2Hangul: string
+): boolean {
+  const d1 = decomposeHangul(name1Hangul);
+  const d2 = decomposeHangul(name2Hangul);
+  if (!d1 || !d2) return false;
+
+  // 첫 글자에 받침이 없으면 해당없음
+  if (d1.jongseong === '') return false;
+
+  // 종성 → 초성 동일 여부 판별 테이블
+  // 단순 종성(단일 자음)은 해당 초성과 매핑
+  // 복합 종성(ᄀᆨ, ᄂᆬ 등)은 첫 번째 자음으로 매핑
+  const JONGSEONG_TO_CHOSEONG: Record<string, string[]> = {
+    'ㄱ': ['ㄱ', 'ㄲ'],           // γ → γ, γγ
+    'ㄲ': ['ㄱ', 'ㄲ'],           // γγ → γ, γγ
+    'ㄳ': ['ㄱ', 'ㄲ'],           // γγ → γ, γγ (ᄀᆨ 복합종성)
+    'ㄴ': ['ㄴ'],               // η → η
+    'ㄵ': ['ㄴ'],               // ηζ → η (ᄂᆬ 복합종성)
+    'ㄶ': ['ㄴ'],               // ηη → η (ᄂᆭ 복합종성)
+    'ㄷ': ['ㄷ', 'ㄸ'],           // δ → δ, δδ
+    'ㄹ': ['ㄹ'],               // λ → λ
+    'ㄺ': ['ㄱ', 'ㄲ'],           // λγ → γ, γγ
+    'ㄻ': ['ㅁ'],               // λμ → μ
+    'ㄼ': ['ㅂ'],               // λβ → β
+    'ㄽ': ['ㅅ'],               // λσ → σ (ᄅᆳ)
+    'ㄾ': ['ㅌ'],               // λτ → τ (ᄅᆴ)
+    'ㄿ': ['ㅍ'],               // λφ → φ (ᄅᆵ)
+    'ㅀ': ['ㄹ'],               // λη → λ (ᄅᆶ)
+    'ㅁ': ['ㅁ'],               // μ → μ
+    'ㅂ': ['ㅂ', 'ㅃ'],           // β → β, ββ
+    'ㅄ': ['ㅅ'],               // βσ → σ (ᄇᆹ)
+    'ㅅ': ['ㅅ', 'ㅆ'],           // σ → σ, σσ
+    'ㅆ': ['ㅅ', 'ㅆ'],           // σσ → σ, σσ
+    'ㅈ': ['ㅈ', 'ㅉ'],           // ζ → ζ, ζζ
+    'ㅊ': ['ㅊ'],               // χ → χ
+    'ㅋ': ['ㅋ'],               // κ → κ
+    'ㅌ': ['ㅌ'],               // τ → τ
+    'ㅍ': ['ㅍ'],               // φ → φ
+    'ㅎ': ['ㅎ'],               // ηη → ηη
+    // 'ㅇ' (ε): 연음 기능으로 사용되므로 필터 제외
+  };
+
+  const matchingChoseongs = JONGSEONG_TO_CHOSEONG[d1.jongseong];
+  if (!matchingChoseongs) return false;
+
+  return matchingChoseongs.includes(d2.choseong);
+}
+
+/**
  * 이름 후보가 음운 기준을 통과하는지 확인
  *
  * 통과 기준:
  * - 기피 발음 없음 (필수)
+ * - 첫 글자 받침과 둘째 글자 초성이 동일한 경우 제외 (필수)
  * - 음운 점수 50점 이상 (권장)
  *
  * @param surnameHangul  성씨 한글
@@ -319,6 +397,10 @@ export function passesPhoneticFilter(
 ): boolean {
   // 기피 발음 필터 (필수)
   if (hasAvoidedSound(name1Hangul + name2Hangul)) return false;
+
+  // 첫 글자 받침 = 둘째 글자 초성 중복 종성 필터 (필수)
+  // 예: 림 + 리, 민 + 니, 서 + 시 등 발음이 어색한 조합 제외
+  if (hasRedundantJongseong(name1Hangul, name2Hangul)) return false;
 
   // 음운 점수 필터 (권장)
   const { score } = calculatePhoneticScore(surnameHangul, name1Hangul, name2Hangul);
