@@ -1056,11 +1056,21 @@ export interface GenerateNamesOptions {
 /**
  * 메인 작명 함수 (Client-Side 비동기 실행)
  *
- * 처리 흐름:
+ * 신구조 첫 글자 후보 풀 × 두 번째 글자 후보 풀 → 조합 → 81수리 필터 → 점수순:
+ *
  * 1. 사주 분석 → 부족 오행 도출
- * 2. 81수리 역순 탐색 → 4격 모두 길수인 획수 조합 산출
- * 3. 해당 획수 + 부족 오행 한자를 Supabase에서 쿼리
- * 4. 한자 조합으로 후보 생성 → 최대 maxResults개 반환
+ * 2. Supabase에서 전체 후보 한자 풀 조회 (오행 조건 적용)
+ * 3. 블랙리스트 제거
+ * 4. 전체 풀에서 가중치 기반 상위 N개를 첫 글자 후보로 독립 선발
+ * 5. 전체 풀에서 가중치 기반 상위 N개를 두 번째 글자 후보로 독립 선발
+ * 6. 첫 글자 후보 × 두 번째 글자 후보 = 전체 조합 생성
+ * 7. 각 조합에 대해 81수리 4격 검사 → 모두 길수인 조합만 유지
+ * 8. 점수 계산 후 내림차순 정렬 → 상위 maxResults개 반환
+ *
+ * 핵심 설계 원칙:
+ * - 첫 글자와 두 번째 글자를 완전히 독립적으로 선발하여 특정 한자가 첫 글자를 독점하는 현상 방지
+ * - 81수리는 조합 생성 후 필터로 적용 (사전 탐색 없음)
+ * - 실제 작명소 방식과 동일: 첫 글자 후보 풀 + 두 번째 글자 후보 풀 조합
  *
  * @param saju            사주 계산 결과
  * @param familyStrokes   성(姓)의 원획수
@@ -1071,128 +1081,167 @@ export async function generateNames(
   familyStrokes: number,
   options: GenerateNamesOptions = {}
 ): Promise<NameCandidate[]> {
-  const { maxResults = 10, prioritizeWeakElements = true } = options;
-
-  // Step 1: 부족 오행 도출
-  const weakElements = prioritizeWeakElements ? getWeakElements(saju) : [];
-
-  // Step 2: 4격 모두 길수인 획수 조합 탐색
-  const luckyCombinations = findLuckyStrokeCombinations(familyStrokes);
-
-  if (luckyCombinations.length === 0) {
-    return [];
-  }
-
-  // Step 3: 필요한 획수 집합 추출
-  const neededStrokes1 = Array.from(new Set(luckyCombinations.map((c) => c.name1Strokes)));
-  const neededStrokes2 = Array.from(new Set(luckyCombinations.map((c) => c.name2Strokes)));
-  const allNeededStrokes = Array.from(new Set([...neededStrokes1, ...neededStrokes2]));
-
-  // Step 4: Supabase 쿼리
-  // 부족 오행이 있으면 오행 조건 포함, 없으면 획수만으로 조회
-  let hanjaPool: HanjaQueryResult[];
-  if (weakElements.length > 0) {
-    hanjaPool = await getHanjaByStrokesAndElements(allNeededStrokes, weakElements);
-  } else {
-    // 오행 조건 없이 획수만으로 조회 (import 추가 필요 시 사용)
-    const { getHanjaByStrokes } = await import('./naming-api');
-    hanjaPool = await getHanjaByStrokes(allNeededStrokes);
-  }
-
-  if (hanjaPool.length === 0) {
-    return [];
-  }
-
-  // 획수별 한자 인덱스 구성
-  // ★ [문제 2 수정] 블랙리스트 한자를 먼저 제거
-  const filteredHanjaPool = hanjaPool.filter((h) => !isBlacklistedHanja(h.hanja));
-
-  // ★ [문제 1 수정] 가중치 기반 다양성 확보를 위해 가중 랜덤 셔플 적용
-  // 각 획수 버킷 내에서 가중치를 확률로 사용하여 순서를 무작위화합니다.
-  // 이렇게 하면 인기 한자가 더 자주 등장하되, 특정 한자가 첫 글자를 독점하지 않습니다.
-  function weightedShuffle(arr: HanjaQueryResult[]): HanjaQueryResult[] {
-    // 각 항목에 가중치 기반 랜덤 키 부여: key = -log(random) / weight
-    // weight가 클수록 key가 작아져 앞쪽에 위치할 확률이 높아짐 (지수 분포 샘플링)
-    return arr
-      .map((h) => ({
-        hanja: h,
-        key: -Math.log(Math.random() + 1e-10) / (getPopularityWeight(h.hanja) + 1),
-      }))
-      .sort((a, b) => a.key - b.key)
-      .map((item) => item.hanja);
-  }
-
-  const hanjaByStrokes: Map<number, HanjaQueryResult[]> = new Map();
-  // 획수별로 그룹화한 뒤 각 버킷에 가중 셔플 적용
-  for (const hanja of filteredHanjaPool) {
-    if (!hanjaByStrokes.has(hanja.strokes)) {
-      hanjaByStrokes.set(hanja.strokes, []);
-    }
-    hanjaByStrokes.get(hanja.strokes)!.push(hanja);
-  }
-  // 각 획수 버킷을 가중 셔플로 재정렬
-  Array.from(hanjaByStrokes.entries()).forEach(([strokes, bucket]) => {
-    hanjaByStrokes.set(strokes, weightedShuffle(bucket));
-  });
-
   const {
+    maxResults = 10,
+    prioritizeWeakElements = true,
     applyPhoneticFilter = true,
     surnameHangul = '',
     gender = 'male',
   } = options;
 
-  // Step 5: 후보 생성
+  // 첫 글자와 두 번째 글자 후보를 각각 몇 개씩 선발할지 설정
+  // 10 × 10 = 100개 조합 → 81수리 필터 후 충분한 후보 확보
+  const POOL_SIZE = 10;
+
+  // ── Step 1: 부족 오행 독출 ──
+  const weakElements = prioritizeWeakElements ? getWeakElements(saju) : [];
+
+  // ── Step 2: Supabase에서 전체 후보 한자 풀 조회 ──
+  // 오행 조건: 부족 오행이 있으면 해당 오행 한자만 조회, 없으면 전체 조회
+  // 획수 조건: 이름 한 글자당 2~30획 범위 내 모든 한자
+  const allStrokes = Array.from({ length: 29 }, (_, i) => i + 2); // 2~30
+
+  let rawPool: HanjaQueryResult[];
+  if (weakElements.length > 0) {
+    rawPool = await getHanjaByStrokesAndElements(allStrokes, weakElements);
+  } else {
+    const { getHanjaByStrokes } = await import('./naming-api');
+    rawPool = await getHanjaByStrokes(allStrokes);
+  }
+
+  if (rawPool.length === 0) {
+    return [];
+  }
+
+  // ── Step 3: 블랙리스트 한자 제거 ──
+  const hanjaPool = rawPool.filter((h) => !isBlacklistedHanja(h.hanja));
+
+  if (hanjaPool.length === 0) {
+    return [];
+  }
+
+  // ── Step 4 & 5: 첫 글자 / 두 번째 글자 후보를 독립적으로 선발 ──
+  //
+  // 핵심: 전체 풀에서 가중치 기반 상위 POOL_SIZE개를 독립적으로 도출합니다.
+  // 이렇게 하면 첫 글자와 두 번째 글자가 서로 다른 한자 풀에서 선발되어
+  // 특정 한자가 첫 글자를 독점하는 현상이 구조적으로 방지됩니다.
+  //
+  // 가중치 기반 상위 K개 선발 알고리즘:
+  // 지수 분포 샘플링 key = -log(U) / w 를 사용하면
+  // 가중치가 높을수록 선발될 확률이 높아지되, 동일 가중치 내에서는 무작위로 선발됩니다.
+  function weightedTopK(arr: HanjaQueryResult[], k: number): HanjaQueryResult[] {
+    return arr
+      .map((h) => ({
+        h,
+        key: -Math.log(Math.random() + 1e-10) / (getPopularityWeight(h.hanja) + 1),
+      }))
+      .sort((a, b) => a.key - b.key)
+      .slice(0, k)
+      .map((item) => item.h);
+  }
+
+  const char1Candidates = weightedTopK(hanjaPool, POOL_SIZE);
+  const char2Candidates = weightedTopK(hanjaPool, POOL_SIZE);
+
+  // ── Step 6: 첫 글자 × 두 번째 글자 전체 조합 생성 ──
+  // ── Step 7: 각 조합에 81수리 4격 검사 필터 적용 ──
   const candidates: NameCandidate[] = [];
 
-  outer: for (const combo of luckyCombinations) {
-    const pool1 = hanjaByStrokes.get(combo.name1Strokes) ?? [];
-    const pool2 = hanjaByStrokes.get(combo.name2Strokes) ?? [];
+  for (const char1 of char1Candidates) {
+    for (const char2 of char2Candidates) {
+      // 같은 한자 중복 방지
+      if (char1.hanja === char2.hanja) continue;
 
-    for (const char1 of pool1) {
-      for (const char2 of pool2) {
-        // 같은 한자 중복 방지
+      // 81수리 4격 모두 길수 검사
+      if (!isAll4GyeokLucky(familyStrokes, char1.strokes, char2.strokes)) continue;
+
+      const name1Hangul = char1.hangul;
+      const name2Hangul = char2.hangul;
+
+      // 음운 필터 적용
+      if (applyPhoneticFilter && surnameHangul) {
+        if (!passesPhoneticFilter(surnameHangul, name1Hangul, name2Hangul)) continue;
+      }
+
+      const suri = calculate4Gyeok(familyStrokes, char1.strokes, char2.strokes);
+      const hangulName = name1Hangul + name2Hangul;
+
+      // 음운 점수 산출
+      const phoneticScore = surnameHangul
+        ? calculatePhoneticScore(surnameHangul, name1Hangul, name2Hangul)
+        : undefined;
+
+      // 영어 이름 추천
+      const meanings = [char1.meaning, char2.meaning];
+      const englishNames = suggestEnglishNames(hangulName, meanings, gender, 3);
+
+      // 적합도 점수 계산
+      let fitnessScore = 60; // 기본점 (4격 모두 길수 충족)
+      if (phoneticScore) fitnessScore += phoneticScore.score * 0.2;
+      const hasWeakElement = weakElements.some(
+        (el) => char1.element === el || char2.element === el
+      );
+      if (hasWeakElement) fitnessScore += 5;
+      const popularityBonus =
+        (getPopularityWeight(char1.hanja) + getPopularityWeight(char2.hanja)) * 1.0;
+      fitnessScore += Math.min(20, popularityBonus);
+      fitnessScore = Math.round(Math.min(100, Math.max(0, fitnessScore)) * 10) / 10;
+
+      candidates.push({
+        char1,
+        char2,
+        suri,
+        hangulName,
+        hanjaName: char1.hanja + char2.hanja,
+        phoneticScore,
+        englishNames,
+        fitnessScore,
+      });
+    }
+  }
+
+  // 후보가 부족하면 풀 크기를 늘려 재시도
+  // (POOL_SIZE × POOL_SIZE 조합에서 81수리 통과한 것이 maxResults보다 적을 때)
+  if (candidates.length < maxResults) {
+    const EXTENDED_POOL_SIZE = POOL_SIZE * 3; // 30 × 30 = 900개 조합
+    const char1Extended = weightedTopK(hanjaPool, EXTENDED_POOL_SIZE);
+    const char2Extended = weightedTopK(hanjaPool, EXTENDED_POOL_SIZE);
+
+    for (const char1 of char1Extended) {
+      for (const char2 of char2Extended) {
         if (char1.hanja === char2.hanja) continue;
+        if (!isAll4GyeokLucky(familyStrokes, char1.strokes, char2.strokes)) continue;
+
+        // 이미 있는 후보와 중복 방지
+        const alreadyExists = candidates.some(
+          (c) => c.char1.hanja === char1.hanja && c.char2.hanja === char2.hanja
+        );
+        if (alreadyExists) continue;
 
         const name1Hangul = char1.hangul;
         const name2Hangul = char2.hangul;
 
-        // 음운 필터 적용
         if (applyPhoneticFilter && surnameHangul) {
-          if (!passesPhoneticFilter(surnameHangul, name1Hangul, name2Hangul)) {
-            continue;
-          }
+          if (!passesPhoneticFilter(surnameHangul, name1Hangul, name2Hangul)) continue;
         }
 
         const suri = calculate4Gyeok(familyStrokes, char1.strokes, char2.strokes);
         const hangulName = name1Hangul + name2Hangul;
-
-        // 음운 점수 산출
         const phoneticScore = surnameHangul
           ? calculatePhoneticScore(surnameHangul, name1Hangul, name2Hangul)
           : undefined;
-
-        // 영어 이름 추천
         const meanings = [char1.meaning, char2.meaning];
         const englishNames = suggestEnglishNames(hangulName, meanings, gender, 3);
 
-        // 적합도 점수 계산
-        // 기본 60점 (4격 모두 길수 충족은 이미 필터링됨)
         let fitnessScore = 60;
-        // 음운 점수 반영 (0~100 범위의 20% 반영)
-        if (phoneticScore) {
-          fitnessScore += phoneticScore.score * 0.2;
-        }
-        // 오행 보완 한자 포함 여부 (+5점)
+        if (phoneticScore) fitnessScore += phoneticScore.score * 0.2;
         const hasWeakElement = weakElements.some(
           (el) => char1.element === el || char2.element === el
         );
         if (hasWeakElement) fitnessScore += 5;
-        // ★ 빈출 한자 가중치 반영 (최대 +20점)
-        // 두 한자의 빈출 가중치 합산 (각 최대 10점) → 20점 만점 → 20점 반영
         const popularityBonus =
           (getPopularityWeight(char1.hanja) + getPopularityWeight(char2.hanja)) * 1.0;
         fitnessScore += Math.min(20, popularityBonus);
-        // 0~100 범위 클램핑, 소수점 1자리
         fitnessScore = Math.round(Math.min(100, Math.max(0, fitnessScore)) * 10) / 10;
 
         candidates.push({
@@ -1206,12 +1255,13 @@ export async function generateNames(
           fitnessScore,
         });
 
-        if (candidates.length >= maxResults * 3) break outer; // 3배 수집 후 정렬
+        if (candidates.length >= maxResults * 2) break;
       }
+      if (candidates.length >= maxResults * 2) break;
     }
   }
 
-  // ★ 적합도 점수 내림차순 정렬 후 maxResults개만 반환
+  // ── Step 8: 점수 내림차순 정렬 후 maxResults개 반환 ──
   candidates.sort((a, b) => b.fitnessScore - a.fitnessScore);
   return candidates.slice(0, maxResults);
 }
