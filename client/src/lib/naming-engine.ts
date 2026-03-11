@@ -1034,6 +1034,8 @@ export const HANJA_BLACKLIST = new Set<string>([
   '辛', // 매울 신 (고통·신랄함을 뜻함, 이름에 부적절)
   '坑', // 구덩이 갱 (구덩이·함정을 뜻함, 이름에 부적절)
   '忡', // 근심할 충 (근심·불안을 뜻함, 이름에 부적절)
+  '飯', // 밥 판 (밥을 뜻함, 이름에 부적절)
+  '打', // 칠 타 (칠다·때리다를 뜻함, 이름에 부적절)
 
   // ── C. 식물 (이름에 쓰기 어색한 식물 명칭) ──
   //
@@ -1278,8 +1280,15 @@ export async function generateNames(
     return [];
   }
 
-  // ── Step 3: 블랙리스트 한자 제거 ──
-  const hanjaPool = rawPool.filter((h) => !isBlacklistedHanja(h.hanja));
+  // ── Step 3: 블랙리스트 한자 제거 + 여아 모드에서 성별 필터 ──
+  //
+  // 여아 모드: POPULAR_HANJA_WEIGHT_FEMALE에 등재된 한자만 후보 풀으로 사용.
+  // 동 테이블에 없는 한자는 가중치 0으로 weightedTopK에 포함되어
+  // 남성적 한자(昊·俊·浩 등)가 여아 이름에 등장하는 구조적 문제를 차단합니다.
+  let hanjaPool = rawPool.filter((h) => !isBlacklistedHanja(h.hanja));
+  if (gender === 'female') {
+    hanjaPool = hanjaPool.filter((h) => (POPULAR_HANJA_WEIGHT_FEMALE[h.hanja] ?? 0) > 0);
+  }
 
   if (hanjaPool.length === 0) {
     return [];
@@ -1431,48 +1440,50 @@ export async function generateNames(
     }
   }
 
-  // ── Step 8: 다양성 보장 — char1·char2 모두 최대 2회 제한 ──
+  // ── Step 8: 다양성 보장 — char1·char2 최대 2회 제한 ──
   //
-  // char1(첫 글자)과 char2(두 번째 글자) 모두 결과 전체에서 최대 2회까지만 허용.
-  // 1회 완전 제한은 후보 부족 시 결과 수 감소를 유발하므로 2회로 완화.
-  // 보충 단계(extras)에서도 동일한 Count Map을 재사용하여 제한이 무력화되지 않도록 함.
+  // 단순화된 단일 패스 알고리즘:
+  // 1) 점수 내림차순 정렬
+  // 2) candidates를 순서대로 순회하면서 char1/char2 각각 2회 제한 적용
+  // 3) 최종 반환 직전 별도 검증 단계로 제한 준수 여부 확인
   const MAX_REPEAT = 2;
   candidates.sort((a, b) => b.fitnessScore - a.fitnessScore);
 
-  const deduplicatedByBoth: NameCandidate[] = [];
   const char1Count = new Map<string, number>();
   const char2Count = new Map<string, number>();
+  const filtered: NameCandidate[] = [];
+
   for (const c of candidates) {
+    if (filtered.length >= maxResults * 3) break; // 과도한 순회 방지
     const c1 = char1Count.get(c.char1.hanja) ?? 0;
     const c2 = char2Count.get(c.char2.hanja) ?? 0;
     if (c1 < MAX_REPEAT && c2 < MAX_REPEAT) {
       char1Count.set(c.char1.hanja, c1 + 1);
       char2Count.set(c.char2.hanja, c2 + 1);
-      deduplicatedByBoth.push(c);
+      filtered.push(c);
     }
   }
 
-  // 제한 적용 후 후보가 maxResults 이상이면 바로 반환
-  if (deduplicatedByBoth.length >= maxResults) {
-    return deduplicatedByBoth.slice(0, maxResults);
-  }
-
-  // 부족한 자리는 char1·char2 2회 제한을 유지하면서 나머지 후보로 채움
-  const usedPairs = new Set(deduplicatedByBoth.map((c) => c.char1.hanja + '｜' + c.char2.hanja));
-  const extras = candidates.filter((c) => !usedPairs.has(c.char1.hanja + '｜' + c.char2.hanja));
-  const result = [...deduplicatedByBoth];
-  for (const c of extras) {
+  // ── Step 9: 최종 검증 — char1·char2 2회 초과 여부 확인 ──
+  //
+  // 앞 단계에서 누락된 엣지 케이스를 방지하기 위한 별도 검증 단계.
+  // filtered를 순서대로 다시 순회하면서 char1/char2 카운터를 새로 시작하여
+  // 실제로 2회를 초과하는 한자가 있는지 최종 확인합니다.
+  const finalChar1Count = new Map<string, number>();
+  const finalChar2Count = new Map<string, number>();
+  const result: NameCandidate[] = [];
+  for (const c of filtered) {
     if (result.length >= maxResults) break;
-    const c1 = char1Count.get(c.char1.hanja) ?? 0;
-    const c2 = char2Count.get(c.char2.hanja) ?? 0;
-    if (c1 < MAX_REPEAT && c2 < MAX_REPEAT) {
-      char1Count.set(c.char1.hanja, c1 + 1);
-      char2Count.set(c.char2.hanja, c2 + 1);
+    const fc1 = finalChar1Count.get(c.char1.hanja) ?? 0;
+    const fc2 = finalChar2Count.get(c.char2.hanja) ?? 0;
+    if (fc1 < MAX_REPEAT && fc2 < MAX_REPEAT) {
+      finalChar1Count.set(c.char1.hanja, fc1 + 1);
+      finalChar2Count.set(c.char2.hanja, fc2 + 1);
       result.push(c);
     }
   }
 
-  // ── Step 9: 점수 내림차순 정렬 후 maxResults개 반환 ──
+  // ── Step 10: 점수 내림차순 정렬 후 maxResults개 반환 ──
   result.sort((a, b) => b.fitnessScore - a.fitnessScore);
   return result;
 }
