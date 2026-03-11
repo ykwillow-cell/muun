@@ -673,15 +673,17 @@ export default function Naming() {
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 backdrop-blur-xl">
                 <PenLine className="w-3 h-3 text-amber-400" />
                 <span className="text-[10px] md:text-xs font-bold tracking-wider text-amber-400 uppercase">
-                  81수리 성명학
+                  전통 작명 원리 기반
                 </span>
               </div>
               <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-white">
                 무운 작명소
               </h2>
               <p className="text-muted-foreground text-xs md:text-sm">
-                원격·형격·이격·정격 4격이 모두 길수인 이름을 사주 오행에 맞춰
-                추천합니다
+                아이의 사주에 맞는 한자 이름을 무료로 추천해드립니다
+              </p>
+              <p className="text-[10px] text-white/30 mt-1">
+                대법원 인명용 한자 기준 · 4격 수리 전부 길수 · 오행 균형 반영
               </p>
             </div>
 
@@ -874,13 +876,71 @@ export default function Naming() {
                     ) : (
                       <>
                         <Sparkles className="w-4 h-4 mr-2" />
-                        이름 분석하기
+                        이름 추천받기
                       </>
                     )}
                   </Button>
                 </form>
               </CardContent>
             </Card>
+
+            {/* STEP 섹션 */}
+            <div className="space-y-4">
+              <div className="text-center">
+                <h3 className="text-base md:text-lg font-bold text-white">
+                  어떻게 이름을 추천하나요?
+                </h3>
+              </div>
+              <div className="space-y-3">
+                {[
+                  {
+                    step: 1,
+                    title: "사주팔자 분석",
+                    desc: "아이가 태어난 연·월·일·시를 8개의 한자로 풀어냅니다. 목·화·토·금·수 다섯 가지 기운 중 어떤 것이 부족한지 파악하고, 이름은 그 부족한 기운을 채워주는 방향으로 짓습니다.",
+                  },
+                  {
+                    step: 2,
+                    title: "한자 선별",
+                    desc: "대법원이 인명용으로 허가한 한자 중에서 뜻이 좋고 실제 이름에 쓰이는 한자만 추려낸 검증된 풀로 후보를 만듭니다. 부정적인 뜻, 어두운 의미의 한자는 구조적으로 배제됩니다.",
+                  },
+                  {
+                    step: 3,
+                    title: "81수리 검증",
+                    desc: "성과 이름의 획수 조합에서 나오는 네 가지 격(원·형·이·정)을 81수리 길흉표와 대조합니다. 네 가지 격이 모두 길수인 조합만 최종 후보로 올라옵니다.",
+                  },
+                  {
+                    step: 4,
+                    title: "최종 추천",
+                    desc: "오행 보완, 수리 길흉, 발음 조화, 성별 어울림을 종합 채점해 점수가 높은 순서로 이름 후보를 보여드립니다.",
+                  },
+                  {
+                    step: 5,
+                    title: "영어 이름 추천",
+                    desc: "한자 이름이 정해지면, 발음과 느낌이 어울리는 영어 이름도 함께 추천해드립니다. 글로벌하게 살아갈 아이를 위해 한국 이름과 자연스럽게 어울리는 이름으로 골랐습니다.",
+                  },
+                ].map(({ step, title, desc }) => (
+                  <div
+                    key={step}
+                    className="flex gap-3 p-3 rounded-xl bg-white/3 border border-white/8"
+                  >
+                    <div className="flex-shrink-0 w-7 h-7 rounded-full bg-amber-500/20 border border-amber-500/30 flex items-center justify-center">
+                      <span className="text-[11px] font-bold text-amber-400">{step}</span>
+                    </div>
+                    <div className="space-y-0.5">
+                      <p className="text-xs font-bold text-white">{title}</p>
+                      <p className="text-[11px] text-white/40 leading-relaxed">{desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="rounded-xl bg-amber-500/5 border border-amber-500/10 p-3">
+                <p className="text-[11px] text-white/40 leading-relaxed text-center">
+                  오프라인 작명소에서 수십만원을 받고 하는 과정을 무운은 동일한 원리로 무료로 제공합니다.
+                  한자 이름부터 영어 이름까지, 아이의 이름을 한 번에 완성하세요.
+                  단, 최종 결정은 부모님의 몫입니다.
+                </p>
+              </div>
+            </div>
 
             {/* 기능 소개 카드 */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
