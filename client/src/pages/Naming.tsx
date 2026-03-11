@@ -887,7 +887,7 @@ export default function Naming() {
             {/* STEP 섹션 */}
             <div className="space-y-4">
               <div className="text-center">
-                <h3 className="text-base md:text-lg font-bold text-white">
+                <h3 className="text-lg md:text-xl font-bold text-white">
                   어떻게 이름을 추천하나요?
                 </h3>
               </div>
@@ -924,17 +924,17 @@ export default function Naming() {
                     className="flex gap-3 p-3 rounded-xl bg-white/3 border border-white/8"
                   >
                     <div className="flex-shrink-0 w-7 h-7 rounded-full bg-amber-500/20 border border-amber-500/30 flex items-center justify-center">
-                      <span className="text-[11px] font-bold text-amber-400">{step}</span>
+                      <span className="text-xs font-bold text-amber-400">{step}</span>
                     </div>
                     <div className="space-y-0.5">
-                      <p className="text-xs font-bold text-white">{title}</p>
-                      <p className="text-[11px] text-white/40 leading-relaxed">{desc}</p>
+                      <p className="text-sm font-bold text-white">{title}</p>
+                      <p className="text-xs text-white/50 leading-relaxed">{desc}</p>
                     </div>
                   </div>
                 ))}
               </div>
               <div className="rounded-xl bg-amber-500/5 border border-amber-500/10 p-3">
-                <p className="text-[11px] text-white/40 leading-relaxed text-center">
+                <p className="text-xs text-white/50 leading-relaxed text-center">
                   한자 이름부터 영어 이름까지, 아이의 이름을 한 번에 완성하세요.
                 </p>
               </div>
