@@ -826,9 +826,9 @@ const metaData: Record<string, { title: string, description: string, h1?: string
       ]
     },
     '/naming': {
-      title: "무료 작명소 - 사주 맞춤 신생아 이름 짓기 | 무운 (MuUn)",
-      description: "회원가입·개인정보 저장 없이 이용하는 무료 작명소. 사주팔자 오행 분석과 81수리 성명학을 결합하여 아기 이름 후보를 무료로 추천합니다. 원격·형격·이격·정격 4격 모두 길수인 이름만 제안합니다.",
-      h1: "무료 작명소 - 사주 맞춤 신생아 이름 짓기",
+      title: "무료 작명소 | 사주로 짓는 아이 이름 추천 - 무운",
+      description: "사주팔자와 81수리 기반 무료 온라인 작명소. 생년월일 입력만으로 오행과 수리가 맞는 한자 이름을 추천해드립니다. 완전 무료.",
+      h1: "무료 작명소 - 사주로 짓는 아이 이름 추천",
       bodyContent: `
         <section>
           <h2>무운 무료 작명소란? - 회원가입 없이 무료로 이용</h2>
@@ -1511,6 +1511,28 @@ const metaData: Record<string, { title: string, description: string, h1?: string
         "logo": { "@type": "ImageObject", "url": "https://muunsaju.com/images/horse_mascot.png" }
       },
       "inLanguage": "ko-KR"
+    };
+  } else if (options.path === '/naming') {
+    schemaData = {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "무운 무료 작명소",
+      "url": "https://muunsaju.com/naming",
+      "description": "사주 기반 무료 한자 이름 추천 서비스",
+      "applicationCategory": "LifestyleApplication",
+      "operatingSystem": "Web",
+      "inLanguage": "ko-KR",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "KRW"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "무운 (MuUn)",
+        "url": "https://muunsaju.com",
+        "logo": { "@type": "ImageObject", "url": "https://muunsaju.com/images/horse_mascot.png" }
+      }
     };
   } else if (options.path === '/') {
     schemaData = {

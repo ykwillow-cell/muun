@@ -117,6 +117,7 @@ function generateSitemap(slugs, columns, dreams) {
   // 정적 페이지
   const staticPages = [
     { url: '/', priority: 1.0, changefreq: 'weekly' },
+    { url: '/naming', priority: 0.9, changefreq: 'monthly' },
     { url: '/fortune-dictionary', priority: 0.9, changefreq: 'weekly' },
     { url: '/yearly-fortune', priority: 0.8, changefreq: 'monthly' },
     { url: '/lifelong-saju', priority: 0.8, changefreq: 'monthly' },

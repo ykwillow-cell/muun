@@ -42,6 +42,7 @@ async function run() {
     '/family-saju',
     '/hybrid-compatibility',
     '/fortune-dictionary',
+    '/naming',
     '/lucky-lunch',
     '/contact',
     '/guide'
