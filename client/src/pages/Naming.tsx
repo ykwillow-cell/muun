@@ -935,9 +935,7 @@ export default function Naming() {
               </div>
               <div className="rounded-xl bg-amber-500/5 border border-amber-500/10 p-3">
                 <p className="text-[11px] text-white/40 leading-relaxed text-center">
-                  오프라인 작명소에서 수십만원을 받고 하는 과정을 무운은 동일한 원리로 무료로 제공합니다.
                   한자 이름부터 영어 이름까지, 아이의 이름을 한 번에 완성하세요.
-                  단, 최종 결정은 부모님의 몫입니다.
                 </p>
               </div>
             </div>
