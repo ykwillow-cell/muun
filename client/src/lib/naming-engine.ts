@@ -494,6 +494,7 @@ export const POPULAR_HANJA_WEIGHT_FEMALE: Record<string, number> = {
   '晶': 5,   // 밝을 정
   '祥': 5,   // 상서로울 상
   '芯': 4,   // 심지 심
+  '貞': 4,   // 곧을 정 (정숙·절개, 전통 여성 이름 한자)
   '伊': 4,   // 저 이
 };
 
