@@ -47,6 +47,7 @@ export interface HanjaQueryResult {
  * 작명 엔진의 역순 탐색에서 호출됨:
  * 1) 81수리 4격이 모두 길수인 획수 조합을 먼저 산출
  * 2) 해당 획수 AND 부족한 오행을 가진 한자만 쿼리 → 성능 최적화
+ * 3) is_name_usable = true 인 화이트리스트 한자만 반환
  *
  * @param strokes  필요한 획수 배열 (예: [5, 8])
  * @param elements 필요한 오행 배열 (예: ["목", "화"])
@@ -59,6 +60,7 @@ export async function getHanjaByStrokesAndElements(
     const { data, error } = await supabase
       .from('hanja_dictionary')
       .select('hanja, hangul, strokes, element, meaning')
+      .eq('is_name_usable', true)
       .in('strokes', strokes)
       .in('element', elements);
 
@@ -75,6 +77,7 @@ export async function getHanjaByStrokesAndElements(
 
 /**
  * 특정 획수 목록에 해당하는 모든 한자 조회 (오행 무관)
+ * is_name_usable = true 인 화이트리스트 한자만 반환
  *
  * @param strokes 필요한 획수 배열
  */
@@ -83,6 +86,7 @@ export async function getHanjaByStrokes(strokes: number[]): Promise<HanjaQueryRe
     const { data, error } = await supabase
       .from('hanja_dictionary')
       .select('hanja, hangul, strokes, element, meaning')
+      .eq('is_name_usable', true)
       .in('strokes', strokes);
 
     if (error) {
@@ -98,6 +102,7 @@ export async function getHanjaByStrokes(strokes: number[]): Promise<HanjaQueryRe
 
 /**
  * 특정 오행을 가진 한자 전체 조회
+ * is_name_usable = true 인 화이트리스트 한자만 반환
  *
  * @param elements 오행 배열 (예: ["목", "화"])
  */
@@ -106,6 +111,7 @@ export async function getHanjaByElements(elements: string[]): Promise<HanjaQuery
     const { data, error } = await supabase
       .from('hanja_dictionary')
       .select('hanja, hangul, strokes, element, meaning')
+      .eq('is_name_usable', true)
       .in('element', elements);
 
     if (error) {
