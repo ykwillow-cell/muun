@@ -234,16 +234,40 @@ const Astrology: React.FC = () => {
     return (
       <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased">
         <Helmet>
-          <title>무료 점성술 운세 - 회원가입 없이 별자리 운세 확인 | 무운 (MuUn)</title>
-          <meta name="description" content="회원가입 없이 확인하는 무료 점성술 운세. 별자리와 행성 배치로 보는 나의 운명을 개인정보 저장 없이 100% 무료로 분석합니다." />
-          <meta name="keywords" content="점성술, 무료점성술, 별자리운세, 별자리, 행성운세, 무료별자리, 점성술무료" />
-          <meta property="og:title" content="무료 점성술 운세 - 회원가입 없이 별자리 운세 확인 | 무운 (MuUn)" />
-          <meta property="og:description" content="회원가입 없이 확인하는 무료 점성술 운세. 별자리와 행성 배치로 보는 나의 운명을 개인정보 저장 없이 100% 무료로 분석합니다." />
+          <title>무료 점성술 네이탈 차트 분석 - 별자리·행성 배치로 보는 내 운명 | 무운 (MuUn)</title>
+          <meta name="description" content="생년월일·출생지 입력만으로 무료로 확인하는 네이탈 차트(탄생 차트) 기반 점성술 풀이. 태양·달·수성·금성·화성 등 7개 행성의 별자리 위치를 분석해 성격·연애운·직업운을 알려드립니다." />
+          <meta name="keywords" content="점성술, 무료점성술, 네이탈차트, 탄생차트, 별자리운세, 서양점성술, 별자리성격, 태양별자리, 달별자리, 상승궁, 출생차트, natal chart, birth chart, 점성술풀이, 행성배치" />
+          <meta property="og:title" content="무료 점성술 네이탈 차트 분석 - 별자리·행성 배치로 보는 내 운명 | 무운 (MuUn)" />
+          <meta property="og:description" content="생년월일·출생지 입력만으로 무료로 확인하는 네이탈 차트(탄생 차트) 기반 점성술 풀이. 태양·달·수성·금성·화성 등 7개 행성의 별자리 위치를 분석해 성격·연애운·직업운을 알려드립니다." />
           <meta property="og:type" content="website" />
-        <meta property="og:site_name" content="무운 (MuUn)" />
-        <meta property="og:locale" content="ko_KR" />
+          <meta property="og:site_name" content="무운 (MuUn)" />
+          <meta property="og:locale" content="ko_KR" />
           <meta property="og:url" content="https://muunsaju.com/astrology" />
+          <meta property="og:image" content="https://muunsaju.com/favicon-512x512.png" />
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta name="twitter:title" content="무료 점성술 네이탈 차트 분석 | 무운 (MuUn)" />
+          <meta name="twitter:description" content="생년월일·출생지 입력만으로 무료로 확인하는 네이탈 차트 기반 점성술 풀이" />
+          <meta name="twitter:image" content="https://muunsaju.com/favicon-512x512.png" />
           <link rel="canonical" href="https://muunsaju.com/astrology" />
+          <script type="application/ld+json">{`{
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "무료 점성술 네이탈 차트 분석",
+            "description": "생년월일과 출생지를 입력하면 태양·달·수성·금성·화성 등 7개 행성의 별자리 위치를 계산해 한국어로 풀이해주는 무료 점성술 서비스입니다.",
+            "url": "https://muunsaju.com/astrology",
+            "applicationCategory": "LifestyleApplication",
+            "operatingSystem": "Web",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "KRW"
+            },
+            "publisher": {
+              "@type": "Organization",
+              "name": "무운 (MuUn)",
+              "url": "https://muunsaju.com"
+            }
+          }`}</script>
         </Helmet>
         {/* Background Effects */}
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
@@ -368,15 +392,20 @@ const Astrology: React.FC = () => {
   return (
     <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased">
       <Helmet>
-        <title>[가입X/100%무료] {result.sun.sign.name}의 기운을 타고난 당신의 점성술 분석 결과 | 무운(Muun)</title>
-        <meta name="description" content={`${result.sun.sign.name}의 에너지를 품은 당신의 탄생 차트 분석 결과입니다. 태양, 달, 행성들의 배치를 통해 당신의 본질과 운명을 확인해보세요.`} />
-        <meta property="og:title" content={`[가입X/100%무료] ${result.sun.sign.name}의 기운을 타고난 당신의 점성술 분석 결과 | 무운`} />
-        <meta property="og:description" content={`${result.sun.sign.name}의 에너지를 품은 당신의 탄생 차트 분석 결과입니다.`} />
-                <meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png" />
+        <title>{result.sun.sign.name} 태양 별자리 - 나의 네이탈 차트 점성술 분석 결과 | 무운 (MuUn)</title>
+        <meta name="description" content={`태양 ${result.sun.sign.name}, 달 ${result.moon?.sign?.name || ''} 별자리의 네이탈 차트 분석 결과입니다. 태양·달·수성·금성·화성 등 7개 행성의 별자리 위치를 분석해 성격과 운명을 확인해보세요.`} />
+        <meta property="og:title" content={`${result.sun.sign.name} 태양 별자리 - 나의 네이탈 차트 점성술 분석 결과 | 무운`} />
+        <meta property="og:description" content={`태양 ${result.sun.sign.name} 별자리의 네이탈 차트 분석 결과입니다. 태양·달·행성들의 배치를 통해 당신의 본질과 운명을 확인해보세요.`} />
+        <meta property="og:image" content="https://muunsaju.com/favicon-512x512.png" />
         <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="무운 (MuUn)" />
+        <meta property="og:locale" content="ko_KR" />
+        <meta property="og:url" content="https://muunsaju.com/astrology" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
-<link rel="canonical" href="https://muunsaju.com/astrology" />
+        <meta name="twitter:title" content={`${result.sun.sign.name} 태양 별자리 네이탈 차트 | 무운`} />
+        <meta name="twitter:description" content={`태양 ${result.sun.sign.name} 별자리의 점성술 분석 결과입니다.`} />
+        <meta name="twitter:image" content="https://muunsaju.com/favicon-512x512.png" />
+        <link rel="canonical" href="https://muunsaju.com/astrology" />
       </Helmet>
       {/* '시간 모름' 시 안내 라벨 */}
       {form.watch("birthTimeUnknown") && (
