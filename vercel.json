@@ -93,6 +93,11 @@
   ],
   "redirects": [
     {
+      "source": "/dream/:slug",
+      "destination": "/dream",
+      "statusCode": 301
+    },
+    {
       "source": "/guide/b0d87c9e-3c21-45b2-8e01-ea16f5070a58",
       "destination": "/guide/luck-2026-daeun-change-b0d87c9e",
       "statusCode": 301
