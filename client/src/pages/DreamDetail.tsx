@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'wouter';
+import NotFound from '@/pages/NotFound';
 import { useCanonical } from '@/lib/use-canonical';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
@@ -73,18 +74,7 @@ export default function DreamDetail() {
   }
 
   if (!dream) {
-    return (
-      <div className="min-h-screen bg-background text-white flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">꿈해몽을 찾을 수 없습니다</h1>
-          <Link href="/dream">
-            <Button className="bg-primary hover:bg-primary/90 text-background">
-              꿈해몽 목록으로 돌아가기
-            </Button>
-          </Link>
-        </div>
-      </div>
-    );
+    return <NotFound />;
   }
 
   const grade = gradeConfig[dream.grade] || gradeConfig.good;

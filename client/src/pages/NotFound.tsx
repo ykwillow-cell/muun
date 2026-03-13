@@ -1,52 +1,51 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { AlertCircle, Home } from "lucide-react";
+import { Home, Search } from "lucide-react";
 import { useLocation } from "wouter";
+import { Helmet } from "react-helmet-async";
 
 export default function NotFound() {
   const [, setLocation] = useLocation();
 
-  const handleGoHome = () => {
-    setLocation("/");
-  };
-
   return (
-    <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-100">
-      <Card className="w-full max-w-lg mx-4 shadow-lg border-0 bg-white/80 backdrop-blur-sm">
-        <CardContent className="pt-8 pb-8 text-center">
-          <div className="flex justify-center mb-6">
-            <div className="relative">
-              <div className="absolute inset-0 bg-red-100 rounded-full animate-pulse" />
-              <AlertCircle className="relative h-16 w-16 text-red-500" />
-            </div>
-          </div>
-
-          <h1 className="text-4xl font-bold text-slate-900 mb-2">404</h1>
-
-          <h2 className="text-xl font-semibold text-slate-700 mb-4">
-            Page Not Found
-          </h2>
-
-          <p className="text-slate-600 mb-8 leading-relaxed">
-            Sorry, the page you are looking for doesn't exist.
+    <>
+      <Helmet>
+        <title>페이지를 찾을 수 없습니다 (404) | 무운</title>
+        <meta name="description" content="요청하신 페이지를 찾을 수 없습니다." />
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
+      <div className="min-h-screen bg-background text-white flex items-center justify-center px-4">
+        <div className="text-center max-w-md">
+          <div className="text-8xl font-bold text-primary/30 mb-4 select-none">404</div>
+          <h1 className="text-2xl font-bold text-white mb-3">
+            페이지를 찾을 수 없습니다
+          </h1>
+          <p className="text-slate-400 mb-8 leading-relaxed">
+            요청하신 페이지가 삭제되었거나 주소가 변경되었습니다.
             <br />
-            It may have been moved or deleted.
+            URL을 다시 확인하거나 홈으로 이동해 주세요.
           </p>
-
           <div
             id="not-found-button-group"
             className="flex flex-col sm:flex-row gap-3 justify-center"
           >
             <Button
-              onClick={handleGoHome}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg transition-all duration-200 shadow-md hover:shadow-lg"
+              onClick={() => setLocation("/")}
+              className="bg-primary hover:bg-primary/90 text-background font-semibold px-6"
             >
               <Home className="w-4 h-4 mr-2" />
-              Go Home
+              홈으로 이동
+            </Button>
+            <Button
+              onClick={() => setLocation("/dream")}
+              variant="outline"
+              className="border-white/20 text-white hover:bg-white/10 px-6"
+            >
+              <Search className="w-4 h-4 mr-2" />
+              꿈해몽 보기
             </Button>
           </div>
-        </CardContent>
-      </Card>
-    </div>
+        </div>
+      </div>
+    </>
   );
 }

@@ -1,5 +1,6 @@
 import { useParams, useLocation } from 'wouter';
 import { Helmet } from 'react-helmet-async';
+import NotFound from '@/pages/NotFound';
 import { ChevronLeft, ArrowRight } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { fetchDictionaryEntryBySlug, type DictionaryEntry } from '@/lib/fortune-dictionary';
@@ -33,16 +34,7 @@ export default function DictionaryDetail() {
   }
 
   if (!entry) {
-    return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-white mb-4">찾을 수 없는 페이지입니다</h1>
-          <Button onClick={() => navigate('/fortune-dictionary')} className="bg-purple-600 hover:bg-purple-700">
-            운세 사전으로 돌아가기
-          </Button>
-        </div>
-      </div>
-    );
+    return <NotFound />;
   }
 
   return (

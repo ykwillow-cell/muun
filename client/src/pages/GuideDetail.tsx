@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'wouter';
+import NotFound from '@/pages/NotFound';
 import { useCanonical } from '@/lib/use-canonical';
 import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
@@ -42,18 +43,7 @@ export default function GuideDetail() {
   }
 
   if (!column) {
-    return (
-      <div className="min-h-screen bg-background text-white flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4">칼럼을 찾을 수 없습니다</h1>
-          <Link href="/guide">
-            <Button className="bg-primary hover:bg-primary/90 text-background">
-              칼럼 목록으로 돌아가기
-            </Button>
-          </Link>
-        </div>
-      </div>
-    );
+    return <NotFound />;
   }
 
   const categoryColor = COLUMN_CATEGORIES[column.category]?.color || 'bg-white/10 text-white/70';

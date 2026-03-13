@@ -1302,8 +1302,21 @@ const metaData: Record<string, { title: string, description: string, h1?: string
       // 꿈해몽 개별 페이지 동적 메타 (한글 키워드 매핑 사용)
       const dreamSlug = dreamMatch[1];
       const dreamInfo = dreamKeywordMap[dreamSlug];
-      const koreanKeyword = dreamInfo?.keyword || dreamSlug.replace(/-dream$/, '').replace(/-/g, ' ');
-      const dreamMetaTitle = dreamInfo?.metaTitle || `${koreanKeyword} 꿈해몽 - 꿈의 의미와 해석`;
+      // dreamKeywordMap에 없는 slug는 404 반환 (Soft 404 방지)
+      if (!dreamInfo) {
+        return {
+          appHtml: '',
+          head: {
+            title: '<title>페이지를 찾을 수 없습니다 (404) | 무운</title>',
+            meta: '<meta name="robots" content="noindex, nofollow">',
+            link: '',
+          },
+          dehydratedState: {},
+          statusCode: 404,
+        };
+      }
+      const koreanKeyword = dreamInfo.keyword;
+      const dreamMetaTitle = dreamInfo.metaTitle;
       currentMeta = {
         title: `${dreamMetaTitle} | 무운 꿈해몽 사전`,
         description: `${koreanKeyword}에 관한 꿈의 의미와 해석을 알아보세요. 무운 꿈해몽 사전에서 350가지 꿈의 상징과 길흉을 무료로 확인하세요.`,
@@ -1335,10 +1348,23 @@ const metaData: Record<string, { title: string, description: string, h1?: string
       // 운세 사전 개별 페이지 동적 메타 (SEO 최적화)
       const dictSlug = dictionarySlugMatch[1];
       const dictInfo = dictionaryKeywordMap[dictSlug];
-      const dictTitle = dictInfo?.title || dictSlug.replace(/-/g, ' ');
-      const dictCategory = dictInfo?.categoryLabel || '운세 사전';
-      const dictMetaTitle = dictInfo?.metaTitle || `${dictTitle} - 사주팔자 ${dictCategory} 의미와 특성`;
-      const dictMetaDesc = dictInfo?.metaDescription || `${dictTitle}의 사주적 의미와 특성을 해설합니다. 무운 운세 사전에서 무료로 확인하세요.`;
+      // dictionaryKeywordMap에 없는 slug는 404 반환 (Soft 404 방지)
+      if (!dictInfo) {
+        return {
+          appHtml: '',
+          head: {
+            title: '<title>페이지를 찾을 수 없습니다 (404) | 무운</title>',
+            meta: '<meta name="robots" content="noindex, nofollow">',
+            link: '',
+          },
+          dehydratedState: {},
+          statusCode: 404,
+        };
+      }
+      const dictTitle = dictInfo.title;
+      const dictCategory = dictInfo.categoryLabel || '운세 사전';
+      const dictMetaTitle = dictInfo.metaTitle || `${dictTitle} - 사주팔자 ${dictCategory} 의미와 특성`;
+      const dictMetaDesc = dictInfo.metaDescription || `${dictTitle}의 사주적 의미와 특성을 해설합니다. 무운 운세 사전에서 무료로 확인하세요.`;
       currentMeta = {
         title: `${dictMetaTitle} - 무운 운세 사전`,
         description: dictMetaDesc,

@@ -114,30 +114,8 @@ async function run() {
   '/guide/money-new-business-d972ab00',
   ];
 
-  // 꿈해몽 개별 페이지 라우트 (513개)
+  // 꿈해몽 개별 페이지 라우트 (483개, UUID slug 30개 제거됨)
   const dreamRoutes = [
-  '/dream/04361c71-a931-4017-8be1-63e2e65cbbd3',
-  '/dream/0987eb4e-49ba-472a-b291-c7be4f2c36ef',
-  '/dream/14ccdfd3-0a76-438c-8493-f709d9f2f68a',
-  '/dream/181d263e-52aa-4577-b673-faa1f49dbbf2',
-  '/dream/26ca7416-1b8b-48d7-a576-53e47c03078d',
-  '/dream/29d3b104-cf31-4858-8f6a-ab3d3a34ef72',
-  '/dream/2a6cacd0-6311-4a2b-b7aa-4f70330b396c',
-  '/dream/354f0b43-4643-4925-a5d6-0f7eaffcb76f',
-  '/dream/4662857f-aeeb-43ea-afdf-4e070a4e0a88',
-  '/dream/5b9af072-3014-4f98-9ef8-404392d4853b',
-  '/dream/60e7f32b-f49c-47ad-9012-2c449942b5e8',
-  '/dream/733527b8-a3a2-4f21-8f69-526ce6a5ef1f',
-  '/dream/79fc4e0c-3e11-4fa7-b23c-abf2bb4c4716',
-  '/dream/7d81efe2-5f2c-4e17-955f-727995724a36',
-  '/dream/7e282dd0-c760-49fb-b143-65c77e7699cb',
-  '/dream/7fd6af7f-90dc-453a-9df0-3f9578317ab0',
-  '/dream/92977164-66d3-4040-a545-a759aa36d479',
-  '/dream/9c3b0483-d2e4-4883-8fe9-a700134916cd',
-  '/dream/9d5c83a4-1d98-42dd-a578-9509a5fa26a3',
-  '/dream/a06056f1-38c5-4421-af46-d32c29352669',
-  '/dream/a5f4aad2-adeb-425d-89b7-110057dee926',
-  '/dream/a9f2aef1-06bc-4f1a-b847-4928845f614b',
   '/dream/actor-kiss-dream-meaning',
   '/dream/airplane-dating-dream-interpretation',
   '/dream/airplane-seat-with-ex-dream',
@@ -147,7 +125,6 @@ async function run() {
   '/dream/ancestor-smiling-hugging-dream',
   '/dream/ancestor-smiling-hugging-dream-2',
   '/dream/ancestors-smiling-dream',
-  '/dream/b55a69b4-22b8-49fb-8b5b-bc14ad1a0362',
   '/dream/bamboo-forest-walking-dream',
   '/dream/bathing-in-mountain-stream-dream',
   '/dream/big-belly-dream-meaning',
@@ -179,7 +156,6 @@ async function run() {
   '/dream/broken-mirror-dream-meaning-2',
   '/dream/buying-new-clothes-dream',
   '/dream/buying-new-clothes-dream-2',
-  '/dream/c9d0fd57-788a-4907-9d2f-67f4e5817d9c',
   '/dream/candlelight-brightening-room-dream',
   '/dream/car-sinking-in-water-dream',
   '/dream/carp-swimming-upstream-dream',
@@ -191,7 +167,6 @@ async function run() {
   '/dream/catching-grasshopper-golden-field-2',
   '/dream/catching-small-fish-stream-dream',
   '/dream/catching-small-fish-stream-dream-2',
-  '/dream/cdd3c4b7-6681-4d8f-be36-f4f5aa6b1a82',
   '/dream/celebrity-baby-dream-conception',
   '/dream/celebrity-breakup-dream-meaning',
   '/dream/celebrity-breakup-dream-meaning-2',
@@ -276,14 +251,11 @@ async function run() {
   '/dream/crying-tears-of-blood-dream',
   '/dream/crying-with-ex-in-rain-dream',
   '/dream/cutting-fingernails-dream-meaning 메타 제목: 손톱 깎는 꿈 해몽 | 걱정 해소와 새로운 시작의 길몽 | 무운 메타 설명: 손톱을 정성껏 깎는 꿈은 근심이 사라지고 재물운이 상승할 징조입니다. 상황별 상세 해석과 행운의 숫자까지 지금 바로 확인하고 운을 잡으세요.',
-  '/dream/d0ed38ad-6568-44e0-a6ef-1abbe4ca80fb',
-  '/dream/d4a066f4-9fee-4d5a-9773-885aa297fde0',
   '/dream/dancing-in-the-rain-with-stranger',
   '/dream/dark-tunnel-lost-dream',
   '/dream/dating-boss-dream-meaning',
   '/dream/dating-same-sex-friend-dream',
   '/dream/dating-teacher-dream-meaning',
-  '/dream/dbb8c0df-eaf4-47e0-aa63-d08ec5fe9a90',
   '/dream/dead-person-coming-alive-dream',
   '/dream/dead-person-coming-alive-dream-2',
   '/dream/deceased-ancestor-smiling-dream',
@@ -305,7 +277,6 @@ async function run() {
   '/dream/dragon-descending-from-sky-dream',
   '/dream/drowning-in-deep-water-dream',
   '/dream/drowning-in-deep-water-dream-2',
-  '/dream/e21e86aa-4c95-4add-8878-5d1fb24ac5f7',
   '/dream/eating-with-lover-dream-meaning',
   '/dream/entering-city-gate-with-flag-dream',
   '/dream/entering-palace-castle-dream',
@@ -329,7 +300,6 @@ async function run() {
   '/dream/falling-from-cliff-dream-2',
   '/dream/falling-into-water-dream',
   '/dream/falling-into-water-dream-2',
-  '/dream/fef3cc4d-69ae-4766-9ca5-d0f73cb9b9d3',
   '/dream/field-of-blooming-flowers-dream',
   '/dream/fighting-with-celebrity-dream',
   '/dream/filthy-toilet-overflowing-dream',
@@ -872,8 +842,16 @@ async function run() {
       break;
     }
     try {
-      const { appHtml, head, dehydratedState } = await render({ path: url });
-      
+      const result = await render({ path: url });
+      const { appHtml, head, dehydratedState, statusCode } = result;
+
+      // statusCode 404 인 경우 HTML 파일 생성 건너뜀 (Soft 404 방지)
+      if (statusCode === 404) {
+        console.log(`⏭️  Skipping 404 page: ${url}`);
+        skippedCount++;
+        continue;
+      }
+
       const html = template
         .replace('<!--app-head-->', `${head.title}${head.meta}${head.link}`)
         .replace('<!--app-html-->', appHtml)
