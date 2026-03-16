@@ -113,13 +113,17 @@ function App() {
         <ThemeProvider defaultTheme="dark">
           <TooltipProvider>
             <Toaster />
-            <AppBar />
-            <main style={{ paddingBottom: 0 }}>
-              <Router />
-            </main>
-            <BottomNav />
-            <Analytics />
-            <Footer />
+            <div className="mu-page-shell">
+              <div className="mu-page-shell__inner">
+                <AppBar />
+                <main style={{ paddingBottom: 0, flex: 1 }}>
+                  <Router />
+                </main>
+                <BottomNav />
+                <Analytics />
+                <Footer />
+              </div>
+            </div>
           </TooltipProvider>
         </ThemeProvider>
       </HelmetProvider>

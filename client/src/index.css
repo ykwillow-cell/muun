@@ -17,8 +17,40 @@
   --safe-area-right: env(safe-area-inset-right, 0px);
   /* Bottom Nav 높이 */
   --bottom-nav-height: calc(56px + var(--safe-area-bottom));
+  /* PC 콘텐츠 최대 너비 */
+  --mu-content-max-width: 896px;
 }
 @plugin "@tailwindcss/typography";
+
+/* ── PC 레이아웃 래퍼 ── */
+.mu-page-shell {
+  width: 100%;
+  min-height: 100dvh;
+  background: var(--background);
+}
+
+/* 896px 이상에서 콘텐츠 중앙 정렬 */
+@media (min-width: 896px) {
+  .mu-page-shell {
+    display: flex;
+    justify-content: center;
+    background: oklch(0.08 0.02 265); /* 사이드 여백 배경 */
+  }
+  .mu-page-shell__inner {
+    width: 100%;
+    max-width: var(--mu-content-max-width);
+    min-height: 100dvh;
+    background: var(--background);
+    position: relative;
+    box-shadow: 0 0 60px rgba(0,0,0,0.5);
+  }
+}
+
+.mu-page-shell__inner {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
 
 @custom-variant dark (&:is(.dark *));
 

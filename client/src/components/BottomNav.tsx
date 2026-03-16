@@ -53,8 +53,10 @@ export function BottomNav() {
         .mu-bottom-nav {
           position: fixed;
           bottom: 0;
-          left: 0;
-          right: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 100%;
+          max-width: var(--mu-content-max-width);
           z-index: 50;
           display: flex;
           align-items: stretch;
