@@ -172,6 +172,9 @@ importers:
       korean-lunar-calendar:
         specifier: ^0.3.6
         version: 0.3.6
+      krds-uiux:
+        specifier: ^1.1.0
+        version: 1.1.0
       lucide-react:
         specifier: ^0.563.0
         version: 0.563.0(react@19.2.1)
@@ -3918,6 +3921,9 @@ packages:
   korean-lunar-calendar@0.3.6:
     resolution: {integrity: sha512-9jpZUH8ph6GsBgIGy8al6z6OfG6TdSIDB99Zj73B35ohtG12EFj3CGE5NzjBsXFiJUUjEr08/XCjfh+flXZVPw==}
     engines: {node: '>= 16.14.0'}
+
+  krds-uiux@1.1.0:
+    resolution: {integrity: sha512-4cjL3cpnlTaDrkivVceDpWhHxUYgV2AhiRRbO74I8ZKlnM17BcutEjPOlMOz9RQGAmdEubTsSYoyKFhvD1/g+A==}
 
   langium@3.3.1:
     resolution: {integrity: sha512-QJv/h939gDpvT+9SiLVlY7tZC3xB2qK57v0J04Sh9wpMb6MP1q8gB21L3WIo8T5P1MSMg3Ep14L7KkDCFG3y4w==}
@@ -9103,6 +9109,8 @@ snapshots:
   kolorist@1.8.0: {}
 
   korean-lunar-calendar@0.3.6: {}
+
+  krds-uiux@1.1.0: {}
 
   langium@3.3.1:
     dependencies:
