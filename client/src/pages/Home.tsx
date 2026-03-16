@@ -310,111 +310,84 @@ export default function Home() {
         </section>
 
         {/* Today's Term - 오늘의 사주 용어 */}
-        <section className="px-4 py-6 md:py-8">
+        <section className="px-4 py-4 border-b border-white/[0.07]">
           <div className={commonMaxWidth}>
             <TodayTermCard />
           </div>
         </section>
 
-        {/* Latest Columns Section — v3 시안 스타일 */}
-        <section className="px-4 py-8 md:py-12 border-b border-white/[0.07]">
+        {/* Latest Columns Section — 콤팩트 리스트 형태 */}
+        <section className="px-4 py-4 border-b border-white/[0.07]">
           <div className={commonMaxWidth}>
-            <div className="flex justify-between items-end mb-6">
-              <div>
-                <span className="text-[11px] font-bold tracking-[0.08em] uppercase text-white/30 block mb-2">운세 칼럼</span>
-                <h2 className="text-[18px] md:text-2xl font-bold text-white flex items-center gap-2">
-                  <BookOpen className="w-5 h-5 text-primary" />
-                  최신 운세 칼럼
-                </h2>
+            {/* 섹션 헤더 */}
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <BookOpen className="w-3.5 h-3.5 text-primary/60" />
+                <span className="text-[11px] font-bold tracking-[0.08em] uppercase text-white/30">운세 칼럼</span>
               </div>
               <Link href="/guide">
-                <Button variant="ghost" className="text-primary hover:text-primary/80 hover:bg-primary/10 gap-1 group hidden md:flex">
-                  전체보기 <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Button>
+                <span className="flex items-center gap-0.5 text-[11px] text-primary/60 hover:text-primary transition-colors">
+                  전체보기 <ChevronRight className="w-3 h-3" />
+                </span>
               </Link>
             </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+            {/* 칼럼 리스트 */}
+            <div className="space-y-2">
               {columnsLoading ? (
                 Array.from({ length: 3 }).map((_, i) => (
-                  <div key={i} className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden animate-pulse">
-                    <div className="aspect-video bg-white/10" />
-                    <div className="p-5 space-y-3">
-                      <div className="h-4 bg-white/10 rounded w-3/4" />
-                      <div className="h-3 bg-white/10 rounded w-full" />
-                      <div className="h-3 bg-white/10 rounded w-2/3" />
+                  <div key={i} className="flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/[0.06] animate-pulse">
+                    <div className="w-14 h-14 rounded-xl bg-white/10 flex-shrink-0" />
+                    <div className="flex-1 space-y-2">
+                      <div className="h-3.5 bg-white/10 rounded w-3/4" />
+                      <div className="h-2.5 bg-white/10 rounded w-1/2" />
                     </div>
                   </div>
                 ))
               ) : latestColumns.length === 0 ? (
-                <div className="col-span-3 text-center py-12 text-muted-foreground">
-                  등록된 칼럼이 없습니다.
-                </div>
+                <div className="text-center py-8 text-[13px] text-white/30">등록된 칼럼이 없습니다.</div>
               ) : latestColumns.map((column, index) => (
                 <motion.div
                   key={column.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, x: -10 }}
+                  whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  className="h-full"
+                  transition={{ delay: index * 0.05 }}
                 >
                   <Link href={`/guide/${column.slug || column.id}`}>
-                    <div className="group cursor-pointer bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-primary/30 hover:bg-white/10 transition-all h-full flex flex-col">
-                      <div className="aspect-video overflow-hidden bg-gradient-to-br from-primary/20 to-purple-500/20 relative flex items-center justify-center">
+                    <div className="group flex items-start gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/[0.06] hover:border-primary/25 hover:bg-white/[0.06] transition-all cursor-pointer">
+                      {/* 썸네일 */}
+                      <div className="w-14 h-14 rounded-xl overflow-hidden bg-gradient-to-br from-primary/20 to-purple-500/20 flex-shrink-0 relative">
                         <img
                           src={column.thumbnail}
                           alt={column.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                          onError={(e) => {
-                            const target = e.target as HTMLImageElement;
-                            target.style.display = 'none';
-                          }}
+                          className="w-full h-full object-cover"
+                          onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
                         />
-                        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-purple-500/10 flex items-center justify-center text-white/30">
-                          <BookOpen className="w-12 h-12" />
+                        <div className="absolute inset-0 flex items-center justify-center text-white/20">
+                          <BookOpen className="w-5 h-5" />
                         </div>
-                        <div className="absolute top-3 left-3">
-                          <span className={`px-2.5 py-1 rounded-lg text-[10px] font-bold uppercase tracking-wider backdrop-blur-md ${COLUMN_CATEGORIES[column.category as keyof typeof COLUMN_CATEGORIES]?.color || 'bg-white/10 text-white/70'}`}>
+                      </div>
+                      {/* 텍스트 */}
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-1.5 mb-1">
+                          <span className={`px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider ${COLUMN_CATEGORIES[column.category as keyof typeof COLUMN_CATEGORIES]?.color || 'bg-white/10 text-white/50'}`}>
                             {column.categoryLabel}
                           </span>
-                        </div>
-                      </div>
-                      <div className="p-5 flex-1 flex flex-col">
-                        <h3 className="text-lg font-bold text-white mb-2 group-hover:text-primary transition-colors line-clamp-2 leading-snug">
-                          {column.title}
-                        </h3>
-                        <p className="text-sm text-muted-foreground line-clamp-2 mb-4 flex-1">
-                          {column.description}
-                        </p>
-                        <div className="flex items-center justify-between mt-auto pt-4 border-t border-white/5">
-                          <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
-                            <span className="flex items-center gap-1">
-                              <CalendarDays className="w-3 h-3" />
-                              {new Date(column.publishedDate).toLocaleDateString('ko-KR')}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Clock className="w-3 h-3" />
-                              {column.readTime}분
-                            </span>
-                          </div>
-                          <span className="text-xs font-bold text-primary opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
-                            읽어보기 <ArrowRight className="w-3 h-3" />
+                          <span className="text-[10px] text-white/25">
+                            <CalendarDays className="w-2.5 h-2.5 inline mr-0.5" />
+                            {new Date(column.publishedDate).toLocaleDateString('ko-KR', { month: 'short', day: 'numeric' })}
                           </span>
                         </div>
+                        <h3 className="text-[13px] font-semibold text-white group-hover:text-primary transition-colors line-clamp-2 leading-snug">
+                          {column.title}
+                        </h3>
                       </div>
+                      <ChevronRight className="w-3.5 h-3.5 text-white/20 group-hover:text-primary/60 transition-colors flex-shrink-0 mt-1" />
                     </div>
                   </Link>
                 </motion.div>
               ))}
-            </div>
-
-            <div className="mt-8 md:hidden">
-              <Link href="/guide">
-                <Button variant="outline" className="w-full border-primary/30 text-primary hover:bg-primary/10 py-6 rounded-xl font-bold">
-                  전체 칼럼 보기
-                </Button>
-              </Link>
             </div>
           </div>
         </section>

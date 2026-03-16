@@ -7,7 +7,7 @@ import { trackCustomEvent } from "@/lib/ga4";
 const TRUST_ITEMS = [
   { num: "100%", label: "무료" },
   { num: "회원가입", label: "없음" },
-  { num: "서버 저장", label: "안함" },
+  { num: "서버 저장", label: "없음" },
 ];
 
 export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
@@ -53,12 +53,6 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
       <div className="mu-hero__glow mu-hero__glow--purple" aria-hidden="true" />
 
       <div className="mu-hero__inner">
-        {/* 배지 */}
-        <div className="mu-hero__badge">
-          <ShieldCheck size={13} strokeWidth={2} />
-          <span>가입 없는 무료 운세</span>
-        </div>
-
         {/* 타이틀 */}
         <h1 className="mu-hero__title">
           지금 바로<br />

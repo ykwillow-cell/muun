@@ -39,57 +39,30 @@ export function TodayTermCard() {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: 0.3 }}
-      className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-purple-600/20 via-blue-600/10 to-slate-900/20 border border-purple-500/30 p-6 md:p-8"
+      transition={{ duration: 0.5 }}
+      className="flex items-start gap-3 p-3.5 rounded-2xl bg-purple-500/[0.07] border border-purple-500/20 hover:border-purple-500/30 transition-all"
     >
-      {/* 배경 효과 */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-0 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-32 h-32 bg-blue-500/10 rounded-full blur-3xl" />
+      {/* 아이콘 */}
+      <div className="w-9 h-9 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+        <Sparkles className="w-4 h-4 text-purple-400" />
       </div>
 
       {/* 콘텐츠 */}
-      <div className="relative z-10">
-        {/* 헤더 */}
-        <div className="flex items-center gap-2 mb-4">
-          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-purple-500/20 border border-purple-500/30">
-            <Sparkles className="w-4 h-4 text-purple-400" />
-          </div>
-          <span className="text-xs font-semibold text-purple-300 uppercase tracking-wider">
-            오늘의 사주 용어
-          </span>
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-2 mb-1">
+          <span className="text-[10px] font-bold tracking-[0.08em] uppercase text-purple-400/60">오늘의 사주 용어</span>
+          <span className="px-1.5 py-0.5 rounded text-[9px] font-medium bg-purple-500/20 text-purple-300 border border-purple-500/30">{todayTerm.categoryLabel}</span>
         </div>
-
-        {/* 용어 제목 */}
-        <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">
-          {todayTerm.title}
-        </h3>
-
-        {/* 카테고리 배지 */}
-        <div className="inline-block px-3 py-1 rounded-full bg-purple-500/20 border border-purple-500/30 mb-4">
-          <span className="text-xs font-medium text-purple-300">
-            {todayTerm.categoryLabel}
-          </span>
-        </div>
-
-        {/* 설명 */}
-        <p className="text-sm md:text-base text-slate-300 leading-relaxed mb-6 line-clamp-3">
-          {todayTerm.modernInterpretation}
-        </p>
-
-        {/* CTA 버튼 */}
-        <Link href="/fortune-dictionary">
-          <motion.div
-            whileHover={{ x: 4 }}
-            whileTap={{ scale: 0.98 }}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-medium text-sm transition-all cursor-pointer group"
-          >
-            <BookOpen className="w-4 h-4" />
-            <span>전체 사전 보기</span>
-            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-          </motion.div>
-        </Link>
+        <h3 className="text-[14px] font-bold text-white mb-1 leading-snug">{todayTerm.title}</h3>
+        <p className="text-[12px] text-white/40 leading-relaxed line-clamp-2">{todayTerm.modernInterpretation}</p>
       </div>
+
+      {/* 사전 링크 */}
+      <Link href="/fortune-dictionary" className="flex-shrink-0">
+        <span className="flex items-center gap-0.5 text-[11px] text-purple-300/60 hover:text-purple-300 transition-colors whitespace-nowrap mt-0.5">
+          사전 <ArrowRight className="w-3 h-3" />
+        </span>
+      </Link>
     </motion.div>
   );
 }
