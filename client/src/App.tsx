@@ -43,6 +43,7 @@ const DreamInterpretation = lazy(() => import("./pages/DreamInterpretation"));
 const DreamDetail = lazy(() => import("./pages/DreamDetail"));
 const PastLife = lazy(() => import("./pages/PastLife"));
 const Naming = lazy(() => import("./pages/Naming"));
+const More = lazy(() => import("./pages/More"));
 
 // 최소한의 로딩 스피너 (CLS 방지)
 function PageLoader() {
@@ -100,6 +101,7 @@ function Router() {
         <Route path="/dream/:slug" component={DreamDetail} />
         <Route path="/past-life" component={PastLife} />
         <Route path="/naming" component={Naming} />
+        <Route path="/more" component={More} />
         <Route component={NotFound} />
       </Switch>
     </Suspense>
