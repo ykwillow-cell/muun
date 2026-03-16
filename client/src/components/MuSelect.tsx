@@ -26,6 +26,22 @@ export function MuSelect({
 }: MuSelectProps) {
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const [dropdownStyle, setDropdownStyle] = useState<React.CSSProperties>({});
+
+  // 드롭다운 열릴 때 트리거 위치 계산 → fixed 포지셔닝으로 stacking context 탈출
+  useEffect(() => {
+    if (open && triggerRef.current) {
+      const rect = triggerRef.current.getBoundingClientRect();
+      setDropdownStyle({
+        position: 'fixed',
+        top: rect.bottom + 4,
+        left: rect.left,
+        width: rect.width,
+        zIndex: 9999,
+      });
+    }
+  }, [open]);
 
   const selected = options.find((o) => o.value === value);
 
@@ -48,6 +64,7 @@ export function MuSelect({
       )}
       <button
         id={id}
+        ref={triggerRef}
         type="button"
         className={`mu-select__trigger${open ? " mu-select__trigger--open" : ""}`}
         onClick={() => setOpen((p) => !p)}
@@ -68,6 +85,7 @@ export function MuSelect({
           className="mu-select__dropdown"
           role="listbox"
           aria-label={label}
+          style={dropdownStyle}
         >
           {options.map((opt) => (
             <li
@@ -138,11 +156,8 @@ export function MuSelect({
           transform: rotate(180deg);
         }
         .mu-select__dropdown {
-          position: absolute;
-          top: calc(100% + 4px);
-          left: 0;
-          right: 0;
-          z-index: 100;
+          position: fixed;
+          z-index: 9999;
           background: oklch(0.18 0.04 265);
           border: 1px solid rgba(255,255,255,0.10);
           border-radius: 10px;
