@@ -1,5 +1,23 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+/* KRDS 토큰 + 컴포넌트 */
+@import "./_core/krds_tokens.css";
+@import "./_core/krds_component.css";
+
+/* ── 무운(MuUn) KRDS 토큰 오버라이드 ── */
+:root {
+  /* 무운 골드 → KRDS primary 매핑 */
+  --krds-comp-btn-primary-bg: oklch(0.85 0.18 85);
+  --krds-comp-btn-primary-text: oklch(0.12 0.04 265);
+  --krds-comp-btn-primary-hover-bg: oklch(0.80 0.18 85);
+  /* SafeArea (Capacitor) */
+  --safe-area-top: env(safe-area-inset-top, 0px);
+  --safe-area-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-left: env(safe-area-inset-left, 0px);
+  --safe-area-right: env(safe-area-inset-right, 0px);
+  /* Bottom Nav 높이 */
+  --bottom-nav-height: calc(56px + var(--safe-area-bottom));
+}
 @plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));

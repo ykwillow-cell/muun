@@ -4,7 +4,8 @@ import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import { GNB } from "./components/GNB";
+import { AppBar } from "./components/AppBar";
+import { BottomNav } from "./components/BottomNav";
 import { useEffect, lazy, Suspense } from "react";
 import { useLocation } from "wouter";
 import { initGA, trackPageView } from "@/lib/ga4";
@@ -112,8 +113,11 @@ function App() {
         <ThemeProvider defaultTheme="dark">
           <TooltipProvider>
             <Toaster />
-            <GNB />
-            <Router />
+            <AppBar />
+            <main style={{ paddingBottom: 0 }}>
+              <Router />
+            </main>
+            <BottomNav />
             <Analytics />
             <Footer />
           </TooltipProvider>

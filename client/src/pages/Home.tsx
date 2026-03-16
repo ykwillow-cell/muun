@@ -15,6 +15,9 @@ import { getFeaturedColumns, COLUMN_CATEGORIES } from "@/lib/column-data-api";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Clock } from "lucide-react";
+import { HeroFirstVisit } from "@/components/HeroFirstVisit";
+import { HeroReturnVisit } from "@/components/HeroReturnVisit";
+import { MainBanner } from "@/components/MainBanner";
 
 export default function Home() {
   useCanonical('/');
@@ -26,6 +29,11 @@ export default function Home() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [latestColumns, setLatestColumns] = useState<any[]>([]);
   const [columnsLoading, setColumnsLoading] = useState(true);
+  const [hasBirth, setHasBirth] = useState<boolean>(
+    () => !!localStorage.getItem("muun_user_birth")
+  );
+  const handleBirthSaved = () => setHasBirth(true);
+  const handleBirthDeleted = () => setHasBirth(false);
 
   useEffect(() => {
     getFeaturedColumns()
@@ -190,77 +198,15 @@ export default function Home() {
 
       <main className="relative z-10">
         
-        {/* Hero Section — v3 디자인 시안 기반 */}
-        <section className="relative overflow-hidden border-b border-white/[0.07]">
-          {/* 앰비언트 글로우 — 실제 사이트 동일 */}
-          <div className="absolute -top-[15%] -left-[15%] w-[280px] h-[280px] bg-primary/10 rounded-full blur-[60px] pointer-events-none" />
-          <div className="absolute -bottom-[15%] -right-[15%] w-[240px] h-[240px] bg-purple-600/10 rounded-full blur-[60px] pointer-events-none" />
+        {/* Hero Section — localStorage 분기 (첫 방문 / 재방문) */}
+        {hasBirth ? (
+          <HeroReturnVisit onDeleteBirth={handleBirthDeleted} />
+        ) : (
+          <HeroFirstVisit onBirthSaved={handleBirthSaved} />
+        )}
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className={`${commonMaxWidth} relative z-10 px-4 pt-[18px] pb-[18px]`}
-          >
-            {/* 배지 */}
-            <div className="inline-flex items-center gap-1.5 px-3 py-[5px] rounded-full bg-primary/10 border border-primary/25 mb-3">
-              <span className="w-[5px] h-[5px] rounded-full bg-primary flex-shrink-0" />
-              <span className="text-[11px] font-semibold text-primary tracking-[0.02em]">가입 없는 무료 운세</span>
-            </div>
-
-            {/* 타이틀 */}
-            <h1 className="text-[26px] md:text-5xl lg:text-6xl font-extrabold tracking-[-0.8px] leading-[1.25] mb-2">
-              지금 바로<br />
-              <span className="bg-gradient-to-r from-primary via-yellow-200 to-primary bg-clip-text text-transparent">내 사주를 확인하세요</span>
-            </h1>
-            <p className="text-[13px] md:text-sm text-muted-foreground mb-[18px] leading-relaxed">
-              생년월일만 입력하면 바로 시작됩니다
-            </p>
-
-            {/* Quick Action 카드 — v3 스타일 */}
-            <div className="flex flex-col md:flex-row gap-3 md:gap-4">
-              <Link href="/yearly-fortune" onClick={() => handleCategoryClick("신년운세(퀴액션)")} className="flex-1">
-                <motion.div
-                  whileTap={{ scale: 0.98 }}
-                  className="group flex items-center justify-between p-4 rounded-2xl bg-gradient-to-r from-primary/15 to-yellow-500/10 border border-primary/30 hover:border-primary/50 transition-all cursor-pointer"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center flex-shrink-0 shadow-[0_2px_12px_rgba(245,200,66,0.3)]">
-                      <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663329919991/ADofygAMfynBhdKC.png" alt="2026년 무료 신년운세 - 무운" className="w-8 h-8 object-contain" loading="lazy" width="32" height="32" />
-                    </div>
-                    <div>
-                      <h3 className="text-[15px] font-bold text-white">2026 신년운세</h3>
-                      <p className="text-xs text-muted-foreground">내 한 해의 운세 흐름 확인</p>
-                    </div>
-                  </div>
-                  <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-background transition-all flex-shrink-0">
-                    <ArrowRight className="w-4 h-4" />
-                  </div>
-                </motion.div>
-              </Link>
-
-              <Link href="/lifelong-saju" onClick={() => handleCategoryClick("평생사주(퀴액션)")} className="flex-1">
-                <motion.div
-                  whileTap={{ scale: 0.98 }}
-                  className="group flex items-center justify-between p-4 rounded-2xl bg-gradient-to-r from-blue-500/15 to-purple-500/10 border border-blue-500/30 hover:border-blue-500/50 transition-all cursor-pointer"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center text-2xl flex-shrink-0 shadow-[0_2px_12px_rgba(59,130,246,0.3)]">
-                      🔮
-                    </div>
-                    <div>
-                      <h3 className="text-[15px] font-bold text-white">평생사주 분석</h3>
-                      <p className="text-xs text-muted-foreground">타고난 기질과 운명 확인</p>
-                    </div>
-                  </div>
-                  <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-blue-400 group-hover:bg-blue-500 group-hover:text-white transition-all flex-shrink-0">
-                    <ArrowRight className="w-4 h-4" />
-                  </div>
-                </motion.div>
-              </Link>
-            </div>
-          </motion.div>
-        </section>
+        {/* Main Banner — Embla Carousel */}
+        <MainBanner />
 
         {/* Popular Services — v3 시안 스타일 */}
         <section className="py-4 px-4 border-b border-white/[0.07]">
