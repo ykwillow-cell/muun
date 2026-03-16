@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { Link } from "wouter";
-import { Search, X, Sparkles } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { trackCustomEvent } from "@/lib/ga4";
 
 interface AppBarProps {
@@ -39,11 +39,8 @@ export function AppBar({ onSearch }: AppBarProps) {
     >
       {/* 메인 바 */}
       <div className="mu-appbar__inner">
-        {/* 로고 */}
+        {/* 항목 6: 로고 — 별 아이콘 제거, 텍스트만 */}
         <Link href="/" className="mu-appbar__logo" aria-label="무운 홈">
-          <span className="mu-appbar__logo-icon" aria-hidden="true">
-            <Sparkles size={18} strokeWidth={1.5} />
-          </span>
           <span className="mu-appbar__logo-text">
             무운 <em>MuUn</em>
           </span>
@@ -60,7 +57,7 @@ export function AppBar({ onSearch }: AppBarProps) {
         </button>
       </div>
 
-      {/* 검색 확장 영역 — 슬라이드 다운 */}
+      {/* 검색 확장 영역 */}
       <div
         className={`mu-appbar__search-wrap ${searchOpen ? "mu-appbar__search-wrap--open" : ""}`}
         aria-hidden={!searchOpen}
@@ -94,10 +91,8 @@ export function AppBar({ onSearch }: AppBarProps) {
           position: sticky;
           top: 0;
           z-index: 50;
-          background: var(--background);
-          border-bottom: 0.5px solid rgba(255,255,255,0.07);
-          backdrop-filter: blur(12px);
-          -webkit-backdrop-filter: blur(12px);
+          background: #ffffff;
+          border-bottom: 0.5px solid rgba(0,0,0,0.10);
         }
         .mu-appbar__inner {
           height: 56px;
@@ -109,43 +104,38 @@ export function AppBar({ onSearch }: AppBarProps) {
         .mu-appbar__logo {
           display: flex;
           align-items: center;
-          gap: 6px;
           text-decoration: none;
         }
-        .mu-appbar__logo-icon {
-          color: oklch(0.85 0.18 85);
-          display: flex;
-          align-items: center;
-        }
+        /* 항목 7: font-weight 500 */
         .mu-appbar__logo-text {
           font-size: 17px;
-          font-weight: 600;
-          color: white;
+          font-weight: 500;
+          color: #1a1a18;
           letter-spacing: -0.01em;
         }
         .mu-appbar__logo-text em {
           font-style: normal;
           font-size: 11px;
           font-weight: 400;
-          color: rgba(255,255,255,0.35);
+          color: #5a5a56;
           margin-left: 4px;
         }
         .mu-appbar__icon-btn {
           width: 36px;
           height: 36px;
           border-radius: 50%;
-          background: rgba(255,255,255,0.06);
-          border: 0.5px solid rgba(255,255,255,0.08);
+          background: rgba(0,0,0,0.04);
+          border: 0.5px solid rgba(0,0,0,0.10);
           display: flex;
           align-items: center;
           justify-content: center;
-          color: rgba(255,255,255,0.6);
+          color: #5a5a56;
           transition: background 0.15s, color 0.15s;
           cursor: pointer;
         }
         .mu-appbar__icon-btn:hover {
-          background: rgba(255,255,255,0.10);
-          color: white;
+          background: rgba(0,0,0,0.08);
+          color: #1a1a18;
         }
         /* 검색 확장 */
         .mu-appbar__search-wrap {
@@ -167,31 +157,31 @@ export function AppBar({ onSearch }: AppBarProps) {
           position: relative;
         }
         .mu-appbar__search-icon {
-          color: rgba(255,255,255,0.3);
+          color: #9a9a96;
           flex-shrink: 0;
         }
         .mu-appbar__search-input {
           flex: 1;
           height: 36px;
-          background: rgba(255,255,255,0.06);
-          border: 0.5px solid rgba(255,255,255,0.10);
+          background: #f5f4ef;
+          border: 0.5px solid rgba(0,0,0,0.10);
           border-radius: 8px;
           padding: 0 10px 0 8px;
           font-size: 13px;
-          color: white;
+          color: #1a1a18;
           outline: none;
           font-family: 'Pretendard', sans-serif;
         }
         .mu-appbar__search-input::placeholder {
-          color: rgba(255,255,255,0.25);
+          color: #9a9a96;
         }
         .mu-appbar__search-input:focus {
-          border-color: oklch(0.85 0.18 85 / 0.4);
+          border-color: rgba(0,0,0,0.25);
         }
         .mu-appbar__search-clear {
           position: absolute;
           right: 22px;
-          color: rgba(255,255,255,0.3);
+          color: #9a9a96;
           cursor: pointer;
           display: flex;
           align-items: center;

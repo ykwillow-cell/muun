@@ -6,10 +6,6 @@
 
 /* ── 무운(MuUn) KRDS 토큰 오버라이드 ── */
 :root {
-  /* 무운 골드 → KRDS primary 매핑 */
-  --krds-comp-btn-primary-bg: oklch(0.85 0.18 85);
-  --krds-comp-btn-primary-text: oklch(0.12 0.04 265);
-  --krds-comp-btn-primary-hover-bg: oklch(0.80 0.18 85);
   /* SafeArea (Capacitor) */
   --safe-area-top: env(safe-area-inset-top, 0px);
   --safe-area-bottom: env(safe-area-inset-bottom, 0px);
@@ -29,12 +25,12 @@
   background: var(--background);
 }
 
-/* 896px 이상에서 콘텐츠 중앙 정렬 */
+/* 480px 이상에서 콘텐츠 중앙 정렬 */
 @media (min-width: 480px) {
   .mu-page-shell {
     display: flex;
     justify-content: center;
-    background: oklch(0.08 0.02 265); /* 사이드 여백 배경 */
+    background: #e8e7e2;
   }
   .mu-page-shell__inner {
     width: 100%;
@@ -42,7 +38,7 @@
     min-height: 100dvh;
     background: var(--background);
     position: relative;
-    box-shadow: 0 0 60px rgba(0,0,0,0.5);
+    box-shadow: 0 0 60px rgba(0,0,0,0.12);
   }
 }
 
@@ -93,90 +89,78 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+/* ── 항목 4: 다크테마 완전 제거 → 라이트 팔레트 ── */
 :root {
-  /* Celestial Glassmorphism Theme */
-  /* Deep Cosmos Navy (#0f1729) -> oklch(0.15 0.05 265) */
-  /* Starlight Gold (#ffd700) -> oklch(0.85 0.18 85) */
-  /* Nebula Purple (#6d28d9) -> oklch(0.45 0.2 290) */
-  
-  --primary: oklch(0.85 0.18 85); /* Gold */
-  --primary-foreground: oklch(0.15 0.05 265); /* Navy */
-  
-  --sidebar-primary: oklch(0.15 0.05 265);
-  --sidebar-primary-foreground: oklch(0.98 0 0);
-  
-  --chart-1: oklch(0.85 0.18 85); /* Gold */
-  --chart-2: oklch(0.45 0.2 290); /* Purple */
-  --chart-3: oklch(0.6 0.15 250); /* Blue */
-  --chart-4: oklch(0.7 0.15 30); /* Red/Orange */
-  --chart-5: oklch(0.8 0.1 140); /* Green */
-  
-  --radius: 1.25rem;
-  
-  --background: oklch(0.12 0.04 265); /* Even Deeper Navy */
-  --foreground: oklch(0.98 0.01 265); /* Off White */
-  
-  --card: oklch(0.18 0.04 265 / 0.7); /* Glass Navy */
-  --card-foreground: oklch(0.98 0.01 265);
-  
-  --popover: oklch(0.2 0.05 265 / 0.9);
-  --popover-foreground: oklch(0.98 0 0);
-  
-  --secondary: oklch(0.25 0.05 265 / 0.5);
-  --secondary-foreground: oklch(0.98 0 0);
-  
-  --muted: oklch(0.25 0.05 265 / 0.3);
-  --muted-foreground: oklch(0.7 0.05 265);
-  
-  --accent: oklch(0.45 0.2 290 / 0.3); /* Purple tint */
-  --accent-foreground: oklch(0.98 0 0);
-  
-  --destructive: oklch(0.6 0.2 20);
-  --destructive-foreground: oklch(0.98 0 0);
-  
-  --border: oklch(0.98 0.01 265 / 0.08);
-  --input: oklch(0.98 0.01 265 / 0.05);
-  --ring: oklch(0.85 0.18 85 / 0.5);
-  
-  --sidebar: oklch(0.15 0.05 265);
-  --sidebar-foreground: oklch(0.98 0 0);
-  --sidebar-accent: oklch(0.25 0.05 265);
-  --sidebar-accent-foreground: oklch(0.98 0 0);
-  --sidebar-border: oklch(0.98 0 0 / 0.1);
-  --sidebar-ring: oklch(0.85 0.18 85);
+  /* 전체 배경 */
+  --background: #f5f4ef;
+  /* 텍스트 */
+  --foreground: #1a1a18;
+  /* 카드·AppBar·Hero */
+  --card: #ffffff;
+  --card-foreground: #1a1a18;
+  /* 팝오버 */
+  --popover: #ffffff;
+  --popover-foreground: #1a1a18;
+  /* Primary — 중립 다크 (골드 제거) */
+  --primary: #1a1a18;
+  --primary-foreground: #ffffff;
+  /* Secondary */
+  --secondary: rgba(26,26,24,0.07);
+  --secondary-foreground: #1a1a18;
+  /* Muted */
+  --muted: rgba(26,26,24,0.05);
+  --muted-foreground: #5a5a56;
+  /* Accent */
+  --accent: rgba(26,26,24,0.06);
+  --accent-foreground: #1a1a18;
+  /* Destructive */
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  /* Border / Input / Ring */
+  --border: rgba(0,0,0,0.10);
+  --input: rgba(0,0,0,0.06);
+  --ring: rgba(26,26,24,0.25);
+  /* Radius */
+  --radius: 0.75rem;
+  /* Chart */
+  --chart-1: #1a1a18;
+  --chart-2: #5a5a56;
+  --chart-3: #9a9a96;
+  --chart-4: #dc2626;
+  --chart-5: #16a34a;
+  /* Sidebar */
+  --sidebar: #ffffff;
+  --sidebar-foreground: #1a1a18;
+  --sidebar-primary: #1a1a18;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: rgba(26,26,24,0.06);
+  --sidebar-accent-foreground: #1a1a18;
+  --sidebar-border: rgba(0,0,0,0.08);
+  --sidebar-ring: rgba(26,26,24,0.25);
 }
-
-/* Dark mode is default, no separate dark class needed */
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground selection:bg-primary/30 selection:text-primary leading-relaxed;
+    @apply bg-background text-foreground leading-relaxed;
     font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
-  
+
   h1, h2, h3, h4, h5, h6 {
     @apply leading-tight;
   }
-  
+
   p {
     @apply leading-relaxed;
   }
-  
+
   .glass-panel {
-    @apply bg-card backdrop-blur-xl border border-white/10 shadow-2xl;
+    @apply bg-card border border-black/10 shadow-sm;
   }
-  
-  .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-b from-white to-white/60;
-  }
-  
-  .gold-gradient {
-    @apply bg-gradient-to-br from-[#FFE082] via-[#FFD700] to-[#B8860B];
-  }
+
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
   [type="button"]:not(:disabled),
@@ -191,24 +175,11 @@
 }
 
 @layer components {
-  /**
-   * Custom container utility that centers content and adds responsive padding.
-   *
-   * This overrides Tailwind's default container behavior to:
-   * - Auto-center content (mx-auto)
-   * - Add responsive horizontal padding
-   * - Set max-width for large screens
-   *
-   * Usage: <div className="container">...</div>
-   *
-   * For custom widths, use max-w-* utilities directly:
-   * <div className="max-w-6xl mx-auto px-4">...</div>
-   */
   .container {
     width: 100%;
     margin-left: auto;
     margin-right: auto;
-    padding-left: 1rem; /* 16px - mobile padding */
+    padding-left: 1rem;
     padding-right: 1rem;
   }
 
@@ -219,33 +190,32 @@
 
   @media (min-width: 640px) {
     .container {
-      padding-left: 1.5rem; /* 24px - tablet padding */
+      padding-left: 1.5rem;
       padding-right: 1.5rem;
     }
   }
 
   @media (min-width: 1024px) {
     .container {
-      padding-left: 2rem; /* 32px - desktop padding */
+      padding-left: 2rem;
       padding-right: 2rem;
-      max-width: 1280px; /* Standard content width */
+      max-width: 1280px;
     }
   }
 }
+
 /* iOS Date/Time Input Reset */
 @layer base {
   input[type="date"],
   input[type="time"] {
     position: relative;
-    min-height: 2.5rem; /* h-10 equivalent for better touch target and alignment */
+    min-height: 2.5rem;
     appearance: none;
     -webkit-appearance: none;
     display: flex;
     align-items: center;
   }
 
-  /* Remove default icons in some browsers if needed, 
-     but keep them functional for iOS where they are usually invisible until clicked */
   input[type="date"]::-webkit-calendar-picker-indicator,
   input[type="time"]::-webkit-calendar-picker-indicator {
     background: transparent;
@@ -260,7 +230,6 @@
     width: auto;
   }
 
-  /* Ensure text is vertically centered in iOS */
   input[type="date"]::-webkit-date-and-time-value,
   input[type="time"]::-webkit-date-and-time-value {
     min-height: 1.5em;

@@ -52,16 +52,17 @@ function getDailyFortune(birth: string) {
   const r2 = seededRandom(seed + 7);
   const ohaengList = Object.keys(OHAENG_MENUS);
   const ohaeng = ohaengList[Math.floor(r1 * ohaengList.length)];
-  const score = Math.floor(r1 * 40) + 55; // 55~94
+  const score = Math.floor(r1 * 40) + 55;
   const titleIdx = Math.floor(r2 * FORTUNE_TITLES.length);
   return { score, title: FORTUNE_TITLES[titleIdx], desc: FORTUNE_DESCS[titleIdx], ohaeng };
 }
 
+/* 항목 5: 바로가기 4버튼 — 색상 통일 (모두 동일한 스타일) */
 const SHORTCUTS = [
-  { href: "/compatibility",  label: "궁합",   Icon: Heart,    color: "rgba(236,72,153,0.15)",  iconColor: "#ec4899" },
-  { href: "/lifelong-saju",  label: "평생사주", Icon: Sparkles, color: "rgba(96,165,250,0.15)",  iconColor: "#60a5fa" },
-  { href: "/tarot",          label: "타로",    Icon: Layers,   color: "rgba(167,139,250,0.15)", iconColor: "#a78bfa" },
-  { href: "/astrology",      label: "점성술",  Icon: Star,     color: "rgba(52,211,153,0.15)",  iconColor: "#34d399" },
+  { href: "/compatibility",  label: "궁합",    Icon: Heart },
+  { href: "/lifelong-saju",  label: "평생사주", Icon: Sparkles },
+  { href: "/tarot",          label: "타로",     Icon: Layers },
+  { href: "/astrology",      label: "점성술",   Icon: Star },
 ];
 
 interface HeroReturnVisitProps {
@@ -101,7 +102,6 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
     onDeleteBirth();
   };
 
-  // 외부 클릭 시 툴팁 닫기
   useEffect(() => {
     if (!showTooltip) return;
     const handler = () => setShowTooltip(false);
@@ -111,10 +111,6 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
 
   return (
     <section className="mu-hero mu-hero--return">
-      {/* 앰비언트 글로우 */}
-      <div className="mu-hero__glow mu-hero__glow--gold" aria-hidden="true" />
-      <div className="mu-hero__glow mu-hero__glow--purple" aria-hidden="true" />
-
       <div className="mu-hero__inner">
         {/* Trust Bar */}
         <div className="mu-hero__trust-bar" role="list">
@@ -202,14 +198,13 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           </div>
         </div>
 
-        {/* 바로가기 4버튼 */}
+        {/* 항목 5: 바로가기 4버튼 — 모두 동일한 스타일 */}
         <div className="mu-shortcuts" role="list" aria-label="서비스 바로가기">
-          {SHORTCUTS.map(({ href, label, Icon, color, iconColor }) => (
+          {SHORTCUTS.map(({ href, label, Icon }) => (
             <Link
               key={href}
               href={`${href}?birth=${birth}`}
               className="mu-shortcut-btn"
-              style={{ "--sc-bg": color, "--sc-icon": iconColor } as React.CSSProperties}
               role="listitem"
               aria-label={label}
             >
@@ -238,12 +233,15 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
       )}
 
       <style>{`
+        .mu-hero--return {
+          background: #ffffff;
+        }
         .mu-hero--return .mu-hero__trust-bar {
           display: flex;
           margin-bottom: 16px;
           border-radius: 10px;
-          background: rgba(255,255,255,0.04);
-          border: 1px solid rgba(255,255,255,0.06);
+          background: #f5f4ef;
+          border: 0.5px solid rgba(0,0,0,0.10);
           overflow: hidden;
         }
         .mu-hero--return .mu-hero__trust-item {
@@ -252,18 +250,18 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           flex-direction: column;
           align-items: center;
           padding: 10px 4px;
-          border-right: 1px solid rgba(255,255,255,0.06);
+          border-right: 0.5px solid rgba(0,0,0,0.08);
           gap: 2px;
         }
         .mu-hero--return .mu-hero__trust-item:last-child { border-right: none; }
         .mu-hero--return .mu-hero__trust-num {
           font-size: 13px;
-          font-weight: 700;
-          color: oklch(0.85 0.18 85);
+          font-weight: 500;
+          color: #1a1a18;
         }
         .mu-hero--return .mu-hero__trust-label {
           font-size: 10px;
-          color: rgba(255,255,255,0.35);
+          color: #5a5a56;
         }
         /* 인사 */
         .mu-hero__greeting-row {
@@ -274,8 +272,8 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
         }
         .mu-hero__greeting {
           font-size: 20px;
-          font-weight: 700;
-          color: white;
+          font-weight: 500;
+          color: #1a1a18;
           letter-spacing: -0.02em;
           margin: 0 0 4px;
         }
@@ -284,18 +282,18 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           align-items: center;
           gap: 5px;
           font-size: 12px;
-          color: rgba(255,255,255,0.35);
+          color: #5a5a56;
           position: relative;
         }
         .mu-hero__info-btn {
           width: 18px; height: 18px;
           border-radius: 50%;
-          background: rgba(255,255,255,0.08);
+          background: rgba(0,0,0,0.06);
           border: none;
           display: flex;
           align-items: center;
           justify-content: center;
-          color: rgba(255,255,255,0.35);
+          color: #5a5a56;
           cursor: pointer;
         }
         .mu-hero__tooltip {
@@ -303,22 +301,22 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           top: calc(100% + 6px);
           left: 0;
           z-index: 20;
-          background: oklch(0.22 0.04 265);
-          border: 1px solid rgba(255,255,255,0.10);
+          background: #ffffff;
+          border: 0.5px solid rgba(0,0,0,0.12);
           border-radius: 8px;
           padding: 10px 12px;
           font-size: 12px;
-          color: rgba(255,255,255,0.65);
+          color: #5a5a56;
           line-height: 1.5;
           width: 220px;
-          box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+          box-shadow: 0 4px 16px rgba(0,0,0,0.10);
         }
         .mu-hero__delete-btn {
           display: flex;
           align-items: center;
           gap: 4px;
           font-size: 11px;
-          color: rgba(255,255,255,0.25);
+          color: #9a9a96;
           background: none;
           border: none;
           cursor: pointer;
@@ -326,15 +324,14 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           white-space: nowrap;
           font-family: 'Pretendard', sans-serif;
         }
-        .mu-hero__delete-btn:hover { color: rgba(255,255,255,0.5); }
+        .mu-hero__delete-btn:hover { color: #5a5a56; }
         /* 운세 카드 */
         .mu-fortune-card {
-          background: oklch(0.18 0.04 265 / 0.8);
-          border: 1px solid rgba(255,255,255,0.08);
+          background: #f5f4ef;
+          border: 0.5px solid rgba(0,0,0,0.10);
           border-radius: 14px;
           padding: 16px;
           margin-bottom: 10px;
-          backdrop-filter: blur(8px);
         }
         .mu-fortune-card__top {
           display: flex;
@@ -347,14 +344,14 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           align-items: center;
           gap: 5px;
           font-size: 11px;
-          color: rgba(255,255,255,0.4);
+          color: #5a5a56;
           font-weight: 500;
           margin-bottom: 6px;
         }
         .mu-fortune-card__live-dot {
           width: 6px; height: 6px;
           border-radius: 50%;
-          background: #4ade80;
+          background: #16a34a;
           animation: live-pulse 1.5s ease-in-out infinite;
           flex-shrink: 0;
         }
@@ -364,14 +361,14 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
         }
         .mu-fortune-card__title {
           font-size: 16px;
-          font-weight: 700;
-          color: white;
+          font-weight: 500;
+          color: #1a1a18;
           letter-spacing: -0.02em;
           margin: 0 0 6px;
         }
         .mu-fortune-card__desc {
           font-size: 12px;
-          color: rgba(255,255,255,0.45);
+          color: #5a5a56;
           line-height: 1.6;
           margin: 0;
           white-space: pre-line;
@@ -386,34 +383,34 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
         }
         .mu-fortune-card__score {
           font-size: 28px;
-          font-weight: 800;
-          color: oklch(0.85 0.18 85);
+          font-weight: 500;
+          color: #1a1a18;
           line-height: 1;
           letter-spacing: -0.03em;
         }
         .mu-fortune-card__score-label {
           font-size: 10px;
-          color: rgba(255,255,255,0.3);
+          color: #5a5a56;
           margin-top: 3px;
           white-space: nowrap;
         }
         .mu-fortune-card__gauge {
           height: 4px;
-          background: rgba(255,255,255,0.08);
+          background: rgba(0,0,0,0.08);
           border-radius: 2px;
           overflow: hidden;
           margin-bottom: 12px;
         }
         .mu-fortune-card__gauge-fill {
           height: 100%;
-          background: linear-gradient(90deg, oklch(0.85 0.18 85), oklch(0.75 0.18 60));
+          background: #1a1a18;
           border-radius: 2px;
           transition: width 0.6s ease;
         }
         .mu-fortune-card__cta {
           display: block;
           font-size: 13px;
-          color: oklch(0.85 0.18 85);
+          color: #1a1a18;
           text-decoration: none;
           font-weight: 500;
           text-align: right;
@@ -423,12 +420,11 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           display: flex;
           align-items: flex-start;
           gap: 12px;
-          background: oklch(0.18 0.04 265 / 0.8);
-          border: 1px solid rgba(255,255,255,0.08);
+          background: #f5f4ef;
+          border: 0.5px solid rgba(0,0,0,0.10);
           border-radius: 14px;
           padding: 14px;
           margin-bottom: 14px;
-          backdrop-filter: blur(8px);
         }
         .mu-lunch-card__emoji {
           font-size: 28px;
@@ -438,13 +434,13 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
         .mu-lunch-card__body { flex: 1; }
         .mu-lunch-card__eyebrow {
           font-size: 11px;
-          color: rgba(255,255,255,0.35);
+          color: #5a5a56;
           margin-bottom: 3px;
         }
         .mu-lunch-card__title {
           font-size: 17px;
-          font-weight: 700;
-          color: white;
+          font-weight: 500;
+          color: #1a1a18;
           letter-spacing: -0.02em;
           margin: 0 0 4px;
           transition: opacity 0.18s;
@@ -452,7 +448,7 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
         .mu-lunch-card__title--fade { opacity: 0; }
         .mu-lunch-card__desc {
           font-size: 11px;
-          color: rgba(255,255,255,0.35);
+          color: #5a5a56;
           margin: 0 0 6px;
         }
         .mu-lunch-card__refresh {
@@ -460,7 +456,7 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           align-items: center;
           gap: 4px;
           font-size: 11px;
-          color: rgba(255,255,255,0.3);
+          color: #9a9a96;
           background: none;
           border: none;
           cursor: pointer;
@@ -468,8 +464,8 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           font-family: 'Pretendard', sans-serif;
           transition: color 0.15s;
         }
-        .mu-lunch-card__refresh:hover { color: oklch(0.85 0.18 85); }
-        /* 바로가기 */
+        .mu-lunch-card__refresh:hover { color: #1a1a18; }
+        /* 항목 5: 바로가기 — 4버튼 모두 동일한 스타일 */
         .mu-shortcuts {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
@@ -481,24 +477,24 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           align-items: center;
           gap: 6px;
           padding: 10px 4px;
-          border-radius: 12px;
-          background: var(--sc-bg, rgba(255,255,255,0.05));
-          border: 1px solid rgba(255,255,255,0.07);
+          border-radius: 10px;
+          background: #ffffff;
+          border: 0.5px solid rgba(0,0,0,0.14);
           text-decoration: none;
           min-height: 48px;
-          transition: transform 0.12s, background 0.12s;
+          transition: box-shadow 0.12s;
           -webkit-tap-highlight-color: transparent;
         }
-        .mu-shortcut-btn:hover { transform: translateY(-1px); }
-        .mu-shortcut-btn:active { transform: scale(0.97); }
+        .mu-shortcut-btn:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .mu-shortcut-btn:active { opacity: 0.85; }
         .mu-shortcut-btn__icon {
-          color: var(--sc-icon, rgba(255,255,255,0.5));
+          color: #1a1a18;
           display: flex;
           align-items: center;
         }
         .mu-shortcut-btn__label {
           font-size: 11px;
-          color: rgba(255,255,255,0.55);
+          color: #1a1a18;
           font-weight: 500;
           white-space: nowrap;
         }
@@ -507,33 +503,33 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           position: fixed;
           inset: 0;
           z-index: 200;
-          background: rgba(0,0,0,0.5);
+          background: rgba(0,0,0,0.35);
           display: flex;
           align-items: flex-end;
         }
         .mu-sheet {
           width: 100%;
-          background: oklch(0.18 0.04 265);
+          background: #ffffff;
           border-radius: 20px 20px 0 0;
           padding: 12px 20px calc(20px + var(--safe-area-bottom));
-          border-top: 1px solid rgba(255,255,255,0.08);
+          border-top: 0.5px solid rgba(0,0,0,0.10);
         }
         .mu-sheet__handle {
           width: 36px; height: 4px;
           border-radius: 2px;
-          background: rgba(255,255,255,0.15);
+          background: rgba(0,0,0,0.12);
           margin: 0 auto 20px;
         }
         .mu-sheet__title {
           font-size: 17px;
-          font-weight: 700;
-          color: white;
+          font-weight: 500;
+          color: #1a1a18;
           text-align: center;
           margin: 0 0 8px;
         }
         .mu-sheet__desc {
           font-size: 13px;
-          color: rgba(255,255,255,0.4);
+          color: #5a5a56;
           text-align: center;
           margin: 0 0 20px;
         }
@@ -545,9 +541,9 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           flex: 1;
           height: 48px;
           border-radius: 12px;
-          background: rgba(255,255,255,0.07);
-          border: 1px solid rgba(255,255,255,0.10);
-          color: rgba(255,255,255,0.6);
+          background: #f5f4ef;
+          border: 0.5px solid rgba(0,0,0,0.10);
+          color: #5a5a56;
           font-size: 15px;
           font-weight: 500;
           cursor: pointer;
@@ -557,11 +553,11 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           flex: 1;
           height: 48px;
           border-radius: 12px;
-          background: oklch(0.6 0.2 20);
+          background: #dc2626;
           border: none;
           color: white;
           font-size: 15px;
-          font-weight: 600;
+          font-weight: 500;
           cursor: pointer;
           font-family: 'Pretendard', sans-serif;
         }

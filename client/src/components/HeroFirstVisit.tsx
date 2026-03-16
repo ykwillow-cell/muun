@@ -18,7 +18,6 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
   const [siju, setSiju] = useState("unknown");
   const [inputError, setInputError] = useState("");
 
-  // Step 1: 생년월일 6자 이상 입력 시 버튼 활성
   const step1Valid = birthInput.replace(/\D/g, "").length >= 6;
 
   const handleStep1Next = () => {
@@ -48,10 +47,6 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
 
   return (
     <section className="mu-hero mu-hero--first">
-      {/* 앰비언트 글로우 */}
-      <div className="mu-hero__glow mu-hero__glow--gold" aria-hidden="true" />
-      <div className="mu-hero__glow mu-hero__glow--purple" aria-hidden="true" />
-
       <div className="mu-hero__inner">
         {/* 타이틀 */}
         <h1 className="mu-hero__title">
@@ -184,62 +179,28 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           position: relative;
           overflow: hidden;
           padding: 24px 16px 28px;
-        }
-        .mu-hero__glow {
-          position: absolute;
-          border-radius: 50%;
-          pointer-events: none;
-          filter: blur(60px);
-          opacity: 0.18;
-        }
-        .mu-hero__glow--gold {
-          width: 220px; height: 220px;
-          top: -40px; left: -40px;
-          background: oklch(0.85 0.18 85);
-        }
-        .mu-hero__glow--purple {
-          width: 180px; height: 180px;
-          bottom: -20px; right: -30px;
-          background: oklch(0.45 0.2 290);
+          background: #ffffff;
         }
         .mu-hero__inner {
           position: relative;
           z-index: 1;
         }
-        /* 배지 */
-        .mu-hero__badge {
-          display: inline-flex;
-          align-items: center;
-          gap: 5px;
-          padding: 4px 10px;
-          border-radius: 100px;
-          background: oklch(0.85 0.18 85 / 0.12);
-          border: 1px solid oklch(0.85 0.18 85 / 0.25);
-          color: oklch(0.85 0.18 85);
-          font-size: 11px;
-          font-weight: 600;
-          letter-spacing: 0.01em;
-          margin-bottom: 14px;
-        }
         /* 타이틀 */
         .mu-hero__title {
           font-size: 26px;
-          font-weight: 700;
+          font-weight: 500;
           line-height: 1.25;
-          color: white;
+          color: #1a1a18;
           letter-spacing: -0.02em;
           margin: 0 0 8px;
         }
         .mu-hero__title em {
           font-style: normal;
-          background: linear-gradient(90deg, oklch(0.85 0.18 85), oklch(0.90 0.15 70));
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          background-clip: text;
+          color: #1a1a18;
         }
         .mu-hero__sub {
           font-size: 14px;
-          color: rgba(255,255,255,0.45);
+          color: #5a5a56;
           margin: 0 0 18px;
           line-height: 1.5;
         }
@@ -255,26 +216,25 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           gap: 4px;
           flex: 1;
           padding: 8px 0;
-          border-right: 1px solid rgba(255,255,255,0.07);
+          border-right: 1px solid rgba(0,0,0,0.08);
         }
         .mu-hero__trust-item:last-child { border-right: none; }
-        .mu-hero__trust-check { color: oklch(0.85 0.18 85); flex-shrink: 0; }
+        .mu-hero__trust-check { color: #1a1a18; flex-shrink: 0; }
         .mu-hero__trust-num {
           font-size: 13px;
-          font-weight: 700;
-          color: oklch(0.85 0.18 85);
+          font-weight: 500;
+          color: #1a1a18;
         }
         .mu-hero__trust-label {
           font-size: 11px;
-          color: rgba(255,255,255,0.4);
+          color: #5a5a56;
         }
         /* 폼 카드 */
         .mu-hero__form-card {
-          background: oklch(0.18 0.04 265 / 0.8);
-          border: 1px solid rgba(255,255,255,0.08);
-          border-radius: 16px;
+          background: #f5f4ef;
+          border: 0.5px solid rgba(0,0,0,0.10);
+          border-radius: 14px;
           padding: 18px 16px;
-          backdrop-filter: blur(8px);
         }
         /* 스텝 인디케이터 */
         .mu-hero__steps {
@@ -290,7 +250,7 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           left: 11px;
           right: 11px;
           height: 1px;
-          background: rgba(255,255,255,0.08);
+          background: rgba(0,0,0,0.08);
           z-index: 0;
         }
         .mu-hero__step {
@@ -305,32 +265,32 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
         .mu-hero__step-dot {
           width: 22px; height: 22px;
           border-radius: 50%;
-          background: rgba(255,255,255,0.08);
-          border: 1px solid rgba(255,255,255,0.12);
+          background: rgba(0,0,0,0.06);
+          border: 1px solid rgba(0,0,0,0.10);
           display: flex;
           align-items: center;
           justify-content: center;
           font-size: 11px;
-          color: rgba(255,255,255,0.3);
-          font-weight: 600;
+          color: #5a5a56;
+          font-weight: 500;
         }
         .mu-hero__step--active .mu-hero__step-dot {
-          background: oklch(0.85 0.18 85);
-          border-color: oklch(0.85 0.18 85);
-          color: oklch(0.12 0.04 265);
+          background: #1a1a18;
+          border-color: #1a1a18;
+          color: #ffffff;
         }
         .mu-hero__step--done .mu-hero__step-dot {
-          background: oklch(0.85 0.18 85 / 0.2);
-          border-color: oklch(0.85 0.18 85 / 0.4);
-          color: oklch(0.85 0.18 85);
+          background: rgba(0,0,0,0.08);
+          border-color: rgba(0,0,0,0.14);
+          color: #1a1a18;
         }
         .mu-hero__step-label {
           font-size: 10px;
-          color: rgba(255,255,255,0.3);
+          color: #5a5a56;
         }
         .mu-hero__step--active .mu-hero__step-label,
         .mu-hero__step--done .mu-hero__step-label {
-          color: oklch(0.85 0.18 85);
+          color: #1a1a18;
         }
         /* 입력 */
         .mu-hero__step-body {
@@ -340,32 +300,32 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
         }
         .mu-hero__input-label {
           font-size: 12px;
-          color: rgba(255,255,255,0.45);
+          color: #5a5a56;
           font-weight: 500;
         }
         .mu-hero__input {
           width: 100%;
           height: 44px;
-          background: rgba(255,255,255,0.05);
-          border: 1px solid rgba(255,255,255,0.10);
+          background: #ffffff;
+          border: 0.5px solid rgba(0,0,0,0.14);
           border-radius: 10px;
           padding: 0 12px;
           font-size: 15px;
-          color: white;
+          color: #1a1a18;
           outline: none;
           font-family: 'Pretendard', sans-serif;
           transition: border-color 0.15s;
           box-sizing: border-box;
         }
         .mu-hero__input:focus {
-          border-color: oklch(0.85 0.18 85 / 0.5);
+          border-color: rgba(0,0,0,0.35);
         }
         .mu-hero__input--error {
-          border-color: oklch(0.6 0.2 20 / 0.6);
+          border-color: #dc2626;
         }
         .mu-hero__input-error {
           font-size: 12px;
-          color: oklch(0.7 0.15 20);
+          color: #dc2626;
           margin: -4px 0 0;
         }
         /* CTA 버튼 */
@@ -378,16 +338,16 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           gap: 6px;
           border-radius: 12px;
           font-size: 15px;
-          font-weight: 600;
-          background: oklch(0.85 0.18 85);
-          color: oklch(0.12 0.04 265);
+          font-weight: 500;
+          background: #1a1a18;
+          color: #ffffff;
           border: none;
           cursor: pointer;
           transition: background 0.15s, opacity 0.15s;
           font-family: 'Pretendard', sans-serif;
           letter-spacing: -0.01em;
         }
-        .mu-hero__cta:hover { background: oklch(0.80 0.18 85); }
+        .mu-hero__cta:hover { background: #333330; }
         .mu-hero__cta.disabled,
         .mu-hero__cta:disabled {
           opacity: 0.35;
@@ -404,18 +364,17 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           border-radius: 8px;
           font-size: 13px;
           font-weight: 500;
-          background: rgba(255,255,255,0.05);
-          border: 1px solid rgba(255,255,255,0.08);
-          color: rgba(255,255,255,0.4);
+          background: #ffffff;
+          border: 0.5px solid rgba(0,0,0,0.12);
+          color: #5a5a56;
           cursor: pointer;
           transition: all 0.15s;
           font-family: 'Pretendard', sans-serif;
         }
         .mu-hero__cal-btn--active {
-          background: oklch(0.85 0.18 85 / 0.15);
-          border-color: oklch(0.85 0.18 85 / 0.4);
-          color: oklch(0.85 0.18 85);
-          font-weight: 600;
+          background: #1a1a18;
+          border-color: #1a1a18;
+          color: #ffffff;
         }
         /* Step2 버튼 행 */
         .mu-hero__step2-actions {
@@ -428,15 +387,15 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           border-radius: 12px;
           font-size: 14px;
           font-weight: 500;
-          background: rgba(255,255,255,0.06);
-          border: 1px solid rgba(255,255,255,0.10);
-          color: rgba(255,255,255,0.5);
+          background: #ffffff;
+          border: 0.5px solid rgba(0,0,0,0.12);
+          color: #5a5a56;
           cursor: pointer;
           white-space: nowrap;
           font-family: 'Pretendard', sans-serif;
           transition: background 0.15s;
         }
-        .mu-hero__back-btn:hover { background: rgba(255,255,255,0.10); }
+        .mu-hero__back-btn:hover { background: #f5f4ef; }
         .mu-hero__cta--flex { flex: 1; width: auto; }
       `}</style>
     </section>

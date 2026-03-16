@@ -221,7 +221,7 @@ export function MainBanner() {
         }
         .mu-banner__title {
           font-size: 18px;
-          font-weight: 700;
+          font-weight: 500;
           color: white;
           letter-spacing: -0.02em;
           line-height: 1.3;
