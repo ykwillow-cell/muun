@@ -190,114 +190,110 @@ export default function Home() {
 
       <main className="relative z-10">
         
-        {/* Hero Section - 컴팩트 모바일 우선 */}
-        <section className="px-4 pt-6 pb-6 md:pt-12 md:pb-8 text-center bg-gradient-to-b from-primary/5 to-transparent">
-          <motion.div 
+        {/* Hero Section — v3 디자인 시안 기반 */}
+        <section className="relative overflow-hidden border-b border-white/[0.07]">
+          {/* 앰비언트 글로우 — 실제 사이트 동일 */}
+          <div className="absolute -top-[15%] -left-[15%] w-[280px] h-[280px] bg-primary/10 rounded-full blur-[60px] pointer-events-none" />
+          <div className="absolute -bottom-[15%] -right-[15%] w-[240px] h-[240px] bg-purple-600/10 rounded-full blur-[60px] pointer-events-none" />
+
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className={`${commonMaxWidth} space-y-4 md:space-y-6`}
+            className={`${commonMaxWidth} relative z-10 px-4 pt-[18px] pb-[18px]`}
           >
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 border border-primary/30 backdrop-blur-xl">
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-              </span>
-              <span className="text-[11px] md:text-xs font-bold tracking-widest text-primary uppercase">가입 없는 무료 운세</span>
+            {/* 배지 */}
+            <div className="inline-flex items-center gap-1.5 px-3 py-[5px] rounded-full bg-primary/10 border border-primary/25 mb-3">
+              <span className="w-[5px] h-[5px] rounded-full bg-primary flex-shrink-0" />
+              <span className="text-[11px] font-semibold text-primary tracking-[0.02em]">가입 없는 무료 운세</span>
             </div>
-            
-            <h1 className="text-[1.75rem] md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.3]">
+
+            {/* 타이틀 */}
+            <h1 className="text-[26px] md:text-5xl lg:text-6xl font-extrabold tracking-[-0.8px] leading-[1.25] mb-2">
               지금 바로<br />
               <span className="bg-gradient-to-r from-primary via-yellow-200 to-primary bg-clip-text text-transparent">내 사주를 확인하세요</span>
             </h1>
-            
-            <p className="text-sm md:text-base text-muted-foreground">
+            <p className="text-[13px] md:text-sm text-muted-foreground mb-[18px] leading-relaxed">
               생년월일만 입력하면 바로 시작됩니다
             </p>
+
+            {/* Quick Action 카드 — v3 스타일 */}
+            <div className="flex flex-col md:flex-row gap-3 md:gap-4">
+              <Link href="/yearly-fortune" onClick={() => handleCategoryClick("신년운세(퀴액션)")} className="flex-1">
+                <motion.div
+                  whileTap={{ scale: 0.98 }}
+                  className="group flex items-center justify-between p-4 rounded-2xl bg-gradient-to-r from-primary/15 to-yellow-500/10 border border-primary/30 hover:border-primary/50 transition-all cursor-pointer"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center flex-shrink-0 shadow-[0_2px_12px_rgba(245,200,66,0.3)]">
+                      <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663329919991/ADofygAMfynBhdKC.png" alt="2026년 무료 신년운세 - 무운" className="w-8 h-8 object-contain" loading="lazy" width="32" height="32" />
+                    </div>
+                    <div>
+                      <h3 className="text-[15px] font-bold text-white">2026 신년운세</h3>
+                      <p className="text-xs text-muted-foreground">내 한 해의 운세 흐름 확인</p>
+                    </div>
+                  </div>
+                  <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-background transition-all flex-shrink-0">
+                    <ArrowRight className="w-4 h-4" />
+                  </div>
+                </motion.div>
+              </Link>
+
+              <Link href="/lifelong-saju" onClick={() => handleCategoryClick("평생사주(퀴액션)")} className="flex-1">
+                <motion.div
+                  whileTap={{ scale: 0.98 }}
+                  className="group flex items-center justify-between p-4 rounded-2xl bg-gradient-to-r from-blue-500/15 to-purple-500/10 border border-blue-500/30 hover:border-blue-500/50 transition-all cursor-pointer"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-blue-500 rounded-xl flex items-center justify-center text-2xl flex-shrink-0 shadow-[0_2px_12px_rgba(59,130,246,0.3)]">
+                      🔮
+                    </div>
+                    <div>
+                      <h3 className="text-[15px] font-bold text-white">평생사주 분석</h3>
+                      <p className="text-xs text-muted-foreground">타고난 기질과 운명 확인</p>
+                    </div>
+                  </div>
+                  <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-blue-400 group-hover:bg-blue-500 group-hover:text-white transition-all flex-shrink-0">
+                    <ArrowRight className="w-4 h-4" />
+                  </div>
+                </motion.div>
+              </Link>
+            </div>
           </motion.div>
         </section>
 
-        {/* Quick Actions - 핵심 CTA (모바일 최적화) */}
-        <section className="px-4 pb-6 md:pb-8">
-          <div className={`${commonMaxWidth} flex flex-col md:flex-row gap-3 md:gap-4`}>
-            <Link href="/yearly-fortune" onClick={() => handleCategoryClick("신년운세(퀵액션)")} className="flex-1">
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.1 }}
-                whileTap={{ scale: 0.98 }}
-                className="group flex items-center justify-between p-4 md:p-5 rounded-2xl bg-gradient-to-r from-primary/15 to-yellow-500/10 border border-primary/30 hover:border-primary/50 transition-all cursor-pointer"
-              >
-                <div className="flex items-center gap-3 md:gap-4">
-                  <div className="w-12 h-12 md:w-14 md:h-14 bg-primary rounded-xl flex items-center justify-center text-2xl md:text-3xl flex-shrink-0">
-                    <img src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663329919991/ADofygAMfynBhdKC.png" alt="2026년 무료 신년운세 - 무운" className="w-8 h-8 md:w-10 md:h-10 object-contain" loading="lazy" width="40" height="40" />
-                  </div>
-                  <div>
-                    <h3 className="text-base md:text-lg font-bold text-white">2026 신년운세</h3>
-                    <p className="text-xs md:text-sm text-muted-foreground">내 한 해의 운세 흐름 확인</p>
-                  </div>
-                </div>
-                <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-background transition-all flex-shrink-0">
-                  <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
-                </div>
-              </motion.div>
-            </Link>
-            
-            <Link href="/lifelong-saju" onClick={() => handleCategoryClick("평생사주(퀵액션)")} className="flex-1">
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                whileTap={{ scale: 0.98 }}
-                className="group flex items-center justify-between p-4 md:p-5 rounded-2xl bg-gradient-to-r from-blue-500/15 to-purple-500/10 border border-blue-500/30 hover:border-blue-500/50 transition-all cursor-pointer"
-              >
-                <div className="flex items-center gap-3 md:gap-4">
-                  <div className="w-12 h-12 md:w-14 md:h-14 bg-blue-500 rounded-xl flex items-center justify-center text-2xl md:text-3xl flex-shrink-0">
-                    🔮
-                  </div>
-                  <div>
-                    <h3 className="text-base md:text-lg font-bold text-white">평생사주 분석</h3>
-                    <p className="text-xs md:text-sm text-muted-foreground">타고난 기질과 운명 확인</p>
-                  </div>
-                </div>
-                <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-white/10 flex items-center justify-center text-blue-400 group-hover:bg-blue-500 group-hover:text-white transition-all flex-shrink-0">
-                  <ArrowRight className="w-4 h-4 md:w-5 md:h-5" />
-                </div>
-              </motion.div>
-            </Link>
-          </div>
-        </section>
-
-        {/* Popular Services - 가로 스크롤 (모바일) / 그리드 (PC) */}
-        <section className="py-6 md:py-8 px-4">
+        {/* Popular Services — v3 시안 스타일 */}
+        <section className="py-4 px-4 border-b border-white/[0.07]">
           <div className={commonMaxWidth}>
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg md:text-xl font-bold text-white flex items-center gap-2">
-                <span className="text-xl">🔥</span> 지금 인기 서비스
-              </h2>
-              <span className="text-xs md:text-sm text-muted-foreground md:hidden">← 스크롤 →</span>
+            <div className="flex justify-between items-center mb-3">
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] font-bold tracking-[0.08em] uppercase text-white/30">인기 서비스</span>
+              </div>
+              <Link href="/" onClick={() => handleCategoryClick("전체보기")}>
+                <span className="text-[12px] text-white/30 hover:text-white/50 transition-colors cursor-pointer">전체보기 →</span>
+              </Link>
             </div>
-            
+
             {/* 모바일: 가로 스크롤 / PC: 5열 그리드 */}
-            <div 
+            <div
               ref={scrollContainerRef}
-              className="flex md:grid md:grid-cols-5 gap-3 overflow-x-auto md:overflow-x-visible pb-2 md:pb-0 snap-x snap-mandatory md:snap-none scrollbar-hide"
+              className="flex md:grid md:grid-cols-5 gap-2.5 overflow-x-auto md:overflow-x-visible pb-1 md:pb-0 snap-x snap-mandatory md:snap-none scrollbar-hide"
               style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
             >
               {popularItems.map((item, index) => (
                 <Link key={index} href={item.href} onClick={() => handleCategoryClick(item.label)} className="flex-shrink-0 md:flex-shrink">
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: index * 0.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="w-[140px] md:w-full snap-start p-4 md:p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-primary/30 hover:bg-white/10 transition-all cursor-pointer h-full"
+                    className="w-[130px] md:w-full snap-start p-3.5 md:p-4 rounded-2xl bg-white/[0.04] border border-white/[0.08] hover:border-primary/30 hover:bg-white/[0.07] transition-all cursor-pointer h-full"
                   >
-                    <div className={`w-11 h-11 md:w-12 md:h-12 rounded-xl ${item.color} flex items-center justify-center mb-3`}>
+                    <div className={`w-10 h-10 rounded-xl ${item.color} flex items-center justify-center mb-2.5 border border-white/10`}>
                       {item.icon}
                     </div>
-                    <h3 className="text-sm md:text-base font-semibold text-white mb-1">{item.label}</h3>
-                    <p className="text-[11px] md:text-xs text-muted-foreground line-clamp-2">{item.desc}</p>
+                    <h3 className="text-[13px] font-semibold text-white mb-0.5 leading-snug">{item.label}</h3>
+                    <p className="text-[11px] text-white/40 line-clamp-2 leading-snug">{item.desc}</p>
                   </motion.div>
                 </Link>
               ))}
@@ -308,31 +304,58 @@ export default function Home() {
         {/* Dream Quick Search Section */}
         <DreamQuickSearch />
 
-        {/* All Services Grid - 2열 모바일 / 4열 데스크톱 */}
-        <section className="px-4 py-6 md:py-8">
+        {/* All Services Grid — v3 시안 스타일 */}
+        <section className="px-4 py-5 md:py-8 border-b border-white/[0.07]">
           <div className={commonMaxWidth}>
-            <h2 className="text-lg md:text-xl font-bold text-white mb-4">전체 서비스</h2>
-            
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-              {menuItems.map((item, index) => (
+            {/* 섹션 헤더 */}
+            <div className="flex justify-between items-center mb-3">
+              <span className="text-[11px] font-bold tracking-[0.08em] uppercase text-white/30">전체 서비스</span>
+            </div>
+
+            {/* 작명소 Spotlight 레이 — v3 시안 */}
+            <Link href="/naming" onClick={() => handleCategoryClick("작명소(Spotlight)")}>
+              <motion.div
+                whileTap={{ scale: 0.98 }}
+                className="group relative flex items-center justify-between p-4 rounded-2xl border border-primary/30 hover:border-primary/60 bg-gradient-to-r from-primary/10 to-emerald-500/5 transition-all cursor-pointer mb-3 overflow-hidden"
+              >
+                {/* 워터마크 */}
+                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[48px] font-black text-primary/5 select-none pointer-events-none leading-none">字</span>
+                <div className="flex items-center gap-3 relative z-10">
+                  <div className="w-11 h-11 rounded-xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-1.5 mb-0.5">
+                      <span className="text-[13px] font-bold text-white">작명소</span>
+                      <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 uppercase tracking-wider">NEW</span>
+                    </div>
+                    <p className="text-[11px] text-white/40">81수리 기반 무료 작명</p>
+                  </div>
+                </div>
+                <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-background transition-all flex-shrink-0 relative z-10">
+                  <ArrowRight className="w-4 h-4" />
+                </div>
+              </motion.div>
+            </Link>
+
+            {/* 서비스 그리드 — 작명소 제외 */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 md:gap-3">
+              {menuItems.filter(item => item.href !== '/naming').map((item, index) => (
                 <Link key={index} href={item.href} onClick={() => handleCategoryClick(item.label)}>
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: index * 0.03 }}
                     whileTap={{ scale: 0.97 }}
-                    className="group p-4 md:p-5 rounded-2xl bg-white/5 border border-white/10 hover:border-primary/30 hover:bg-white/10 transition-all cursor-pointer h-full"
+                    className="group p-3.5 md:p-4 rounded-2xl bg-white/[0.04] border border-white/[0.08] hover:border-primary/30 hover:bg-white/[0.07] transition-all cursor-pointer h-full"
                   >
-                    <div className={`w-10 h-10 md:w-11 md:h-11 rounded-xl ${item.color} flex items-center justify-center mb-3`}>
+                    <div className={`w-10 h-10 rounded-xl ${item.color} flex items-center justify-center mb-2.5 border border-white/10`}>
                       {item.icon}
                     </div>
-                    <div className="flex items-center gap-1.5 mb-1">
-                      <h3 className="text-sm md:text-base font-semibold text-white group-hover:text-primary transition-colors">{item.label}</h3>
-                      {(item as any).isNew && (
-                        <span className="px-1 py-0.5 rounded text-[8px] font-bold bg-emerald-500/30 text-emerald-300 border border-emerald-500/40 uppercase tracking-wider">NEW</span>
-                      )}
+                    <div className="flex items-center gap-1 mb-0.5">
+                      <h3 className="text-[13px] font-semibold text-white group-hover:text-primary transition-colors leading-snug">{item.label}</h3>
                     </div>
-                    <p className="text-[11px] md:text-xs text-muted-foreground line-clamp-2">{item.desc}</p>
+                    <p className="text-[11px] text-white/40 line-clamp-2 leading-snug">{item.desc}</p>
                   </motion.div>
                 </Link>
               ))}
@@ -347,19 +370,16 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Latest Columns Section - 전문 칼럼 보강 (순서 변경: 위로 이동) */}
-        <section className="px-4 py-12 md:py-16 bg-white/5 border-t border-white/10">
+        {/* Latest Columns Section — v3 시안 스타일 */}
+        <section className="px-4 py-8 md:py-12 border-b border-white/[0.07]">
           <div className={commonMaxWidth}>
-            <div className="flex justify-between items-end mb-10">
+            <div className="flex justify-between items-end mb-6">
               <div>
-                <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-lg bg-primary/10 border border-primary/20 mb-3">
-                  <span className="text-[10px] font-bold tracking-widest text-primary uppercase">Insight</span>
-                </div>
-                <h2 className="text-2xl md:text-3xl font-bold text-white mb-2 flex items-center gap-2">
-                  <BookOpen className="w-7 h-7 text-primary" />
+                <span className="text-[11px] font-bold tracking-[0.08em] uppercase text-white/30 block mb-2">운세 칼럼</span>
+                <h2 className="text-[18px] md:text-2xl font-bold text-white flex items-center gap-2">
+                  <BookOpen className="w-5 h-5 text-primary" />
                   최신 운세 칼럼
                 </h2>
-                <p className="text-sm md:text-base text-muted-foreground">30년 내공의 역술인이 전하는 삶의 지혜</p>
               </div>
               <Link href="/guide">
                 <Button variant="ghost" className="text-primary hover:text-primary/80 hover:bg-primary/10 gap-1 group hidden md:flex">
@@ -453,47 +473,47 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Value Proposition - 가치 제안 */}
-        <section className="px-4 py-8 md:py-12 bg-gradient-to-b from-transparent to-primary/5">
+        {/* Value Proposition — v3 시안 스타일 */}
+        <section className="px-4 py-6 md:py-10">
           <div className={commonMaxWidth}>
-            <div className="text-center mb-6 md:mb-8">
-              <h2 className="text-lg md:text-2xl font-bold text-white mb-2">왜 무운인가요?</h2>
-              <p className="text-xs md:text-sm text-muted-foreground">무운만의 세 가지 약속</p>
+            <div className="mb-4">
+              <span className="text-[11px] font-bold tracking-[0.08em] uppercase text-white/30 block mb-1">왜 무운인가요?</span>
+              <h2 className="text-[18px] md:text-2xl font-bold text-white">무운만의 세 가지 약속</h2>
             </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4">
-              <div className="p-5 md:p-6 rounded-2xl bg-white/5 border border-white/10">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-xl bg-yellow-500/10 flex items-center justify-center">
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-2.5 md:gap-3">
+              <div className="p-4 md:p-5 rounded-2xl bg-white/[0.04] border border-white/[0.08]">
+                <div className="flex items-center gap-3 mb-2.5">
+                  <div className="w-10 h-10 rounded-xl bg-yellow-500/15 border border-yellow-500/20 flex items-center justify-center">
                     <Star className="w-5 h-5 text-yellow-400" />
                   </div>
-                  <h3 className="text-sm md:text-base font-bold text-white">정밀한 알고리즘</h3>
+                  <h3 className="text-[14px] font-bold text-white">정밀한 알고리즘</h3>
                 </div>
-                <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
+                <p className="text-[12px] text-white/40 leading-relaxed">
                   30년 경력 명리학 전문가의 데이터를 바탕으로 한 현대적 분석 시스템
                 </p>
               </div>
-              
-              <div className="p-5 md:p-6 rounded-2xl bg-white/5 border border-white/10">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-xl bg-green-500/10 flex items-center justify-center">
+
+              <div className="p-4 md:p-5 rounded-2xl bg-white/[0.04] border border-white/[0.08]">
+                <div className="flex items-center gap-3 mb-2.5">
+                  <div className="w-10 h-10 rounded-xl bg-green-500/15 border border-green-500/20 flex items-center justify-center">
                     <ShieldCheck className="w-5 h-5 text-green-400" />
                   </div>
-                  <h3 className="text-sm md:text-base font-bold text-white">완벽한 익명성</h3>
+                  <h3 className="text-[14px] font-bold text-white">완벽한 익명성</h3>
                 </div>
-                <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
+                <p className="text-[12px] text-white/40 leading-relaxed">
                   모든 계산은 브라우저에서 처리되며, 개인정보는 서버에 저장되지 않습니다
                 </p>
               </div>
-              
-              <div className="p-5 md:p-6 rounded-2xl bg-white/5 border border-white/10">
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="w-10 h-10 rounded-xl bg-blue-500/10 flex items-center justify-center">
+
+              <div className="p-4 md:p-5 rounded-2xl bg-white/[0.04] border border-white/[0.08]">
+                <div className="flex items-center gap-3 mb-2.5">
+                  <div className="w-10 h-10 rounded-xl bg-blue-500/15 border border-blue-500/20 flex items-center justify-center">
                     <Info className="w-5 h-5 text-blue-400" />
                   </div>
-                  <h3 className="text-sm md:text-base font-bold text-white">진짜 무료</h3>
+                  <h3 className="text-[14px] font-bold text-white">진짜 무료</h3>
                 </div>
-                <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
+                <p className="text-[12px] text-white/40 leading-relaxed">
                   회원가입, 결제 유도 없이 모든 프리미엄 콘텐츠를 무료로 제공합니다
                 </p>
               </div>
