@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "wouter";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface ServiceItem {
   emoji: string;
@@ -13,25 +14,25 @@ interface ServiceItem {
 }
 
 const POPULAR_SERVICES: ServiceItem[] = [
+  { emoji: "👨‍👩‍👧‍👦", label: "가족사주",    href: "/family-saju",          color: "#fb923c", bg: "rgba(251,146,60,0.12)",  isHot: true },
+  { emoji: "🧠", label: "사주×MBTI",  href: "/hybrid-compatibility", color: "#c084fc", bg: "rgba(192,132,252,0.12)" },
+  { emoji: "🃏", label: "타로",        href: "/tarot",                color: "#a78bfa", bg: "rgba(167,139,250,0.12)", isHot: true },
+  { emoji: "💑", label: "궁합",        href: "/compatibility",        color: "#ec4899", bg: "rgba(236,72,153,0.12)" },
   { emoji: "🌟", label: "신년운세",    href: "/yearly-fortune",       color: "#f5c842", bg: "rgba(245,200,66,0.12)" },
   { emoji: "✨", label: "평생사주",    href: "/lifelong-saju",        color: "#60a5fa", bg: "rgba(96,165,250,0.12)" },
-  { emoji: "💑", label: "궁합",        href: "/compatibility",        color: "#ec4899", bg: "rgba(236,72,153,0.12)" },
-  { emoji: "🃏", label: "타로",        href: "/tarot",                color: "#a78bfa", bg: "rgba(167,139,250,0.12)", isHot: true },
-  { emoji: "🌙", label: "오늘의 운세", href: "/daily-fortune",        color: "#34d399", bg: "rgba(52,211,153,0.12)" },
-  { emoji: "🔮", label: "점성술",      href: "/astrology",            color: "#2dd4bf", bg: "rgba(45,212,191,0.12)" },
 ];
 
 const MORE_SERVICES: ServiceItem[] = [
-  { emoji: "👨‍👩‍👧‍👦", label: "가족사주",      href: "/family-saju",          color: "#fb923c", bg: "rgba(251,146,60,0.12)" },
-  { emoji: "🧠", label: "사주×MBTI",   href: "/hybrid-compatibility", color: "#c084fc", bg: "rgba(192,132,252,0.12)", isNew: true },
-  { emoji: "💭", label: "꿈해몽",       href: "/dream",                color: "#818cf8", bg: "rgba(129,140,248,0.12)" },
-  { emoji: "🌏", label: "만세력",       href: "/manse",                color: "#94a3b8", bg: "rgba(148,163,184,0.12)" },
-  { emoji: "🧬", label: "심리테스트",   href: "/psychology",           color: "#f472b6", bg: "rgba(244,114,182,0.12)", isNew: true },
-  { emoji: "⭐", label: "별자리 운세",  href: "/star-fortune",         color: "#fbbf24", bg: "rgba(251,191,36,0.12)" },
-  { emoji: "🀄", label: "사주 칼럼",   href: "/column",               color: "#64748b", bg: "rgba(100,116,139,0.12)" },
+  { emoji: "📜", label: "토정비결",    href: "/tojeong",              color: "#fbbf24", bg: "rgba(251,191,36,0.12)" },
+  { emoji: "🔮", label: "점성술",      href: "/astrology",            color: "#2dd4bf", bg: "rgba(45,212,191,0.12)" },
+  { emoji: "🌙", label: "오늘의 운세", href: "/daily-fortune",        color: "#34d399", bg: "rgba(52,211,153,0.12)" },
+  { emoji: "🧬", label: "심리테스트",  href: "/psychology",           color: "#f472b6", bg: "rgba(244,114,182,0.12)" },
+  { emoji: "☕", label: "행운의 점심", href: "/lucky-lunch",          color: "#d97706", bg: "rgba(217,119,6,0.12)" },
+  { emoji: "💭", label: "꿈해몽",      href: "/dream",                color: "#818cf8", bg: "rgba(129,140,248,0.12)" },
+  { emoji: "🌏", label: "만세력",      href: "/manselyeok",           color: "#94a3b8", bg: "rgba(148,163,184,0.12)" },
 ];
 
-function ServiceCard({ item }: { item: ServiceItem }) {
+function ServiceCard({ item, index }: { item: ServiceItem; index: number }) {
   return (
     <Link
       href={item.href}
@@ -61,9 +62,9 @@ export function ServiceGrid() {
         <span className="mu-section-label">인기 서비스</span>
       </div>
       <div className="mu-service-grid__popular" role="list">
-        {POPULAR_SERVICES.map((s) => (
+        {POPULAR_SERVICES.map((s, i) => (
           <div key={s.href} role="listitem">
-            <ServiceCard item={s} />
+            <ServiceCard item={s} index={i} />
           </div>
         ))}
       </div>
@@ -81,7 +82,7 @@ export function ServiceGrid() {
         <div className="mu-naming-spotlight__visual" aria-hidden="true">字</div>
       </Link>
 
-      {/* 더보기 */}
+      {/* 더보기 토글 */}
       <button
         className="mu-more-toggle"
         onClick={() => setShowMore((p) => !p)}
@@ -101,9 +102,9 @@ export function ServiceGrid() {
           className="mu-service-grid__more"
           role="list"
         >
-          {MORE_SERVICES.map((s) => (
+          {MORE_SERVICES.map((s, i) => (
             <div key={s.href} role="listitem">
-              <ServiceCard item={s} />
+              <ServiceCard item={s} index={i} />
             </div>
           ))}
         </div>
@@ -111,7 +112,8 @@ export function ServiceGrid() {
 
       <style>{`
         .mu-service-grid {
-          padding: 0 16px 8px;
+          padding: 12px 16px 8px;
+          border-bottom: 1px solid rgba(255,255,255,0.07);
         }
         .mu-section-header {
           display: flex;
@@ -191,7 +193,6 @@ export function ServiceGrid() {
           border: 1px solid oklch(0.85 0.18 85 / 0.2);
           text-decoration: none;
           margin-bottom: 12px;
-          position: relative;
           overflow: hidden;
           transition: opacity 0.15s;
           -webkit-tap-highlight-color: transparent;
