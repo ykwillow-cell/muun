@@ -207,12 +207,12 @@ export default function Home() {
             </div>
             
             <h1 className="text-[1.75rem] md:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.3]">
-              30년 내공의 명리학,<br />
-              <span className="bg-gradient-to-r from-primary via-yellow-200 to-primary bg-clip-text text-transparent">운명을 읽다</span>
+              지금 바로<br />
+              <span className="bg-gradient-to-r from-primary via-yellow-200 to-primary bg-clip-text text-transparent">내 사주를 확인하세요</span>
             </h1>
             
             <p className="text-sm md:text-base text-muted-foreground">
-              회원가입 없이 바로 확인하는 프리미엄 운세 서비스
+              생년월일만 입력하면 바로 시작됩니다
             </p>
           </motion.div>
         </section>
