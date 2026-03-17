@@ -7,6 +7,8 @@ import { HeroFirstVisit } from "@/components/HeroFirstVisit";
 import { HeroReturnVisit } from "@/components/HeroReturnVisit";
 import { MainBanner } from "@/components/MainBanner";
 import { ServiceGrid } from "@/components/ServiceGrid";
+import { HomeColumnSection } from "@/components/HomeColumnSection";
+import { HomeDictionarySection } from "@/components/HomeDictionarySection";
 
 export default function Home() {
   useCanonical('/');
@@ -62,6 +64,12 @@ export default function Home() {
 
       {/* 3. 인기서비스 2×2 + 작명소 Spotlight + 더보기 2×3 (항상 노출) */}
       <ServiceGrid />
+
+      {/* 4. 운세 칼럼 미리보기 */}
+      <HomeColumnSection />
+
+      {/* 5. 운세 사전 바로가기 */}
+      <HomeDictionarySection />
     </div>
   );
 }
