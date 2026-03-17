@@ -135,7 +135,7 @@ const DatePickerInput = forwardRef<HTMLInputElement, DatePickerInputProps>(
           maxLength={10}
           autoComplete="off"
           className={cn(
-            "flex h-11 w-full rounded-xl border bg-white/5 border-white/10 px-3 pr-10 py-2 text-sm text-white ring-offset-background transition-all",
+            "flex h-11 w-full rounded-xl border bg-black/[0.05] border-black/10 px-3 pr-10 py-2 text-sm text-[#1a1a18] ring-offset-background transition-all",
             "placeholder:text-muted-foreground",
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-0",
             focusClass,
@@ -147,11 +147,11 @@ const DatePickerInput = forwardRef<HTMLInputElement, DatePickerInputProps>(
         <button
           type="button"
           onClick={handleCalendarClick}
-          className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-lg hover:bg-white/10 transition-colors"
+          className="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 rounded-lg hover:bg-black/[0.06] transition-colors"
           aria-label="캘린더에서 날짜 선택"
           tabIndex={-1}
         >
-          <Calendar className="w-4 h-4 text-white/50 hover:text-white/80 transition-colors" />
+          <Calendar className="w-4 h-4 text-[#999891] hover:text-[#1a1a18] transition-colors" />
         </button>
         
         {/* 숨겨진 네이티브 date picker */}

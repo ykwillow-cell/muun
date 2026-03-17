@@ -197,7 +197,7 @@ export default function PastLife() {
               </div>
 
               {/* 생년월일 입력 */}
-              <div className="rounded-2xl border border-white/10 bg-white/5 p-6 mb-4">
+              <div className="rounded-2xl border border-black/10 bg-black/[0.05] p-6 mb-4">
                 <h2 className="text-sm font-bold text-foreground/60 uppercase tracking-widest mb-4">
                   생년월일 입력
                 </h2>
@@ -209,7 +209,7 @@ export default function PastLife() {
                       placeholder="1990"
                       value={birthYear}
                       onChange={(e) => setBirthYear(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-3 text-sm text-center focus:outline-none focus:border-violet-500/50 focus:bg-white/10 transition-all"
+                      className="w-full bg-black/[0.05] border border-black/10 rounded-xl px-3 py-3 text-sm text-center focus:outline-none focus:border-violet-500/50 focus:bg-black/06 transition-all"
                       min={1900}
                       max={currentYear}
                     />
@@ -221,7 +221,7 @@ export default function PastLife() {
                       placeholder="1"
                       value={birthMonth}
                       onChange={(e) => setBirthMonth(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-3 text-sm text-center focus:outline-none focus:border-violet-500/50 focus:bg-white/10 transition-all"
+                      className="w-full bg-black/[0.05] border border-black/10 rounded-xl px-3 py-3 text-sm text-center focus:outline-none focus:border-violet-500/50 focus:bg-black/06 transition-all"
                       min={1}
                       max={12}
                     />
@@ -233,7 +233,7 @@ export default function PastLife() {
                       placeholder="1"
                       value={birthDay}
                       onChange={(e) => setBirthDay(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-3 text-sm text-center focus:outline-none focus:border-violet-500/50 focus:bg-white/10 transition-all"
+                      className="w-full bg-black/[0.05] border border-black/10 rounded-xl px-3 py-3 text-sm text-center focus:outline-none focus:border-violet-500/50 focus:bg-black/06 transition-all"
                       min={1}
                       max={31}
                     />
@@ -252,7 +252,7 @@ export default function PastLife() {
                       className={`py-2.5 rounded-xl text-sm font-bold transition-all border ${
                         gender === g
                           ? "bg-violet-500/20 border-violet-500/50 text-violet-300"
-                          : "bg-white/5 border-white/10 text-foreground/50 hover:bg-white/10"
+                          : "bg-black/[0.05] border-black/10 text-foreground/50 hover:bg-black/[0.06]"
                       }`}
                     >
                       {g === "male" ? "남성" : g === "female" ? "여성" : "선택 안 함"}
@@ -273,7 +273,7 @@ export default function PastLife() {
               <Button
                 onClick={handleReveal}
                 disabled={isLoading}
-                className="w-full h-14 rounded-2xl bg-violet-600 hover:bg-violet-500 text-white font-black text-base transition-all shadow-[0_0_30px_rgba(139,92,246,0.3)] hover:shadow-[0_0_40px_rgba(139,92,246,0.5)]"
+                className="w-full h-14 rounded-2xl bg-violet-600 hover:bg-violet-500 text-[#1a1a18] font-black text-base transition-all shadow-[0_0_30px_rgba(139,92,246,0.3)] hover:shadow-[0_0_40px_rgba(139,92,246,0.5)]"
               >
                 {isLoading ? (
                   <>
@@ -328,14 +328,14 @@ export default function PastLife() {
 
                 {/* 시대 & 지역 */}
                 <div className="grid grid-cols-2 gap-3 mb-5">
-                  <div className="rounded-xl bg-white/5 p-3">
+                  <div className="rounded-xl bg-black/[0.05] p-3">
                     <div className="flex items-center gap-1.5 mb-1">
                       <Scroll className="w-3.5 h-3.5 text-foreground/40" />
                       <span className="text-[10px] text-foreground/40 uppercase tracking-widest font-bold">시대</span>
                     </div>
                     <div className="text-sm font-bold">{result.era}</div>
                   </div>
-                  <div className="rounded-xl bg-white/5 p-3">
+                  <div className="rounded-xl bg-black/[0.05] p-3">
                     <div className="flex items-center gap-1.5 mb-1">
                       <Globe className="w-3.5 h-3.5 text-foreground/40" />
                       <span className="text-[10px] text-foreground/40 uppercase tracking-widest font-bold">지역</span>
@@ -345,7 +345,7 @@ export default function PastLife() {
                 </div>
 
                 {/* 전생 이야기 */}
-                <div className="rounded-xl bg-white/5 p-4 mb-4">
+                <div className="rounded-xl bg-black/[0.05] p-4 mb-4">
                   <div className="flex items-center gap-1.5 mb-2">
                     <BookOpen className="w-3.5 h-3.5 text-foreground/40" />
                     <span className="text-[10px] text-foreground/40 uppercase tracking-widest font-bold">전생 이야기</span>
@@ -354,7 +354,7 @@ export default function PastLife() {
                 </div>
 
                 {/* 교훈 */}
-                <div className="rounded-xl bg-white/5 p-4 mb-4">
+                <div className="rounded-xl bg-black/[0.05] p-4 mb-4">
                   <div className="flex items-center gap-1.5 mb-2">
                     <Flame className="w-3.5 h-3.5 text-foreground/40" />
                     <span className="text-[10px] text-foreground/40 uppercase tracking-widest font-bold">이번 생의 사명</span>
@@ -363,7 +363,7 @@ export default function PastLife() {
                 </div>
 
                 {/* 카르마 */}
-                <div className="rounded-xl bg-white/5 p-4">
+                <div className="rounded-xl bg-black/[0.05] p-4">
                   <div className="flex items-center gap-1.5 mb-2">
                     <Link2 className="w-3.5 h-3.5 text-foreground/40" />
                     <span className="text-[10px] text-foreground/40 uppercase tracking-widest font-bold">현생과의 연결</span>
@@ -376,26 +376,26 @@ export default function PastLife() {
               <Button
                 onClick={handleReset}
                 variant="outline"
-                className="w-full h-12 rounded-2xl border-white/10 hover:bg-white/5 font-bold"
+                className="w-full h-12 rounded-2xl border-black/10 hover:bg-black/[0.05] font-bold"
               >
                 <RefreshCw className="w-4 h-4 mr-2" />
                 다시 탐색하기
               </Button>
 
               {/* 다른 서비스 추천 */}
-              <div className="mt-6 rounded-2xl border border-white/5 bg-white/3 p-4">
+              <div className="mt-6 rounded-2xl border border-black/10 bg-white/3 p-4">
                 <p className="text-xs text-foreground/40 text-center mb-3 uppercase tracking-widest font-bold">
                   함께 보면 좋은 서비스
                 </p>
                 <div className="grid grid-cols-2 gap-2">
                   <Link href="/lifelong-saju">
-                    <div className="rounded-xl bg-white/5 hover:bg-white/10 transition-colors p-3 text-center cursor-pointer">
+                    <div className="rounded-xl bg-black/[0.05] hover:bg-black/[0.06] transition-colors p-3 text-center cursor-pointer">
                       <div className="text-lg mb-1">✨</div>
                       <div className="text-xs font-bold">평생사주</div>
                     </div>
                   </Link>
                   <Link href="/tarot">
-                    <div className="rounded-xl bg-white/5 hover:bg-white/10 transition-colors p-3 text-center cursor-pointer">
+                    <div className="rounded-xl bg-black/[0.05] hover:bg-black/[0.06] transition-colors p-3 text-center cursor-pointer">
                       <div className="text-lg mb-1">🃏</div>
                       <div className="text-xs font-bold">타로</div>
                     </div>

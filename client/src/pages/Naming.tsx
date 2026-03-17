@@ -70,14 +70,14 @@ const ELEMENT_COLOR: Record<string, string> = {
   목: "text-green-400",
   화: "text-red-400",
   토: "text-yellow-400",
-  금: "text-slate-300",
+  금: "text-[#6a6a66]",
   수: "text-blue-400",
 };
 const ELEMENT_BG: Record<string, string> = {
   목: "bg-green-500/10 border-green-500/20",
   화: "bg-red-500/10 border-red-500/20",
   토: "bg-yellow-500/10 border-yellow-500/20",
-  금: "bg-slate-400/10 border-slate-400/20",
+  금: "bg-[#6a6a66]/10 border-[#6a6a66]/20",
   수: "bg-blue-500/10 border-blue-500/20",
 };
 
@@ -289,7 +289,7 @@ function GyeokCard({
       }`}
     >
       <div className="flex items-center justify-between">
-        <p className="text-[11px] text-white/50">{label}</p>
+        <p className="text-[11px] text-[#999891]">{label}</p>
         <Badge
           className={`text-[10px] px-1.5 py-0 ${
             isGil
@@ -308,11 +308,11 @@ function GyeokCard({
         >
           {number}
         </span>
-        <span className="text-sm text-white/50 pb-1">수</span>
+        <span className="text-sm text-[#999891] pb-1">수</span>
       </div>
       <div>
-        <p className="text-sm font-bold text-white">{suriInfo?.name}</p>
-        <p className="text-xs text-white/50">{suriInfo?.keyword}</p>
+        <p className="text-sm font-bold text-[#1a1a18]">{suriInfo?.name}</p>
+        <p className="text-xs text-[#999891]">{suriInfo?.keyword}</p>
       </div>
       {/* 쉬운 풀이 */}
       <div className={`rounded-lg p-2.5 ${
@@ -329,7 +329,7 @@ function GyeokCard({
           </p>
         </div>
       </div>
-      <p className="text-[11px] text-white/30 italic">{description}</p>
+      <p className="text-[11px] text-[#999891] italic">{description}</p>
     </div>
   );
 }
@@ -366,17 +366,17 @@ function CandidateCard({
       className={`rounded-xl border cursor-pointer transition-all duration-200 overflow-hidden ${
         isSelected
           ? "bg-amber-500/10 border-amber-500/40 shadow-lg shadow-amber-500/10"
-          : "bg-white/5 border-white/10 hover:bg-white/8 hover:border-amber-500/20"
+          : "bg-black/[0.05] border-black/10 hover:bg-white/8 hover:border-amber-500/20"
       }`}
       onClick={() => onSelect(candidate)}
     >
       {/* 이름 헤더 */}
       <div className="flex items-center justify-between p-4 pb-3">
         <div className="flex items-baseline gap-2">
-          <span className="text-2xl font-black text-white">
+          <span className="text-2xl font-black text-[#1a1a18]">
             {surnameHangul}{hangulName}
           </span>
-          <span className="text-sm text-white/40">
+          <span className="text-sm text-[#999891]">
             {surnameHanja}{hanjaName}
           </span>
         </div>
@@ -385,7 +385,7 @@ function CandidateCard({
           <div className={`flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-bold ${
             fitnessScore >= 90 ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' :
             fitnessScore >= 80 ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' :
-            'bg-white/10 text-white/50 border border-white/10'
+            'bg-black/06 text-[#999891] border border-black/10'
           }`}>
             <Star className="w-2.5 h-2.5" />
             {fitnessScore.toFixed(1)}점
@@ -404,9 +404,9 @@ function CandidateCard({
 
       {/* 한 줄 요약: 의미 + 영어 이름 */}
       <div className="px-4 pb-3 flex items-center justify-between gap-2">
-        <p className="text-xs text-white/50">
-          <span className="text-white/70">{char1.hanja}</span> {char1.hangul}({meaningKeywords.split(' · ')[0]}) ·{" "}
-          <span className="text-white/70">{char2.hanja}</span> {char2.hangul}({meaningKeywords.split(' · ')[1] ?? char2.meaning.split(/[,\s·]+/)[0]})
+        <p className="text-xs text-[#999891]">
+          <span className="text-[#5a5a56]">{char1.hanja}</span> {char1.hangul}({meaningKeywords.split(' · ')[0]}) ·{" "}
+          <span className="text-[#5a5a56]">{char2.hanja}</span> {char2.hangul}({meaningKeywords.split(' · ')[1] ?? char2.meaning.split(/[,\s·]+/)[0]})
         </p>
         {firstEnglish && (
           <Badge className="bg-blue-500/15 text-blue-300 border-blue-500/20 text-[10px] flex-shrink-0">
@@ -433,7 +433,7 @@ function CandidateCard({
                   : "bg-red-500/10 border border-red-500/20"
               }`}
             >
-              <p className="text-[10px] text-white/40">{g.label}</p>
+              <p className="text-[10px] text-[#999891]">{g.label}</p>
               <p className={`text-sm font-black ${ g.j === "길" ? "text-amber-300" : "text-red-300" }`}>{g.val}</p>
               <p className={`text-[10px] font-bold ${ g.j === "길" ? "text-amber-400" : "text-red-400" }`}>{g.j}</p>
             </div>
@@ -442,13 +442,13 @@ function CandidateCard({
         {/* 한자 오행 표시 */}
         <div className="flex gap-2">
           {[char1, char2].map((ch, idx) => (
-            <div key={idx} className={`flex-1 rounded-lg border p-2 ${ ELEMENT_BG[ch.element] ?? "bg-white/5 border-white/10" }`}>
+            <div key={idx} className={`flex-1 rounded-lg border p-2 ${ ELEMENT_BG[ch.element] ?? "bg-black/[0.05] border-black/10" }`}>
               <div className="flex items-center gap-1">
-                <span className="text-base font-black text-white">{ch.hanja}</span>
-                <span className="text-[11px] text-white/50">{ch.hangul}</span>
-                <span className={`text-[11px] font-bold ml-auto ${ ELEMENT_COLOR[ch.element] ?? "text-white/50" }`}>{ch.element}({ch.strokes}획)</span>
+                <span className="text-base font-black text-[#1a1a18]">{ch.hanja}</span>
+                <span className="text-[11px] text-[#999891]">{ch.hangul}</span>
+                <span className={`text-[11px] font-bold ml-auto ${ ELEMENT_COLOR[ch.element] ?? "text-[#999891]" }`}>{ch.element}({ch.strokes}획)</span>
               </div>
-              <p className="text-[10px] text-white/40 mt-0.5 leading-relaxed">{ch.meaning}</p>
+              <p className="text-[10px] text-[#999891] mt-0.5 leading-relaxed">{ch.meaning}</p>
             </div>
           ))}
         </div>
@@ -644,18 +644,18 @@ export default function Naming() {
         </div>
 
         {/* 헤더 */}
-        <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
+        <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-black/10">
           <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
             <Link href="/">
               <Button
                 variant="ghost"
                 size="icon"
-                className="mr-2 text-white hover:bg-white/10 min-w-[44px] min-h-[44px]"
+                className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]"
               >
                 <ChevronLeft className="h-5 w-5" />
               </Button>
             </Link>
-            <h2 className="text-base md:text-lg font-bold text-white">
+            <h2 className="text-base md:text-lg font-bold text-[#1a1a18]">
               작명소
             </h2>
           </div>
@@ -676,21 +676,21 @@ export default function Naming() {
                   전통 작명 원리 기반
                 </span>
               </div>
-              <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-white">
+              <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-[#1a1a18]">
                 무운 작명소
               </h2>
               <p className="text-muted-foreground text-xs md:text-sm">
                 아이의 사주에 맞는 한자 이름을 무료로 추천해드립니다
               </p>
-              <p className="text-[10px] text-white/30 mt-1">
+              <p className="text-[10px] text-[#999891] mt-1">
                 대법원 인명용 한자 기준 · 4격 수리 전부 길수 · 오행 균형 반영
               </p>
             </div>
 
             {/* 입력 폼 */}
-            <Card className="glass-panel border-white/5 shadow-xl rounded-2xl overflow-hidden">
-              <CardHeader className="border-b border-white/5 px-4 py-3 md:px-6 md:py-4">
-                <CardTitle className="text-white flex items-center gap-2 text-base md:text-lg">
+            <Card className="glass-panel border-black/10 shadow-xl rounded-2xl overflow-hidden">
+              <CardHeader className="border-b border-black/10 px-4 py-3 md:px-6 md:py-4">
+                <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-base md:text-lg">
                   <div className="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center">
                     <PenLine className="w-4 h-4 text-amber-400" />
                   </div>
@@ -704,7 +704,7 @@ export default function Naming() {
                 >
                   {/* 성씨 입력 (Combobox) */}
                   <div className="space-y-1.5">
-                    <Label className="text-white text-sm font-medium flex items-center gap-1.5">
+                    <Label className="text-[#1a1a18] text-sm font-medium flex items-center gap-1.5">
                       <BookOpen className="w-3.5 h-3.5 text-amber-400" />
                       성씨
                     </Label>
@@ -734,7 +734,7 @@ export default function Naming() {
                         exit={{ opacity: 0, height: 0 }}
                         className="space-y-1.5"
                       >
-                        <Label className="text-white text-sm font-medium flex items-center gap-1.5">
+                        <Label className="text-[#1a1a18] text-sm font-medium flex items-center gap-1.5">
                           <Info className="w-3.5 h-3.5 text-amber-400" />
                           성씨 원획수 직접 입력
                         </Label>
@@ -744,9 +744,9 @@ export default function Naming() {
                           max={40}
                           placeholder="예: 8 (金=8획)"
                           {...form.register("customStrokes")}
-                          className="h-11 bg-white/5 border-white/10 text-white placeholder:text-white/30 rounded-xl focus:ring-amber-500/50 focus:border-amber-500 transition-all"
+                          className="h-11 bg-black/[0.05] border-black/10 text-[#1a1a18] placeholder:text-[#999891] rounded-xl focus:ring-amber-500/50 focus:border-amber-500 transition-all"
                         />
-                        <p className="text-[11px] text-white/40 leading-relaxed">
+                        <p className="text-[11px] text-[#999891] leading-relaxed">
                           원획수(原劃數) 기준으로 입력해주세요.
                           변형 부수(氵→水 4획, 灬→火 4획 등)는 원래 획수로
                           계산합니다.
@@ -757,7 +757,7 @@ export default function Naming() {
 
                   {/* 성별 */}
                   <div className="space-y-1.5">
-                    <Label className="text-white text-sm font-medium flex items-center gap-1.5">
+                    <Label className="text-[#1a1a18] text-sm font-medium flex items-center gap-1.5">
                       <User className="w-3.5 h-3.5 text-amber-400" />
                       성별
                     </Label>
@@ -768,17 +768,17 @@ export default function Naming() {
                         if (value)
                           form.setValue("gender", value as "male" | "female");
                       }}
-                      className="w-full h-11 bg-white/5 p-1 rounded-xl border border-white/10 grid grid-cols-2 gap-1"
+                      className="w-full h-11 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1"
                     >
                       <ToggleGroupItem
                         value="male"
-                        className="h-full rounded-lg data-[state=on]:bg-amber-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-sm"
+                        className="h-full rounded-lg data-[state=on]:bg-amber-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-sm"
                       >
                         남성
                       </ToggleGroupItem>
                       <ToggleGroupItem
                         value="female"
-                        className="h-full rounded-lg data-[state=on]:bg-amber-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-sm"
+                        className="h-full rounded-lg data-[state=on]:bg-amber-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-sm"
                       >
                         여성
                       </ToggleGroupItem>
@@ -788,7 +788,7 @@ export default function Naming() {
                   {/* 생년월일 + 시간 */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
-                      <Label className="text-white text-sm font-medium flex items-center gap-1.5">
+                      <Label className="text-[#1a1a18] text-sm font-medium flex items-center gap-1.5">
                         <Calendar className="w-3.5 h-3.5 text-amber-400" />
                         생년월일
                       </Label>
@@ -799,7 +799,7 @@ export default function Naming() {
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <Label className="text-white text-sm font-medium flex items-center gap-1.5">
+                      <Label className="text-[#1a1a18] text-sm font-medium flex items-center gap-1.5">
                         <Clock className="w-3.5 h-3.5 text-amber-400" />
                         태어난 시간
                       </Label>
@@ -817,7 +817,7 @@ export default function Naming() {
 
                   {/* 양/음력 */}
                   <div className="space-y-1.5">
-                    <Label className="text-white text-sm font-medium flex items-center gap-1.5">
+                    <Label className="text-[#1a1a18] text-sm font-medium flex items-center gap-1.5">
                       <ScrollText className="w-3.5 h-3.5 text-amber-400" />
                       날짜 구분
                     </Label>
@@ -831,17 +831,17 @@ export default function Naming() {
                             value as "solar" | "lunar"
                           );
                       }}
-                      className="w-full h-11 bg-white/5 p-1 rounded-xl border border-white/10 grid grid-cols-2 gap-1"
+                      className="w-full h-11 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1"
                     >
                       <ToggleGroupItem
                         value="solar"
-                        className="h-full rounded-lg data-[state=on]:bg-amber-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-sm"
+                        className="h-full rounded-lg data-[state=on]:bg-amber-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-sm"
                       >
                         양력
                       </ToggleGroupItem>
                       <ToggleGroupItem
                         value="lunar"
-                        className="h-full rounded-lg data-[state=on]:bg-amber-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-sm"
+                        className="h-full rounded-lg data-[state=on]:bg-amber-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-sm"
                       >
                         음력
                       </ToggleGroupItem>
@@ -856,7 +856,7 @@ export default function Naming() {
                         작명 원칙
                       </p>
                     </div>
-                    <p className="text-[11px] text-white/40 leading-relaxed">
+                    <p className="text-[11px] text-[#999891] leading-relaxed">
                       원격(초년운)·형격(청년운)·이격(장년운)·정격(총운) 4격이
                       모두 길수인 이름만 추천합니다. 사주 오행 분석으로 부족한
                       오행을 보완하는 한자를 우선 선정합니다.
@@ -887,7 +887,7 @@ export default function Naming() {
             {/* STEP 섹션 */}
             <div className="space-y-4">
               <div className="text-center">
-                <h3 className="text-lg md:text-xl font-bold text-white">
+                <h3 className="text-lg md:text-xl font-bold text-[#1a1a18]">
                   어떻게 이름을 추천하나요?
                 </h3>
               </div>
@@ -927,14 +927,14 @@ export default function Naming() {
                       <span className="text-xs font-bold text-amber-400">{step}</span>
                     </div>
                     <div className="space-y-0.5">
-                      <p className="text-sm font-bold text-white">{title}</p>
-                      <p className="text-xs text-white/50 leading-relaxed">{desc}</p>
+                      <p className="text-sm font-bold text-[#1a1a18]">{title}</p>
+                      <p className="text-xs text-[#999891] leading-relaxed">{desc}</p>
                     </div>
                   </div>
                 ))}
               </div>
               <div className="rounded-xl bg-amber-500/5 border border-amber-500/10 p-3">
-                <p className="text-xs text-white/50 leading-relaxed text-center">
+                <p className="text-xs text-[#999891] leading-relaxed text-center">
                   한자 이름부터 영어 이름까지, 아이의 이름을 한 번에 완성하세요.
                 </p>
               </div>
@@ -950,12 +950,12 @@ export default function Naming() {
               ].map((f) => (
                 <Card
                   key={f.title}
-                  className="bg-white/5 border-white/10 rounded-xl"
+                  className="bg-black/[0.05] border-black/10 rounded-xl"
                 >
                   <CardContent className="p-3 text-center space-y-1">
                     <div className="text-2xl">{f.icon}</div>
-                    <p className="text-xs font-bold text-white">{f.title}</p>
-                    <p className="text-[10px] text-white/40">{f.desc}</p>
+                    <p className="text-xs font-bold text-[#1a1a18]">{f.title}</p>
+                    <p className="text-[10px] text-[#999891]">{f.desc}</p>
                   </CardContent>
                 </Card>
               ))}
@@ -987,18 +987,18 @@ export default function Naming() {
       </div>
 
       {/* 헤더 */}
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10 print:hidden">
+      <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-black/10 print:hidden">
         <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
             <Button
               variant="ghost"
               size="icon"
               onClick={handleReset}
-              className="mr-2 text-white hover:bg-white/10 min-w-[44px] min-h-[44px]"
+              className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]"
             >
               <ChevronLeft className="h-5 w-5" />
             </Button>
-            <h2 className="text-base md:text-lg font-bold text-white">
+            <h2 className="text-base md:text-lg font-bold text-[#1a1a18]">
               작명 결과
             </h2>
           </div>
@@ -1007,7 +1007,7 @@ export default function Naming() {
               variant="outline"
               size="sm"
               onClick={handlePrint}
-              className="border-white/20 text-white hover:bg-white/10 text-xs gap-1.5"
+              className="border-black/10 text-[#1a1a18] hover:bg-black/[0.06] text-xs gap-1.5"
             >
               <Download className="w-3.5 h-3.5" />
               PDF 저장
@@ -1016,7 +1016,7 @@ export default function Naming() {
               variant="ghost"
               size="sm"
               onClick={handleReset}
-              className="text-white/60 hover:text-white hover:bg-white/10 text-xs gap-1.5"
+              className="text-[#5a5a56] hover:text-[#1a1a18] hover:bg-black/[0.06] text-xs gap-1.5"
             >
               <RefreshCw className="w-3.5 h-3.5" />
               다시 분석
@@ -1038,13 +1038,13 @@ export default function Naming() {
               <CardContent className="p-4 md:p-6">
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="text-xs text-white/40 mb-1">분석 대상 성씨</p>
+                    <p className="text-xs text-[#999891] mb-1">분석 대상 성씨</p>
                     <div className="flex items-center gap-2">
                       <span className="text-3xl font-black text-amber-300">
                         {currentSurnameHangul}
                       </span>
                       {currentSurnameHanja && (
-                        <span className="text-lg text-white/40">
+                        <span className="text-lg text-[#999891]">
                           {currentSurnameHanja}
                         </span>
                       )}
@@ -1054,10 +1054,10 @@ export default function Naming() {
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-xs text-white/40 mb-1">후보 이름 수</p>
-                    <p className="text-2xl font-black text-white">
+                    <p className="text-xs text-[#999891] mb-1">후보 이름 수</p>
+                    <p className="text-2xl font-black text-[#1a1a18]">
                       {candidates.length}
-                      <span className="text-sm font-normal text-white/40 ml-1">
+                      <span className="text-sm font-normal text-[#999891] ml-1">
                         개
                       </span>
                     </p>
@@ -1077,8 +1077,8 @@ export default function Naming() {
                 transition={{ duration: 0.4 }}
               >
                 <Card className="glass-panel border-amber-500/20 shadow-xl rounded-2xl overflow-hidden">
-                  <CardHeader className="border-b border-white/5 px-4 py-3 md:px-6 md:py-4">
-                    <CardTitle className="text-white flex items-center gap-2 text-base">
+                  <CardHeader className="border-b border-black/10 px-4 py-3 md:px-6 md:py-4">
+                    <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-base">
                       <div className="w-7 h-7 rounded-lg bg-amber-500/20 flex items-center justify-center">
                         <Star className="w-4 h-4 text-amber-400" />
                       </div>
@@ -1092,37 +1092,37 @@ export default function Naming() {
                       <div className="flex items-center justify-center gap-1">
                         {/* 성씨 한자 */}
                         <div className="flex flex-col items-center">
-                          <span className="text-5xl md:text-7xl font-black text-white/30 leading-none">{currentSurnameHanja}</span>
-                          <span className="text-xs text-white/25 mt-1">{currentSurnameHangul}</span>
+                          <span className="text-5xl md:text-7xl font-black text-[#999891] leading-none">{currentSurnameHanja}</span>
+                          <span className="text-xs text-[#1a1a18]/25 mt-1">{currentSurnameHangul}</span>
                         </div>
-                        <span className="text-3xl text-white/10 mx-1">·</span>
+                        <span className="text-3xl text-[#1a1a18]/10 mx-1">·</span>
                         {/* 이름 첫째 한자 */}
-                        <div className={`flex flex-col items-center rounded-2xl px-4 py-2 ${ ELEMENT_BG[selectedCandidate.char1.element] ?? 'bg-white/5' }`}>
-                          <span className="text-5xl md:text-7xl font-black text-white leading-none">{selectedCandidate.char1.hanja}</span>
-                          <span className="text-xs text-white/60 mt-1">{selectedCandidate.char1.hangul}</span>
+                        <div className={`flex flex-col items-center rounded-2xl px-4 py-2 ${ ELEMENT_BG[selectedCandidate.char1.element] ?? 'bg-black/[0.05]' }`}>
+                          <span className="text-5xl md:text-7xl font-black text-[#1a1a18] leading-none">{selectedCandidate.char1.hanja}</span>
+                          <span className="text-xs text-[#5a5a56] mt-1">{selectedCandidate.char1.hangul}</span>
                         </div>
                         {/* 이름 둘째 한자 */}
-                        <div className={`flex flex-col items-center rounded-2xl px-4 py-2 ${ ELEMENT_BG[selectedCandidate.char2.element] ?? 'bg-white/5' }`}>
-                          <span className="text-5xl md:text-7xl font-black text-white leading-none">{selectedCandidate.char2.hanja}</span>
-                          <span className="text-xs text-white/60 mt-1">{selectedCandidate.char2.hangul}</span>
+                        <div className={`flex flex-col items-center rounded-2xl px-4 py-2 ${ ELEMENT_BG[selectedCandidate.char2.element] ?? 'bg-black/[0.05]' }`}>
+                          <span className="text-5xl md:text-7xl font-black text-[#1a1a18] leading-none">{selectedCandidate.char2.hanja}</span>
+                          <span className="text-xs text-[#5a5a56] mt-1">{selectedCandidate.char2.hangul}</span>
                         </div>
                       </div>
                       {/* 한글 이름 + 적합도 점수 */}
                       <div className="flex items-center justify-center gap-3">
-                        <p className="text-2xl font-black text-white">
+                        <p className="text-2xl font-black text-[#1a1a18]">
                           {currentSurnameHangul}{selectedCandidate.hangulName}
                         </p>
                         <div className={`flex items-center gap-1 rounded-full px-3 py-1 text-sm font-bold ${
                           selectedCandidate.fitnessScore >= 90 ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' :
                           selectedCandidate.fitnessScore >= 80 ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30' :
-                          'bg-white/10 text-white/50 border border-white/10'
+                          'bg-black/06 text-[#999891] border border-black/10'
                         }`}>
                           <Star className="w-3.5 h-3.5" />
                           적합도 {selectedCandidate.fitnessScore.toFixed(1)}점
                         </div>
                       </div>
                       {/* 점수 설명 */}
-                      <p className="text-[11px] text-white/30">
+                      <p className="text-[11px] text-[#999891]">
                         81수리 4격 길수 기본 70점 + 음운 조화 + 오행 보완 점수 반영
                       </p>
                     </div>
@@ -1164,32 +1164,32 @@ export default function Naming() {
                       <ul className="space-y-2">
                         <li className="flex items-start gap-2">
                           <span className="text-emerald-400 text-xs mt-0.5 flex-shrink-0">✓</span>
-                          <p className="text-xs text-white/70 leading-relaxed">
-                            <span className="text-white font-semibold">원격 {selectedCandidate.suri.won}수</span>는 ‘{SURI_TABLE[selectedCandidate.suri.won]?.name ?? ''}’로, {getEasyExplain('won', selectedCandidate.suri.won, true)}
+                          <p className="text-xs text-[#5a5a56] leading-relaxed">
+                            <span className="text-[#1a1a18] font-semibold">원격 {selectedCandidate.suri.won}수</span>는 ‘{SURI_TABLE[selectedCandidate.suri.won]?.name ?? ''}’로, {getEasyExplain('won', selectedCandidate.suri.won, true)}
                           </p>
                         </li>
                         <li className="flex items-start gap-2">
                           <span className="text-emerald-400 text-xs mt-0.5 flex-shrink-0">✓</span>
-                          <p className="text-xs text-white/70 leading-relaxed">
-                            <span className="text-white font-semibold">형격 {selectedCandidate.suri.hyung}수</span>는 ‘{SURI_TABLE[selectedCandidate.suri.hyung]?.name ?? ''}’로, {getEasyExplain('hyung', selectedCandidate.suri.hyung, true)}
+                          <p className="text-xs text-[#5a5a56] leading-relaxed">
+                            <span className="text-[#1a1a18] font-semibold">형격 {selectedCandidate.suri.hyung}수</span>는 ‘{SURI_TABLE[selectedCandidate.suri.hyung]?.name ?? ''}’로, {getEasyExplain('hyung', selectedCandidate.suri.hyung, true)}
                           </p>
                         </li>
                         <li className="flex items-start gap-2">
                           <span className="text-emerald-400 text-xs mt-0.5 flex-shrink-0">✓</span>
-                          <p className="text-xs text-white/70 leading-relaxed">
-                            <span className="text-white font-semibold">이격 {selectedCandidate.suri.i}수</span>는 ‘{SURI_TABLE[selectedCandidate.suri.i]?.name ?? ''}’로, {getEasyExplain('i', selectedCandidate.suri.i, true)}
+                          <p className="text-xs text-[#5a5a56] leading-relaxed">
+                            <span className="text-[#1a1a18] font-semibold">이격 {selectedCandidate.suri.i}수</span>는 ‘{SURI_TABLE[selectedCandidate.suri.i]?.name ?? ''}’로, {getEasyExplain('i', selectedCandidate.suri.i, true)}
                           </p>
                         </li>
                         <li className="flex items-start gap-2">
                           <span className="text-emerald-400 text-xs mt-0.5 flex-shrink-0">✓</span>
-                          <p className="text-xs text-white/70 leading-relaxed">
-                            <span className="text-white font-semibold">정격 {selectedCandidate.suri.jung}수</span>는 ‘{SURI_TABLE[selectedCandidate.suri.jung]?.name ?? ''}’로, {getEasyExplain('jung', selectedCandidate.suri.jung, true)}
+                          <p className="text-xs text-[#5a5a56] leading-relaxed">
+                            <span className="text-[#1a1a18] font-semibold">정격 {selectedCandidate.suri.jung}수</span>는 ‘{SURI_TABLE[selectedCandidate.suri.jung]?.name ?? ''}’로, {getEasyExplain('jung', selectedCandidate.suri.jung, true)}
                           </p>
                         </li>
                         <li className="flex items-start gap-2">
                           <span className="text-emerald-400 text-xs mt-0.5 flex-shrink-0">✓</span>
-                          <p className="text-xs text-white/70 leading-relaxed">
-                            <span className="text-white font-semibold">{selectedCandidate.char1.hanja}({selectedCandidate.char1.hangul})</span>는 ‘{selectedCandidate.char1.meaning}’의 뜻을 담고 <span className={`font-semibold ${ELEMENT_COLOR[selectedCandidate.char1.element] ?? ''}`}>{selectedCandidate.char1.element}오행</span>을 품고 있으며, <span className="text-white font-semibold">{selectedCandidate.char2.hanja}({selectedCandidate.char2.hangul})</span>는 ‘{selectedCandidate.char2.meaning}’의 뜻을 담고 <span className={`font-semibold ${ELEMENT_COLOR[selectedCandidate.char2.element] ?? ''}`}>{selectedCandidate.char2.element}오행</span>을 품고 있어 이름에 깊은 의미를 더합니다.
+                          <p className="text-xs text-[#5a5a56] leading-relaxed">
+                            <span className="text-[#1a1a18] font-semibold">{selectedCandidate.char1.hanja}({selectedCandidate.char1.hangul})</span>는 ‘{selectedCandidate.char1.meaning}’의 뜻을 담고 <span className={`font-semibold ${ELEMENT_COLOR[selectedCandidate.char1.element] ?? ''}`}>{selectedCandidate.char1.element}오행</span>을 품고 있으며, <span className="text-[#1a1a18] font-semibold">{selectedCandidate.char2.hanja}({selectedCandidate.char2.hangul})</span>는 ‘{selectedCandidate.char2.meaning}’의 뜻을 담고 <span className={`font-semibold ${ELEMENT_COLOR[selectedCandidate.char2.element] ?? ''}`}>{selectedCandidate.char2.element}오행</span>을 품고 있어 이름에 깊은 의미를 더합니다.
                           </p>
                         </li>
                       </ul>
@@ -1224,7 +1224,7 @@ export default function Naming() {
                         <div className="rounded-xl bg-purple-500/5 border border-purple-500/15 p-4 space-y-3">
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
-                              <div className="w-4 h-4 rounded-full bg-gradient-to-br from-white to-gray-800 border border-white/20" />
+                              <div className="w-4 h-4 rounded-full bg-gradient-to-br from-white to-gray-800 border border-black/10" />
                               <p className="text-sm font-bold text-purple-300">음양 균형 분석</p>
                             </div>
                             <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${
@@ -1238,8 +1238,8 @@ export default function Naming() {
                               <div key={idx} className={`flex-1 rounded-xl border p-3 text-center ${
                                 ch.yy === '양' ? 'bg-orange-500/10 border-orange-500/20' : 'bg-blue-500/10 border-blue-500/20'
                               }`}>
-                                <p className="text-2xl font-black text-white">{ch.hanja}</p>
-                                <p className="text-xs text-white/50 mt-0.5">{ch.hangul}</p>
+                                <p className="text-2xl font-black text-[#1a1a18]">{ch.hanja}</p>
+                                <p className="text-xs text-[#999891] mt-0.5">{ch.hangul}</p>
                                 <div className={`mt-1.5 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-bold ${
                                   ch.yy === '양' ? 'bg-orange-500/20 text-orange-300' : 'bg-blue-500/20 text-blue-300'
                                 }`}>
@@ -1248,7 +1248,7 @@ export default function Naming() {
                               </div>
                             ))}
                           </div>
-                          <p className="text-[11px] text-white/40 leading-relaxed">
+                          <p className="text-[11px] text-[#999891] leading-relaxed">
                             {isBalanced
                               ? `양(陽) ${yangCount}자 · 음(陰) ${yinCount}자로 음양이 균형을 이루어 조화로운 이름입니다. 밝고 활발한 기운과 차분하고 깊은 기운이 어우러집니다.`
                               : yangCount > yinCount
@@ -1261,8 +1261,8 @@ export default function Naming() {
                     })()}
 
                     {/* 한자 상세 */}
-                    <div className="rounded-xl bg-white/3 border border-white/5 p-4 space-y-3">
-                      <p className="text-xs font-bold text-white/60 uppercase tracking-wider">
+                    <div className="rounded-xl bg-white/3 border border-black/10 p-4 space-y-3">
+                      <p className="text-xs font-bold text-[#5a5a56] uppercase tracking-wider">
                         한자 풀이
                       </p>
                       <div className="grid grid-cols-2 gap-3">
@@ -1272,24 +1272,24 @@ export default function Naming() {
                         ].map((ch, idx) => (
                           <div
                             key={idx}
-                            className={`rounded-xl border p-3 ${ELEMENT_BG[ch.element] ?? "bg-white/5 border-white/10"}`}
+                            className={`rounded-xl border p-3 ${ELEMENT_BG[ch.element] ?? "bg-black/[0.05] border-black/10"}`}
                           >
                             <div className="flex items-center gap-2 mb-2">
-                              <span className="text-2xl font-black text-white">
+                              <span className="text-2xl font-black text-[#1a1a18]">
                                 {ch.hanja}
                               </span>
                               <div>
-                                <p className="text-sm font-bold text-white">
+                                <p className="text-sm font-bold text-[#1a1a18]">
                                   {ch.hangul}
                                 </p>
                                 <p
-                                  className={`text-xs font-bold ${ELEMENT_COLOR[ch.element] ?? "text-white/50"}`}
+                                  className={`text-xs font-bold ${ELEMENT_COLOR[ch.element] ?? "text-[#999891]"}`}
                                 >
                                   {ch.element}오행 · {ch.strokes}획
                                 </p>
                               </div>
                             </div>
-                            <p className="text-xs text-white/50">
+                            <p className="text-xs text-[#999891]">
                               {ch.meaning}
                             </p>
                           </div>
@@ -1303,20 +1303,20 @@ export default function Naming() {
                         <div className="flex items-center gap-2">
                           <Globe className="w-4 h-4 text-blue-400" />
                           <p className="text-sm font-bold text-blue-300">영어 이름 추천</p>
-                          <span className="text-[11px] text-white/30 ml-auto">한자 의미 · 발음 기반</span>
+                          <span className="text-[11px] text-[#999891] ml-auto">한자 의미 · 발음 기반</span>
                         </div>
                         <div className="grid grid-cols-3 gap-2">
                           {selectedCandidate.englishNames.map((en, idx) => (
                             <div key={idx} className="rounded-lg bg-blue-500/10 border border-blue-500/20 p-3 text-center">
-                              <p className="text-base font-black text-white">{en.name}</p>
+                              <p className="text-base font-black text-[#1a1a18]">{en.name}</p>
                               <p className="text-[10px] text-blue-300/70 mt-0.5">{en.reason}</p>
                               {en.keyword && (
-                                <p className="text-[10px] text-white/30 mt-0.5">‘{en.keyword}’ 의미</p>
+                                <p className="text-[10px] text-[#999891] mt-0.5">‘{en.keyword}’ 의미</p>
                               )}
                             </div>
                           ))}
                         </div>
-                        <p className="text-[11px] text-white/30 leading-relaxed">
+                        <p className="text-[11px] text-[#999891] leading-relaxed">
                           한자 이름의 의미와 발음을 바탕으로 어울리는 영어 이름을 추천합니다. 국제적인 환경에서도 자연스러운 이름으로 불릴 수 있습니다.
                         </p>
                       </div>
@@ -1342,9 +1342,9 @@ export default function Naming() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <Card className="glass-panel border-white/5 shadow-xl rounded-2xl overflow-hidden">
-              <CardHeader className="border-b border-white/5 px-4 py-3 md:px-6 md:py-4">
-                <CardTitle className="text-white flex items-center gap-2 text-base">
+            <Card className="glass-panel border-black/10 shadow-xl rounded-2xl overflow-hidden">
+              <CardHeader className="border-b border-black/10 px-4 py-3 md:px-6 md:py-4">
+                <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-base">
                   <div className="w-7 h-7 rounded-lg bg-amber-500/20 flex items-center justify-center">
                     <PenLine className="w-4 h-4 text-amber-400" />
                   </div>
@@ -1364,11 +1364,11 @@ export default function Naming() {
 
                 {candidates.length === 0 ? (
                   <div className="text-center py-12 space-y-3">
-                    <XCircle className="w-12 h-12 text-white/20 mx-auto" />
-                    <p className="text-white/40 text-sm">
+                    <XCircle className="w-12 h-12 text-[#1a1a18]/20 mx-auto" />
+                    <p className="text-[#999891] text-sm">
                       조건을 만족하는 이름 후보가 없습니다.
                     </p>
-                    <p className="text-white/30 text-xs">
+                    <p className="text-[#999891] text-xs">
                       Supabase 한자 데이터베이스에 해당 획수의 한자가 없을 수
                       있습니다. 관리자에게 문의해주세요.
                     </p>
@@ -1376,7 +1376,7 @@ export default function Naming() {
                       variant="outline"
                       size="sm"
                       onClick={handleReset}
-                      className="border-white/20 text-white hover:bg-white/10 mt-2"
+                      className="border-black/10 text-[#1a1a18] hover:bg-black/[0.06] mt-2"
                     >
                       <RefreshCw className="w-3.5 h-3.5 mr-1.5" />
                       다시 분석하기

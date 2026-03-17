@@ -63,18 +63,18 @@ export function RelatedTermsSection({
   }
 
   return (
-    <div className="mt-12 pt-8 border-t border-slate-800">
-      <h3 className="text-lg font-semibold text-white mb-6">함께 보면 좋은 기운</h3>
+    <div className="mt-12 pt-8 border-t border-black/10">
+      <h3 className="text-lg font-semibold text-[#1a1a18] mb-6">함께 보면 좋은 기운</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {relatedTerms.map((term) => (
           <Link key={term.id} href={`/dictionary/${term.slug}`}>
-            <a className="group p-4 bg-slate-900/50 border border-slate-800 rounded-lg hover:border-yellow-400 hover:bg-slate-900/80 transition-all duration-200">
+            <a className="group p-4 bg-[#f5f4ef] border border-black/10 rounded-lg hover:border-black/20 hover:bg-white transition-all duration-200">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
-                  <h4 className="font-semibold text-white group-hover:text-yellow-400 transition-colors mb-2">
+                  <h4 className="font-semibold text-[#1a1a18] group-hover:text-yellow-400 transition-colors mb-2">
                     {term.title}
                   </h4>
-                  <p className="text-sm text-slate-400 line-clamp-2">{term.summary}</p>
+                  <p className="text-sm text-[#5a5a56] line-clamp-2">{term.summary}</p>
                 </div>
                 <div className="ml-2 text-yellow-400 opacity-0 group-hover:opacity-100 transition-opacity">
                   →
@@ -85,13 +85,13 @@ export function RelatedTermsSection({
                   {term.tags.slice(0, 2).map((tag) => (
                     <span
                       key={tag}
-                      className="text-xs px-2 py-1 bg-slate-800 text-slate-300 rounded-full"
+                      className="text-xs px-2 py-1 bg-[#f5f4ef] text-[#5a5a56] rounded-full"
                     >
                       {tag}
                     </span>
                   ))}
                   {term.tags.length > 2 && (
-                    <span className="text-xs px-2 py-1 bg-slate-800 text-slate-300 rounded-full">
+                    <span className="text-xs px-2 py-1 bg-[#f5f4ef] text-[#5a5a56] rounded-full">
                       +{term.tags.length - 2}
                     </span>
                   )}

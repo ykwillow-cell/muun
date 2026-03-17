@@ -36,7 +36,7 @@ export default function GuideDetail() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background text-white flex items-center justify-center">
+      <div className="min-h-screen bg-background text-[#1a1a18] flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
     );
@@ -46,10 +46,10 @@ export default function GuideDetail() {
     return <NotFound />;
   }
 
-  const categoryColor = COLUMN_CATEGORIES[column.category]?.color || 'bg-white/10 text-white/70';
+  const categoryColor = COLUMN_CATEGORIES[column.category]?.color || 'bg-black/06 text-[#5a5a56]';
 
   return (
-    <div className="min-h-screen bg-background text-white">
+    <div className="min-h-screen bg-background text-[#1a1a18]">
       <Helmet>
         <title>{column.title} | 무운 (MuUn)</title>
         <meta name="description" content={column.description} />
@@ -80,15 +80,15 @@ export default function GuideDetail() {
       </Helmet>
 
       {/* 헤더 */}
-      <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-white/5">
+      <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-black/10">
         <div className="max-w-3xl mx-auto px-4 h-14 flex items-center justify-between">
           <Link href="/guide">
-            <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 min-w-[44px] min-h-[44px]">
+            <Button variant="ghost" size="icon" className="text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
               <ChevronLeft className="w-5 h-5" />
             </Button>
           </Link>
-          <span className="text-sm font-semibold text-white/60">칼럼</span>
-          <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 min-w-[44px] min-h-[44px]">
+          <span className="text-sm font-semibold text-[#5a5a56]">칼럼</span>
+          <Button variant="ghost" size="icon" className="text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
             <Share2 className="w-5 h-5" />
           </Button>
         </div>
@@ -100,7 +100,7 @@ export default function GuideDetail() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="w-full h-64 md:h-96 rounded-2xl overflow-hidden mb-8 bg-white/5"
+            className="w-full h-64 md:h-96 rounded-2xl overflow-hidden mb-8 bg-black/[0.05]"
           >
             <img
               src={column.thumbnail}
@@ -122,12 +122,12 @@ export default function GuideDetail() {
             <span className={`px-3 py-1 rounded-full text-xs font-semibold ${categoryColor}`}>
               {column.categoryLabel}
             </span>
-            <span className="text-xs text-white/40">{column.author}</span>
+            <span className="text-xs text-[#999891]">{column.author}</span>
           </div>
           <h1 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
             {column.title}
           </h1>
-          <div className="flex items-center gap-6 text-sm text-white/40 flex-wrap">
+          <div className="flex items-center gap-6 text-sm text-[#999891] flex-wrap">
             <div className="flex items-center gap-2">
               <Calendar className="w-4 h-4" />
               {new Date(column.publishedDate).toLocaleDateString('ko-KR', {
@@ -197,9 +197,9 @@ export default function GuideDetail() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {relatedColumns.map((relatedColumn) => (
                 <Link key={relatedColumn.id} href={`/guide/${relatedColumn.slug || relatedColumn.id}`}>
-                  <div className="group cursor-pointer bg-white/5 border border-white/10 rounded-xl overflow-hidden hover:border-primary/30 hover:bg-white/10 transition-all h-full">
+                  <div className="group cursor-pointer bg-black/[0.05] border border-black/10 rounded-xl overflow-hidden hover:border-primary/30 hover:bg-black/[0.06] transition-all h-full">
                     {relatedColumn.thumbnail && (
-                      <div className="aspect-video overflow-hidden bg-white/5">
+                      <div className="aspect-video overflow-hidden bg-black/[0.05]">
                         <img
                           src={relatedColumn.thumbnail}
                           alt={relatedColumn.title}
@@ -209,7 +209,7 @@ export default function GuideDetail() {
                       </div>
                     )}
                     <div className="p-4">
-                      <span className={`inline-block px-2 py-1 rounded-full text-xs font-semibold mb-2 ${COLUMN_CATEGORIES[relatedColumn.category]?.color || 'bg-white/10 text-white/70'}`}>
+                      <span className={`inline-block px-2 py-1 rounded-full text-xs font-semibold mb-2 ${COLUMN_CATEGORIES[relatedColumn.category]?.color || 'bg-black/06 text-[#5a5a56]'}`}>
                         {relatedColumn.categoryLabel}
                       </span>
                       <h3 className="font-bold text-sm line-clamp-2 group-hover:text-primary transition-colors">

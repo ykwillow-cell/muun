@@ -53,8 +53,8 @@ export function TodayTermCard() {
           <span className="text-[10px] font-bold tracking-[0.08em] uppercase text-purple-400/60">오늘의 사주 용어</span>
           <span className="px-1.5 py-0.5 rounded text-[9px] font-medium bg-purple-500/20 text-purple-300 border border-purple-500/30">{todayTerm.categoryLabel}</span>
         </div>
-        <h3 className="text-[14px] font-bold text-white mb-1 leading-snug">{todayTerm.title}</h3>
-        <p className="text-[12px] text-white/40 leading-relaxed line-clamp-2">{todayTerm.modernInterpretation}</p>
+        <h3 className="text-[14px] font-bold text-[#1a1a18] mb-1 leading-snug">{todayTerm.title}</h3>
+        <p className="text-[12px] text-[#999891] leading-relaxed line-clamp-2">{todayTerm.modernInterpretation}</p>
       </div>
 
       {/* 사전 링크 */}

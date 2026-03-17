@@ -27,51 +27,51 @@ const AstrologyContent = () => {
           <section>
             <h2 className="text-2xl font-semibold text-foreground mb-4">별자리별 성격 - 태양 별자리(Sun Sign) 완전 가이드</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+              <div className="bg-black/[0.05] rounded-lg p-4 border border-black/10">
                 <h3 className="font-semibold text-foreground mb-2">♈ 양자리 (3/21~4/19)</h3>
                 <p className="text-foreground/70 text-sm">개척 정신과 리더십이 강하며, 새로운 도전을 두려워하지 않는 불의 별자리입니다. 직설적이고 열정적인 성격으로 주변에 활력을 불어넣습니다.</p>
               </div>
-              <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+              <div className="bg-black/[0.05] rounded-lg p-4 border border-black/10">
                 <h3 className="font-semibold text-foreground mb-2">♉ 황소자리 (4/20~5/20)</h3>
                 <p className="text-foreground/70 text-sm">안정과 감각적 풍요를 추구하는 흙의 별자리입니다. 인내심이 강하고 신뢰할 수 있으며, 물질적 안정과 아름다움을 중시합니다.</p>
               </div>
-              <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+              <div className="bg-black/[0.05] rounded-lg p-4 border border-black/10">
                 <h3 className="font-semibold text-foreground mb-2">♊ 쌍둥이자리 (5/21~6/21)</h3>
                 <p className="text-foreground/70 text-sm">지적 호기심과 소통 능력이 뛰어난 공기의 별자리입니다. 다재다능하고 적응력이 강하며, 다양한 분야에 관심을 가집니다.</p>
               </div>
-              <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+              <div className="bg-black/[0.05] rounded-lg p-4 border border-black/10">
                 <h3 className="font-semibold text-foreground mb-2">♋ 게자리 (6/22~7/22)</h3>
                 <p className="text-foreground/70 text-sm">감수성과 보호 본능이 강한 물의 별자리입니다. 가족과 가정을 소중히 여기며, 직관력이 뛰어나고 감정이 풍부합니다.</p>
               </div>
-              <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+              <div className="bg-black/[0.05] rounded-lg p-4 border border-black/10">
                 <h3 className="font-semibold text-foreground mb-2">♌ 사자자리 (7/23~8/22)</h3>
                 <p className="text-foreground/70 text-sm">카리스마와 창의성이 넘치는 불의 별자리입니다. 리더십이 강하고 자신감 있으며, 주목받는 것을 즐기고 관대한 성품을 지닙니다.</p>
               </div>
-              <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+              <div className="bg-black/[0.05] rounded-lg p-4 border border-black/10">
                 <h3 className="font-semibold text-foreground mb-2">♍ 처녀자리 (8/23~9/22)</h3>
                 <p className="text-foreground/70 text-sm">분석력과 완벽주의적 성향의 흙의 별자리입니다. 세심하고 실용적이며, 봉사 정신이 강하고 건강과 일상의 질서를 중시합니다.</p>
               </div>
-              <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+              <div className="bg-black/[0.05] rounded-lg p-4 border border-black/10">
                 <h3 className="font-semibold text-foreground mb-2">♎ 천칭자리 (9/23~10/22)</h3>
                 <p className="text-foreground/70 text-sm">균형과 미적 감각이 뛰어난 공기의 별자리입니다. 공정함을 추구하고 협력적이며, 아름다움과 조화로운 관계를 중시합니다.</p>
               </div>
-              <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+              <div className="bg-black/[0.05] rounded-lg p-4 border border-black/10">
                 <h3 className="font-semibold text-foreground mb-2">♏ 전갈자리 (10/23~11/21)</h3>
                 <p className="text-foreground/70 text-sm">깊은 직관과 변혁의 힘을 가진 물의 별자리입니다. 강렬하고 신비로우며, 진실을 꿰뚫어 보는 통찰력과 집중력이 탁월합니다.</p>
               </div>
-              <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+              <div className="bg-black/[0.05] rounded-lg p-4 border border-black/10">
                 <h3 className="font-semibold text-foreground mb-2">♐ 사수자리 (11/22~12/21)</h3>
                 <p className="text-foreground/70 text-sm">자유와 철학적 탐구를 사랑하는 불의 별자리입니다. 낙관적이고 모험적이며, 넓은 세계관과 지식에 대한 열정을 지닙니다.</p>
               </div>
-              <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+              <div className="bg-black/[0.05] rounded-lg p-4 border border-black/10">
                 <h3 className="font-semibold text-foreground mb-2">♑ 염소자리 (12/22~1/19)</h3>
                 <p className="text-foreground/70 text-sm">책임감과 성취 지향적인 흙의 별자리입니다. 인내심이 강하고 야망이 있으며, 장기적인 목표를 향해 꾸준히 나아가는 성품입니다.</p>
               </div>
-              <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+              <div className="bg-black/[0.05] rounded-lg p-4 border border-black/10">
                 <h3 className="font-semibold text-foreground mb-2">♒ 물병자리 (1/20~2/18)</h3>
                 <p className="text-foreground/70 text-sm">혁신과 인도주의적 가치를 추구하는 공기의 별자리입니다. 독창적이고 미래 지향적이며, 사회 변화와 공동체에 관심이 많습니다.</p>
               </div>
-              <div className="bg-white/5 rounded-lg p-4 border border-white/10">
+              <div className="bg-black/[0.05] rounded-lg p-4 border border-black/10">
                 <h3 className="font-semibold text-foreground mb-2">♓ 물고기자리 (2/19~3/20)</h3>
                 <p className="text-foreground/70 text-sm">공감 능력과 영적 감수성이 뛰어난 물의 별자리입니다. 직관적이고 예술적이며, 타인의 감정을 깊이 이해하는 따뜻한 성품을 지닙니다.</p>
               </div>
@@ -137,7 +137,7 @@ const AstrologyContent = () => {
                 </div>
               </div>
               <div className="flex items-start space-x-3">
-                <Star className="w-5 h-5 text-gray-400 mt-1 flex-shrink-0" />
+                <Star className="w-5 h-5 text-[#999891] mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="font-semibold text-foreground">토성(Saturn) - 책임과 성숙</h3>
                   <p className="text-foreground/70 text-sm">책임, 제약, 인내를 통해 성숙해지는 삶의 과제를 상징합니다. 토성이 위치한 별자리는 가장 어렵지만 가장 큰 성장을 이루는 영역을 보여줍니다.</p>

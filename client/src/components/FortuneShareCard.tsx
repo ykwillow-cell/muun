@@ -451,7 +451,7 @@ export default function FortuneShareCard(props: FortuneShareCardProps) {
         <Button
           onClick={captureAndDownload}
           disabled={isCapturing}
-          className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold py-3 px-8 rounded-xl flex items-center justify-center gap-2 min-h-[48px]"
+          className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-[#1a1a18] font-bold py-3 px-8 rounded-xl flex items-center justify-center gap-2 min-h-[48px]"
         >
           {isCapturing ? (
             <>

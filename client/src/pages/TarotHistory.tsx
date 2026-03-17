@@ -108,7 +108,7 @@ export default function TarotHistory() {
         {isLoading ? (
           <div className="space-y-4">
             {[1, 2, 3].map((i) => (
-              <Skeleton key={i} className="h-24 w-full rounded-2xl bg-white/5" />
+              <Skeleton key={i} className="h-24 w-full rounded-2xl bg-black/[0.05]" />
             ))}
           </div>
         ) : readings.length === 0 ? (
@@ -121,7 +121,7 @@ export default function TarotHistory() {
               <HelpCircle className="w-8 h-8 text-primary" />
             </div>
             <div className="space-y-2">
-              <h2 className="text-2xl font-bold text-white">아직 저장된 타로 기록이 없습니다</h2>
+              <h2 className="text-2xl font-bold text-[#1a1a18]">아직 저장된 타로 기록이 없습니다</h2>
               <p className="text-muted-foreground">지금 바로 상담을 시작해 보세요!</p>
             </div>
             <Button
@@ -137,7 +137,7 @@ export default function TarotHistory() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               {/* 기록 목록 */}
               <div className="lg:col-span-1 space-y-4">
-                <h2 className="text-xl font-bold text-white mb-4">상담 기록 ({readings.length})</h2>
+                <h2 className="text-xl font-bold text-[#1a1a18] mb-4">상담 기록 ({readings.length})</h2>
                 <div className="space-y-2 max-h-[600px] overflow-y-auto pr-2">
                   {readings.map((reading, index) => (
                     <motion.div
@@ -149,11 +149,11 @@ export default function TarotHistory() {
                       className={`p-4 rounded-xl cursor-pointer transition-all duration-300 ${
                         selectedReading?.id === reading.id
                           ? "bg-primary/20 border border-primary/50"
-                          : "bg-white/5 border border-white/10 hover:bg-white/10"
+                          : "bg-black/[0.05] border border-black/10 hover:bg-black/[0.06]"
                       }`}
                     >
                       <div className="space-y-2">
-                        <p className="text-sm font-semibold text-white truncate">{reading.question}</p>
+                        <p className="text-sm font-semibold text-[#1a1a18] truncate">{reading.question}</p>
                         <div className="flex items-center gap-2 text-xs text-muted-foreground">
                           <Calendar className="w-3 h-3" />
                           {formatDate(reading.timestamp)}
@@ -183,10 +183,10 @@ export default function TarotHistory() {
                       className="glass-panel p-8 md:p-12 rounded-[2.5rem] space-y-8"
                     >
                       {/* 헤더 */}
-                      <div className="space-y-4 border-b border-white/10 pb-6">
+                      <div className="space-y-4 border-b border-black/10 pb-6">
                         <div className="flex items-start justify-between gap-4">
                           <div className="space-y-2 flex-1">
-                            <h2 className="text-2xl font-bold text-white">{selectedReading.question}</h2>
+                            <h2 className="text-2xl font-bold text-[#1a1a18]">{selectedReading.question}</h2>
                             <div className="flex items-center gap-2 text-sm text-muted-foreground">
                               <Calendar className="w-4 h-4" />
                               {new Date(selectedReading.timestamp).toLocaleDateString("ko-KR", {
@@ -211,11 +211,11 @@ export default function TarotHistory() {
 
                       {/* 카드 정보 */}
                       <div className="space-y-4">
-                        <h3 className="text-lg font-bold text-white">선택된 카드</h3>
+                        <h3 className="text-lg font-bold text-[#1a1a18]">선택된 카드</h3>
                         <div className="grid grid-cols-3 gap-4">
                           {selectedReading.selectedCards.map((card, index) => (
                             <div key={index} className="space-y-3">
-                              <div className="aspect-[2/3.5] rounded-xl overflow-hidden border border-primary/30 shadow-[0_0_30px_rgba(255,215,0,0.1)] bg-white/5">
+                              <div className="aspect-[2/3.5] rounded-xl overflow-hidden border border-primary/30 shadow-[0_0_30px_rgba(255,215,0,0.1)] bg-black/[0.05]">
                                 <img
                                   src={card.image}
                                   alt={card.name}
@@ -230,7 +230,7 @@ export default function TarotHistory() {
                                 <span className="text-[10px] text-primary font-bold uppercase tracking-widest block mb-1">
                                   {index === 0 ? "Past" : index === 1 ? "Present" : "Future"}
                                 </span>
-                                <h4 className="text-sm font-bold text-white">{card.korName}</h4>
+                                <h4 className="text-sm font-bold text-[#1a1a18]">{card.korName}</h4>
                                 <p className="text-xs text-muted-foreground">{card.name}</p>
                               </div>
                             </div>
@@ -240,14 +240,14 @@ export default function TarotHistory() {
 
                       {/* 해석 */}
                       <div className="space-y-4">
-                        <h3 className="text-lg font-bold text-white">AI 상담사의 해석</h3>
+                        <h3 className="text-lg font-bold text-[#1a1a18]">AI 상담사의 해석</h3>
                         <div className="prose prose-invert max-w-none text-foreground/90 leading-relaxed whitespace-pre-wrap text-base">
                           {selectedReading.interpretation}
                         </div>
                       </div>
 
                       {/* 액션 버튼 */}
-                      <div className="flex gap-3 pt-6 border-t border-white/10">
+                      <div className="flex gap-3 pt-6 border-t border-black/10">
                         <Button
                           onClick={() => setLocation("/tarot")}
                           className="flex-1 h-12 rounded-xl text-lg font-bold gap-2 shadow-[0_0_20px_rgba(255,215,0,0.2)]"
@@ -284,11 +284,11 @@ export default function TarotHistory() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
-              className="flex items-start gap-3 p-6 rounded-[2rem] bg-white/5 border border-white/10 max-w-3xl mx-auto mt-12"
+              className="flex items-start gap-3 p-6 rounded-[2rem] bg-black/[0.05] border border-black/10 max-w-3xl mx-auto mt-12"
             >
               <Info className="w-5 h-5 text-primary/50 mt-0.5 flex-shrink-0" />
               <div className="space-y-1">
-                <p className="text-sm font-bold text-white/70">기록 저장 안내</p>
+                <p className="text-sm font-bold text-[#5a5a56]">기록 저장 안내</p>
                 <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
                   무운은 사용자의 소중한 개인정보를 보호하기 위해 별도의 회원가입 없이 서비스를 제공합니다. 
                   타로 기록은 현재 사용 중인 브라우저의 <strong>로컬 저장소(Local Storage)</strong>에 안전하게 보관되며, 

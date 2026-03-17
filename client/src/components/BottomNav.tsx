@@ -24,7 +24,7 @@ export function BottomNav() {
 
       <nav
         className="mu-bottom-nav"
-        style={{ paddingBottom: "var(--safe-area-bottom)" }}
+        style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
         aria-label="하단 내비게이션"
       >
         {NAV_ITEMS.map(({ href, label, Icon }) => {

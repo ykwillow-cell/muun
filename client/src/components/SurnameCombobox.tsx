@@ -276,7 +276,7 @@ export default function SurnameCombobox({
     <div className="relative w-full">
       {/* 입력 필드 */}
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-white/30 pointer-events-none" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#999891] pointer-events-none" />
         <input
           ref={inputRef}
           type="text"
@@ -294,10 +294,10 @@ export default function SurnameCombobox({
           }}
           placeholder="성씨 입력 (예: 김, 이, 박)"
           className={cn(
-            "w-full h-11 bg-white/5 border text-white rounded-xl pl-9 pr-9 text-sm",
+            "w-full h-11 bg-black/[0.05] border text-[#1a1a18] rounded-xl pl-9 pr-9 text-sm",
             "focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-500 transition-all",
-            "placeholder:text-white/30",
-            error ? "border-red-500/50" : "border-white/10"
+            "placeholder:text-[#999891]",
+            error ? "border-red-500/50" : "border-black/10"
           )}
         />
         {/* 우측 아이콘 */}
@@ -306,12 +306,12 @@ export default function SurnameCombobox({
             <button
               type="button"
               onClick={handleClear}
-              className="text-white/30 hover:text-white/60 transition-colors"
+              className="text-[#999891] hover:text-[#5a5a56] transition-colors"
             >
               <X className="w-3.5 h-3.5" />
             </button>
           )}
-          <ChevronsUpDown className="w-3.5 h-3.5 text-white/30 pointer-events-none" />
+          <ChevronsUpDown className="w-3.5 h-3.5 text-[#999891] pointer-events-none" />
         </div>
       </div>
 
@@ -324,7 +324,7 @@ export default function SurnameCombobox({
           >
             {value} — 원획수 {strokes}획
           </Badge>
-          <span className="text-[10px] text-white/30">자동 적용됨</span>
+          <span className="text-[10px] text-[#999891]">자동 적용됨</span>
         </div>
       )}
 
@@ -342,16 +342,16 @@ export default function SurnameCombobox({
                 onClick={() => confirmSelect(opt)}
                 className={cn(
                   "flex items-center gap-2 rounded-lg border p-2.5 text-left transition-all",
-                  "bg-white/5 border-white/10 hover:bg-amber-500/10 hover:border-amber-500/30",
+                  "bg-black/[0.05] border-black/10 hover:bg-amber-500/10 hover:border-amber-500/30",
                   value === `${opt.hangul}(${opt.hanja})`
                     ? "bg-amber-500/10 border-amber-500/30"
                     : ""
                 )}
               >
-                <span className="text-xl font-black text-white">{opt.hanja}</span>
+                <span className="text-xl font-black text-[#1a1a18]">{opt.hanja}</span>
                 <div>
-                  <p className="text-xs text-white font-medium">{opt.hangul}({opt.hanja})</p>
-                  <p className="text-[10px] text-white/40">{opt.strokes}획</p>
+                  <p className="text-xs text-[#1a1a18] font-medium">{opt.hangul}({opt.hanja})</p>
+                  <p className="text-[10px] text-[#999891]">{opt.strokes}획</p>
                 </div>
                 {value === `${opt.hangul}(${opt.hanja})` && (
                   <Check className="w-3.5 h-3.5 text-amber-400 ml-auto" />
@@ -366,12 +366,12 @@ export default function SurnameCombobox({
       {open && (
         <div
           ref={dropdownRef}
-          className="absolute top-full left-0 right-0 z-50 mt-1 max-h-60 overflow-y-auto rounded-xl border border-white/10 bg-[#0d0d14] shadow-2xl shadow-black/50"
+          className="absolute top-full left-0 right-0 z-50 mt-1 max-h-60 overflow-y-auto rounded-xl border border-black/10 bg-[#0d0d14] shadow-2xl shadow-black/50"
         >
           {filtered.length === 0 ? (
             <div className="p-3 text-center">
-              <p className="text-xs text-white/40">검색 결과가 없습니다</p>
-              <p className="text-[11px] text-white/25 mt-1">
+              <p className="text-xs text-[#999891]">검색 결과가 없습니다</p>
+              <p className="text-[11px] text-[#1a1a18]/25 mt-1">
                 목록에 없는 성씨는 아래 직접 입력을 이용해주세요
               </p>
             </div>
@@ -389,18 +389,18 @@ export default function SurnameCombobox({
                       onClick={() => handleSelect(s)}
                       className={cn(
                         "w-full flex items-center justify-between px-3 py-2.5 text-left",
-                        "hover:bg-white/5 transition-colors",
+                        "hover:bg-black/[0.05] transition-colors",
                         value?.startsWith(s.hangul + "(")
                           ? "bg-amber-500/10"
                           : ""
                       )}
                     >
                       <div className="flex items-center gap-2.5">
-                        <span className="text-base font-black text-white w-6 text-center">
+                        <span className="text-base font-black text-[#1a1a18] w-6 text-center">
                           {s.hangul}
                         </span>
                         <div>
-                          <span className="text-sm text-white/70">
+                          <span className="text-sm text-[#5a5a56]">
                             {allHanja.map((h) => h.hanja).join(" / ")}
                           </span>
                           {allHanja.length > 1 && (
@@ -411,7 +411,7 @@ export default function SurnameCombobox({
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="text-[11px] text-white/30">
+                        <span className="text-[11px] text-[#999891]">
                           {allHanja.length === 1
                             ? `${s.strokes}획`
                             : `${Math.min(...allHanja.map((h) => h.strokes))}~${Math.max(...allHanja.map((h) => h.strokes))}획`}
@@ -429,7 +429,7 @@ export default function SurnameCombobox({
 
           {/* 직접 입력 옵션 */}
           {query.trim() && (
-            <div className="border-t border-white/5 p-2">
+            <div className="border-t border-black/10 p-2">
               <button
                 type="button"
                 onClick={() => {
@@ -438,9 +438,9 @@ export default function SurnameCombobox({
                   setOpen(false);
                   setHomonymOptions([]);
                 }}
-                className="w-full text-left px-3 py-2 rounded-lg hover:bg-white/5 transition-colors"
+                className="w-full text-left px-3 py-2 rounded-lg hover:bg-black/[0.05] transition-colors"
               >
-                <span className="text-xs text-white/40">
+                <span className="text-xs text-[#999891]">
                   "{query.trim()}" 직접 입력
                 </span>
                 <span className="ml-1.5 text-[10px] text-amber-400/60">

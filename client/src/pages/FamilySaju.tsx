@@ -185,10 +185,10 @@ export default function FamilySaju() {
         <link rel="canonical" href="https://muunsaju.com/family-saju" />
         </Helmet>
         {/* 헤더 */}
-        <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-white/5">
+        <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-black/10">
           <div className="max-w-2xl mx-auto px-4 h-14 flex items-center">
             <Link href="/">
-              <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-white/10 min-w-[44px] min-h-[44px]">
+              <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
                 <ChevronLeft className="w-5 h-5" />
               </Button>
             </Link>
@@ -225,7 +225,7 @@ export default function FamilySaju() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
               >
-                <Card className="bg-white/[0.03] border-white/10">
+                <Card className="bg-white/[0.03] border-black/10">
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
                       <CardTitle className="text-base text-[#1a1a18] flex items-center gap-2">
@@ -256,7 +256,7 @@ export default function FamilySaju() {
                             className={`flex flex-col items-center gap-0.5 py-2 px-1 rounded-lg text-sm md:text-xs transition-all ${
                               member.role === role.value
                                 ? "bg-primary/20 text-primary border border-primary/40"
-                                : "bg-white/5 text-[#5a5a56] border border-white/10 hover:bg-white/10"
+                                : "bg-black/[0.05] text-[#5a5a56] border border-black/10 hover:bg-black/[0.06]"
                             }`}
                           >
                             <span className="text-base">{role.icon}</span>
@@ -276,7 +276,7 @@ export default function FamilySaju() {
                           placeholder="이름"
                           value={member.name}
                           onChange={(e) => updateMember(index, "name", e.target.value)}
-                          className="bg-white/5 border-white/10 text-[#1a1a18] h-10"
+                          className="bg-black/[0.05] border-black/10 text-[#1a1a18] h-10"
                         />
                       </div>
                       <div className="space-y-1.5">
@@ -285,7 +285,7 @@ export default function FamilySaju() {
                           type="single"
                           value={member.gender}
                           onValueChange={(v) => { if (v) updateMember(index, "gender", v); }}
-                          className="w-full h-9 bg-white/5 p-1 rounded-xl border border-white/10 grid grid-cols-2 gap-1"
+                          className="w-full h-9 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1"
                         >
                           <ToggleGroupItem value="male" className="h-full rounded-lg text-sm md:text-xs data-[state=on]:bg-blue-500/30 data-[state=on]:text-blue-300">남성</ToggleGroupItem>
                           <ToggleGroupItem value="female" className="h-full rounded-lg text-sm md:text-xs data-[state=on]:bg-pink-500/30 data-[state=on]:text-pink-300">여성</ToggleGroupItem>
@@ -331,7 +331,7 @@ export default function FamilySaju() {
                         type="single"
                         value={member.calendarType}
                         onValueChange={(v) => { if (v) updateMember(index, "calendarType", v); }}
-                        className="w-full h-9 bg-white/5 p-1 rounded-xl border border-white/10 grid grid-cols-2 gap-1"
+                        className="w-full h-9 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1"
                       >
                         <ToggleGroupItem value="solar" className="h-full rounded-lg text-sm md:text-xs data-[state=on]:bg-primary/30 data-[state=on]:text-primary">양력</ToggleGroupItem>
                         <ToggleGroupItem value="lunar" className="h-full rounded-lg text-sm md:text-xs data-[state=on]:bg-primary/30 data-[state=on]:text-primary">음력</ToggleGroupItem>
@@ -346,7 +346,7 @@ export default function FamilySaju() {
                             type="checkbox"
                             checked={member.isLeapMonth}
                             onChange={(e) => updateMember(index, "isLeapMonth", e.target.checked)}
-                            className="w-4 h-4 rounded border-white/20 bg-white/5 accent-primary"
+                            className="w-4 h-4 rounded border-black/10 bg-black/[0.05] accent-primary"
                           />
                           <span className="text-base md:text-sm text-[#1a1a18] group-hover:text-primary transition-colors">윤달(Leap Month)인 경우 체크</span>
                         </label>
@@ -365,7 +365,7 @@ export default function FamilySaju() {
             {members.length < 6 && (
               <Button
                 variant="outline"
-                className="w-full border-dashed border-white/20 text-[#5a5a56] hover:text-[#1a1a18] hover:bg-white/5 h-12"
+                className="w-full border-dashed border-black/10 text-[#5a5a56] hover:text-[#1a1a18] hover:bg-black/[0.05] h-12"
                 onClick={addMember}
               >
                 <Plus className="w-4 h-4 mr-2" />
@@ -430,9 +430,9 @@ export default function FamilySaju() {
         </div>
       )}
       {/* 헤더 */}
-      <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-white/5">
+      <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-black/10">
         <div className="max-w-2xl mx-auto px-4 h-14 flex items-center">
-          <Button variant="ghost" size="icon" onClick={() => setResult(null)} className="mr-2 text-[#1a1a18] hover:bg-white/10 min-w-[44px] min-h-[44px]">
+          <Button variant="ghost" size="icon" onClick={() => setResult(null)} className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
             <ChevronLeft className="w-5 h-5" />
           </Button>
           <h1 className="text-lg font-bold text-[#1a1a18] flex items-center gap-2">
@@ -496,7 +496,7 @@ export default function FamilySaju() {
               const analysis = analyzeElementBalance(balance);
 
               return (
-                <Card key={idx} className="bg-white/[0.03] border-white/10">
+                <Card key={idx} className="bg-white/[0.03] border-black/10">
                   <CardContent className="pt-4 pb-4">
                     <div className="flex items-start gap-3">
                       <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-lg shrink-0">
@@ -505,7 +505,7 @@ export default function FamilySaju() {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
                           <span className="font-bold text-[#1a1a18]">{member.name}</span>
-                          <span className="text-sm md:text-xs text-[#999891] bg-white/5 px-2 py-0.5 rounded-full">{member.role}</span>
+                          <span className="text-sm md:text-xs text-[#999891] bg-black/[0.05] px-2 py-0.5 rounded-full">{member.role}</span>
                         </div>
                         <p className="text-base md:text-sm text-[#5a5a56] mb-2">
                           일간(日干): {withReading(member.saju!.dayPillar.stem)} — {personality?.symbol || ""} {elemKor}의 기운
@@ -517,7 +517,7 @@ export default function FamilySaju() {
                         <div className="flex gap-1 mt-2">
                           {balance.map((b, bi) => (
                             <div key={bi} className="flex-1">
-                              <div className="h-1.5 rounded-full bg-white/10 overflow-hidden">
+                              <div className="h-1.5 rounded-full bg-black/06 overflow-hidden">
                                 <div
                                   className="h-full rounded-full"
                                   style={{
@@ -545,7 +545,7 @@ export default function FamilySaju() {
             <Star className="w-5 h-5 text-primary" />
             가족 오행 분포
           </h2>
-          <Card className="bg-white/[0.03] border-white/10">
+          <Card className="bg-white/[0.03] border-black/10">
             <CardContent className="pt-4 pb-4 space-y-4">
               {familyBalance.distribution.map((elem, idx) => {
                 const maxVal = Math.max(...familyBalance.distribution.map(d => d.value), 1);
@@ -560,7 +560,7 @@ export default function FamilySaju() {
                         {elem.members.length > 0 ? elem.members.join(", ") : "-"}
                       </span>
                     </div>
-                    <div className="h-3 rounded-full bg-white/10 overflow-hidden">
+                    <div className="h-3 rounded-full bg-black/06 overflow-hidden">
                       <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${(elem.value / maxVal) * 100}%` }}
@@ -598,7 +598,7 @@ export default function FamilySaju() {
             <TrendingUp className="w-5 h-5 text-primary" />
             가족의 강점과 조언
           </h2>
-          <Card className="bg-white/[0.03] border-white/10">
+          <Card className="bg-white/[0.03] border-black/10">
             <CardContent className="pt-4 pb-4 space-y-4">
               {/* 강점 */}
               <div>
@@ -652,7 +652,7 @@ export default function FamilySaju() {
             />
           )}
           <Button
-            className="w-full bg-white/5 border border-white/10 text-[#1a1a18] hover:bg-white/10 h-11 rounded-xl font-medium text-base md:text-sm"
+            className="w-full bg-black/[0.05] border border-black/10 text-[#1a1a18] hover:bg-black/[0.06] h-11 rounded-xl font-medium text-base md:text-sm"
             onClick={() => shareContent({
               title: '무운 가족사주 분석',
               text: `우리 가족 사주 조화 점수: ${familySummary.overallScore}점! 가족의 오행 궁합을 확인해보세요.`,
@@ -665,7 +665,7 @@ export default function FamilySaju() {
           </Button>
           <Button
             variant="ghost"
-            className="w-full text-[#5a5a56] hover:text-[#1a1a18] hover:bg-white/5 h-11 rounded-xl font-medium text-base md:text-sm"
+            className="w-full text-[#5a5a56] hover:text-[#1a1a18] hover:bg-black/[0.05] h-11 rounded-xl font-medium text-base md:text-sm"
             onClick={() => setResult(null)}
           >
             다른 가족 정보로 다시 보기
@@ -688,7 +688,7 @@ function RelationCard({ relation, index }: {
   const scoreBg = analysis.score >= 80 ? "bg-green-500/20" : analysis.score >= 65 ? "bg-blue-500/20" : analysis.score >= 50 ? "bg-yellow-500/20" : "bg-red-500/20";
 
   return (
-    <Card className="bg-white/[0.03] border-white/10 overflow-hidden">
+    <Card className="bg-white/[0.03] border-black/10 overflow-hidden">
       <button
         className="w-full text-left"
         onClick={() => setIsOpen(!isOpen)}
@@ -721,7 +721,7 @@ function RelationCard({ relation, index }: {
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <div className="px-6 pb-4 space-y-3 border-t border-white/5 pt-3">
+            <div className="px-6 pb-4 space-y-3 border-t border-black/10 pt-3">
               <p className="text-base md:text-sm text-[#5a5a56] leading-relaxed">{cleanAIContent(analysis.description)}</p>
               <div className="p-3 rounded-lg bg-primary/5 border border-primary/10">
                 <p className="text-sm md:text-xs font-bold text-primary mb-1 flex items-center gap-1">
@@ -779,7 +779,7 @@ function FamilySajuInfoContent() {
             { title: "형제자매 관계", desc: "형제자매 간의 성격 차이와 상호 보완 관계를 분석합니다." },
             { title: "가족 화합 방법", desc: "가족 전체의 기운을 고려한 맞춤형 화합 활동과 조언을 제공합니다." },
           ].map((item, idx) => (
-            <Card key={idx} className="bg-white/[0.03] border-white/10">
+            <Card key={idx} className="bg-white/[0.03] border-black/10">
               <CardContent className="pt-4 pb-4">
                 <h3 className="text-base font-bold text-[#1a1a18] mb-1">{item.title}</h3>
                 <p className="text-base md:text-sm text-[#5a5a56]">{item.desc}</p>

@@ -176,13 +176,13 @@ export default function TarotCardGrid({
                 {/* 선택 표시 (체크마크) */}
                 {isSelected && (
                   <div className="absolute inset-0 bg-primary/20 flex items-center justify-center">
-                    <div className="text-white font-bold text-xs">✓</div>
+                    <div className="text-[#1a1a18] font-bold text-xs">✓</div>
                   </div>
                 )}
 
                 {/* 호버 오버레이 */}
                 {!disabled && (canSelect || isSelected) && !isSelected && (
-                  <div className="absolute inset-0 bg-white/0 hover:bg-white/10 transition-colors" />
+                  <div className="absolute inset-0 bg-white/0 hover:bg-black/[0.06] transition-colors" />
                 )}
               </motion.button>
             );

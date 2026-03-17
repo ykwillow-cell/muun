@@ -1,79 +1,73 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { Link } from "wouter";
-import { ArrowRight } from "lucide-react";
 
 interface BannerItem {
   id: string;
   tag: string;
+  tagBg: string;
+  tagColor: string;
+  tagBorder: string;
   title: string;
   sub: string;
   cta: string;
   href: string;
   visual: string;
-  gradFrom: string;
-  gradTo: string;
-  accentColor: string;
-  titleColor: string;
-  subColor: string;
+  visualColor: string;
 }
 
 const BANNERS: BannerItem[] = [
   {
     id: "yearly",
     tag: "2026 병오년",
+    tagBg: "rgba(245,158,11,0.10)",
+    tagColor: "#92400e",
+    tagBorder: "rgba(245,158,11,0.30)",
     title: "올해의 운세\n지금 확인하세요",
     sub: "병오년(丙午年) 나의 총운·월별 운세",
     cta: "신년운세 보기",
     href: "/yearly-fortune",
     visual: "丙\n午",
-    gradFrom: "rgba(245,200,66,0.18)",
-    gradTo: "rgba(245,200,66,0.04)",
-    accentColor: "#b5860a",
-    titleColor: "#1a1a18",
-    subColor: "#5a5a56",
+    visualColor: "rgba(245,158,11,0.18)",
   },
   {
     id: "family",
-    tag: "가족 사주",
+    tag: "무운에서만",
+    tagBg: "rgba(16,185,129,0.10)",
+    tagColor: "#065f46",
+    tagBorder: "rgba(16,185,129,0.30)",
     title: "가족의 오행 조화\n함께 확인해요",
     sub: "부모·자녀·형제의 사주를 한눈에",
     cta: "가족사주 보기",
     href: "/family-saju",
     visual: "家\n族",
-    gradFrom: "rgba(52,211,153,0.18)",
-    gradTo: "rgba(52,211,153,0.04)",
-    accentColor: "#0d7a52",
-    titleColor: "#1a1a18",
-    subColor: "#5a5a56",
+    visualColor: "rgba(16,185,129,0.18)",
   },
   {
     id: "mbti",
     tag: "사주 × MBTI",
+    tagBg: "rgba(139,92,246,0.10)",
+    tagColor: "#4c1d95",
+    tagBorder: "rgba(139,92,246,0.30)",
     title: "사주와 성격\n둘 다 보는 궁합",
     sub: "명리학과 심리학이 만나는 진짜 궁합",
     cta: "MBTI 궁합 보기",
     href: "/hybrid-compatibility",
     visual: "合\n心",
-    gradFrom: "rgba(167,139,250,0.18)",
-    gradTo: "rgba(167,139,250,0.04)",
-    accentColor: "#5b21b6",
-    titleColor: "#1a1a18",
-    subColor: "#5a5a56",
+    visualColor: "rgba(139,92,246,0.18)",
   },
   {
     id: "naming",
     tag: "작명소 NEW",
+    tagBg: "rgba(0,0,0,0.05)",
+    tagColor: "#1a1a18",
+    tagBorder: "rgba(0,0,0,0.14)",
     title: "81수리 성명학\n이름의 운을 바꾸다",
     sub: "사주 기반 이름 분석 및 작명 서비스",
     cta: "작명소 바로가기",
     href: "/naming",
     visual: "字\n名",
-    gradFrom: "rgba(0,0,0,0.04)",
-    gradTo: "rgba(0,0,0,0.01)",
-    accentColor: "#1a1a18",
-    titleColor: "#1a1a18",
-    subColor: "#5a5a56",
+    visualColor: "rgba(0,0,0,0.08)",
   },
 ];
 
@@ -140,23 +134,32 @@ export function MainBanner() {
               aria-roledescription="slide"
               aria-label={`${i + 1} / ${BANNERS.length}: ${b.title.replace("\n", " ")}`}
             >
-              <Link href={b.href} className="mu-banner__card" style={{
-                background: `linear-gradient(135deg, ${b.gradFrom} 0%, ${b.gradTo} 100%)`,
-              }}>
+              <Link href={b.href} className="mu-banner__card" aria-label={b.title.replace("\n", " ")}>
                 <div className="mu-banner__card-body">
+                  {/* 태그 컬러 pill */}
                   <span
                     className="mu-banner__tag"
-                    style={{ color: b.accentColor, borderColor: `${b.accentColor}40`, background: `${b.accentColor}15` }}
+                    style={{
+                      background: b.tagBg,
+                      color: b.tagColor,
+                      border: `1px solid ${b.tagBorder}`,
+                    }}
                   >
                     {b.tag}
                   </span>
-                  <p className="mu-banner__title" style={{ whiteSpace: "pre-line", color: b.titleColor }}>{b.title}</p>
-                  <p className="mu-banner__sub" style={{ color: b.subColor }}>{b.sub}</p>
-                  <span className="mu-banner__cta" style={{ color: b.accentColor }}>
-                    {b.cta} <ArrowRight size={13} style={{ display: "inline", verticalAlign: "middle" }} />
-                  </span>
+                  {/* 제목 */}
+                  <p className="mu-banner__title" style={{ whiteSpace: "pre-line" }}>{b.title}</p>
+                  {/* 부제 */}
+                  <p className="mu-banner__sub">{b.sub}</p>
+                  {/* CTA 버튼 */}
+                  <span className="mu-banner__cta">{b.cta} →</span>
                 </div>
-                <div className="mu-banner__visual" style={{ color: b.accentColor }}>
+                {/* 비주얼 */}
+                <div
+                  className="mu-banner__visual"
+                  style={{ color: b.visualColor }}
+                  aria-hidden="true"
+                >
                   {b.visual}
                 </div>
               </Link>
@@ -193,7 +196,7 @@ export function MainBanner() {
         }
         .mu-banner__viewport {
           overflow: hidden;
-          border-radius: 16px;
+          border-radius: 14px;
         }
         .mu-banner__container {
           display: flex;
@@ -203,56 +206,70 @@ export function MainBanner() {
           flex: 0 0 100%;
           min-width: 0;
         }
+        /* 항목 2: 카드 흰 배경 */
         .mu-banner__card {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 20px 18px;
-          border-radius: 16px;
-          border: 0.5px solid rgba(0,0,0,0.10);
+          padding: 18px 16px;
+          border-radius: 14px;
+          background: #ffffff;
+          border: 0.5px solid rgba(0,0,0,0.14);
           text-decoration: none;
-          min-height: 120px;
+          min-height: 116px;
           position: relative;
           overflow: hidden;
           transition: opacity 0.15s;
           -webkit-tap-highlight-color: transparent;
-          background-color: #ffffff;
         }
         .mu-banner__card:active { opacity: 0.85; }
         .mu-banner__card-body { flex: 1; }
+        /* 태그 pill */
         .mu-banner__tag {
           display: inline-block;
-          font-size: 11px;
-          font-weight: 600;
+          font-size: 10px;
+          font-weight: 500;
           padding: 3px 8px;
           border-radius: 100px;
-          border: 1px solid;
-          margin-bottom: 8px;
+          margin-bottom: 7px;
           letter-spacing: 0.01em;
         }
+        /* 제목 */
         .mu-banner__title {
-          font-size: 18px;
+          font-size: 15px;
           font-weight: 500;
+          color: #1a1a18;
           letter-spacing: -0.02em;
-          line-height: 1.3;
-          margin: 0 0 6px;
+          line-height: 1.35;
+          margin: 0 0 5px;
         }
+        /* 부제 */
         .mu-banner__sub {
-          font-size: 12px;
+          font-size: 11px;
+          color: #5a5a56;
           margin: 0 0 10px;
           line-height: 1.4;
         }
+        /* CTA 버튼 */
         .mu-banner__cta {
-          font-size: 13px;
-          font-weight: 600;
+          display: inline-block;
+          background: #f5f4ef;
+          color: #1a1a18;
+          border: 0.5px solid rgba(0,0,0,0.14);
+          border-radius: 8px;
+          padding: 7px 14px;
+          font-size: 11px;
+          font-weight: 500;
+          letter-spacing: -0.01em;
+          font-family: 'Pretendard', sans-serif;
         }
+        /* 비주얼 */
         .mu-banner__visual {
-          font-size: 32px;
+          font-size: 36px;
           font-weight: 500;
           line-height: 1.2;
           text-align: center;
           white-space: pre-line;
-          opacity: 0.25;
           letter-spacing: -0.02em;
           flex-shrink: 0;
           margin-left: 12px;

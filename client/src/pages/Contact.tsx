@@ -60,14 +60,14 @@ export default function Contact() {
         <meta name="twitter:description" content="무운 서비스에 대한 문의, 제안, 피드백을 남겨주세요. 더 나은 무료 사주·운세 서비스를 위해 소중한 의견을 기다립니다." />
         <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
       </Helmet>
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
+      <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-black/10">
         <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
           <Link href="/">
-            <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/10">
+            <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06]">
               <ChevronLeft className="h-6 w-6" />
             </Button>
           </Link>
-          <h1 className="text-xl font-bold text-white">문의하기</h1>
+          <h1 className="text-xl font-bold text-[#1a1a18]">문의하기</h1>
         </div>
       </header>
 
@@ -78,7 +78,7 @@ export default function Contact() {
           className="max-w-2xl mx-auto space-y-8"
         >
           <section className="text-center space-y-3 mb-12">
-            <h2 className="text-3xl font-bold text-white">문의하기</h2>
+            <h2 className="text-3xl font-bold text-[#1a1a18]">문의하기</h2>
             <p className="text-muted-foreground text-lg">
               무운 서비스에 대한 질문이나 피드백이 있으신가요?<br />
               언제든지 저희에게 연락주세요.
@@ -86,33 +86,33 @@ export default function Contact() {
           </section>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            <Card className="bg-card border-white/10">
+            <Card className="bg-card border-black/10">
               <CardContent className="p-6 space-y-3 text-center">
                 <Mail className="w-8 h-8 text-primary mx-auto" />
-                <h3 className="font-bold text-white">이메일</h3>
+                <h3 className="font-bold text-[#1a1a18]">이메일</h3>
                 <p className="text-sm text-muted-foreground">ykwillow1@naver.com</p>
               </CardContent>
             </Card>
 
-            <Card className="bg-card border-white/10">
+            <Card className="bg-card border-black/10">
               <CardContent className="p-6 space-y-3 text-center">
                 <Clock className="w-8 h-8 text-primary mx-auto" />
-                <h3 className="font-bold text-white">응답 시간</h3>
+                <h3 className="font-bold text-[#1a1a18]">응답 시간</h3>
                 <p className="text-sm text-muted-foreground">24시간 이내</p>
               </CardContent>
             </Card>
 
-            <Card className="bg-card border-white/10">
+            <Card className="bg-card border-black/10">
               <CardContent className="p-6 space-y-3 text-center">
                 <MessageSquare className="w-8 h-8 text-primary mx-auto" />
-                <h3 className="font-bold text-white">문의 유형</h3>
+                <h3 className="font-bold text-[#1a1a18]">문의 유형</h3>
                 <p className="text-sm text-muted-foreground">모든 문의 환영</p>
               </CardContent>
             </Card>
           </div>
 
-          <Card className="bg-card border-white/10">
-            <CardHeader className="border-b border-white/5 mb-6">
+          <Card className="bg-card border-black/10">
+            <CardHeader className="border-b border-black/10 mb-6">
               <CardTitle className="text-2xl text-primary">문의 양식</CardTitle>
             </CardHeader>
             <CardContent>
@@ -127,7 +127,7 @@ export default function Contact() {
                       value={formData.name}
                       onChange={handleChange}
                       required
-                      className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
+                      className="bg-black/[0.05] border-black/10 text-[#1a1a18] placeholder:text-[#999891]"
                     />
                   </div>
                   <div className="space-y-2">
@@ -140,7 +140,7 @@ export default function Contact() {
                       value={formData.email}
                       onChange={handleChange}
                       required
-                      className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
+                      className="bg-black/[0.05] border-black/10 text-[#1a1a18] placeholder:text-[#999891]"
                     />
                   </div>
                 </div>
@@ -154,7 +154,7 @@ export default function Contact() {
                     value={formData.subject}
                     onChange={handleChange}
                     required
-                    className="bg-white/5 border-white/10 text-white placeholder:text-white/30"
+                    className="bg-black/[0.05] border-black/10 text-[#1a1a18] placeholder:text-[#999891]"
                   />
                 </div>
 
@@ -168,7 +168,7 @@ export default function Contact() {
                     onChange={handleChange}
                     required
                     rows={6}
-                    className="w-full px-4 py-2 rounded-lg bg-white/5 border border-white/10 text-white placeholder:text-white/30 focus:border-primary/50 transition-all"
+                    className="w-full px-4 py-2 rounded-lg bg-black/[0.05] border border-black/10 text-[#1a1a18] placeholder:text-[#999891] focus:border-primary/50 transition-all"
                   />
                 </div>
 
@@ -185,20 +185,20 @@ export default function Contact() {
             </CardContent>
           </Card>
 
-          <Card className="bg-white/5 border-white/10">
+          <Card className="bg-black/[0.05] border-black/10">
             <CardContent className="p-6 space-y-4">
-              <h3 className="font-bold text-white text-lg">자주 묻는 질문</h3>
+              <h3 className="font-bold text-[#1a1a18] text-lg">자주 묻는 질문</h3>
               <div className="space-y-3 text-sm text-muted-foreground">
                 <div>
-                  <p className="font-semibold text-white mb-1">Q. 내 정보는 안전한가요?</p>
+                  <p className="font-semibold text-[#1a1a18] mb-1">Q. 내 정보는 안전한가요?</p>
                   <p>A. 네, 모든 정보는 브라우저에서만 처리되며 서버에 저장되지 않습니다.</p>
                 </div>
                 <div>
-                  <p className="font-semibold text-white mb-1">Q. 결과를 저장할 수 있나요?</p>
+                  <p className="font-semibold text-[#1a1a18] mb-1">Q. 결과를 저장할 수 있나요?</p>
                   <p>A. 결과 페이지에서 스크린샷을 촬영하거나 공유 기능을 이용할 수 있습니다.</p>
                 </div>
                 <div>
-                  <p className="font-semibold text-white mb-1">Q. 비용이 드나요?</p>
+                  <p className="font-semibold text-[#1a1a18] mb-1">Q. 비용이 드나요?</p>
                   <p>A. 아니요, 모든 서비스는 완전히 무료입니다.</p>
                 </div>
               </div>

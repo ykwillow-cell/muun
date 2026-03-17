@@ -162,14 +162,14 @@ export default function Psychology() {
         <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-pink-900/10 rounded-full blur-[120px]" />
       </div>
 
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
+      <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-black/10">
         <div className={`${commonMaxWidth} px-4 h-14 flex items-center`}>
           <Link href="/">
-            <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/10 min-w-[44px] min-h-[44px]">
+            <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
               <ChevronLeft className="h-6 w-6" />
             </Button>
           </Link>
-          <h1 className="text-lg md:text-xl font-bold text-white">무료 심리 테스트</h1>
+          <h1 className="text-lg md:text-xl font-bold text-[#1a1a18]">무료 심리 테스트</h1>
         </div>
       </header>
 
@@ -190,23 +190,23 @@ export default function Psychology() {
                     <BrainCircuit className="w-4 h-4 text-purple-400" />
                     <span className="text-[11px] md:text-xs font-bold tracking-widest text-purple-400 uppercase">심리 분석</span>
                   </div>
-                  <h2 className="text-2xl md:text-4xl font-bold tracking-tight text-white">나의 숨겨진 성격 찾기</h2>
+                  <h2 className="text-2xl md:text-4xl font-bold tracking-tight text-[#1a1a18]">나의 숨겨진 성격 찾기</h2>
                   <p className="text-sm md:text-base text-muted-foreground max-w-md mx-auto">
                     평소 무심코 하는 행동 속에 숨겨진 당신의 진짜 성격은?
                   </p>
                 </section>
 
-                <Card className="bg-white/5 border-white/10 overflow-hidden rounded-2xl">
+                <Card className="bg-black/[0.05] border-black/10 overflow-hidden rounded-2xl">
                   <div className="aspect-video bg-gradient-to-br from-purple-600/50 to-pink-600/50 flex items-center justify-center">
-                    <div className="w-20 h-20 md:w-24 md:h-24 rounded-3xl bg-white/10 backdrop-blur-xl flex items-center justify-center">
-                      <Sparkles className="w-10 h-10 md:w-12 md:h-12 text-white animate-pulse" />
+                    <div className="w-20 h-20 md:w-24 md:h-24 rounded-3xl bg-black/06 backdrop-blur-xl flex items-center justify-center">
+                      <Sparkles className="w-10 h-10 md:w-12 md:h-12 text-[#1a1a18] animate-pulse" />
                     </div>
                   </div>
                   <CardContent className="p-6 md:p-8 text-center space-y-4">
                     <div className="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center mx-auto">
                       {test.icon}
                     </div>
-                    <h3 className="text-lg md:text-xl font-bold text-white">{test.title}</h3>
+                    <h3 className="text-lg md:text-xl font-bold text-[#1a1a18]">{test.title}</h3>
                     <p className="text-sm md:text-base text-muted-foreground">{test.description}</p>
                     <Button 
                       onClick={handleStart}
@@ -233,7 +233,7 @@ export default function Psychology() {
                 {/* Progress */}
                 <div className="flex justify-between items-center text-sm text-muted-foreground">
                   <span className="text-xs md:text-sm">질문 {currentQuestion + 1} / {test.questions.length}</span>
-                  <div className="w-24 md:w-32 h-2 bg-white/10 rounded-full overflow-hidden">
+                  <div className="w-24 md:w-32 h-2 bg-black/06 rounded-full overflow-hidden">
                     <motion.div 
                       className="h-full bg-primary" 
                       initial={{ width: 0 }}
@@ -243,8 +243,8 @@ export default function Psychology() {
                   </div>
                 </div>
                 
-                <Card className="bg-white/5 border-white/10 rounded-2xl p-6 md:p-8">
-                  <h2 className="text-lg md:text-xl font-bold text-white leading-relaxed mb-6 md:mb-8">
+                <Card className="bg-black/[0.05] border-black/10 rounded-2xl p-6 md:p-8">
+                  <h2 className="text-lg md:text-xl font-bold text-[#1a1a18] leading-relaxed mb-6 md:mb-8">
                     {test.questions[currentQuestion].question}
                   </h2>
 
@@ -253,10 +253,10 @@ export default function Psychology() {
                       <Button
                         key={idx}
                         variant="outline"
-                        className="h-auto min-h-[56px] py-4 px-5 text-left justify-start bg-white/5 border-white/10 hover:bg-white/10 hover:border-primary/50 transition-all rounded-xl"
+                        className="h-auto min-h-[56px] py-4 px-5 text-left justify-start bg-black/[0.05] border-black/10 hover:bg-black/[0.06] hover:border-primary/50 transition-all rounded-xl"
                         onClick={() => handleAnswer(option.score)}
                       >
-                        <span className="text-sm md:text-base text-white">{option.text}</span>
+                        <span className="text-sm md:text-base text-[#1a1a18]">{option.text}</span>
                       </Button>
                     ))}
                   </div>
@@ -271,17 +271,17 @@ export default function Psychology() {
                 animate={{ opacity: 1, scale: 1 }}
                 className="space-y-6 md:space-y-8"
               >
-                <Card className="bg-white/5 border-white/10 overflow-hidden rounded-2xl">
+                <Card className="bg-black/[0.05] border-black/10 overflow-hidden rounded-2xl">
                   <div className="p-6 md:p-8 text-center space-y-6">
                     <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-primary/20 flex items-center justify-center mx-auto">
                       <Target className="w-8 h-8 md:w-10 md:h-10 text-primary" />
                     </div>
                     <div className="space-y-2">
                       <p className="text-sm md:text-base text-primary font-medium">당신의 심리 분석 결과</p>
-                      <h2 className="text-2xl md:text-3xl font-bold text-white">{finalResult.title}</h2>
+                      <h2 className="text-2xl md:text-3xl font-bold text-[#1a1a18]">{finalResult.title}</h2>
                     </div>
                     
-                    <div className="p-5 md:p-6 rounded-2xl bg-white/5 border border-white/10 text-left">
+                    <div className="p-5 md:p-6 rounded-2xl bg-black/[0.05] border border-black/10 text-left">
                       <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
                         {finalResult.desc}
                       </p>
@@ -290,7 +290,7 @@ export default function Psychology() {
                     <div className="grid grid-cols-2 gap-3 md:gap-4 pt-4">
                       <Button 
                         variant="outline" 
-                        className="gap-2 border-white/10 min-h-[48px] rounded-xl"
+                        className="gap-2 border-black/10 min-h-[48px] rounded-xl"
                         onClick={handleStart}
                       >
                         <RefreshCw className="w-4 h-4" /> 다시하기

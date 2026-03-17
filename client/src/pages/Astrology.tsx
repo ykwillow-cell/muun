@@ -121,7 +121,7 @@ const CitySelector = ({ value, onChange }: { value: string; onChange: (city: str
 	      <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full h-12 px-4 bg-white/5 border border-white/10 text-[#1a1a18] rounded-lg flex items-center justify-between hover:border-primary/30 transition-colors"
+        className="w-full h-12 px-4 bg-black/[0.05] border border-black/10 text-[#1a1a18] rounded-lg flex items-center justify-between hover:border-primary/30 transition-colors"
       >
         <div className="flex items-center gap-2">
           <MapPin className="w-4 h-4 text-primary" />
@@ -135,10 +135,10 @@ const CitySelector = ({ value, onChange }: { value: string; onChange: (city: str
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
 	          exit={{ opacity: 0, y: -10 }}
-	          className="absolute top-full left-0 right-0 mt-2 bg-slate-900 border border-white/10 rounded-lg shadow-[0_10px_40px_rgba(0,0,0,0.5)] z-[100] backdrop-blur-xl"
+	          className="absolute top-full left-0 right-0 mt-2 bg-white border border-black/10 rounded-lg shadow-[0_10px_40px_rgba(0,0,0,0.5)] z-[100] backdrop-blur-xl"
 	        >
-          <div className="p-3 border-b border-white/10">
-            <div className="flex items-center gap-2 bg-white/5 px-3 py-2 rounded-lg">
+          <div className="p-3 border-b border-black/10">
+            <div className="flex items-center gap-2 bg-black/[0.05] px-3 py-2 rounded-lg">
               <Search className="w-4 h-4 text-[#999891]" />
               <input
                 type="text"
@@ -159,7 +159,7 @@ const CitySelector = ({ value, onChange }: { value: string; onChange: (city: str
                   setIsOpen(false);
                   setSearchTerm("");
                 }}
-                className={`w-full px-4 py-3 text-left text-sm hover:bg-white/5 transition-colors flex items-center gap-3 ${
+                className={`w-full px-4 py-3 text-left text-sm hover:bg-black/[0.05] transition-colors flex items-center gap-3 ${
                   selectedCity?.name === city.name ? 'bg-primary/20 text-primary' : 'text-[#5a5a56]'
                 }`}
               >
@@ -275,10 +275,10 @@ const Astrology: React.FC = () => {
           <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-blue-900/10 rounded-full blur-[120px]" />
         </div>
 
-        <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
+        <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-black/10">
           <div className={`${commonMaxWidth} px-4 h-14 flex items-center`}>
             <Link href="/">
-              <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-white/10 min-w-[44px] min-h-[44px]">
+              <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
                 <ChevronLeft className="h-6 w-6" />
               </Button>
             </Link>
@@ -308,7 +308,7 @@ const Astrology: React.FC = () => {
               </p>
             </div>
 
-            <Card className="bg-white/5 border-white/10 shadow-2xl backdrop-blur-xl relative z-10 rounded-2xl">
+            <Card className="bg-black/[0.05] border-black/10 shadow-2xl backdrop-blur-xl relative z-10 rounded-2xl">
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary/50 via-purple-500/50 to-blue-500/50" />
               <CardHeader className="p-4 md:p-6">
                 <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-base md:text-lg">
@@ -327,7 +327,7 @@ const Astrology: React.FC = () => {
                         id="birthDate"
                         type="date"
                         {...form.register("birthDate")}
-                        className="bg-white/5 border-white/10 text-[#1a1a18] min-h-[48px] focus:ring-primary/50 rounded-xl"
+                        className="bg-black/[0.05] border-black/10 text-[#1a1a18] min-h-[48px] focus:ring-primary/50 rounded-xl"
                       />
                     </div>
                     <div className="space-y-2">
@@ -338,13 +338,13 @@ const Astrology: React.FC = () => {
                           type="time"
                           {...form.register("birthTime")}
                           disabled={form.watch("birthTimeUnknown")}
-                          className={`bg-white/5 border-white/10 text-[#1a1a18] min-h-[48px] focus:ring-primary/50 rounded-xl ${form.watch("birthTimeUnknown") ? 'opacity-40' : ''}`}
+                          className={`bg-black/[0.05] border-black/10 text-[#1a1a18] min-h-[48px] focus:ring-primary/50 rounded-xl ${form.watch("birthTimeUnknown") ? 'opacity-40' : ''}`}
                         />
                         <label className="flex items-center gap-1.5 cursor-pointer">
                           <input
                             type="checkbox"
                             {...form.register("birthTimeUnknown")}
-                            className="w-3.5 h-3.5 rounded border-white/20 bg-white/5 accent-primary"
+                            className="w-3.5 h-3.5 rounded border-black/10 bg-black/[0.05] accent-primary"
                           />
                           <span className="text-[11px] text-[#5a5a56]">모름</span>
                         </label>
@@ -421,10 +421,10 @@ const Astrology: React.FC = () => {
         <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-blue-900/10 rounded-full blur-[120px]" />
       </div>
 
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
+      <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-black/10">
         <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
-            <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-white/10 min-w-[44px] min-h-[44px]" onClick={() => setResult(null)}>
+            <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]" onClick={() => setResult(null)}>
               <ChevronLeft className="h-6 w-6" />
             </Button>
             <h1 className="text-lg md:text-xl font-bold text-[#1a1a18]">분석 결과</h1>
@@ -442,7 +442,7 @@ const Astrology: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* 왼쪽: 시각적 차트 */}
           <div className="lg:col-span-5 space-y-6">
-            <Card className="bg-card/30 border-white/10 backdrop-blur-xl p-6 sticky top-24">
+            <Card className="bg-card/30 border-black/10 backdrop-blur-xl p-6 sticky top-24">
               <div className="text-center mb-6">
                 <h3 className="text-lg font-bold text-[#1a1a18] flex items-center justify-center gap-2">
                   <Globe className="w-4 h-4 text-primary" />
@@ -459,7 +459,7 @@ const Astrology: React.FC = () => {
               <AstrologyChart planets={result.planets} />
               <div className="mt-8 grid grid-cols-2 gap-2">
                 {result.planets.slice(0, 4).map((p: any) => (
-                  <div key={p.en} className="flex items-center gap-2 bg-white/5 p-2 rounded-lg border border-white/5">
+                  <div key={p.en} className="flex items-center gap-2 bg-black/[0.05] p-2 rounded-lg border border-black/10">
                     <span className="text-lg">{p.icon}</span>
                     <div className="text-[10px]">
                       <div className="text-[#999891]">{p.name}</div>
@@ -507,10 +507,10 @@ const Astrology: React.FC = () => {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: i * 0.1 }}
                     >
-                      <Card className="bg-card/50 border-white/10 hover:border-primary/30 transition-colors overflow-hidden group">
-                        <CardHeader className="p-4 bg-white/5 flex flex-row items-center justify-between">
+                      <Card className="bg-card/50 border-black/10 hover:border-primary/30 transition-colors overflow-hidden group">
+                        <CardHeader className="p-4 bg-black/[0.05] flex flex-row items-center justify-between">
                           <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-background flex items-center justify-center text-xl border border-white/10 group-hover:scale-110 transition-transform">
+                            <div className="w-10 h-10 rounded-full bg-background flex items-center justify-center text-xl border border-black/10 group-hover:scale-110 transition-transform">
                               {p.icon}
                             </div>
                             <div>

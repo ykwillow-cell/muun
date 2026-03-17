@@ -27,7 +27,7 @@ export default function DictionaryDetail() {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
-          <p className="text-slate-400 text-lg">불러오는 중...</p>
+          <p className="text-[#999891] text-lg">불러오는 중...</p>
         </div>
       </div>
     );
@@ -83,37 +83,37 @@ export default function DictionaryDetail() {
             <div className="inline-block px-3 py-1 bg-purple-600/20 border border-purple-500/30 rounded-full text-purple-400 text-xs font-semibold mb-4">
               {entry.categoryLabel}
             </div>
-            <h1 className="text-4xl font-bold text-white mb-2">{entry.title}</h1>
-            {entry.subtitle && <p className="text-slate-400 text-lg">{entry.subtitle}</p>}
+            <h1 className="text-4xl font-bold text-[#1a1a18] mb-2">{entry.title}</h1>
+            {entry.subtitle && <p className="text-[#999891] text-lg">{entry.subtitle}</p>}
           </div>
 
           {/* 콘텐츠 */}
           <div className="space-y-8">
             {/* 원래 의미 */}
-            <section className="bg-slate-900/50 border border-slate-800 rounded-lg p-6">
+            <section className="bg-[#f5f4ef] border border-black/10 rounded-lg p-6">
               <h2 className="text-lg font-semibold text-purple-400 mb-4">원래 의미</h2>
-              <p className="text-slate-300 leading-relaxed text-base">{entry.originalMeaning}</p>
+              <p className="text-[#1a1a18] leading-relaxed text-base">{entry.originalMeaning}</p>
             </section>
 
             {/* 현대적 해석 */}
-            <section className="bg-slate-900/50 border border-slate-800 rounded-lg p-6">
+            <section className="bg-[#f5f4ef] border border-black/10 rounded-lg p-6">
               <h2 className="text-lg font-semibold text-purple-400 mb-4">현대적 해석</h2>
-              <p className="text-slate-300 leading-relaxed text-base">{entry.modernInterpretation}</p>
+              <p className="text-[#1a1a18] leading-relaxed text-base">{entry.modernInterpretation}</p>
             </section>
 
             {/* 무운의 조언 */}
             <section className="bg-gradient-to-r from-purple-600/10 to-blue-600/10 border border-purple-500/20 rounded-lg p-6">
               <h2 className="text-lg font-semibold text-purple-400 mb-4">💡 무운의 조언</h2>
-              <p className="text-slate-200 leading-relaxed text-base">{entry.muunAdvice}</p>
+              <p className="text-[#1a1a18] leading-relaxed text-base">{entry.muunAdvice}</p>
             </section>
 
             {/* 관련 키워드 */}
             {entry.tags && entry.tags.length > 0 && (
               <section>
-                <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wide mb-3">관련 키워드</h3>
+                <h3 className="text-sm font-semibold text-[#999891] uppercase tracking-wide mb-3">관련 키워드</h3>
                 <div className="flex flex-wrap gap-2">
                   {entry.tags.map((tag) => (
-                    <span key={tag} className="px-3 py-1 bg-slate-800 border border-slate-700 rounded-full text-sm text-slate-300">
+                    <span key={tag} className="px-3 py-1 bg-[#f5f4ef] border border-black/10 rounded-full text-sm text-[#5a5a56]">
                       {tag}
                     </span>
                   ))}
@@ -129,58 +129,58 @@ export default function DictionaryDetail() {
           />
 
           {/* 관련 서비스 링크 */}
-          <div className="mt-12 pt-8 border-t border-slate-800">
-            <h3 className="text-lg font-semibold text-white mb-6">관련 서비스 둘러보기</h3>
+          <div className="mt-12 pt-8 border-t border-black/10">
+            <h3 className="text-lg font-semibold text-[#1a1a18] mb-6">관련 서비스 둘러보기</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <button
                 onClick={() => navigate('/yearly-fortune')}
-                className="p-4 bg-slate-900/50 border border-slate-800 rounded-lg hover:border-purple-500 transition group"
+                className="p-4 bg-[#f5f4ef] border border-black/10 rounded-lg hover:border-black/20 transition group"
               >
                 <div className="flex items-center justify-between">
                   <div className="text-left">
-                    <h4 className="font-semibold text-white group-hover:text-purple-400 transition">신년운세</h4>
-                    <p className="text-sm text-slate-400">2026년 총운 확인</p>
+                    <h4 className="font-semibold text-[#1a1a18] group-hover:text-purple-400 transition">신년운세</h4>
+                    <p className="text-sm text-[#999891]">2026년 총운 확인</p>
                   </div>
-                  <ArrowRight className="w-5 h-5 text-slate-600 group-hover:text-purple-400 transition" />
+                  <ArrowRight className="w-5 h-5 text-[#5a5a56] group-hover:text-[#1a1a18] transition" />
                 </div>
               </button>
 
               <button
                 onClick={() => navigate('/lifelong-saju')}
-                className="p-4 bg-slate-900/50 border border-slate-800 rounded-lg hover:border-purple-500 transition group"
+                className="p-4 bg-[#f5f4ef] border border-black/10 rounded-lg hover:border-black/20 transition group"
               >
                 <div className="flex items-center justify-between">
                   <div className="text-left">
-                    <h4 className="font-semibold text-white group-hover:text-purple-400 transition">평생사주</h4>
-                    <p className="text-sm text-slate-400">타고난 기질과 운명</p>
+                    <h4 className="font-semibold text-[#1a1a18] group-hover:text-purple-400 transition">평생사주</h4>
+                    <p className="text-sm text-[#999891]">타고난 기질과 운명</p>
                   </div>
-                  <ArrowRight className="w-5 h-5 text-slate-600 group-hover:text-purple-400 transition" />
+                  <ArrowRight className="w-5 h-5 text-[#5a5a56] group-hover:text-[#1a1a18] transition" />
                 </div>
               </button>
 
               <button
                 onClick={() => navigate('/compatibility')}
-                className="p-4 bg-slate-900/50 border border-slate-800 rounded-lg hover:border-purple-500 transition group"
+                className="p-4 bg-[#f5f4ef] border border-black/10 rounded-lg hover:border-black/20 transition group"
               >
                 <div className="flex items-center justify-between">
                   <div className="text-left">
-                    <h4 className="font-semibold text-white group-hover:text-purple-400 transition">궁합</h4>
-                    <p className="text-sm text-slate-400">찰떡궁합 확인</p>
+                    <h4 className="font-semibold text-[#1a1a18] group-hover:text-purple-400 transition">궁합</h4>
+                    <p className="text-sm text-[#999891]">찰떡궁합 확인</p>
                   </div>
-                  <ArrowRight className="w-5 h-5 text-slate-600 group-hover:text-purple-400 transition" />
+                  <ArrowRight className="w-5 h-5 text-[#5a5a56] group-hover:text-[#1a1a18] transition" />
                 </div>
               </button>
 
               <button
                 onClick={() => navigate('/tarot')}
-                className="p-4 bg-slate-900/50 border border-slate-800 rounded-lg hover:border-purple-500 transition group"
+                className="p-4 bg-[#f5f4ef] border border-black/10 rounded-lg hover:border-black/20 transition group"
               >
                 <div className="flex items-center justify-between">
                   <div className="text-left">
-                    <h4 className="font-semibold text-white group-hover:text-purple-400 transition">타로</h4>
-                    <p className="text-sm text-slate-400">카드가 전하는 인사이트</p>
+                    <h4 className="font-semibold text-[#1a1a18] group-hover:text-purple-400 transition">타로</h4>
+                    <p className="text-sm text-[#999891]">카드가 전하는 인사이트</p>
                   </div>
-                  <ArrowRight className="w-5 h-5 text-slate-600 group-hover:text-purple-400 transition" />
+                  <ArrowRight className="w-5 h-5 text-[#5a5a56] group-hover:text-[#1a1a18] transition" />
                 </div>
               </button>
             </div>

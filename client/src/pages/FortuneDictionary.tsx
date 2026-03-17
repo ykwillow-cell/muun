@@ -73,21 +73,21 @@ export default function FortuneDictionary() {
       <div className="max-w-6xl mx-auto">
         {/* 헤더 */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">무운 운세 사전</h1>
-          <p className="text-slate-300 text-lg">
+          <h1 className="text-4xl font-bold text-[#1a1a18] mb-2">무운 운세 사전</h1>
+          <p className="text-[#1a1a18] text-lg">
             사주 명리학의 어려운 용어들을 쉽고 따뜻하게 설명해드립니다.
           </p>
         </div>
         {/* 검색창 */}
         <div className="mb-8">
           <div className="relative">
-            <Search className="absolute left-4 top-3.5 w-5 h-5 text-slate-400" />
+            <Search className="absolute left-4 top-3.5 w-5 h-5 text-[#999891]" />
             <input
               type="text"
               placeholder="용어를 검색해보세요 (예: 역마살, 재성, 대운)"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 bg-slate-700 border border-slate-600 rounded-lg text-white placeholder-slate-400 focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition"
+              className="w-full pl-12 pr-4 py-3 bg-white border border-black/10 rounded-lg text-[#1a1a18] placeholder-[#999891] focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition"
             />
           </div>
         </div>
@@ -98,8 +98,8 @@ export default function FortuneDictionary() {
               onClick={() => setSelectedCategory(null)}
               className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold border transition-all min-h-[40px] active:scale-[0.97] ${
                 selectedCategory === null
-                  ? 'bg-primary border-primary text-white shadow-md shadow-primary/20'
-                  : 'bg-white/5 border-white/10 text-slate-400 hover:bg-white/10 hover:text-white hover:border-white/20'
+                  ? 'bg-primary border-primary text-[#1a1a18] shadow-md shadow-primary/20'
+                  : 'bg-black/[0.05] border-black/10 text-[#999891] hover:bg-black/[0.06] hover:text-[#1a1a18] hover:border-black/10'
               }`}
             >
               전체
@@ -110,8 +110,8 @@ export default function FortuneDictionary() {
                 onClick={() => setSelectedCategory(category.id)}
                 className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold border transition-all min-h-[40px] active:scale-[0.97] ${
                   selectedCategory === category.id
-                    ? 'bg-primary border-primary text-white shadow-md shadow-primary/20'
-                    : 'bg-white/5 border-white/10 text-slate-400 hover:bg-white/10 hover:text-white hover:border-white/20'
+                    ? 'bg-primary border-primary text-[#1a1a18] shadow-md shadow-primary/20'
+                    : 'bg-black/[0.05] border-black/10 text-[#999891] hover:bg-black/[0.06] hover:text-[#1a1a18] hover:border-black/10'
                 }`}
               >
                 {category.label}
@@ -123,7 +123,7 @@ export default function FortuneDictionary() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {loading ? (
             <div className="col-span-full text-center py-12">
-              <p className="text-slate-400 text-lg">사전 데이터를 불러오는 중...</p>
+              <p className="text-[#999891] text-lg">사전 데이터를 불러오는 중...</p>
             </div>
           ) : filteredEntries.length > 0 ? (
             filteredEntries.map((entry, idx) => (
@@ -135,7 +135,7 @@ export default function FortuneDictionary() {
                 onClick={() => {
                   navigate(`/dictionary/${entry.slug}`);
                 }}
-                className="w-full text-left p-5 bg-slate-800/50 border border-slate-700 rounded-xl hover:border-purple-500/50 hover:bg-slate-800 transition-all group cursor-pointer"
+                className="w-full text-left p-5 bg-white border border-black/10 rounded-xl hover:border-black/20 hover:bg-[#f5f4ef] transition-all group cursor-pointer"
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
@@ -144,47 +144,47 @@ export default function FortuneDictionary() {
                         {entry.categoryLabel}
                       </span>
                     </div>
-                    <h3 className="text-base font-bold text-white group-hover:text-primary transition">
+                    <h3 className="text-base font-bold text-[#1a1a18] group-hover:text-primary transition">
                       {entry.title}
                     </h3>
                     {entry.subtitle && (
-                      <p className="text-xs text-slate-400 mt-1">{entry.subtitle}</p>
+                      <p className="text-xs text-[#999891] mt-1">{entry.subtitle}</p>
                     )}
-                    <p className="text-sm text-slate-500 mt-2 line-clamp-2 leading-relaxed">
+                    <p className="text-sm text-[#5a5a56] mt-2 line-clamp-2 leading-relaxed">
                       {entry.summary}
                     </p>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-slate-500 group-hover:text-primary transition mt-0.5 flex-shrink-0" />
+                  <ChevronRight className="w-5 h-5 text-[#5a5a56] group-hover:text-primary transition mt-0.5 flex-shrink-0" />
                 </div>
               </motion.button>
             ))
           ) : (
             <div className="col-span-full text-center py-12">
-              <p className="text-slate-400 text-lg">검색 결과가 없습니다.</p>
-              <p className="text-slate-500 text-sm mt-2">다른 키워드로 검색해보세요.</p>
+              <p className="text-[#999891] text-lg">검색 결과가 없습니다.</p>
+              <p className="text-[#5a5a56] text-sm mt-2">다른 키워드로 검색해보세요.</p>
             </div>
           )}
         </div>
         {/* 상세 보기 모달 */}
         {selectedEntry && (
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-            <div className="bg-slate-900 rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-slate-700">
+            <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-black/10">
               {/* 모달 헤더 */}
-              <div className="sticky top-0 bg-slate-900 border-b border-slate-700 p-6 flex items-start justify-between">
+              <div className="sticky top-0 bg-white border-b border-black/10 p-6 flex items-start justify-between">
                 <div>
                   <div className="inline-block px-3 py-1 bg-purple-600/20 border border-purple-500/30 rounded-full text-purple-400 text-xs font-semibold mb-3">
                     {selectedEntry.categoryLabel}
                   </div>
-                  <h2 className="text-2xl font-bold text-white">
+                  <h2 className="text-2xl font-bold text-[#1a1a18]">
                     {selectedEntry.title}
                   </h2>
                   {selectedEntry.subtitle && (
-                    <p className="text-slate-400 text-sm mt-2">{selectedEntry.subtitle}</p>
+                    <p className="text-[#999891] text-sm mt-2">{selectedEntry.subtitle}</p>
                   )}
                 </div>
                 <button
                   onClick={() => setSelectedEntry(null)}
-                  className="text-slate-400 hover:text-white transition text-2xl leading-none"
+                  className="text-[#999891] hover:text-[#1a1a18] transition text-2xl leading-none"
                 >
                   ✕
                 </button>
@@ -196,7 +196,7 @@ export default function FortuneDictionary() {
                   <h3 className="text-sm font-semibold text-purple-400 uppercase tracking-wide mb-2">
                     원래 의미
                   </h3>
-                  <p className="text-slate-300 leading-relaxed">
+                  <p className="text-[#1a1a18] leading-relaxed">
                     {selectedEntry.originalMeaning}
                   </p>
                 </div>
@@ -205,7 +205,7 @@ export default function FortuneDictionary() {
                   <h3 className="text-sm font-semibold text-purple-400 uppercase tracking-wide mb-2">
                     현대적 재해석 (무운의 시선)
                   </h3>
-                  <p className="text-slate-300 leading-relaxed">
+                  <p className="text-[#1a1a18] leading-relaxed">
                     {selectedEntry.modernInterpretation}
                   </p>
                 </div>
@@ -214,21 +214,21 @@ export default function FortuneDictionary() {
                   <h3 className="text-sm font-semibold text-purple-400 uppercase tracking-wide mb-2">
                     💡 무운의 따뜻한 한마디
                   </h3>
-                  <p className="text-slate-200 leading-relaxed">
+                  <p className="text-[#1a1a18] leading-relaxed">
                     {selectedEntry.muunAdvice}
                   </p>
                 </div>
                 {/* 태그 */}
                 {selectedEntry.tags && selectedEntry.tags.length > 0 && (
                   <div>
-                    <h3 className="text-sm font-semibold text-slate-400 uppercase tracking-wide mb-2">
+                    <h3 className="text-sm font-semibold text-[#999891] uppercase tracking-wide mb-2">
                       관련 키워드
                     </h3>
                     <div className="flex flex-wrap gap-2">
                       {selectedEntry.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="px-3 py-1 bg-slate-700 text-slate-300 rounded-full text-xs hover:bg-slate-600 cursor-pointer transition"
+                          className="px-3 py-1 bg-[#f5f4ef] text-[#5a5a56] rounded-full text-xs hover:bg-[#ebe9e3] cursor-pointer transition"
                         >
                           #{tag}
                         </span>
@@ -238,10 +238,10 @@ export default function FortuneDictionary() {
                 )}
               </div>
               {/* 모달 푸터 */}
-              <div className="sticky bottom-0 bg-slate-800 border-t border-slate-700 p-4 flex justify-end">
+              <div className="sticky bottom-0 bg-[#f5f4ef] border-t border-black/10 p-4 flex justify-end">
                 <button
                   onClick={() => setSelectedEntry(null)}
-                  className="px-6 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition font-medium"
+                  className="px-6 py-2 bg-[#f5f4ef] hover:bg-[#ebe9e3] text-[#1a1a18] rounded-lg transition font-medium"
                 >
                   닫기
                 </button>

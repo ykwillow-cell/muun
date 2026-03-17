@@ -15,9 +15,9 @@ const Footer: React.FC = () => {
               <path d="M3 9h18"/>
               <path d="M3 15h18"/>
             </svg>
-            <span className="text-[15px] font-bold text-white tracking-tight">MUUN</span>
+            <span className="text-[15px] font-bold text-[#1a1a18] tracking-tight">MUUN</span>
           </div>
-          <p className="text-[11px] text-white/30 leading-relaxed">
+          <p className="text-[11px] text-[#999891] leading-relaxed">
             회원가입 없이, 개인정보 저장 없이<br />
             100% 무료 사주·운세 서비스
           </p>
@@ -26,7 +26,7 @@ const Footer: React.FC = () => {
         {/* 링크 그리드 */}
         <div className="grid grid-cols-3 gap-x-4 gap-y-5 mb-6">
           <div>
-            <p className="text-[10px] font-bold tracking-[0.08em] uppercase text-white/25 mb-2.5">운세 서비스</p>
+            <p className="text-[10px] font-bold tracking-[0.08em] uppercase text-[#1a1a18]/25 mb-2.5">운세 서비스</p>
             <ul className="space-y-2">
               {[
                 { href: '/yearly-fortune', label: '신년운세' },
@@ -38,14 +38,14 @@ const Footer: React.FC = () => {
                 { href: '/tarot', label: '타로' },
               ].map(({ href, label }) => (
                 <li key={href}>
-                  <Link href={href} className="text-[12px] text-white/40 hover:text-white/70 transition-colors">{label}</Link>
+                  <Link href={href} className="text-[12px] text-[#999891] hover:text-[#5a5a56] transition-colors">{label}</Link>
                 </li>
               ))}
             </ul>
           </div>
 
           <div>
-            <p className="text-[10px] font-bold tracking-[0.08em] uppercase text-white/25 mb-2.5">더 알아보기</p>
+            <p className="text-[10px] font-bold tracking-[0.08em] uppercase text-[#1a1a18]/25 mb-2.5">더 알아보기</p>
             <ul className="space-y-2">
               {[
                 { href: '/dream', label: '꿈해몽' },
@@ -57,14 +57,14 @@ const Footer: React.FC = () => {
                 { href: '/family-saju', label: '가족사주' },
               ].map(({ href, label }) => (
                 <li key={href}>
-                  <Link href={href} className="text-[12px] text-white/40 hover:text-white/70 transition-colors">{label}</Link>
+                  <Link href={href} className="text-[12px] text-[#999891] hover:text-[#5a5a56] transition-colors">{label}</Link>
                 </li>
               ))}
             </ul>
           </div>
 
           <div>
-            <p className="text-[10px] font-bold tracking-[0.08em] uppercase text-white/25 mb-2.5">서비스 안내</p>
+            <p className="text-[10px] font-bold tracking-[0.08em] uppercase text-[#1a1a18]/25 mb-2.5">서비스 안내</p>
             <ul className="space-y-2">
               {[
                 { href: '/about', label: '무운 소개' },
@@ -73,7 +73,7 @@ const Footer: React.FC = () => {
                 { href: '/terms', label: '이용약관' },
               ].map(({ href, label }) => (
                 <li key={href}>
-                  <Link href={href} className="text-[12px] text-white/40 hover:text-white/70 transition-colors">{label}</Link>
+                  <Link href={href} className="text-[12px] text-[#999891] hover:text-[#5a5a56] transition-colors">{label}</Link>
                 </li>
               ))}
             </ul>
@@ -82,7 +82,7 @@ const Footer: React.FC = () => {
 
         {/* SEO 보강 텍스트 */}
         <div className="border-t border-white/[0.07] pt-4 mb-4">
-          <p className="text-[10px] text-white/20 leading-relaxed">
+          <p className="text-[10px] text-[#1a1a18]/20 leading-relaxed">
             무운(MuUn)은 회원가입 없이, 개인정보를 저장하지 않는 100% 무료 사주·운세 서비스입니다.
             무료 사주풀이, 2026년 신년운세, 토정비결, 궁합, 타로, 만세력, 꿈해몽, 심리테스트 등
             다양한 운명학 콘텐츠를 제공합니다.
@@ -91,7 +91,7 @@ const Footer: React.FC = () => {
 
         {/* 카피라이트 */}
         <div className="text-center">
-          <p className="text-[11px] text-white/20">
+          <p className="text-[11px] text-[#1a1a18]/20">
             © {new Date().getFullYear()} MUUN Celestial Services. All rights reserved.
           </p>
         </div>

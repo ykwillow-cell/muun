@@ -3,6 +3,7 @@ import { Link } from "wouter";
 interface ServiceItem {
   emoji: string;
   label: string;
+  sub?: string;
   href: string;
   isNew?: boolean;
   isHot?: boolean;
@@ -10,10 +11,10 @@ interface ServiceItem {
 
 /* 항목 3: 인기 서비스 4개, 순서: 궁합 → 평생사주 → 점성술 → 타로 */
 const POPULAR_SERVICES: ServiceItem[] = [
-  { emoji: "💑", label: "궁합",    href: "/compatibility" },
-  { emoji: "✨", label: "평생사주", href: "/lifelong-saju" },
-  { emoji: "🔮", label: "점성술",  href: "/astrology" },
-  { emoji: "🃏", label: "타로",    href: "/tarot" },
+  { emoji: "💑", label: "궁합",    sub: "사주 오행 조화 분석",       href: "/compatibility" },
+  { emoji: "✨", label: "평생사주", sub: "타고난 기질과 운의 흐름",   href: "/lifelong-saju" },
+  { emoji: "🔮", label: "점성술",  sub: "네이탈 차트 분석",          href: "/astrology" },
+  { emoji: "🃏", label: "타로",    sub: "오늘의 카드 한 장",         href: "/tarot" },
 ];
 
 /* 더보기 7개 — 항상 노출 */
@@ -36,6 +37,7 @@ function ServiceCard({ item }: { item: ServiceItem }) {
     >
       <span className="mu-service-card__icon" aria-hidden="true">{item.emoji}</span>
       <span className="mu-service-card__label">{item.label}</span>
+      {item.sub && <span className="mu-service-card__sub">{item.sub}</span>}
       {item.isNew && (
         <span className="mu-service-card__badge mu-service-card__badge--new" aria-label="신규">N</span>
       )}
@@ -111,10 +113,10 @@ export function ServiceGrid() {
           gap: 8px;
           margin-bottom: 12px;
         }
-        /* 더보기 — 2×3 (6칸) + 나머지 */
+        /* 더보기 — 2열 고정 */
         .mu-service-grid__more {
           display: grid;
-          grid-template-columns: repeat(3, 1fr);
+          grid-template-columns: repeat(2, 1fr);
           gap: 8px;
           margin-bottom: 0;
         }
@@ -147,6 +149,13 @@ export function ServiceGrid() {
           font-weight: 500;
           color: #1a1a18;
           text-align: center;
+          white-space: nowrap;
+        }
+        .mu-service-card__sub {
+          font-size: 10px;
+          color: #5a5a56;
+          text-align: center;
+          line-height: 1.3;
           white-space: nowrap;
         }
         .mu-service-card__badge {

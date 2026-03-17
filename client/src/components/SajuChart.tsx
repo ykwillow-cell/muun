@@ -11,7 +11,7 @@ const ELEMENT_BG: Record<string, string> = {
   '木': 'bg-green-500/15 border-green-500/30',
   '火': 'bg-red-500/15 border-red-500/30',
   '土': 'bg-yellow-500/15 border-yellow-500/30',
-  '金': 'bg-slate-300/15 border-slate-300/30',
+  '金': 'bg-[#6a6a66]/15 border-[#6a6a66]/30',
   '水': 'bg-blue-500/15 border-blue-500/30',
 };
 
@@ -19,7 +19,7 @@ const ELEMENT_TEXT: Record<string, string> = {
   '木': 'text-green-400',
   '火': 'text-red-400',
   '土': 'text-yellow-400',
-  '金': 'text-slate-200',
+  '金': 'text-[#6a6a66]',
   '水': 'text-blue-400',
 };
 
@@ -49,7 +49,7 @@ export default function SajuChart({ result, theme = 'yellow' }: SajuChartProps) 
                     transition={{ delay: i * 0.1 }}
                   >
                     <span className={`text-xs font-bold ${accentClass}`}>{p.label}</span>
-                    <p className="text-[10px] text-white/40 mt-0.5">{p.desc}</p>
+                    <p className="text-[10px] text-[#999891] mt-0.5">{p.desc}</p>
                   </motion.div>
                 </th>
               ))}
@@ -64,7 +64,7 @@ export default function SajuChart({ result, theme = 'yellow' }: SajuChartProps) 
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.3 + i * 0.1 }}
-                    className="text-[10px] text-white/50 font-medium"
+                    className="text-[10px] text-[#999891] font-medium"
                   >
                     {p.pillar.tenGod ? TEN_GOD_MEANINGS[p.pillar.tenGod]?.name || p.pillar.tenGod : '일간'}
                   </motion.div>
@@ -92,9 +92,9 @@ export default function SajuChart({ result, theme = 'yellow' }: SajuChartProps) 
                       <div className={`text-2xl md:text-3xl font-bold ${ELEMENT_TEXT[elem]}`}>
                         {p.pillar.stem}
                       </div>
-                      <div className="text-xs text-white/70 mt-1">
+                      <div className="text-xs text-[#5a5a56] mt-1">
                         {STEM_READINGS[p.pillar.stem]}
-                        <span className="text-[10px] text-white/40 ml-1">
+                        <span className="text-[10px] text-[#999891] ml-1">
                           ({isYang ? '양' : '음'}{ELEMENT_READINGS[elem]})
                         </span>
                       </div>
@@ -119,9 +119,9 @@ export default function SajuChart({ result, theme = 'yellow' }: SajuChartProps) 
                       <div className={`text-2xl md:text-3xl font-bold ${ELEMENT_TEXT[elem]}`}>
                         {p.pillar.branch}
                       </div>
-                      <div className="text-xs text-white/70 mt-1">
+                      <div className="text-xs text-[#5a5a56] mt-1">
                         {BRANCH_READINGS[p.pillar.branch]}
-                        <span className="text-[10px] text-white/40 ml-1">
+                        <span className="text-[10px] text-[#999891] ml-1">
                           ({isYang ? '양' : '음'}{ELEMENT_READINGS[elem]})
                         </span>
                       </div>
@@ -146,7 +146,7 @@ export default function SajuChart({ result, theme = 'yellow' }: SajuChartProps) 
                       <span className={`text-[10px] font-medium ${ELEMENT_TEXT[stemElem]}`}>
                         {withReading(stemElem)}
                       </span>
-                      <span className="text-[10px] text-white/30">/</span>
+                      <span className="text-[10px] text-[#999891]">/</span>
                       <span className={`text-[10px] font-medium ${ELEMENT_TEXT[branchElem]}`}>
                         {withReading(branchElem)}
                       </span>
@@ -166,14 +166,14 @@ export default function SajuChart({ result, theme = 'yellow' }: SajuChartProps) 
         transition={{ delay: 0.8 }}
         className={`${accentBg} rounded-xl p-3 text-center`}
       >
-        <p className="text-xs text-white/60 mb-1">사주팔자 간지(干支)</p>
-        <p className="text-sm font-bold text-white tracking-wider">
+        <p className="text-xs text-[#5a5a56] mb-1">사주팔자 간지(干支)</p>
+        <p className="text-sm font-bold text-[#1a1a18] tracking-wider">
           {pillarReading(result.yearPillar.stem, result.yearPillar.branch)}년{' '}
           {pillarReading(result.monthPillar.stem, result.monthPillar.branch)}월{' '}
           {pillarReading(result.dayPillar.stem, result.dayPillar.branch)}일{' '}
           {pillarReading(result.hourPillar.stem, result.hourPillar.branch)}시
         </p>
-        <p className="text-[11px] text-white/50 mt-1">
+        <p className="text-[11px] text-[#999891] mt-1">
           일간(日干): {withReading(result.dayPillar.stem)} — {STEM_YIN_YANG[result.dayPillar.stem] ? '양' : '음'}의 {ELEMENT_READINGS[STEM_ELEMENTS[result.dayPillar.stem]]}({STEM_ELEMENTS[result.dayPillar.stem]}) 기운
         </p>
       </motion.div>

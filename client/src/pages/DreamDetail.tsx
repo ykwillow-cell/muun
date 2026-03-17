@@ -67,7 +67,7 @@ export default function DreamDetail() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background text-white flex items-center justify-center">
+      <div className="min-h-screen bg-background text-[#1a1a18] flex items-center justify-center">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
     );
@@ -100,7 +100,7 @@ export default function DreamDetail() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-white">
+    <div className="min-h-screen bg-background text-[#1a1a18]">
       <Helmet>
         <title>{metaTitle}</title>
         <meta name="description" content={metaDescription} />
@@ -143,18 +143,18 @@ export default function DreamDetail() {
       </Helmet>
 
       {/* 헤더 */}
-      <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-white/5">
+      <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-black/10">
         <div className="max-w-3xl mx-auto px-4 h-14 flex items-center justify-between">
           <Link href="/dream">
-            <Button variant="ghost" size="icon" className="text-white hover:bg-white/10 min-w-[44px] min-h-[44px]">
+            <Button variant="ghost" size="icon" className="text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
               <ChevronLeft className="w-5 h-5" />
             </Button>
           </Link>
-          <span className="text-sm font-semibold text-white/60">꿈해몽</span>
+          <span className="text-sm font-semibold text-[#5a5a56]">꿈해몽</span>
           <Button
             variant="ghost"
             size="icon"
-            className="text-white hover:bg-white/10 min-w-[44px] min-h-[44px]"
+            className="text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]"
             onClick={handleShare}
           >
             <Share2 className="w-5 h-5" />
@@ -185,7 +185,7 @@ export default function DreamDetail() {
                   <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    className="absolute -top-2 -right-2 bg-primary text-[10px] font-bold px-2 py-1 rounded-full text-white shadow-lg"
+                    className="absolute -top-2 -right-2 bg-primary text-[10px] font-bold px-2 py-1 rounded-full text-[#1a1a18] shadow-lg"
                   >
                     {dream.score}점
                   </motion.div>
@@ -195,16 +195,16 @@ export default function DreamDetail() {
                 <span className={`text-sm font-bold tracking-widest uppercase ${grade.color}`}>
                   {grade.label}
                 </span>
-                <CardTitle className="text-3xl md:text-4xl font-bold text-white">
+                <CardTitle className="text-3xl md:text-4xl font-bold text-[#1a1a18]">
                   {dream.keyword}
                 </CardTitle>
               </div>
               <div className="flex justify-center gap-2 mt-3">
-                <span className={`px-3 py-1 rounded-full text-xs font-semibold ${DREAM_CATEGORIES[dream.category]?.color || 'bg-white/10 text-white/70'}`}>
+                <span className={`px-3 py-1 rounded-full text-xs font-semibold ${DREAM_CATEGORIES[dream.category]?.color || 'bg-black/06 text-[#5a5a56]'}`}>
                   {categoryLabel}
                 </span>
               </div>
-              <p className="text-slate-400 text-sm mt-4 max-w-xs mx-auto">
+              <p className="text-[#999891] text-sm mt-4 max-w-xs mx-auto">
                 {grade.desc}
               </p>
             </CardHeader>
@@ -212,7 +212,7 @@ export default function DreamDetail() {
             <CardContent className="text-center pb-10 px-6">
               {/* Score Gauge */}
               <div className="max-w-xs mx-auto mb-8 mt-4">
-                <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden border border-white/10">
+                <div className="h-2 w-full bg-black/[0.05] rounded-full overflow-hidden border border-black/10">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${dream.score}%` }}
@@ -220,15 +220,15 @@ export default function DreamDetail() {
                     className={`h-full bg-gradient-to-r ${dream.grade === 'great' ? 'from-yellow-400 to-orange-500' : dream.grade === 'good' ? 'from-blue-400 to-indigo-500' : 'from-purple-400 to-pink-500'}`}
                   />
                 </div>
-                <div className="flex justify-between mt-2 text-[10px] font-bold text-slate-500 uppercase tracking-tighter">
+                <div className="flex justify-between mt-2 text-[10px] font-bold text-[#5a5a56] uppercase tracking-tighter">
                   <span>기운 약함</span>
                   <span>강력한 에너지</span>
                 </div>
               </div>
 
-              <div className="relative inline-block px-8 py-8 bg-white/5 rounded-3xl border border-white/10 w-full shadow-inner">
+              <div className="relative inline-block px-8 py-8 bg-black/[0.05] rounded-3xl border border-black/10 w-full shadow-inner">
                 <Quote className={`absolute top-6 left-6 w-8 h-8 ${grade.color} opacity-20`} />
-                <p className="text-lg md:text-xl text-slate-100 leading-relaxed font-medium">
+                <p className="text-lg md:text-xl text-[#1a1a18] leading-relaxed font-medium">
                   {dream.interpretation}
                 </p>
                 <Quote className={`absolute bottom-6 right-6 w-8 h-8 ${grade.color} opacity-20 rotate-180`} />
@@ -246,7 +246,7 @@ export default function DreamDetail() {
             className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"
           >
             {dream.traditional_meaning && (
-              <Card className="bg-white/5 border-white/10 hover:border-primary/30 transition-all group overflow-hidden">
+              <Card className="bg-black/[0.05] border-black/10 hover:border-primary/30 transition-all group overflow-hidden">
                 <div className="absolute top-0 left-0 w-1 h-full bg-yellow-500/50" />
                 <CardHeader className="flex flex-row items-center gap-3 pb-2">
                   <div className="p-2 bg-yellow-500/20 rounded-lg group-hover:bg-yellow-500/30 transition-colors">
@@ -255,14 +255,14 @@ export default function DreamDetail() {
                   <CardTitle className="text-lg">전통적 의미</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-slate-400 leading-relaxed">
+                  <p className="text-sm text-[#999891] leading-relaxed">
                     {dream.traditional_meaning}
                   </p>
                 </CardContent>
               </Card>
             )}
             {dream.psychological_meaning && (
-              <Card className="bg-white/5 border-white/10 hover:border-primary/30 transition-all group overflow-hidden">
+              <Card className="bg-black/[0.05] border-black/10 hover:border-primary/30 transition-all group overflow-hidden">
                 <div className="absolute top-0 left-0 w-1 h-full bg-blue-500/50" />
                 <CardHeader className="flex flex-row items-center gap-3 pb-2">
                   <div className="p-2 bg-blue-500/20 rounded-lg group-hover:bg-blue-500/30 transition-colors">
@@ -271,7 +271,7 @@ export default function DreamDetail() {
                   <CardTitle className="text-lg">심리학적 분석</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-sm text-slate-400 leading-relaxed">
+                  <p className="text-sm text-[#999891] leading-relaxed">
                     {dream.psychological_meaning}
                   </p>
                 </CardContent>
@@ -290,7 +290,7 @@ export default function DreamDetail() {
           <Link href="/dream" className="flex-1">
             <Button
               variant="outline"
-              className="w-full h-14 rounded-2xl border-white/10 hover:bg-white/5 text-lg"
+              className="w-full h-14 rounded-2xl border-black/10 hover:bg-black/[0.05] text-lg"
             >
               다른 꿈 검색하기
             </Button>
@@ -351,13 +351,13 @@ export default function DreamDetail() {
                 const RelatedIcon = relatedGrade.icon;
                 return (
                   <Link key={related.id} href={`/dream/${related.slug}`}>
-                    <div className={`group cursor-pointer bg-white/5 border ${relatedGrade.border} rounded-xl p-5 hover:bg-white/10 transition-all h-full`}>
+                    <div className={`group cursor-pointer bg-black/[0.05] border ${relatedGrade.border} rounded-xl p-5 hover:bg-black/[0.06] transition-all h-full`}>
                       <div className="flex items-center gap-3 mb-3">
                         <div className={`p-2 rounded-lg border ${relatedGrade.border} bg-background/50`}>
                           <RelatedIcon className={`w-5 h-5 ${relatedGrade.color}`} />
                         </div>
                         <div>
-                          <h3 className="font-bold text-white group-hover:text-primary transition-colors">
+                          <h3 className="font-bold text-[#1a1a18] group-hover:text-primary transition-colors">
                             {related.keyword}
                           </h3>
                           <span className={`text-[10px] font-bold ${relatedGrade.color}`}>
@@ -365,7 +365,7 @@ export default function DreamDetail() {
                           </span>
                         </div>
                       </div>
-                      <p className="text-xs text-slate-400 line-clamp-2">
+                      <p className="text-xs text-[#999891] line-clamp-2">
                         {related.interpretation}
                       </p>
                     </div>

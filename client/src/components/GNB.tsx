@@ -98,17 +98,17 @@ export function GNB() {
   return (
     <div className="w-full flex flex-col">
       {/* 상단 신뢰 배너 - 보라색 그라데이션 적용 */}
-      <div className="w-full bg-gradient-to-r from-indigo-900/80 via-purple-900/80 to-indigo-900/80 py-2 md:py-3 border-b border-white/10 backdrop-blur-md overflow-hidden">
+      <div className="w-full bg-gradient-to-r from-indigo-900/80 via-purple-900/80 to-indigo-900/80 py-2 md:py-3 border-b border-black/10 backdrop-blur-md overflow-hidden">
         <div className="container max-w-[1280px] px-5 flex items-center justify-center gap-2 animate-in fade-in slide-in-from-top duration-1000">
           <Sparkles className="w-3.5 h-3.5 md:w-4 md:h-4 text-purple-300 animate-pulse" />
           <p className="text-[11px] md:text-sm font-bold text-purple-100 tracking-tight text-center">
-            회원가입 없이 1초 만에 확인하는 <span className="text-white underline decoration-purple-400/50 underline-offset-2">100% 무료</span> 운세 서비스
+            회원가입 없이 1초 만에 확인하는 <span className="text-[#1a1a18] underline decoration-purple-400/50 underline-offset-2">100% 무료</span> 운세 서비스
           </p>
           <Sparkles className="w-3.5 h-3.5 md:w-4 md:h-4 text-purple-300 animate-pulse" />
         </div>
       </div>
 
-      <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-background/60 backdrop-blur-3xl">
+      <header className="sticky top-0 z-50 w-full border-b border-black/10 bg-background/60 backdrop-blur-3xl">
         <div className="container max-w-[1280px] flex h-16 md:h-20 items-center justify-between px-5 md:px-8">
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-3 group">
@@ -139,9 +139,9 @@ export function GNB() {
                   <span className="sr-only">Toggle menu</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-[300px] bg-background/95 backdrop-blur-2xl border-l border-white/10 p-0">
+              <SheetContent side="right" className="w-[300px] bg-background/95 backdrop-blur-2xl border-l border-black/10 p-0">
                 <div className="flex flex-col h-full">
-                  <SheetHeader className="p-6 border-b border-white/5">
+                  <SheetHeader className="p-6 border-b border-black/10">
                     <SheetTitle className="text-left flex items-center gap-2">
                       <div className="w-6 h-6 bg-primary rounded flex items-center justify-center">
                         <Sparkles className="w-4 h-4 text-background" />
@@ -164,12 +164,12 @@ export function GNB() {
                               "group flex items-center gap-4 p-4 rounded-xl transition-all duration-200 min-h-[44px]",
                               isActive 
                                 ? "bg-primary/10 text-primary" 
-                                : "hover:bg-white/5 text-foreground/70 hover:text-foreground"
+                                : "hover:bg-black/[0.05] text-foreground/70 hover:text-foreground"
                             )}
                           >
                             <div className={cn(
                               "w-10 h-10 rounded-lg flex items-center justify-center transition-colors",
-                              isActive ? "bg-primary text-background" : "bg-white/5 group-hover:bg-primary/20 group-hover:text-primary"
+                              isActive ? "bg-primary text-background" : "bg-black/[0.05] group-hover:bg-primary/20 group-hover:text-primary"
                             )}>
                               <Icon className="w-5 h-5" />
                             </div>
@@ -187,7 +187,7 @@ export function GNB() {
                     </div>
                   </div>
 
-                  <div className="p-6 border-t border-white/5 bg-white/5">
+                  <div className="p-6 border-t border-black/10 bg-black/[0.05]">
                     <p className="text-[10px] text-center text-foreground/40 font-medium uppercase tracking-widest">
                       © 2026 MUUN Celestial Services
                     </p>

@@ -87,10 +87,10 @@ export default function RecommendedContent() {
   if (isLoading) {
     return (
       <div className="w-full max-w-2xl mx-auto mt-10 px-4 pb-10">
-        <div className="h-6 w-40 bg-white/5 rounded-full animate-pulse mb-4" />
+        <div className="h-6 w-40 bg-black/[0.05] rounded-full animate-pulse mb-4" />
         <div className="grid grid-cols-2 gap-3">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="h-24 bg-white/5 rounded-2xl animate-pulse" />
+            <div key={i} className="h-24 bg-black/[0.05] rounded-2xl animate-pulse" />
           ))}
         </div>
       </div>
@@ -127,10 +127,10 @@ export default function RecommendedContent() {
               <Link href={`/guide/${item.data.id}`}>
                 <div
                   onClick={() => handleClick(item)}
-                  className="group flex flex-col h-full min-h-[80px] bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-primary/40 hover:bg-white/8 transition-all cursor-pointer active:scale-[0.98]"
+                  className="group flex flex-col h-full min-h-[80px] bg-black/[0.05] border border-black/10 rounded-2xl overflow-hidden hover:border-primary/40 hover:bg-white/8 transition-all cursor-pointer active:scale-[0.98]"
                 >
                   {item.data.thumbnail && (
-                    <div className="w-full h-20 overflow-hidden bg-white/5 flex-shrink-0">
+                    <div className="w-full h-20 overflow-hidden bg-black/[0.05] flex-shrink-0">
                       <img
                         src={item.data.thumbnail}
                         alt={item.data.title}
@@ -147,11 +147,11 @@ export default function RecommendedContent() {
                         <BookOpen className="w-3 h-3 text-primary flex-shrink-0" />
                         <span className="text-[10px] font-bold text-primary uppercase tracking-wider">운세 칼럼</span>
                       </div>
-                      <p className="text-xs font-semibold text-white/90 line-clamp-2 leading-snug">
+                      <p className="text-xs font-semibold text-[#1a1a18]/90 line-clamp-2 leading-snug">
                         {item.data.title}
                       </p>
                     </div>
-                    <ArrowRight className="w-3 h-3 text-white/30 group-hover:text-primary transition-colors mt-2 self-end" />
+                    <ArrowRight className="w-3 h-3 text-[#999891] group-hover:text-primary transition-colors mt-2 self-end" />
                   </div>
                 </div>
               </Link>
@@ -161,7 +161,7 @@ export default function RecommendedContent() {
               <Link href={`/dream/${item.data.slug}`}>
                 <div
                   onClick={() => handleClick(item)}
-                  className="group flex flex-col h-full min-h-[80px] bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-purple-500/40 hover:bg-white/8 transition-all cursor-pointer active:scale-[0.98]"
+                  className="group flex flex-col h-full min-h-[80px] bg-black/[0.05] border border-black/10 rounded-2xl overflow-hidden hover:border-purple-500/40 hover:bg-white/8 transition-all cursor-pointer active:scale-[0.98]"
                 >
                   <div className="p-3 flex flex-col flex-1 justify-between">
                     <div>
@@ -169,14 +169,14 @@ export default function RecommendedContent() {
                         <CloudMoon className="w-3 h-3 text-purple-400 flex-shrink-0" />
                         <span className="text-[10px] font-bold text-purple-400 uppercase tracking-wider">꿈해몽</span>
                       </div>
-                      <p className="text-xs font-semibold text-white/90 line-clamp-2 leading-snug">
+                      <p className="text-xs font-semibold text-[#1a1a18]/90 line-clamp-2 leading-snug">
                         {item.data.keyword}
                       </p>
-                      <p className="text-[10px] text-white/50 mt-1 line-clamp-2 leading-snug">
+                      <p className="text-[10px] text-[#999891] mt-1 line-clamp-2 leading-snug">
                         {item.data.interpretation}
                       </p>
                     </div>
-                    <ArrowRight className="w-3 h-3 text-white/30 group-hover:text-purple-400 transition-colors mt-2 self-end" />
+                    <ArrowRight className="w-3 h-3 text-[#999891] group-hover:text-purple-400 transition-colors mt-2 self-end" />
                   </div>
                 </div>
               </Link>
@@ -186,7 +186,7 @@ export default function RecommendedContent() {
               <Link href={`/dictionary/${item.slug}`}>
                 <div
                   onClick={() => handleClick(item)}
-                  className="group flex flex-col h-full min-h-[80px] bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-yellow-500/40 hover:bg-white/8 transition-all cursor-pointer active:scale-[0.98]"
+                  className="group flex flex-col h-full min-h-[80px] bg-black/[0.05] border border-black/10 rounded-2xl overflow-hidden hover:border-yellow-500/40 hover:bg-white/8 transition-all cursor-pointer active:scale-[0.98]"
                 >
                   <div className="p-3 flex flex-col flex-1 justify-between">
                     <div>
@@ -194,14 +194,14 @@ export default function RecommendedContent() {
                         <BookMarked className="w-3 h-3 text-yellow-400 flex-shrink-0" />
                         <span className="text-[10px] font-bold text-yellow-400 uppercase tracking-wider">운세 사전</span>
                       </div>
-                      <p className="text-xs font-semibold text-white/90 line-clamp-2 leading-snug">
+                      <p className="text-xs font-semibold text-[#1a1a18]/90 line-clamp-2 leading-snug">
                         {item.title}
                       </p>
-                      <p className="text-[10px] text-white/50 mt-1 line-clamp-2 leading-snug">
+                      <p className="text-[10px] text-[#999891] mt-1 line-clamp-2 leading-snug">
                         {item.summary}
                       </p>
                     </div>
-                    <ArrowRight className="w-3 h-3 text-white/30 group-hover:text-yellow-400 transition-colors mt-2 self-end" />
+                    <ArrowRight className="w-3 h-3 text-[#999891] group-hover:text-yellow-400 transition-colors mt-2 self-end" />
                   </div>
                 </div>
               </Link>

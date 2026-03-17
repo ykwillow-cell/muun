@@ -534,14 +534,14 @@ export default function Compatibility() {
           <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-red-500/10 rounded-full blur-[100px]" />
         </div>
 
-        <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
+        <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-black/10">
           <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
             <Link href="/">
-              <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/10 min-w-[44px] min-h-[44px]">
+              <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
                 <ChevronLeft className="h-5 w-5" />
               </Button>
             </Link>
-            <h2 className="text-base md:text-lg font-bold text-white">궁합 풀이</h2>
+            <h2 className="text-base md:text-lg font-bold text-[#1a1a18]">궁합 풀이</h2>
           </div>
         </header>
 
@@ -557,15 +557,15 @@ export default function Compatibility() {
                 <Heart className="w-3 h-3 text-pink-400" />
                 <span className="text-[10px] md:text-sm md:text-xs font-bold tracking-wider text-pink-400 uppercase">서로의 기운을 맞추다</span>
               </div>
-              <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-white">궁합</h2>
+              <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-[#1a1a18]">궁합</h2>
               <p className="text-muted-foreground text-xs md:text-base md:text-sm">
                 두 사람의 사주를 분석하여 서로의 조화를 확인해보세요
               </p>
             </div>
 
-            <Card className="glass-panel border-white/5 shadow-xl rounded-2xl overflow-hidden">
-              <CardHeader className="border-b border-white/5 px-4 py-3 md:px-6 md:py-4">
-                <CardTitle className="text-white flex items-center gap-2 text-base md:text-lg">
+            <Card className="glass-panel border-black/10 shadow-xl rounded-2xl overflow-hidden">
+              <CardHeader className="border-b border-black/10 px-4 py-3 md:px-6 md:py-4">
+                <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-base md:text-lg">
                   <div className="w-8 h-8 rounded-lg bg-pink-500/20 flex items-center justify-center">
                     <Users className="w-4 h-4 text-pink-400" />
                   </div>
@@ -577,35 +577,35 @@ export default function Compatibility() {
                   {/* 첫 번째 사람 */}
                   <div className="space-y-3">
                     <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-full bg-pink-500 text-white text-sm md:text-xs font-bold flex items-center justify-center">1</div>
-                      <h3 className="text-white font-bold text-base md:text-sm">첫 번째 사람</h3>
+                      <div className="w-6 h-6 rounded-full bg-pink-500 text-[#1a1a18] text-sm md:text-xs font-bold flex items-center justify-center">1</div>
+                      <h3 className="text-[#1a1a18] font-bold text-base md:text-sm">첫 번째 사람</h3>
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div className="space-y-1.5">
-                        <Label htmlFor="name1" className="text-white text-base md:text-sm font-medium flex items-center gap-1.5">
+                        <Label htmlFor="name1" className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
                           <User className="w-3.5 h-3.5 text-pink-400" /> 이름
                         </Label>
-                        <Input id="name1" placeholder="이름" {...form.register("name1")} className="h-11 bg-white/5 border-white/10 text-white placeholder:text-white/30 rounded-xl focus:ring-pink-500/50 focus:border-pink-500 transition-all text-base md:text-sm" />
+                        <Input id="name1" placeholder="이름" {...form.register("name1")} className="h-11 bg-black/[0.05] border-black/10 text-[#1a1a18] placeholder:text-[#999891] rounded-xl focus:ring-pink-500/50 focus:border-pink-500 transition-all text-base md:text-sm" />
                       </div>
                       <div className="space-y-1.5">
-                        <Label className="text-white text-base md:text-sm font-medium flex items-center gap-1.5">
+                        <Label className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
                           <Sparkles className="w-3.5 h-3.5 text-pink-400" /> 성별
                         </Label>
-                        <ToggleGroup type="single" value={form.watch("gender1")} onValueChange={(v) => { if (v) form.setValue("gender1", v as "male" | "female"); }} className="w-full h-11 bg-white/5 p-1 rounded-xl border border-white/10 grid grid-cols-2 gap-1">
-                          <ToggleGroupItem value="male" className="h-full rounded-lg data-[state=on]:bg-pink-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-base md:text-sm">남성</ToggleGroupItem>
-                          <ToggleGroupItem value="female" className="h-full rounded-lg data-[state=on]:bg-pink-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-base md:text-sm">여성</ToggleGroupItem>
+                        <ToggleGroup type="single" value={form.watch("gender1")} onValueChange={(v) => { if (v) form.setValue("gender1", v as "male" | "female"); }} className="w-full h-11 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1">
+                          <ToggleGroupItem value="male" className="h-full rounded-lg data-[state=on]:bg-pink-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-base md:text-sm">남성</ToggleGroupItem>
+                          <ToggleGroupItem value="female" className="h-full rounded-lg data-[state=on]:bg-pink-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-base md:text-sm">여성</ToggleGroupItem>
                         </ToggleGroup>
                       </div>
                     </div>
                     <div className="space-y-1.5">
-                      <Label htmlFor="birthDate1" className="text-white text-base md:text-sm font-medium flex items-center gap-1.5">
+                      <Label htmlFor="birthDate1" className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
                         <Calendar className="w-3.5 h-3.5 text-pink-400" /> 생년월일
                       </Label>
                       <DatePickerInput id="birthDate1" {...form.register("birthDate1")} accentColor="pink" />
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div className="space-y-1.5">
-                        <Label htmlFor="birthTime1" className="text-white text-base md:text-sm font-medium flex items-center gap-1.5">
+                        <Label htmlFor="birthTime1" className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
                           <Clock className="w-3.5 h-3.5 text-pink-400" /> 태어난 시간
                         </Label>
                         <BirthTimeSelect
@@ -617,7 +617,7 @@ export default function Compatibility() {
                         />
                       </div>
                       <div className="space-y-1.5">
-                        <Label className="text-white text-base md:text-sm font-medium flex items-center gap-1.5">
+                        <Label className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
                           <Star className="w-3.5 h-3.5 text-pink-400" /> 양력/음력
                         </Label>
                         <ToggleGroup
@@ -628,12 +628,12 @@ export default function Compatibility() {
                               form.setValue("calendarType1", value as "solar" | "lunar");
                             }
                           }}
-                          className="w-full h-11 bg-white/5 p-1 rounded-xl border border-white/10 grid grid-cols-2 gap-1"
+                          className="w-full h-11 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1"
                         >
-                          <ToggleGroupItem value="solar" className="h-full rounded-lg data-[state=on]:bg-pink-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-base md:text-sm">
+                          <ToggleGroupItem value="solar" className="h-full rounded-lg data-[state=on]:bg-pink-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-base md:text-sm">
                             양력
                           </ToggleGroupItem>
-                          <ToggleGroupItem value="lunar" className="h-full rounded-lg data-[state=on]:bg-pink-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-base md:text-sm">
+                          <ToggleGroupItem value="lunar" className="h-full rounded-lg data-[state=on]:bg-pink-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-base md:text-sm">
                             음력
                           </ToggleGroupItem>
                         </ToggleGroup>
@@ -644,9 +644,9 @@ export default function Compatibility() {
                               id="isLeapMonth1"
                               checked={form.watch("isLeapMonth1") || false}
                               onChange={(e) => form.setValue("isLeapMonth1", e.target.checked)}
-                              className="w-3.5 h-3.5 rounded border-white/20 bg-white/5 text-pink-500 focus:ring-pink-500/50"
+                              className="w-3.5 h-3.5 rounded border-black/10 bg-black/[0.05] text-pink-500 focus:ring-pink-500/50"
                             />
-                            <Label htmlFor="isLeapMonth1" className="text-white/60 text-[11px] cursor-pointer">
+                            <Label htmlFor="isLeapMonth1" className="text-[#5a5a56] text-[11px] cursor-pointer">
                               윤달입니다
                             </Label>
                           </div>
@@ -656,43 +656,43 @@ export default function Compatibility() {
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <div className="flex-1 h-px bg-white/10"></div>
+                    <div className="flex-1 h-px bg-black/06"></div>
                     <Heart className="w-4 h-4 text-pink-400" />
-                    <div className="flex-1 h-px bg-white/10"></div>
+                    <div className="flex-1 h-px bg-black/06"></div>
                   </div>
 
                   {/* 두 번째 사람 */}
                   <div className="space-y-3">
                     <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 rounded-full bg-red-500 text-white text-sm md:text-xs font-bold flex items-center justify-center">2</div>
-                      <h3 className="text-white font-bold text-base md:text-sm">두 번째 사람</h3>
+                      <div className="w-6 h-6 rounded-full bg-red-500 text-[#1a1a18] text-sm md:text-xs font-bold flex items-center justify-center">2</div>
+                      <h3 className="text-[#1a1a18] font-bold text-base md:text-sm">두 번째 사람</h3>
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div className="space-y-1.5">
-                        <Label htmlFor="name2" className="text-white text-base md:text-sm font-medium flex items-center gap-1.5">
+                        <Label htmlFor="name2" className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
                           <User className="w-3.5 h-3.5 text-red-400" /> 이름
                         </Label>
-                        <Input id="name2" placeholder="이름" {...form.register("name2")} className="h-11 bg-white/5 border-white/10 text-white placeholder:text-white/30 rounded-xl focus:ring-red-500/50 focus:border-red-500 transition-all text-base md:text-sm" />
+                        <Input id="name2" placeholder="이름" {...form.register("name2")} className="h-11 bg-black/[0.05] border-black/10 text-[#1a1a18] placeholder:text-[#999891] rounded-xl focus:ring-red-500/50 focus:border-red-500 transition-all text-base md:text-sm" />
                       </div>
                       <div className="space-y-1.5">
-                        <Label className="text-white text-base md:text-sm font-medium flex items-center gap-1.5">
+                        <Label className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
                           <Sparkles className="w-3.5 h-3.5 text-red-400" /> 성별
                         </Label>
-                        <ToggleGroup type="single" value={form.watch("gender2")} onValueChange={(v) => { if (v) form.setValue("gender2", v as "male" | "female"); }} className="w-full h-11 bg-white/5 p-1 rounded-xl border border-white/10 grid grid-cols-2 gap-1">
-                          <ToggleGroupItem value="male" className="h-full rounded-lg data-[state=on]:bg-red-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-base md:text-sm">남성</ToggleGroupItem>
-                          <ToggleGroupItem value="female" className="h-full rounded-lg data-[state=on]:bg-red-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-base md:text-sm">여성</ToggleGroupItem>
+                        <ToggleGroup type="single" value={form.watch("gender2")} onValueChange={(v) => { if (v) form.setValue("gender2", v as "male" | "female"); }} className="w-full h-11 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1">
+                          <ToggleGroupItem value="male" className="h-full rounded-lg data-[state=on]:bg-red-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-base md:text-sm">남성</ToggleGroupItem>
+                          <ToggleGroupItem value="female" className="h-full rounded-lg data-[state=on]:bg-red-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-base md:text-sm">여성</ToggleGroupItem>
                         </ToggleGroup>
                       </div>
                     </div>
                     <div className="space-y-1.5">
-                      <Label htmlFor="birthDate2" className="text-white text-base md:text-sm font-medium flex items-center gap-1.5">
+                      <Label htmlFor="birthDate2" className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
                         <Calendar className="w-3.5 h-3.5 text-red-400" /> 생년월일
                       </Label>
                       <DatePickerInput id="birthDate2" {...form.register("birthDate2")} accentColor="red" />
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div className="space-y-1.5">
-                        <Label htmlFor="birthTime2" className="text-white text-base md:text-sm font-medium flex items-center gap-1.5">
+                        <Label htmlFor="birthTime2" className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
                           <Clock className="w-3.5 h-3.5 text-red-400" /> 태어난 시간
                         </Label>
                         <BirthTimeSelect
@@ -704,7 +704,7 @@ export default function Compatibility() {
                         />
                       </div>
                       <div className="space-y-1.5">
-                        <Label className="text-white text-base md:text-sm font-medium flex items-center gap-1.5">
+                        <Label className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
                           <Star className="w-3.5 h-3.5 text-red-400" /> 양력/음력
                         </Label>
                         <ToggleGroup
@@ -715,12 +715,12 @@ export default function Compatibility() {
                               form.setValue("calendarType2", value as "solar" | "lunar");
                             }
                           }}
-                          className="w-full h-11 bg-white/5 p-1 rounded-xl border border-white/10 grid grid-cols-2 gap-1"
+                          className="w-full h-11 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1"
                         >
-                          <ToggleGroupItem value="solar" className="h-full rounded-lg data-[state=on]:bg-red-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-base md:text-sm">
+                          <ToggleGroupItem value="solar" className="h-full rounded-lg data-[state=on]:bg-red-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-base md:text-sm">
                             양력
                           </ToggleGroupItem>
-                          <ToggleGroupItem value="lunar" className="h-full rounded-lg data-[state=on]:bg-red-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-base md:text-sm">
+                          <ToggleGroupItem value="lunar" className="h-full rounded-lg data-[state=on]:bg-red-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-base md:text-sm">
                             음력
                           </ToggleGroupItem>
                         </ToggleGroup>
@@ -731,9 +731,9 @@ export default function Compatibility() {
                               id="isLeapMonth2"
                               checked={form.watch("isLeapMonth2") || false}
                               onChange={(e) => form.setValue("isLeapMonth2", e.target.checked)}
-                              className="w-3.5 h-3.5 rounded border-white/20 bg-white/5 text-red-500 focus:ring-red-500/50"
+                              className="w-3.5 h-3.5 rounded border-black/10 bg-black/[0.05] text-red-500 focus:ring-red-500/50"
                             />
-                            <Label htmlFor="isLeapMonth2" className="text-white/60 text-[11px] cursor-pointer">
+                            <Label htmlFor="isLeapMonth2" className="text-[#5a5a56] text-[11px] cursor-pointer">
                               윤달입니다
                             </Label>
                           </div>
@@ -742,7 +742,7 @@ export default function Compatibility() {
                     </div>
                   </div>
 
-                  <Button type="submit" className="w-full h-12 bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white font-bold text-sm md:text-base rounded-xl shadow-lg shadow-pink-500/20 transition-all hover:scale-[1.02] active:scale-[0.98] mt-2">
+                  <Button type="submit" className="w-full h-12 bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-[#1a1a18] font-bold text-sm md:text-base rounded-xl shadow-lg shadow-pink-500/20 transition-all hover:scale-[1.02] active:scale-[0.98] mt-2">
                     <Heart className="w-4 h-4 mr-2" />
                  궁합 결과 보기
                   </Button>
@@ -751,28 +751,28 @@ export default function Compatibility() {
             </Card>
 
             <div className="grid grid-cols-3 gap-2 md:gap-3">
-              <Card className="bg-white/5 border-white/10 rounded-xl">
+              <Card className="bg-black/[0.05] border-black/10 rounded-xl">
                 <CardContent className="p-2.5 md:p-3 text-center space-y-1">
                   <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-pink-500/10 flex items-center justify-center mx-auto">
                     <Heart className="w-4 h-4 text-pink-400" />
                   </div>
-                  <p className="text-[10px] md:text-sm md:text-xs font-medium text-white">궁합 점수</p>
+                  <p className="text-[10px] md:text-sm md:text-xs font-medium text-[#1a1a18]">궁합 점수</p>
                 </CardContent>
               </Card>
-              <Card className="bg-white/5 border-white/10 rounded-xl">
+              <Card className="bg-black/[0.05] border-black/10 rounded-xl">
                 <CardContent className="p-2.5 md:p-3 text-center space-y-1">
                   <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-red-500/10 flex items-center justify-center mx-auto">
                     <Activity className="w-4 h-4 text-red-400" />
                   </div>
-                  <p className="text-[10px] md:text-sm md:text-xs font-medium text-white">오행 분석</p>
+                  <p className="text-[10px] md:text-sm md:text-xs font-medium text-[#1a1a18]">오행 분석</p>
                 </CardContent>
               </Card>
-              <Card className="bg-white/5 border-white/10 rounded-xl">
+              <Card className="bg-black/[0.05] border-black/10 rounded-xl">
                 <CardContent className="p-2.5 md:p-3 text-center space-y-1">
                   <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-purple-500/10 flex items-center justify-center mx-auto">
                     <Users className="w-4 h-4 text-purple-400" />
                   </div>
-                  <p className="text-[10px] md:text-sm md:text-xs font-medium text-white">상세 해석</p>
+                  <p className="text-[10px] md:text-sm md:text-xs font-medium text-[#1a1a18]">상세 해석</p>
                 </CardContent>
               </Card>
             </div>
@@ -842,13 +842,13 @@ export default function Compatibility() {
       </div>
 
       {/* Header */}
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
+      <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-black/10">
         <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
-            <Button variant="ghost" size="icon" onClick={() => setResult(null)} className="mr-2 text-white hover:bg-white/10 min-w-[44px] min-h-[44px]">
+            <Button variant="ghost" size="icon" onClick={() => setResult(null)} className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
               <ChevronLeft className="h-5 w-5" />
             </Button>
-            <h1 className="text-base md:text-lg font-bold text-white">궁합 결과</h1>
+            <h1 className="text-base md:text-lg font-bold text-[#1a1a18]">궁합 결과</h1>
           </div>
           <Button variant="ghost" size="icon" className="text-pink-400 min-w-[44px] min-h-[44px]" onClick={() => shareContent({ title: '무운 궁합 결과', text: `우리 궁합 점수는 ${scores.total}점! 궁합 결과를 확인해보세요.`, page: 'compatibility', buttonType: 'icon' })}>
             <Share2 className="h-5 w-5" />
@@ -871,7 +871,7 @@ export default function Compatibility() {
             
             <div className="relative w-36 h-36 md:w-44 md:h-44 mx-auto">
               <svg className="w-full h-full" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" strokeWidth="8" className="text-white/5" />
+                <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" strokeWidth="8" className="text-[#1a1a18]/5" />
                 <motion.circle
                   cx="50" cy="50" r="45" fill="none"
                   stroke="url(#compat-gradient)" strokeWidth="8"
@@ -890,7 +890,7 @@ export default function Compatibility() {
                 </defs>
               </svg>
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <span className="text-4xl md:text-5xl font-black text-white">{scores.total}</span>
+                <span className="text-4xl md:text-5xl font-black text-[#1a1a18]">{scores.total}</span>
                 <span className="text-[10px] md:text-sm md:text-xs text-pink-400 font-bold mt-0.5">{getScoreLabel(scores.total)}</span>
               </div>
             </div>
@@ -904,22 +904,22 @@ export default function Compatibility() {
 
           {/* ===== 2. 세부 점수 그래프 ===== */}
           <section>
-            <h2 className="text-lg md:text-xl font-bold text-white flex items-center gap-2 mb-4">
+            <h2 className="text-lg md:text-xl font-bold text-[#1a1a18] flex items-center gap-2 mb-4">
               <TrendingUp className="w-5 h-5 text-pink-400" />
               세부 궁합 점수
             </h2>
-            <Card className="bg-white/5 border-white/10 rounded-xl overflow-hidden">
+            <Card className="bg-black/[0.05] border-black/10 rounded-xl overflow-hidden">
               <CardContent className="p-4 md:p-6 space-y-4">
                 {scoreItems.map((item, idx) => (
                   <div key={idx} className="space-y-1.5">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <span className={getScoreColor(item.score)}>{item.icon}</span>
-                        <span className="text-base md:text-sm text-white/80 font-medium">{item.label}</span>
+                        <span className="text-base md:text-sm text-[#1a1a18] font-medium">{item.label}</span>
                       </div>
                       <span className={`text-base md:text-sm font-bold ${getScoreColor(item.score)}`}>{item.score}점</span>
                     </div>
-                    <div className="w-full h-2.5 bg-white/5 rounded-full overflow-hidden">
+                    <div className="w-full h-2.5 bg-black/[0.05] rounded-full overflow-hidden">
                       <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${item.score}%` }}
@@ -935,7 +935,7 @@ export default function Compatibility() {
 
           {/* ===== 3. 두 사람의 사주팔자표 ===== */}
           <section>
-            <h2 className="text-lg md:text-xl font-bold text-white flex items-center gap-2 mb-4">
+            <h2 className="text-lg md:text-xl font-bold text-[#1a1a18] flex items-center gap-2 mb-4">
               <Users className="w-5 h-5 text-pink-400" />
               두 사람의 사주팔자(四柱八字)
             </h2>
@@ -943,10 +943,10 @@ export default function Compatibility() {
             {/* 첫 번째 사람 */}
             <div className="mb-4">
               <div className="flex items-center gap-2 mb-2">
-                <div className="w-5 h-5 rounded-full bg-pink-500 text-white text-xs md:text-[10px] font-bold flex items-center justify-center">1</div>
+                <div className="w-5 h-5 rounded-full bg-pink-500 text-[#1a1a18] text-xs md:text-[10px] font-bold flex items-center justify-center">1</div>
                 <span className="text-base md:text-sm font-bold text-pink-400">{name1}님의 사주</span>
               </div>
-              <Card className="bg-white/5 border-white/10 rounded-xl overflow-hidden">
+              <Card className="bg-black/[0.05] border-black/10 rounded-xl overflow-hidden">
                 <CardContent className="p-3 md:p-4">
                   <SajuChart result={saju1} theme="purple" />
                 </CardContent>
@@ -956,10 +956,10 @@ export default function Compatibility() {
             {/* 두 번째 사람 */}
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <div className="w-5 h-5 rounded-full bg-red-500 text-white text-xs md:text-[10px] font-bold flex items-center justify-center">2</div>
+                <div className="w-5 h-5 rounded-full bg-red-500 text-[#1a1a18] text-xs md:text-[10px] font-bold flex items-center justify-center">2</div>
                 <span className="text-base md:text-sm font-bold text-red-400">{name2}님의 사주</span>
               </div>
-              <Card className="bg-white/5 border-white/10 rounded-xl overflow-hidden">
+              <Card className="bg-black/[0.05] border-black/10 rounded-xl overflow-hidden">
                 <CardContent className="p-3 md:p-4">
                   <SajuChart result={saju2} theme="purple" />
                 </CardContent>
@@ -969,15 +969,15 @@ export default function Compatibility() {
 
           {/* ===== 4. 일간 궁합 종합 해석 ===== */}
           <section>
-            <h2 className="text-lg md:text-xl font-bold text-white flex items-center gap-2 mb-4">
+            <h2 className="text-lg md:text-xl font-bold text-[#1a1a18] flex items-center gap-2 mb-4">
               <Quote className="w-5 h-5 text-pink-400" />
               일간(日干) 궁합 종합 해석
             </h2>
-            <Card className="bg-white/5 border-white/10 rounded-xl overflow-hidden">
+            <Card className="bg-black/[0.05] border-black/10 rounded-xl overflow-hidden">
               <CardContent className="p-4 md:p-6">
                 <div className="space-y-4">
                   {overallInterpretation.map((para, idx) => (
-                    <p key={idx} className="text-sm md:text-[15px] text-white/90 leading-relaxed" dangerouslySetInnerHTML={{ __html: para.replace(/\*\*(.*?)\*\*/g, '<strong class="text-pink-300">$1</strong>') }} />
+                    <p key={idx} className="text-sm md:text-[15px] text-[#1a1a18]/90 leading-relaxed" dangerouslySetInnerHTML={{ __html: para.replace(/\*\*(.*?)\*\*/g, '<strong class="text-pink-300">$1</strong>') }} />
                   ))}
                 </div>
               </CardContent>
@@ -987,23 +987,23 @@ export default function Compatibility() {
           {/* ===== 5. 성격 궁합 비교 ===== */}
           {personality1 && personality2 && (
             <section>
-              <h2 className="text-lg md:text-xl font-bold text-white flex items-center gap-2 mb-4">
+              <h2 className="text-lg md:text-xl font-bold text-[#1a1a18] flex items-center gap-2 mb-4">
                 <User className="w-5 h-5 text-pink-400" />
                 성격 궁합 비교
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {/* 첫 번째 사람 성격 */}
-                <Card className="bg-white/5 border-pink-500/20 rounded-xl overflow-hidden">
-                  <CardHeader className="bg-pink-500/5 border-b border-white/5 py-3 px-4">
+                <Card className="bg-black/[0.05] border-pink-500/20 rounded-xl overflow-hidden">
+                  <CardHeader className="bg-pink-500/5 border-b border-black/10 py-3 px-4">
                     <CardTitle className="text-base md:text-sm font-bold text-pink-400 flex items-center gap-2">
-                      <div className="w-5 h-5 rounded-full bg-pink-500 text-white text-xs md:text-[10px] font-bold flex items-center justify-center">1</div>
+                      <div className="w-5 h-5 rounded-full bg-pink-500 text-[#1a1a18] text-xs md:text-[10px] font-bold flex items-center justify-center">1</div>
                       {name1}님 — {personality1.name}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="p-4 space-y-3">
                     <div>
-                      <p className="text-xs md:text-[10px] text-white/40 mb-1">상징</p>
-                      <p className="text-base md:text-sm text-white/90">{personality1.nature} ({personality1.symbol})</p>
+                      <p className="text-xs md:text-[10px] text-[#999891] mb-1">상징</p>
+                      <p className="text-base md:text-sm text-[#1a1a18]/90">{personality1.nature} ({personality1.symbol})</p>
                     </div>
                     <div>
                       <p className="text-xs md:text-[10px] text-green-400 mb-1">강점</p>
@@ -1025,17 +1025,17 @@ export default function Compatibility() {
                 </Card>
 
                 {/* 두 번째 사람 성격 */}
-                <Card className="bg-white/5 border-red-500/20 rounded-xl overflow-hidden">
-                  <CardHeader className="bg-red-500/5 border-b border-white/5 py-3 px-4">
+                <Card className="bg-black/[0.05] border-red-500/20 rounded-xl overflow-hidden">
+                  <CardHeader className="bg-red-500/5 border-b border-black/10 py-3 px-4">
                     <CardTitle className="text-base md:text-sm font-bold text-red-400 flex items-center gap-2">
-                      <div className="w-5 h-5 rounded-full bg-red-500 text-white text-xs md:text-[10px] font-bold flex items-center justify-center">2</div>
+                      <div className="w-5 h-5 rounded-full bg-red-500 text-[#1a1a18] text-xs md:text-[10px] font-bold flex items-center justify-center">2</div>
                       {name2}님 — {personality2.name}
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="p-4 space-y-3">
                     <div>
-                      <p className="text-xs md:text-[10px] text-white/40 mb-1">상징</p>
-                      <p className="text-base md:text-sm text-white/90">{personality2.nature} ({personality2.symbol})</p>
+                      <p className="text-xs md:text-[10px] text-[#999891] mb-1">상징</p>
+                      <p className="text-base md:text-sm text-[#1a1a18]/90">{personality2.nature} ({personality2.symbol})</p>
                     </div>
                     <div>
                       <p className="text-xs md:text-[10px] text-green-400 mb-1">강점</p>
@@ -1061,11 +1061,11 @@ export default function Compatibility() {
 
           {/* ===== 6. 오행 조화 비교 분석 ===== */}
           <section>
-            <h2 className="text-lg md:text-xl font-bold text-white flex items-center gap-2 mb-4">
+            <h2 className="text-lg md:text-xl font-bold text-[#1a1a18] flex items-center gap-2 mb-4">
               <Activity className="w-5 h-5 text-pink-400" />
               오행(五行) 조화 비교
             </h2>
-            <Card className="bg-white/5 border-white/10 rounded-xl overflow-hidden">
+            <Card className="bg-black/[0.05] border-black/10 rounded-xl overflow-hidden">
               <CardContent className="p-4 md:p-6 space-y-5">
                 {/* 오행 비교 바 차트 */}
                 {['木', '火', '土', '金', '水'].map((elem) => {
@@ -1075,12 +1075,12 @@ export default function Compatibility() {
                     <div key={elem} className="space-y-1.5">
                       <div className="flex items-center justify-between">
                         <span className={`text-base md:text-sm font-bold ${ELEMENT_TEXT[elem]}`}>{withReading(elem)}</span>
-                        <span className="text-sm md:text-xs text-white/50">{name1}: {v1}개 / {name2}: {v2}개</span>
+                        <span className="text-sm md:text-xs text-[#999891]">{name1}: {v1}개 / {name2}: {v2}개</span>
                       </div>
                       <div className="grid grid-cols-2 gap-1">
                         <div className="flex items-center gap-1">
                           <span className="text-xs md:text-[10px] text-pink-400 w-6">{name1.slice(0, 1)}</span>
-                          <div className="flex-1 h-2 bg-white/5 rounded-full overflow-hidden">
+                          <div className="flex-1 h-2 bg-black/[0.05] rounded-full overflow-hidden">
                             <motion.div
                               initial={{ width: 0 }}
                               animate={{ width: `${(v1 / 8) * 100}%` }}
@@ -1091,7 +1091,7 @@ export default function Compatibility() {
                         </div>
                         <div className="flex items-center gap-1">
                           <span className="text-xs md:text-[10px] text-red-400 w-6">{name2.slice(0, 1)}</span>
-                          <div className="flex-1 h-2 bg-white/5 rounded-full overflow-hidden">
+                          <div className="flex-1 h-2 bg-black/[0.05] rounded-full overflow-hidden">
                             <motion.div
                               initial={{ width: 0 }}
                               animate={{ width: `${(v2 / 8) * 100}%` }}
@@ -1106,11 +1106,11 @@ export default function Compatibility() {
                 })}
                 
                 {/* 오행 보완 분석 */}
-                <div className="border-t border-white/10 pt-4 space-y-3">
-                  <p className="text-base md:text-sm text-white/90 leading-relaxed">
+                <div className="border-t border-black/10 pt-4 space-y-3">
+                  <p className="text-base md:text-sm text-[#1a1a18]/90 leading-relaxed">
                     {cleanAIContent(elementAnalysis1.analysis)}
                   </p>
-                  <p className="text-base md:text-sm text-white/90 leading-relaxed">
+                  <p className="text-base md:text-sm text-[#1a1a18]/90 leading-relaxed">
                     {cleanAIContent(elementAnalysis2.analysis)}
                   </p>
                   {elementAnalysis1.weakest !== elementAnalysis2.weakest && (
@@ -1130,15 +1130,15 @@ export default function Compatibility() {
 
           {/* ===== 7. 애정운 궁합 ===== */}
           <section>
-            <h2 className="text-lg md:text-xl font-bold text-white flex items-center gap-2 mb-4">
+            <h2 className="text-lg md:text-xl font-bold text-[#1a1a18] flex items-center gap-2 mb-4">
               <Heart className="w-5 h-5 text-pink-400" />
               애정운 궁합
               <span className={`text-base md:text-sm font-bold ${getScoreColor(scores.loveScore)}`}>({scores.loveScore}점)</span>
             </h2>
-            <Card className="bg-white/5 border-white/10 rounded-xl overflow-hidden">
+            <Card className="bg-black/[0.05] border-black/10 rounded-xl overflow-hidden">
               <CardContent className="p-4 md:p-6 space-y-4">
                 {loveInterpretation.map((para, idx) => (
-                  <p key={idx} className="text-sm md:text-[15px] text-white/90 leading-relaxed">{para}</p>
+                  <p key={idx} className="text-sm md:text-[15px] text-[#1a1a18]/90 leading-relaxed">{para}</p>
                 ))}
               </CardContent>
             </Card>
@@ -1146,15 +1146,15 @@ export default function Compatibility() {
 
           {/* ===== 8. 재물 궁합 ===== */}
           <section>
-            <h2 className="text-lg md:text-xl font-bold text-white flex items-center gap-2 mb-4">
+            <h2 className="text-lg md:text-xl font-bold text-[#1a1a18] flex items-center gap-2 mb-4">
               <Zap className="w-5 h-5 text-yellow-400" />
               재물 궁합
               <span className={`text-base md:text-sm font-bold ${getScoreColor(scores.wealthScore)}`}>({scores.wealthScore}점)</span>
             </h2>
-            <Card className="bg-white/5 border-white/10 rounded-xl overflow-hidden">
+            <Card className="bg-black/[0.05] border-black/10 rounded-xl overflow-hidden">
               <CardContent className="p-4 md:p-6 space-y-4">
                 {wealthInterpretation.map((para, idx) => (
-                  <p key={idx} className="text-sm md:text-[15px] text-white/90 leading-relaxed">{para}</p>
+                  <p key={idx} className="text-sm md:text-[15px] text-[#1a1a18]/90 leading-relaxed">{para}</p>
                 ))}
               </CardContent>
             </Card>
@@ -1162,15 +1162,15 @@ export default function Compatibility() {
 
           {/* ===== 9. 가정운 궁합 ===== */}
           <section>
-            <h2 className="text-lg md:text-xl font-bold text-white flex items-center gap-2 mb-4">
+            <h2 className="text-lg md:text-xl font-bold text-[#1a1a18] flex items-center gap-2 mb-4">
               <Home className="w-5 h-5 text-green-400" />
               가정운 궁합
               <span className={`text-base md:text-sm font-bold ${getScoreColor(scores.familyScore)}`}>({scores.familyScore}점)</span>
             </h2>
-            <Card className="bg-white/5 border-white/10 rounded-xl overflow-hidden">
+            <Card className="bg-black/[0.05] border-black/10 rounded-xl overflow-hidden">
               <CardContent className="p-4 md:p-6 space-y-4">
                 {familyInterpretation.map((para, idx) => (
-                  <p key={idx} className="text-sm md:text-[15px] text-white/90 leading-relaxed">{para}</p>
+                  <p key={idx} className="text-sm md:text-[15px] text-[#1a1a18]/90 leading-relaxed">{para}</p>
                 ))}
               </CardContent>
             </Card>
@@ -1178,13 +1178,13 @@ export default function Compatibility() {
 
           {/* ===== 10. 갈등 포인트 및 해결 방법 ===== */}
           <section>
-            <h2 className="text-lg md:text-xl font-bold text-white flex items-center gap-2 mb-4">
+            <h2 className="text-lg md:text-xl font-bold text-[#1a1a18] flex items-center gap-2 mb-4">
               <AlertTriangle className="w-5 h-5 text-orange-400" />
               갈등 포인트 및 해결 방법
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Card className="bg-white/5 border-orange-500/20 rounded-xl overflow-hidden">
-                <CardHeader className="bg-orange-500/5 border-b border-white/5 py-3 px-4">
+              <Card className="bg-black/[0.05] border-orange-500/20 rounded-xl overflow-hidden">
+                <CardHeader className="bg-orange-500/5 border-b border-black/10 py-3 px-4">
                   <CardTitle className="text-base md:text-sm font-bold text-orange-400 flex items-center gap-2">
                     <AlertTriangle className="w-4 h-4" /> 주의할 갈등 포인트
                   </CardTitle>
@@ -1192,7 +1192,7 @@ export default function Compatibility() {
                 <CardContent className="p-4">
                   <ul className="space-y-3">
                     {conflictAdvice.conflicts.map((c, i) => (
-                      <li key={i} className="text-base md:text-sm text-white/80 leading-relaxed flex items-start gap-2">
+                      <li key={i} className="text-base md:text-sm text-[#1a1a18] leading-relaxed flex items-start gap-2">
                         <span className="w-1.5 h-1.5 bg-orange-400 rounded-full mt-1.5 flex-shrink-0" />
                         {c}
                       </li>
@@ -1200,8 +1200,8 @@ export default function Compatibility() {
                   </ul>
                 </CardContent>
               </Card>
-              <Card className="bg-white/5 border-green-500/20 rounded-xl overflow-hidden">
-                <CardHeader className="bg-green-500/5 border-b border-white/5 py-3 px-4">
+              <Card className="bg-black/[0.05] border-green-500/20 rounded-xl overflow-hidden">
+                <CardHeader className="bg-green-500/5 border-b border-black/10 py-3 px-4">
                   <CardTitle className="text-base md:text-sm font-bold text-green-400 flex items-center gap-2">
                     <CheckCircle2 className="w-4 h-4" /> 관계 개선 방법
                   </CardTitle>
@@ -1209,7 +1209,7 @@ export default function Compatibility() {
                 <CardContent className="p-4">
                   <ul className="space-y-3">
                     {conflictAdvice.solutions.map((s, i) => (
-                      <li key={i} className="text-base md:text-sm text-white/80 leading-relaxed flex items-start gap-2">
+                      <li key={i} className="text-base md:text-sm text-[#1a1a18] leading-relaxed flex items-start gap-2">
                         <span className="w-1.5 h-1.5 bg-green-400 rounded-full mt-1.5 flex-shrink-0" />
                         {s}
                       </li>
@@ -1222,14 +1222,14 @@ export default function Compatibility() {
 
           {/* ===== 11. 종합 조언 ===== */}
           <section>
-            <h2 className="text-lg md:text-xl font-bold text-white flex items-center gap-2 mb-4">
+            <h2 className="text-lg md:text-xl font-bold text-[#1a1a18] flex items-center gap-2 mb-4">
               <Sparkles className="w-5 h-5 text-pink-400" />
               전문가 종합 조언
             </h2>
             <Card className="bg-gradient-to-br from-pink-500/10 to-red-500/10 border-pink-500/20 rounded-xl overflow-hidden">
               <CardContent className="p-4 md:p-6 space-y-4">
                 {finalAdvice.map((para, idx) => (
-                  <p key={idx} className="text-sm md:text-[15px] text-white/90 leading-relaxed">{para}</p>
+                  <p key={idx} className="text-sm md:text-[15px] text-[#1a1a18]/90 leading-relaxed">{para}</p>
                 ))}
               </CardContent>
             </Card>
@@ -1256,7 +1256,7 @@ export default function Compatibility() {
               />
             )}
             <Button 
-              className="w-full bg-white/5 border border-white/10 text-white hover:bg-white/10 h-11 rounded-xl font-medium text-base md:text-sm"
+              className="w-full bg-black/[0.05] border border-black/10 text-[#1a1a18] hover:bg-black/[0.06] h-11 rounded-xl font-medium text-base md:text-sm"
               onClick={() => shareContent({ title: '무운 궁합 결과', text: `우리 궁합 점수는 ${scores.total}점! 궁합 결과를 확인해보세요.`, page: 'compatibility', buttonType: 'text_button' })}
             >
               <Share2 className="w-4 h-4 mr-2" />
@@ -1264,7 +1264,7 @@ export default function Compatibility() {
             </Button>
             <Button 
               variant="ghost"
-              className="w-full text-white/60 hover:text-white hover:bg-white/5 h-11 rounded-xl font-medium text-base md:text-sm"
+              className="w-full text-[#5a5a56] hover:text-[#1a1a18] hover:bg-black/[0.05] h-11 rounded-xl font-medium text-base md:text-sm"
               onClick={() => setResult(null)}
             >
               다른 정보로 다시 보기

@@ -61,10 +61,10 @@ export default function CallToAction({
           <p className="text-xs font-bold tracking-widest text-yellow-400/80 uppercase">
             무운(MuUn) 무료 운세
           </p>
-          <h3 className="text-xl md:text-2xl font-bold text-white leading-snug">
+          <h3 className="text-xl md:text-2xl font-bold text-[#1a1a18] leading-snug">
             {message}
           </h3>
-          <p className="text-sm text-white/60 leading-relaxed max-w-sm mx-auto">
+          <p className="text-sm text-[#5a5a56] leading-relaxed max-w-sm mx-auto">
             생년월일만 입력하시면 오늘의 총운, 재물운, 애정운을<br className="hidden md:block" />
             무료로 확인하실 수 있습니다.
           </p>
@@ -75,7 +75,7 @@ export default function CallToAction({
           <Link href={targetPath}>
             <button
               onClick={handleClick}
-              className="inline-flex items-center justify-center gap-2 w-full max-w-xs h-14 px-8 rounded-2xl font-bold text-base text-white shadow-xl shadow-yellow-500/20 transition-all hover:scale-[1.03] active:scale-[0.98]"
+              className="inline-flex items-center justify-center gap-2 w-full max-w-xs h-14 px-8 rounded-2xl font-bold text-base text-[#1a1a18] shadow-xl shadow-yellow-500/20 transition-all hover:scale-[1.03] active:scale-[0.98]"
               style={{
                 background: 'linear-gradient(135deg, #d97706 0%, #7c3aed 100%)',
               }}
@@ -84,7 +84,7 @@ export default function CallToAction({
               {buttonLabel}
             </button>
           </Link>
-          <p className="mt-3 text-[11px] text-white/30">
+          <p className="mt-3 text-[11px] text-[#999891]">
             회원가입 없이 바로 이용 가능합니다
           </p>
         </div>

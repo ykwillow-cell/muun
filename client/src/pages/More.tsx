@@ -158,7 +158,7 @@ const CATEGORIES = [
       {
         href: "/fortune-dictionary",
         icon: <BookOpen size={18} />,
-        iconBg: "bg-slate-500/15 border-slate-500/25 text-slate-400",
+        iconBg: "bg-[#f5f4ef] border-black/10 text-[#5a5a56]",
         label: "사주 사전",
         desc: "사주 · 명리학 용어 해설",
       },
@@ -193,12 +193,12 @@ export default function More() {
         <div className="px-4 pt-5 pb-4">
           <div className="flex items-center gap-2 mb-1">
             <Grid3x3Icon />
-            <span className="text-[11px] font-bold tracking-[0.08em] uppercase text-white/30">전체 서비스</span>
+            <span className="text-[11px] font-bold tracking-[0.08em] uppercase text-[#999891]">전체 서비스</span>
           </div>
-          <h1 className="text-[22px] font-bold text-white leading-tight">
+          <h1 className="text-[22px] font-bold text-[#1a1a18] leading-tight">
             무운의 모든 서비스
           </h1>
-          <p className="text-[13px] text-white/40 mt-1">
+          <p className="text-[13px] text-[#999891] mt-1">
             회원가입 없이 모두 무료로 이용하세요
           </p>
         </div>
@@ -237,7 +237,7 @@ export default function More() {
                         {/* 텍스트 */}
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-1.5 mb-0.5">
-                            <span className="text-[14px] font-semibold text-white group-hover:text-primary transition-colors">
+                            <span className="text-[14px] font-semibold text-[#1a1a18] group-hover:text-primary transition-colors">
                               {svc.label}
                             </span>
                             {svc.badge && (
@@ -246,7 +246,7 @@ export default function More() {
                               </span>
                             )}
                           </div>
-                          <p className="text-[12px] text-white/35 leading-snug truncate">
+                          <p className="text-[12px] text-[#1a1a18]/35 leading-snug truncate">
                             {svc.desc}
                           </p>
                         </div>
@@ -254,7 +254,7 @@ export default function More() {
                         {/* 화살표 */}
                         <ChevronRight
                           size={16}
-                          className="text-white/20 group-hover:text-primary/60 transition-colors flex-shrink-0"
+                          className="text-[#1a1a18]/20 group-hover:text-primary/60 transition-colors flex-shrink-0"
                         />
                       </div>
                     </Link>
@@ -274,7 +274,7 @@ function Grid3x3Icon() {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-      className="text-white/30">
+      className="text-[#999891]">
       <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
       <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
     </svg>

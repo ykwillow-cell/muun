@@ -39,9 +39,9 @@ const getElementColor = (element: FiveElement) => {
     case '木': return 'text-green-400 border-green-400/30 bg-green-400/10';
     case '火': return 'text-red-400 border-red-400/30 bg-red-400/10';
     case '土': return 'text-yellow-400 border-yellow-400/30 bg-yellow-400/10';
-    case '金': return 'text-gray-300 border-gray-300/30 bg-gray-300/10';
+    case '金': return 'text-[#6a6a66] border-[#6a6a66]/30 bg-[#6a6a66]/10';
     case '水': return 'text-blue-400 border-blue-400/30 bg-blue-400/10';
-    default: return 'text-white border-white/30 bg-white/10';
+    default: return 'text-[#1a1a18] border-white/30 bg-black/06';
   }
 };
 
@@ -124,22 +124,22 @@ export default function Manselyeok() {
         <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-teal-500/10 rounded-full blur-[100px]" />
       </div>
 
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
+      <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-black/10">
         <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
             <Link href="/">
-              <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/10 min-w-[44px] min-h-[44px]">
+              <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
                 <ChevronLeft className="h-5 w-5" />
               </Button>
             </Link>
-            <h1 className="text-base md:text-lg font-bold text-white">만세력</h1>
+            <h1 className="text-base md:text-lg font-bold text-[#1a1a18]">만세력</h1>
           </div>
           {result && (
             <div className="flex gap-2">
               <Button
                 variant="ghost"
                 size="icon"
-                className="text-white hover:bg-white/10 min-w-[44px] min-h-[44px]"
+                className="text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]"
                 onClick={() => setResult(null)}
               >
                 <RefreshCcw className="h-5 w-5" />
@@ -181,16 +181,16 @@ export default function Manselyeok() {
                   <Activity className="w-3 h-3 text-emerald-400" />
                   <span className="text-[10px] md:text-xs font-bold tracking-wider text-emerald-400 uppercase">정통 만세력 분석</span>
                 </div>
-                <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-white">만세력</h2>
+                <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-[#1a1a18]">만세력</h2>
                 <p className="text-muted-foreground text-xs md:text-sm">
                   정확한 사주팔자 분석을 위해 태어난 시간을 입력해주세요
                 </p>
               </div>
 
               {/* Input Form Card - 컴팩트하게 */}
-              <Card className="glass-panel border-white/5 shadow-xl rounded-2xl overflow-hidden">
-                <CardHeader className="border-b border-white/5 px-4 py-3 md:px-6 md:py-4">
-                  <CardTitle className="text-white flex items-center gap-2 text-base md:text-lg">
+              <Card className="glass-panel border-black/10 shadow-xl rounded-2xl overflow-hidden">
+                <CardHeader className="border-b border-black/10 px-4 py-3 md:px-6 md:py-4">
+                  <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-base md:text-lg">
                     <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
                       <User className="w-4 h-4 text-emerald-400" />
                     </div>
@@ -202,7 +202,7 @@ export default function Manselyeok() {
                     {/* Name & Gender Row */}
                     <div className="grid grid-cols-2 gap-3">
                       <div className="space-y-1.5">
-                        <Label htmlFor="name" className="text-white text-sm font-medium flex items-center gap-1.5">
+                        <Label htmlFor="name" className="text-[#1a1a18] text-sm font-medium flex items-center gap-1.5">
                           <User className="w-3.5 h-3.5 text-emerald-400" />
                           이름
                         </Label>
@@ -210,7 +210,7 @@ export default function Manselyeok() {
                           id="name" 
                           placeholder="이름" 
                           {...form.register("name")} 
-                          className="h-11 bg-white/5 border-white/10 text-white placeholder:text-white/30 rounded-xl focus:ring-emerald-500/50 focus:border-emerald-500 transition-all text-sm"
+                          className="h-11 bg-black/[0.05] border-black/10 text-[#1a1a18] placeholder:text-[#999891] rounded-xl focus:ring-emerald-500/50 focus:border-emerald-500 transition-all text-sm"
                         />
                         {form.formState.errors.name && (
                           <p className="text-destructive text-xs font-medium">{form.formState.errors.name.message}</p>
@@ -218,7 +218,7 @@ export default function Manselyeok() {
                       </div>
 
                       <div className="space-y-1.5">
-                        <Label className="text-white text-sm font-medium flex items-center gap-1.5">
+                        <Label className="text-[#1a1a18] text-sm font-medium flex items-center gap-1.5">
                           <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
                           성별
                         </Label>
@@ -228,17 +228,17 @@ export default function Manselyeok() {
                           onValueChange={(value) => {
                             if (value) form.setValue("gender", value as "male" | "female");
                           }}
-                          className="w-full h-11 bg-white/5 p-1 rounded-xl border border-white/10 grid grid-cols-2 gap-1"
+                          className="w-full h-11 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1"
                         >
                           <ToggleGroupItem
                             value="male"
-                            className="h-full rounded-lg data-[state=on]:bg-emerald-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-sm"
+                            className="h-full rounded-lg data-[state=on]:bg-emerald-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-sm"
                           >
                             남성
                           </ToggleGroupItem>
                           <ToggleGroupItem
                             value="female"
-                            className="h-full rounded-lg data-[state=on]:bg-emerald-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-sm"
+                            className="h-full rounded-lg data-[state=on]:bg-emerald-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-sm"
                           >
                             여성
                           </ToggleGroupItem>
@@ -249,7 +249,7 @@ export default function Manselyeok() {
                     {/* Birth Date & Time Row */}
                     <div className="grid grid-cols-2 gap-3">
                       <div className="space-y-1.5">
-                        <Label htmlFor="birthDate" className="text-white text-sm font-medium flex items-center gap-1.5">
+                        <Label htmlFor="birthDate" className="text-[#1a1a18] text-sm font-medium flex items-center gap-1.5">
                           <Calendar className="w-3.5 h-3.5 text-emerald-400" />
                           생년월일
                         </Label>
@@ -260,7 +260,7 @@ export default function Manselyeok() {
                         />
                       </div>
                       <div className="space-y-1.5">
-                        <Label htmlFor="birthTime" className="text-white text-sm font-medium flex items-center gap-1.5">
+                        <Label htmlFor="birthTime" className="text-[#1a1a18] text-sm font-medium flex items-center gap-1.5">
                           <Clock className="w-3.5 h-3.5 text-emerald-400" />
                           태어난 시간
                         </Label>
@@ -276,7 +276,7 @@ export default function Manselyeok() {
 
                     {/* Calendar Type */}
                     <div className="space-y-1.5">
-                      <Label className="text-white text-sm font-medium flex items-center gap-1.5">
+                      <Label className="text-[#1a1a18] text-sm font-medium flex items-center gap-1.5">
                         <ScrollText className="w-3.5 h-3.5 text-emerald-400" />
                         날짜 구분
                       </Label>
@@ -286,17 +286,17 @@ export default function Manselyeok() {
                         onValueChange={(value) => {
                           if (value) form.setValue("calendarType", value as "solar" | "lunar");
                         }}
-                        className="w-full md:w-48 h-11 bg-white/5 p-1 rounded-xl border border-white/10 grid grid-cols-2 gap-1"
+                        className="w-full md:w-48 h-11 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1"
                       >
                         <ToggleGroupItem
                           value="solar"
-                          className="h-full rounded-lg data-[state=on]:bg-emerald-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-sm"
+                          className="h-full rounded-lg data-[state=on]:bg-emerald-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-sm"
                         >
                           양력
                         </ToggleGroupItem>
                         <ToggleGroupItem
                           value="lunar"
-                          className="h-full rounded-lg data-[state=on]:bg-emerald-500 data-[state=on]:text-white text-white/70 transition-all font-medium text-sm"
+                          className="h-full rounded-lg data-[state=on]:bg-emerald-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-sm"
                         >
                           음력
                         </ToggleGroupItem>
@@ -310,9 +310,9 @@ export default function Manselyeok() {
                           <input
                             type="checkbox"
                             {...form.register("isLeapMonth")}
-                            className="w-4 h-4 rounded border-white/20 bg-white/5 accent-emerald-500"
+                            className="w-4 h-4 rounded border-black/10 bg-black/[0.05] accent-emerald-500"
                           />
-                          <span className="text-sm text-white/80 group-hover:text-emerald-400 transition-colors">윤달(Leap Month)인 경우 체크</span>
+                          <span className="text-sm text-[#1a1a18] group-hover:text-emerald-400 transition-colors">윤달(Leap Month)인 경우 체크</span>
                         </label>
                       </div>
                     )}
@@ -320,7 +320,7 @@ export default function Manselyeok() {
                     {/* Submit Button */}
                     <Button 
                       type="submit" 
-                      className="w-full h-12 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-bold text-sm md:text-base rounded-xl shadow-lg shadow-emerald-500/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                      className="w-full h-12 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-[#1a1a18] font-bold text-sm md:text-base rounded-xl shadow-lg shadow-emerald-500/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
                     >
                       <Activity className="w-4 h-4 mr-2" />
                    만세력 분석하기
@@ -331,36 +331,36 @@ export default function Manselyeok() {
 
               {/* Feature Cards - 더 컴팩트하게 */}
               <div className="grid grid-cols-4 gap-2 md:gap-3">
-                <Card className="bg-white/5 border-white/10 rounded-xl">
+                <Card className="bg-black/[0.05] border-black/10 rounded-xl">
                   <CardContent className="p-2.5 md:p-3 text-center space-y-1">
                     <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-emerald-500/10 flex items-center justify-center mx-auto">
                       <ScrollText className="w-4 h-4 md:w-4.5 md:h-4.5 text-emerald-400" />
                     </div>
-                    <p className="text-[10px] md:text-xs font-medium text-white">사주팔자</p>
+                    <p className="text-[10px] md:text-xs font-medium text-[#1a1a18]">사주팔자</p>
                   </CardContent>
                 </Card>
-                <Card className="bg-white/5 border-white/10 rounded-xl">
+                <Card className="bg-black/[0.05] border-black/10 rounded-xl">
                   <CardContent className="p-2.5 md:p-3 text-center space-y-1">
                     <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-teal-500/10 flex items-center justify-center mx-auto">
                       <Activity className="w-4 h-4 md:w-4.5 md:h-4.5 text-teal-400" />
                     </div>
-                    <p className="text-[10px] md:text-xs font-medium text-white">오행 분석</p>
+                    <p className="text-[10px] md:text-xs font-medium text-[#1a1a18]">오행 분석</p>
                   </CardContent>
                 </Card>
-                <Card className="bg-white/5 border-white/10 rounded-xl">
+                <Card className="bg-black/[0.05] border-black/10 rounded-xl">
                   <CardContent className="p-2.5 md:p-3 text-center space-y-1">
                     <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-cyan-500/10 flex items-center justify-center mx-auto">
                       <Zap className="w-4 h-4 md:w-4.5 md:h-4.5 text-cyan-400" />
                     </div>
-                    <p className="text-[10px] md:text-xs font-medium text-white">대운 세운</p>
+                    <p className="text-[10px] md:text-xs font-medium text-[#1a1a18]">대운 세운</p>
                   </CardContent>
                 </Card>
-                <Card className="bg-white/5 border-white/10 rounded-xl">
+                <Card className="bg-black/[0.05] border-black/10 rounded-xl">
                   <CardContent className="p-2.5 md:p-3 text-center space-y-1">
                     <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-green-500/10 flex items-center justify-center mx-auto">
                       <Info className="w-4 h-4 md:w-4.5 md:h-4.5 text-green-400" />
                     </div>
-                    <p className="text-[10px] md:text-xs font-medium text-white">상세 해석</p>
+                    <p className="text-[10px] md:text-xs font-medium text-[#1a1a18]">상세 해석</p>
                   </CardContent>
                 </Card>
               </div>
@@ -381,12 +381,12 @@ export default function Manselyeok() {
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 backdrop-blur-xl">
                   <span className="text-[10px] md:text-xs font-bold tracking-wider text-emerald-400 uppercase">만세력 분석 결과</span>
                 </div>
-                <h2 className="text-xl md:text-2xl font-bold tracking-tight text-white">{form.getValues('name')}님의 사주팔자</h2>
+                <h2 className="text-xl md:text-2xl font-bold tracking-tight text-[#1a1a18]">{form.getValues('name')}님의 사주팔자</h2>
               </div>
 
               {/* 사주팔자 테이블 */}
-              <Card className="bg-white/5 border-white/10 rounded-xl overflow-hidden">
-                <CardHeader className="border-b border-white/5 px-4 py-3">
+              <Card className="bg-black/[0.05] border-black/10 rounded-xl overflow-hidden">
+                <CardHeader className="border-b border-black/10 px-4 py-3">
                   <CardTitle className="text-sm md:text-base flex items-center gap-2 text-emerald-400">
                     <div className="w-7 h-7 md:w-8 md:h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
                       <ScrollText className="w-3.5 h-3.5 md:w-4 md:h-4" />
@@ -403,7 +403,7 @@ export default function Manselyeok() {
                       { label: '년주', pillar: result.yearPillar },
                     ].map((item) => (
                       <div key={item.label} className="text-center space-y-1.5">
-                        <p className="text-[10px] md:text-xs text-white/60">{item.label}</p>
+                        <p className="text-[10px] md:text-xs text-[#5a5a56]">{item.label}</p>
                         <div className="space-y-1">
                           <div className={`p-2 rounded-lg border ${getElementColor(item.pillar.stemElement)}`}>
                             <p className="text-base md:text-xl font-bold">{item.pillar.stem}</p>
@@ -421,8 +421,8 @@ export default function Manselyeok() {
               </Card>
 
               {/* 오행 분석 */}
-              <Card className="bg-white/5 border-white/10 rounded-xl overflow-hidden">
-                <CardHeader className="border-b border-white/5 px-4 py-3">
+              <Card className="bg-black/[0.05] border-black/10 rounded-xl overflow-hidden">
+                <CardHeader className="border-b border-black/10 px-4 py-3">
                   <CardTitle className="text-sm md:text-base flex items-center gap-2 text-emerald-400">
                     <div className="w-7 h-7 md:w-8 md:h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
                       <Activity className="w-3.5 h-3.5 md:w-4 md:h-4" />
@@ -461,7 +461,7 @@ export default function Manselyeok() {
               {/* Action Buttons */}
               <div className="space-y-2 pt-2">
                 <Button 
-                  className="w-full bg-white/5 border border-white/10 text-white hover:bg-white/10 h-11 rounded-xl font-medium text-sm"
+                  className="w-full bg-black/[0.05] border border-black/10 text-[#1a1a18] hover:bg-black/[0.06] h-11 rounded-xl font-medium text-sm"
                   onClick={() => {
                     shareContent({
                       title: '무운 만세력 결과',
@@ -475,7 +475,7 @@ export default function Manselyeok() {
                 </Button>
                 <Button 
                   variant="ghost"
-                  className="w-full text-white/60 hover:text-white hover:bg-white/5 h-11 rounded-xl font-medium text-sm"
+                  className="w-full text-[#5a5a56] hover:text-[#1a1a18] hover:bg-black/[0.05] h-11 rounded-xl font-medium text-sm"
                   onClick={() => setResult(null)}
                 >
                   다시 보기

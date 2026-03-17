@@ -196,14 +196,14 @@ export default function Tarot() {
         <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-purple-900/10 rounded-full blur-[120px]" />
       </div>
 
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
+      <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-black/10">
         <div className={`${commonMaxWidth} px-4 h-14 flex items-center`}>
           <Link href="/">
-            <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/10 min-w-[44px] min-h-[44px]">
+            <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
               <ChevronLeft className="h-6 w-6" />
             </Button>
           </Link>
-          <h1 className="text-lg md:text-xl font-bold text-white">무운 타로 상담소</h1>
+          <h1 className="text-lg md:text-xl font-bold text-[#1a1a18]">무운 타로 상담소</h1>
         </div>
       </header>
 
@@ -219,7 +219,7 @@ export default function Tarot() {
               <Sparkles className="w-3.5 h-3.5 text-primary" />
               <span className="text-[10px] md:text-xs font-bold tracking-widest text-primary uppercase">Tarot Reading</span>
             </motion.div>
-            <h2 className="text-xl md:text-4xl font-bold tracking-tight text-white">신비로운 타로의 세계</h2>
+            <h2 className="text-xl md:text-4xl font-bold tracking-tight text-[#1a1a18]">신비로운 타로의 세계</h2>
             <p className="text-xs md:text-base text-muted-foreground max-w-md mx-auto">
               마음을 가다듬고 고민을 떠올려 보세요.
             </p>
@@ -234,14 +234,14 @@ export default function Tarot() {
                 exit={{ opacity: 0, scale: 0.95 }}
                 className="space-y-6 md:space-y-8"
               >
-                <div className="bg-white/5 border border-white/10 p-5 md:p-8 rounded-2xl space-y-6">
+                <div className="bg-black/[0.05] border border-black/10 p-5 md:p-8 rounded-2xl space-y-6">
                   <div className="space-y-3">
-                    <label className="text-base md:text-lg font-bold text-white block">어떤 고민이 있으신가요?</label>
+                    <label className="text-base md:text-lg font-bold text-[#1a1a18] block">어떤 고민이 있으신가요?</label>
                     <textarea
                       value={question}
                       onChange={(e) => setQuestion(e.target.value)}
                       placeholder="예: 올해 연애운이 궁금해요. / 이직을 고민 중인데 잘 될까요?"
-                      className="w-full min-h-[120px] md:min-h-[150px] bg-white/5 border border-white/10 rounded-xl p-4 md:p-5 text-sm md:text-base focus:outline-none focus:border-primary/50 transition-colors resize-none"
+                      className="w-full min-h-[120px] md:min-h-[150px] bg-black/[0.05] border border-black/10 rounded-xl p-4 md:p-5 text-sm md:text-base focus:outline-none focus:border-primary/50 transition-colors resize-none"
                       disabled={isLoading}
                     />
                   </div>
@@ -268,7 +268,7 @@ export default function Tarot() {
                 className="space-y-0"
               >
                 {/* 선택 정보 섹션 - 더 컴팩트하게 */}
-                <div className="bg-background/95 backdrop-blur-sm py-3 md:py-6 border-b border-white/10 -mx-4 px-4 mb-4">
+                <div className="bg-background/95 backdrop-blur-sm py-3 md:py-6 border-b border-black/10 -mx-4 px-4 mb-4">
                   <div className="flex items-center justify-between gap-2">
                     <div className="space-y-0.5">
                       <h3 className="text-base md:text-xl font-bold text-primary leading-tight">카드를 3장 선택해 주세요</h3>
@@ -278,7 +278,7 @@ export default function Tarot() {
                     <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
                       <div className="flex justify-end gap-1 md:gap-3">
                         {[0, 1, 2].map((i) => (
-                          <div key={i} className="w-8 h-11 md:w-14 md:h-20 rounded-md border border-dashed border-primary/40 flex items-center justify-center overflow-hidden bg-white/5 relative flex-shrink-0">
+                          <div key={i} className="w-8 h-11 md:w-14 md:h-20 rounded-md border border-dashed border-primary/40 flex items-center justify-center overflow-hidden bg-black/[0.05] relative flex-shrink-0">
                             {selectedCards[i] ? (
                               <img 
                                 src={selectedCards[i].image} 
@@ -328,7 +328,7 @@ export default function Tarot() {
                               }}
                             >
                               <div className={`
-                                w-full h-full rounded-md md:rounded-xl overflow-hidden shadow-lg border border-white/10
+                                w-full h-full rounded-md md:rounded-xl overflow-hidden shadow-lg border border-black/10
                                 ${isSelected 
                                   ? "ring-2 md:ring-4 ring-primary ring-offset-1 md:ring-offset-2 ring-offset-background scale-110" 
                                   : "hover:translate-y-[-5px] md:hover:translate-y-[-10px]"}
@@ -403,29 +403,29 @@ export default function Tarot() {
                         <span className="text-[10px] md:text-xs text-primary font-bold uppercase tracking-wider">
                           {["Past", "Present", "Future"][index]}
                         </span>
-                        <h4 className="text-sm md:text-lg font-bold text-white truncate">{card.korName}</h4>
+                        <h4 className="text-sm md:text-lg font-bold text-[#1a1a18] truncate">{card.korName}</h4>
                       </div>
                     </motion.div>
                   ))}
                 </div>
 
                 {isLoading ? (
-                  <div className="bg-white/5 border border-white/10 rounded-2xl p-6 md:p-10 space-y-6">
+                  <div className="bg-black/[0.05] border border-black/10 rounded-2xl p-6 md:p-10 space-y-6">
                     <div className="flex flex-col items-center justify-center py-8 space-y-4">
                       <div className="relative">
                         <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
                         <Sparkles className="absolute inset-0 m-auto w-6 h-6 text-primary animate-pulse" />
                       </div>
                       <div className="text-center space-y-2">
-                        <p className="text-lg font-bold text-white">카드의 목소리를 듣는 중입니다...</p>
+                        <p className="text-lg font-bold text-[#1a1a18]">카드의 목소리를 듣는 중입니다...</p>
                         <p className="text-sm text-muted-foreground">잠시만 기다려 주세요. 정성껏 해석해 드릴게요.</p>
                       </div>
                     </div>
                     <div className="space-y-3">
-                      <Skeleton className="h-4 w-full bg-white/5" />
-                      <Skeleton className="h-4 w-[90%] bg-white/5" />
-                      <Skeleton className="h-4 w-[95%] bg-white/5" />
-                      <Skeleton className="h-4 w-[85%] bg-white/5" />
+                      <Skeleton className="h-4 w-full bg-black/[0.05]" />
+                      <Skeleton className="h-4 w-[90%] bg-black/[0.05]" />
+                      <Skeleton className="h-4 w-[95%] bg-black/[0.05]" />
+                      <Skeleton className="h-4 w-[85%] bg-black/[0.05]" />
                     </div>
                   </div>
                 ) : error ? (
@@ -438,7 +438,7 @@ export default function Tarot() {
                       <AlertCircle className="w-6 h-6 text-red-500" />
                     </div>
                     <div className="space-y-2">
-                      <h3 className="text-lg font-bold text-white">해석을 가져오지 못했습니다</h3>
+                      <h3 className="text-lg font-bold text-[#1a1a18]">해석을 가져오지 못했습니다</h3>
                       <p className="text-sm text-muted-foreground whitespace-pre-wrap">
                         {EMOTIONAL_ERROR_MESSAGES[error.type]}
                       </p>
@@ -455,7 +455,7 @@ export default function Tarot() {
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-white/5 border border-white/10 rounded-2xl p-5 md:p-8 space-y-6"
+                    className="bg-black/[0.05] border border-black/10 rounded-2xl p-5 md:p-8 space-y-6"
                   >
                     <div>
                       <h3 className="text-lg md:text-xl font-bold text-primary mb-4">타로의 메시지</h3>

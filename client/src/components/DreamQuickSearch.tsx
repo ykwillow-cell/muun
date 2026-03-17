@@ -28,7 +28,7 @@ export const DreamQuickSearch: React.FC = () => {
             value={keyword}
             onChange={(e) => setKeyword(e.target.value)}
             placeholder="꿈 키워드 검색 (예: 돼지, 불, 조상)"
-            className="flex-1 bg-transparent text-[13px] text-white placeholder:text-white/25 outline-none min-w-0"
+            className="flex-1 bg-transparent text-[13px] text-[#1a1a18] placeholder:text-[#1a1a18]/25 outline-none min-w-0"
           />
           <button
             type="submit"
