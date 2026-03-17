@@ -16,11 +16,11 @@ const ELEMENT_BG: Record<string, string> = {
 };
 
 const ELEMENT_TEXT: Record<string, string> = {
-  '木': 'text-green-400',
-  '火': 'text-red-400',
-  '土': 'text-yellow-400',
+  '木': 'text-green-600',
+  '火': 'text-red-600',
+  '土': 'text-yellow-600',
   '金': 'text-[#6a6a66]',
-  '水': 'text-blue-400',
+  '水': 'text-blue-600',
 };
 
 export default function SajuChart({ result, theme = 'yellow' }: SajuChartProps) {
@@ -31,7 +31,7 @@ export default function SajuChart({ result, theme = 'yellow' }: SajuChartProps) 
     { label: '연주(年柱)', pillar: result.yearPillar, desc: '초년·조상' },
   ];
 
-  const accentClass = theme === 'purple' ? 'text-purple-400' : 'text-yellow-400';
+  const accentClass = theme === 'purple' ? 'text-purple-600' : 'text-yellow-600';
   const accentBg = theme === 'purple' ? 'bg-purple-500/10' : 'bg-yellow-500/10';
 
   return (

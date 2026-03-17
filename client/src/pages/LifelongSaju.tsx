@@ -227,7 +227,7 @@ export default function LifelongSaju() {
   const commonMaxWidth = "w-full max-w-2xl mx-auto";
 
   const ELEMENT_TEXT_COLOR: Record<string, string> = {
-    '木': 'text-green-400', '火': 'text-red-400', '土': 'text-yellow-400', '金': 'text-[#6a6a66]', '水': 'text-blue-400',
+    '木': 'text-green-600', '火': 'text-red-600', '土': 'text-yellow-600', '金': 'text-[#6a6a66]', '水': 'text-blue-600',
   };
 
   if (!result) {
@@ -238,7 +238,7 @@ export default function LifelongSaju() {
           <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-primary/10 rounded-full blur-[100px]" />
         </div>
 
-        <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-black/10">
+        <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
           <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
             <Link href="/">
               <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
@@ -258,8 +258,8 @@ export default function LifelongSaju() {
           >
             <div className="text-center space-y-2">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 backdrop-blur-xl">
-                <Sparkles className="w-3 h-3 text-purple-400" />
-                <span className="text-[10px] md:text-sm md:text-xs font-bold tracking-wider text-purple-400 uppercase">인생의 흐름을 읽는 지혜</span>
+                <Sparkles className="w-3 h-3 text-purple-600" />
+                <span className="text-[10px] md:text-sm md:text-xs font-bold tracking-wider text-purple-600 uppercase">인생의 흐름을 읽는 지혜</span>
               </div>
               <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-[#1a1a18]">평생사주</h2>
               <p className="text-muted-foreground text-xs md:text-base md:text-sm">
@@ -271,7 +271,7 @@ export default function LifelongSaju() {
               <CardHeader className="border-b border-black/10 px-4 py-3 md:px-6 md:py-4">
                 <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-base md:text-lg">
                   <div className="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center">
-                    <User className="w-4 h-4 text-purple-400" />
+                    <User className="w-4 h-4 text-purple-600" />
                   </div>
                   사주 정보 입력
                 </CardTitle>
@@ -281,7 +281,7 @@ export default function LifelongSaju() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
                       <Label htmlFor="name" className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
-                        <User className="w-3.5 h-3.5 text-purple-400" />
+                        <User className="w-3.5 h-3.5 text-purple-600" />
                         이름
                       </Label>
                       <Input
@@ -293,7 +293,7 @@ export default function LifelongSaju() {
                     </div>
                     <div className="space-y-1.5">
                       <Label className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
-                        <Sparkles className="w-3.5 h-3.5 text-purple-400" />
+                        <Sparkles className="w-3.5 h-3.5 text-purple-600" />
                         성별
                       </Label>
                       <ToggleGroup
@@ -320,7 +320,7 @@ export default function LifelongSaju() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
                       <Label htmlFor="birthDate" className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
-                        <Calendar className="w-3.5 h-3.5 text-purple-400" />
+                        <Calendar className="w-3.5 h-3.5 text-purple-600" />
                         생년월일
                       </Label>
                       <DatePickerInput
@@ -331,7 +331,7 @@ export default function LifelongSaju() {
                     </div>
                     <div className="space-y-1.5">
                       <Label htmlFor="birthTime" className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
-                        <Clock className="w-3.5 h-3.5 text-purple-400" />
+                        <Clock className="w-3.5 h-3.5 text-purple-600" />
                         태어난 시간
                       </Label>
                       <BirthTimeSelect
@@ -347,7 +347,7 @@ export default function LifelongSaju() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
                       <Label className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
-                        <ScrollText className="w-3.5 h-3.5 text-purple-400" />
+                        <ScrollText className="w-3.5 h-3.5 text-purple-600" />
                         날짜 구분
                       </Label>
                       <ToggleGroup
@@ -371,7 +371,7 @@ export default function LifelongSaju() {
                     </div>
                     <div className="space-y-1.5">
                       <Label className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
-                        <Heart className="w-3.5 h-3.5 text-purple-400" />
+                        <Heart className="w-3.5 h-3.5 text-purple-600" />
                         결혼 여부
                       </Label>
                       <ToggleGroup
@@ -409,7 +409,7 @@ export default function LifelongSaju() {
               <Card className="bg-black/[0.05] border-black/10 rounded-xl">
                 <CardContent className="p-2.5 md:p-3 text-center space-y-1">
                   <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-purple-500/10 flex items-center justify-center mx-auto">
-                    <User className="w-4 h-4 text-purple-400" />
+                    <User className="w-4 h-4 text-purple-600" />
                   </div>
                   <p className="text-[10px] md:text-sm md:text-xs font-medium text-[#1a1a18]">타고난 성격</p>
                 </CardContent>
@@ -417,7 +417,7 @@ export default function LifelongSaju() {
               <Card className="bg-black/[0.05] border-black/10 rounded-xl">
                 <CardContent className="p-2.5 md:p-3 text-center space-y-1">
                   <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-yellow-500/10 flex items-center justify-center mx-auto">
-                    <Zap className="w-4 h-4 text-yellow-400" />
+                    <Zap className="w-4 h-4 text-yellow-600" />
                   </div>
                   <p className="text-[10px] md:text-sm md:text-xs font-medium text-[#1a1a18]">재물운</p>
                 </CardContent>
@@ -425,7 +425,7 @@ export default function LifelongSaju() {
               <Card className="bg-black/[0.05] border-black/10 rounded-xl">
                 <CardContent className="p-2.5 md:p-3 text-center space-y-1">
                   <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-blue-500/10 flex items-center justify-center mx-auto">
-                    <Briefcase className="w-4 h-4 text-blue-400" />
+                    <Briefcase className="w-4 h-4 text-blue-600" />
                   </div>
                   <p className="text-[10px] md:text-sm md:text-xs font-medium text-[#1a1a18]">직업운</p>
                 </CardContent>
@@ -433,7 +433,7 @@ export default function LifelongSaju() {
               <Card className="bg-black/[0.05] border-black/10 rounded-xl">
                 <CardContent className="p-2.5 md:p-3 text-center space-y-1">
                   <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-pink-500/10 flex items-center justify-center mx-auto">
-                    <Heart className="w-4 h-4 text-pink-400" />
+                    <Heart className="w-4 h-4 text-pink-600" />
                   </div>
                   <p className="text-[10px] md:text-sm md:text-xs font-medium text-[#1a1a18]">연애운</p>
                 </CardContent>
@@ -474,7 +474,7 @@ export default function LifelongSaju() {
         <link rel="canonical" href="https://muunsaju.com/lifelong-saju" />
       </Helmet>
     <div className="min-h-screen bg-background text-foreground pb-20">
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-black/10">
+      <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
         <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
             <Button variant="ghost" size="icon" onClick={() => setResult(null)} className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
@@ -485,7 +485,7 @@ export default function LifelongSaju() {
           <Button
             variant="ghost"
             size="icon"
-            className="text-purple-400 min-w-[44px] min-h-[44px]"
+            className="text-purple-600 min-w-[44px] min-h-[44px]"
             onClick={() => {
               shareContent({
                 title: '무운 평생사주',
@@ -510,7 +510,7 @@ export default function LifelongSaju() {
           <section className="space-y-3">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center">
-                <ScrollText className="w-4 h-4 text-purple-400" />
+                <ScrollText className="w-4 h-4 text-purple-600" />
               </div>
               <h2 className="text-lg font-bold text-[#1a1a18]">{userName}님의 사주팔자</h2>
             </div>
@@ -529,13 +529,13 @@ export default function LifelongSaju() {
             <section className="space-y-3">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center">
-                  <User className="w-4 h-4 text-purple-400" />
+                  <User className="w-4 h-4 text-purple-600" />
                 </div>
                 <h2 className="text-lg font-bold text-[#1a1a18]">일간(日干) 성격 분석</h2>
               </div>
               <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden">
                 <CardHeader className="border-b border-black/10 px-4 py-3">
-                  <CardTitle className="text-sm md:text-base text-purple-400 flex items-center gap-2">
+                  <CardTitle className="text-sm md:text-base text-purple-600 flex items-center gap-2">
                     <span className={`text-lg ${ELEMENT_TEXT_COLOR[dayElement]}`}>{dayStem}</span>
                     {stemPersonality.name} — {stemPersonality.nature} ({stemPersonality.symbol})
                   </CardTitle>
@@ -546,7 +546,7 @@ export default function LifelongSaju() {
                   ))}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
                     <div className="bg-green-500/5 border border-green-500/10 rounded-xl p-3">
-                      <p className="text-sm md:text-xs font-bold text-green-400 mb-2">강점</p>
+                      <p className="text-sm md:text-xs font-bold text-green-600 mb-2">강점</p>
                       <ul className="space-y-1">
                         {stemPersonality.strength.map((s, i) => (
                           <li key={i} className="text-sm md:text-xs text-[#5a5a56] flex items-start gap-1.5">
@@ -557,7 +557,7 @@ export default function LifelongSaju() {
                       </ul>
                     </div>
                     <div className="bg-red-500/5 border border-red-500/10 rounded-xl p-3">
-                      <p className="text-sm md:text-xs font-bold text-red-400 mb-2">주의점</p>
+                      <p className="text-sm md:text-xs font-bold text-red-600 mb-2">주의점</p>
                       <ul className="space-y-1">
                         {stemPersonality.weakness.map((w, i) => (
                           <li key={i} className="text-sm md:text-xs text-[#5a5a56] flex items-start gap-1.5">
@@ -570,16 +570,16 @@ export default function LifelongSaju() {
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <div className="bg-pink-500/5 border border-pink-500/10 rounded-xl p-3">
-                      <p className="text-sm md:text-xs font-bold text-pink-400 mb-1">연애 스타일</p>
+                      <p className="text-sm md:text-xs font-bold text-pink-600 mb-1">연애 스타일</p>
                       <p className="text-sm md:text-xs text-[#5a5a56] leading-relaxed">{stemPersonality.loveStyle}</p>
                     </div>
                     <div className="bg-blue-500/5 border border-blue-500/10 rounded-xl p-3">
-                      <p className="text-sm md:text-xs font-bold text-blue-400 mb-1">직업 스타일</p>
+                      <p className="text-sm md:text-xs font-bold text-blue-600 mb-1">직업 스타일</p>
                       <p className="text-sm md:text-xs text-[#5a5a56] leading-relaxed">{stemPersonality.workStyle}</p>
                     </div>
                   </div>
                   <div className="bg-yellow-500/5 border border-yellow-500/10 rounded-xl p-3">
-                    <p className="text-sm md:text-xs font-bold text-yellow-400 mb-1">전문가 조언</p>
+                    <p className="text-sm md:text-xs font-bold text-yellow-600 mb-1">전문가 조언</p>
                     <p className="text-sm md:text-xs text-[#5a5a56] leading-relaxed">{stemPersonality.advice}</p>
                   </div>
                 </CardContent>
@@ -639,7 +639,7 @@ export default function LifelongSaju() {
           <section className="space-y-3">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-lg bg-pink-500/20 flex items-center justify-center">
-                <Sparkles className="w-4 h-4 text-pink-400" />
+                <Sparkles className="w-4 h-4 text-pink-600" />
               </div>
               <h2 className="text-lg font-bold text-[#1a1a18]">행운 아이템</h2>
             </div>
@@ -658,7 +658,7 @@ export default function LifelongSaju() {
               >
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-lg bg-cyan-500/20 flex items-center justify-center">
-                    <Baby className="w-4 h-4 text-cyan-400" />
+                    <Baby className="w-4 h-4 text-cyan-600" />
                   </div>
                   <h2 className="text-lg font-bold text-[#1a1a18]">{fortunes.earlyLife.title}</h2>
                 </div>
@@ -680,7 +680,7 @@ export default function LifelongSaju() {
               >
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-lg bg-indigo-500/20 flex items-center justify-center">
-                    <TrendingUp className="w-4 h-4 text-indigo-400" />
+                    <TrendingUp className="w-4 h-4 text-indigo-600" />
                   </div>
                   <h2 className="text-lg font-bold text-[#1a1a18]">{fortunes.midLife.title}</h2>
                 </div>
@@ -702,7 +702,7 @@ export default function LifelongSaju() {
               >
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center">
-                    <Sunset className="w-4 h-4 text-amber-400" />
+                    <Sunset className="w-4 h-4 text-amber-600" />
                   </div>
                   <h2 className="text-lg font-bold text-[#1a1a18]">{fortunes.lateLife.title}</h2>
                 </div>
@@ -724,7 +724,7 @@ export default function LifelongSaju() {
               >
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-lg bg-yellow-500/20 flex items-center justify-center">
-                    <Zap className="w-4 h-4 text-yellow-400" />
+                    <Zap className="w-4 h-4 text-yellow-600" />
                   </div>
                   <h2 className="text-lg font-bold text-[#1a1a18]">{fortunes.wealth.title}</h2>
                 </div>
@@ -746,7 +746,7 @@ export default function LifelongSaju() {
               >
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center">
-                    <Briefcase className="w-4 h-4 text-blue-400" />
+                    <Briefcase className="w-4 h-4 text-blue-600" />
                   </div>
                   <h2 className="text-lg font-bold text-[#1a1a18]">{fortunes.career.title}</h2>
                 </div>
@@ -768,7 +768,7 @@ export default function LifelongSaju() {
               >
                 <div className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-lg bg-pink-500/20 flex items-center justify-center">
-                    <Heart className="w-4 h-4 text-pink-400" />
+                    <Heart className="w-4 h-4 text-pink-600" />
                   </div>
                   <h2 className="text-lg font-bold text-[#1a1a18]">{loveFortune.title}</h2>
                 </div>
@@ -808,7 +808,7 @@ export default function LifelongSaju() {
             <section className="space-y-3">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center">
-                  <Quote className="w-4 h-4 text-amber-400" />
+                  <Quote className="w-4 h-4 text-amber-600" />
                 </div>
                 <h2 className="text-lg font-bold text-[#1a1a18]">일주(日柱) 해석</h2>
               </div>

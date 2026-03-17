@@ -3,7 +3,7 @@ import { Link } from 'wouter';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-[#080810] border-t border-white/[0.07] pt-8 pb-6 mt-4">
+    <footer className="bg-[#080810] border-t border-black/10 pt-8 pb-6 mt-4">
       <div className="px-4 max-w-[480px] mx-auto">
 
         {/* 브랜드 */}
@@ -81,7 +81,7 @@ const Footer: React.FC = () => {
         </div>
 
         {/* SEO 보강 텍스트 */}
-        <div className="border-t border-white/[0.07] pt-4 mb-4">
+        <div className="border-t border-black/10 pt-4 mb-4">
           <p className="text-[10px] text-[#1a1a18]/20 leading-relaxed">
             무운(MuUn)은 회원가입 없이, 개인정보를 저장하지 않는 100% 무료 사주·운세 서비스입니다.
             무료 사주풀이, 2026년 신년운세, 토정비결, 궁합, 타로, 만세력, 꿈해몽, 심리테스트 등

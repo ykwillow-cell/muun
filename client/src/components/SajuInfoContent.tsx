@@ -45,7 +45,7 @@ export default function SajuInfoContent() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="bg-black/[0.05] rounded-2xl p-6 border border-black/10">
             <div className="flex items-center gap-3 mb-3">
-              <Star className="w-5 h-5 text-yellow-400" />
+              <Star className="w-5 h-5 text-yellow-600" />
               <h3 className="text-lg font-semibold text-[#1a1a18] m-0">타고난 성격과 기질</h3>
             </div>
             <p className="text-[#5a5a56] text-sm leading-relaxed m-0">
@@ -55,7 +55,7 @@ export default function SajuInfoContent() {
           </div>
           <div className="bg-black/[0.05] rounded-2xl p-6 border border-black/10">
             <div className="flex items-center gap-3 mb-3">
-              <Zap className="w-5 h-5 text-green-400" />
+              <Zap className="w-5 h-5 text-green-600" />
               <h3 className="text-lg font-semibold text-[#1a1a18] m-0">재물운과 금전 흐름</h3>
             </div>
             <p className="text-[#5a5a56] text-sm leading-relaxed m-0">
@@ -65,7 +65,7 @@ export default function SajuInfoContent() {
           </div>
           <div className="bg-black/[0.05] rounded-2xl p-6 border border-black/10">
             <div className="flex items-center gap-3 mb-3">
-              <Briefcase className="w-5 h-5 text-blue-400" />
+              <Briefcase className="w-5 h-5 text-blue-600" />
               <h3 className="text-lg font-semibold text-[#1a1a18] m-0">직업운과 적성</h3>
             </div>
             <p className="text-[#5a5a56] text-sm leading-relaxed m-0">
@@ -75,7 +75,7 @@ export default function SajuInfoContent() {
           </div>
           <div className="bg-black/[0.05] rounded-2xl p-6 border border-black/10">
             <div className="flex items-center gap-3 mb-3">
-              <Heart className="w-5 h-5 text-pink-400" />
+              <Heart className="w-5 h-5 text-pink-600" />
               <h3 className="text-lg font-semibold text-[#1a1a18] m-0">연애운과 결혼운</h3>
             </div>
             <p className="text-[#5a5a56] text-sm leading-relaxed m-0">
@@ -85,7 +85,7 @@ export default function SajuInfoContent() {
           </div>
           <div className="bg-black/[0.05] rounded-2xl p-6 border border-black/10">
             <div className="flex items-center gap-3 mb-3">
-              <TrendingUp className="w-5 h-5 text-purple-400" />
+              <TrendingUp className="w-5 h-5 text-purple-600" />
               <h3 className="text-lg font-semibold text-[#1a1a18] m-0">대운과 세운의 흐름</h3>
             </div>
             <p className="text-[#5a5a56] text-sm leading-relaxed m-0">
@@ -95,7 +95,7 @@ export default function SajuInfoContent() {
           </div>
           <div className="bg-black/[0.05] rounded-2xl p-6 border border-black/10">
             <div className="flex items-center gap-3 mb-3">
-              <BookOpen className="w-5 h-5 text-orange-400" />
+              <BookOpen className="w-5 h-5 text-orange-600" />
               <h3 className="text-lg font-semibold text-[#1a1a18] m-0">건강운과 주의사항</h3>
             </div>
             <p className="text-[#5a5a56] text-sm leading-relaxed m-0">

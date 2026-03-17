@@ -19,7 +19,7 @@ const SajuGlossary: React.FC = () => {
         <AccordionItem value="item-1" className="border border-black/10 rounded-lg bg-black/[0.05] px-4 overflow-hidden">
           <AccordionTrigger className="hover:no-underline py-4">
             <div className="flex items-center gap-3 text-left">
-              <Users className="w-5 h-5 text-blue-400" />
+              <Users className="w-5 h-5 text-blue-600" />
               <div>
                 <span className="text-[#1a1a18] font-bold block">1. 비겁(비견과 겁재): 주체성과 경쟁심</span>
               </div>
@@ -38,7 +38,7 @@ const SajuGlossary: React.FC = () => {
         <AccordionItem value="item-2" className="border border-black/10 rounded-lg bg-black/[0.05] px-4 overflow-hidden">
           <AccordionTrigger className="hover:no-underline py-4">
             <div className="flex items-center gap-3 text-left">
-              <Activity className="w-5 h-5 text-green-400" />
+              <Activity className="w-5 h-5 text-green-600" />
               <div>
                 <span className="text-[#1a1a18] font-bold block">2. 식상(식신과 상관): 표현과 창의성</span>
               </div>
@@ -57,7 +57,7 @@ const SajuGlossary: React.FC = () => {
         <AccordionItem value="item-3" className="border border-black/10 rounded-lg bg-black/[0.05] px-4 overflow-hidden">
           <AccordionTrigger className="hover:no-underline py-4">
             <div className="flex items-center gap-3 text-left">
-              <TrendingUp className="w-5 h-5 text-yellow-400" />
+              <TrendingUp className="w-5 h-5 text-yellow-600" />
               <div>
                 <span className="text-[#1a1a18] font-bold block">3. 재성(편재와 정재): 재물과 결과</span>
               </div>
@@ -76,7 +76,7 @@ const SajuGlossary: React.FC = () => {
         <AccordionItem value="item-4" className="border border-black/10 rounded-lg bg-black/[0.05] px-4 overflow-hidden">
           <AccordionTrigger className="hover:no-underline py-4">
             <div className="flex items-center gap-3 text-left">
-              <ShieldCheck className="w-5 h-5 text-red-400" />
+              <ShieldCheck className="w-5 h-5 text-red-600" />
               <div>
                 <span className="text-[#1a1a18] font-bold block">4. 관성(편관과 정관): 규율과 명예</span>
               </div>
@@ -95,7 +95,7 @@ const SajuGlossary: React.FC = () => {
         <AccordionItem value="item-5" className="border border-black/10 rounded-lg bg-black/[0.05] px-4 overflow-hidden">
           <AccordionTrigger className="hover:no-underline py-4">
             <div className="flex items-center gap-3 text-left">
-              <GraduationCap className="w-5 h-5 text-purple-400" />
+              <GraduationCap className="w-5 h-5 text-purple-600" />
               <div>
                 <span className="text-[#1a1a18] font-bold block">5. 인성(편인과 정인): 수용과 지혜</span>
               </div>

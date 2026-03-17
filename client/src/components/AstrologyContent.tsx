@@ -7,7 +7,7 @@ const AstrologyContent = () => {
   return (
     <>
     <div className="w-full max-w-4xl mx-auto my-12 px-4 space-y-6">
-      <Card className="bg-background/80 backdrop-blur-sm border-border/50 shadow-xl overflow-hidden">
+      <Card className="bg-white/80 backdrop-blur-sm border-border/50 shadow-xl overflow-hidden">
         <CardHeader>
           <CardTitle className="text-3xl font-bold text-center text-primary">
             네이탈 차트(탄생 차트) 기반 무료 점성술 풀이
@@ -109,28 +109,28 @@ const AstrologyContent = () => {
             <h2 className="text-2xl font-semibold text-foreground mb-4">행성별 의미 - 수성·금성·화성·목성·토성</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex items-start space-x-3">
-                <Zap className="w-5 h-5 text-yellow-400 mt-1 flex-shrink-0" />
+                <Zap className="w-5 h-5 text-yellow-600 mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="font-semibold text-foreground">수성(Mercury) - 사고와 소통</h3>
                   <p className="text-foreground/70 text-sm">사고방식, 의사소통 스타일, 학습 능력, 언어 감각을 지배합니다. 수성이 위치한 별자리는 어떻게 생각하고 말하는지를 보여줍니다.</p>
                 </div>
               </div>
               <div className="flex items-start space-x-3">
-                <Heart className="w-5 h-5 text-pink-400 mt-1 flex-shrink-0" />
+                <Heart className="w-5 h-5 text-pink-600 mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="font-semibold text-foreground">금성(Venus) - 사랑과 미적 감각</h3>
                   <p className="text-foreground/70 text-sm">연애관, 미적 취향, 대인관계에서의 매력, 가치관을 나타냅니다. 금성의 위치는 어떤 사람에게 끌리고 어떻게 사랑하는지를 알려줍니다.</p>
                 </div>
               </div>
               <div className="flex items-start space-x-3">
-                <Zap className="w-5 h-5 text-red-400 mt-1 flex-shrink-0" />
+                <Zap className="w-5 h-5 text-red-600 mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="font-semibold text-foreground">화성(Mars) - 행동력과 열정</h3>
                   <p className="text-foreground/70 text-sm">행동력, 욕망, 경쟁심, 에너지 사용 방식을 보여줍니다. 화성의 위치는 어떤 분야에서 열정을 발휘하고 어떻게 목표를 추구하는지를 나타냅니다.</p>
                 </div>
               </div>
               <div className="flex items-start space-x-3">
-                <Briefcase className="w-5 h-5 text-blue-400 mt-1 flex-shrink-0" />
+                <Briefcase className="w-5 h-5 text-blue-600 mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="font-semibold text-foreground">목성(Jupiter) - 행운과 성장</h3>
                   <p className="text-foreground/70 text-sm">행운, 성장, 확장의 영역과 풍요를 가져오는 분야를 알려줍니다. 목성이 위치한 별자리와 하우스는 인생에서 가장 큰 행운이 찾아오는 영역을 나타냅니다.</p>

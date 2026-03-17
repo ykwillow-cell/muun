@@ -71,12 +71,12 @@ export function RelatedTermsSection({
             <a className="group p-4 bg-[#f5f4ef] border border-black/10 rounded-lg hover:border-black/20 hover:bg-white transition-all duration-200">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
-                  <h4 className="font-semibold text-[#1a1a18] group-hover:text-yellow-400 transition-colors mb-2">
+                  <h4 className="font-semibold text-[#1a1a18] group-hover:text-yellow-600 transition-colors mb-2">
                     {term.title}
                   </h4>
                   <p className="text-sm text-[#5a5a56] line-clamp-2">{term.summary}</p>
                 </div>
-                <div className="ml-2 text-yellow-400 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="ml-2 text-yellow-600 opacity-0 group-hover:opacity-100 transition-opacity">
                   →
                 </div>
               </div>

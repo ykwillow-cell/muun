@@ -24,7 +24,7 @@ export default function RelatedServices({ title = "함께 보면 좋은 서비�
 
   return (
     <section className="w-full max-w-4xl mx-auto my-8 px-4">
-      <div className="border border-border/50 rounded-2xl overflow-hidden bg-background/60 backdrop-blur-sm">
+      <div className="border border-border/50 rounded-2xl overflow-hidden bg-white/80 backdrop-blur-sm">
         <div className="px-6 py-4 border-b border-border/50">
           <h2 className="text-lg font-semibold text-foreground">{title}</h2>
         </div>

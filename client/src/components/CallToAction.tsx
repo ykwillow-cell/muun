@@ -50,15 +50,15 @@ export default function CallToAction({
         {/* 아이콘 */}
         <div className="relative z-10 flex justify-center mb-4">
           <div className="flex items-center gap-1">
-            <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+            <Star className="w-4 h-4 text-yellow-600 fill-yellow-400" />
             <Sparkles className="w-5 h-5 text-yellow-300" />
-            <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+            <Star className="w-4 h-4 text-yellow-600 fill-yellow-400" />
           </div>
         </div>
 
         {/* 메시지 */}
         <div className="relative z-10 space-y-2 mb-6">
-          <p className="text-xs font-bold tracking-widest text-yellow-400/80 uppercase">
+          <p className="text-xs font-bold tracking-widest text-yellow-600/80 uppercase">
             무운(MuUn) 무료 운세
           </p>
           <h3 className="text-xl md:text-2xl font-bold text-[#1a1a18] leading-snug">

@@ -365,9 +365,9 @@ function PrescriptionCard({ prescription }: { prescription: HybridCompatResult['
       <div className="p-4 rounded-xl border border-black/10 bg-black/[0.05]">
         <div className="flex items-center gap-2 mb-3">
           <div className="w-7 h-7 rounded-lg bg-amber-500/20 flex items-center justify-center">
-            <Palette className="w-3.5 h-3.5 text-amber-400" />
+            <Palette className="w-3.5 h-3.5 text-amber-600" />
           </div>
-          <span className="text-sm font-semibold text-amber-400">행운의 컬러</span>
+          <span className="text-sm font-semibold text-amber-600">행운의 컬러</span>
         </div>
         <div className="flex items-center gap-3 mb-2">
           <div className="flex gap-2">
@@ -382,9 +382,9 @@ function PrescriptionCard({ prescription }: { prescription: HybridCompatResult['
       <div className="p-4 rounded-xl border border-black/10 bg-black/[0.05]">
         <div className="flex items-center gap-2 mb-3">
           <div className="w-7 h-7 rounded-lg bg-pink-500/20 flex items-center justify-center">
-            <Gift className="w-3.5 h-3.5 text-pink-400" />
+            <Gift className="w-3.5 h-3.5 text-pink-600" />
           </div>
-          <span className="text-sm font-semibold text-pink-400">행운의 아이템</span>
+          <span className="text-sm font-semibold text-pink-600">행운의 아이템</span>
         </div>
         <p className="text-xs text-[#5a5a56] leading-relaxed">{prescription.luckyItem}</p>
       </div>
@@ -393,9 +393,9 @@ function PrescriptionCard({ prescription }: { prescription: HybridCompatResult['
       <div className="p-4 rounded-xl border border-purple-500/20 bg-purple-500/5">
         <div className="flex items-center gap-2 mb-3">
           <div className="w-7 h-7 rounded-lg bg-purple-500/20 flex items-center justify-center">
-            <MessageCircle className="w-3.5 h-3.5 text-purple-400" />
+            <MessageCircle className="w-3.5 h-3.5 text-purple-600" />
           </div>
-          <span className="text-sm font-semibold text-purple-400">대화 팁</span>
+          <span className="text-sm font-semibold text-purple-600">대화 팁</span>
         </div>
         <p className="text-xs text-[#5a5a56] leading-relaxed">{prescription.tipForPartner}</p>
       </div>
@@ -404,9 +404,9 @@ function PrescriptionCard({ prescription }: { prescription: HybridCompatResult['
       <div className="p-4 rounded-xl border border-orange-500/20 bg-orange-500/5">
         <div className="flex items-center gap-2 mb-3">
           <div className="w-7 h-7 rounded-lg bg-orange-500/20 flex items-center justify-center">
-            <AlertCircle className="w-3.5 h-3.5 text-orange-400" />
+            <AlertCircle className="w-3.5 h-3.5 text-orange-600" />
           </div>
-          <span className="text-sm font-semibold text-orange-400">주의 신호</span>
+          <span className="text-sm font-semibold text-orange-600">주의 신호</span>
         </div>
         <p className="text-xs text-[#5a5a56] leading-relaxed">{prescription.warningSign}</p>
       </div>
@@ -601,7 +601,7 @@ export default function HybridCompatibilityPage() {
           </div>
 
           {/* 헤더 */}
-          <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-black/10">
+          <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
             <div className={`${commonMaxWidth} container mx-auto px-4 py-3 flex items-center justify-between`}>
               <button onClick={() => setResult(null)} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
                 <ChevronLeft className="w-5 h-5" />
@@ -627,7 +627,7 @@ export default function HybridCompatibilityPage() {
                   <CardHeader className="border-b border-black/10 px-4 py-3 md:px-6 md:py-4">
                     <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-sm md:text-base">
                       <div className="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center">
-                        <Sparkles className="w-4 h-4 text-purple-400" />
+                        <Sparkles className="w-4 h-4 text-purple-600" />
                       </div>
                       인연의 에너지 저울
                     </CardTitle>
@@ -680,7 +680,7 @@ export default function HybridCompatibilityPage() {
                         <span className="text-xs px-3 py-1.5 rounded-full border font-medium" style={{ background: `${elem1Color}15`, borderColor: `${elem1Color}40`, color: elem1Color }}>
                           {hybrid.synergyCard.nickname1}
                         </span>
-                        <Heart className="w-4 h-4 text-pink-400" />
+                        <Heart className="w-4 h-4 text-pink-600" />
                         <span className="text-xs px-3 py-1.5 rounded-full border font-medium" style={{ background: `${elem2Color}15`, borderColor: `${elem2Color}40`, color: elem2Color }}>
                           {hybrid.synergyCard.nickname2}
                         </span>
@@ -716,7 +716,7 @@ export default function HybridCompatibilityPage() {
                   <CardHeader className="border-b border-black/10 px-4 py-3 md:px-6 md:py-4">
                     <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-sm md:text-base">
                       <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center">
-                        <Brain className="w-4 h-4 text-blue-400" />
+                        <Brain className="w-4 h-4 text-blue-600" />
                       </div>
                       4대 영역 하이브리드 리포트
                     </CardTitle>
@@ -748,7 +748,7 @@ export default function HybridCompatibilityPage() {
                   <CardHeader className="border-b border-black/10 px-4 py-3 md:px-6 md:py-4">
                     <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-sm md:text-base">
                       <div className="w-8 h-8 rounded-lg bg-green-500/20 flex items-center justify-center">
-                        <TrendingUp className="w-4 h-4 text-green-400" />
+                        <TrendingUp className="w-4 h-4 text-green-600" />
                       </div>
                       인연 타임라인
                     </CardTitle>
@@ -765,7 +765,7 @@ export default function HybridCompatibilityPage() {
                   <CardHeader className="border-b border-black/10 px-4 py-3 md:px-6 md:py-4">
                     <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-sm md:text-base">
                       <div className="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center">
-                        <Lightbulb className="w-4 h-4 text-amber-400" />
+                        <Lightbulb className="w-4 h-4 text-amber-600" />
                       </div>
                       무운의 한 줄 처방전
                     </CardTitle>
@@ -824,7 +824,7 @@ export default function HybridCompatibilityPage() {
           <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-pink-500/10 rounded-full blur-[100px]" />
         </div>
 
-        <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-black/10">
+        <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
           <div className={`${commonMaxWidth} container mx-auto px-4 py-3 md:py-4 flex items-center justify-between`}>
             <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
               <ChevronLeft className="w-5 h-5" />
@@ -845,7 +845,7 @@ export default function HybridCompatibilityPage() {
             <div className="space-y-2">
               <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-[#1a1a18]">사주×MBTI 하이브리드 궁합</h2>
               <p className="text-[#999891] text-xs md:text-sm">
-                사주는 <span className="text-purple-400 font-medium">하드웨어(타고난 기질)</span>, MBTI는 <span className="text-pink-400 font-medium">소프트웨어(후천적 성격)</span>.<br />
+                사주는 <span className="text-purple-600 font-medium">하드웨어(타고난 기질)</span>, MBTI는 <span className="text-pink-600 font-medium">소프트웨어(후천적 성격)</span>.<br />
                 두 가지를 결합한 960가지 경우의 수 분석으로 진짜 궁합을 알아보세요.
               </p>
             </div>
@@ -854,7 +854,7 @@ export default function HybridCompatibilityPage() {
               <CardHeader className="border-b border-black/10 px-4 py-3 md:px-6 md:py-4">
                 <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-base md:text-lg">
                   <div className="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center">
-                    <Users className="w-4 h-4 text-purple-400" />
+                    <Users className="w-4 h-4 text-purple-600" />
                   </div>
                   궁합 정보 입력
                 </CardTitle>
@@ -870,16 +870,16 @@ export default function HybridCompatibilityPage() {
                     <div className="grid grid-cols-2 gap-3">
                       <div className="space-y-1.5">
                         <Label htmlFor="name1" className="text-[#1a1a18] text-sm font-medium flex items-center gap-1.5">
-                          <User className="w-3.5 h-3.5 text-purple-400" /> 이름
+                          <User className="w-3.5 h-3.5 text-purple-600" /> 이름
                         </Label>
                         <div ref={name1Ref}>
                         <Input id="name1" placeholder="이름" {...form.register("name1")} className={`h-11 bg-black/[0.05] border-black/10 text-[#1a1a18] placeholder:text-[#1a1a18]/30 rounded-xl focus:ring-purple-500/50 focus:border-purple-500 transition-all text-sm ${form.formState.errors.name1 ? 'border-red-500/60 ring-1 ring-red-500/40' : ''}`} />
-                        {form.formState.errors.name1 && <p className="text-xs text-red-400 mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{form.formState.errors.name1.message}</p>}
+                        {form.formState.errors.name1 && <p className="text-xs text-red-600 mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{form.formState.errors.name1.message}</p>}
                       </div>
                       </div>
                       <div className="space-y-1.5">
                         <Label className="text-[#1a1a18] text-sm font-medium flex items-center gap-1.5">
-                          <Sparkles className="w-3.5 h-3.5 text-purple-400" /> 성별
+                          <Sparkles className="w-3.5 h-3.5 text-purple-600" /> 성별
                         </Label>
                         <ToggleGroup
                           type="single"
@@ -894,15 +894,15 @@ export default function HybridCompatibilityPage() {
                     </div>
                     <div className="space-y-1.5" ref={birthDate1Ref}>
                       <Label htmlFor="birthDate1" className="text-[#1a1a18] text-sm font-medium flex items-center gap-1.5">
-                        <Calendar className="w-3.5 h-3.5 text-purple-400" /> 생년월일
+                        <Calendar className="w-3.5 h-3.5 text-purple-600" /> 생년월일
                       </Label>
                       <DatePickerInput id="birthDate1" {...form.register("birthDate1")} accentColor="purple" />
-                      {form.formState.errors.birthDate1 && <p className="text-xs text-red-400 mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{form.formState.errors.birthDate1.message}</p>}
+                      {form.formState.errors.birthDate1 && <p className="text-xs text-red-600 mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{form.formState.errors.birthDate1.message}</p>}
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div className="space-y-1.5">
                         <Label htmlFor="birthTime1" className="text-[#1a1a18] text-sm font-medium flex items-center gap-1.5">
-                          <Clock className="w-3.5 h-3.5 text-purple-400" /> 태어난 시간
+                          <Clock className="w-3.5 h-3.5 text-purple-600" /> 태어난 시간
                         </Label>
                         <BirthTimeSelect
                           value={form.watch("birthTime1")}
@@ -914,7 +914,7 @@ export default function HybridCompatibilityPage() {
                       </div>
                       <div className="space-y-1.5">
                         <Label className="text-[#1a1a18] text-sm font-medium flex items-center gap-1.5">
-                          <Star className="w-3.5 h-3.5 text-purple-400" /> 양력/음력
+                          <Star className="w-3.5 h-3.5 text-purple-600" /> 양력/음력
                         </Label>
                         <ToggleGroup
                           type="single"
@@ -935,7 +935,7 @@ export default function HybridCompatibilityPage() {
                     </div>
                     <div className="space-y-1.5" ref={mbti1Ref}>
                       <Label className="text-[#1a1a18] text-sm font-medium flex items-center gap-1.5">
-                        <Brain className="w-3.5 h-3.5 text-purple-400" /> MBTI
+                        <Brain className="w-3.5 h-3.5 text-purple-600" /> MBTI
                       </Label>
                       <div className={`grid grid-cols-4 gap-2 p-2 rounded-xl transition-all ${form.formState.errors.mbti1 ? 'ring-1 ring-red-500/40 bg-red-500/5' : ''}`}>
                         {['ISTJ', 'ISFJ', 'INFJ', 'INTJ', 'ISTP', 'ISFP', 'INFP', 'INTP', 'ESTP', 'ESFP', 'ENFP', 'ENTP', 'ESTJ', 'ESFJ', 'ENFJ', 'ENTJ'].map((mbti) => (
@@ -945,14 +945,14 @@ export default function HybridCompatibilityPage() {
                           </button>
                         ))}
                       </div>
-                      {form.formState.errors.mbti1 && <p className="text-xs text-red-400 mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{form.formState.errors.mbti1.message}</p>}
+                      {form.formState.errors.mbti1 && <p className="text-xs text-red-600 mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{form.formState.errors.mbti1.message}</p>}
                     </div>
                   </div>
 
                   <div className="flex items-center gap-3">
                     <div className="flex-1 h-px bg-black/06" />
                     <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500/30 to-pink-500/30 border border-black/10 flex items-center justify-center">
-                      <Heart className="w-4 h-4 text-pink-400" />
+                      <Heart className="w-4 h-4 text-pink-600" />
                     </div>
                     <div className="flex-1 h-px bg-black/06" />
                   </div>
@@ -966,16 +966,16 @@ export default function HybridCompatibilityPage() {
                     <div className="grid grid-cols-2 gap-3">
                       <div className="space-y-1.5">
                         <Label htmlFor="name2" className="text-[#1a1a18] text-sm font-medium flex items-center gap-1.5">
-                          <User className="w-3.5 h-3.5 text-pink-400" /> 이름
+                          <User className="w-3.5 h-3.5 text-pink-600" /> 이름
                         </Label>
                         <div ref={name2Ref}>
                         <Input id="name2" placeholder="이름" {...form.register("name2")} className={`h-11 bg-black/[0.05] border-black/10 text-[#1a1a18] placeholder:text-[#1a1a18]/30 rounded-xl focus:ring-pink-500/50 focus:border-pink-500 transition-all text-sm ${form.formState.errors.name2 ? 'border-red-500/60 ring-1 ring-red-500/40' : ''}`} />
-                        {form.formState.errors.name2 && <p className="text-xs text-red-400 mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{form.formState.errors.name2.message}</p>}
+                        {form.formState.errors.name2 && <p className="text-xs text-red-600 mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{form.formState.errors.name2.message}</p>}
                       </div>
                       </div>
                       <div className="space-y-1.5">
                         <Label className="text-[#1a1a18] text-sm font-medium flex items-center gap-1.5">
-                          <Sparkles className="w-3.5 h-3.5 text-pink-400" /> 성별
+                          <Sparkles className="w-3.5 h-3.5 text-pink-600" /> 성별
                         </Label>
                         <ToggleGroup
                           type="single"
@@ -990,15 +990,15 @@ export default function HybridCompatibilityPage() {
                     </div>
                     <div className="space-y-1.5" ref={birthDate2Ref}>
                       <Label htmlFor="birthDate2" className="text-[#1a1a18] text-sm font-medium flex items-center gap-1.5">
-                        <Calendar className="w-3.5 h-3.5 text-pink-400" /> 생년월일
+                        <Calendar className="w-3.5 h-3.5 text-pink-600" /> 생년월일
                       </Label>
                       <DatePickerInput id="birthDate2" {...form.register("birthDate2")} accentColor="pink" />
-                      {form.formState.errors.birthDate2 && <p className="text-xs text-red-400 mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{form.formState.errors.birthDate2.message}</p>}
+                      {form.formState.errors.birthDate2 && <p className="text-xs text-red-600 mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{form.formState.errors.birthDate2.message}</p>}
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div className="space-y-1.5">
                         <Label htmlFor="birthTime2" className="text-[#1a1a18] text-sm font-medium flex items-center gap-1.5">
-                          <Clock className="w-3.5 h-3.5 text-pink-400" /> 태어난 시간
+                          <Clock className="w-3.5 h-3.5 text-pink-600" /> 태어난 시간
                         </Label>
                         <BirthTimeSelect
                           value={form.watch("birthTime2")}
@@ -1010,7 +1010,7 @@ export default function HybridCompatibilityPage() {
                       </div>
                       <div className="space-y-1.5">
                         <Label className="text-[#1a1a18] text-sm font-medium flex items-center gap-1.5">
-                          <Star className="w-3.5 h-3.5 text-pink-400" /> 양력/음력
+                          <Star className="w-3.5 h-3.5 text-pink-600" /> 양력/음력
                         </Label>
                         <ToggleGroup
                           type="single"
@@ -1031,7 +1031,7 @@ export default function HybridCompatibilityPage() {
                     </div>
                     <div className="space-y-1.5" ref={mbti2Ref}>
                       <Label className="text-[#1a1a18] text-sm font-medium flex items-center gap-1.5">
-                        <Brain className="w-3.5 h-3.5 text-pink-400" /> MBTI
+                        <Brain className="w-3.5 h-3.5 text-pink-600" /> MBTI
                       </Label>
                       <div className={`grid grid-cols-4 gap-2 p-2 rounded-xl transition-all ${form.formState.errors.mbti2 ? 'ring-1 ring-red-500/40 bg-red-500/5' : ''}`}>
                         {['ISTJ', 'ISFJ', 'INFJ', 'INTJ', 'ISTP', 'ISFP', 'INFP', 'INTP', 'ESTP', 'ESFP', 'ENFP', 'ENTP', 'ESTJ', 'ESFJ', 'ENFJ', 'ENTJ'].map((mbti) => (
@@ -1041,7 +1041,7 @@ export default function HybridCompatibilityPage() {
                           </button>
                         ))}
                       </div>
-                      {form.formState.errors.mbti2 && <p className="text-xs text-red-400 mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{form.formState.errors.mbti2.message}</p>}
+                      {form.formState.errors.mbti2 && <p className="text-xs text-red-600 mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{form.formState.errors.mbti2.message}</p>}
                     </div>
                   </div>
 
@@ -1049,8 +1049,8 @@ export default function HybridCompatibilityPage() {
                   {validationErrors.length > 0 && (
                     <div ref={errorMsgRef} className="p-4 rounded-xl border border-red-500/30 bg-red-500/10 space-y-2">
                       <div className="flex items-center gap-2">
-                        <AlertCircle className="w-4 h-4 text-red-400 flex-shrink-0" />
-                        <p className="text-sm font-semibold text-red-400">아래 항목을 입력해주세요</p>
+                        <AlertCircle className="w-4 h-4 text-red-600 flex-shrink-0" />
+                        <p className="text-sm font-semibold text-red-600">아래 항목을 입력해주세요</p>
                       </div>
                       <ul className="space-y-1 pl-6">
                         {validationErrors.map((msg, i) => (

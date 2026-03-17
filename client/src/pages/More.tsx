@@ -228,7 +228,7 @@ export default function More() {
                     transition={{ delay: catIdx * 0.07 + svcIdx * 0.04 }}
                   >
                     <Link href={svc.href}>
-                      <div className="group flex items-center gap-3 p-3.5 rounded-2xl bg-white/[0.03] border border-white/[0.07] hover:border-primary/25 hover:bg-white/[0.06] active:scale-[0.98] transition-all cursor-pointer">
+                      <div className="group flex items-center gap-3 p-3.5 rounded-2xl bg-white border border-black/10 hover:border-primary/25 hover:bg-black/[0.04] active:scale-[0.98] transition-all cursor-pointer">
                         {/* 아이콘 */}
                         <div className={`w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 border ${svc.iconBg}`}>
                           {svc.icon}

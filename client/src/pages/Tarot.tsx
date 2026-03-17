@@ -196,7 +196,7 @@ export default function Tarot() {
         <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-purple-900/10 rounded-full blur-[120px]" />
       </div>
 
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-black/10">
+      <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
         <div className={`${commonMaxWidth} px-4 h-14 flex items-center`}>
           <Link href="/">
             <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
@@ -268,7 +268,7 @@ export default function Tarot() {
                 className="space-y-0"
               >
                 {/* 선택 정보 섹션 - 더 컴팩트하게 */}
-                <div className="bg-background/95 backdrop-blur-sm py-3 md:py-6 border-b border-black/10 -mx-4 px-4 mb-4">
+                <div className="bg-white/95 backdrop-blur-sm py-3 md:py-6 border-b border-black/10 -mx-4 px-4 mb-4">
                   <div className="flex items-center justify-between gap-2">
                     <div className="space-y-0.5">
                       <h3 className="text-base md:text-xl font-bold text-primary leading-tight">카드를 3장 선택해 주세요</h3>

@@ -44,13 +44,13 @@ export function TodayTermCard() {
     >
       {/* 아이콘 */}
       <div className="w-9 h-9 rounded-xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center flex-shrink-0 mt-0.5">
-        <Sparkles className="w-4 h-4 text-purple-400" />
+        <Sparkles className="w-4 h-4 text-purple-600" />
       </div>
 
       {/* 콘텐츠 */}
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-1">
-          <span className="text-[10px] font-bold tracking-[0.08em] uppercase text-purple-400/60">오늘의 사주 용어</span>
+          <span className="text-[10px] font-bold tracking-[0.08em] uppercase text-purple-600/60">오늘의 사주 용어</span>
           <span className="px-1.5 py-0.5 rounded text-[9px] font-medium bg-purple-500/20 text-purple-300 border border-purple-500/30">{todayTerm.categoryLabel}</span>
         </div>
         <h3 className="text-[14px] font-bold text-[#1a1a18] mb-1 leading-snug">{todayTerm.title}</h3>

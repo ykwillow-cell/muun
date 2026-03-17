@@ -354,7 +354,7 @@ export default function SurnameCombobox({
                   <p className="text-[10px] text-[#999891]">{opt.strokes}획</p>
                 </div>
                 {value === `${opt.hangul}(${opt.hanja})` && (
-                  <Check className="w-3.5 h-3.5 text-amber-400 ml-auto" />
+                  <Check className="w-3.5 h-3.5 text-amber-600 ml-auto" />
                 )}
               </button>
             ))}
@@ -404,7 +404,7 @@ export default function SurnameCombobox({
                             {allHanja.map((h) => h.hanja).join(" / ")}
                           </span>
                           {allHanja.length > 1 && (
-                            <span className="ml-1.5 text-[10px] text-amber-400/70">
+                            <span className="ml-1.5 text-[10px] text-amber-600/70">
                               ({allHanja.length}가지)
                             </span>
                           )}
@@ -417,7 +417,7 @@ export default function SurnameCombobox({
                             : `${Math.min(...allHanja.map((h) => h.strokes))}~${Math.max(...allHanja.map((h) => h.strokes))}획`}
                         </span>
                         {value?.startsWith(s.hangul + "(") && (
-                          <Check className="w-3.5 h-3.5 text-amber-400" />
+                          <Check className="w-3.5 h-3.5 text-amber-600" />
                         )}
                       </div>
                     </button>
@@ -443,7 +443,7 @@ export default function SurnameCombobox({
                 <span className="text-xs text-[#999891]">
                   "{query.trim()}" 직접 입력
                 </span>
-                <span className="ml-1.5 text-[10px] text-amber-400/60">
+                <span className="ml-1.5 text-[10px] text-amber-600/60">
                   (획수 별도 입력 필요)
                 </span>
               </button>
@@ -454,7 +454,7 @@ export default function SurnameCombobox({
 
       {/* 에러 메시지 */}
       {error && (
-        <p className="mt-1 text-xs text-red-400">{error}</p>
+        <p className="mt-1 text-xs text-red-600">{error}</p>
       )}
     </div>
   );

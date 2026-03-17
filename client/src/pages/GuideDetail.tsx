@@ -80,7 +80,7 @@ export default function GuideDetail() {
       </Helmet>
 
       {/* 헤더 */}
-      <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-black/10">
+      <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-black/10">
         <div className="max-w-3xl mx-auto px-4 h-14 flex items-center justify-between">
           <Link href="/guide">
             <Button variant="ghost" size="icon" className="text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">

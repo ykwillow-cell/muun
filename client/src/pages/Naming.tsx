@@ -366,7 +366,7 @@ function CandidateCard({
       className={`rounded-xl border cursor-pointer transition-all duration-200 overflow-hidden ${
         isSelected
           ? "bg-amber-500/10 border-amber-500/40 shadow-lg shadow-amber-500/10"
-          : "bg-black/[0.05] border-black/10 hover:bg-white/8 hover:border-amber-500/20"
+          : "bg-black/[0.05] border-black/10 hover:bg-white hover:border-amber-500/20"
       }`}
       onClick={() => onSelect(candidate)}
     >
@@ -644,7 +644,7 @@ export default function Naming() {
         </div>
 
         {/* 헤더 */}
-        <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-black/10">
+        <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
           <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
             <Link href="/">
               <Button
@@ -921,7 +921,7 @@ export default function Naming() {
                 ].map(({ step, title, desc }) => (
                   <div
                     key={step}
-                    className="flex gap-3 p-3 rounded-xl bg-white/3 border border-white/8"
+                    className="flex gap-3 p-3 rounded-xl bg-white border border-black/10"
                   >
                     <div className="flex-shrink-0 w-7 h-7 rounded-full bg-amber-500/20 border border-amber-500/30 flex items-center justify-center">
                       <span className="text-xs font-bold text-amber-400">{step}</span>
@@ -987,7 +987,7 @@ export default function Naming() {
       </div>
 
       {/* 헤더 */}
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-black/10 print:hidden">
+      <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10 print:hidden">
         <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
             <Button
@@ -1261,7 +1261,7 @@ export default function Naming() {
                     })()}
 
                     {/* 한자 상세 */}
-                    <div className="rounded-xl bg-white/3 border border-black/10 p-4 space-y-3">
+                    <div className="rounded-xl bg-white border border-black/10 p-4 space-y-3">
                       <p className="text-xs font-bold text-[#5a5a56] uppercase tracking-wider">
                         한자 풀이
                       </p>

@@ -162,7 +162,7 @@ export default function Psychology() {
         <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-pink-900/10 rounded-full blur-[120px]" />
       </div>
 
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-black/10">
+      <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
         <div className={`${commonMaxWidth} px-4 h-14 flex items-center`}>
           <Link href="/">
             <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">

@@ -127,7 +127,7 @@ export default function RecommendedContent() {
               <Link href={`/guide/${item.data.id}`}>
                 <div
                   onClick={() => handleClick(item)}
-                  className="group flex flex-col h-full min-h-[80px] bg-black/[0.05] border border-black/10 rounded-2xl overflow-hidden hover:border-primary/40 hover:bg-white/8 transition-all cursor-pointer active:scale-[0.98]"
+                  className="group flex flex-col h-full min-h-[80px] bg-black/[0.05] border border-black/10 rounded-2xl overflow-hidden hover:border-primary/40 hover:bg-white transition-all cursor-pointer active:scale-[0.98]"
                 >
                   {item.data.thumbnail && (
                     <div className="w-full h-20 overflow-hidden bg-black/[0.05] flex-shrink-0">
@@ -161,13 +161,13 @@ export default function RecommendedContent() {
               <Link href={`/dream/${item.data.slug}`}>
                 <div
                   onClick={() => handleClick(item)}
-                  className="group flex flex-col h-full min-h-[80px] bg-black/[0.05] border border-black/10 rounded-2xl overflow-hidden hover:border-purple-500/40 hover:bg-white/8 transition-all cursor-pointer active:scale-[0.98]"
+                  className="group flex flex-col h-full min-h-[80px] bg-black/[0.05] border border-black/10 rounded-2xl overflow-hidden hover:border-purple-500/40 hover:bg-white transition-all cursor-pointer active:scale-[0.98]"
                 >
                   <div className="p-3 flex flex-col flex-1 justify-between">
                     <div>
                       <div className="flex items-center gap-1 mb-1.5">
-                        <CloudMoon className="w-3 h-3 text-purple-400 flex-shrink-0" />
-                        <span className="text-[10px] font-bold text-purple-400 uppercase tracking-wider">꿈해몽</span>
+                        <CloudMoon className="w-3 h-3 text-purple-600 flex-shrink-0" />
+                        <span className="text-[10px] font-bold text-purple-600 uppercase tracking-wider">꿈해몽</span>
                       </div>
                       <p className="text-xs font-semibold text-[#1a1a18]/90 line-clamp-2 leading-snug">
                         {item.data.keyword}
@@ -176,7 +176,7 @@ export default function RecommendedContent() {
                         {item.data.interpretation}
                       </p>
                     </div>
-                    <ArrowRight className="w-3 h-3 text-[#999891] group-hover:text-purple-400 transition-colors mt-2 self-end" />
+                    <ArrowRight className="w-3 h-3 text-[#999891] group-hover:text-purple-600 transition-colors mt-2 self-end" />
                   </div>
                 </div>
               </Link>
@@ -186,13 +186,13 @@ export default function RecommendedContent() {
               <Link href={`/dictionary/${item.slug}`}>
                 <div
                   onClick={() => handleClick(item)}
-                  className="group flex flex-col h-full min-h-[80px] bg-black/[0.05] border border-black/10 rounded-2xl overflow-hidden hover:border-yellow-500/40 hover:bg-white/8 transition-all cursor-pointer active:scale-[0.98]"
+                  className="group flex flex-col h-full min-h-[80px] bg-black/[0.05] border border-black/10 rounded-2xl overflow-hidden hover:border-yellow-500/40 hover:bg-white transition-all cursor-pointer active:scale-[0.98]"
                 >
                   <div className="p-3 flex flex-col flex-1 justify-between">
                     <div>
                       <div className="flex items-center gap-1 mb-1.5">
-                        <BookMarked className="w-3 h-3 text-yellow-400 flex-shrink-0" />
-                        <span className="text-[10px] font-bold text-yellow-400 uppercase tracking-wider">운세 사전</span>
+                        <BookMarked className="w-3 h-3 text-yellow-600 flex-shrink-0" />
+                        <span className="text-[10px] font-bold text-yellow-600 uppercase tracking-wider">운세 사전</span>
                       </div>
                       <p className="text-xs font-semibold text-[#1a1a18]/90 line-clamp-2 leading-snug">
                         {item.title}
@@ -201,7 +201,7 @@ export default function RecommendedContent() {
                         {item.summary}
                       </p>
                     </div>
-                    <ArrowRight className="w-3 h-3 text-[#999891] group-hover:text-yellow-400 transition-colors mt-2 self-end" />
+                    <ArrowRight className="w-3 h-3 text-[#999891] group-hover:text-yellow-600 transition-colors mt-2 self-end" />
                   </div>
                 </div>
               </Link>

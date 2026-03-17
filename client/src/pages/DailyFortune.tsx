@@ -36,11 +36,11 @@ type FormValues = z.infer<typeof formSchema>;
 
 // ─── 오행 아이콘/색상 매핑 ───────────────────────────────────────────────────
 const ELEMENT_CONFIG: Record<string, { icon: React.ReactNode; color: string; bg: string; border: string; label: string }> = {
-  '木': { icon: <Leaf className="w-4 h-4" />, color: 'text-green-400', bg: 'bg-green-500/10', border: 'border-green-500/30', label: '목(木)' },
-  '火': { icon: <Flame className="w-4 h-4" />, color: 'text-red-400', bg: 'bg-red-500/10', border: 'border-red-500/30', label: '화(火)' },
-  '土': { icon: <Mountain className="w-4 h-4" />, color: 'text-yellow-400', bg: 'bg-yellow-500/10', border: 'border-yellow-500/30', label: '토(土)' },
+  '木': { icon: <Leaf className="w-4 h-4" />, color: 'text-green-600', bg: 'bg-green-500/10', border: 'border-green-500/30', label: '목(木)' },
+  '火': { icon: <Flame className="w-4 h-4" />, color: 'text-red-600', bg: 'bg-red-500/10', border: 'border-red-500/30', label: '화(火)' },
+  '土': { icon: <Mountain className="w-4 h-4" />, color: 'text-yellow-600', bg: 'bg-yellow-500/10', border: 'border-yellow-500/30', label: '토(土)' },
   '金': { icon: <Gem className="w-4 h-4" />, color: 'text-[#6a6a66]', bg: 'bg-[#6a6a66]/10', border: 'border-[#6a6a66]/30', label: '금(金)' },
-  '水': { icon: <Droplets className="w-4 h-4" />, color: 'text-blue-400', bg: 'bg-blue-500/10', border: 'border-blue-500/30', label: '수(水)' },
+  '水': { icon: <Droplets className="w-4 h-4" />, color: 'text-blue-600', bg: 'bg-blue-500/10', border: 'border-blue-500/30', label: '수(水)' },
 };
 
 const DIRECTION_ICON: Record<string, React.ReactNode> = {
@@ -133,7 +133,7 @@ function AnimatedScore({ score }: { score: number }) {
 function ElementBar({ name, value, fullMark }: { name: string; value: number; fullMark: number }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
-  const config = ELEMENT_CONFIG[name] ?? { color: 'text-orange-400', bg: 'bg-orange-500/10', border: 'border-orange-500/30', label: name, icon: null };
+  const config = ELEMENT_CONFIG[name] ?? { color: 'text-orange-600', bg: 'bg-orange-500/10', border: 'border-orange-500/30', label: name, icon: null };
   const pct = Math.round((value / fullMark) * 100);
 
   return (
@@ -177,7 +177,7 @@ function MatrixGauge({ label, value, leftLabel, rightLabel, icon }: {
     <div ref={ref} className="space-y-2">
       <div className="flex items-center justify-between text-xs text-[#5a5a56]">
         <span className="flex items-center gap-1">{icon} {leftLabel}</span>
-        <span className="font-bold text-orange-400">{value}</span>
+        <span className="font-bold text-orange-600">{value}</span>
         <span>{rightLabel}</span>
       </div>
       <div className="relative h-3 bg-black/[0.05] rounded-full overflow-hidden">
@@ -214,13 +214,13 @@ function TimelineChart({ slots }: { slots: DailyFortuneResult['extended']['timel
           className="flex items-center gap-3 px-4 py-3 rounded-xl bg-gradient-to-r from-yellow-500/20 to-orange-500/10 border border-yellow-500/30"
         >
           <div className="w-8 h-8 rounded-lg bg-yellow-500/20 flex items-center justify-center flex-shrink-0">
-            <Star className="w-4 h-4 text-yellow-400" />
+            <Star className="w-4 h-4 text-yellow-600" />
           </div>
           <div>
-            <p className="text-xs text-yellow-400 font-bold">골든 타임</p>
+            <p className="text-xs text-yellow-600 font-bold">골든 타임</p>
             <p className="text-sm text-[#1a1a18] font-semibold">{goldenSlot.label} — {goldenSlot.description}</p>
           </div>
-          <div className="ml-auto text-2xl font-black text-yellow-400">{goldenSlot.score}</div>
+          <div className="ml-auto text-2xl font-black text-yellow-600">{goldenSlot.score}</div>
         </motion.div>
       )}
 
@@ -252,7 +252,7 @@ function TimelineChart({ slots }: { slots: DailyFortuneResult['extended']['timel
               </span>
               {isGolden && (
                 <div className="absolute -top-5 left-1/2 -translate-x-1/2">
-                  <Star className="w-3 h-3 text-yellow-400" />
+                  <Star className="w-3 h-3 text-yellow-600" />
                 </div>
               )}
             </div>
@@ -325,13 +325,13 @@ function SectionHeader({
   icon: React.ReactNode; label: string; title: string; accent?: string;
 }) {
   const accentColors: Record<string, string> = {
-    orange: 'text-orange-400 bg-orange-500/10 border-orange-500/20',
-    green: 'text-green-400 bg-green-500/10 border-green-500/20',
-    blue: 'text-blue-400 bg-blue-500/10 border-blue-500/20',
-    yellow: 'text-yellow-400 bg-yellow-500/10 border-yellow-500/20',
-    red: 'text-red-400 bg-red-500/10 border-red-500/20',
-    purple: 'text-purple-400 bg-purple-500/10 border-purple-500/20',
-    pink: 'text-pink-400 bg-pink-500/10 border-pink-500/20',
+    orange: 'text-orange-600 bg-orange-500/10 border-orange-500/20',
+    green: 'text-green-600 bg-green-500/10 border-green-500/20',
+    blue: 'text-blue-600 bg-blue-500/10 border-blue-500/20',
+    yellow: 'text-yellow-600 bg-yellow-500/10 border-yellow-500/20',
+    red: 'text-red-600 bg-red-500/10 border-red-500/20',
+    purple: 'text-purple-600 bg-purple-500/10 border-purple-500/20',
+    pink: 'text-pink-600 bg-pink-500/10 border-pink-500/20',
   };
   const cls = accentColors[accent] ?? accentColors.orange;
 
@@ -407,7 +407,7 @@ export default function DailyFortune() {
           <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-primary/10 rounded-full blur-[100px]" />
         </div>
 
-        <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-black/10">
+        <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
           <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
             <Link href="/">
               <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
@@ -428,8 +428,8 @@ export default function DailyFortune() {
             {/* Hero Section - 컴팩트하게 */}
             <div className="text-center space-y-2">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 backdrop-blur-xl">
-                <Sun className="w-3 h-3 text-orange-400" />
-                <span className="text-[10px] md:text-sm md:text-xs font-bold tracking-wider text-orange-400 uppercase">오늘 하루의 기운</span>
+                <Sun className="w-3 h-3 text-orange-600" />
+                <span className="text-[10px] md:text-sm md:text-xs font-bold tracking-wider text-orange-600 uppercase">오늘 하루의 기운</span>
               </div>
               <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-[#1a1a18]">오늘의 운세</h2>
               <p className="text-muted-foreground text-xs md:text-base md:text-sm">
@@ -442,7 +442,7 @@ export default function DailyFortune() {
               <CardHeader className="border-b border-black/10 px-4 py-3 md:px-6 md:py-4">
                 <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-base md:text-lg">
                   <div className="w-8 h-8 rounded-lg bg-orange-500/20 flex items-center justify-center">
-                    <User className="w-4 h-4 text-orange-400" />
+                    <User className="w-4 h-4 text-orange-600" />
                   </div>
                   운세 정보 입력
                 </CardTitle>
@@ -453,7 +453,7 @@ export default function DailyFortune() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-1.5">
                       <Label htmlFor="name" className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
-                        <User className="w-3.5 h-3.5 text-orange-400" />
+                        <User className="w-3.5 h-3.5 text-orange-600" />
                         이름
                       </Label>
                       <Input
@@ -466,7 +466,7 @@ export default function DailyFortune() {
 
                     <div className="space-y-1.5">
                       <Label className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
-                        <Sparkles className="w-3.5 h-3.5 text-orange-400" />
+                        <Sparkles className="w-3.5 h-3.5 text-orange-600" />
                         성별
                       </Label>
                       <ToggleGroup
@@ -496,7 +496,7 @@ export default function DailyFortune() {
                   {/* Birth Date */}
                   <div className="space-y-1.5">
                     <Label htmlFor="birthDate" className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
-                      <Calendar className="w-3.5 h-3.5 text-orange-400" />
+                      <Calendar className="w-3.5 h-3.5 text-orange-600" />
                       생년월일
                     </Label>
                     <DatePickerInput
@@ -509,7 +509,7 @@ export default function DailyFortune() {
                   {/* 날짜 구분 */}
                   <div className="space-y-1.5">
                     <Label className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
-                      <Calendar className="w-3.5 h-3.5 text-orange-400" />
+                      <Calendar className="w-3.5 h-3.5 text-orange-600" />
                       날짜 구분
                     </Label>
                     <ToggleGroup
@@ -538,7 +538,7 @@ export default function DailyFortune() {
                           {...form.register("isLeapMonth")}
                           className="w-4 h-4 rounded border-black/10 bg-black/[0.05] accent-orange-500"
                         />
-                        <span className="text-base md:text-sm text-[#1a1a18] group-hover:text-orange-400 transition-colors">윤달(Leap Month)인 경우 체크</span>
+                        <span className="text-base md:text-sm text-[#1a1a18] group-hover:text-orange-600 transition-colors">윤달(Leap Month)인 경우 체크</span>
                       </label>
                     </div>
                   )}
@@ -560,7 +560,7 @@ export default function DailyFortune() {
               <Card className="bg-black/[0.05] border-black/10 rounded-xl">
                 <CardContent className="p-2.5 md:p-3 text-center space-y-1">
                   <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-orange-500/10 flex items-center justify-center mx-auto">
-                    <Zap className="w-4 h-4 md:w-4.5 md:h-4.5 text-orange-400" />
+                    <Zap className="w-4 h-4 md:w-4.5 md:h-4.5 text-orange-600" />
                   </div>
                   <p className="text-[10px] md:text-sm md:text-xs font-medium text-[#1a1a18]">오늘의 총운</p>
                 </CardContent>
@@ -568,7 +568,7 @@ export default function DailyFortune() {
               <Card className="bg-black/[0.05] border-black/10 rounded-xl">
                 <CardContent className="p-2.5 md:p-3 text-center space-y-1">
                   <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-yellow-500/10 flex items-center justify-center mx-auto">
-                    <Star className="w-4 h-4 md:w-4.5 md:h-4.5 text-yellow-400" />
+                    <Star className="w-4 h-4 md:w-4.5 md:h-4.5 text-yellow-600" />
                   </div>
                   <p className="text-[10px] md:text-sm md:text-xs font-medium text-[#1a1a18]">행운 점수</p>
                 </CardContent>
@@ -576,7 +576,7 @@ export default function DailyFortune() {
               <Card className="bg-black/[0.05] border-black/10 rounded-xl">
                 <CardContent className="p-2.5 md:p-3 text-center space-y-1">
                   <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-pink-500/10 flex items-center justify-center mx-auto">
-                    <Palette className="w-4 h-4 md:w-4.5 md:h-4.5 text-pink-400" />
+                    <Palette className="w-4 h-4 md:w-4.5 md:h-4.5 text-pink-600" />
                   </div>
                   <p className="text-[10px] md:text-sm md:text-xs font-medium text-[#1a1a18]">행운의 컬러</p>
                 </CardContent>
@@ -584,7 +584,7 @@ export default function DailyFortune() {
               <Card className="bg-black/[0.05] border-black/10 rounded-xl">
                 <CardContent className="p-2.5 md:p-3 text-center space-y-1">
                   <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-blue-500/10 flex items-center justify-center mx-auto">
-                    <MapPin className="w-4 h-4 md:w-4.5 md:h-4.5 text-blue-400" />
+                    <MapPin className="w-4 h-4 md:w-4.5 md:h-4.5 text-blue-600" />
                   </div>
                   <p className="text-[10px] md:text-sm md:text-xs font-medium text-[#1a1a18]">행운의 방향</p>
                 </CardContent>
@@ -629,7 +629,7 @@ export default function DailyFortune() {
         </div>
 
         {/* 헤더 */}
-        <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-black/10">
+        <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
           <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
             <div className="flex items-center">
               <Button
@@ -645,7 +645,7 @@ export default function DailyFortune() {
             <Button
               variant="ghost"
               size="icon"
-              className="text-orange-400 min-w-[44px] min-h-[44px]"
+              className="text-orange-600 min-w-[44px] min-h-[44px]"
               onClick={() => {
                 shareContent({
                   title: '무운 오늘의 운세',
@@ -678,8 +678,8 @@ export default function DailyFortune() {
                   {/* 배지 */}
                   <div className="flex items-center justify-between">
                     <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20">
-                      <Zap className="w-3 h-3 text-orange-400" />
-                      <span className="text-[10px] font-bold tracking-widest text-orange-400 uppercase">Section 01 · Hero</span>
+                      <Zap className="w-3 h-3 text-orange-600" />
+                      <span className="text-[10px] font-bold tracking-widest text-orange-600 uppercase">Section 01 · Hero</span>
                     </div>
                     <div className="text-xs text-[#999891]">{fortune.date}</div>
                   </div>
@@ -687,7 +687,7 @@ export default function DailyFortune() {
                   {/* 이름 + 키워드 */}
                   <div className="text-center space-y-1">
                     <p className="text-sm text-[#5a5a56]">
-                      <span className="text-orange-400 font-bold">{userName}</span>님의 오늘 에너지 키워드
+                      <span className="text-orange-600 font-bold">{userName}</span>님의 오늘 에너지 키워드
                     </p>
                     <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-orange-500/20 to-yellow-500/10 border border-orange-500/30">
                       <span className="text-xl font-black text-[#1a1a18]">{extended.energyKeyword}</span>
@@ -701,7 +701,7 @@ export default function DailyFortune() {
                   <div className="flex justify-center">
                     <div className="px-4 py-2 rounded-xl bg-black/[0.05] border border-black/10 text-center">
                       <p className="text-[10px] text-[#999891] mb-0.5">오늘의 십신</p>
-                      <p className="text-base font-bold text-orange-400">{fortune.tenGod}</p>
+                      <p className="text-base font-bold text-orange-600">{fortune.tenGod}</p>
                     </div>
                   </div>
 
@@ -712,7 +712,7 @@ export default function DailyFortune() {
 
                   {/* 요약 */}
                   <div className="flex items-start gap-3 p-3 rounded-xl bg-orange-500/5 border border-orange-500/20">
-                    <TrendingUp className="w-4 h-4 text-orange-400 flex-shrink-0 mt-0.5" />
+                    <TrendingUp className="w-4 h-4 text-orange-600 flex-shrink-0 mt-0.5" />
                     <p className="text-sm text-[#5a5a56]">{fortune.summary}</p>
                   </div>
                 </CardContent>
@@ -731,14 +731,14 @@ export default function DailyFortune() {
                 <div className="h-1 bg-gradient-to-r from-green-500 via-blue-400 to-purple-500" />
                 <CardContent className="p-6 space-y-6">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20">
-                    <Brain className="w-3 h-3 text-green-400" />
-                    <span className="text-[10px] font-bold tracking-widest text-green-400 uppercase">Section 02 · Analysis</span>
+                    <Brain className="w-3 h-3 text-green-600" />
+                    <span className="text-[10px] font-bold tracking-widest text-green-600 uppercase">Section 02 · Analysis</span>
                   </div>
 
                   {/* 오행 밸런스 */}
                   <div>
                     <SectionHeader
-                      icon={<Wind className="w-4 h-4 text-green-400" />}
+                      icon={<Wind className="w-4 h-4 text-green-600" />}
                       label="오행 분석"
                       title="오행(五行) 밸런스"
                       accent="green"
@@ -757,7 +757,7 @@ export default function DailyFortune() {
                   {/* 의사결정 매트릭스 */}
                   <div>
                     <SectionHeader
-                      icon={<Brain className="w-4 h-4 text-purple-400" />}
+                      icon={<Brain className="w-4 h-4 text-purple-600" />}
                       label="의사결정 매트릭스"
                       title="오늘의 판단 지수"
                       accent="purple"
@@ -768,32 +768,32 @@ export default function DailyFortune() {
                         value={extended.decisionMatrix.logicScore}
                         leftLabel="논리"
                         rightLabel="직관"
-                        icon={<Brain className="w-3 h-3 text-purple-400" />}
+                        icon={<Brain className="w-3 h-3 text-purple-600" />}
                       />
                       <MatrixGauge
                         label="공격 vs 수비"
                         value={extended.decisionMatrix.offenseScore}
                         leftLabel="공격"
                         rightLabel="수비"
-                        icon={<Sword className="w-3 h-3 text-red-400" />}
+                        icon={<Sword className="w-3 h-3 text-red-600" />}
                       />
                     </div>
                     <div className="grid grid-cols-2 gap-2 mt-4">
                       <div className="p-3 rounded-xl bg-purple-500/5 border border-purple-500/20 text-center">
                         <p className="text-[10px] text-[#999891]">논리 지수</p>
-                        <p className="text-2xl font-black text-purple-400">{extended.decisionMatrix.logicScore}</p>
+                        <p className="text-2xl font-black text-purple-600">{extended.decisionMatrix.logicScore}</p>
                       </div>
                       <div className="p-3 rounded-xl bg-blue-500/5 border border-blue-500/20 text-center">
                         <p className="text-[10px] text-[#999891]">직관 지수</p>
-                        <p className="text-2xl font-black text-blue-400">{extended.decisionMatrix.intuitionScore}</p>
+                        <p className="text-2xl font-black text-blue-600">{extended.decisionMatrix.intuitionScore}</p>
                       </div>
                       <div className="p-3 rounded-xl bg-red-500/5 border border-red-500/20 text-center">
                         <p className="text-[10px] text-[#999891]">공격 지수</p>
-                        <p className="text-2xl font-black text-red-400">{extended.decisionMatrix.offenseScore}</p>
+                        <p className="text-2xl font-black text-red-600">{extended.decisionMatrix.offenseScore}</p>
                       </div>
                       <div className="p-3 rounded-xl bg-green-500/5 border border-green-500/20 text-center">
                         <p className="text-[10px] text-[#999891]">수비 지수</p>
-                        <p className="text-2xl font-black text-green-400">{extended.decisionMatrix.defenseScore}</p>
+                        <p className="text-2xl font-black text-green-600">{extended.decisionMatrix.defenseScore}</p>
                       </div>
                     </div>
                   </div>
@@ -813,12 +813,12 @@ export default function DailyFortune() {
                 <div className="h-1 bg-gradient-to-r from-yellow-500 via-orange-400 to-red-500" />
                 <CardContent className="p-6 space-y-5">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-yellow-500/10 border border-yellow-500/20">
-                    <Clock className="w-3 h-3 text-yellow-400" />
-                    <span className="text-[10px] font-bold tracking-widest text-yellow-400 uppercase">Section 03 · Timeline</span>
+                    <Clock className="w-3 h-3 text-yellow-600" />
+                    <span className="text-[10px] font-bold tracking-widest text-yellow-600 uppercase">Section 03 · Timeline</span>
                   </div>
 
                   <SectionHeader
-                    icon={<Clock className="w-4 h-4 text-yellow-400" />}
+                    icon={<Clock className="w-4 h-4 text-yellow-600" />}
                     label="12시진 흐름"
                     title="오늘의 운세 타임라인"
                     accent="yellow"
@@ -844,22 +844,22 @@ export default function DailyFortune() {
                             slot.isGoldenTime ? 'bg-yellow-500/20' : 'bg-orange-500/10'
                           }`}>
                             {slot.isGoldenTime
-                              ? <Star className="w-4 h-4 text-yellow-400" />
-                              : <Clock className="w-4 h-4 text-orange-400" />
+                              ? <Star className="w-4 h-4 text-yellow-600" />
+                              : <Clock className="w-4 h-4 text-orange-600" />
                             }
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2">
-                              <p className={`text-sm font-bold ${slot.isGoldenTime ? 'text-yellow-400' : 'text-[#1a1a18]'}`}>
+                              <p className={`text-sm font-bold ${slot.isGoldenTime ? 'text-yellow-600' : 'text-[#1a1a18]'}`}>
                                 {slot.label}
                               </p>
                               {slot.isGoldenTime && (
-                                <span className="text-[9px] px-1.5 py-0.5 rounded bg-yellow-500/20 text-yellow-400 font-bold">GOLDEN</span>
+                                <span className="text-[9px] px-1.5 py-0.5 rounded bg-yellow-500/20 text-yellow-600 font-bold">GOLDEN</span>
                               )}
                             </div>
                             <p className="text-xs text-[#999891] truncate">{slot.description}</p>
                           </div>
-                          <div className={`text-lg font-black ${slot.isGoldenTime ? 'text-yellow-400' : 'text-orange-400'}`}>
+                          <div className={`text-lg font-black ${slot.isGoldenTime ? 'text-yellow-600' : 'text-orange-600'}`}>
                             {slot.score}
                           </div>
                         </div>
@@ -881,12 +881,12 @@ export default function DailyFortune() {
                 <div className="h-1 bg-gradient-to-r from-red-600 via-red-400 to-orange-500" />
                 <CardContent className="p-6 space-y-5">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20">
-                    <AlertTriangle className="w-3 h-3 text-red-400" />
-                    <span className="text-[10px] font-bold tracking-widest text-red-400 uppercase">Section 04 · Cautions</span>
+                    <AlertTriangle className="w-3 h-3 text-red-600" />
+                    <span className="text-[10px] font-bold tracking-widest text-red-600 uppercase">Section 04 · Cautions</span>
                   </div>
 
                   <SectionHeader
-                    icon={<AlertTriangle className="w-4 h-4 text-red-400" />}
+                    icon={<AlertTriangle className="w-4 h-4 text-red-600" />}
                     label="명리학적 주의사항"
                     title="오늘 조심해야 할 것들"
                     accent="red"
@@ -906,7 +906,7 @@ export default function DailyFortune() {
                         </div>
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
-                            <span className="flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-red-500/20 text-red-400 font-bold border border-red-500/30">
+                            <span className="flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-red-500/20 text-red-600 font-bold border border-red-500/30">
                               {CAUTION_CATEGORY_ICON[caution.category]}
                               {caution.category}
                             </span>
@@ -933,12 +933,12 @@ export default function DailyFortune() {
                 <div className="h-1 bg-gradient-to-r from-green-500 via-emerald-400 to-teal-500" />
                 <CardContent className="p-6 space-y-5">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20">
-                    <Lightbulb className="w-3 h-3 text-green-400" />
-                    <span className="text-[10px] font-bold tracking-widest text-green-400 uppercase">Section 05 · Luck Boosters</span>
+                    <Lightbulb className="w-3 h-3 text-green-600" />
+                    <span className="text-[10px] font-bold tracking-widest text-green-600 uppercase">Section 05 · Luck Boosters</span>
                   </div>
 
                   <SectionHeader
-                    icon={<Lightbulb className="w-4 h-4 text-green-400" />}
+                    icon={<Lightbulb className="w-4 h-4 text-green-600" />}
                     label="기운 상승 활동"
                     title="오늘 하면 좋은 것들"
                     accent="green"
@@ -960,12 +960,12 @@ export default function DailyFortune() {
                           <div className="flex-1">
                             <div className="flex items-center justify-between mb-1">
                               <p className="text-sm font-bold text-[#1a1a18]">{booster.title}</p>
-                              <CheckCircle2 className="w-4 h-4 text-green-400 flex-shrink-0" />
+                              <CheckCircle2 className="w-4 h-4 text-green-600 flex-shrink-0" />
                             </div>
                             <p className="text-xs text-[#5a5a56] leading-relaxed mb-2">{booster.description}</p>
                             <div className="flex items-center gap-1.5">
-                              <Clock className="w-3 h-3 text-green-400/60" />
-                              <span className="text-[10px] text-green-400/80 font-medium">{booster.timing}</span>
+                              <Clock className="w-3 h-3 text-green-600/60" />
+                              <span className="text-[10px] text-green-600/80 font-medium">{booster.timing}</span>
                             </div>
                           </div>
                         </div>
@@ -988,12 +988,12 @@ export default function DailyFortune() {
                 <div className="h-1 bg-gradient-to-r from-blue-500 via-cyan-400 to-teal-500" />
                 <CardContent className="p-6 space-y-5">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20">
-                    <Compass className="w-3 h-3 text-blue-400" />
-                    <span className="text-[10px] font-bold tracking-widest text-blue-400 uppercase">Section 06 · Spatial</span>
+                    <Compass className="w-3 h-3 text-blue-600" />
+                    <span className="text-[10px] font-bold tracking-widest text-blue-600 uppercase">Section 06 · Spatial</span>
                   </div>
 
                   <SectionHeader
-                    icon={<Compass className="w-4 h-4 text-blue-400" />}
+                    icon={<Compass className="w-4 h-4 text-blue-600" />}
                     label="공간 에너지"
                     title="행운의 방향 & 데스크테리어"
                     accent="blue"
@@ -1027,7 +1027,7 @@ export default function DailyFortune() {
                       <div className="p-4 rounded-xl bg-black/[0.05] border border-black/10 flex-1">
                         <p className="text-xs text-[#999891] mb-2">행운의 방향</p>
                         <div className="flex items-center gap-2">
-                          <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-400">
+                          <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-600">
                             {DIRECTION_ICON[extended.spatial.luckyDirection] ?? <Compass className="w-4 h-4" />}
                           </div>
                           <p className="text-sm font-bold text-[#1a1a18]">{extended.spatial.luckyDirection}</p>
@@ -1045,7 +1045,7 @@ export default function DailyFortune() {
                       {extended.spatial.deskItems.map((item, idx) => (
                         <div key={idx} className="flex items-start gap-3 p-3 rounded-xl bg-black/[0.05] border border-black/10">
                           <div className="w-6 h-6 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <span className="text-xs font-bold text-blue-400">{idx + 1}</span>
+                            <span className="text-xs font-bold text-blue-600">{idx + 1}</span>
                           </div>
                           <div>
                             <p className="text-sm font-semibold text-[#1a1a18]">{item.name}</p>
@@ -1071,12 +1071,12 @@ export default function DailyFortune() {
                 <div className="h-1 bg-gradient-to-r from-purple-600 via-pink-500 to-rose-500" />
                 <CardContent className="p-6 space-y-5">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20">
-                    <Users className="w-3 h-3 text-purple-400" />
-                    <span className="text-[10px] font-bold tracking-widest text-purple-400 uppercase">Section 07 · Synergy</span>
+                    <Users className="w-3 h-3 text-purple-600" />
+                    <span className="text-[10px] font-bold tracking-widest text-purple-600 uppercase">Section 07 · Synergy</span>
                   </div>
 
                   <SectionHeader
-                    icon={<Users className="w-4 h-4 text-purple-400" />}
+                    icon={<Users className="w-4 h-4 text-purple-600" />}
                     label="사주 x MBTI 시너지"
                     title="오늘의 에너지 보완 유형"
                     accent="purple"

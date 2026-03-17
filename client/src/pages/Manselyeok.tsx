@@ -36,12 +36,12 @@ type FormValues = z.infer<typeof formSchema>;
 
 const getElementColor = (element: FiveElement) => {
   switch (element) {
-    case '木': return 'text-green-400 border-green-400/30 bg-green-400/10';
-    case '火': return 'text-red-400 border-red-400/30 bg-red-400/10';
-    case '土': return 'text-yellow-400 border-yellow-400/30 bg-yellow-400/10';
+    case '木': return 'text-green-600 border-green-400/30 bg-green-400/10';
+    case '火': return 'text-red-600 border-red-400/30 bg-red-400/10';
+    case '土': return 'text-yellow-600 border-yellow-400/30 bg-yellow-400/10';
     case '金': return 'text-[#6a6a66] border-[#6a6a66]/30 bg-[#6a6a66]/10';
-    case '水': return 'text-blue-400 border-blue-400/30 bg-blue-400/10';
-    default: return 'text-[#1a1a18] border-white/30 bg-black/06';
+    case '水': return 'text-blue-600 border-blue-400/30 bg-blue-400/10';
+    default: return 'text-[#1a1a18] border-black/15 bg-black/06';
   }
 };
 
@@ -124,7 +124,7 @@ export default function Manselyeok() {
         <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-teal-500/10 rounded-full blur-[100px]" />
       </div>
 
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-black/10">
+      <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
         <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
             <Link href="/">
@@ -342,7 +342,7 @@ export default function Manselyeok() {
                 <Card className="bg-black/[0.05] border-black/10 rounded-xl">
                   <CardContent className="p-2.5 md:p-3 text-center space-y-1">
                     <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-teal-500/10 flex items-center justify-center mx-auto">
-                      <Activity className="w-4 h-4 md:w-4.5 md:h-4.5 text-teal-400" />
+                      <Activity className="w-4 h-4 md:w-4.5 md:h-4.5 text-teal-600" />
                     </div>
                     <p className="text-[10px] md:text-xs font-medium text-[#1a1a18]">오행 분석</p>
                   </CardContent>
@@ -350,7 +350,7 @@ export default function Manselyeok() {
                 <Card className="bg-black/[0.05] border-black/10 rounded-xl">
                   <CardContent className="p-2.5 md:p-3 text-center space-y-1">
                     <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-cyan-500/10 flex items-center justify-center mx-auto">
-                      <Zap className="w-4 h-4 md:w-4.5 md:h-4.5 text-cyan-400" />
+                      <Zap className="w-4 h-4 md:w-4.5 md:h-4.5 text-cyan-600" />
                     </div>
                     <p className="text-[10px] md:text-xs font-medium text-[#1a1a18]">대운 세운</p>
                   </CardContent>
@@ -358,7 +358,7 @@ export default function Manselyeok() {
                 <Card className="bg-black/[0.05] border-black/10 rounded-xl">
                   <CardContent className="p-2.5 md:p-3 text-center space-y-1">
                     <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-green-500/10 flex items-center justify-center mx-auto">
-                      <Info className="w-4 h-4 md:w-4.5 md:h-4.5 text-green-400" />
+                      <Info className="w-4 h-4 md:w-4.5 md:h-4.5 text-green-600" />
                     </div>
                     <p className="text-[10px] md:text-xs font-medium text-[#1a1a18]">상세 해석</p>
                   </CardContent>

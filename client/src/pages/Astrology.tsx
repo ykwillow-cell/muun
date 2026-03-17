@@ -275,7 +275,7 @@ const Astrology: React.FC = () => {
           <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-blue-900/10 rounded-full blur-[120px]" />
         </div>
 
-        <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-black/10">
+        <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
           <div className={`${commonMaxWidth} px-4 h-14 flex items-center`}>
             <Link href="/">
               <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
@@ -296,8 +296,8 @@ const Astrology: React.FC = () => {
             {/* Hero Section */}
             <div className="text-center space-y-4 py-4 md:py-6">
               <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/30 backdrop-blur-xl">
-                <Compass className="w-4 h-4 text-purple-400" />
-                <span className="text-[11px] md:text-xs font-bold tracking-widest text-purple-400 uppercase">Birth Chart</span>
+                <Compass className="w-4 h-4 text-purple-600" />
+                <span className="text-[11px] md:text-xs font-bold tracking-widest text-purple-600 uppercase">Birth Chart</span>
               </div>
               <h2 className="text-2xl md:text-4xl font-bold tracking-tight text-[#1a1a18]">
                 당신의 탄생 차트 분석
@@ -421,7 +421,7 @@ const Astrology: React.FC = () => {
         <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-blue-900/10 rounded-full blur-[120px]" />
       </div>
 
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-black/10">
+      <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
         <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
             <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]" onClick={() => setResult(null)}>
@@ -442,7 +442,7 @@ const Astrology: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* 왼쪽: 시각적 차트 */}
           <div className="lg:col-span-5 space-y-6">
-            <Card className="bg-card/30 border-black/10 backdrop-blur-xl p-6 sticky top-24">
+            <Card className="bg-white/80 border-black/10 backdrop-blur-xl p-6 sticky top-24">
               <div className="text-center mb-6">
                 <h3 className="text-lg font-bold text-[#1a1a18] flex items-center justify-center gap-2">
                   <Globe className="w-4 h-4 text-primary" />
@@ -495,7 +495,7 @@ const Astrology: React.FC = () => {
               {/* 행성별 상세 분석 */}
               <div className="space-y-4">
                 <h3 className="text-xl font-bold text-[#1a1a18] flex items-center gap-2 px-2">
-                  <Zap className="w-5 h-5 text-yellow-400" />
+                  <Zap className="w-5 h-5 text-yellow-600" />
                   하늘의 행성들이 보내는 메시지
                 </h3>
                 
@@ -507,7 +507,7 @@ const Astrology: React.FC = () => {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: i * 0.1 }}
                     >
-                      <Card className="bg-card/50 border-black/10 hover:border-primary/30 transition-colors overflow-hidden group">
+                      <Card className="bg-white/80 border-black/10 hover:border-primary/30 transition-colors overflow-hidden group">
                         <CardHeader className="p-4 bg-black/[0.05] flex flex-row items-center justify-between">
                           <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-full bg-background flex items-center justify-center text-xl border border-black/10 group-hover:scale-110 transition-transform">
@@ -544,8 +544,8 @@ const Astrology: React.FC = () => {
               {/* 안내 문구 */}
               <Card className="bg-blue-500/5 border-blue-500/20">
                 <CardContent className="p-4 flex items-start gap-3">
-                  <Info className="text-blue-400 mt-1 flex-shrink-0" size={18} />
-                  <p className="text-xs text-blue-400/80 leading-relaxed">
+                  <Info className="text-blue-600 mt-1 flex-shrink-0" size={18} />
+                  <p className="text-xs text-blue-600/80 leading-relaxed">
                     이 분석은 당신이 태어난 순간, 하늘의 행성들이 어디에 있었는지를 계산한 결과예요. 
                     태양은 당신의 겉모습을, 달은 숨겨진 감정을, 금성은 사랑의 방식을 알려준답니다. 
                     나를 더 깊이 이해하는 재미있는 가이드로 활용해보세요!

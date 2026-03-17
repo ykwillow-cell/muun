@@ -43,7 +43,7 @@ export default function YearlyFortuneContent() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="bg-black/[0.05] rounded-2xl p-6 border border-black/10">
             <div className="flex items-center gap-3 mb-3">
-              <Sparkles className="w-5 h-5 text-red-400" />
+              <Sparkles className="w-5 h-5 text-red-600" />
               <h3 className="text-lg font-semibold text-[#1a1a18] m-0">화(火)의 기운이 강한 해</h3>
             </div>
             <p className="text-[#5a5a56] text-sm leading-relaxed m-0">
@@ -53,7 +53,7 @@ export default function YearlyFortuneContent() {
           </div>
           <div className="bg-black/[0.05] rounded-2xl p-6 border border-black/10">
             <div className="flex items-center gap-3 mb-3">
-              <TrendingUp className="w-5 h-5 text-orange-400" />
+              <TrendingUp className="w-5 h-5 text-orange-600" />
               <h3 className="text-lg font-semibold text-[#1a1a18] m-0">변화와 성장의 에너지</h3>
             </div>
             <p className="text-[#5a5a56] text-sm leading-relaxed m-0">
@@ -63,7 +63,7 @@ export default function YearlyFortuneContent() {
           </div>
           <div className="bg-black/[0.05] rounded-2xl p-6 border border-black/10">
             <div className="flex items-center gap-3 mb-3">
-              <Target className="w-5 h-5 text-yellow-400" />
+              <Target className="w-5 h-5 text-yellow-600" />
               <h3 className="text-lg font-semibold text-[#1a1a18] m-0">목표 달성에 유리</h3>
             </div>
             <p className="text-[#5a5a56] text-sm leading-relaxed m-0">
@@ -73,7 +73,7 @@ export default function YearlyFortuneContent() {
           </div>
           <div className="bg-black/[0.05] rounded-2xl p-6 border border-black/10">
             <div className="flex items-center gap-3 mb-3">
-              <Zap className="w-5 h-5 text-blue-400" />
+              <Zap className="w-5 h-5 text-blue-600" />
               <h3 className="text-lg font-semibold text-[#1a1a18] m-0">주의할 점</h3>
             </div>
             <p className="text-[#5a5a56] text-sm leading-relaxed m-0">

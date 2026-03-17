@@ -383,7 +383,7 @@ export default function PastLife() {
               </Button>
 
               {/* 다른 서비스 추천 */}
-              <div className="mt-6 rounded-2xl border border-black/10 bg-white/3 p-4">
+              <div className="mt-6 rounded-2xl border border-black/10 bg-white p-4">
                 <p className="text-xs text-foreground/40 text-center mb-3 uppercase tracking-widest font-bold">
                   함께 보면 좋은 서비스
                 </p>

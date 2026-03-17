@@ -14,7 +14,7 @@ export const DreamQuickSearch: React.FC = () => {
   };
 
   return (
-    <section className="px-4 py-4 border-b border-white/[0.07]">
+    <section className="px-4 py-4 border-b border-black/10">
       <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-indigo-500/[0.07] border border-indigo-500/20 hover:border-indigo-500/30 transition-all">
         {/* 아이콘 */}
         <div className="w-9 h-9 rounded-xl bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center flex-shrink-0">

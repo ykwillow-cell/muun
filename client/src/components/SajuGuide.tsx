@@ -12,7 +12,7 @@ const SajuGuide: React.FC<SajuGuideProps> = ({ userName, theme = 'yellow' }) => 
 
   const accentColor = theme === 'purple' ? 'purple' : 'primary';
   const accentBg = theme === 'purple' ? 'bg-purple-500/10 border-purple-500/20' : 'bg-primary/10 border-primary/20';
-  const accentText = theme === 'purple' ? 'text-purple-400' : 'text-primary';
+  const accentText = theme === 'purple' ? 'text-purple-600' : 'text-primary';
   const accentHover = theme === 'purple' ? 'hover:bg-purple-500/20' : 'hover:bg-primary/20';
 
   return (
@@ -88,10 +88,10 @@ const SajuGuide: React.FC<SajuGuideProps> = ({ userName, theme = 'yellow' }) => 
                   {/* 목(木) */}
                   <div className="flex items-center gap-3 bg-green-500/10 border border-green-500/20 rounded-xl px-3 py-2.5">
                     <div className="w-8 h-8 rounded-lg bg-green-500/20 flex items-center justify-center shrink-0">
-                      <span className="text-green-400 font-bold text-sm">木</span>
+                      <span className="text-green-600 font-bold text-sm">木</span>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-bold text-green-400">목(木) 나무 — 초록색</p>
+                      <p className="text-sm font-bold text-green-600">목(木) 나무 — 초록색</p>
                       <p className="text-xs text-[#5a5a56] mt-0.5">성장, 시작, 자존심, 계획을 상징해요</p>
                     </div>
                   </div>
@@ -99,10 +99,10 @@ const SajuGuide: React.FC<SajuGuideProps> = ({ userName, theme = 'yellow' }) => 
                   {/* 화(火) */}
                   <div className="flex items-center gap-3 bg-red-500/10 border border-red-500/20 rounded-xl px-3 py-2.5">
                     <div className="w-8 h-8 rounded-lg bg-red-500/20 flex items-center justify-center shrink-0">
-                      <span className="text-red-400 font-bold text-sm">火</span>
+                      <span className="text-red-600 font-bold text-sm">火</span>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-bold text-red-400">화(火) 불 — 빨간색</p>
+                      <p className="text-sm font-bold text-red-600">화(火) 불 — 빨간색</p>
                       <p className="text-xs text-[#5a5a56] mt-0.5">열정, 표현, 예의, 화려함을 상징해요</p>
                     </div>
                   </div>
@@ -110,10 +110,10 @@ const SajuGuide: React.FC<SajuGuideProps> = ({ userName, theme = 'yellow' }) => 
                   {/* 토(土) */}
                   <div className="flex items-center gap-3 bg-yellow-500/10 border border-yellow-500/20 rounded-xl px-3 py-2.5">
                     <div className="w-8 h-8 rounded-lg bg-yellow-500/20 flex items-center justify-center shrink-0">
-                      <span className="text-yellow-400 font-bold text-sm">土</span>
+                      <span className="text-yellow-600 font-bold text-sm">土</span>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-bold text-yellow-400">토(土) 흙 — 노란색</p>
+                      <p className="text-sm font-bold text-yellow-600">토(土) 흙 — 노란색</p>
                       <p className="text-xs text-[#5a5a56] mt-0.5">신뢰, 안정, 중재, 포용력을 상징해요</p>
                     </div>
                   </div>
@@ -132,10 +132,10 @@ const SajuGuide: React.FC<SajuGuideProps> = ({ userName, theme = 'yellow' }) => 
                   {/* 수(水) */}
                   <div className="flex items-center gap-3 bg-blue-500/10 border border-blue-500/20 rounded-xl px-3 py-2.5">
                     <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center shrink-0">
-                      <span className="text-blue-400 font-bold text-sm">水</span>
+                      <span className="text-blue-600 font-bold text-sm">水</span>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-bold text-blue-400">수(水) 물 — 파란색</p>
+                      <p className="text-sm font-bold text-blue-600">수(水) 물 — 파란색</p>
                       <p className="text-xs text-[#5a5a56] mt-0.5">지혜, 유연함, 생각, 휴식을 상징해요</p>
                     </div>
                   </div>
@@ -145,7 +145,7 @@ const SajuGuide: React.FC<SajuGuideProps> = ({ userName, theme = 'yellow' }) => 
               {/* 마무리 팁 */}
               <div className={`${theme === 'purple' ? 'bg-purple-500/10 border-purple-500/20' : 'bg-primary/10 border-primary/20'} border rounded-xl p-3`}>
                 <p className="text-sm text-[#5a5a56] leading-relaxed">
-                  <strong className={accentText}>💡 Tip:</strong> 일주(日柱)의 천간, 즉 위쪽 글자에 <span className="text-yellow-400 font-bold">'나'</span>라는 표시가 붙어 있는 것이 보이시나요?
+                  <strong className={accentText}>💡 Tip:</strong> 일주(日柱)의 천간, 즉 위쪽 글자에 <span className="text-yellow-600 font-bold">'나'</span>라는 표시가 붙어 있는 것이 보이시나요?
                   이것이 바로 핵심 기운인 <strong className="text-[#1a1a18]/90">'일간(日干)'</strong>이에요. 사주 풀이의 모든 해석은 이 글자를 중심으로 이루어진답니다!
                 </p>
               </div>

@@ -88,28 +88,28 @@ export default function LuckyItems({ result }: LuckyItemsProps) {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card className="bg-card border-black/10">
           <CardContent className="p-6 flex flex-col items-center text-center gap-2">
-            <Palette className="w-8 h-8 text-pink-400" />
+            <Palette className="w-8 h-8 text-pink-600" />
             <p className="text-xs text-muted-foreground">행운의 컬러</p>
             <p className="font-bold text-[#1a1a18]">{lucky.colors.join(', ')}</p>
           </CardContent>
         </Card>
         <Card className="bg-card border-black/10">
           <CardContent className="p-6 flex flex-col items-center text-center gap-2">
-            <Hash className="w-8 h-8 text-yellow-400" />
+            <Hash className="w-8 h-8 text-yellow-600" />
             <p className="text-xs text-muted-foreground">행운의 숫자</p>
             <p className="font-bold text-[#1a1a18]">{lucky.numbers.join(', ')}</p>
           </CardContent>
         </Card>
         <Card className="bg-card border-black/10">
           <CardContent className="p-6 flex flex-col items-center text-center gap-2">
-            <Coffee className="w-8 h-8 text-orange-400" />
+            <Coffee className="w-8 h-8 text-orange-600" />
             <p className="text-xs text-muted-foreground">추천 음식</p>
             <p className="font-bold text-[#1a1a18]">{lucky.foods[0]}</p>
           </CardContent>
         </Card>
         <Card className="bg-card border-black/10">
           <CardContent className="p-6 flex flex-col items-center text-center gap-2">
-            <MapPin className="w-8 h-8 text-blue-400" />
+            <MapPin className="w-8 h-8 text-blue-600" />
             <p className="text-xs text-muted-foreground">행운의 방향</p>
             <p className="font-bold text-[#1a1a18]">{lucky.directions[0]}</p>
           </CardContent>
@@ -119,7 +119,7 @@ export default function LuckyItems({ result }: LuckyItemsProps) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card className="bg-card border-black/10 overflow-hidden">
           <CardHeader className="bg-green-500/5 border-b border-black/10 py-3">
-            <CardTitle className="text-sm font-bold text-green-400 flex items-center gap-2">
+            <CardTitle className="text-sm font-bold text-green-600 flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4" /> 추천 활동
             </CardTitle>
           </CardHeader>
@@ -135,7 +135,7 @@ export default function LuckyItems({ result }: LuckyItemsProps) {
         </Card>
         <Card className="bg-card border-black/10 overflow-hidden">
           <CardHeader className="bg-red-500/5 border-b border-black/10 py-3">
-            <CardTitle className="text-sm font-bold text-red-400 flex items-center gap-2">
+            <CardTitle className="text-sm font-bold text-red-600 flex items-center gap-2">
               <AlertCircle className="w-4 h-4" /> 주의해야 할 행동
             </CardTitle>
           </CardHeader>

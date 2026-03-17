@@ -126,23 +126,23 @@ export function BirthTimeSelect({
       <SelectTrigger
         className={cn(
           // SelectTrigger 기본 data-[size=default]:h-9(36px)를 !h-11(44px)로 강제 덮어씀
-          "!h-11 w-full rounded-xl border border-white/10 bg-white/5",
-          "px-3 py-2 text-sm text-white",
+          "!h-11 w-full rounded-xl border border-black/10 bg-white",
+          "px-3 py-2 text-sm text-foreground",
           "ring-offset-background transition-all",
           "focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-0",
           accentClass,
-          !selectValue && "text-white/40",
+          !selectValue && "text-foreground/40",
           className
         )}
       >
         <SelectValue placeholder="시간대 선택" />
       </SelectTrigger>
-      <SelectContent className="bg-[#1a1a2e] border-white/10 text-white max-h-72">
+      <SelectContent className="bg-white border-black/10 text-foreground max-h-72">
         {SI_OPTIONS.map((option) => (
           <SelectItem
             key={option.value}
             value={option.value}
-            className="text-white hover:bg-white/10 focus:bg-white/10 focus:text-white cursor-pointer"
+            className="text-foreground hover:bg-primary/8 focus:bg-primary/8 focus:text-primary cursor-pointer"
           >
             {option.label}
           </SelectItem>
@@ -150,7 +150,7 @@ export function BirthTimeSelect({
         {/* '모름' 옵션 - 항상 표시, 구분선 없이 다른 항목과 동일한 스타일 */}
         <SelectItem
           value={BIRTH_TIME_UNKNOWN_VALUE}
-          className="text-white hover:bg-white/10 focus:bg-white/10 focus:text-white cursor-pointer"
+          className="text-foreground hover:bg-primary/8 focus:bg-primary/8 focus:text-primary cursor-pointer"
         >
           모름 (시간 모름)
         </SelectItem>

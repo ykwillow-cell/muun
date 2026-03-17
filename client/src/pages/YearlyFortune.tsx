@@ -156,10 +156,10 @@ function generateMonthlyFortune(saju: SajuResult): { month: number; title: strin
 
   const data = monthlyThemes[dayElement] || monthlyThemes['木'];
   const scoreColors = (score: number) => {
-    if (score >= 85) return 'text-green-400';
-    if (score >= 75) return 'text-yellow-400';
-    if (score >= 70) return 'text-orange-400';
-    return 'text-red-400';
+    if (score >= 85) return 'text-green-600';
+    if (score >= 75) return 'text-yellow-600';
+    if (score >= 70) return 'text-orange-600';
+    return 'text-red-600';
   };
   const barColors = (score: number) => {
     if (score >= 85) return 'bg-green-500';
@@ -338,7 +338,7 @@ export default function YearlyFortune() {
           <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-orange-500/10 rounded-full blur-[100px]" />
         </div>
 
-        <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-black/10">
+        <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
           <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
             <Link href="/">
               <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
@@ -505,7 +505,7 @@ export default function YearlyFortune() {
               <Card className="bg-black/[0.05] border-black/10 rounded-xl">
                 <CardContent className="p-3 md:p-4 text-center space-y-1.5">
                   <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-yellow-500/10 flex items-center justify-center mx-auto">
-                    <Zap className="w-4 h-4 md:w-5 md:h-5 text-yellow-400" />
+                    <Zap className="w-4 h-4 md:w-5 md:h-5 text-yellow-600" />
                   </div>
                   <p className="text-[10px] md:text-sm md:text-xs font-medium text-[#1a1a18]">재물운</p>
                 </CardContent>
@@ -513,7 +513,7 @@ export default function YearlyFortune() {
               <Card className="bg-black/[0.05] border-black/10 rounded-xl">
                 <CardContent className="p-3 md:p-4 text-center space-y-1.5">
                   <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-blue-500/10 flex items-center justify-center mx-auto">
-                    <Briefcase className="w-4 h-4 md:w-5 md:h-5 text-blue-400" />
+                    <Briefcase className="w-4 h-4 md:w-5 md:h-5 text-blue-600" />
                   </div>
                   <p className="text-[10px] md:text-sm md:text-xs font-medium text-[#1a1a18]">직업운</p>
                 </CardContent>
@@ -555,7 +555,7 @@ export default function YearlyFortune() {
   }
 
   const ELEMENT_TEXT_COLOR: Record<string, string> = {
-    '木': 'text-green-400', '火': 'text-red-400', '土': 'text-yellow-400', '金': 'text-[#6a6a66]', '水': 'text-blue-400',
+    '木': 'text-green-600', '火': 'text-red-600', '土': 'text-yellow-600', '金': 'text-[#6a6a66]', '水': 'text-blue-600',
   };
 
   return (
@@ -583,7 +583,7 @@ export default function YearlyFortune() {
           </p>
         </div>
       )}
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-black/10">
+      <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
         <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
             <Button variant="ghost" size="icon" onClick={() => setResult(null)} className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
@@ -638,13 +638,13 @@ export default function YearlyFortune() {
             <section className="space-y-3">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center">
-                  <User className="w-4 h-4 text-purple-400" />
+                  <User className="w-4 h-4 text-purple-600" />
                 </div>
                 <h2 className="text-lg font-bold text-[#1a1a18]">일간(日干) 성격 분석</h2>
               </div>
               <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden">
                 <CardHeader className="border-b border-black/10 px-4 py-3">
-                  <CardTitle className="text-sm md:text-base text-purple-400 flex items-center gap-2">
+                  <CardTitle className="text-sm md:text-base text-purple-600 flex items-center gap-2">
                     <span className={`text-lg ${ELEMENT_TEXT_COLOR[dayElement]}`}>{dayStem}</span>
                     {stemPersonality.name} — {stemPersonality.nature} ({stemPersonality.symbol})
                   </CardTitle>
@@ -655,7 +655,7 @@ export default function YearlyFortune() {
                   ))}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
                     <div className="bg-green-500/5 border border-green-500/10 rounded-xl p-3">
-                      <p className="text-sm md:text-xs font-bold text-green-400 mb-2">강점</p>
+                      <p className="text-sm md:text-xs font-bold text-green-600 mb-2">강점</p>
                       <ul className="space-y-1">
                         {stemPersonality.strength.map((s, i) => (
                           <li key={i} className="text-sm md:text-xs text-[#5a5a56] flex items-start gap-1.5">
@@ -666,7 +666,7 @@ export default function YearlyFortune() {
                       </ul>
                     </div>
                     <div className="bg-red-500/5 border border-red-500/10 rounded-xl p-3">
-                      <p className="text-sm md:text-xs font-bold text-red-400 mb-2">주의점</p>
+                      <p className="text-sm md:text-xs font-bold text-red-600 mb-2">주의점</p>
                       <ul className="space-y-1">
                         {stemPersonality.weakness.map((w, i) => (
                           <li key={i} className="text-sm md:text-xs text-[#5a5a56] flex items-start gap-1.5">
@@ -678,7 +678,7 @@ export default function YearlyFortune() {
                     </div>
                   </div>
                   <div className="bg-yellow-500/5 border border-yellow-500/10 rounded-xl p-3">
-                    <p className="text-sm md:text-xs font-bold text-yellow-400 mb-1">전문가 조언</p>
+                    <p className="text-sm md:text-xs font-bold text-yellow-600 mb-1">전문가 조언</p>
                     <p className="text-sm md:text-xs text-[#5a5a56] leading-relaxed">{stemPersonality.advice}</p>
                   </div>
                 </CardContent>
@@ -738,7 +738,7 @@ export default function YearlyFortune() {
           <section className="space-y-3">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-lg bg-pink-500/20 flex items-center justify-center">
-                <Sparkles className="w-4 h-4 text-pink-400" />
+                <Sparkles className="w-4 h-4 text-pink-600" />
               </div>
               <h2 className="text-lg font-bold text-[#1a1a18]">행운 아이템</h2>
             </div>
@@ -774,7 +774,7 @@ export default function YearlyFortune() {
             <section className="space-y-3">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-lg bg-yellow-500/20 flex items-center justify-center">
-                  <Zap className="w-4 h-4 text-yellow-400" />
+                  <Zap className="w-4 h-4 text-yellow-600" />
                 </div>
                 <h2 className="text-lg font-bold text-[#1a1a18]">2026년 재물운</h2>
               </div>
@@ -791,7 +791,7 @@ export default function YearlyFortune() {
             <section className="space-y-3">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center">
-                  <Briefcase className="w-4 h-4 text-blue-400" />
+                  <Briefcase className="w-4 h-4 text-blue-600" />
                 </div>
                 <h2 className="text-lg font-bold text-[#1a1a18]">2026년 직업운</h2>
               </div>
@@ -808,7 +808,7 @@ export default function YearlyFortune() {
             <section className="space-y-3">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-lg bg-pink-500/20 flex items-center justify-center">
-                  <Heart className="w-4 h-4 text-pink-400" />
+                  <Heart className="w-4 h-4 text-pink-600" />
                 </div>
                 <h2 className="text-lg font-bold text-[#1a1a18]">2026년 애정운</h2>
               </div>
@@ -842,7 +842,7 @@ export default function YearlyFortune() {
             <section className="space-y-3">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-lg bg-indigo-500/20 flex items-center justify-center">
-                  <Calendar className="w-4 h-4 text-indigo-400" />
+                  <Calendar className="w-4 h-4 text-indigo-600" />
                 </div>
                 <h2 className="text-lg font-bold text-[#1a1a18]">2026년 월별 운세</h2>
               </div>
@@ -860,10 +860,10 @@ export default function YearlyFortune() {
                             <div className={`h-full rounded-full ${m.color}`} style={{ width: `${m.score}%` }} />
                           </div>
                           <span className={`text-sm md:text-xs font-bold ${
-                            m.score >= 85 ? 'text-green-400' :
-                            m.score >= 75 ? 'text-yellow-400' :
-                            m.score >= 70 ? 'text-orange-400' :
-                            'text-red-400'
+                            m.score >= 85 ? 'text-green-600' :
+                            m.score >= 75 ? 'text-yellow-600' :
+                            m.score >= 70 ? 'text-orange-600' :
+                            'text-red-600'
                           }`}>{m.score}점</span>
                         </div>
                         {expandedMonths.has(m.month) ? (
@@ -901,7 +901,7 @@ export default function YearlyFortune() {
             <section className="space-y-3">
               <div className="flex items-center gap-2">
                 <div className="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center">
-                  <Quote className="w-4 h-4 text-amber-400" />
+                  <Quote className="w-4 h-4 text-amber-600" />
                 </div>
                 <h2 className="text-lg font-bold text-[#1a1a18]">일주(日柱) 해석</h2>
               </div>

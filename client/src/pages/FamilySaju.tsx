@@ -185,7 +185,7 @@ export default function FamilySaju() {
         <link rel="canonical" href="https://muunsaju.com/family-saju" />
         </Helmet>
         {/* 헤더 */}
-        <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-black/10">
+        <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-black/10">
           <div className="max-w-2xl mx-auto px-4 h-14 flex items-center">
             <Link href="/">
               <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
@@ -236,7 +236,7 @@ export default function FamilySaju() {
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="text-red-400 hover:text-red-300 hover:bg-red-500/10 min-w-[36px] min-h-[36px]"
+                          className="text-red-600 hover:text-red-300 hover:bg-red-500/10 min-w-[36px] min-h-[36px]"
                           onClick={() => removeMember(index)}
                         >
                           <Trash2 className="w-4 h-4" />
@@ -354,7 +354,7 @@ export default function FamilySaju() {
                     )}
 
                     {errors[index] && (
-                      <p className="text-red-400 text-sm md:text-xs">{errors[index]}</p>
+                      <p className="text-red-600 text-sm md:text-xs">{errors[index]}</p>
                     )}
                   </CardContent>
                 </Card>
@@ -430,7 +430,7 @@ export default function FamilySaju() {
         </div>
       )}
       {/* 헤더 */}
-      <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-black/10">
+      <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-black/10">
         <div className="max-w-2xl mx-auto px-4 h-14 flex items-center">
           <Button variant="ghost" size="icon" onClick={() => setResult(null)} className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
             <ChevronLeft className="w-5 h-5" />
@@ -602,7 +602,7 @@ export default function FamilySaju() {
             <CardContent className="pt-4 pb-4 space-y-4">
               {/* 강점 */}
               <div>
-                <h3 className="text-base md:text-sm font-bold text-green-400 flex items-center gap-1.5 mb-2">
+                <h3 className="text-base md:text-sm font-bold text-green-600 flex items-center gap-1.5 mb-2">
                   <span className="w-5 h-5 rounded-full bg-green-500/20 flex items-center justify-center text-sm md:text-xs">+</span>
                   우리 가족의 강점
                 </h3>
@@ -615,7 +615,7 @@ export default function FamilySaju() {
 
               {/* 개선점 */}
               <div>
-                <h3 className="text-base md:text-sm font-bold text-yellow-400 flex items-center gap-1.5 mb-2">
+                <h3 className="text-base md:text-sm font-bold text-yellow-600 flex items-center gap-1.5 mb-2">
                   <span className="w-5 h-5 rounded-full bg-yellow-500/20 flex items-center justify-center text-sm md:text-xs">!</span>
                   더 좋은 관계를 위한 조언
                 </h3>
@@ -684,7 +684,7 @@ function RelationCard({ relation, index }: {
 }) {
   const [isOpen, setIsOpen] = useState(true);
   const { analysis, member1, member2 } = relation;
-  const scoreColor = analysis.score >= 80 ? "text-green-400" : analysis.score >= 65 ? "text-blue-400" : analysis.score >= 50 ? "text-yellow-400" : "text-red-400";
+  const scoreColor = analysis.score >= 80 ? "text-green-600" : analysis.score >= 65 ? "text-blue-600" : analysis.score >= 50 ? "text-yellow-600" : "text-red-600";
   const scoreBg = analysis.score >= 80 ? "bg-green-500/20" : analysis.score >= 65 ? "bg-blue-500/20" : analysis.score >= 50 ? "bg-yellow-500/20" : "bg-red-500/20";
 
   return (
@@ -805,7 +805,7 @@ function FamilySajuInfoContent() {
           ].map((item, idx) => (
             <div key={idx} className="flex items-start gap-3 p-3 rounded-lg bg-white/[0.02]">
               <div className="w-5 h-5 rounded-full bg-green-500/20 flex items-center justify-center shrink-0 mt-0.5">
-                <span className="text-green-400 text-sm md:text-xs">✓</span>
+                <span className="text-green-600 text-sm md:text-xs">✓</span>
               </div>
               <div>
                 <h4 className="text-base md:text-sm font-bold text-[#1a1a18]">{item.title}</h4>

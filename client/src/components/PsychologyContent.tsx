@@ -7,7 +7,7 @@ const PsychologyContent = () => {
   return (
     <>
     <div className="w-full max-w-4xl mx-auto my-12 px-4">
-      <Card className="bg-background/80 backdrop-blur-sm border-border/50 shadow-xl overflow-hidden">
+      <Card className="bg-white/80 backdrop-blur-sm border-border/50 shadow-xl overflow-hidden">
         <CardHeader>
           <CardTitle className="text-3xl font-bold text-center text-primary">심리테스트, 나를 찾아 떠나는 여행</CardTitle>
         </CardHeader>

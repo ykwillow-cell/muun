@@ -143,7 +143,7 @@ export default function DreamDetail() {
       </Helmet>
 
       {/* 헤더 */}
-      <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-black/10">
+      <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-black/10">
         <div className="max-w-3xl mx-auto px-4 h-14 flex items-center justify-between">
           <Link href="/dream">
             <Button variant="ghost" size="icon" className="text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
@@ -180,7 +180,7 @@ export default function DreamDetail() {
 
             <CardHeader className="text-center pb-4 pt-10 px-6">
               <div className="flex justify-center mb-6">
-                <div className={`relative p-5 rounded-full border-2 ${grade.border} bg-background/50 backdrop-blur-md shadow-xl`}>
+                <div className={`relative p-5 rounded-full border-2 ${grade.border} bg-white/80 backdrop-blur-md shadow-xl`}>
                   <GradeIcon className={`w-10 h-10 ${grade.color}`} />
                   <motion.div
                     initial={{ scale: 0 }}
@@ -353,7 +353,7 @@ export default function DreamDetail() {
                   <Link key={related.id} href={`/dream/${related.slug}`}>
                     <div className={`group cursor-pointer bg-black/[0.05] border ${relatedGrade.border} rounded-xl p-5 hover:bg-black/[0.06] transition-all h-full`}>
                       <div className="flex items-center gap-3 mb-3">
-                        <div className={`p-2 rounded-lg border ${relatedGrade.border} bg-background/50`}>
+                        <div className={`p-2 rounded-lg border ${relatedGrade.border} bg-white/80`}>
                           <RelatedIcon className={`w-5 h-5 ${relatedGrade.color}`} />
                         </div>
                         <div>
