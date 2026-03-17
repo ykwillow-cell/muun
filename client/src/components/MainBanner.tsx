@@ -17,42 +17,42 @@ const BANNERS: BannerItem[] = [
   {
     id: "yearly",
     tag: "2026 병오년",
-    title: "신년운세",
-    sub: "올해의 총운과 월별 운세",
-    cta: "지금 보기",
+    title: "올해의 운세\n지금 확인하기",
+    sub: "월별 상세 · 12가지 운세 항목",
+    cta: "무료로 보기",
     href: "/yearly-fortune",
-    gradient: "linear-gradient(135deg, #6B5FFF 0%, #60C8D4 60%, #A8E6CF 100%)",
-    watermark: "運",
+    gradient: "linear-gradient(135deg, #7B61FF 0%, #6A4FE8 100%)",
+    watermark: "丙\n午",
   },
   {
     id: "family",
     tag: "무운에서만",
-    title: "가족사주",
-    sub: "가족 전체의 사주를 한 번에",
-    cta: "시작하기",
+    title: "가족 오행\n함께 분석",
+    sub: "가족 구성원 사주 한눈에 비교",
+    cta: "가족 사주 보기",
     href: "/family-saju",
-    gradient: "linear-gradient(135deg, #F59E0B 0%, #FBBF24 50%, #FDE68A 100%)",
-    watermark: "家",
+    gradient: "linear-gradient(135deg, #6A4FE8 0%, #5940CC 100%)",
+    watermark: "家\n運",
   },
   {
     id: "mbti",
-    tag: "사주 × MBTI",
-    title: "성격 궁합",
-    sub: "명리학과 심리학이 만나는 진짜 궁합",
-    cta: "확인하기",
+    tag: "무운에서만",
+    title: "MBTI × 사주\n궁합 분석",
+    sub: "성격 유형과 오행의 만남",
+    cta: "궁합 보기",
     href: "/hybrid-compatibility",
-    gradient: "linear-gradient(135deg, #4F46E5 0%, #7C3AED 80%, #A78BFA 100%)",
-    watermark: "合",
+    gradient: "linear-gradient(135deg, #5940CC 0%, #4A31B0 100%)",
+    watermark: "合\n命",
   },
   {
     id: "naming",
-    tag: "작명소 NEW",
-    title: "이름의 운",
-    sub: "81수리 성명학으로 이름을 분석",
-    cta: "분석하기",
+    tag: "작명소",
+    title: "아이 이름\n사주로 짓다",
+    sub: "402자 검증 한자 · 81수리 성명학",
+    cta: "이름 짓기",
     href: "/naming",
-    gradient: "linear-gradient(135deg, #334155 0%, #475569 60%, #64748B 100%)",
-    watermark: "名",
+    gradient: "linear-gradient(135deg, #4A31B0 0%, #3A2490 100%)",
+    watermark: "名\n字",
   },
 ];
 
@@ -109,6 +109,12 @@ export function MainBanner() {
       aria-label="서비스 배너"
       aria-roledescription="carousel"
     >
+      {/* 섹션 헤더 */}
+      <div className="mu-banner__header">
+        <span className="mu-banner__section-title">지금 확인하기</span>
+        <Link href="/guide" className="mu-banner__section-more">더보기 →</Link>
+      </div>
+
       <div className="mu-banner__viewport" ref={emblaRef}>
         <div className="mu-banner__container">
           {BANNERS.map((b, i) => (
@@ -117,21 +123,21 @@ export function MainBanner() {
               className="mu-banner__slide"
               role="group"
               aria-roledescription="slide"
-              aria-label={`${i + 1} / ${BANNERS.length}: ${b.title}`}
+              aria-label={`${i + 1} / ${BANNERS.length}: ${b.title.replace('\n', ' ')}`}
             >
               <Link
                 href={b.href}
                 className="mu-banner__card"
                 style={{ background: b.gradient }}
-                aria-label={b.title}
+                aria-label={b.title.replace('\n', ' ')}
               >
                 {/* 한자 워터마크 */}
-                <span className="mu-banner__watermark" aria-hidden="true">{b.watermark}</span>
+                <span className="mu-banner__watermark" aria-hidden="true" style={{ whiteSpace: 'pre-line' }}>{b.watermark}</span>
 
                 {/* 콘텐츠 */}
                 <div className="mu-banner__card-body">
                   <span className="mu-banner__tag">{b.tag}</span>
-                  <p className="mu-banner__title">{b.title}</p>
+                  <p className="mu-banner__title" style={{ whiteSpace: 'pre-line' }}>{b.title}</p>
                   <p className="mu-banner__sub">{b.sub}</p>
                   <span className="mu-banner__cta">{b.cta} →</span>
                 </div>
@@ -169,6 +175,31 @@ export function MainBanner() {
           padding: 0 16px 4px;
           background: #f2f4f6;
         }
+
+        /* ── 섹션 헤더 ── */
+        .mu-banner__header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 12px;
+          padding-top: 4px;
+        }
+        .mu-banner__section-title {
+          font-size: 18px;
+          font-weight: 800;
+          color: #191f28;
+          letter-spacing: -0.03em;
+          font-family: 'Pretendard Variable', Pretendard, sans-serif;
+        }
+        .mu-banner__section-more {
+          font-size: 12px;
+          font-weight: 600;
+          color: #8b95a1;
+          text-decoration: none;
+          font-family: 'Pretendard Variable', Pretendard, sans-serif;
+        }
+        .mu-banner__section-more:hover { color: #4e5968; }
+
         .mu-banner__viewport {
           overflow: hidden;
           border-radius: 20px;
@@ -188,7 +219,7 @@ export function MainBanner() {
           padding: 22px 20px 20px;
           border-radius: 20px;
           text-decoration: none;
-          min-height: 148px;
+          min-height: 152px;
           position: relative;
           overflow: hidden;
           transition: opacity 0.15s;
@@ -199,15 +230,16 @@ export function MainBanner() {
         /* ── 한자 워터마크 ── */
         .mu-banner__watermark {
           position: absolute;
-          right: -4px;
-          bottom: -18px;
-          font-size: 110px;
+          right: 10px;
+          bottom: -10px;
+          font-size: 80px;
           font-weight: 900;
           color: rgba(255,255,255,0.13);
           line-height: 1;
           pointer-events: none;
           user-select: none;
           font-family: 'Noto Serif KR', serif;
+          text-align: center;
         }
 
         /* ── 카드 콘텐츠 ── */
@@ -230,20 +262,23 @@ export function MainBanner() {
           backdrop-filter: blur(4px);
           width: fit-content;
           letter-spacing: 0.01em;
+          font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
         .mu-banner__title {
-          font-size: 24px;
+          font-size: 22px;
           font-weight: 800;
           color: #ffffff;
-          letter-spacing: -0.6px;
-          line-height: 1.15;
+          letter-spacing: -0.5px;
+          line-height: 1.25;
           margin: 0;
+          font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
         .mu-banner__sub {
-          font-size: 13px;
-          color: rgba(255,255,255,0.80);
+          font-size: 12px;
+          color: rgba(255,255,255,0.75);
           line-height: 1.5;
           margin: 0;
+          font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
         .mu-banner__cta {
           display: inline-flex;
@@ -258,6 +293,7 @@ export function MainBanner() {
           color: #ffffff;
           width: fit-content;
           letter-spacing: 0.01em;
+          font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
 
         /* ── 도트 인디케이터 ── */

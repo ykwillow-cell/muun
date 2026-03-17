@@ -109,12 +109,12 @@ export function BottomNav() {
         /* ── 활성 탭 dot 인디케이터 ── */
         .mu-bottom-nav__dot {
           position: absolute;
-          bottom: 6px;
+          bottom: 5px;
           left: 50%;
           transform: translateX(-50%);
-          width: 4px;
-          height: 4px;
-          border-radius: 50%;
+          width: 16px;
+          height: 3px;
+          border-radius: 2px;
           background: #6B5FFF;
         }
       `}</style>

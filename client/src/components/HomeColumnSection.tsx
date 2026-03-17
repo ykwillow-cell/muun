@@ -3,6 +3,36 @@ import { Link } from 'wouter';
 import { ChevronRight, Clock, BookOpen } from 'lucide-react';
 import { getLatestColumns, ColumnData, COLUMN_CATEGORIES } from '@/lib/column-data-api';
 
+/* 카테고리 태그 스타일 (라이트 배경 최적화) */
+const CATEGORY_STYLES: Record<string, { bg: string; color: string; label: string }> = {
+  luck:         { bg: '#FFF9E6', color: '#B45309', label: '개운법' },
+  basic:        { bg: '#EFF6FF', color: '#1D4ED8', label: '기초 명리' },
+  relationship: { bg: '#FDF2F8', color: '#9D174D', label: '인간관계' },
+  health:       { bg: '#F0FDF4', color: '#166534', label: '건강운' },
+  money:        { bg: '#F5F3FF', color: '#6D28D9', label: '재물운' },
+  flow:         { bg: '#EEF2FF', color: '#3730A3', label: '운의 흐름' },
+  career:       { bg: '#FFF7ED', color: '#C2410C', label: '직업운' },
+  love:         { bg: '#FFF1F2', color: '#BE123C', label: '연애운' },
+  family:       { bg: '#F0FDFA', color: '#0F766E', label: '가족 & 자녀' },
+};
+
+function getCategoryStyle(category: string) {
+  return CATEGORY_STYLES[category] ?? { bg: '#F2F4F6', color: '#4E5968', label: category };
+}
+
+/* 썸네일 배경색 (카테고리별) */
+const THUMB_BG: Record<string, string> = {
+  money:        '#E8F0FF',
+  family:       '#E8F8EE',
+  luck:         '#F0EDFF',
+  love:         '#FFF1F2',
+  career:       '#FFF3E0',
+  health:       '#E8FFF0',
+  relationship: '#FDF2F8',
+  basic:        '#EFF6FF',
+  flow:         '#EEF2FF',
+};
+
 export function HomeColumnSection() {
   const [columns, setColumns] = useState<ColumnData[]>([]);
   const [loading, setLoading] = useState(true);
@@ -14,134 +44,242 @@ export function HomeColumnSection() {
     });
   }, []);
 
-  // 카테고리 태그 색상 — 라이트 배경용
-  const getCategoryStyle = (category: string) => {
-    const map: Record<string, string> = {
-      luck:         'bg-yellow-100 text-yellow-700',
-      basic:        'bg-blue-100 text-blue-700',
-      relationship: 'bg-pink-100 text-pink-700',
-      health:       'bg-green-100 text-green-700',
-      money:        'bg-purple-100 text-purple-700',
-      flow:         'bg-indigo-100 text-indigo-700',
-      career:       'bg-orange-100 text-orange-700',
-      love:         'bg-rose-100 text-rose-700',
-      family:       'bg-teal-100 text-teal-700',
-    };
-    return map[category] ?? 'bg-gray-100 text-gray-600';
-  };
-
   return (
-    <section style={{ padding: '0 16px 8px' }}>
+    <section className="mu-column-section" aria-label="운세 칼럼">
+
       {/* 섹션 헤더 */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <BookOpen size={16} style={{ color: '#6B5FFF' }} />
-          <span style={{ fontSize: '16px', fontWeight: 600, color: '#191F28', fontFamily: 'Pretendard Variable, Pretendard, sans-serif' }}>
-            운세 칼럼
-          </span>
-        </div>
-        <Link href="/guide">
-          <span style={{
-            display: 'flex', alignItems: 'center', gap: '2px',
-            fontSize: '13px', color: '#4E5968', cursor: 'pointer',
-            fontFamily: 'Pretendard Variable, Pretendard, sans-serif',
-          }}>
-            전체보기 <ChevronRight size={14} />
-          </span>
+      <div className="mu-column-section__header">
+        <span className="mu-column-section__title">
+          <BookOpen size={16} aria-hidden="true" />
+          운세 칼럼
+        </span>
+        <Link href="/guide" className="mu-column-section__more">
+          전체보기 <ChevronRight size={13} aria-hidden="true" />
         </Link>
       </div>
 
       {/* 카드 목록 */}
-      <div style={{
-        background: '#ffffff',
-        borderRadius: '16px',
-        overflow: 'hidden',
-        boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
-      }}>
+      <div className="mu-column-list">
         {loading ? (
-          // 스켈레톤
           [0, 1, 2].map((i) => (
-            <div key={i} style={{
-              display: 'flex', gap: '12px', padding: '14px 16px',
-              borderBottom: i < 2 ? '1px solid rgba(0,0,0,0.06)' : 'none',
-            }}>
-              <div style={{ width: 64, height: 64, borderRadius: 10, background: '#F2F4F6', flexShrink: 0 }} />
-              <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 6 }}>
-                <div style={{ height: 12, borderRadius: 6, background: '#F2F4F6', width: '40%' }} />
-                <div style={{ height: 14, borderRadius: 6, background: '#F2F4F6', width: '85%' }} />
-                <div style={{ height: 12, borderRadius: 6, background: '#F2F4F6', width: '60%' }} />
+            <div key={i} className={`mu-column-item mu-column-item--skeleton${i < 2 ? ' mu-column-item--border' : ''}`}>
+              <div className="mu-column-item__thumb mu-skeleton-box" />
+              <div className="mu-column-item__body">
+                <div className="mu-skeleton-line" style={{ width: '40%', height: 11 }} />
+                <div className="mu-skeleton-line" style={{ width: '85%', height: 14, marginTop: 4 }} />
+                <div className="mu-skeleton-line" style={{ width: '55%', height: 11, marginTop: 4 }} />
               </div>
             </div>
           ))
         ) : columns.length === 0 ? (
-          <div style={{ padding: '32px 16px', textAlign: 'center', color: '#8B95A1', fontSize: 14 }}>
-            등록된 칼럼이 없습니다.
-          </div>
+          <div className="mu-column-empty">등록된 칼럼이 없습니다.</div>
         ) : (
-          columns.map((col, i) => (
-            <Link key={col.id} href={`/guide/${col.slug || col.id}`}>
-              <div style={{
-                display: 'flex', gap: '12px', padding: '14px 16px',
-                borderBottom: i < columns.length - 1 ? '1px solid rgba(0,0,0,0.06)' : 'none',
-                cursor: 'pointer',
-                transition: 'background 0.15s',
-              }}
-                onMouseEnter={e => (e.currentTarget.style.background = '#F8F9FA')}
-                onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
-              >
+          columns.map((col, i) => {
+            const catStyle = getCategoryStyle(col.category);
+            const thumbBg = THUMB_BG[col.category] ?? '#F0EDFF';
+            return (
+              <Link key={col.id} href={`/guide/${col.slug || col.id}`} className={`mu-column-item${i < columns.length - 1 ? ' mu-column-item--border' : ''}`}>
                 {/* 썸네일 */}
                 {col.thumbnail ? (
                   <img
                     src={col.thumbnail}
                     alt={col.title}
-                    style={{ width: 64, height: 64, borderRadius: 10, objectFit: 'cover', flexShrink: 0, background: '#F2F4F6' }}
+                    className="mu-column-item__thumb mu-column-item__thumb--img"
                   />
                 ) : (
-                  <div style={{
-                    width: 64, height: 64, borderRadius: 10, flexShrink: 0,
-                    background: 'linear-gradient(135deg, rgba(107,95,255,0.12) 0%, rgba(107,95,255,0.06) 100%)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  }}>
+                  <div className="mu-column-item__thumb" style={{ background: thumbBg }} aria-hidden="true">
                     <BookOpen size={22} style={{ color: '#6B5FFF' }} />
                   </div>
                 )}
 
-                {/* 텍스트 */}
-                <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: '4px', justifyContent: 'center' }}>
+                {/* 텍스트 영역 */}
+                <div className="mu-column-item__body">
                   {/* 카테고리 태그 */}
-                  <span style={{
-                    display: 'inline-block', width: 'fit-content',
-                    fontSize: '11px', fontWeight: 500, padding: '2px 7px',
-                    borderRadius: '20px',
-                    fontFamily: 'Pretendard Variable, Pretendard, sans-serif',
-                  }} className={getCategoryStyle(col.category)}>
-                    {col.categoryLabel || COLUMN_CATEGORIES[col.category]?.label || col.category}
+                  <span
+                    className="mu-column-item__tag"
+                    style={{ background: catStyle.bg, color: catStyle.color }}
+                  >
+                    {col.categoryLabel || COLUMN_CATEGORIES[col.category]?.label || catStyle.label}
                   </span>
                   {/* 제목 */}
-                  <p style={{
-                    fontSize: '14px', fontWeight: 600, color: '#191F28',
-                    margin: 0, lineHeight: '1.4',
-                    overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-                    fontFamily: 'Pretendard Variable, Pretendard, sans-serif',
-                  }}>
-                    {col.title}
-                  </p>
+                  <p className="mu-column-item__title">{col.title}</p>
                   {/* 메타 */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#8B95A1', fontSize: '11px' }}>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
-                      <Clock size={10} />
+                  <div className="mu-column-item__meta">
+                    <span className="mu-column-item__meta-item">
+                      <Clock size={10} aria-hidden="true" />
                       {col.readTime}분
                     </span>
+                    <span className="mu-column-item__meta-dot" aria-hidden="true" />
                     <span>{col.publishedDate?.slice(0, 10)}</span>
                   </div>
                 </div>
 
-                <ChevronRight size={16} style={{ color: '#C5CBD3', flexShrink: 0, alignSelf: 'center' }} />
-              </div>
-            </Link>
-          ))
+                <ChevronRight size={15} className="mu-column-item__arrow" aria-hidden="true" />
+              </Link>
+            );
+          })
         )}
       </div>
+
+      <style>{`
+        /* ── 운세 칼럼 섹션 ── */
+        .mu-column-section {
+          padding: 20px 16px 8px;
+          background: #f2f4f6;
+        }
+        .mu-column-section__header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 12px;
+        }
+        .mu-column-section__title {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          font-size: 18px;
+          font-weight: 800;
+          color: #191f28;
+          letter-spacing: -0.03em;
+          font-family: 'Pretendard Variable', Pretendard, sans-serif;
+        }
+        .mu-column-section__title svg { color: #6B5FFF; }
+        .mu-column-section__more {
+          display: flex;
+          align-items: center;
+          gap: 2px;
+          font-size: 12px;
+          font-weight: 600;
+          color: #8b95a1;
+          text-decoration: none;
+          font-family: 'Pretendard Variable', Pretendard, sans-serif;
+        }
+        .mu-column-section__more:hover { color: #4e5968; }
+
+        /* ── 카드 목록 ── */
+        .mu-column-list {
+          background: #ffffff;
+          border-radius: 16px;
+          overflow: hidden;
+          border: 1px solid #e5e8eb;
+        }
+
+        /* ── 칼럼 아이템 ── */
+        .mu-column-item {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 14px 16px;
+          text-decoration: none;
+          transition: background 0.15s;
+          -webkit-tap-highlight-color: transparent;
+        }
+        .mu-column-item:hover { background: #f8f9fa; }
+        .mu-column-item--border {
+          border-bottom: 1px solid #e5e8eb;
+        }
+
+        /* ── 썸네일 ── */
+        .mu-column-item__thumb {
+          width: 68px;
+          height: 68px;
+          border-radius: 12px;
+          flex-shrink: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          overflow: hidden;
+        }
+        .mu-column-item__thumb--img {
+          object-fit: cover;
+          background: #f2f4f6;
+        }
+
+        /* ── 텍스트 영역 ── */
+        .mu-column-item__body {
+          flex: 1;
+          min-width: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+          justify-content: center;
+        }
+
+        /* ── 카테고리 태그 ── */
+        .mu-column-item__tag {
+          display: inline-block;
+          width: fit-content;
+          font-size: 11px;
+          font-weight: 600;
+          padding: 2px 8px;
+          border-radius: 20px;
+          font-family: 'Pretendard Variable', Pretendard, sans-serif;
+        }
+
+        /* ── 제목 ── */
+        .mu-column-item__title {
+          font-size: 14px;
+          font-weight: 600;
+          color: #191f28;
+          margin: 0;
+          line-height: 1.4;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          font-family: 'Pretendard Variable', Pretendard, sans-serif;
+        }
+
+        /* ── 메타 ── */
+        .mu-column-item__meta {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          color: #8b95a1;
+          font-size: 11px;
+          font-family: 'Pretendard Variable', Pretendard, sans-serif;
+        }
+        .mu-column-item__meta-item {
+          display: flex;
+          align-items: center;
+          gap: 3px;
+        }
+        .mu-column-item__meta-dot {
+          width: 2px;
+          height: 2px;
+          border-radius: 50%;
+          background: #b0b8c1;
+          flex-shrink: 0;
+        }
+
+        /* ── 화살표 ── */
+        .mu-column-item__arrow {
+          color: #c5ccd4;
+          flex-shrink: 0;
+        }
+
+        /* ── 스켈레톤 ── */
+        .mu-skeleton-box {
+          background: #f2f4f6 !important;
+          animation: skeleton-pulse 1.4s ease-in-out infinite;
+        }
+        .mu-skeleton-line {
+          border-radius: 6px;
+          background: #f2f4f6;
+          animation: skeleton-pulse 1.4s ease-in-out infinite;
+        }
+        .mu-column-empty {
+          padding: 32px 16px;
+          text-align: center;
+          color: #8b95a1;
+          font-size: 14px;
+          font-family: 'Pretendard Variable', Pretendard, sans-serif;
+        }
+
+        @keyframes skeleton-pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.5; }
+        }
+      `}</style>
     </section>
   );
 }

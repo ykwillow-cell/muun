@@ -90,7 +90,7 @@ export function AppBar({ onSearch }: AppBarProps) {
           position: sticky;
           top: 0;
           z-index: 50;
-          background: #f2f4f6;
+          background: #ffffff;
         }
         .mu-appbar__inner {
           height: 54px;

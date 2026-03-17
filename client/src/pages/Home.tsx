@@ -5,6 +5,7 @@ import { setHomeOGTags } from '@/lib/og-tags';
 import { OrganizationSchema, BreadcrumbListSchema, WebApplicationSchema, SiteNavigationSchema } from "@/components/SchemaMarkup";
 import { HeroFirstVisit } from "@/components/HeroFirstVisit";
 import { HeroReturnVisit } from "@/components/HeroReturnVisit";
+import { TrustBar } from "@/components/TrustBar";
 import { MainBanner } from "@/components/MainBanner";
 import { ServiceGrid } from "@/components/ServiceGrid";
 import { HomeColumnSection } from "@/components/HomeColumnSection";
@@ -24,7 +25,7 @@ export default function Home() {
   const handleBirthDeleted = () => setHasBirth(false);
 
   return (
-    <div className="min-h-screen overflow-x-hidden antialiased" style={{ background: '#f5f4ef', color: '#1a1a18' }}>
+    <div className="min-h-screen overflow-x-hidden antialiased" style={{ background: '#f2f4f6', color: '#191f28' }}>
       <Helmet>
         <title>무료 사주 무운 (MuUn) - 회원가입 없는 100% 무료 사주풀이 및 2026년 운세</title>
         <meta name="description" content="회원가입 없이, 개인정보 저장 없이, 생년월일만으로 바로 확인하는 100% 무료 사주풀이. 2026년 병오년 신년운세, 토정비결, 궁합, 타로, 꿈해몽까지 모든 서비스가 완전 무료입니다." />
@@ -59,16 +60,19 @@ export default function Home() {
         <HeroFirstVisit onBirthSaved={handleBirthSaved} />
       )}
 
-      {/* 2. 메인 배너 (4장 Swiper) */}
+      {/* 2. Trust Bar — 신뢰 지표 (1만+ 누적 이용자 / 13가지 무료 서비스 / 정통 명리학) */}
+      <TrustBar />
+
+      {/* 3. 메인 배너 (4장 Swiper) */}
       <MainBanner />
 
-      {/* 3. 인기서비스 2×2 + 작명소 Spotlight + 더보기 2×3 (항상 노출) */}
+      {/* 4. 인기서비스 2×2 + 작명소 Spotlight + 더보기 2×3 (항상 노출) */}
       <ServiceGrid />
 
-      {/* 4. 운세 칼럼 미리보기 */}
+      {/* 5. 운세 칼럼 미리보기 */}
       <HomeColumnSection />
 
-      {/* 5. 운세 사전 바로가기 */}
+      {/* 6. 운세 사전 바로가기 */}
       <HomeDictionarySection />
     </div>
   );
