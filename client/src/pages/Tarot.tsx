@@ -271,14 +271,14 @@ export default function Tarot() {
                 <div className="bg-white/95 backdrop-blur-sm py-3 md:py-6 border-b border-black/10 -mx-4 px-4 mb-4">
                   <div className="flex items-center justify-between gap-2">
                     <div className="space-y-0.5">
-                      <h3 className="text-base md:text-xl font-bold text-primary leading-tight">카드를 3장 선택해 주세요</h3>
-                      <p className="text-[10px] md:text-sm text-muted-foreground">마음이 끌리는 카드를 순서대로 클릭하세요</p>
+                      <h3 className="text-sm md:text-xl font-bold text-primary leading-tight">카드를 3장 선택해 주세요</h3>
+                      <p className="text-[9px] md:text-sm text-muted-foreground">마음이 끌리는 카드를 순서대로 클릭하세요</p>
                     </div>
                     {/* 선택된 카드 슬롯 - 더 작게 */}
                     <div className="flex flex-col items-end gap-1.5 flex-shrink-0">
                       <div className="flex justify-end gap-1 md:gap-3">
                         {[0, 1, 2].map((i) => (
-                          <div key={i} className="w-8 h-11 md:w-14 md:h-20 rounded-md border border-dashed border-primary/40 flex items-center justify-center overflow-hidden bg-black/[0.05] relative flex-shrink-0">
+                          <div key={i} className="w-7 h-10 md:w-14 md:h-20 rounded-md border border-dashed border-primary/40 flex items-center justify-center overflow-hidden bg-black/[0.05] relative flex-shrink-0">
                             {selectedCards[i] ? (
                               <img 
                                 src={selectedCards[i].image} 
@@ -291,7 +291,7 @@ export default function Tarot() {
                           </div>
                         ))}
                       </div>
-                      <div className="text-[9px] md:text-xs font-medium text-primary/60">
+                      <div className="text-[8px] md:text-xs font-medium text-primary/60">
                         {selectedCards.length} / 3 선택됨
                       </div>
                     </div>
@@ -316,13 +316,13 @@ export default function Tarot() {
                               whileTap={{ scale: 0.95 }}
                               onClick={() => handleSelectCard(card)}
                               className={`
-                                relative flex-shrink-0 w-[45px] h-[68px] md:w-[120px] md:h-[180px] 
+                                relative flex-shrink-0 w-[38px] h-[58px] md:w-[120px] md:h-[180px] 
                                 transition-all duration-300
                                 ${isSelected ? "z-20" : "z-0"}
                               `}
                               style={{ 
                                 // 모바일에서 카드 겹치기를 더 촘촘하게 (-30px)
-                                marginLeft: cardIndex === 0 ? 0 : '-32px', 
+                                marginLeft: cardIndex === 0 ? 0 : '-28px', 
                                 // 데스크톱에서는 기존대로
                                 rotate: rowIndex % 2 === 0 ? (cardIndex % 2 === 0 ? 1 : -1) : (cardIndex % 2 === 0 ? -1 : 1)
                               }}
