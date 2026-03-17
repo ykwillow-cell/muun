@@ -320,13 +320,13 @@ export default function Tarot() {
                 </div>
 
                 {/* 카드 덱 영역 - 모바일 최적화: 가로 스크롤 없이 더 촘촘하게 */}
-                <div className="relative space-y-1.5 md:space-y-8 py-1 overflow-hidden">
+                <div className="relative space-y-2 md:space-y-8 py-2 overflow-hidden">
                   {rows.map((row, rowIndex) => (
                     <div 
                       key={rowIndex}
-                      className="flex justify-center"
+                      className="flex justify-center -mx-2"
                     >
-                      <div className="flex px-2 max-w-full">
+                      <div className="flex px-4 w-full justify-center max-w-full overflow-visible">
                         {row.map((card, cardIndex) => {
                           const isSelected = selectedCards.find(c => c.id === card.id);
                           const selectIndex = selectedCards.findIndex(c => c.id === card.id);
@@ -337,13 +337,12 @@ export default function Tarot() {
                               whileTap={{ scale: 0.95 }}
                               onClick={() => handleSelectCard(card)}
                               className={`
-                                relative flex-shrink-0 w-[34px] h-[52px] md:w-[120px] md:h-[180px] 
+                                relative flex-shrink-0 w-[36px] h-[54px] md:w-[120px] md:h-[180px] 
                                 transition-all duration-300
                                 ${isSelected ? "z-20" : "z-0"}
+                                ${cardIndex !== 0 ? "-ml-[14px] md:-ml-1" : ""}
                               `}
                               style={{ 
-                                // 모바일에서 카드를 겹쳐서 한 줄에 다 들어오게 설정
-                                marginLeft: cardIndex === 0 ? 0 : (typeof window !== 'undefined' && window.innerWidth < 768 ? '-10px' : '-4px'), 
                                 // 데스크톱에서는 기존대로
                                 rotate: rowIndex % 2 === 0 ? (cardIndex % 2 === 0 ? 1 : -1) : (cardIndex % 2 === 0 ? -1 : 1)
                               }}
