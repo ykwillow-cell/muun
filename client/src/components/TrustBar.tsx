@@ -19,9 +19,10 @@ export function TrustBar() {
         .mu-trust-bar {
           background: #F2F4F6;
           border-radius: 12px;
-          margin: 0 18px 18px;
+          margin: 12px 18px 16px;
           display: flex;
           align-items: center;
+          overflow: hidden;
         }
         .mu-trust-item {
           flex: 1;

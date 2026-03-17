@@ -51,7 +51,7 @@ export function HomeDictionarySection() {
         /* ── 운세 사전 섹션 ── */
         .mu-dict-section {
           padding: 20px 16px 24px;
-          background: #f2f4f6;
+          background: #ffffff;
         }
         .mu-dict-section__header {
           display: flex;

@@ -124,8 +124,8 @@ export function HomeColumnSection() {
       <style>{`
         /* ── 운세 칼럼 섹션 ── */
         .mu-column-section {
-          padding: 20px 16px 8px;
-          background: #f2f4f6;
+          padding: 20px 16px 20px;
+          background: #ffffff;
         }
         .mu-column-section__header {
           display: flex;

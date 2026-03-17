@@ -121,7 +121,7 @@ export function ServiceGrid() {
         /* ── 섹션 래퍼 ── */
         .mu-service-grid {
           padding: 20px 16px 20px;
-          background: #f2f4f6;
+          background: #ffffff;
           display: flex;
           flex-direction: column;
           gap: 0;

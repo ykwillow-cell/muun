@@ -218,8 +218,10 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
 
         /* ── 폼 카드 ── */
         .mu-hero__form-card {
-          background: #f2f4f6;
+          background: #ffffff;
           border-radius: 16px;
+          box-shadow: 0 2px 12px rgba(0,0,0,.06);
+          padding: 14px;
           overflow: hidden;
           display: flex;
           flex-direction: column;
@@ -231,10 +233,10 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
         }
         .mu-hero__step-tab-row {
           display: flex;
-          background: #f2f4f6;
+          background: #F2F4F6;
           border-radius: 12px;
           overflow: hidden;
-          margin: 12px 12px 0;
+          margin: 0 0 0;
         }
         .mu-hero__step-tab {
           flex: 1;
@@ -281,14 +283,15 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           display: flex;
           flex-direction: column;
           gap: 10px;
-          padding: 12px 12px 14px;
+          padding: 12px 0 0;
         }
         .mu-hero__input {
           width: 100%;
-          background: #f2f4f6;
+          box-sizing: border-box;
+          background: #F2F4F6;
           border: 2px solid transparent;
           border-radius: 12px;
-          padding: 14px 16px;
+          padding: 15px 16px;
           font-size: 16px;
           font-weight: 500;
           color: #191f28;
@@ -297,13 +300,13 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           transition: all 0.18s;
         }
         .mu-hero__input::placeholder {
-          color: #d1d6db;
+          color: #b0b8c1;
           font-weight: 400;
         }
         .mu-hero__input:focus {
           background: #ffffff;
-          border-color: #ddd6ff;
-          box-shadow: 0 0 0 4px rgba(107,95,255,0.08);
+          border-color: #DDD6FF;
+          box-shadow: 0 0 0 4px rgba(123,97,255,0.08);
         }
         .mu-hero__input--error {
           border-color: rgba(240,68,82,0.4);
@@ -336,9 +339,14 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           gap: 6px;
         }
         .mu-hero__cta:hover { background: #5a4ee0; }
+        .mu-hero__cta:not(:disabled) {
+          background: #7B61FF;
+          color: #ffffff;
+        }
         .mu-hero__cta.disabled,
         .mu-hero__cta:disabled {
-          opacity: 0.35;
+          background: #D1D6DB;
+          color: #8B95A1;
           cursor: not-allowed;
         }
 
@@ -371,8 +379,8 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           border-radius: 10px;
           font-size: 13px;
           font-weight: 600;
-          background: #ffffff;
-          border: 1.5px solid #e5e8eb;
+          background: #F2F4F6;
+          border: 2px solid transparent;
           color: #4e5968;
           cursor: pointer;
           transition: all 0.15s;

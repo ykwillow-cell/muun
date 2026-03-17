@@ -11,6 +11,8 @@ import { ServiceGrid } from "@/components/ServiceGrid";
 import { HomeColumnSection } from "@/components/HomeColumnSection";
 import { HomeDictionarySection } from "@/components/HomeDictionarySection";
 
+const GAP = <div aria-hidden="true" style={{ height: 8, background: '#F2F4F6', flexShrink: 0 }} />;
+
 export default function Home() {
   useCanonical('/');
 
@@ -25,7 +27,7 @@ export default function Home() {
   const handleBirthDeleted = () => setHasBirth(false);
 
   return (
-    <div className="min-h-screen overflow-x-hidden antialiased" style={{ background: '#f2f4f6', color: '#191f28' }}>
+    <div className="min-h-screen overflow-x-hidden antialiased" style={{ background: '#F2F4F6', color: '#191f28' }}>
       <Helmet>
         <title>무료 사주 무운 (MuUn) - 회원가입 없는 100% 무료 사주풀이 및 2026년 운세</title>
         <meta name="description" content="회원가입 없이, 개인정보 저장 없이, 생년월일만으로 바로 확인하는 100% 무료 사주풀이. 2026년 병오년 신년운세, 토정비결, 궁합, 타로, 꿈해몽까지 모든 서비스가 완전 무료입니다." />
@@ -53,31 +55,45 @@ export default function Home() {
         { name: "홈", url: "https://muunsaju.com" },
       ]} />
 
-      {/* 1. Trust Bar — AppBar 바로 아래 고정 */}
-      <div style={{ background: '#ffffff', paddingTop: '8px' }}>
+      {/* ── Trust Bar + Hero (AppBar 바로 아래, 단일 흰 블록) ── */}
+      <div style={{ background: '#ffffff' }}>
         <TrustBar />
+        {hasBirth ? (
+          <HeroReturnVisit onDeleteBirth={handleBirthDeleted} />
+        ) : (
+          <HeroFirstVisit onBirthSaved={handleBirthSaved} />
+        )}
       </div>
 
-      {/* 2. Hero — 첫 방문 / 재방문 분기 (8px gray gap 위) */}
-      <div style={{ height: '8px', background: '#F2F4F6' }} />
-      {hasBirth ? (
-        <HeroReturnVisit onDeleteBirth={handleBirthDeleted} />
-      ) : (
-        <HeroFirstVisit onBirthSaved={handleBirthSaved} />
-      )}
+      {GAP}
 
-      {/* 3. 메인 배너 (4장 Swiper) — Hero 아래 8px gap */}
-      <div style={{ height: '8px', background: '#F2F4F6' }} />
-      <MainBanner />
+      {/* ── 메인 배너 (흰 블록) ── */}
+      <div style={{ background: '#ffffff' }}>
+        <MainBanner />
+      </div>
 
-      {/* 4. 인기서비스 2×2 + 작명소 Spotlight + 더보기 2×3 (항상 노출) */}
-      <ServiceGrid />
+      {GAP}
 
-      {/* 5. 운세 칼럼 미리보기 */}
-      <HomeColumnSection />
+      {/* ── 인기서비스 + 작명소 + 더보기 (흰 블록) ── */}
+      <div style={{ background: '#ffffff' }}>
+        <ServiceGrid />
+      </div>
 
-      {/* 6. 운세 사전 바로가기 */}
-      <HomeDictionarySection />
+      {GAP}
+
+      {/* ── 운세 칼럼 (흰 블록) ── */}
+      <div style={{ background: '#ffffff' }}>
+        <HomeColumnSection />
+      </div>
+
+      {GAP}
+
+      {/* ── 운세 사전 (흰 블록) ── */}
+      <div style={{ background: '#ffffff' }}>
+        <HomeDictionarySection />
+      </div>
+
+      {GAP}
     </div>
   );
 }

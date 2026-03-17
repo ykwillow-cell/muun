@@ -173,7 +173,7 @@ export function MainBanner() {
         /* ── 배너 섹션 ── */
         .mu-banner {
           padding: 0 16px 4px;
-          background: #f2f4f6;
+          background: #ffffff;
         }
 
         /* ── 섹션 헤더 ── */
@@ -275,7 +275,7 @@ export function MainBanner() {
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
         .mu-banner__sub {
-          font-size: 12px;
+          font-size: 11px;
           color: rgba(255,255,255,0.75);
           line-height: 1.5;
           margin: 0;

@@ -9,8 +9,9 @@ const Footer: React.FC = () => {
         {/* 브랜드 */}
         <div style={{ marginBottom: 20 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
-            <img src="/images/muun_logo.png" alt="" style={{ width: 20, height: 20, borderRadius: 6, objectFit: 'cover' }} aria-hidden="true" />
-            <span style={{ fontSize: 15, fontWeight: 700, color: '#191F28', letterSpacing: '-0.4px', fontFamily: "'Pretendard Variable', Pretendard, sans-serif" }}>무운</span>
+            <span style={{ fontSize: 16, fontWeight: 800, letterSpacing: '-0.5px', fontFamily: "'Pretendard Variable', Pretendard, sans-serif" }}>
+              <span style={{ color: '#191F28' }}>무</span><span style={{ color: '#7B61FF' }}>운</span>
+            </span>
           </div>
           <p style={{ fontSize: 11, color: '#8B95A1', lineHeight: 1.6, margin: 0, fontFamily: "'Pretendard Variable', Pretendard, sans-serif" }}>
             회원가입 없이, 개인정보 저장 없이<br />

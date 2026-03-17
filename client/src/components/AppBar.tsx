@@ -39,10 +39,11 @@ export function AppBar({ onSearch }: AppBarProps) {
     >
       {/* 메인 바 */}
       <div className="mu-appbar__inner">
-        {/* 로고 — 퍼플 그라디언트 마크 + 텍스트 */}
+        {/* 로고 — 텍스트 전용 */}
         <Link href="/" className="mu-appbar__logo" aria-label="무운 홈">
-          <img src="/images/muun_logo.png" alt="" className="mu-appbar__logo-img" aria-hidden="true" />
-          <span className="mu-appbar__logo-text">무운</span>
+          <span className="mu-appbar__logo-text">
+            <span style={{ color: '#191F28' }}>무</span><span style={{ color: '#7B61FF' }}>운</span>
+          </span>
         </Link>
 
         {/* 검색 버튼 */}
@@ -105,18 +106,11 @@ export function AppBar({ onSearch }: AppBarProps) {
           gap: 8px;
           text-decoration: none;
         }
-        .mu-appbar__logo-img {
-          width: 28px;
-          height: 28px;
-          border-radius: 9px;
-          object-fit: cover;
-          flex-shrink: 0;
-        }
         .mu-appbar__logo-text {
-          font-size: 17px;
-          font-weight: 700;
-          color: #191f28;
-          letter-spacing: -0.4px;
+          font-size: 18px;
+          font-weight: 800;
+          letter-spacing: -0.5px;
+          font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
         .mu-appbar__icon-btn {
           width: 36px;
