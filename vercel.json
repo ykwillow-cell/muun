@@ -93,8 +93,8 @@
   ],
   "redirects": [
     {
-      "source": "/dream/:slug",
-      "destination": "/dream",
+      "source": "/lifetime-saju",
+      "destination": "/lifelong-saju",
       "statusCode": 301
     },
     {
@@ -402,5 +402,6 @@
       "destination": "/guide/family-family-communication-90b3867b",
       "statusCode": 301
     }
-  ]
+  ],
+  "trailingSlash": false
 }

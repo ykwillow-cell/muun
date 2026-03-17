@@ -468,8 +468,7 @@ export default function LifelongSaju() {
         <meta property="og:locale" content="ko_KR" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
-{/* 사용자 입력 기반 결과 페이지 - 개인정보 보호 및 SEO 품질 관리 */}
-        <meta name="robots" content="noindex, nofollow" />
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
         <meta name="keywords" content="평생사주, 무료사주풀이, 사주분석, 타고난운명, 연애운, 결혼운, 재물운, 무료사주" />
         <link rel="canonical" href="https://muunsaju.com/lifelong-saju" />
       </Helmet>
