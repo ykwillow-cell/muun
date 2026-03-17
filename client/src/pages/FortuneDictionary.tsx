@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useCanonical } from '@/lib/use-canonical';
 import { setDictionaryOGTags } from '@/lib/og-tags';
-import { Search, ChevronRight } from 'lucide-react';
+import { Search, ChevronRight, Loader2 } from 'lucide-react';
 import { useLocation } from 'wouter';
 import { motion } from 'framer-motion';
 import {
@@ -22,7 +22,6 @@ export default function FortuneDictionary() {
   const [, navigate] = useLocation();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedEntry, setSelectedEntry] = useState<DictionaryEntry | null>(null);
   const [entries, setEntries] = useState<DictionaryEntry[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -52,7 +51,7 @@ export default function FortuneDictionary() {
   }, [selectedCategory, searchQuery, entries]);
 
   return (
-    <div className="min-h-screen bg-black py-8 px-4">
+    <div className="min-h-screen bg-[#F2F4F6] py-8 md:py-12 px-4">
       <Helmet>
         <title>사주 용어 사전 - 사주 기초 개념 무료 학습 | 무운 (MuUn)</title>
         <meta name="description" content="사주 명리학의 핵심 용어를 쉽게 풀이한 무료 사주 용어 사전. 천간, 지지, 십신, 대운, 오행 등 사주 기초 개념을 회원가입 없이 무료로 학습하세요." />
@@ -63,43 +62,40 @@ export default function FortuneDictionary() {
         <meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png" />
         <meta property="og:url" content="https://muunsaju.com/fortune-dictionary" />
         <meta property="og:type" content="website" />
-        <meta property="og:site_name" content="무운 (MuUn)" />
-        <meta property="og:locale" content="ko_KR" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="사주 용어 사전 - 사주 기초 개념 무료 학습 | 무운 (MuUn)" />
-        <meta name="twitter:description" content="사주 명리학의 핵심 용어를 쉽게 풀이한 무료 사주 용어 사전. 천간, 지지, 십신, 대운, 오행 등 사주 기초 개념을 회원가입 없이 무료로 학습하세요." />
-        <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
       </Helmet>
-      <div className="max-w-6xl mx-auto">
+
+      <div className="max-w-4xl mx-auto">
         {/* 헤더 */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-[#1a1a18] mb-2">무운 운세 사전</h1>
-          <p className="text-[#1a1a18] text-lg">
+        <div className="mb-10 text-center md:text-left">
+          <h1 className="text-3xl md:text-4xl font-bold text-[#191F28] mb-3">무운 운세 사전</h1>
+          <p className="text-[#4E5968] text-lg">
             사주 명리학의 어려운 용어들을 쉽고 따뜻하게 설명해드립니다.
           </p>
         </div>
+
         {/* 검색창 */}
         <div className="mb-8">
-          <div className="relative">
-            <Search className="absolute left-4 top-3.5 w-5 h-5 text-[#999891]" />
+          <div className="relative group">
+            <Search className="absolute left-5 top-1/2 -translate-y-1/2 w-5 h-5 text-[#8B95A1] group-focus-within:text-[#6B5FFF] transition-colors" />
             <input
               type="text"
               placeholder="용어를 검색해보세요 (예: 역마살, 재성, 대운)"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 bg-white border border-black/10 rounded-lg text-[#1a1a18] placeholder-[#999891] focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500/20 transition"
+              className="w-full pl-14 pr-6 py-4 bg-white border border-black/10 rounded-2xl text-[#191F28] placeholder-[#8B95A1] focus:outline-none focus:border-[#6B5FFF] focus:ring-4 focus:ring-[#6B5FFF]/10 transition-all shadow-sm text-lg"
             />
           </div>
         </div>
-        {/* 카테고리 필터 - 칩(Chip) 스타일 */}
-        <div className="mb-8">
-          <div className="flex flex-wrap gap-2">
+
+        {/* 카테고리 필터 */}
+        <div className="mb-10">
+          <div className="flex flex-wrap gap-2 justify-center md:justify-start">
             <button
               onClick={() => setSelectedCategory(null)}
-              className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold border transition-all min-h-[40px] active:scale-[0.97] ${
+              className={`inline-flex items-center px-5 py-2 rounded-full text-sm font-bold border transition-all active:scale-[0.95] ${
                 selectedCategory === null
-                  ? 'bg-primary border-primary text-[#1a1a18] shadow-md shadow-primary/20'
-                  : 'bg-black/[0.05] border-black/10 text-[#999891] hover:bg-black/[0.06] hover:text-[#1a1a18] hover:border-black/10'
+                  ? 'bg-[#6B5FFF] border-[#6B5FFF] text-white shadow-lg shadow-[#6B5FFF]/20'
+                  : 'bg-white border-black/10 text-[#4E5968] hover:bg-black/[0.04] hover:border-black/20'
               }`}
             >
               전체
@@ -108,10 +104,10 @@ export default function FortuneDictionary() {
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-semibold border transition-all min-h-[40px] active:scale-[0.97] ${
+                className={`inline-flex items-center px-5 py-2 rounded-full text-sm font-bold border transition-all active:scale-[0.95] ${
                   selectedCategory === category.id
-                    ? 'bg-primary border-primary text-[#1a1a18] shadow-md shadow-primary/20'
-                    : 'bg-black/[0.05] border-black/10 text-[#999891] hover:bg-black/[0.06] hover:text-[#1a1a18] hover:border-black/10'
+                    ? 'bg-[#6B5FFF] border-[#6B5FFF] text-white shadow-lg shadow-[#6B5FFF]/20'
+                    : 'bg-white border-black/10 text-[#4E5968] hover:bg-black/[0.04] hover:border-black/20'
                 }`}
               >
                 {category.label}
@@ -119,136 +115,52 @@ export default function FortuneDictionary() {
             ))}
           </div>
         </div>
-        {/* 결과 표시 - 피드 스타일 */}
+
+        {/* 결과 표시 */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {loading ? (
-            <div className="col-span-full text-center py-12">
-              <p className="text-[#999891] text-lg">사전 데이터를 불러오는 중...</p>
+            <div className="col-span-full flex flex-col items-center justify-center py-20">
+              <Loader2 className="w-10 h-10 animate-spin text-[#6B5FFF] mb-4" />
+              <p className="text-[#8B95A1] text-lg font-medium">사전 데이터를 불러오는 중...</p>
             </div>
           ) : filteredEntries.length > 0 ? (
             filteredEntries.map((entry, idx) => (
-              <motion.button
+              <motion.div
                 key={entry.id}
                 initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: idx * 0.03 }}
-                onClick={() => {
-                  navigate(`/dictionary/${entry.slug}`);
-                }}
-                className="w-full text-left p-5 bg-white border border-black/10 rounded-xl hover:border-black/20 hover:bg-[#f5f4ef] transition-all group cursor-pointer"
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx % 10 * 0.05 }}
               >
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="inline-block px-2 py-0.5 bg-purple-600/20 border border-purple-500/30 rounded-full text-purple-400 text-xs font-semibold">
-                        {entry.categoryLabel}
-                      </span>
-                    </div>
-                    <h3 className="text-base font-bold text-[#1a1a18] group-hover:text-primary transition">
-                      {entry.title}
-                    </h3>
-                    {entry.subtitle && (
-                      <p className="text-xs text-[#999891] mt-1">{entry.subtitle}</p>
-                    )}
-                    <p className="text-sm text-[#5a5a56] mt-2 line-clamp-2 leading-relaxed">
-                      {entry.summary}
-                    </p>
+                <button
+                  onClick={() => navigate(`/dictionary/${entry.slug}`)}
+                  className="w-full text-left p-6 bg-white border border-black/10 rounded-2xl hover:border-[#6B5FFF]/30 hover:bg-[#6B5FFF]/05 transition-all group shadow-sm flex flex-col h-full"
+                >
+                  <div className="flex items-start justify-between mb-3">
+                    <span className="inline-block px-2.5 py-1 bg-[#6B5FFF]/10 border border-[#6B5FFF]/20 rounded-lg text-[#6B5FFF] text-[11px] font-bold uppercase tracking-wider">
+                      {entry.categoryLabel}
+                    </span>
+                    <ChevronRight className="w-5 h-5 text-[#8B95A1] group-hover:text-[#6B5FFF] group-hover:translate-x-1 transition-all" />
                   </div>
-                  <ChevronRight className="w-5 h-5 text-[#5a5a56] group-hover:text-primary transition mt-0.5 flex-shrink-0" />
-                </div>
-              </motion.button>
+                  <h3 className="text-xl font-bold text-[#191F28] group-hover:text-[#6B5FFF] transition-colors mb-2">
+                    {entry.title}
+                  </h3>
+                  {entry.subtitle && (
+                    <p className="text-sm text-[#8B95A1] mb-3 font-medium">{entry.subtitle}</p>
+                  )}
+                  <p className="text-sm text-[#4E5968] line-clamp-2 leading-relaxed mt-auto">
+                    {entry.summary}
+                  </p>
+                </button>
+              </motion.div>
             ))
           ) : (
-            <div className="col-span-full text-center py-12">
-              <p className="text-[#999891] text-lg">검색 결과가 없습니다.</p>
-              <p className="text-[#5a5a56] text-sm mt-2">다른 키워드로 검색해보세요.</p>
+            <div className="col-span-full text-center py-20 bg-white rounded-3xl border border-dashed border-black/10">
+              <p className="text-[#8B95A1] text-xl font-bold">검색 결과가 없습니다</p>
+              <p className="text-[#4E5968] text-base mt-2">다른 키워드로 검색해보세요.</p>
             </div>
           )}
         </div>
-        {/* 상세 보기 모달 */}
-        {selectedEntry && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-black/10">
-              {/* 모달 헤더 */}
-              <div className="sticky top-0 bg-white border-b border-black/10 p-6 flex items-start justify-between">
-                <div>
-                  <div className="inline-block px-3 py-1 bg-purple-600/20 border border-purple-500/30 rounded-full text-purple-400 text-xs font-semibold mb-3">
-                    {selectedEntry.categoryLabel}
-                  </div>
-                  <h2 className="text-2xl font-bold text-[#1a1a18]">
-                    {selectedEntry.title}
-                  </h2>
-                  {selectedEntry.subtitle && (
-                    <p className="text-[#999891] text-sm mt-2">{selectedEntry.subtitle}</p>
-                  )}
-                </div>
-                <button
-                  onClick={() => setSelectedEntry(null)}
-                  className="text-[#999891] hover:text-[#1a1a18] transition text-2xl leading-none"
-                >
-                  ✕
-                </button>
-              </div>
-              {/* 모달 콘텐츠 */}
-              <div className="p-6 space-y-6">
-                {/* 원래 의미 */}
-                <div>
-                  <h3 className="text-sm font-semibold text-purple-400 uppercase tracking-wide mb-2">
-                    원래 의미
-                  </h3>
-                  <p className="text-[#1a1a18] leading-relaxed">
-                    {selectedEntry.originalMeaning}
-                  </p>
-                </div>
-                {/* 현대적 재해석 */}
-                <div>
-                  <h3 className="text-sm font-semibold text-purple-400 uppercase tracking-wide mb-2">
-                    현대적 재해석 (무운의 시선)
-                  </h3>
-                  <p className="text-[#1a1a18] leading-relaxed">
-                    {selectedEntry.modernInterpretation}
-                  </p>
-                </div>
-                {/* 무운의 한마디 */}
-                <div className="bg-gradient-to-r from-purple-600/10 to-blue-600/10 border border-purple-500/20 rounded-lg p-4">
-                  <h3 className="text-sm font-semibold text-purple-400 uppercase tracking-wide mb-2">
-                    💡 무운의 따뜻한 한마디
-                  </h3>
-                  <p className="text-[#1a1a18] leading-relaxed">
-                    {selectedEntry.muunAdvice}
-                  </p>
-                </div>
-                {/* 태그 */}
-                {selectedEntry.tags && selectedEntry.tags.length > 0 && (
-                  <div>
-                    <h3 className="text-sm font-semibold text-[#999891] uppercase tracking-wide mb-2">
-                      관련 키워드
-                    </h3>
-                    <div className="flex flex-wrap gap-2">
-                      {selectedEntry.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="px-3 py-1 bg-[#f5f4ef] text-[#5a5a56] rounded-full text-xs hover:bg-[#ebe9e3] cursor-pointer transition"
-                        >
-                          #{tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-              {/* 모달 푸터 */}
-              <div className="sticky bottom-0 bg-[#f5f4ef] border-t border-black/10 p-4 flex justify-end">
-                <button
-                  onClick={() => setSelectedEntry(null)}
-                  className="px-6 py-2 bg-[#f5f4ef] hover:bg-[#ebe9e3] text-[#1a1a18] rounded-lg transition font-medium"
-                >
-                  닫기
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

@@ -1,11 +1,12 @@
 import { useParams, useLocation } from 'wouter';
 import { Helmet } from 'react-helmet-async';
 import NotFound from '@/pages/NotFound';
-import { ChevronLeft, ArrowRight } from 'lucide-react';
+import { ChevronLeft, ArrowRight, Loader2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { fetchDictionaryEntryBySlug, type DictionaryEntry } from '@/lib/fortune-dictionary';
 import CallToAction from '@/components/CallToAction';
 import { Button } from '@/components/ui/button';
+import { Link } from 'wouter';
 
 export default function DictionaryDetail() {
   const { id } = useParams<{ id: string }>();
@@ -25,10 +26,8 @@ export default function DictionaryDetail() {
   // 로딩 중
   if (entry === undefined) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="text-center">
-          <p className="text-[#999891] text-lg">불러오는 중...</p>
-        </div>
+      <div className="min-h-screen bg-[#F2F4F6] flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
       </div>
     );
   }
@@ -38,9 +37,9 @@ export default function DictionaryDetail() {
   }
 
   return (
-    <>
+    <div className="min-h-screen bg-[#F2F4F6] text-[#191F28]">
       <Helmet>
-        <title>{entry.metaTitle || `${entry.title} - ${entry.summary} | 무운(Muun) 사주 사전`}</title>
+        <title>{entry.metaTitle || `${entry.title} - ${entry.summary} | 무운(MuUn) 사주 사전`}</title>
         <meta name="description" content={entry.metaDescription || `${entry.title}이 내 사주에 있다면 어떤 의미일까요? 20년 경력 역술가의 깊이 있는 통찰로 ${entry.title}의 현대적 해석과 대처법을 확인해 보세요.`} />
         <meta property="og:title" content={entry.metaTitle || `${entry.title} - ${entry.summary} | 무운`} />
         <meta property="og:description" content={entry.metaDescription || `${entry.title}이 내 사주에 있다면 어떤 의미일까요? 20년 경력 역술가의 깊이 있는 통찰로 ${entry.title}의 현대적 해석과 대처법을 확인해 보세요.`} />
@@ -50,154 +49,127 @@ export default function DictionaryDetail() {
         <link rel="canonical" href={`https://muunsaju.com/dictionary/${entry.slug}`} />
       </Helmet>
 
-      <div className="min-h-screen bg-black py-8 px-4">
-        <div className="max-w-4xl mx-auto">
-          {/* DefinedTerm Schema Markup */}
-          <script type="application/ld+json">
-            {JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': 'DefinedTerm',
-              name: entry.title,
-              description: entry.modernInterpretation,
-              inDefinedTermSet: 'https://muunsaju.com/fortune-dictionary',
-              url: `https://muunsaju.com/dictionary/${entry.slug}`,
-              author: {
-                '@type': 'Organization',
-                name: '무운(Muun)',
-                url: 'https://muunsaju.com',
-              },
-            })}
-          </script>
-
-          {/* 뒤로가기 버튼 */}
-          <button
-            onClick={() => navigate('/fortune-dictionary')}
-            className="flex items-center gap-2 text-purple-400 hover:text-purple-300 transition mb-8"
-          >
-            <ChevronLeft className="w-5 h-5" />
-            <span>운세 사전으로 돌아가기</span>
-          </button>
-
-          {/* 헤더 */}
-          <div className="mb-8">
-            <div className="inline-block px-3 py-1 bg-purple-600/20 border border-purple-500/30 rounded-full text-purple-400 text-xs font-semibold mb-4">
-              {entry.categoryLabel}
-            </div>
-            <h1 className="text-4xl font-bold text-[#1a1a18] mb-2">{entry.title}</h1>
-            {entry.subtitle && <p className="text-[#999891] text-lg">{entry.subtitle}</p>}
-          </div>
-
-          {/* 콘텐츠 */}
-          <div className="space-y-8">
-            {/* 원래 의미 */}
-            <section className="bg-[#f5f4ef] border border-black/10 rounded-lg p-6">
-              <h2 className="text-lg font-semibold text-purple-400 mb-4">원래 의미</h2>
-              <p className="text-[#1a1a18] leading-relaxed text-base">{entry.originalMeaning}</p>
-            </section>
-
-            {/* 현대적 해석 */}
-            <section className="bg-[#f5f4ef] border border-black/10 rounded-lg p-6">
-              <h2 className="text-lg font-semibold text-purple-400 mb-4">현대적 해석</h2>
-              <p className="text-[#1a1a18] leading-relaxed text-base">{entry.modernInterpretation}</p>
-            </section>
-
-            {/* 무운의 조언 */}
-            <section className="bg-gradient-to-r from-purple-600/10 to-blue-600/10 border border-purple-500/20 rounded-lg p-6">
-              <h2 className="text-lg font-semibold text-purple-400 mb-4">💡 무운의 조언</h2>
-              <p className="text-[#1a1a18] leading-relaxed text-base">{entry.muunAdvice}</p>
-            </section>
-
-            {/* 관련 키워드 */}
-            {entry.tags && entry.tags.length > 0 && (
-              <section>
-                <h3 className="text-sm font-semibold text-[#999891] uppercase tracking-wide mb-3">관련 키워드</h3>
-                <div className="flex flex-wrap gap-2">
-                  {entry.tags.map((tag) => (
-                    <span key={tag} className="px-3 py-1 bg-[#f5f4ef] border border-black/10 rounded-full text-sm text-[#5a5a56]">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </section>
-            )}
-          </div>
-
-          {/* CTA - 무료 운세 전환 유도 */}
-          <CallToAction
-            message="오늘 나의 운세도 확인해 보세요"
-            targetPath="/daily-fortune"
-          />
-
-          {/* 관련 서비스 링크 */}
-          <div className="mt-12 pt-8 border-t border-black/10">
-            <h3 className="text-lg font-semibold text-[#1a1a18] mb-6">관련 서비스 둘러보기</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <button
-                onClick={() => navigate('/yearly-fortune')}
-                className="p-4 bg-[#f5f4ef] border border-black/10 rounded-lg hover:border-black/20 transition group"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="text-left">
-                    <h4 className="font-semibold text-[#1a1a18] group-hover:text-purple-400 transition">신년운세</h4>
-                    <p className="text-sm text-[#999891]">2026년 총운 확인</p>
-                  </div>
-                  <ArrowRight className="w-5 h-5 text-[#5a5a56] group-hover:text-[#1a1a18] transition" />
-                </div>
-              </button>
-
-              <button
-                onClick={() => navigate('/lifelong-saju')}
-                className="p-4 bg-[#f5f4ef] border border-black/10 rounded-lg hover:border-black/20 transition group"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="text-left">
-                    <h4 className="font-semibold text-[#1a1a18] group-hover:text-purple-400 transition">평생사주</h4>
-                    <p className="text-sm text-[#999891]">타고난 기질과 운명</p>
-                  </div>
-                  <ArrowRight className="w-5 h-5 text-[#5a5a56] group-hover:text-[#1a1a18] transition" />
-                </div>
-              </button>
-
-              <button
-                onClick={() => navigate('/compatibility')}
-                className="p-4 bg-[#f5f4ef] border border-black/10 rounded-lg hover:border-black/20 transition group"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="text-left">
-                    <h4 className="font-semibold text-[#1a1a18] group-hover:text-purple-400 transition">궁합</h4>
-                    <p className="text-sm text-[#999891]">찰떡궁합 확인</p>
-                  </div>
-                  <ArrowRight className="w-5 h-5 text-[#5a5a56] group-hover:text-[#1a1a18] transition" />
-                </div>
-              </button>
-
-              <button
-                onClick={() => navigate('/tarot')}
-                className="p-4 bg-[#f5f4ef] border border-black/10 rounded-lg hover:border-black/20 transition group"
-              >
-                <div className="flex items-center justify-between">
-                  <div className="text-left">
-                    <h4 className="font-semibold text-[#1a1a18] group-hover:text-purple-400 transition">타로</h4>
-                    <p className="text-sm text-[#999891]">카드가 전하는 인사이트</p>
-                  </div>
-                  <ArrowRight className="w-5 h-5 text-[#5a5a56] group-hover:text-[#1a1a18] transition" />
-                </div>
-              </button>
-            </div>
-          </div>
-
-          {/* 다른 용어 탐색 */}
-          <div className="mt-8 text-center">
-            <Button
-              onClick={() => navigate('/fortune-dictionary')}
-              variant="outline"
-              className="border-purple-500/30 text-purple-400 hover:bg-purple-500/10"
-            >
-              다른 용어 탐색하기
+      {/* 헤더 */}
+      <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-black/10">
+        <div className="max-w-3xl mx-auto px-4 h-14 flex items-center justify-between">
+          <Link href="/fortune-dictionary">
+            <Button variant="ghost" size="icon" className="text-[#191F28] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
+              <ChevronLeft className="w-5 h-5" />
             </Button>
-          </div>
+          </Link>
+          <span className="text-sm font-semibold text-[#4E5968]">운세 사전</span>
+          <div className="w-11" /> {/* Spacer for centering */}
         </div>
       </div>
-    </>
+
+      <main className="max-w-3xl mx-auto px-4 py-8 md:py-12">
+        {/* DefinedTerm Schema Markup */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'DefinedTerm',
+            name: entry.title,
+            description: entry.modernInterpretation,
+            inDefinedTermSet: 'https://muunsaju.com/fortune-dictionary',
+            url: `https://muunsaju.com/dictionary/${entry.slug}`,
+            author: {
+              '@type': 'Organization',
+              name: '무운(MuUn)',
+              url: 'https://muunsaju.com',
+            },
+          })}
+        </script>
+
+        {/* 타이틀 영역 */}
+        <div className="mb-8">
+          <div className="inline-block px-3 py-1 bg-[#6B5FFF]/10 border border-[#6B5FFF]/20 rounded-full text-[#6B5FFF] text-xs font-semibold mb-4">
+            {entry.categoryLabel}
+          </div>
+          <h1 className="text-3xl md:text-4xl font-bold text-[#191F28] mb-3">{entry.title}</h1>
+          {entry.subtitle && <p className="text-[#4E5968] text-lg">{entry.subtitle}</p>}
+        </div>
+
+        {/* 콘텐츠 영역 */}
+        <div className="space-y-6 mb-12">
+          {/* 원래 의미 */}
+          <section className="bg-white border border-black/10 rounded-2xl p-6 md:p-8 shadow-sm">
+            <h2 className="text-lg font-bold text-[#6B5FFF] mb-4">원래 의미</h2>
+            <p className="text-[#191F28] leading-relaxed text-base md:text-lg">{entry.originalMeaning}</p>
+          </section>
+
+          {/* 현대적 해석 */}
+          <section className="bg-white border border-black/10 rounded-2xl p-6 md:p-8 shadow-sm">
+            <h2 className="text-lg font-bold text-[#6B5FFF] mb-4">현대적 해석</h2>
+            <p className="text-[#191F28] leading-relaxed text-base md:text-lg">{entry.modernInterpretation}</p>
+          </section>
+
+          {/* 무운의 조언 */}
+          <section className="bg-gradient-to-br from-[#6B5FFF]/05 to-[#6B5FFF]/10 border border-[#6B5FFF]/20 rounded-2xl p-6 md:p-8 shadow-sm">
+            <h2 className="text-lg font-bold text-[#6B5FFF] mb-4 flex items-center gap-2">
+              <span>💡</span> 무운의 조언
+            </h2>
+            <p className="text-[#191F28] leading-relaxed text-base md:text-lg font-medium">{entry.muunAdvice}</p>
+          </section>
+
+          {/* 관련 키워드 */}
+          {entry.tags && entry.tags.length > 0 && (
+            <section className="pt-4">
+              <h3 className="text-sm font-semibold text-[#8B95A1] uppercase tracking-wider mb-4">관련 키워드</h3>
+              <div className="flex flex-wrap gap-2">
+                {entry.tags.map((tag) => (
+                  <span key={tag} className="px-4 py-1.5 bg-white border border-black/10 rounded-full text-sm text-[#4E5968] font-medium shadow-sm">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </section>
+          )}
+        </div>
+
+        {/* CTA - 무료 운세 전환 유도 */}
+        <CallToAction
+          message="오늘 나의 운세도 확인해 보세요"
+          targetPath="/daily-fortune"
+        />
+
+        {/* 관련 서비스 링크 */}
+        <div className="mt-12 pt-8 border-t border-black/10">
+          <h3 className="text-xl font-bold text-[#191F28] mb-6">관련 서비스 둘러보기</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {[
+              { path: '/yearly-fortune', title: '신년운세', desc: '2026년 총운 확인' },
+              { path: '/lifelong-saju', title: '평생사주', desc: '타고난 기질과 운명' },
+              { path: '/compatibility', title: '궁합', desc: '찰떡궁합 확인' },
+              { path: '/tarot', title: '타로', desc: '카드가 전하는 인사이트' }
+            ].map((service) => (
+              <button
+                key={service.path}
+                onClick={() => navigate(service.path)}
+                className="p-5 bg-white border border-black/10 rounded-2xl hover:border-[#6B5FFF]/30 hover:bg-[#6B5FFF]/05 transition-all group shadow-sm text-left"
+              >
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-bold text-[#191F28] group-hover:text-[#6B5FFF] transition-colors">{service.title}</h4>
+                    <p className="text-sm text-[#4E5968] mt-1">{service.desc}</p>
+                  </div>
+                  <ArrowRight className="w-5 h-5 text-[#8B95A1] group-hover:text-[#6B5FFF] group-hover:translate-x-1 transition-all" />
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* 다른 용어 탐색 */}
+        <div className="mt-12 text-center">
+          <Button
+            onClick={() => navigate('/fortune-dictionary')}
+            variant="outline"
+            className="rounded-full border-[#6B5FFF] text-[#6B5FFF] hover:bg-[#6B5FFF]/05 px-8 h-12 font-semibold"
+          >
+            다른 용어 탐색하기
+          </Button>
+        </div>
+      </main>
+    </div>
   );
 }
