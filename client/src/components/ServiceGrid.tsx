@@ -63,7 +63,9 @@ function MoreCard({ item }: { item: MoreItem }) {
       className={`mu-more-card${item.fullWidth ? " mu-more-card--full" : ""}`}
       aria-label={item.label}
     >
-      <span className="mu-more-card__icon" aria-hidden="true">{item.emoji}</span>
+      <span className="mu-more-card__icon" aria-hidden="true">
+        <span>{item.emoji}</span>
+      </span>
       <span className="mu-more-card__body">
         <span className="mu-more-card__label">{item.label}</span>
         <span className="mu-more-card__desc">{item.desc}</span>
@@ -172,9 +174,9 @@ export function ServiceGrid() {
           transition: transform 0.12s, box-shadow 0.12s;
           -webkit-tap-highlight-color: transparent;
           min-height: 100px;
-          box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+          box-shadow: 0 2px 8px rgba(0,0,0,.05), 0 6px 18px rgba(0,0,0,.06);
         }
-        .mu-pop-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .mu-pop-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,.10); }
         .mu-pop-card:active { transform: scale(0.97); }
         .mu-pop-card__top {
           display: flex;
@@ -307,30 +309,37 @@ export function ServiceGrid() {
         /* ── 더보기 2열 그리드 ── */
         .mu-service-grid__more {
           display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 8px;
+          grid-template-columns: 1fr 1fr;
+          gap: 6px;
         }
 
         /* ── 더보기 카드 ── */
         .mu-more-card {
           display: flex;
           align-items: center;
-          gap: 10px;
-          padding: 14px 14px;
-          border-radius: 14px;
-          background: #ffffff;
+          gap: 9px;
+          padding: 11px 12px;
+          border-radius: 12px;
+          background: #F2F4F6;
           text-decoration: none;
-          transition: background 0.12s, box-shadow 0.12s;
+          transition: background 0.12s;
           -webkit-tap-highlight-color: transparent;
-          box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+          min-height: 50px;
         }
-        .mu-more-card:hover { background: #f8f9fa; }
+        .mu-more-card:hover { background: #eaecef; }
         .mu-more-card:active { opacity: 0.80; }
         .mu-more-card--full {
           grid-column: 1 / -1;
         }
         .mu-more-card__icon {
-          font-size: 22px;
+          width: 28px;
+          height: 28px;
+          border-radius: 8px;
+          background: #fff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 16px;
           line-height: 1;
           flex-shrink: 0;
         }

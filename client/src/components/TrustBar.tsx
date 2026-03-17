@@ -17,10 +17,11 @@ export function TrustBar() {
       </div>
       <style>{`
         .mu-trust-bar {
-          background: #ffffff;
+          background: #F2F4F6;
+          border-radius: 12px;
+          margin: 0 18px 18px;
           display: flex;
           align-items: center;
-          padding: 0 18px 14px;
         }
         .mu-trust-item {
           flex: 1;
@@ -28,7 +29,7 @@ export function TrustBar() {
           flex-direction: column;
           align-items: center;
           gap: 2px;
-          padding: 6px 0;
+          padding: 10px 0;
         }
         .mu-trust-divider {
           width: 1px;

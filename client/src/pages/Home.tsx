@@ -53,17 +53,21 @@ export default function Home() {
         { name: "홈", url: "https://muunsaju.com" },
       ]} />
 
-      {/* 1. Hero — 첫 방문 / 재방문 분기 */}
+      {/* 1. Trust Bar — AppBar 바로 아래 고정 */}
+      <div style={{ background: '#ffffff', paddingTop: '8px' }}>
+        <TrustBar />
+      </div>
+
+      {/* 2. Hero — 첫 방문 / 재방문 분기 (8px gray gap 위) */}
+      <div style={{ height: '8px', background: '#F2F4F6' }} />
       {hasBirth ? (
         <HeroReturnVisit onDeleteBirth={handleBirthDeleted} />
       ) : (
         <HeroFirstVisit onBirthSaved={handleBirthSaved} />
       )}
 
-      {/* 2. Trust Bar — 신뢰 지표 (1만+ 누적 이용자 / 13가지 무료 서비스 / 정통 명리학) */}
-      <TrustBar />
-
-      {/* 3. 메인 배너 (4장 Swiper) */}
+      {/* 3. 메인 배너 (4장 Swiper) — Hero 아래 8px gap */}
+      <div style={{ height: '8px', background: '#F2F4F6' }} />
       <MainBanner />
 
       {/* 4. 인기서비스 2×2 + 작명소 Spotlight + 더보기 2×3 (항상 노출) */}

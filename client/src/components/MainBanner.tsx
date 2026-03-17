@@ -216,10 +216,11 @@ export function MainBanner() {
         /* ── 그라디언트 카드 ── */
         .mu-banner__card {
           display: block;
-          padding: 22px 20px 20px;
+          padding: 18px;
           border-radius: 20px;
           text-decoration: none;
-          min-height: 152px;
+          min-height: 114px;
+          max-height: 140px;
           position: relative;
           overflow: hidden;
           transition: opacity 0.15s;
@@ -231,8 +232,8 @@ export function MainBanner() {
         .mu-banner__watermark {
           position: absolute;
           right: 10px;
-          bottom: -10px;
-          font-size: 80px;
+          bottom: -8px;
+          font-size: 50px;
           font-weight: 900;
           color: rgba(255,255,255,0.13);
           line-height: 1;
@@ -265,7 +266,7 @@ export function MainBanner() {
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
         .mu-banner__title {
-          font-size: 22px;
+          font-size: 15px;
           font-weight: 800;
           color: #ffffff;
           letter-spacing: -0.5px;

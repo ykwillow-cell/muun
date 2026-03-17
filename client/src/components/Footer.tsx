@@ -3,31 +3,26 @@ import { Link } from 'wouter';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-[#080810] border-t border-black/10 pt-8 pb-6 mt-4">
-      <div className="px-4 max-w-[480px] mx-auto">
+    <footer style={{ background: '#F2F4F6', borderTop: '1px solid #E5E8EB', paddingTop: 28, paddingBottom: 24, marginTop: 4 }}>
+      <div style={{ padding: '0 16px', maxWidth: 480, margin: '0 auto' }}>
 
         {/* 브랜드 */}
-        <div className="mb-6">
-          <div className="flex items-center gap-2 mb-2">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f5c842" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M12 3c-4.2 5.4-4.2 12.6 0 18"/>
-              <path d="M12 3c4.2 5.4 4.2 12.6 0 18"/>
-              <path d="M3 9h18"/>
-              <path d="M3 15h18"/>
-            </svg>
-            <span className="text-[15px] font-bold text-[#1a1a18] tracking-tight">MUUN</span>
+        <div style={{ marginBottom: 20 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 6 }}>
+            <img src="/images/muun_logo.png" alt="" style={{ width: 20, height: 20, borderRadius: 6, objectFit: 'cover' }} aria-hidden="true" />
+            <span style={{ fontSize: 15, fontWeight: 700, color: '#191F28', letterSpacing: '-0.4px', fontFamily: "'Pretendard Variable', Pretendard, sans-serif" }}>무운</span>
           </div>
-          <p className="text-[11px] text-[#999891] leading-relaxed">
+          <p style={{ fontSize: 11, color: '#8B95A1', lineHeight: 1.6, margin: 0, fontFamily: "'Pretendard Variable', Pretendard, sans-serif" }}>
             회원가입 없이, 개인정보 저장 없이<br />
             100% 무료 사주·운세 서비스
           </p>
         </div>
 
         {/* 링크 그리드 */}
-        <div className="grid grid-cols-3 gap-x-4 gap-y-5 mb-6">
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0 16px', marginBottom: 20 }}>
           <div>
-            <p className="text-[10px] font-bold tracking-[0.08em] uppercase text-[#1a1a18]/25 mb-2.5">운세 서비스</p>
-            <ul className="space-y-2">
+            <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#B0B8C1', marginBottom: 10, fontFamily: "'Pretendard Variable', Pretendard, sans-serif" }}>운세 서비스</p>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 8 }}>
               {[
                 { href: '/yearly-fortune', label: '신년운세' },
                 { href: '/lifelong-saju', label: '평생사주' },
@@ -38,15 +33,15 @@ const Footer: React.FC = () => {
                 { href: '/tarot', label: '타로' },
               ].map(({ href, label }) => (
                 <li key={href}>
-                  <Link href={href} className="text-[12px] text-[#999891] hover:text-[#5a5a56] transition-colors">{label}</Link>
+                  <Link href={href} style={{ fontSize: 12, color: '#4E5968', textDecoration: 'none', fontFamily: "'Pretendard Variable', Pretendard, sans-serif" }}>{label}</Link>
                 </li>
               ))}
             </ul>
           </div>
 
           <div>
-            <p className="text-[10px] font-bold tracking-[0.08em] uppercase text-[#1a1a18]/25 mb-2.5">더 알아보기</p>
-            <ul className="space-y-2">
+            <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#B0B8C1', marginBottom: 10, fontFamily: "'Pretendard Variable', Pretendard, sans-serif" }}>더 알아보기</p>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 8 }}>
               {[
                 { href: '/dream', label: '꿈해몽' },
                 { href: '/psychology', label: '심리테스트' },
@@ -57,15 +52,15 @@ const Footer: React.FC = () => {
                 { href: '/family-saju', label: '가족사주' },
               ].map(({ href, label }) => (
                 <li key={href}>
-                  <Link href={href} className="text-[12px] text-[#999891] hover:text-[#5a5a56] transition-colors">{label}</Link>
+                  <Link href={href} style={{ fontSize: 12, color: '#4E5968', textDecoration: 'none', fontFamily: "'Pretendard Variable', Pretendard, sans-serif" }}>{label}</Link>
                 </li>
               ))}
             </ul>
           </div>
 
           <div>
-            <p className="text-[10px] font-bold tracking-[0.08em] uppercase text-[#1a1a18]/25 mb-2.5">서비스 안내</p>
-            <ul className="space-y-2">
+            <p style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: '#B0B8C1', marginBottom: 10, fontFamily: "'Pretendard Variable', Pretendard, sans-serif" }}>서비스 안내</p>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 8 }}>
               {[
                 { href: '/about', label: '무운 소개' },
                 { href: '/contact', label: '문의하기' },
@@ -73,7 +68,7 @@ const Footer: React.FC = () => {
                 { href: '/terms', label: '이용약관' },
               ].map(({ href, label }) => (
                 <li key={href}>
-                  <Link href={href} className="text-[12px] text-[#999891] hover:text-[#5a5a56] transition-colors">{label}</Link>
+                  <Link href={href} style={{ fontSize: 12, color: '#4E5968', textDecoration: 'none', fontFamily: "'Pretendard Variable', Pretendard, sans-serif" }}>{label}</Link>
                 </li>
               ))}
             </ul>
@@ -81,8 +76,8 @@ const Footer: React.FC = () => {
         </div>
 
         {/* SEO 보강 텍스트 */}
-        <div className="border-t border-black/10 pt-4 mb-4">
-          <p className="text-[10px] text-[#1a1a18]/20 leading-relaxed">
+        <div style={{ borderTop: '1px solid #E5E8EB', paddingTop: 14, marginBottom: 12 }}>
+          <p style={{ fontSize: 10, color: '#B0B8C1', lineHeight: 1.6, margin: 0, fontFamily: "'Pretendard Variable', Pretendard, sans-serif" }}>
             무운(MuUn)은 회원가입 없이, 개인정보를 저장하지 않는 100% 무료 사주·운세 서비스입니다.
             무료 사주풀이, 2026년 신년운세, 토정비결, 궁합, 타로, 만세력, 꿈해몽, 심리테스트 등
             다양한 운명학 콘텐츠를 제공합니다.
@@ -90,8 +85,8 @@ const Footer: React.FC = () => {
         </div>
 
         {/* 카피라이트 */}
-        <div className="text-center">
-          <p className="text-[11px] text-[#1a1a18]/20">
+        <div style={{ textAlign: 'center' }}>
+          <p style={{ fontSize: 11, color: '#B0B8C1', margin: 0, fontFamily: "'Pretendard Variable', Pretendard, sans-serif" }}>
             © {new Date().getFullYear()} MUUN Celestial Services. All rights reserved.
           </p>
         </div>

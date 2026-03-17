@@ -41,7 +41,7 @@ export function AppBar({ onSearch }: AppBarProps) {
       <div className="mu-appbar__inner">
         {/* 로고 — 퍼플 그라디언트 마크 + 텍스트 */}
         <Link href="/" className="mu-appbar__logo" aria-label="무운 홈">
-          <div className="mu-appbar__logo-mark" aria-hidden="true">무</div>
+          <img src="/images/muun_logo.png" alt="" className="mu-appbar__logo-img" aria-hidden="true" />
           <span className="mu-appbar__logo-text">무운</span>
         </Link>
 
@@ -105,18 +105,11 @@ export function AppBar({ onSearch }: AppBarProps) {
           gap: 8px;
           text-decoration: none;
         }
-        .mu-appbar__logo-mark {
+        .mu-appbar__logo-img {
           width: 28px;
           height: 28px;
           border-radius: 9px;
-          background: linear-gradient(135deg, #6B5FFF 0%, #60C8D4 60%, #A8E6CF 100%);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 13px;
-          font-weight: 700;
-          color: #ffffff;
-          letter-spacing: -0.3px;
+          object-fit: cover;
           flex-shrink: 0;
         }
         .mu-appbar__logo-text {
