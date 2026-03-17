@@ -61,7 +61,8 @@ export default function Tarot() {
       const j = Math.floor(Math.random() * (i + 1));
       [deck[i], deck[j]] = [deck[j], deck[i]];
     }
-    setShuffledDeck(deck);
+    // 78장 중 22장만 무작위로 선택하여 셔플 덱 구성
+    setShuffledDeck(deck.slice(0, 22));
   };
 
   const handleStart = () => {
@@ -172,19 +173,17 @@ export default function Tarot() {
     const updateRows = () => {
       const isMobile = window.innerWidth < 768;
       if (isMobile) {
+        // 22장을 8-7-7 구조로 3줄 배치 (가로 스크롤 제거)
         setRows([
-          shuffledDeck.slice(0, 13),
-          shuffledDeck.slice(13, 26),
-          shuffledDeck.slice(26, 39),
-          shuffledDeck.slice(39, 52),
-          shuffledDeck.slice(52, 65),
-          shuffledDeck.slice(65, 78)
+          shuffledDeck.slice(0, 8),
+          shuffledDeck.slice(8, 15),
+          shuffledDeck.slice(15, 22)
         ]);
       } else {
+        // 데스크톱에서는 22장을 한 줄에 11장씩 2줄 배치
         setRows([
-          shuffledDeck.slice(0, 26),
-          shuffledDeck.slice(26, 52),
-          shuffledDeck.slice(52, 78)
+          shuffledDeck.slice(0, 11),
+          shuffledDeck.slice(11, 22)
         ]);
       }
     };
@@ -338,13 +337,13 @@ export default function Tarot() {
                               whileTap={{ scale: 0.95 }}
                               onClick={() => handleSelectCard(card)}
                               className={`
-                                relative flex-shrink-0 w-[32px] h-[48px] md:w-[120px] md:h-[180px] 
+                                relative flex-shrink-0 w-[42px] h-[64px] md:w-[120px] md:h-[180px] 
                                 transition-all duration-300
                                 ${isSelected ? "z-20" : "z-0"}
                               `}
                               style={{ 
                                 // 모바일에서 카드 겹치기를 더 촘촘하게 (-30px)
-                                marginLeft: cardIndex === 0 ? 0 : '-12px', 
+                                marginLeft: cardIndex === 0 ? 0 : '-4px', 
                                 // 데스크톱에서는 기존대로
                                 rotate: rowIndex % 2 === 0 ? (cardIndex % 2 === 0 ? 1 : -1) : (cardIndex % 2 === 0 ? -1 : 1)
                               }}
