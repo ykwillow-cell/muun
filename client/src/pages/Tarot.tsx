@@ -165,12 +165,34 @@ export default function Tarot() {
     setIsSaved(false);
   };
 
-  // 덱을 3줄로 나눕니다.
-  const rows = [
-    shuffledDeck.slice(0, 26),
-    shuffledDeck.slice(26, 52),
-    shuffledDeck.slice(52, 78)
-  ];
+  // 덱을 모바일에서는 6줄, 데스크톱에서는 3줄로 나눕니다.
+  const [rows, setRows] = useState<TarotCard[][]>([]);
+
+  useEffect(() => {
+    const updateRows = () => {
+      const isMobile = window.innerWidth < 768;
+      if (isMobile) {
+        setRows([
+          shuffledDeck.slice(0, 13),
+          shuffledDeck.slice(13, 26),
+          shuffledDeck.slice(26, 39),
+          shuffledDeck.slice(39, 52),
+          shuffledDeck.slice(52, 65),
+          shuffledDeck.slice(65, 78)
+        ]);
+      } else {
+        setRows([
+          shuffledDeck.slice(0, 26),
+          shuffledDeck.slice(26, 52),
+          shuffledDeck.slice(52, 78)
+        ]);
+      }
+    };
+
+    updateRows();
+    window.addEventListener('resize', updateRows);
+    return () => window.removeEventListener('resize', updateRows);
+  }, [shuffledDeck]);
 
   return (
     <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased overflow-x-hidden">
@@ -299,7 +321,7 @@ export default function Tarot() {
                 </div>
 
                 {/* 카드 덱 영역 - 모바일 최적화: 가로 스크롤 없이 더 촘촘하게 */}
-                <div className="relative space-y-3 md:space-y-8 py-2 overflow-hidden touch-action-pan-x">
+                <div className="relative space-y-2 md:space-y-8 py-2 overflow-hidden">
                   {rows.map((row, rowIndex) => (
                     <div 
                       key={rowIndex}
@@ -316,13 +338,13 @@ export default function Tarot() {
                               whileTap={{ scale: 0.95 }}
                               onClick={() => handleSelectCard(card)}
                               className={`
-                                relative flex-shrink-0 w-[38px] h-[58px] md:w-[120px] md:h-[180px] 
+                                relative flex-shrink-0 w-[32px] h-[48px] md:w-[120px] md:h-[180px] 
                                 transition-all duration-300
                                 ${isSelected ? "z-20" : "z-0"}
                               `}
                               style={{ 
                                 // 모바일에서 카드 겹치기를 더 촘촘하게 (-30px)
-                                marginLeft: cardIndex === 0 ? 0 : '-28px', 
+                                marginLeft: cardIndex === 0 ? 0 : '-12px', 
                                 // 데스크톱에서는 기존대로
                                 rotate: rowIndex % 2 === 0 ? (cardIndex % 2 === 0 ? 1 : -1) : (cardIndex % 2 === 0 ? -1 : 1)
                               }}
