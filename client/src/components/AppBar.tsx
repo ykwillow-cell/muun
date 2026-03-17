@@ -92,6 +92,7 @@ export function AppBar({ onSearch }: AppBarProps) {
           top: 0;
           z-index: 50;
           background: #ffffff;
+          border-bottom: 1px solid #E5E8EB;
         }
         .mu-appbar__inner {
           height: 54px;

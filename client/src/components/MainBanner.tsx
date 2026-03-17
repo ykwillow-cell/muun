@@ -109,12 +109,6 @@ export function MainBanner() {
       aria-label="서비스 배너"
       aria-roledescription="carousel"
     >
-      {/* 섹션 헤더 */}
-      <div className="mu-banner__header">
-        <span className="mu-banner__section-title">지금 확인하기</span>
-        <Link href="/guide" className="mu-banner__section-more">더보기 →</Link>
-      </div>
-
       <div className="mu-banner__viewport" ref={emblaRef}>
         <div className="mu-banner__container">
           {BANNERS.map((b, i) => (
@@ -136,7 +130,6 @@ export function MainBanner() {
 
                 {/* 콘텐츠 */}
                 <div className="mu-banner__card-body">
-                  <span className="mu-banner__tag">{b.tag}</span>
                   <p className="mu-banner__title" style={{ whiteSpace: 'pre-line' }}>{b.title}</p>
                   <p className="mu-banner__sub">{b.sub}</p>
                   <span className="mu-banner__cta">{b.cta} →</span>
@@ -172,33 +165,9 @@ export function MainBanner() {
       <style>{`
         /* ── 배너 섹션 ── */
         .mu-banner {
-          padding: 0 16px 4px;
+          padding: 12px 18px;
           background: #ffffff;
         }
-
-        /* ── 섹션 헤더 ── */
-        .mu-banner__header {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: 12px;
-          padding-top: 4px;
-        }
-        .mu-banner__section-title {
-          font-size: 18px;
-          font-weight: 800;
-          color: #191f28;
-          letter-spacing: -0.03em;
-          font-family: 'Pretendard Variable', Pretendard, sans-serif;
-        }
-        .mu-banner__section-more {
-          font-size: 12px;
-          font-weight: 600;
-          color: #8b95a1;
-          text-decoration: none;
-          font-family: 'Pretendard Variable', Pretendard, sans-serif;
-        }
-        .mu-banner__section-more:hover { color: #4e5968; }
 
         .mu-banner__viewport {
           overflow: hidden;
@@ -251,25 +220,12 @@ export function MainBanner() {
           flex-direction: column;
           gap: 5px;
         }
-        .mu-banner__tag {
-          display: inline-flex;
-          align-items: center;
-          padding: 3px 10px;
-          border-radius: 20px;
-          font-size: 11px;
-          font-weight: 600;
-          color: #ffffff;
-          background: rgba(255,255,255,0.22);
-          backdrop-filter: blur(4px);
-          width: fit-content;
-          letter-spacing: 0.01em;
-          font-family: 'Pretendard Variable', Pretendard, sans-serif;
-        }
         .mu-banner__title {
           font-size: 15px;
           font-weight: 800;
           color: #ffffff;
           letter-spacing: -0.5px;
+          margin-top: 0;
           line-height: 1.25;
           margin: 0;
           font-family: 'Pretendard Variable', Pretendard, sans-serif;

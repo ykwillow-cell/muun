@@ -45,11 +45,7 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
 
         {/* ── 메인 타이틀 ── */}
         <div className="mu-hero__header">
-          <h1 className="mu-hero__title">
-            지금 바로<br />
-            내 사주를<br />
-            확인하세요
-          </h1>
+          <h1 className="mu-hero__title">지금 바로 내 사주를 확인하세요</h1>
           <p className="mu-hero__sub">생년월일만 입력하면 바로 시작됩니다</p>
         </div>
 
@@ -201,12 +197,12 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           gap: 6px;
         }
         .mu-hero__title {
-          font-size: 28px;
+          font-size: 24px;
           font-weight: 800;
           color: #191f28;
-          letter-spacing: -0.04em;
-          line-height: 1.25;
-          margin: 0;
+          letter-spacing: -0.03em;
+          line-height: 1.3;
+          margin: 0 0 6px;
         }
         .mu-hero__sub {
           font-size: 14px;
@@ -233,10 +229,12 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
         }
         .mu-hero__step-tab-row {
           display: flex;
-          background: #F2F4F6;
+          background: #E5E8EB;
           border-radius: 12px;
+          padding: 4px;
+          gap: 4px;
           overflow: hidden;
-          margin: 0 0 0;
+          margin: 0;
         }
         .mu-hero__step-tab {
           flex: 1;
@@ -245,16 +243,23 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           justify-content: center;
           gap: 5px;
           padding: 10px 0;
-          font-size: 12px;
+          font-size: 13px;
           font-weight: 600;
-          color: #b0b8c1;
+          color: #B0B8C1;
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
           transition: all 0.2s;
+          border-radius: 9px;
+          border: none;
+          box-shadow: none;
+          background: transparent;
+          text-align: center;
         }
         .mu-hero__step-tab.active {
-          color: #191f28;
-          background: #ffffff;
-          border-radius: 10px;
+          color: #191F28;
+          font-weight: 700;
+          background: #FFFFFF;
+          border-radius: 9px;
+          box-shadow: 0 1px 4px rgba(0,0,0,0.08);
         }
         .mu-hero__step-num {
           width: 18px;

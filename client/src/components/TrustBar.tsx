@@ -20,8 +20,9 @@ export function TrustBar() {
           border-radius: 0;
           box-shadow: none;
           border: none;
+          border-bottom: 1px solid #E5E8EB;
           margin: 0;
-          padding: 8px 18px 16px;
+          padding: 14px 18px;
           display: flex;
           align-items: stretch;
         }
@@ -41,15 +42,16 @@ export function TrustBar() {
           border-right: none;
         }
         .mu-trust-num {
-          font-size: 13px;
+          font-size: 15px;
           font-weight: 800;
           color: #191F28;
           letter-spacing: -0.03em;
           line-height: 1.2;
+          margin-bottom: 2px;
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
         .mu-trust-lbl {
-          font-size: 9px;
+          font-size: 11px;
           font-weight: 500;
           color: #B0B8C1;
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
