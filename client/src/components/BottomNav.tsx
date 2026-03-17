@@ -19,7 +19,7 @@ export function BottomNav() {
 
   return (
     <>
-      {/* 하단 여백 확보 (콘텐츠가 BottomNav에 가리지 않도록) */}
+      {/* 하단 여백 확보 */}
       <div style={{ height: "var(--bottom-nav-height)" }} aria-hidden="true" />
 
       <nav
@@ -37,19 +37,20 @@ export function BottomNav() {
               aria-current={active ? "page" : undefined}
               aria-label={label}
             >
-              <span className="mu-bottom-nav__pill" aria-hidden="true" />
               <Icon
                 size={22}
-                strokeWidth={active ? 2 : 1.5}
+                strokeWidth={active ? 2.2 : 1.6}
                 className="mu-bottom-nav__icon"
               />
               <span className="mu-bottom-nav__label">{label}</span>
+              {active && <span className="mu-bottom-nav__dot" aria-hidden="true" />}
             </Link>
           );
         })}
       </nav>
 
       <style>{`
+        /* ── Bottom Nav ── */
         .mu-bottom-nav {
           position: fixed;
           bottom: 0;
@@ -61,60 +62,60 @@ export function BottomNav() {
           display: flex;
           align-items: stretch;
           background: #ffffff;
-          border-top: 0.5px solid rgba(0,0,0,0.10);
+          border-top: 1px solid #e8ebed;
           height: var(--bottom-nav-height);
         }
+
+        /* ── 탭 ── */
         .mu-bottom-nav__tab {
           flex: 1;
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          gap: 3px;
-          padding: 8px 4px 4px;
+          gap: 4px;
+          padding: 8px 4px 6px;
           min-height: 56px;
           position: relative;
           text-decoration: none;
-          color: #999891;
+          color: #c5ccd4;
           transition: color 0.15s;
           -webkit-tap-highlight-color: transparent;
         }
         .mu-bottom-nav__tab:hover {
-          color: #5a5a56;
+          color: #8b95a1;
         }
         .mu-bottom-nav__tab--active {
-          color: #1a1a18;
+          color: #6B5FFF;
         }
-        /* 활성 탭 pill 배경 */
-        .mu-bottom-nav__pill {
-          position: absolute;
-          top: 6px;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 56px;
-          height: 28px;
-          border-radius: 100px;
-          background: transparent;
-          transition: background 0.15s;
-          pointer-events: none;
-        }
-        .mu-bottom-nav__tab--active .mu-bottom-nav__pill {
-          background: rgba(0,0,0,0.06);
-        }
+
+        /* ── 아이콘 ── */
         .mu-bottom-nav__icon {
-          position: relative;
-          z-index: 1;
           transition: transform 0.15s;
         }
         .mu-bottom-nav__tab--active .mu-bottom-nav__icon {
           transform: scale(1.05);
         }
+
+        /* ── 레이블 ── */
         .mu-bottom-nav__label {
           font-size: 10px;
           font-weight: 500;
           letter-spacing: -0.01em;
           white-space: nowrap;
           line-height: 1;
+        }
+
+        /* ── 활성 탭 dot 인디케이터 ── */
+        .mu-bottom-nav__dot {
+          position: absolute;
+          bottom: 6px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 4px;
+          height: 4px;
+          border-radius: 50%;
+          background: #6B5FFF;
         }
       `}</style>
     </>

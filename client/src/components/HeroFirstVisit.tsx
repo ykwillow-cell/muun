@@ -1,14 +1,8 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
-import { ShieldCheck, CheckCircle2, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { MuSelect, SIJU_OPTIONS } from "./MuSelect";
 import { trackCustomEvent } from "@/lib/ga4";
-
-const TRUST_ITEMS = [
-  { num: "100%", label: "무료" },
-  { num: "회원가입", label: "없음" },
-  { num: "서버 저장", label: "없음" },
-];
 
 export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
   const [, navigate] = useLocation();
@@ -48,40 +42,34 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
   return (
     <section className="mu-hero mu-hero--first">
       <div className="mu-hero__inner">
-        {/* 타이틀 */}
-        <h1 className="mu-hero__title">
-          지금 바로<br />
-          <em>내 사주를 확인하세요</em>
-        </h1>
-        <p className="mu-hero__sub">생년월일만 입력하면 바로 시작됩니다</p>
 
-        {/* Trust Bar */}
-        <div className="mu-hero__trust-bar" role="list">
-          {TRUST_ITEMS.map((t) => (
-            <div key={t.label} className="mu-hero__trust-item" role="listitem">
-              <CheckCircle2 size={12} className="mu-hero__trust-check" />
-              <span className="mu-hero__trust-num">{t.num}</span>
-              <span className="mu-hero__trust-label">{t.label}</span>
+        {/* ── 압축형 헤더 ── */}
+        <div className="mu-hero__header">
+          <div className="mu-hero__eyebrow">명리학 기반 운세</div>
+          <div className="mu-hero__title-row">
+            <h1 className="mu-hero__title">내 사주 바로 확인</h1>
+            <div className="mu-hero__chips">
+              <span className="mu-hero__chip">무료</span>
+              <span className="mu-hero__chip">비회원</span>
             </div>
-          ))}
+          </div>
         </div>
 
-        {/* 폼 카드 */}
+        {/* ── 폼 카드 ── */}
         <div className="mu-hero__form-card">
+
           {/* 스텝 인디케이터 */}
           <div className="mu-hero__steps" aria-label="입력 단계">
-            {[1, 2].map((s) => (
+            <div className="mu-hero__step-track" aria-hidden="true">
               <div
-                key={s}
-                className={`mu-hero__step${step === s ? " mu-hero__step--active" : step > s ? " mu-hero__step--done" : ""}`}
-              >
-                <span className="mu-hero__step-dot">{step > s ? "✓" : s}</span>
-                <span className="mu-hero__step-label">
-                  {s === 1 ? "생년월일" : "상세 정보"}
-                </span>
-              </div>
-            ))}
-            <div className="mu-hero__step-line" aria-hidden="true" />
+                className="mu-hero__step-fill"
+                style={{ width: step === 1 ? "50%" : "100%" }}
+              />
+            </div>
+            <div className="mu-hero__step-labels">
+              <span className={`mu-hero__step-lbl${step >= 1 ? " active" : ""}`}>생년월일</span>
+              <span className={`mu-hero__step-lbl${step >= 2 ? " active" : ""}`}>상세 정보</span>
+            </div>
           </div>
 
           {step === 1 ? (
@@ -89,36 +77,37 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
               <label className="mu-hero__input-label" htmlFor="birth-input">
                 생년월일 입력
               </label>
-              <input
-                id="birth-input"
-                type="text"
-                inputMode="numeric"
-                className={`mu-hero__input krds-input${inputError ? " mu-hero__input--error" : ""}`}
-                placeholder="예: 19930316"
-                value={birthInput}
-                maxLength={10}
-                onChange={(e) => {
-                  setBirthInput(e.target.value);
-                  if (inputError) setInputError("");
-                }}
-                onKeyDown={(e) => e.key === "Enter" && step1Valid && handleStep1Next()}
-                aria-describedby={inputError ? "birth-error" : undefined}
-              />
+              <div className="mu-hero__input-row">
+                <input
+                  id="birth-input"
+                  type="text"
+                  inputMode="numeric"
+                  className={`mu-hero__input${inputError ? " mu-hero__input--error" : ""}`}
+                  placeholder="예: 1993. 03. 16"
+                  value={birthInput}
+                  maxLength={10}
+                  onChange={(e) => {
+                    setBirthInput(e.target.value);
+                    if (inputError) setInputError("");
+                  }}
+                  onKeyDown={(e) => e.key === "Enter" && step1Valid && handleStep1Next()}
+                  aria-describedby={inputError ? "birth-error" : undefined}
+                />
+                <button
+                  type="button"
+                  className={`mu-hero__cta-inline${step1Valid ? "" : " disabled"}`}
+                  onClick={handleStep1Next}
+                  disabled={!step1Valid}
+                  aria-disabled={!step1Valid}
+                >
+                  확인
+                </button>
+              </div>
               {inputError && (
                 <p id="birth-error" className="mu-hero__input-error" role="alert">
                   {inputError}
                 </p>
               )}
-              <button
-                type="button"
-                className={`mu-hero__cta krds-btn primary${step1Valid ? "" : " disabled"}`}
-                onClick={handleStep1Next}
-                disabled={!step1Valid}
-                aria-disabled={!step1Valid}
-              >
-                다음 단계
-                <ArrowRight size={15} />
-              </button>
             </div>
           ) : (
             <div className="mu-hero__step-body">
@@ -155,14 +144,14 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
               <div className="mu-hero__step2-actions">
                 <button
                   type="button"
-                  className="mu-hero__back-btn krds-btn secondary"
+                  className="mu-hero__back-btn"
                   onClick={() => setStep(1)}
                 >
                   이전
                 </button>
                 <button
                   type="button"
-                  className="mu-hero__cta mu-hero__cta--flex krds-btn primary"
+                  className="mu-hero__cta"
                   onClick={handleSubmit}
                 >
                   사주 확인하기
@@ -172,211 +161,198 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
             </div>
           )}
         </div>
+
       </div>
 
       <style>{`
-        .mu-hero {
-          position: relative;
-          overflow: hidden;
-          padding: 24px 16px 28px;
+        /* ── Hero 섹션 ── */
+        .mu-hero--first {
           background: #ffffff;
+          padding: 20px 16px 20px;
         }
         .mu-hero__inner {
-          position: relative;
-          z-index: 1;
-        }
-        /* 타이틀 */
-        .mu-hero__title {
-          font-size: 26px;
-          font-weight: 500;
-          line-height: 1.25;
-          color: #1a1a18;
-          letter-spacing: -0.02em;
-          margin: 0 0 8px;
-        }
-        .mu-hero__title em {
-          font-style: normal;
-          color: #1a1a18;
-        }
-        .mu-hero__sub {
-          font-size: 14px;
-          color: #5a5a56;
-          margin: 0 0 18px;
-          line-height: 1.5;
-        }
-        /* Trust Bar */
-        .mu-hero__trust-bar {
-          display: flex;
-          gap: 0;
-          margin-bottom: 20px;
-        }
-        .mu-hero__trust-item {
-          display: flex;
-          align-items: center;
-          gap: 4px;
-          flex: 1;
-          padding: 8px 0;
-          border-right: 1px solid rgba(0,0,0,0.08);
-        }
-        .mu-hero__trust-item:last-child { border-right: none; }
-        .mu-hero__trust-check { color: #1a1a18; flex-shrink: 0; }
-        .mu-hero__trust-num {
-          font-size: 13px;
-          font-weight: 500;
-          color: #1a1a18;
-        }
-        .mu-hero__trust-label {
-          font-size: 11px;
-          color: #5a5a56;
-        }
-        /* 폼 카드 */
-        .mu-hero__form-card {
-          background: #f5f4ef;
-          border: 0.5px solid rgba(0,0,0,0.10);
-          border-radius: 14px;
-          padding: 18px 16px;
-        }
-        /* 스텝 인디케이터 */
-        .mu-hero__steps {
-          display: flex;
-          align-items: center;
-          gap: 0;
-          margin-bottom: 18px;
-          position: relative;
-        }
-        .mu-hero__step-line {
-          position: absolute;
-          top: 11px;
-          left: 11px;
-          right: 11px;
-          height: 1px;
-          background: rgba(0,0,0,0.08);
-          z-index: 0;
-        }
-        .mu-hero__step {
           display: flex;
           flex-direction: column;
-          align-items: center;
-          gap: 4px;
-          flex: 1;
-          position: relative;
-          z-index: 1;
+          gap: 14px;
         }
-        .mu-hero__step-dot {
-          width: 22px; height: 22px;
-          border-radius: 50%;
-          background: rgba(0,0,0,0.06);
-          border: 1px solid rgba(0,0,0,0.10);
+
+        /* ── 압축형 헤더 ── */
+        .mu-hero__header {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+        }
+        .mu-hero__eyebrow {
+          font-size: 11px;
+          font-weight: 500;
+          color: #6B5FFF;
+          letter-spacing: 0.02em;
+          text-transform: uppercase;
+        }
+        .mu-hero__title-row {
           display: flex;
           align-items: center;
-          justify-content: center;
+          justify-content: space-between;
+          gap: 8px;
+        }
+        .mu-hero__title {
+          font-size: 22px;
+          font-weight: 700;
+          color: #191f28;
+          letter-spacing: -0.5px;
+          line-height: 1.2;
+          margin: 0;
+        }
+        .mu-hero__chips {
+          display: flex;
+          gap: 4px;
+          flex-shrink: 0;
+        }
+        .mu-hero__chip {
+          display: inline-flex;
+          align-items: center;
+          padding: 3px 8px;
+          border-radius: 20px;
+          background: rgba(107,95,255,0.08);
+          color: #6B5FFF;
           font-size: 11px;
-          color: #5a5a56;
           font-weight: 500;
+          letter-spacing: -0.1px;
         }
-        .mu-hero__step--active .mu-hero__step-dot {
-          background: #1a1a18;
-          border-color: #1a1a18;
-          color: #ffffff;
-        }
-        .mu-hero__step--done .mu-hero__step-dot {
-          background: rgba(0,0,0,0.08);
-          border-color: rgba(0,0,0,0.14);
-          color: #1a1a18;
-        }
-        .mu-hero__step-label {
-          font-size: 10px;
-          color: #5a5a56;
-        }
-        .mu-hero__step--active .mu-hero__step-label,
-        .mu-hero__step--done .mu-hero__step-label {
-          color: #1a1a18;
-        }
-        /* 입력 */
-        .mu-hero__step-body {
+
+        /* ── 폼 카드 ── */
+        .mu-hero__form-card {
+          background: #f2f4f6;
+          border-radius: 16px;
+          padding: 16px;
           display: flex;
           flex-direction: column;
           gap: 12px;
         }
-        .mu-hero__input-label {
-          font-size: 12px;
-          color: #5a5a56;
+
+        /* ── 스텝 인디케이터 (진행 바 스타일) ── */
+        .mu-hero__steps {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+        }
+        .mu-hero__step-track {
+          height: 3px;
+          background: #e8ebed;
+          border-radius: 2px;
+          overflow: hidden;
+        }
+        .mu-hero__step-fill {
+          height: 100%;
+          background: #6B5FFF;
+          border-radius: 2px;
+          transition: width 0.3s cubic-bezier(0.4,0,0.2,1);
+        }
+        .mu-hero__step-labels {
+          display: flex;
+          justify-content: space-between;
+        }
+        .mu-hero__step-lbl {
+          font-size: 11px;
+          color: #8b95a1;
+          font-weight: 400;
+        }
+        .mu-hero__step-lbl.active {
+          color: #6B5FFF;
           font-weight: 500;
         }
+
+        /* ── 입력 ── */
+        .mu-hero__step-body {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+        .mu-hero__input-label {
+          font-size: 12px;
+          color: #4e5968;
+          font-weight: 500;
+        }
+        .mu-hero__input-row {
+          display: flex;
+          gap: 8px;
+          align-items: center;
+        }
         .mu-hero__input {
-          width: 100%;
+          flex: 1;
           height: 44px;
           background: #ffffff;
-          border: 0.5px solid rgba(0,0,0,0.14);
+          border: none;
           border-radius: 10px;
-          padding: 0 12px;
+          padding: 0 14px;
           font-size: 15px;
-          color: #1a1a18;
+          color: #191f28;
           outline: none;
-          font-family: 'Pretendard', sans-serif;
-          transition: border-color 0.15s;
-          box-sizing: border-box;
+          font-family: 'Pretendard Variable', Pretendard, sans-serif;
+          transition: box-shadow 0.15s;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.06);
         }
         .mu-hero__input:focus {
-          border-color: rgba(0,0,0,0.35);
+          box-shadow: 0 0 0 2px rgba(107,95,255,0.25);
         }
         .mu-hero__input--error {
-          border-color: #dc2626;
+          box-shadow: 0 0 0 2px rgba(220,38,38,0.25);
         }
         .mu-hero__input-error {
           font-size: 12px;
           color: #dc2626;
           margin: -4px 0 0;
         }
-        /* CTA 버튼 */
-        .mu-hero__cta {
-          width: 100%;
-          height: 48px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 6px;
-          border-radius: 12px;
-          font-size: 15px;
-          font-weight: 500;
-          background: #1a1a18;
+
+        /* ── 인라인 확인 버튼 ── */
+        .mu-hero__cta-inline {
+          height: 44px;
+          padding: 0 18px;
+          border-radius: 10px;
+          font-size: 14px;
+          font-weight: 600;
+          background: #6B5FFF;
           color: #ffffff;
           border: none;
           cursor: pointer;
+          white-space: nowrap;
+          font-family: 'Pretendard Variable', Pretendard, sans-serif;
           transition: background 0.15s, opacity 0.15s;
-          font-family: 'Pretendard', sans-serif;
-          letter-spacing: -0.01em;
+          flex-shrink: 0;
         }
-        .mu-hero__cta:hover { background: #333330; }
-        .mu-hero__cta.disabled,
-        .mu-hero__cta:disabled {
+        .mu-hero__cta-inline:hover { background: #5a4ee0; }
+        .mu-hero__cta-inline.disabled,
+        .mu-hero__cta-inline:disabled {
           opacity: 0.35;
           cursor: not-allowed;
         }
-        /* 양/음력 토글 */
+
+        /* ── 양/음력 토글 ── */
         .mu-hero__cal-toggle {
           display: flex;
           gap: 6px;
         }
         .mu-hero__cal-btn {
           flex: 1;
-          height: 38px;
-          border-radius: 8px;
+          height: 40px;
+          border-radius: 10px;
           font-size: 13px;
           font-weight: 500;
           background: #ffffff;
-          border: 0.5px solid rgba(0,0,0,0.12);
-          color: #5a5a56;
+          border: none;
+          color: #4e5968;
           cursor: pointer;
           transition: all 0.15s;
-          font-family: 'Pretendard', sans-serif;
+          font-family: 'Pretendard Variable', Pretendard, sans-serif;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.06);
         }
         .mu-hero__cal-btn--active {
-          background: #1a1a18;
-          border-color: #1a1a18;
+          background: #6B5FFF;
           color: #ffffff;
+          box-shadow: 0 2px 8px rgba(107,95,255,0.30);
         }
-        /* Step2 버튼 행 */
+
+        /* ── Step2 버튼 행 ── */
         .mu-hero__step2-actions {
           display: flex;
           gap: 8px;
@@ -388,15 +364,34 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           font-size: 14px;
           font-weight: 500;
           background: #ffffff;
-          border: 0.5px solid rgba(0,0,0,0.12);
-          color: #5a5a56;
+          border: none;
+          color: #4e5968;
           cursor: pointer;
           white-space: nowrap;
-          font-family: 'Pretendard', sans-serif;
+          font-family: 'Pretendard Variable', Pretendard, sans-serif;
           transition: background 0.15s;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.06);
         }
-        .mu-hero__back-btn:hover { background: #f5f4ef; }
-        .mu-hero__cta--flex { flex: 1; width: auto; }
+        .mu-hero__back-btn:hover { background: #f2f4f6; }
+        .mu-hero__cta {
+          flex: 1;
+          height: 48px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 6px;
+          border-radius: 12px;
+          font-size: 15px;
+          font-weight: 600;
+          background: #6B5FFF;
+          color: #ffffff;
+          border: none;
+          cursor: pointer;
+          transition: background 0.15s;
+          font-family: 'Pretendard Variable', Pretendard, sans-serif;
+          letter-spacing: -0.2px;
+        }
+        .mu-hero__cta:hover { background: #5a4ee0; }
       `}</style>
     </section>
   );

@@ -39,11 +39,10 @@ export function AppBar({ onSearch }: AppBarProps) {
     >
       {/* 메인 바 */}
       <div className="mu-appbar__inner">
-        {/* 항목 6: 로고 — 별 아이콘 제거, 텍스트만 */}
+        {/* 로고 — 퍼플 그라디언트 마크 + 텍스트 */}
         <Link href="/" className="mu-appbar__logo" aria-label="무운 홈">
-          <span className="mu-appbar__logo-text">
-            무운 <em>MuUn</em>
-          </span>
+          <div className="mu-appbar__logo-mark" aria-hidden="true">무</div>
+          <span className="mu-appbar__logo-text">무운</span>
         </Link>
 
         {/* 검색 버튼 */}
@@ -53,7 +52,7 @@ export function AppBar({ onSearch }: AppBarProps) {
           aria-label={searchOpen ? "검색 닫기" : "검색 열기"}
           aria-expanded={searchOpen}
         >
-          {searchOpen ? <X size={18} strokeWidth={1.5} /> : <Search size={18} strokeWidth={1.5} />}
+          {searchOpen ? <X size={18} strokeWidth={1.6} /> : <Search size={18} strokeWidth={1.6} />}
         </button>
       </div>
 
@@ -91,11 +90,10 @@ export function AppBar({ onSearch }: AppBarProps) {
           position: sticky;
           top: 0;
           z-index: 50;
-          background: #ffffff;
-          border-bottom: 0.5px solid rgba(0,0,0,0.10);
+          background: #f2f4f6;
         }
         .mu-appbar__inner {
-          height: 56px;
+          height: 54px;
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -104,38 +102,45 @@ export function AppBar({ onSearch }: AppBarProps) {
         .mu-appbar__logo {
           display: flex;
           align-items: center;
+          gap: 8px;
           text-decoration: none;
         }
-        /* 항목 7: font-weight 500 */
+        .mu-appbar__logo-mark {
+          width: 28px;
+          height: 28px;
+          border-radius: 9px;
+          background: linear-gradient(135deg, #6B5FFF 0%, #60C8D4 60%, #A8E6CF 100%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 13px;
+          font-weight: 700;
+          color: #ffffff;
+          letter-spacing: -0.3px;
+          flex-shrink: 0;
+        }
         .mu-appbar__logo-text {
           font-size: 17px;
-          font-weight: 500;
-          color: #1a1a18;
-          letter-spacing: -0.01em;
-        }
-        .mu-appbar__logo-text em {
-          font-style: normal;
-          font-size: 11px;
-          font-weight: 400;
-          color: #5a5a56;
-          margin-left: 4px;
+          font-weight: 700;
+          color: #191f28;
+          letter-spacing: -0.4px;
         }
         .mu-appbar__icon-btn {
           width: 36px;
           height: 36px;
           border-radius: 50%;
-          background: rgba(0,0,0,0.04);
-          border: 0.5px solid rgba(0,0,0,0.10);
+          background: transparent;
+          border: none;
           display: flex;
           align-items: center;
           justify-content: center;
-          color: #5a5a56;
+          color: #4e5968;
           transition: background 0.15s, color 0.15s;
           cursor: pointer;
         }
         .mu-appbar__icon-btn:hover {
-          background: rgba(0,0,0,0.08);
-          color: #1a1a18;
+          background: rgba(0,0,0,0.05);
+          color: #191f28;
         }
         /* 검색 확장 */
         .mu-appbar__search-wrap {
@@ -157,34 +162,37 @@ export function AppBar({ onSearch }: AppBarProps) {
           position: relative;
         }
         .mu-appbar__search-icon {
-          color: #9a9a96;
+          color: #8b95a1;
           flex-shrink: 0;
         }
         .mu-appbar__search-input {
           flex: 1;
-          height: 36px;
-          background: #f5f4ef;
-          border: 0.5px solid rgba(0,0,0,0.10);
-          border-radius: 8px;
+          height: 38px;
+          background: #ffffff;
+          border: none;
+          border-radius: 10px;
           padding: 0 10px 0 8px;
-          font-size: 13px;
-          color: #1a1a18;
+          font-size: 14px;
+          color: #191f28;
           outline: none;
-          font-family: 'Pretendard', sans-serif;
+          font-family: 'Pretendard Variable', Pretendard, sans-serif;
+          box-shadow: 0 1px 4px rgba(0,0,0,0.06);
         }
         .mu-appbar__search-input::placeholder {
-          color: #9a9a96;
+          color: #8b95a1;
         }
         .mu-appbar__search-input:focus {
-          border-color: rgba(0,0,0,0.25);
+          box-shadow: 0 0 0 2px rgba(107,95,255,0.25);
         }
         .mu-appbar__search-clear {
           position: absolute;
           right: 22px;
-          color: #9a9a96;
+          color: #8b95a1;
           cursor: pointer;
           display: flex;
           align-items: center;
+          background: none;
+          border: none;
         }
       `}</style>
     </header>

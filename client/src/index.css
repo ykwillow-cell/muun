@@ -30,7 +30,7 @@
   .mu-page-shell {
     display: flex;
     justify-content: center;
-    background: #e8e7e2;
+    background: #e4e6e9;
   }
   .mu-page-shell__inner {
     width: 100%;
@@ -89,54 +89,63 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
-/* ── 항목 4: 다크테마 완전 제거 → 라이트 팔레트 ── */
+/* ── 리뉴얼: Galaxy AI 퍼플 + 토스 레이아웃 팔레트 ── */
 :root {
-  /* 전체 배경 */
-  --background: #f5f4ef;
-  /* 텍스트 */
-  --foreground: #1a1a18;
-  /* 카드·AppBar·Hero */
+  /* ── 배경 (토스 연회색) ── */
+  --background: #f2f4f6;
+  /* ── 텍스트 3단계 (토스 기준) ── */
+  --foreground: #191f28;
+  --foreground-secondary: #4e5968;
+  --foreground-tertiary: #8b95a1;
+  /* ── 카드 (흰색, 위에 뜨는 레이어) ── */
   --card: #ffffff;
-  --card-foreground: #1a1a18;
-  /* 팝오버 */
+  --card-foreground: #191f28;
+  /* ── 팝오버 ── */
   --popover: #ffffff;
-  --popover-foreground: #1a1a18;
-  /* Primary — 중립 다크 (골드 제거) */
-  --primary: #1a1a18;
+  --popover-foreground: #191f28;
+  /* ── Primary — Galaxy AI 퍼플 ── */
+  --primary: #6B5FFF;
   --primary-foreground: #ffffff;
-  /* Secondary */
-  --secondary: rgba(26,26,24,0.07);
-  --secondary-foreground: #1a1a18;
-  /* Muted */
-  --muted: rgba(26,26,24,0.05);
-  --muted-foreground: #5a5a56;
-  /* Accent */
-  --accent: rgba(26,26,24,0.06);
-  --accent-foreground: #1a1a18;
-  /* Destructive */
+  --primary-light: #8B7FFF;
+  --primary-tint: rgba(107,95,255,0.08);
+  /* ── Secondary ── */
+  --secondary: #f2f4f6;
+  --secondary-foreground: #191f28;
+  /* ── Muted ── */
+  --muted: #f2f4f6;
+  --muted-foreground: #8b95a1;
+  /* ── Accent ── */
+  --accent: rgba(107,95,255,0.08);
+  --accent-foreground: #6B5FFF;
+  /* ── Destructive ── */
   --destructive: #dc2626;
   --destructive-foreground: #ffffff;
-  /* Border / Input / Ring */
-  --border: rgba(0,0,0,0.10);
-  --input: rgba(0,0,0,0.06);
-  --ring: rgba(26,26,24,0.25);
-  /* Radius */
-  --radius: 0.75rem;
-  /* Chart */
-  --chart-1: #1a1a18;
-  --chart-2: #5a5a56;
-  --chart-3: #9a9a96;
+  /* ── Border / Input / Ring ── */
+  --border: #e8ebed;
+  --input: #f2f4f6;
+  --ring: rgba(107,95,255,0.35);
+  /* ── Radius (토스 기준) ── */
+  --radius: 1rem;
+  /* ── Chart ── */
+  --chart-1: #6B5FFF;
+  --chart-2: #4e5968;
+  --chart-3: #8b95a1;
   --chart-4: #dc2626;
-  --chart-5: #16a34a;
-  /* Sidebar */
+  --chart-5: #0891b2;
+  /* ── Sidebar ── */
   --sidebar: #ffffff;
-  --sidebar-foreground: #1a1a18;
-  --sidebar-primary: #1a1a18;
+  --sidebar-foreground: #191f28;
+  --sidebar-primary: #6B5FFF;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: rgba(26,26,24,0.06);
-  --sidebar-accent-foreground: #1a1a18;
-  --sidebar-border: rgba(0,0,0,0.08);
-  --sidebar-ring: rgba(26,26,24,0.25);
+  --sidebar-accent: rgba(107,95,255,0.08);
+  --sidebar-accent-foreground: #6B5FFF;
+  --sidebar-border: #e8ebed;
+  --sidebar-ring: rgba(107,95,255,0.35);
+  /* ── Galaxy AI Aurora 그라디언트 ── */
+  --aurora: linear-gradient(135deg, #6B5FFF 0%, #60C8D4 60%, #A8E6CF 100%);
+  --aurora-indigo: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  --aurora-teal: linear-gradient(135deg, #0891B2 0%, #06B6D4 100%);
+  --aurora-slate: linear-gradient(135deg, #334155 0%, #475569 100%);
 }
 
 @layer base {
@@ -145,7 +154,7 @@
   }
   body {
     @apply bg-background text-foreground leading-relaxed;
-    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-family: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
 

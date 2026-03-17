@@ -5,69 +5,54 @@ import { Link } from "wouter";
 interface BannerItem {
   id: string;
   tag: string;
-  tagBg: string;
-  tagColor: string;
-  tagBorder: string;
   title: string;
   sub: string;
   cta: string;
   href: string;
-  visual: string;
-  visualColor: string;
+  gradient: string;
+  watermark: string;
 }
 
 const BANNERS: BannerItem[] = [
   {
     id: "yearly",
     tag: "2026 병오년",
-    tagBg: "rgba(245,158,11,0.10)",
-    tagColor: "#92400e",
-    tagBorder: "rgba(245,158,11,0.30)",
-    title: "올해의 운세\n지금 확인하세요",
-    sub: "병오년(丙午年) 나의 총운·월별 운세",
-    cta: "신년운세 보기",
+    title: "신년운세",
+    sub: "올해의 총운과 월별 운세",
+    cta: "지금 보기",
     href: "/yearly-fortune",
-    visual: "丙\n午",
-    visualColor: "rgba(245,158,11,0.18)",
+    gradient: "linear-gradient(135deg, #6B5FFF 0%, #60C8D4 60%, #A8E6CF 100%)",
+    watermark: "運",
   },
   {
     id: "family",
     tag: "무운에서만",
-    tagBg: "rgba(16,185,129,0.10)",
-    tagColor: "#065f46",
-    tagBorder: "rgba(16,185,129,0.30)",
-    title: "가족의 오행 조화\n함께 확인해요",
-    sub: "부모·자녀·형제의 사주를 한눈에",
-    cta: "가족사주 보기",
+    title: "가족사주",
+    sub: "가족 전체의 사주를 한 번에",
+    cta: "시작하기",
     href: "/family-saju",
-    visual: "家\n族",
-    visualColor: "rgba(16,185,129,0.18)",
+    gradient: "linear-gradient(135deg, #F59E0B 0%, #FBBF24 50%, #FDE68A 100%)",
+    watermark: "家",
   },
   {
     id: "mbti",
     tag: "사주 × MBTI",
-    tagBg: "rgba(139,92,246,0.10)",
-    tagColor: "#4c1d95",
-    tagBorder: "rgba(139,92,246,0.30)",
-    title: "사주와 성격\n둘 다 보는 궁합",
+    title: "성격 궁합",
     sub: "명리학과 심리학이 만나는 진짜 궁합",
-    cta: "MBTI 궁합 보기",
+    cta: "확인하기",
     href: "/hybrid-compatibility",
-    visual: "合\n心",
-    visualColor: "rgba(139,92,246,0.18)",
+    gradient: "linear-gradient(135deg, #4F46E5 0%, #7C3AED 80%, #A78BFA 100%)",
+    watermark: "合",
   },
   {
     id: "naming",
     tag: "작명소 NEW",
-    tagBg: "rgba(0,0,0,0.05)",
-    tagColor: "#1a1a18",
-    tagBorder: "rgba(0,0,0,0.14)",
-    title: "81수리 성명학\n이름의 운을 바꾸다",
-    sub: "사주 기반 이름 분석 및 작명 서비스",
-    cta: "작명소 바로가기",
+    title: "이름의 운",
+    sub: "81수리 성명학으로 이름을 분석",
+    cta: "분석하기",
     href: "/naming",
-    visual: "字\n名",
-    visualColor: "rgba(0,0,0,0.08)",
+    gradient: "linear-gradient(135deg, #334155 0%, #475569 60%, #64748B 100%)",
+    watermark: "名",
   },
 ];
 
@@ -132,35 +117,23 @@ export function MainBanner() {
               className="mu-banner__slide"
               role="group"
               aria-roledescription="slide"
-              aria-label={`${i + 1} / ${BANNERS.length}: ${b.title.replace("\n", " ")}`}
+              aria-label={`${i + 1} / ${BANNERS.length}: ${b.title}`}
             >
-              <Link href={b.href} className="mu-banner__card" aria-label={b.title.replace("\n", " ")}>
+              <Link
+                href={b.href}
+                className="mu-banner__card"
+                style={{ background: b.gradient }}
+                aria-label={b.title}
+              >
+                {/* 한자 워터마크 */}
+                <span className="mu-banner__watermark" aria-hidden="true">{b.watermark}</span>
+
+                {/* 콘텐츠 */}
                 <div className="mu-banner__card-body">
-                  {/* 태그 컬러 pill */}
-                  <span
-                    className="mu-banner__tag"
-                    style={{
-                      background: b.tagBg,
-                      color: b.tagColor,
-                      border: `1px solid ${b.tagBorder}`,
-                    }}
-                  >
-                    {b.tag}
-                  </span>
-                  {/* 제목 */}
-                  <p className="mu-banner__title" style={{ whiteSpace: "pre-line" }}>{b.title}</p>
-                  {/* 부제 */}
+                  <span className="mu-banner__tag">{b.tag}</span>
+                  <p className="mu-banner__title">{b.title}</p>
                   <p className="mu-banner__sub">{b.sub}</p>
-                  {/* CTA 버튼 */}
                   <span className="mu-banner__cta">{b.cta} →</span>
-                </div>
-                {/* 비주얼 */}
-                <div
-                  className="mu-banner__visual"
-                  style={{ color: b.visualColor }}
-                  aria-hidden="true"
-                >
-                  {b.visual}
                 </div>
               </Link>
             </div>
@@ -191,12 +164,14 @@ export function MainBanner() {
       </div>
 
       <style>{`
+        /* ── 배너 섹션 ── */
         .mu-banner {
           padding: 0 16px 4px;
+          background: #f2f4f6;
         }
         .mu-banner__viewport {
           overflow: hidden;
-          border-radius: 14px;
+          border-radius: 20px;
         }
         .mu-banner__container {
           display: flex;
@@ -206,88 +181,98 @@ export function MainBanner() {
           flex: 0 0 100%;
           min-width: 0;
         }
-        /* 항목 2: 카드 흰 배경 */
+
+        /* ── 그라디언트 카드 ── */
         .mu-banner__card {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 18px 16px;
-          border-radius: 14px;
-          background: #ffffff;
-          border: 0.5px solid rgba(0,0,0,0.14);
+          display: block;
+          padding: 22px 20px 20px;
+          border-radius: 20px;
           text-decoration: none;
-          min-height: 116px;
+          min-height: 148px;
           position: relative;
           overflow: hidden;
           transition: opacity 0.15s;
           -webkit-tap-highlight-color: transparent;
         }
-        .mu-banner__card:active { opacity: 0.85; }
-        .mu-banner__card-body { flex: 1; }
-        /* 태그 pill */
-        .mu-banner__tag {
-          display: inline-block;
-          font-size: 10px;
-          font-weight: 500;
-          padding: 3px 8px;
-          border-radius: 100px;
-          margin-bottom: 7px;
-          letter-spacing: 0.01em;
-        }
-        /* 제목 */
-        .mu-banner__title {
-          font-size: 15px;
-          font-weight: 500;
-          color: #1a1a18;
-          letter-spacing: -0.02em;
-          line-height: 1.35;
-          margin: 0 0 5px;
-        }
-        /* 부제 */
-        .mu-banner__sub {
-          font-size: 11px;
-          color: #5a5a56;
-          margin: 0 0 10px;
-          line-height: 1.4;
-        }
-        /* CTA 버튼 */
-        .mu-banner__cta {
-          display: inline-block;
-          background: #f5f4ef;
-          color: #1a1a18;
-          border: 0.5px solid rgba(0,0,0,0.14);
-          border-radius: 8px;
-          padding: 7px 14px;
-          font-size: 11px;
-          font-weight: 500;
-          letter-spacing: -0.01em;
-          font-family: 'Pretendard', sans-serif;
-        }
-        /* 비주얼 */
-        .mu-banner__visual {
-          font-size: 36px;
-          font-weight: 500;
-          line-height: 1.2;
-          text-align: center;
-          white-space: pre-line;
-          letter-spacing: -0.02em;
-          flex-shrink: 0;
-          margin-left: 12px;
+        .mu-banner__card:active { opacity: 0.90; }
+
+        /* ── 한자 워터마크 ── */
+        .mu-banner__watermark {
+          position: absolute;
+          right: -4px;
+          bottom: -18px;
+          font-size: 110px;
+          font-weight: 900;
+          color: rgba(255,255,255,0.13);
+          line-height: 1;
+          pointer-events: none;
+          user-select: none;
           font-family: 'Noto Serif KR', serif;
         }
-        /* 도트 */
+
+        /* ── 카드 콘텐츠 ── */
+        .mu-banner__card-body {
+          position: relative;
+          z-index: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 5px;
+        }
+        .mu-banner__tag {
+          display: inline-flex;
+          align-items: center;
+          padding: 3px 10px;
+          border-radius: 20px;
+          font-size: 11px;
+          font-weight: 600;
+          color: #ffffff;
+          background: rgba(255,255,255,0.22);
+          backdrop-filter: blur(4px);
+          width: fit-content;
+          letter-spacing: 0.01em;
+        }
+        .mu-banner__title {
+          font-size: 24px;
+          font-weight: 800;
+          color: #ffffff;
+          letter-spacing: -0.6px;
+          line-height: 1.15;
+          margin: 0;
+        }
+        .mu-banner__sub {
+          font-size: 13px;
+          color: rgba(255,255,255,0.80);
+          line-height: 1.5;
+          margin: 0;
+        }
+        .mu-banner__cta {
+          display: inline-flex;
+          align-items: center;
+          margin-top: 4px;
+          padding: 7px 16px;
+          border-radius: 20px;
+          background: rgba(255,255,255,0.22);
+          backdrop-filter: blur(4px);
+          font-size: 12px;
+          font-weight: 600;
+          color: #ffffff;
+          width: fit-content;
+          letter-spacing: 0.01em;
+        }
+
+        /* ── 도트 인디케이터 ── */
         .mu-banner__dots {
           display: flex;
           justify-content: center;
-          gap: 6px;
+          gap: 5px;
           padding: 10px 0 4px;
         }
         .mu-banner__dot {
           position: relative;
-          width: 6px;
-          height: 6px;
+          width: 5px;
+          height: 5px;
           border-radius: 3px;
-          background: rgba(0,0,0,0.12);
+          background: #d1d5db;
           border: none;
           cursor: pointer;
           padding: 0;
@@ -295,13 +280,13 @@ export function MainBanner() {
           transition: width 0.2s, background 0.2s;
         }
         .mu-banner__dot--active {
-          width: 20px;
-          background: rgba(0,0,0,0.15);
+          width: 18px;
+          background: #e8ebed;
         }
         .mu-banner__dot-progress {
           position: absolute;
           inset: 0;
-          background: #1a1a18;
+          background: #6B5FFF;
           border-radius: inherit;
           transform-origin: left;
           animation: dot-fill linear forwards;

@@ -22,7 +22,6 @@ const OHAENG_DESC: Record<string, string> = {
   수: "수(水) 기운이 오늘을 돕습니다.",
 };
 
-/* ── 오늘의 운세 데이터 (시드 기반) ── */
 const FORTUNE_TITLES = [
   "재물운이 열리는 날", "귀인을 만나는 날", "집중력이 높아지는 날",
   "변화의 기운이 오는 날", "안정이 찾아오는 날", "창의력이 빛나는 날",
@@ -57,7 +56,6 @@ function getDailyFortune(birth: string) {
   return { score, title: FORTUNE_TITLES[titleIdx], desc: FORTUNE_DESCS[titleIdx], ohaeng };
 }
 
-/* 항목 5: 바로가기 4버튼 — 색상 통일 (모두 동일한 스타일) */
 const SHORTCUTS = [
   { href: "/compatibility",  label: "궁합",    Icon: Heart },
   { href: "/lifelong-saju",  label: "평생사주", Icon: Sparkles },
@@ -112,35 +110,29 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
   return (
     <section className="mu-hero mu-hero--return">
       <div className="mu-hero__inner">
-        {/* Trust Bar */}
-        <div className="mu-hero__trust-bar" role="list">
-          {[["1만+","누적 이용자"],["13가지","무료 서비스"],["정통 명리학","사주 이론 기반"]].map(([n,l]) => (
-            <div key={l} className="mu-hero__trust-item" role="listitem">
-              <span className="mu-hero__trust-num">{n}</span>
-              <span className="mu-hero__trust-label">{l}</span>
-            </div>
-          ))}
-        </div>
 
-        {/* 인사 행 */}
+        {/* ── 인사 행 (압축) ── */}
         <div className="mu-hero__greeting-row">
           <div>
-            <p className="mu-hero__greeting">오늘도 좋은 하루예요</p>
-            <div className="mu-hero__greeting-sub">
-              <span>{todayStr} · {birthYear}년생 기준</span>
-              <button
-                className="mu-hero__info-btn"
-                onClick={(e) => { e.stopPropagation(); setShowTooltip((p) => !p); }}
-                aria-label="저장 정보 안내"
-                aria-expanded={showTooltip}
-              >
-                <Info size={12} />
-              </button>
-              {showTooltip && (
-                <div className="mu-hero__tooltip" role="tooltip">
-                  🔒 이 기기에만 저장됩니다. 서버로 전송되지 않으며 언제든지 삭제 가능합니다.
-                </div>
-              )}
+            <div className="mu-hero__eyebrow">명리학 기반 운세</div>
+            <div className="mu-hero__greeting-line">
+              <p className="mu-hero__greeting">오늘도 좋은 하루예요</p>
+              <div className="mu-hero__greeting-meta">
+                <span>{todayStr} · {birthYear}년생</span>
+                <button
+                  className="mu-hero__info-btn"
+                  onClick={(e) => { e.stopPropagation(); setShowTooltip((p) => !p); }}
+                  aria-label="저장 정보 안내"
+                  aria-expanded={showTooltip}
+                >
+                  <Info size={11} />
+                </button>
+                {showTooltip && (
+                  <div className="mu-hero__tooltip" role="tooltip">
+                    🔒 이 기기에만 저장됩니다. 서버로 전송되지 않으며 언제든지 삭제 가능합니다.
+                  </div>
+                )}
+              </div>
             </div>
           </div>
           <button
@@ -148,36 +140,35 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
             onClick={() => setShowDeleteSheet(true)}
             aria-label="저장된 정보 삭제"
           >
-            <Trash2 size={12} />
-            정보 삭제
+            <Trash2 size={11} />
+            삭제
           </button>
         </div>
 
-        {/* 오늘의 운세 카드 */}
+        {/* ── 오늘의 운세 카드 (토스 스타일) ── */}
         <div className="mu-fortune-card">
-          <div className="mu-fortune-card__top">
-            <div className="mu-fortune-card__left">
-              <div className="mu-fortune-card__eyebrow">
-                <span className="mu-fortune-card__live-dot" aria-hidden="true" />
-                오늘의 운세
-              </div>
-              <p className="mu-fortune-card__title">{fortune.title}</p>
-              <p className="mu-fortune-card__desc">{fortune.desc}</p>
+          <div className="mu-fortune-card__header">
+            <div className="mu-fortune-card__eyebrow">
+              <span className="mu-fortune-card__live-dot" aria-hidden="true" />
+              오늘의 운세
             </div>
-            <div className="mu-fortune-card__score-wrap" aria-label={`오늘의 지수 ${fortune.score}점`}>
-              <span className="mu-fortune-card__score">{fortune.score}</span>
-              <span className="mu-fortune-card__score-label">오늘의 지수</span>
-            </div>
+            <span className="mu-fortune-card__score-badge" aria-label={`오늘의 지수 ${fortune.score}점`}>
+              {fortune.score}점
+            </span>
           </div>
+          <p className="mu-fortune-card__title">{fortune.title}</p>
           <div className="mu-fortune-card__gauge" role="progressbar" aria-valuenow={fortune.score} aria-valuemin={0} aria-valuemax={100}>
             <div className="mu-fortune-card__gauge-fill" style={{ width: `${fortune.score}%` }} />
           </div>
-          <Link href="/yearly-fortune" className="mu-fortune-card__cta">
-            자세히 보기 →
-          </Link>
+          <div className="mu-fortune-card__footer">
+            <p className="mu-fortune-card__desc">{fortune.desc}</p>
+            <Link href="/yearly-fortune" className="mu-fortune-card__cta">
+              자세히 →
+            </Link>
+          </div>
         </div>
 
-        {/* 행운 메뉴 카드 */}
+        {/* ── 행운 메뉴 카드 (토스 스타일 수평 행) ── */}
         <div className="mu-lunch-card">
           <span className="mu-lunch-card__emoji" aria-hidden="true">
             {OHAENG_EMOJI[fortune.ohaeng]}
@@ -191,14 +182,13 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
               {menus[menuIdx]}
             </p>
             <p className="mu-lunch-card__desc">{OHAENG_DESC[fortune.ohaeng]}</p>
-            <button className="mu-lunch-card__refresh" onClick={handleRefreshMenu} aria-label="다른 메뉴 보기">
-              <RefreshCw size={11} />
-              다른 메뉴 보기
-            </button>
           </div>
+          <button className="mu-lunch-card__refresh" onClick={handleRefreshMenu} aria-label="다른 메뉴 보기">
+            <RefreshCw size={13} />
+          </button>
         </div>
 
-        {/* 항목 5: 바로가기 4버튼 — 모두 동일한 스타일 */}
+        {/* ── 바로가기 4버튼 (토스 스타일) ── */}
         <div className="mu-shortcuts" role="list" aria-label="서비스 바로가기">
           {SHORTCUTS.map(({ href, label, Icon }) => (
             <Link
@@ -209,15 +199,16 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
               aria-label={label}
             >
               <span className="mu-shortcut-btn__icon">
-                <Icon size={18} strokeWidth={1.5} />
+                <Icon size={20} strokeWidth={1.6} />
               </span>
               <span className="mu-shortcut-btn__label">{label}</span>
             </Link>
           ))}
         </div>
+
       </div>
 
-      {/* 삭제 확인 바텀시트 */}
+      {/* ── 삭제 확인 바텀시트 ── */}
       {showDeleteSheet && (
         <div className="mu-sheet-overlay" onClick={() => setShowDeleteSheet(false)}>
           <div className="mu-sheet" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-label="정보 삭제 확인">
@@ -233,67 +224,62 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
       )}
 
       <style>{`
+        /* ── Hero 섹션 ── */
         .mu-hero--return {
           background: #ffffff;
+          padding: 16px 16px 20px;
         }
-        .mu-hero--return .mu-hero__trust-bar {
-          display: flex;
-          margin-bottom: 16px;
-          border-radius: 10px;
-          background: #f5f4ef;
-          border: 0.5px solid rgba(0,0,0,0.10);
-          overflow: hidden;
-        }
-        .mu-hero--return .mu-hero__trust-item {
-          flex: 1;
+        .mu-hero__inner {
           display: flex;
           flex-direction: column;
-          align-items: center;
-          padding: 10px 4px;
-          border-right: 0.5px solid rgba(0,0,0,0.08);
-          gap: 2px;
+          gap: 10px;
         }
-        .mu-hero--return .mu-hero__trust-item:last-child { border-right: none; }
-        .mu-hero--return .mu-hero__trust-num {
-          font-size: 13px;
-          font-weight: 500;
-          color: #1a1a18;
-        }
-        .mu-hero--return .mu-hero__trust-label {
-          font-size: 10px;
-          color: #5a5a56;
-        }
-        /* 인사 */
+
+        /* ── 인사 행 ── */
         .mu-hero__greeting-row {
           display: flex;
           align-items: flex-start;
           justify-content: space-between;
-          margin-bottom: 14px;
+          margin-bottom: 2px;
+        }
+        .mu-hero__eyebrow {
+          font-size: 11px;
+          font-weight: 500;
+          color: #6B5FFF;
+          letter-spacing: 0.02em;
+          text-transform: uppercase;
+          margin-bottom: 2px;
+        }
+        .mu-hero__greeting-line {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
         }
         .mu-hero__greeting {
           font-size: 20px;
-          font-weight: 500;
-          color: #1a1a18;
-          letter-spacing: -0.02em;
-          margin: 0 0 4px;
+          font-weight: 700;
+          color: #191f28;
+          letter-spacing: -0.5px;
+          margin: 0;
+          line-height: 1.2;
         }
-        .mu-hero__greeting-sub {
+        .mu-hero__greeting-meta {
           display: flex;
           align-items: center;
-          gap: 5px;
+          gap: 4px;
           font-size: 12px;
-          color: #5a5a56;
+          color: #8b95a1;
           position: relative;
         }
         .mu-hero__info-btn {
-          width: 18px; height: 18px;
+          width: 16px; height: 16px;
           border-radius: 50%;
-          background: rgba(0,0,0,0.06);
+          background: #f2f4f6;
           border: none;
           display: flex;
           align-items: center;
           justify-content: center;
-          color: #5a5a56;
+          color: #8b95a1;
           cursor: pointer;
         }
         .mu-hero__tooltip {
@@ -302,11 +288,11 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           left: 0;
           z-index: 20;
           background: #ffffff;
-          border: 0.5px solid rgba(0,0,0,0.12);
-          border-radius: 8px;
+          border: 1px solid #e8ebed;
+          border-radius: 10px;
           padding: 10px 12px;
           font-size: 12px;
-          color: #5a5a56;
+          color: #4e5968;
           line-height: 1.5;
           width: 220px;
           box-shadow: 0 4px 16px rgba(0,0,0,0.10);
@@ -314,44 +300,42 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
         .mu-hero__delete-btn {
           display: flex;
           align-items: center;
-          gap: 4px;
+          gap: 3px;
           font-size: 11px;
-          color: #9a9a96;
+          color: #8b95a1;
           background: none;
           border: none;
           cursor: pointer;
           padding: 4px 0;
           white-space: nowrap;
-          font-family: 'Pretendard', sans-serif;
+          font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
-        .mu-hero__delete-btn:hover { color: #5a5a56; }
-        /* 운세 카드 */
+        .mu-hero__delete-btn:hover { color: #4e5968; }
+
+        /* ── 운세 카드 (토스 스타일) ── */
         .mu-fortune-card {
-          background: #f5f4ef;
-          border: 0.5px solid rgba(0,0,0,0.10);
-          border-radius: 14px;
+          background: #f2f4f6;
+          border-radius: 16px;
           padding: 16px;
-          margin-bottom: 10px;
         }
-        .mu-fortune-card__top {
+        .mu-fortune-card__header {
           display: flex;
-          gap: 12px;
-          margin-bottom: 12px;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 8px;
         }
-        .mu-fortune-card__left { flex: 1; }
         .mu-fortune-card__eyebrow {
           display: flex;
           align-items: center;
           gap: 5px;
-          font-size: 11px;
-          color: #5a5a56;
+          font-size: 12px;
+          color: #4e5968;
           font-weight: 500;
-          margin-bottom: 6px;
         }
         .mu-fortune-card__live-dot {
           width: 6px; height: 6px;
           border-radius: 50%;
-          background: #16a34a;
+          background: #6B5FFF;
           animation: live-pulse 1.5s ease-in-out infinite;
           flex-shrink: 0;
         }
@@ -359,113 +343,112 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           0%, 100% { opacity: 1; transform: scale(1); }
           50% { opacity: 0.4; transform: scale(0.8); }
         }
+        .mu-fortune-card__score-badge {
+          font-size: 13px;
+          font-weight: 700;
+          color: #6B5FFF;
+          background: rgba(107,95,255,0.10);
+          padding: 2px 10px;
+          border-radius: 20px;
+        }
         .mu-fortune-card__title {
-          font-size: 16px;
-          font-weight: 500;
-          color: #1a1a18;
-          letter-spacing: -0.02em;
-          margin: 0 0 6px;
-        }
-        .mu-fortune-card__desc {
-          font-size: 12px;
-          color: #5a5a56;
-          line-height: 1.6;
-          margin: 0;
-          white-space: pre-line;
-        }
-        .mu-fortune-card__score-wrap {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          flex-shrink: 0;
-          min-width: 52px;
-        }
-        .mu-fortune-card__score {
-          font-size: 28px;
-          font-weight: 500;
-          color: #1a1a18;
-          line-height: 1;
-          letter-spacing: -0.03em;
-        }
-        .mu-fortune-card__score-label {
-          font-size: 10px;
-          color: #5a5a56;
-          margin-top: 3px;
-          white-space: nowrap;
+          font-size: 17px;
+          font-weight: 700;
+          color: #191f28;
+          letter-spacing: -0.4px;
+          margin: 0 0 10px;
+          line-height: 1.3;
         }
         .mu-fortune-card__gauge {
-          height: 4px;
-          background: rgba(0,0,0,0.08);
+          height: 3px;
+          background: #e8ebed;
           border-radius: 2px;
           overflow: hidden;
-          margin-bottom: 12px;
+          margin-bottom: 10px;
         }
         .mu-fortune-card__gauge-fill {
           height: 100%;
-          background: #1a1a18;
+          background: linear-gradient(90deg, #6B5FFF, #60C8D4);
           border-radius: 2px;
           transition: width 0.6s ease;
         }
-        .mu-fortune-card__cta {
-          display: block;
-          font-size: 13px;
-          color: #1a1a18;
-          text-decoration: none;
-          font-weight: 500;
-          text-align: right;
+        .mu-fortune-card__footer {
+          display: flex;
+          align-items: flex-end;
+          justify-content: space-between;
+          gap: 8px;
         }
-        /* 행운 메뉴 */
+        .mu-fortune-card__desc {
+          font-size: 12px;
+          color: #4e5968;
+          line-height: 1.6;
+          margin: 0;
+          white-space: pre-line;
+          flex: 1;
+        }
+        .mu-fortune-card__cta {
+          font-size: 13px;
+          color: #6B5FFF;
+          text-decoration: none;
+          font-weight: 600;
+          white-space: nowrap;
+          flex-shrink: 0;
+        }
+
+        /* ── 행운 메뉴 카드 (수평 행) ── */
         .mu-lunch-card {
           display: flex;
-          align-items: flex-start;
+          align-items: center;
           gap: 12px;
-          background: #f5f4ef;
-          border: 0.5px solid rgba(0,0,0,0.10);
-          border-radius: 14px;
-          padding: 14px;
-          margin-bottom: 14px;
+          background: #f2f4f6;
+          border-radius: 16px;
+          padding: 14px 16px;
         }
         .mu-lunch-card__emoji {
-          font-size: 28px;
+          font-size: 26px;
           line-height: 1;
           flex-shrink: 0;
         }
-        .mu-lunch-card__body { flex: 1; }
+        .mu-lunch-card__body { flex: 1; min-width: 0; }
         .mu-lunch-card__eyebrow {
           font-size: 11px;
-          color: #5a5a56;
-          margin-bottom: 3px;
+          color: #8b95a1;
+          margin-bottom: 2px;
         }
         .mu-lunch-card__title {
-          font-size: 17px;
-          font-weight: 500;
-          color: #1a1a18;
-          letter-spacing: -0.02em;
-          margin: 0 0 4px;
+          font-size: 16px;
+          font-weight: 700;
+          color: #191f28;
+          letter-spacing: -0.3px;
+          margin: 0 0 2px;
           transition: opacity 0.18s;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
         .mu-lunch-card__title--fade { opacity: 0; }
         .mu-lunch-card__desc {
           font-size: 11px;
-          color: #5a5a56;
-          margin: 0 0 6px;
+          color: #8b95a1;
+          margin: 0;
         }
         .mu-lunch-card__refresh {
+          width: 32px; height: 32px;
+          border-radius: 50%;
+          background: #ffffff;
+          border: none;
           display: flex;
           align-items: center;
-          gap: 4px;
-          font-size: 11px;
-          color: #9a9a96;
-          background: none;
-          border: none;
+          justify-content: center;
+          color: #4e5968;
           cursor: pointer;
-          padding: 0;
-          font-family: 'Pretendard', sans-serif;
-          transition: color 0.15s;
+          flex-shrink: 0;
+          transition: background 0.15s;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.06);
         }
-        .mu-lunch-card__refresh:hover { color: #1a1a18; }
-        /* 항목 5: 바로가기 — 4버튼 모두 동일한 스타일 */
+        .mu-lunch-card__refresh:hover { background: #e8ebed; }
+
+        /* ── 바로가기 4버튼 (토스 스타일) ── */
         .mu-shortcuts {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
@@ -476,29 +459,34 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           flex-direction: column;
           align-items: center;
           gap: 6px;
-          padding: 10px 4px;
-          border-radius: 10px;
-          background: #ffffff;
-          border: 0.5px solid rgba(0,0,0,0.14);
+          padding: 14px 4px 12px;
+          border-radius: 14px;
+          background: #f2f4f6;
+          border: none;
           text-decoration: none;
-          min-height: 48px;
-          transition: box-shadow 0.12s;
+          transition: background 0.12s;
           -webkit-tap-highlight-color: transparent;
         }
-        .mu-shortcut-btn:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-        .mu-shortcut-btn:active { opacity: 0.85; }
+        .mu-shortcut-btn:hover { background: #e8ebed; }
+        .mu-shortcut-btn:active { opacity: 0.8; }
         .mu-shortcut-btn__icon {
-          color: #1a1a18;
+          width: 36px; height: 36px;
+          border-radius: 12px;
+          background: #ffffff;
           display: flex;
           align-items: center;
+          justify-content: center;
+          color: #6B5FFF;
+          box-shadow: 0 1px 4px rgba(0,0,0,0.06);
         }
         .mu-shortcut-btn__label {
           font-size: 11px;
-          color: #1a1a18;
+          color: #191f28;
           font-weight: 500;
           white-space: nowrap;
         }
-        /* 바텀시트 */
+
+        /* ── 바텀시트 ── */
         .mu-sheet-overlay {
           position: fixed;
           inset: 0;
@@ -512,24 +500,23 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           background: #ffffff;
           border-radius: 20px 20px 0 0;
           padding: 12px 20px calc(20px + var(--safe-area-bottom));
-          border-top: 0.5px solid rgba(0,0,0,0.10);
         }
         .mu-sheet__handle {
           width: 36px; height: 4px;
           border-radius: 2px;
-          background: rgba(0,0,0,0.12);
+          background: #e8ebed;
           margin: 0 auto 20px;
         }
         .mu-sheet__title {
           font-size: 17px;
-          font-weight: 500;
-          color: #1a1a18;
+          font-weight: 700;
+          color: #191f28;
           text-align: center;
           margin: 0 0 8px;
         }
         .mu-sheet__desc {
           font-size: 13px;
-          color: #5a5a56;
+          color: #4e5968;
           text-align: center;
           margin: 0 0 20px;
         }
@@ -539,27 +526,27 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
         }
         .mu-sheet__cancel {
           flex: 1;
-          height: 48px;
-          border-radius: 12px;
-          background: #f5f4ef;
-          border: 0.5px solid rgba(0,0,0,0.10);
-          color: #5a5a56;
+          height: 50px;
+          border-radius: 14px;
+          background: #f2f4f6;
+          border: none;
+          color: #4e5968;
           font-size: 15px;
-          font-weight: 500;
+          font-weight: 600;
           cursor: pointer;
-          font-family: 'Pretendard', sans-serif;
+          font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
         .mu-sheet__confirm {
           flex: 1;
-          height: 48px;
-          border-radius: 12px;
+          height: 50px;
+          border-radius: 14px;
           background: #dc2626;
           border: none;
           color: white;
           font-size: 15px;
-          font-weight: 500;
+          font-weight: 600;
           cursor: pointer;
-          font-family: 'Pretendard', sans-serif;
+          font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
       `}</style>
     </section>
