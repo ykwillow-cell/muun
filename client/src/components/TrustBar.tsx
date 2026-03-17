@@ -5,24 +5,25 @@ export function TrustBar() {
         <span className="mu-trust-num">1만+</span>
         <span className="mu-trust-lbl">누적 이용자</span>
       </div>
-      <div className="mu-trust-divider" aria-hidden="true" />
       <div className="mu-trust-item">
         <span className="mu-trust-num">13가지</span>
         <span className="mu-trust-lbl">무료 서비스</span>
       </div>
-      <div className="mu-trust-divider" aria-hidden="true" />
-      <div className="mu-trust-item">
+      <div className="mu-trust-item mu-trust-item--last">
         <span className="mu-trust-num">정통 명리학</span>
         <span className="mu-trust-lbl">사주 이론 기반</span>
       </div>
       <style>{`
+        /* Trust Bar — 카드 아님, AppBar와 이어지는 흰 영역 */
         .mu-trust-bar {
-          background: #F2F4F6;
-          border-radius: 12px;
-          margin: 12px 18px 16px;
+          background: #FFFFFF;
+          border-radius: 0;
+          box-shadow: none;
+          border: none;
+          margin: 0;
+          padding: 8px 18px 16px;
           display: flex;
-          align-items: center;
-          overflow: hidden;
+          align-items: stretch;
         }
         .mu-trust-item {
           flex: 1;
@@ -30,13 +31,14 @@ export function TrustBar() {
           flex-direction: column;
           align-items: center;
           gap: 2px;
-          padding: 10px 0;
+          padding: 8px 0;
+          border-right: 1px solid #E5E8EB;
+          border-radius: 0;
+          box-shadow: none;
+          text-align: center;
         }
-        .mu-trust-divider {
-          width: 1px;
-          height: 20px;
-          background: #E5E8EB;
-          flex-shrink: 0;
+        .mu-trust-item--last {
+          border-right: none;
         }
         .mu-trust-num {
           font-size: 13px;
