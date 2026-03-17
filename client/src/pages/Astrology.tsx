@@ -33,8 +33,8 @@ const AstrologyChart = ({ planets }: { planets: any[] }) => {
       {/* 배경 원 (황도 12궁) */}
       <svg viewBox="0 0 400 400" className="w-full h-full transform -rotate-90">
         {/* 바깥 원 */}
-        <circle cx="200" cy="200" r="180" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
-        <circle cx="200" cy="200" r="140" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
+        <circle cx="200" cy="200" r="180" fill="none" stroke="rgba(0,0,0,0.08)" strokeWidth="1" />
+        <circle cx="200" cy="200" r="140" fill="none" stroke="rgba(0,0,0,0.08)" strokeWidth="1" />
         
         {/* 12궁 구분선 및 아이콘 */}
         {ZODIAC_SIGNS.map((sign, i) => {
@@ -51,11 +51,11 @@ const AstrologyChart = ({ planets }: { planets: any[] }) => {
           
           return (
             <g key={sign.en}>
-              <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="rgba(255,255,255,0.2)" strokeWidth="1" />
+              <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="rgba(0,0,0,0.10)" strokeWidth="1" />
               <text 
                 x={iconX} 
                 y={iconY} 
-                fill="rgba(255,255,255,0.5)" 
+                fill="rgba(0,0,0,0.25)" 
                 fontSize="12" 
                 textAnchor="middle" 
                 alignmentBaseline="middle"
@@ -121,7 +121,7 @@ const CitySelector = ({ value, onChange }: { value: string; onChange: (city: str
 	      <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full h-12 px-4 bg-white/5 border border-white/10 text-white rounded-lg flex items-center justify-between hover:border-primary/30 transition-colors"
+        className="w-full h-12 px-4 bg-white/5 border border-white/10 text-[#1a1a18] rounded-lg flex items-center justify-between hover:border-primary/30 transition-colors"
       >
         <div className="flex items-center gap-2">
           <MapPin className="w-4 h-4 text-primary" />
@@ -139,13 +139,13 @@ const CitySelector = ({ value, onChange }: { value: string; onChange: (city: str
 	        >
           <div className="p-3 border-b border-white/10">
             <div className="flex items-center gap-2 bg-white/5 px-3 py-2 rounded-lg">
-              <Search className="w-4 h-4 text-white/40" />
+              <Search className="w-4 h-4 text-[#999891]" />
               <input
                 type="text"
                 placeholder="도시 검색..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="bg-transparent text-white text-sm outline-none flex-1 placeholder-white/40"
+                className="bg-transparent text-[#1a1a18] text-sm outline-none flex-1 placeholder-white/40"
               />
             </div>
           </div>
@@ -160,13 +160,13 @@ const CitySelector = ({ value, onChange }: { value: string; onChange: (city: str
                   setSearchTerm("");
                 }}
                 className={`w-full px-4 py-3 text-left text-sm hover:bg-white/5 transition-colors flex items-center gap-3 ${
-                  selectedCity?.name === city.name ? 'bg-primary/20 text-primary' : 'text-white/70'
+                  selectedCity?.name === city.name ? 'bg-primary/20 text-primary' : 'text-[#5a5a56]'
                 }`}
               >
                 <MapPin className="w-4 h-4" />
                 <div>
                   <div className="font-medium">{city.name}</div>
-                  <div className="text-xs text-white/40">{city.en}</div>
+                  <div className="text-xs text-[#999891]">{city.en}</div>
                 </div>
               </button>
             ))}
@@ -278,11 +278,11 @@ const Astrology: React.FC = () => {
         <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
           <div className={`${commonMaxWidth} px-4 h-14 flex items-center`}>
             <Link href="/">
-              <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/10 min-w-[44px] min-h-[44px]">
+              <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-white/10 min-w-[44px] min-h-[44px]">
                 <ChevronLeft className="h-6 w-6" />
               </Button>
             </Link>
-            <h1 className="text-lg md:text-xl font-bold text-white">점성술 분석</h1>
+            <h1 className="text-lg md:text-xl font-bold text-[#1a1a18]">점성술 분석</h1>
           </div>
         </header>
 
@@ -299,7 +299,7 @@ const Astrology: React.FC = () => {
                 <Compass className="w-4 h-4 text-purple-400" />
                 <span className="text-[11px] md:text-xs font-bold tracking-widest text-purple-400 uppercase">Birth Chart</span>
               </div>
-              <h2 className="text-2xl md:text-4xl font-bold tracking-tight text-white">
+              <h2 className="text-2xl md:text-4xl font-bold tracking-tight text-[#1a1a18]">
                 당신의 탄생 차트 분석
               </h2>
               <p className="text-sm md:text-base text-muted-foreground max-w-md mx-auto">
@@ -311,7 +311,7 @@ const Astrology: React.FC = () => {
             <Card className="bg-white/5 border-white/10 shadow-2xl backdrop-blur-xl relative z-10 rounded-2xl">
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary/50 via-purple-500/50 to-blue-500/50" />
               <CardHeader className="p-4 md:p-6">
-                <CardTitle className="text-white flex items-center gap-2 text-base md:text-lg">
+                <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-base md:text-lg">
                   <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-primary/20 flex items-center justify-center">
                     <Star className="w-4 h-4 md:w-5 md:h-5 text-primary" />
                   </div>
@@ -322,23 +322,23 @@ const Astrology: React.FC = () => {
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 md:space-y-6">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
                     <div className="space-y-2">
-                      <Label htmlFor="birthDate" className="text-white/70 text-xs md:text-sm font-medium">생년월일</Label>
+                      <Label htmlFor="birthDate" className="text-[#5a5a56] text-xs md:text-sm font-medium">생년월일</Label>
                       <Input
                         id="birthDate"
                         type="date"
                         {...form.register("birthDate")}
-                        className="bg-white/5 border-white/10 text-white min-h-[48px] focus:ring-primary/50 rounded-xl"
+                        className="bg-white/5 border-white/10 text-[#1a1a18] min-h-[48px] focus:ring-primary/50 rounded-xl"
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="birthTime" className="text-white/70 text-xs md:text-sm font-medium">태어난 시간</Label>
+                      <Label htmlFor="birthTime" className="text-[#5a5a56] text-xs md:text-sm font-medium">태어난 시간</Label>
                       <div className="space-y-2">
                         <Input
                           id="birthTime"
                           type="time"
                           {...form.register("birthTime")}
                           disabled={form.watch("birthTimeUnknown")}
-                          className={`bg-white/5 border-white/10 text-white min-h-[48px] focus:ring-primary/50 rounded-xl ${form.watch("birthTimeUnknown") ? 'opacity-40' : ''}`}
+                          className={`bg-white/5 border-white/10 text-[#1a1a18] min-h-[48px] focus:ring-primary/50 rounded-xl ${form.watch("birthTimeUnknown") ? 'opacity-40' : ''}`}
                         />
                         <label className="flex items-center gap-1.5 cursor-pointer">
                           <input
@@ -346,14 +346,14 @@ const Astrology: React.FC = () => {
                             {...form.register("birthTimeUnknown")}
                             className="w-3.5 h-3.5 rounded border-white/20 bg-white/5 accent-primary"
                           />
-                          <span className="text-[11px] text-white/60">모름</span>
+                          <span className="text-[11px] text-[#5a5a56]">모름</span>
                         </label>
                       </div>
                     </div>
                   </div>
 
                   <div className="space-y-2 relative z-20">
-                    <Label className="text-white/70 text-xs md:text-sm font-medium">태어난 도시</Label>
+                    <Label className="text-[#5a5a56] text-xs md:text-sm font-medium">태어난 도시</Label>
                     <CitySelector 
                       value={form.watch("birthCity")} 
                       onChange={(city) => form.setValue("birthCity", city)}
@@ -424,13 +424,13 @@ const Astrology: React.FC = () => {
       <header className="sticky top-0 z-50 backdrop-blur-md bg-background/50 border-b border-white/10">
         <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
-            <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/10 min-w-[44px] min-h-[44px]" onClick={() => setResult(null)}>
+            <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-white/10 min-w-[44px] min-h-[44px]" onClick={() => setResult(null)}>
               <ChevronLeft className="h-6 w-6" />
             </Button>
-            <h1 className="text-lg md:text-xl font-bold text-white">분석 결과</h1>
+            <h1 className="text-lg md:text-xl font-bold text-[#1a1a18]">분석 결과</h1>
           </div>
           {result.city && (
-            <div className="flex items-center gap-1 text-xs text-white/50">
+            <div className="flex items-center gap-1 text-xs text-[#999891]">
               <MapPin className="w-3 h-3" />
               {result.city.name}
             </div>
@@ -444,11 +444,11 @@ const Astrology: React.FC = () => {
           <div className="lg:col-span-5 space-y-6">
             <Card className="bg-card/30 border-white/10 backdrop-blur-xl p-6 sticky top-24">
               <div className="text-center mb-6">
-                <h3 className="text-lg font-bold text-white flex items-center justify-center gap-2">
+                <h3 className="text-lg font-bold text-[#1a1a18] flex items-center justify-center gap-2">
                   <Globe className="w-4 h-4 text-primary" />
                   Natal Chart
                 </h3>
-                <p className="text-xs text-white/40">당신이 태어난 순간의 하늘</p>
+                <p className="text-xs text-[#999891]">당신이 태어난 순간의 하늘</p>
                 {result.city && (
                   <p className="text-xs text-primary mt-2 flex items-center justify-center gap-1">
                     <MapPin className="w-3 h-3" />
@@ -462,8 +462,8 @@ const Astrology: React.FC = () => {
                   <div key={p.en} className="flex items-center gap-2 bg-white/5 p-2 rounded-lg border border-white/5">
                     <span className="text-lg">{p.icon}</span>
                     <div className="text-[10px]">
-                      <div className="text-white/40">{p.name}</div>
-                      <div className="text-white font-bold">{p.sign.name}</div>
+                      <div className="text-[#999891]">{p.name}</div>
+                      <div className="text-[#1a1a18] font-bold">{p.sign.name}</div>
                     </div>
                   </div>
                 ))}
@@ -483,18 +483,18 @@ const Astrology: React.FC = () => {
                 <div className="absolute top-0 right-0 p-4 opacity-10">
                   <Sparkles className="w-24 h-24 text-primary" />
                 </div>
-                <h2 className="text-2xl font-black text-white mb-4">
+                <h2 className="text-2xl font-black text-[#1a1a18] mb-4">
                   {result.sun.sign.name}의 기운을 타고난 <br/>
                   <span className="text-primary">당신은 어떤 사람일까요?</span>
                 </h2>
-                <p className="text-white/70 leading-relaxed">
+                <p className="text-[#5a5a56] leading-relaxed">
                   점성술에서 '태양'은 당신의 가장 핵심적인 모습과 삶을 대하는 태도를 말해줘요. {result.sun.sign.name}의 에너지를 품은 당신이 가진 특별한 매력을 아래에서 확인해보세요.
                 </p>
               </div>
 
               {/* 행성별 상세 분석 */}
               <div className="space-y-4">
-                <h3 className="text-xl font-bold text-white flex items-center gap-2 px-2">
+                <h3 className="text-xl font-bold text-[#1a1a18] flex items-center gap-2 px-2">
                   <Zap className="w-5 h-5 text-yellow-400" />
                   하늘의 행성들이 보내는 메시지
                 </h3>
@@ -514,7 +514,7 @@ const Astrology: React.FC = () => {
                               {p.icon}
                             </div>
                             <div>
-                              <CardTitle className="text-sm font-bold text-white">
+                              <CardTitle className="text-sm font-bold text-[#1a1a18]">
                                 {p.en === 'Sun' ? '나의 본모습' : 
                                  p.en === 'Moon' ? '나의 속마음' : 
                                  p.en === 'Mercury' ? '나의 소통 방식' : 
@@ -526,12 +526,12 @@ const Astrology: React.FC = () => {
                               <div className="text-[10px] text-primary font-bold">{p.name}이(가) {p.sign.name}에 머물 때</div>
                             </div>
                           </div>
-                          <div className="text-[10px] text-white/30 font-mono">
+                          <div className="text-[10px] text-[#999891] font-mono">
                             {p.longitude.toFixed(2)}°
                           </div>
                         </CardHeader>
                         <CardContent className="p-5">
-                          <div className="text-sm text-white/70 leading-relaxed whitespace-pre-wrap">
+                          <div className="text-sm text-[#5a5a56] leading-relaxed whitespace-pre-wrap">
                             {(zodiacData as any)[p.sign.en] || "상세 분석 데이터를 준비 중입니다."}
                           </div>
                         </CardContent>

@@ -14,6 +14,8 @@ interface BannerItem {
   gradFrom: string;
   gradTo: string;
   accentColor: string;
+  titleColor: string;
+  subColor: string;
 }
 
 const BANNERS: BannerItem[] = [
@@ -27,7 +29,9 @@ const BANNERS: BannerItem[] = [
     visual: "丙\n午",
     gradFrom: "rgba(245,200,66,0.18)",
     gradTo: "rgba(245,200,66,0.04)",
-    accentColor: "oklch(0.85 0.18 85)",
+    accentColor: "#b5860a",
+    titleColor: "#1a1a18",
+    subColor: "#5a5a56",
   },
   {
     id: "family",
@@ -39,7 +43,9 @@ const BANNERS: BannerItem[] = [
     visual: "家\n族",
     gradFrom: "rgba(52,211,153,0.18)",
     gradTo: "rgba(52,211,153,0.04)",
-    accentColor: "#34d399",
+    accentColor: "#0d7a52",
+    titleColor: "#1a1a18",
+    subColor: "#5a5a56",
   },
   {
     id: "mbti",
@@ -51,7 +57,9 @@ const BANNERS: BannerItem[] = [
     visual: "合\n心",
     gradFrom: "rgba(167,139,250,0.18)",
     gradTo: "rgba(167,139,250,0.04)",
-    accentColor: "#a78bfa",
+    accentColor: "#5b21b6",
+    titleColor: "#1a1a18",
+    subColor: "#5a5a56",
   },
   {
     id: "naming",
@@ -61,9 +69,11 @@ const BANNERS: BannerItem[] = [
     cta: "작명소 바로가기",
     href: "/naming",
     visual: "字\n名",
-    gradFrom: "rgba(255,255,255,0.10)",
-    gradTo: "rgba(255,255,255,0.02)",
-    accentColor: "rgba(255,255,255,0.7)",
+    gradFrom: "rgba(0,0,0,0.04)",
+    gradTo: "rgba(0,0,0,0.01)",
+    accentColor: "#1a1a18",
+    titleColor: "#1a1a18",
+    subColor: "#5a5a56",
   },
 ];
 
@@ -140,8 +150,8 @@ export function MainBanner() {
                   >
                     {b.tag}
                   </span>
-                  <p className="mu-banner__title" style={{ whiteSpace: "pre-line" }}>{b.title}</p>
-                  <p className="mu-banner__sub">{b.sub}</p>
+                  <p className="mu-banner__title" style={{ whiteSpace: "pre-line", color: b.titleColor }}>{b.title}</p>
+                  <p className="mu-banner__sub" style={{ color: b.subColor }}>{b.sub}</p>
                   <span className="mu-banner__cta" style={{ color: b.accentColor }}>
                     {b.cta} <ArrowRight size={13} style={{ display: "inline", verticalAlign: "middle" }} />
                   </span>
@@ -199,13 +209,14 @@ export function MainBanner() {
           justify-content: space-between;
           padding: 20px 18px;
           border-radius: 16px;
-          border: 1px solid rgba(255,255,255,0.08);
+          border: 0.5px solid rgba(0,0,0,0.10);
           text-decoration: none;
           min-height: 120px;
           position: relative;
           overflow: hidden;
           transition: opacity 0.15s;
           -webkit-tap-highlight-color: transparent;
+          background-color: #ffffff;
         }
         .mu-banner__card:active { opacity: 0.85; }
         .mu-banner__card-body { flex: 1; }
@@ -222,14 +233,12 @@ export function MainBanner() {
         .mu-banner__title {
           font-size: 18px;
           font-weight: 500;
-          color: white;
           letter-spacing: -0.02em;
           line-height: 1.3;
           margin: 0 0 6px;
         }
         .mu-banner__sub {
           font-size: 12px;
-          color: rgba(255,255,255,0.4);
           margin: 0 0 10px;
           line-height: 1.4;
         }
@@ -239,7 +248,7 @@ export function MainBanner() {
         }
         .mu-banner__visual {
           font-size: 32px;
-          font-weight: 800;
+          font-weight: 500;
           line-height: 1.2;
           text-align: center;
           white-space: pre-line;
@@ -261,7 +270,7 @@ export function MainBanner() {
           width: 6px;
           height: 6px;
           border-radius: 3px;
-          background: rgba(255,255,255,0.15);
+          background: rgba(0,0,0,0.12);
           border: none;
           cursor: pointer;
           padding: 0;
@@ -270,12 +279,12 @@ export function MainBanner() {
         }
         .mu-banner__dot--active {
           width: 20px;
-          background: rgba(255,255,255,0.2);
+          background: rgba(0,0,0,0.15);
         }
         .mu-banner__dot-progress {
           position: absolute;
           inset: 0;
-          background: oklch(0.85 0.18 85);
+          background: #1a1a18;
           border-radius: inherit;
           transform-origin: left;
           animation: dot-fill linear forwards;

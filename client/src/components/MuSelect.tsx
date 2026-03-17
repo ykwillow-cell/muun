@@ -116,7 +116,7 @@ export function MuSelect({
         .mu-select__label {
           display: block;
           font-size: 12px;
-          color: rgba(255,255,255,0.45);
+          color: #5a5a56;
           margin-bottom: 6px;
           font-weight: 500;
         }
@@ -127,28 +127,28 @@ export function MuSelect({
           align-items: center;
           justify-content: space-between;
           padding: 0 12px;
-          background: rgba(255,255,255,0.05);
-          border: 1px solid rgba(255,255,255,0.10);
+          background: #ffffff;
+          border: 0.5px solid rgba(0,0,0,0.14);
           border-radius: 10px;
           font-size: 14px;
-          color: white;
+          color: #1a1a18;
           cursor: pointer;
           transition: border-color 0.15s, background 0.15s;
           font-family: 'Pretendard', sans-serif;
         }
         .mu-select__trigger:hover,
         .mu-select__trigger--open {
-          border-color: oklch(0.85 0.18 85 / 0.4);
-          background: rgba(255,255,255,0.07);
+          border-color: rgba(0,0,0,0.30);
+          background: #f5f4ef;
         }
         .mu-select__placeholder {
-          color: rgba(255,255,255,0.25);
+          color: #999891;
         }
         .mu-select__value {
-          color: white;
+          color: #1a1a18;
         }
         .mu-select__chevron {
-          color: rgba(255,255,255,0.35);
+          color: #5a5a56;
           transition: transform 0.18s;
           flex-shrink: 0;
         }
@@ -158,15 +158,15 @@ export function MuSelect({
         .mu-select__dropdown {
           position: fixed;
           z-index: 9999;
-          background: oklch(0.18 0.04 265);
-          border: 1px solid rgba(255,255,255,0.10);
+          background: #ffffff;
+          border: 0.5px solid rgba(0,0,0,0.12);
           border-radius: 10px;
           padding: 4px;
           max-height: 220px;
           overflow-y: auto;
           list-style: none;
           margin: 0;
-          box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+          box-shadow: 0 8px 24px rgba(0,0,0,0.10);
         }
         .mu-select__dropdown::-webkit-scrollbar {
           width: 4px;
@@ -175,7 +175,7 @@ export function MuSelect({
           background: transparent;
         }
         .mu-select__dropdown::-webkit-scrollbar-thumb {
-          background: rgba(255,255,255,0.12);
+          background: rgba(0,0,0,0.10);
           border-radius: 2px;
         }
         .mu-select__option {
@@ -187,26 +187,26 @@ export function MuSelect({
           cursor: pointer;
           transition: background 0.12s;
           font-size: 13px;
-          color: rgba(255,255,255,0.75);
+          color: #5a5a56;
           min-height: 36px;
         }
         .mu-select__option:hover {
-          background: rgba(255,255,255,0.06);
-          color: white;
+          background: #f5f4ef;
+          color: #1a1a18;
         }
         .mu-select__option--selected {
-          background: oklch(0.85 0.18 85 / 0.12);
-          color: oklch(0.85 0.18 85);
+          background: rgba(0,0,0,0.05);
+          color: #1a1a18;
         }
         .mu-select__option-label {
           flex: 1;
         }
         .mu-select__option-sub {
           font-size: 11px;
-          color: rgba(255,255,255,0.3);
+          color: #999891;
         }
         .mu-select__option-check {
-          color: oklch(0.85 0.18 85);
+          color: #1a1a18;
           flex-shrink: 0;
         }
       `}</style>

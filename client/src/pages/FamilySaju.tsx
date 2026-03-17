@@ -169,7 +169,7 @@ export default function FamilySaju() {
   // ===== 입력 화면 =====
   if (!result) {
     return (
-      <div className="min-h-screen bg-background text-white">
+      <div className="min-h-screen bg-background text-[#1a1a18]">
         <Helmet>
           <title>무료 가족사주 분석 - 회원가입 없이 가족 오행 조화 확인 | 무운</title>
           <meta name="description" content="회원가입 없이 가족 구성원의 사주를 분석하는 무료 가족사주. 가족 간 오행 조화와 관계를 개인정보 저장 없이 100% 무료로 확인하세요." />
@@ -188,11 +188,11 @@ export default function FamilySaju() {
         <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-white/5">
           <div className="max-w-2xl mx-auto px-4 h-14 flex items-center">
             <Link href="/">
-              <Button variant="ghost" size="icon" className="mr-2 text-white hover:bg-white/10 min-w-[44px] min-h-[44px]">
+              <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-white/10 min-w-[44px] min-h-[44px]">
                 <ChevronLeft className="w-5 h-5" />
               </Button>
             </Link>
-            <h1 className="text-lg font-bold text-white flex items-center gap-2">
+            <h1 className="text-lg font-bold text-[#1a1a18] flex items-center gap-2">
               <Users className="w-5 h-5 text-primary" />
               가족사주 분석
             </h1>
@@ -209,8 +209,8 @@ export default function FamilySaju() {
               <Users className="w-4 h-4" />
               우리 가족의 사주 조화
             </div>
-            <h2 className="text-2xl font-bold text-white">가족사주 분석</h2>
-            <p className="text-white/60 text-base md:text-sm leading-relaxed">
+            <h2 className="text-2xl font-bold text-[#1a1a18]">가족사주 분석</h2>
+            <p className="text-[#5a5a56] text-base md:text-sm leading-relaxed">
               가족 구성원의 사주를 분석하여 오행의 조화,<br />
               관계별 궁합, 가족 역학을 알아봅니다
             </p>
@@ -228,7 +228,7 @@ export default function FamilySaju() {
                 <Card className="bg-white/[0.03] border-white/10">
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
-                      <CardTitle className="text-base text-white flex items-center gap-2">
+                      <CardTitle className="text-base text-[#1a1a18] flex items-center gap-2">
                         <span className="text-lg">{ROLE_OPTIONS.find(r => r.value === member.role)?.icon || "👤"}</span>
                         구성원 {index + 1}
                       </CardTitle>
@@ -247,7 +247,7 @@ export default function FamilySaju() {
                   <CardContent className="space-y-3">
                     {/* 역할 선택 */}
                     <div className="space-y-1.5">
-                      <Label className="text-white/70 text-base md:text-sm">가족 관계</Label>
+                      <Label className="text-[#5a5a56] text-base md:text-sm">가족 관계</Label>
                       <div className="grid grid-cols-4 gap-1.5">
                         {ROLE_OPTIONS.map(role => (
                           <button
@@ -256,7 +256,7 @@ export default function FamilySaju() {
                             className={`flex flex-col items-center gap-0.5 py-2 px-1 rounded-lg text-sm md:text-xs transition-all ${
                               member.role === role.value
                                 ? "bg-primary/20 text-primary border border-primary/40"
-                                : "bg-white/5 text-white/60 border border-white/10 hover:bg-white/10"
+                                : "bg-white/5 text-[#5a5a56] border border-white/10 hover:bg-white/10"
                             }`}
                           >
                             <span className="text-base">{role.icon}</span>
@@ -269,18 +269,18 @@ export default function FamilySaju() {
                     {/* 이름 + 성별 */}
                     <div className="grid grid-cols-2 gap-3">
                       <div className="space-y-1.5">
-                        <Label className="text-white/70 text-base md:text-sm flex items-center gap-1">
+                        <Label className="text-[#5a5a56] text-base md:text-sm flex items-center gap-1">
                           <User className="w-3 h-3" /> 이름
                         </Label>
                         <Input
                           placeholder="이름"
                           value={member.name}
                           onChange={(e) => updateMember(index, "name", e.target.value)}
-                          className="bg-white/5 border-white/10 text-white h-10"
+                          className="bg-white/5 border-white/10 text-[#1a1a18] h-10"
                         />
                       </div>
                       <div className="space-y-1.5">
-                        <Label className="text-white/70 text-base md:text-sm">성별</Label>
+                        <Label className="text-[#5a5a56] text-base md:text-sm">성별</Label>
                         <ToggleGroup
                           type="single"
                           value={member.gender}
@@ -296,7 +296,7 @@ export default function FamilySaju() {
                     {/* 생년월일 + 시간 */}
                     <div className="grid grid-cols-2 gap-3">
                       <div className="space-y-1.5">
-                        <Label className="text-white/70 text-base md:text-sm flex items-center gap-1">
+                        <Label className="text-[#5a5a56] text-base md:text-sm flex items-center gap-1">
                           <Calendar className="w-3 h-3" /> 생년월일
                         </Label>
                         <DatePickerInput
@@ -311,7 +311,7 @@ export default function FamilySaju() {
                         />
                       </div>
                       <div className="space-y-1.5">
-                        <Label className="text-white/70 text-base md:text-sm flex items-center gap-1">
+                        <Label className="text-[#5a5a56] text-base md:text-sm flex items-center gap-1">
                           <Clock className="w-3 h-3" /> 태어난 시간
                         </Label>
                         <BirthTimeSelect
@@ -326,7 +326,7 @@ export default function FamilySaju() {
 
                     {/* 양력/음력 */}
                     <div className="space-y-1.5">
-                      <Label className="text-white/70 text-base md:text-sm">날짜 구분</Label>
+                      <Label className="text-[#5a5a56] text-base md:text-sm">날짜 구분</Label>
                       <ToggleGroup
                         type="single"
                         value={member.calendarType}
@@ -348,7 +348,7 @@ export default function FamilySaju() {
                             onChange={(e) => updateMember(index, "isLeapMonth", e.target.checked)}
                             className="w-4 h-4 rounded border-white/20 bg-white/5 accent-primary"
                           />
-                          <span className="text-base md:text-sm text-white/80 group-hover:text-primary transition-colors">윤달(Leap Month)인 경우 체크</span>
+                          <span className="text-base md:text-sm text-[#1a1a18] group-hover:text-primary transition-colors">윤달(Leap Month)인 경우 체크</span>
                         </label>
                       </div>
                     )}
@@ -365,7 +365,7 @@ export default function FamilySaju() {
             {members.length < 6 && (
               <Button
                 variant="outline"
-                className="w-full border-dashed border-white/20 text-white/60 hover:text-white hover:bg-white/5 h-12"
+                className="w-full border-dashed border-white/20 text-[#5a5a56] hover:text-[#1a1a18] hover:bg-white/5 h-12"
                 onClick={addMember}
               >
                 <Plus className="w-4 h-4 mr-2" />
@@ -432,10 +432,10 @@ export default function FamilySaju() {
       {/* 헤더 */}
       <div className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-white/5">
         <div className="max-w-2xl mx-auto px-4 h-14 flex items-center">
-          <Button variant="ghost" size="icon" onClick={() => setResult(null)} className="mr-2 text-white hover:bg-white/10 min-w-[44px] min-h-[44px]">
+          <Button variant="ghost" size="icon" onClick={() => setResult(null)} className="mr-2 text-[#1a1a18] hover:bg-white/10 min-w-[44px] min-h-[44px]">
             <ChevronLeft className="w-5 h-5" />
           </Button>
-          <h1 className="text-lg font-bold text-white flex items-center gap-2">
+          <h1 className="text-lg font-bold text-[#1a1a18] flex items-center gap-2">
             <Users className="w-5 h-5 text-primary" />
             가족사주 분석 결과
           </h1>
@@ -452,7 +452,7 @@ export default function FamilySaju() {
               </div>
               <div className="relative inline-flex items-center justify-center">
                 <svg className="w-32 h-32" viewBox="0 0 120 120">
-                  <circle cx="60" cy="60" r="54" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="8" />
+                  <circle cx="60" cy="60" r="54" fill="none" stroke="rgba(0,0,0,0.08)" strokeWidth="8" />
                   <circle
                     cx="60" cy="60" r="54"
                     fill="none"
@@ -471,10 +471,10 @@ export default function FamilySaju() {
                 </svg>
                 <div className="absolute flex flex-col items-center">
                   <span className="text-3xl font-bold text-primary">{familySummary.overallScore}</span>
-                  <span className="text-sm md:text-xs text-white/60">종합 점수</span>
+                  <span className="text-sm md:text-xs text-[#5a5a56]">종합 점수</span>
                 </div>
               </div>
-              <p className="text-white/80 text-base md:text-sm leading-relaxed max-w-md mx-auto">
+              <p className="text-[#1a1a18] text-base md:text-sm leading-relaxed max-w-md mx-auto">
                 {familySummary.harmony}
               </p>
             </CardContent>
@@ -483,7 +483,7 @@ export default function FamilySaju() {
 
         {/* 가족 구성원 사주 요약 */}
         <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-          <h2 className="text-lg font-bold text-white flex items-center gap-2 mb-3">
+          <h2 className="text-lg font-bold text-[#1a1a18] flex items-center gap-2 mb-3">
             <User className="w-5 h-5 text-primary" />
             가족 구성원 사주 요약
           </h2>
@@ -504,13 +504,13 @@ export default function FamilySaju() {
                       </div>
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="font-bold text-white">{member.name}</span>
-                          <span className="text-sm md:text-xs text-white/40 bg-white/5 px-2 py-0.5 rounded-full">{member.role}</span>
+                          <span className="font-bold text-[#1a1a18]">{member.name}</span>
+                          <span className="text-sm md:text-xs text-[#999891] bg-white/5 px-2 py-0.5 rounded-full">{member.role}</span>
                         </div>
-                        <p className="text-base md:text-sm text-white/60 mb-2">
+                        <p className="text-base md:text-sm text-[#5a5a56] mb-2">
                           일간(日干): {withReading(member.saju!.dayPillar.stem)} — {personality?.symbol || ""} {elemKor}의 기운
                         </p>
-                        <p className="text-sm md:text-xs text-white/50 leading-relaxed">
+                        <p className="text-sm md:text-xs text-[#999891] leading-relaxed">
                           {personality?.description?.substring(0, 80) || ""}...
                         </p>
                         {/* 미니 오행 바 */}
@@ -526,7 +526,7 @@ export default function FamilySaju() {
                                   }}
                                 />
                               </div>
-                              <span className="text-xs md:text-[10px] text-white/40 block text-center mt-0.5">{ELEMENT_KOREAN[b.name] || b.name}</span>
+                              <span className="text-xs md:text-[10px] text-[#999891] block text-center mt-0.5">{ELEMENT_KOREAN[b.name] || b.name}</span>
                             </div>
                           ))}
                         </div>
@@ -541,7 +541,7 @@ export default function FamilySaju() {
 
         {/* 가족 오행 분포 */}
         <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
-          <h2 className="text-lg font-bold text-white flex items-center gap-2 mb-3">
+          <h2 className="text-lg font-bold text-[#1a1a18] flex items-center gap-2 mb-3">
             <Star className="w-5 h-5 text-primary" />
             가족 오행 분포
           </h2>
@@ -553,10 +553,10 @@ export default function FamilySaju() {
                 return (
                   <div key={idx}>
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-base md:text-sm text-white/80 font-medium">
+                      <span className="text-base md:text-sm text-[#1a1a18] font-medium">
                         {ELEMENT_KOREAN[elem.name] || elem.name} ({elem.name})
                       </span>
-                      <span className="text-sm md:text-xs text-white/50">
+                      <span className="text-sm md:text-xs text-[#999891]">
                         {elem.members.length > 0 ? elem.members.join(", ") : "-"}
                       </span>
                     </div>
@@ -573,7 +573,7 @@ export default function FamilySaju() {
                 );
               })}
               <div className="mt-3 p-3 rounded-lg bg-primary/5 border border-primary/10">
-                <p className="text-base md:text-sm text-white/70 leading-relaxed">{familyBalance.advice}</p>
+                <p className="text-base md:text-sm text-[#5a5a56] leading-relaxed">{familyBalance.advice}</p>
               </div>
             </CardContent>
           </Card>
@@ -581,7 +581,7 @@ export default function FamilySaju() {
 
         {/* 가족 관계별 분석 */}
         <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
-          <h2 className="text-lg font-bold text-white flex items-center gap-2 mb-3">
+          <h2 className="text-lg font-bold text-[#1a1a18] flex items-center gap-2 mb-3">
             <Heart className="w-5 h-5 text-primary" />
             가족 관계별 궁합 분석
           </h2>
@@ -594,7 +594,7 @@ export default function FamilySaju() {
 
         {/* 가족 강점 & 개선점 */}
         <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
-          <h2 className="text-lg font-bold text-white flex items-center gap-2 mb-3">
+          <h2 className="text-lg font-bold text-[#1a1a18] flex items-center gap-2 mb-3">
             <TrendingUp className="w-5 h-5 text-primary" />
             가족의 강점과 조언
           </h2>
@@ -608,7 +608,7 @@ export default function FamilySaju() {
                 </h3>
                 <div className="space-y-2">
                   {familySummary.strengths.map((s, i) => (
-                    <p key={i} className="text-base md:text-sm text-white/70 leading-relaxed pl-7">{s}</p>
+                    <p key={i} className="text-base md:text-sm text-[#5a5a56] leading-relaxed pl-7">{s}</p>
                   ))}
                 </div>
               </div>
@@ -621,7 +621,7 @@ export default function FamilySaju() {
                 </h3>
                 <div className="space-y-2">
                   {familySummary.improvements.map((s, i) => (
-                    <p key={i} className="text-base md:text-sm text-white/70 leading-relaxed pl-7">{s}</p>
+                    <p key={i} className="text-base md:text-sm text-[#5a5a56] leading-relaxed pl-7">{s}</p>
                   ))}
                 </div>
               </div>
@@ -632,7 +632,7 @@ export default function FamilySaju() {
                   <Sparkles className="w-4 h-4" />
                   가족에게 추천하는 활동
                 </h3>
-                <p className="text-base md:text-sm text-white/70">{familySummary.luckyActivity}</p>
+                <p className="text-base md:text-sm text-[#5a5a56]">{familySummary.luckyActivity}</p>
               </div>
             </CardContent>
           </Card>
@@ -652,7 +652,7 @@ export default function FamilySaju() {
             />
           )}
           <Button
-            className="w-full bg-white/5 border border-white/10 text-white hover:bg-white/10 h-11 rounded-xl font-medium text-base md:text-sm"
+            className="w-full bg-white/5 border border-white/10 text-[#1a1a18] hover:bg-white/10 h-11 rounded-xl font-medium text-base md:text-sm"
             onClick={() => shareContent({
               title: '무운 가족사주 분석',
               text: `우리 가족 사주 조화 점수: ${familySummary.overallScore}점! 가족의 오행 궁합을 확인해보세요.`,
@@ -665,7 +665,7 @@ export default function FamilySaju() {
           </Button>
           <Button
             variant="ghost"
-            className="w-full text-white/60 hover:text-white hover:bg-white/5 h-11 rounded-xl font-medium text-base md:text-sm"
+            className="w-full text-[#5a5a56] hover:text-[#1a1a18] hover:bg-white/5 h-11 rounded-xl font-medium text-base md:text-sm"
             onClick={() => setResult(null)}
           >
             다른 가족 정보로 다시 보기
@@ -697,19 +697,19 @@ function RelationCard({ relation, index }: {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="text-base">{ROLE_OPTIONS.find(r => r.value === member1.role)?.icon}</span>
-              <span className="text-base md:text-sm font-medium text-white">{member1.name}</span>
-              <ArrowRight className="w-3 h-3 text-white/30" />
+              <span className="text-base md:text-sm font-medium text-[#1a1a18]">{member1.name}</span>
+              <ArrowRight className="w-3 h-3 text-[#999891]" />
               <span className="text-base">{ROLE_OPTIONS.find(r => r.value === member2.role)?.icon}</span>
-              <span className="text-base md:text-sm font-medium text-white">{member2.name}</span>
+              <span className="text-base md:text-sm font-medium text-[#1a1a18]">{member2.name}</span>
             </div>
             <div className="flex items-center gap-2">
               <span className={`text-base md:text-sm font-bold ${scoreColor} ${scoreBg} px-2 py-0.5 rounded-full`}>
                 {analysis.score}점
               </span>
-              {isOpen ? <ChevronUp className="w-4 h-4 text-white/40" /> : <ChevronDown className="w-4 h-4 text-white/40" />}
+              {isOpen ? <ChevronUp className="w-4 h-4 text-[#999891]" /> : <ChevronDown className="w-4 h-4 text-[#999891]" />}
             </div>
           </div>
-          <p className="text-sm md:text-xs text-white/50 mt-1">{analysis.title}</p>
+          <p className="text-sm md:text-xs text-[#999891] mt-1">{analysis.title}</p>
         </CardContent>
       </button>
       <AnimatePresence>
@@ -722,12 +722,12 @@ function RelationCard({ relation, index }: {
             className="overflow-hidden"
           >
             <div className="px-6 pb-4 space-y-3 border-t border-white/5 pt-3">
-              <p className="text-base md:text-sm text-white/70 leading-relaxed">{cleanAIContent(analysis.description)}</p>
+              <p className="text-base md:text-sm text-[#5a5a56] leading-relaxed">{cleanAIContent(analysis.description)}</p>
               <div className="p-3 rounded-lg bg-primary/5 border border-primary/10">
                 <p className="text-sm md:text-xs font-bold text-primary mb-1 flex items-center gap-1">
                   <Shield className="w-3 h-3" /> 관계 개선 조언
                 </p>
-                <p className="text-base md:text-sm text-white/70 leading-relaxed">{cleanAIContent(analysis.advice)}</p>
+                <p className="text-base md:text-sm text-[#5a5a56] leading-relaxed">{cleanAIContent(analysis.advice)}</p>
               </div>
             </div>
           </motion.div>
@@ -746,9 +746,9 @@ function FamilySajuInfoContent() {
           <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
             <Users className="w-5 h-5 text-primary" />
           </div>
-          <h2 className="text-2xl font-bold text-white m-0">가족사주란 무엇인가?</h2>
+          <h2 className="text-2xl font-bold text-[#1a1a18] m-0">가족사주란 무엇인가?</h2>
         </div>
-        <div className="space-y-4 text-white/70 text-base md:text-sm leading-relaxed">
+        <div className="space-y-4 text-[#5a5a56] text-base md:text-sm leading-relaxed">
           <p>
             <strong className="text-primary">가족사주(家族四柱)</strong>는 가족 구성원 각각의 사주팔자(四柱八字)를 종합적으로 분석하여,
             가족 간의 오행(五行) 조화와 관계 역학을 파악하는 명리학의 응용 분야입니다.
@@ -770,7 +770,7 @@ function FamilySajuInfoContent() {
           <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
             <Heart className="w-5 h-5 text-primary" />
           </div>
-          <h2 className="text-2xl font-bold text-white m-0">가족사주로 알 수 있는 것들</h2>
+          <h2 className="text-2xl font-bold text-[#1a1a18] m-0">가족사주로 알 수 있는 것들</h2>
         </div>
         <div className="grid gap-4">
           {[
@@ -781,8 +781,8 @@ function FamilySajuInfoContent() {
           ].map((item, idx) => (
             <Card key={idx} className="bg-white/[0.03] border-white/10">
               <CardContent className="pt-4 pb-4">
-                <h3 className="text-base font-bold text-white mb-1">{item.title}</h3>
-                <p className="text-base md:text-sm text-white/60">{item.desc}</p>
+                <h3 className="text-base font-bold text-[#1a1a18] mb-1">{item.title}</h3>
+                <p className="text-base md:text-sm text-[#5a5a56]">{item.desc}</p>
               </CardContent>
             </Card>
           ))}
@@ -794,7 +794,7 @@ function FamilySajuInfoContent() {
           <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
             <Shield className="w-5 h-5 text-primary" />
           </div>
-          <h2 className="text-2xl font-bold text-white m-0">무운 가족사주의 특징</h2>
+          <h2 className="text-2xl font-bold text-[#1a1a18] m-0">무운 가족사주의 특징</h2>
         </div>
         <div className="grid gap-3">
           {[
@@ -808,8 +808,8 @@ function FamilySajuInfoContent() {
                 <span className="text-green-400 text-sm md:text-xs">✓</span>
               </div>
               <div>
-                <h4 className="text-base md:text-sm font-bold text-white">{item.title}</h4>
-                <p className="text-sm md:text-xs text-white/50 mt-0.5">{item.desc}</p>
+                <h4 className="text-base md:text-sm font-bold text-[#1a1a18]">{item.title}</h4>
+                <p className="text-sm md:text-xs text-[#999891] mt-0.5">{item.desc}</p>
               </div>
             </div>
           ))}

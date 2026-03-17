@@ -431,7 +431,7 @@ export default function FortuneShareCard(props: FortuneShareCardProps) {
                 display: 'flex',
                 justifyContent: 'space-between',
                 padding: '8px 0',
-                borderBottom: idx < content.bottomItems.length - 1 ? '1px solid rgba(255,255,255,0.1)' : 'none',
+                borderBottom: idx < content.bottomItems.length - 1 ? '1px solid rgba(0,0,0,0.08)' : 'none',
               }}
             >
               <span style={{ fontSize: '13px', color: '#aaa' }}>🔮 {item.label}:</span>

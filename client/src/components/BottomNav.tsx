@@ -60,10 +60,8 @@ export function BottomNav() {
           z-index: 50;
           display: flex;
           align-items: stretch;
-          background: var(--background);
-          border-top: 0.5px solid rgba(255,255,255,0.07);
-          backdrop-filter: blur(12px);
-          -webkit-backdrop-filter: blur(12px);
+          background: #ffffff;
+          border-top: 0.5px solid rgba(0,0,0,0.10);
           height: var(--bottom-nav-height);
         }
         .mu-bottom-nav__tab {
@@ -77,15 +75,15 @@ export function BottomNav() {
           min-height: 56px;
           position: relative;
           text-decoration: none;
-          color: rgba(255,255,255,0.35);
+          color: #999891;
           transition: color 0.15s;
           -webkit-tap-highlight-color: transparent;
         }
         .mu-bottom-nav__tab:hover {
-          color: rgba(255,255,255,0.6);
+          color: #5a5a56;
         }
         .mu-bottom-nav__tab--active {
-          color: oklch(0.85 0.18 85);
+          color: #1a1a18;
         }
         /* 활성 탭 pill 배경 */
         .mu-bottom-nav__pill {
@@ -101,7 +99,7 @@ export function BottomNav() {
           pointer-events: none;
         }
         .mu-bottom-nav__tab--active .mu-bottom-nav__pill {
-          background: oklch(0.85 0.18 85 / 0.12);
+          background: rgba(0,0,0,0.06);
         }
         .mu-bottom-nav__icon {
           position: relative;
