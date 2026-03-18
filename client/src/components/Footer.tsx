@@ -3,8 +3,8 @@ import { Link } from 'wouter';
 
 const Footer: React.FC = () => {
   return (
-    <footer style={{ background: '#F2F4F6', borderTop: '1px solid #E5E8EB', paddingTop: 28, paddingBottom: 24, marginTop: 4 }}>
-      <div style={{ padding: '0 16px', maxWidth: 480, margin: '0 auto' }}>
+    <footer style={{ background: '#F2F4F6', borderTop: '1px solid #E5E8EB', padding: '28px 18px 24px', marginTop: 0 }}>
+      <div style={{ maxWidth: 480, margin: '0 auto' }}>
 
         {/* 브랜드 */}
         <div style={{ marginBottom: 20 }}>
@@ -77,8 +77,8 @@ const Footer: React.FC = () => {
         </div>
 
         {/* SEO 보강 텍스트 */}
-        <div style={{ borderTop: '1px solid #E5E8EB', paddingTop: 14, marginBottom: 12 }}>
-          <p style={{ fontSize: 10, color: '#B0B8C1', lineHeight: 1.6, margin: 0, fontFamily: "'Pretendard Variable', Pretendard, sans-serif" }}>
+        <div style={{ borderTop: '1px solid #E5E8EB', paddingTop: 16, marginTop: 20, marginBottom: 12 }}>
+          <p style={{ fontSize: 11, color: '#B0B8C1', lineHeight: 1.6, margin: 0, fontFamily: "'Pretendard Variable', Pretendard, sans-serif" }}>
             무운(MuUn)은 회원가입 없이, 개인정보를 저장하지 않는 100% 무료 사주·운세 서비스입니다.
             무료 사주풀이, 2026년 신년운세, 토정비결, 궁합, 타로, 만세력, 꿈해몽, 심리테스트 등
             다양한 운명학 콘텐츠를 제공합니다.

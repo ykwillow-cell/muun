@@ -50,8 +50,9 @@ export function HomeDictionarySection() {
       <style>{`
         /* ── 운세 사전 섹션 ── */
         .mu-dict-section {
-          padding: 20px 16px 24px;
-          background: #ffffff;
+          padding: 20px 16px 20px;
+          margin-bottom: 0;
+          background: #F2F4F6;
         }
         .mu-dict-section__header {
           display: flex;
@@ -97,9 +98,10 @@ export function HomeDictionarySection() {
           gap: 4px;
           padding: 14px 16px;
           background: #ffffff;
-          border-radius: 14px;
+          border: none;
+          border-radius: 12px;
           text-decoration: none;
-          box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+          box-shadow: none;
           transition: box-shadow 0.15s, transform 0.15s;
           -webkit-tap-highlight-color: transparent;
         }
@@ -129,9 +131,10 @@ export function HomeDictionarySection() {
           justify-content: space-between;
           padding: 14px 16px;
           background: #ffffff;
-          border-radius: 14px;
+          border: none;
+          border-radius: 12px;
           text-decoration: none;
-          box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+          box-shadow: none;
           transition: background 0.15s;
           -webkit-tap-highlight-color: transparent;
         }

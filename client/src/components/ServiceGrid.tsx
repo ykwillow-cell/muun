@@ -22,7 +22,7 @@ interface MoreItem {
 const POPULAR_SERVICES: ServiceItem[] = [
   { emoji: "⚖", label: "궁합",    sub: "사주 오행 조화 분석",     href: "/compatibility",  iconBg: "rgba(107,95,255,0.10)" },
   { emoji: "☯", label: "평생사주", sub: "타고난 기질과 운의 흐름", href: "/lifelong-saju",  iconBg: "rgba(107,95,255,0.10)" },
-  { emoji: "✦", label: "점성술",  sub: "네이탈 차트 분석",        href: "/astrology",      iconBg: "rgba(96,200,212,0.12)" },
+  { emoji: "✦", label: "점성술",  sub: "네이탈 차트 분석",        href: "/astrology",      iconBg: "rgba(107,95,255,0.10)" },
   { emoji: "🃏", label: "타로",    sub: "오늘의 카드 한 장",       href: "/tarot",          iconBg: "rgba(240,68,82,0.08)" },
 ];
 
@@ -94,10 +94,7 @@ export function ServiceGrid() {
       {/* ── 작명소 Spotlight ── */}
       <Link href="/naming" className="mu-naming-spotlight" aria-label="사주 기반 작명소 바로가기">
         <div className="mu-naming-spotlight__left">
-          <span className="mu-naming-spotlight__badge">
-            <span className="mu-naming-spotlight__badge-dot" aria-hidden="true" />
-            NEW
-          </span>
+          <span className="mu-naming-spotlight__badge">NEW</span>
           <p className="mu-naming-spotlight__title">사주 기반 작명소</p>
           <p className="mu-naming-spotlight__sub">81수리 성명학으로 이름의 운을 분석합니다</p>
           <span className="mu-naming-spotlight__cta">이름 추천받기 →</span>
@@ -118,7 +115,7 @@ export function ServiceGrid() {
         /* ── 섹션 래퍼 ── */
         .mu-service-grid {
           padding: 20px 16px 20px;
-          background: #ffffff;
+          background: #F2F4F6;
           display: flex;
           flex-direction: column;
           gap: 0;
@@ -165,13 +162,14 @@ export function ServiceGrid() {
           padding: 16px 14px 14px;
           border-radius: 16px;
           background: #ffffff;
+          border: none;
           text-decoration: none;
           position: relative;
           overflow: hidden;
           transition: transform 0.12s, box-shadow 0.12s;
           -webkit-tap-highlight-color: transparent;
           min-height: 100px;
-          box-shadow: 0 2px 8px rgba(0,0,0,.05), 0 6px 18px rgba(0,0,0,.06);
+          box-shadow: 0 1px 4px rgba(0,0,0,.05), 0 4px 12px rgba(0,0,0,.06);
         }
         .mu-pop-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,.10); }
         .mu-pop-card:active { transform: scale(0.97); }
@@ -254,22 +252,15 @@ export function ServiceGrid() {
         .mu-naming-spotlight__badge {
           display: inline-flex;
           align-items: center;
-          gap: 4px;
           font-size: 10px;
-          font-weight: 600;
-          color: #6B5FFF;
-          background: rgba(107,95,255,0.15);
+          font-weight: 800;
+          color: #ffffff;
+          background: #7B61FF;
           border-radius: 100px;
-          padding: 2px 8px;
+          padding: 3px 10px;
           margin-bottom: 8px;
           letter-spacing: 0.04em;
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
-        }
-        .mu-naming-spotlight__badge-dot {
-          width: 5px; height: 5px;
-          border-radius: 50%;
-          background: #6B5FFF;
-          animation: live-pulse 1.5s ease-in-out infinite;
         }
         .mu-naming-spotlight__title {
           font-size: 17px;
@@ -317,13 +308,14 @@ export function ServiceGrid() {
           gap: 9px;
           padding: 11px 12px;
           border-radius: 12px;
-          background: #F2F4F6;
+          background: #ffffff;
           text-decoration: none;
           transition: background 0.12s;
           -webkit-tap-highlight-color: transparent;
           min-height: 50px;
+          box-shadow: 0 1px 4px rgba(0,0,0,.05), 0 4px 12px rgba(0,0,0,.06);
         }
-        .mu-more-card:hover { background: #eaecef; }
+        .mu-more-card:hover { background: #f8f9fa; }
         .mu-more-card:active { opacity: 0.80; }
         .mu-more-card--full {
           grid-column: 1 / -1;
@@ -332,7 +324,7 @@ export function ServiceGrid() {
           width: 28px;
           height: 28px;
           border-radius: 8px;
-          background: #fff;
+          background: #F2F4F6;
           display: flex;
           align-items: center;
           justify-content: center;
