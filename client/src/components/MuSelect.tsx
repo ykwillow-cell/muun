@@ -31,6 +31,7 @@ export function MuSelect({
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const dropdownRef = useRef<HTMLUListElement>(null);
   const [dropdownStyle, setDropdownStyle] = useState<React.CSSProperties>({});
 
   // 드롭다운 열릴 때 트리거 위치 계산 → Portal로 body에 렌더링
@@ -66,6 +67,8 @@ export function MuSelect({
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
+      // 드롭다운 내부 클릭이면 무시
+      if (dropdownRef.current && dropdownRef.current.contains(e.target as Node)) return;
       if (
         containerRef.current &&
         !containerRef.current.contains(e.target as Node)
@@ -73,7 +76,11 @@ export function MuSelect({
         setOpen(false);
       }
     };
-    const handleScroll = () => setOpen(false);
+    const handleScroll = (e: Event) => {
+      // 드롭다운 내부 스크롤이면 닫지 않음
+      if (dropdownRef.current && dropdownRef.current.contains(e.target as Node)) return;
+      setOpen(false);
+    };
     document.addEventListener("mousedown", handleClickOutside);
     window.addEventListener("scroll", handleScroll, true);
     return () => {
@@ -84,6 +91,7 @@ export function MuSelect({
 
   const dropdownEl = open ? (
     <ul
+      ref={dropdownRef}
       className={`mu-select__dropdown${dark ? " mu-select__dropdown--dark" : ""}`}
       role="listbox"
       aria-label={label}
