@@ -241,7 +241,7 @@ export function ServiceGrid() {
           border-radius: 16px;
           background: #f0edff;
           text-decoration: none;
-          margin-bottom: 0;
+          margin-bottom: 12px;
           overflow: hidden;
           transition: transform 0.12s;
           -webkit-tap-highlight-color: transparent;
