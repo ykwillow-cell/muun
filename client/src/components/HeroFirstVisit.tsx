@@ -163,6 +163,7 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
                 value={siju}
                 onChange={setSiju}
                 placeholder="시간을 선택하세요"
+                dark={true}
               />
 
               <div className="mu-hero__step2-actions">
