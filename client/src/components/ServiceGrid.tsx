@@ -106,9 +106,6 @@ export function ServiceGrid() {
       </Link>
 
       {/* ── 더보기 2열 그리드 ── */}
-      <div className="mu-section-header mu-section-header--more">
-        <span className="mu-section-label">더보기</span>
-      </div>
       <div className="mu-service-grid__more" role="list">
         {MORE_SERVICES.map((s) => (
           <div key={s.href} role="listitem" style={s.fullWidth ? { gridColumn: "1 / -1" } : {}}>
