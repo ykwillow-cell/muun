@@ -55,8 +55,8 @@ export default function Home() {
         { name: "홈", url: "https://muunsaju.com" },
       ]} />
 
-      {/* ── Trust Bar + Hero (AppBar 바로 아래, 단일 흰 블록) ── */}
-      <div style={{ background: '#ffffff' }}>
+      {/* ── Trust Bar + Hero (AppBar 바로 아래, 다크 그라디언트 블록) ── */}
+      <div>
         <TrustBar />
         {hasBirth ? (
           <HeroReturnVisit onDeleteBirth={handleBirthDeleted} />
@@ -74,22 +74,22 @@ export default function Home() {
 
       {GAP}
 
-      {/* ── 인기서비스 + 작명소 + 더보기 (흰 블록) ── */}
-      <div style={{ background: '#ffffff' }}>
+      {/* ── 인기서비스 + 작명소 + 더보기 ── */}
+      <div>
         <ServiceGrid />
       </div>
 
       {GAP}
 
-      {/* ── 운세 칼럼 (흰 블록) ── */}
-      <div style={{ background: '#ffffff' }}>
+      {/* ── 운세 칼럼 ── */}
+      <div>
         <HomeColumnSection />
       </div>
 
       {GAP}
 
-      {/* ── 운세 사전 (흰 블록) ── */}
-      <div style={{ background: '#ffffff' }}>
+      {/* ── 운세 사전 ── */}
+      <div>
         <HomeDictionarySection />
       </div>
 

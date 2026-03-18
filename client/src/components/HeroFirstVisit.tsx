@@ -41,12 +41,41 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
 
   return (
     <section className="mu-hero mu-hero--first">
+
+      {/* ── 배경 장식 ── */}
+      <div className="mu-hero__bg" aria-hidden="true">
+        <div className="mu-hero__orb mu-hero__orb--1" />
+        <div className="mu-hero__orb mu-hero__orb--2" />
+        <div className="mu-hero__orb mu-hero__orb--3" />
+        <div className="mu-hero__stars">
+          {Array.from({ length: 28 }).map((_, i) => (
+            <span key={i} className="mu-hero__star" style={{
+              left: `${(i * 37 + 11) % 100}%`,
+              top: `${(i * 53 + 7) % 100}%`,
+              animationDelay: `${(i * 0.31) % 3}s`,
+              width: i % 3 === 0 ? '2px' : '1.5px',
+              height: i % 3 === 0 ? '2px' : '1.5px',
+              opacity: 0.3 + (i % 5) * 0.1,
+            }} />
+          ))}
+        </div>
+      </div>
+
       <div className="mu-hero__inner">
+
+        {/* ── 상단 레이블 ── */}
+        <div className="mu-hero__eyebrow-wrap">
+          <span className="mu-hero__eyebrow-dot" />
+          <span className="mu-hero__eyebrow-text">정통 명리학 기반 · 100% 무료</span>
+        </div>
 
         {/* ── 메인 타이틀 ── */}
         <div className="mu-hero__header">
-          <h1 className="mu-hero__title">지금 바로 내 사주를 확인하세요</h1>
-          <p className="mu-hero__sub">생년월일만 입력하면 바로 시작됩니다</p>
+          <h1 className="mu-hero__title">
+            생년월일로 보는<br />
+            <span className="mu-hero__title-accent">나의 사주</span>
+          </h1>
+          <p className="mu-hero__sub">회원가입 없이 지금 바로 확인하세요</p>
         </div>
 
         {/* ── 폼 카드 ── */}
@@ -96,7 +125,8 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
                 disabled={!step1Valid}
                 aria-disabled={!step1Valid}
               >
-                다음 →
+                다음 단계로
+                <ArrowRight size={15} />
               </button>
               <p className="mu-hero__hint">
                 <span className="mu-hero__hint-dot" aria-hidden="true" />
@@ -163,15 +193,15 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
         {/* ── 신뢰 배지 3개 ── */}
         <div className="mu-hero__badges" aria-label="서비스 특징">
           <div className="mu-hero__badge">
-            <span className="mu-hero__badge-check" aria-hidden="true">✓</span>
+            <span className="mu-hero__badge-icon" aria-hidden="true">✦</span>
             100% 무료
           </div>
           <div className="mu-hero__badge">
-            <span className="mu-hero__badge-check" aria-hidden="true">✓</span>
+            <span className="mu-hero__badge-icon" aria-hidden="true">✦</span>
             회원가입 없음
           </div>
           <div className="mu-hero__badge">
-            <span className="mu-hero__badge-check" aria-hidden="true">✓</span>
+            <span className="mu-hero__badge-icon" aria-hidden="true">✦</span>
             저장 안함
           </div>
         </div>
@@ -179,48 +209,134 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
       </div>
 
       <style>{`
-        /* ── Hero 섹션 ── */
+        /* ── Hero 섹션 래퍼 ── */
         .mu-hero--first {
-          background: #ffffff;
-          padding: 24px 18px 24px;
+          position: relative;
+          background: linear-gradient(155deg, #12082e 0%, #1e0f4a 40%, #2a1060 70%, #1a0840 100%);
+          padding: 32px 18px 36px;
+          overflow: hidden;
         }
+
+        /* ── 배경 장식 ── */
+        .mu-hero__bg {
+          position: absolute;
+          inset: 0;
+          pointer-events: none;
+          z-index: 0;
+        }
+        .mu-hero__orb {
+          position: absolute;
+          border-radius: 50%;
+          filter: blur(60px);
+        }
+        .mu-hero__orb--1 {
+          width: 260px; height: 260px;
+          background: radial-gradient(circle, rgba(123,97,255,0.35) 0%, transparent 70%);
+          top: -80px; right: -60px;
+        }
+        .mu-hero__orb--2 {
+          width: 200px; height: 200px;
+          background: radial-gradient(circle, rgba(160,120,255,0.20) 0%, transparent 70%);
+          bottom: -40px; left: -40px;
+        }
+        .mu-hero__orb--3 {
+          width: 140px; height: 140px;
+          background: radial-gradient(circle, rgba(200,160,255,0.15) 0%, transparent 70%);
+          top: 50%; left: 30%;
+          transform: translateY(-50%);
+        }
+        .mu-hero__stars {
+          position: absolute;
+          inset: 0;
+        }
+        .mu-hero__star {
+          position: absolute;
+          border-radius: 50%;
+          background: #ffffff;
+          animation: star-twinkle 3s ease-in-out infinite;
+        }
+        @keyframes star-twinkle {
+          0%, 100% { opacity: var(--base-opacity, 0.4); transform: scale(1); }
+          50% { opacity: 0.1; transform: scale(0.6); }
+        }
+
+        /* ── 내부 콘텐츠 ── */
         .mu-hero__inner {
+          position: relative;
+          z-index: 1;
           display: flex;
           flex-direction: column;
-          gap: 16px;
+          gap: 20px;
+        }
+
+        /* ── 상단 레이블 ── */
+        .mu-hero__eyebrow-wrap {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          background: rgba(255,255,255,0.10);
+          border: 1px solid rgba(255,255,255,0.15);
+          border-radius: 100px;
+          padding: 5px 12px;
+          width: fit-content;
+        }
+        .mu-hero__eyebrow-dot {
+          width: 6px; height: 6px;
+          border-radius: 50%;
+          background: #a78bfa;
+          animation: live-pulse 1.8s ease-in-out infinite;
+          flex-shrink: 0;
+        }
+        .mu-hero__eyebrow-text {
+          font-size: 11px;
+          font-weight: 600;
+          color: rgba(255,255,255,0.75);
+          letter-spacing: 0.02em;
+          font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
 
         /* ── 메인 타이틀 ── */
         .mu-hero__header {
           display: flex;
           flex-direction: column;
-          gap: 6px;
+          gap: 8px;
         }
         .mu-hero__title {
-          font-size: 24px;
-          font-weight: 800;
-          color: #191f28;
-          letter-spacing: -0.03em;
-          line-height: 1.3;
-          margin: 0 0 6px;
+          font-size: 30px;
+          font-weight: 900;
+          color: #ffffff;
+          letter-spacing: -0.04em;
+          line-height: 1.2;
+          margin: 0;
+          font-family: 'Pretendard Variable', Pretendard, sans-serif;
+        }
+        .mu-hero__title-accent {
+          background: linear-gradient(90deg, #c4b5fd 0%, #a78bfa 50%, #818cf8 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
         }
         .mu-hero__sub {
           font-size: 14px;
           font-weight: 500;
-          color: #8b95a1;
+          color: rgba(255,255,255,0.55);
           margin: 0;
           line-height: 1.5;
+          font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
 
-        /* ── 폼 카드 ── */
+        /* ── 폼 카드 (글래스모피즘) ── */
         .mu-hero__form-card {
-          background: #ffffff;
-          border-radius: 16px;
-          box-shadow: 0 2px 12px rgba(0,0,0,.06);
-          padding: 14px;
+          background: rgba(255,255,255,0.10);
+          backdrop-filter: blur(20px);
+          -webkit-backdrop-filter: blur(20px);
+          border: 1px solid rgba(255,255,255,0.18);
+          border-radius: 20px;
+          padding: 16px;
           overflow: hidden;
           display: flex;
           flex-direction: column;
+          box-shadow: 0 8px 32px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.15);
         }
 
         /* ── 스텝 탭 ── */
@@ -229,7 +345,7 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
         }
         .mu-hero__step-tab-row {
           display: flex;
-          background: #E5E8EB;
+          background: rgba(0,0,0,0.25);
           border-radius: 12px;
           padding: 4px;
           gap: 4px;
@@ -245,7 +361,7 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           padding: 10px 0;
           font-size: 13px;
           font-weight: 600;
-          color: #B0B8C1;
+          color: rgba(255,255,255,0.40);
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
           transition: all 0.2s;
           border-radius: 9px;
@@ -259,27 +375,27 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           font-weight: 700;
           background: #FFFFFF;
           border-radius: 9px;
-          box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+          box-shadow: 0 1px 4px rgba(0,0,0,0.15);
         }
         .mu-hero__step-num {
           width: 18px;
           height: 18px;
           border-radius: 50%;
-          background: #e8ebed;
+          background: rgba(255,255,255,0.15);
           display: flex;
           align-items: center;
           justify-content: center;
           font-size: 9px;
           font-weight: 700;
-          color: #b0b8c1;
+          color: rgba(255,255,255,0.50);
         }
         .mu-hero__step-tab.active .mu-hero__step-num {
-          background: #6B5FFF;
+          background: #7B61FF;
           color: #ffffff;
         }
         .mu-hero__step-divider {
           width: 1px;
-          background: rgba(0,0,0,0.04);
+          background: rgba(255,255,255,0.08);
           flex-shrink: 0;
         }
 
@@ -293,33 +409,33 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
         .mu-hero__input {
           width: 100%;
           box-sizing: border-box;
-          background: #F2F4F6;
-          border: 2px solid transparent;
+          background: rgba(255,255,255,0.12);
+          border: 1.5px solid rgba(255,255,255,0.20);
           border-radius: 12px;
           padding: 15px 16px;
           font-size: 16px;
           font-weight: 500;
-          color: #191f28;
+          color: #ffffff;
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
           outline: none;
           transition: all 0.18s;
         }
         .mu-hero__input::placeholder {
-          color: #b0b8c1;
+          color: rgba(255,255,255,0.35);
           font-weight: 400;
         }
         .mu-hero__input:focus {
-          background: #ffffff;
-          border-color: #DDD6FF;
-          box-shadow: 0 0 0 4px rgba(123,97,255,0.08);
+          background: rgba(255,255,255,0.18);
+          border-color: rgba(167,139,250,0.70);
+          box-shadow: 0 0 0 4px rgba(123,97,255,0.20);
         }
         .mu-hero__input--error {
-          border-color: rgba(240,68,82,0.4);
-          box-shadow: 0 0 0 4px rgba(240,68,82,0.06);
+          border-color: rgba(240,68,82,0.6);
+          box-shadow: 0 0 0 4px rgba(240,68,82,0.10);
         }
         .mu-hero__input-error {
           font-size: 12px;
-          color: #f04452;
+          color: #fca5a5;
           margin: -4px 0 0;
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
@@ -327,32 +443,36 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
         /* ── CTA 버튼 ── */
         .mu-hero__cta {
           width: 100%;
-          height: 50px;
-          border-radius: 12px;
+          height: 52px;
+          border-radius: 14px;
           font-size: 15px;
           font-weight: 700;
-          background: #6B5FFF;
+          background: linear-gradient(135deg, #7B61FF 0%, #9B6DFF 100%);
           color: #ffffff;
           border: none;
           cursor: pointer;
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
-          transition: background 0.15s, opacity 0.15s;
+          transition: all 0.15s;
           letter-spacing: -0.2px;
           display: flex;
           align-items: center;
           justify-content: center;
           gap: 6px;
+          box-shadow: 0 4px 16px rgba(123,97,255,0.45);
         }
-        .mu-hero__cta:hover { background: #5a4ee0; }
-        .mu-hero__cta:not(:disabled) {
-          background: #7B61FF;
-          color: #ffffff;
+        .mu-hero__cta:hover {
+          background: linear-gradient(135deg, #6B51EF 0%, #8B5DEF 100%);
+          box-shadow: 0 6px 20px rgba(123,97,255,0.55);
+          transform: translateY(-1px);
         }
+        .mu-hero__cta:active { transform: scale(0.98); }
         .mu-hero__cta.disabled,
         .mu-hero__cta:disabled {
-          background: #D1D6DB;
-          color: #8B95A1;
+          background: rgba(255,255,255,0.12);
+          color: rgba(255,255,255,0.30);
           cursor: not-allowed;
+          box-shadow: none;
+          transform: none;
         }
 
         /* ── 힌트 ── */
@@ -361,7 +481,7 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           align-items: center;
           gap: 5px;
           font-size: 11px;
-          color: #8b95a1;
+          color: rgba(255,255,255,0.40);
           margin: 0;
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
@@ -369,7 +489,7 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           width: 4px;
           height: 4px;
           border-radius: 50%;
-          background: #b0b8c1;
+          background: rgba(255,255,255,0.30);
           flex-shrink: 0;
         }
 
@@ -384,18 +504,18 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           border-radius: 10px;
           font-size: 13px;
           font-weight: 600;
-          background: #F2F4F6;
-          border: 2px solid transparent;
-          color: #4e5968;
+          background: rgba(255,255,255,0.10);
+          border: 1.5px solid rgba(255,255,255,0.15);
+          color: rgba(255,255,255,0.60);
           cursor: pointer;
           transition: all 0.15s;
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
         .mu-hero__cal-btn--active {
-          background: #6B5FFF;
-          border-color: #6B5FFF;
+          background: #7B61FF;
+          border-color: #7B61FF;
           color: #ffffff;
-          box-shadow: 0 2px 8px rgba(107,95,255,0.30);
+          box-shadow: 0 2px 10px rgba(123,97,255,0.40);
         }
 
         /* ── Step2 버튼 행 ── */
@@ -404,22 +524,21 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           gap: 8px;
         }
         .mu-hero__back-btn {
-          height: 50px;
+          height: 52px;
           padding: 0 18px;
-          border-radius: 12px;
+          border-radius: 14px;
           font-size: 14px;
           font-weight: 500;
-          background: #ffffff;
-          border: none;
-          color: #4e5968;
+          background: rgba(255,255,255,0.10);
+          border: 1.5px solid rgba(255,255,255,0.15);
+          color: rgba(255,255,255,0.70);
           cursor: pointer;
           white-space: nowrap;
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
           transition: background 0.15s;
-          box-shadow: 0 1px 3px rgba(0,0,0,0.06);
           flex-shrink: 0;
         }
-        .mu-hero__back-btn:hover { background: #f2f4f6; }
+        .mu-hero__back-btn:hover { background: rgba(255,255,255,0.16); }
         .mu-hero__cta--submit {
           flex: 1;
           width: auto;
@@ -434,19 +553,24 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
         .mu-hero__badge {
           display: inline-flex;
           align-items: center;
-          gap: 4px;
-          padding: 5px 10px;
-          border-radius: 20px;
-          background: #f2f4f6;
+          gap: 5px;
+          padding: 6px 12px;
+          border-radius: 100px;
+          background: rgba(255,255,255,0.10);
+          border: 1px solid rgba(255,255,255,0.15);
           font-size: 11px;
-          font-weight: 500;
-          color: #4e5968;
+          font-weight: 600;
+          color: rgba(255,255,255,0.75);
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
-        .mu-hero__badge-check {
-          color: #6B5FFF;
-          font-weight: 700;
-          font-size: 11px;
+        .mu-hero__badge-icon {
+          color: #a78bfa;
+          font-size: 9px;
+        }
+
+        @keyframes live-pulse {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.4; transform: scale(0.8); }
         }
       `}</style>
     </section>

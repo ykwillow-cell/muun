@@ -14,15 +14,15 @@ export function TrustBar() {
         <span className="mu-trust-lbl">사주 이론 기반</span>
       </div>
       <style>{`
-        /* Trust Bar — 카드 아님, AppBar와 이어지는 흰 영역 */
+        /* Trust Bar — 히어로 딥 퍼플 배경과 연결 */
         .mu-trust-bar {
-          background: #FFFFFF;
+          background: linear-gradient(155deg, #12082e 0%, #1e0f4a 100%);
           border-radius: 0;
           box-shadow: none;
           border: none;
-          border-bottom: 1px solid #E5E8EB;
+          border-bottom: 1px solid rgba(255,255,255,0.08);
           margin: 0;
-          padding: 14px 18px;
+          padding: 12px 18px;
           display: flex;
           align-items: stretch;
         }
@@ -32,8 +32,8 @@ export function TrustBar() {
           flex-direction: column;
           align-items: center;
           gap: 2px;
-          padding: 8px 0;
-          border-right: 1px solid #E5E8EB;
+          padding: 6px 0;
+          border-right: 1px solid rgba(255,255,255,0.10);
           border-radius: 0;
           box-shadow: none;
           text-align: center;
@@ -44,7 +44,7 @@ export function TrustBar() {
         .mu-trust-num {
           font-size: 15px;
           font-weight: 800;
-          color: #191F28;
+          color: #ffffff;
           letter-spacing: -0.03em;
           line-height: 1.2;
           margin-bottom: 2px;
@@ -53,7 +53,7 @@ export function TrustBar() {
         .mu-trust-lbl {
           font-size: 11px;
           font-weight: 500;
-          color: #B0B8C1;
+          color: rgba(255,255,255,0.40);
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
       `}</style>
