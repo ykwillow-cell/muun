@@ -47,6 +47,7 @@ import {
   getElementRelation,
 } from "@/lib/saju-reading";
 import { cleanAIContent, addWarmClosing } from "@/lib/content-cleaner";
+import { getHeroBirthForForm } from "@/lib/user-birth";
 
 const formSchema = z.object({
   name: z.string().min(1, "이름을 입력해주세요"),
@@ -164,9 +165,18 @@ export default function LifelongSaju() {
           ...form.getValues(),
           ...parsed,
         });
+        return;
       } catch (e) {
         console.error("Failed to parse saved data:", e);
       }
+    }
+    // muun_user_data 없으면 muun_user_birth에서 생년월일 pre-fill
+    const heroBirth = getHeroBirthForForm();
+    if (heroBirth) {
+      form.setValue("birthDate", heroBirth.birthDate);
+      form.setValue("calendarType", heroBirth.calendarType);
+      form.setValue("birthTime", heroBirth.birthTime);
+      form.setValue("birthTimeUnknown", heroBirth.birthTimeUnknown);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

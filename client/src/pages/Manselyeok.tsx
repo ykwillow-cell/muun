@@ -20,6 +20,7 @@ import { calculateSaju, SajuResult, FiveElement } from "@/lib/saju";
 import { convertToSolarDate } from "@/lib/lunar-converter";
 import SajuGlossary from "@/components/SajuGlossary";
 import ManselyeokContent from "@/components/ManselyeokContent";
+import { getHeroBirthForForm } from "@/lib/user-birth";
 
 // 폼 스키마 정의
 const formSchema = z.object({
@@ -67,8 +68,18 @@ export default function Manselyeok() {
   useEffect(() => {
     const savedData = localStorage.getItem("muun_user_data");
     if (savedData) {
-      const parsed = JSON.parse(savedData);
-      form.reset(parsed);
+      try {
+        const parsed = JSON.parse(savedData);
+        form.reset(parsed);
+        return;
+      } catch {}
+    }
+    const heroBirth = getHeroBirthForForm();
+    if (heroBirth) {
+      form.setValue("birthDate", heroBirth.birthDate);
+      form.setValue("calendarType", heroBirth.calendarType);
+      form.setValue("birthTime", heroBirth.birthTime);
+      form.setValue("birthTimeUnknown", heroBirth.birthTimeUnknown);
     }
   }, [form]);
 

@@ -19,6 +19,7 @@ import { calculateTojeong } from "@/lib/tojeong";
 import { convertToSolarDate } from "@/lib/lunar-converter";
 import TojeongContent from "@/components/TojeongContent";
 import RecommendedContent from "@/components/RecommendedContent";
+import { getHeroBirthForForm } from "@/lib/user-birth";
 
 // 폼 스키마 정의 (태어난 시간 제외)
 const formSchema = z.object({
@@ -59,9 +60,17 @@ export default function Tojeong() {
   useEffect(() => {
     const savedData = localStorage.getItem("muun_user_data");
     if (savedData) {
-      const parsed = JSON.parse(savedData);
-      const { birthTime, ...rest } = parsed;
-      form.reset({ ...form.getValues(), ...rest });
+      try {
+        const parsed = JSON.parse(savedData);
+        const { birthTime, ...rest } = parsed;
+        form.reset({ ...form.getValues(), ...rest });
+        return;
+      } catch {}
+    }
+    const heroBirth = getHeroBirthForForm();
+    if (heroBirth) {
+      form.setValue("birthDate", heroBirth.birthDate);
+      form.setValue("calendarType", heroBirth.calendarType);
     }
   }, [form]);
 

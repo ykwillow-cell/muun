@@ -48,6 +48,7 @@ import {
   analyzeElementBalance,
   getElementRelation,
 } from "@/lib/saju-reading";
+import { getHeroBirthForForm } from "@/lib/user-birth";
 
 const formSchema = z.object({
   name: z.string().min(1, "이름을 입력해주세요"),
@@ -270,8 +271,19 @@ export default function YearlyFortune() {
   useEffect(() => {
     const savedData = localStorage.getItem("muun_user_data");
     if (savedData) {
-      const parsed = JSON.parse(savedData);
-      form.reset(parsed);
+      try {
+        const parsed = JSON.parse(savedData);
+        form.reset(parsed);
+        return;
+      } catch {}
+    }
+    // muun_user_data 없으면 muun_user_birth에서 pre-fill
+    const heroBirth = getHeroBirthForForm();
+    if (heroBirth) {
+      form.setValue("birthDate", heroBirth.birthDate);
+      form.setValue("calendarType", heroBirth.calendarType);
+      form.setValue("birthTime", heroBirth.birthTime);
+      form.setValue("birthTimeUnknown", heroBirth.birthTimeUnknown);
     }
   }, [form]);
 

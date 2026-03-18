@@ -23,6 +23,7 @@ import { shareContent } from "@/lib/share";
 import DailyFortuneContent from "@/components/DailyFortuneContent";
 import RecommendedContent from "@/components/RecommendedContent";
 import { convertToSolarDate } from "@/lib/lunar-converter";
+import { getHeroBirthForForm } from "@/lib/user-birth";
 
 const formSchema = z.object({
   name: z.string().min(1, "이름을 입력해주세요"),
@@ -370,14 +371,22 @@ export default function DailyFortune() {
   useEffect(() => {
     const savedData = localStorage.getItem("muun_user_data");
     if (savedData) {
-      const parsed = JSON.parse(savedData);
-      form.reset({
-        name: parsed.name || "",
-        gender: parsed.gender || "male",
-        birthDate: parsed.birthDate || "2000-01-01",
-        calendarType: parsed.calendarType || "solar",
-        isLeapMonth: parsed.isLeapMonth || false,
-      });
+      try {
+        const parsed = JSON.parse(savedData);
+        form.reset({
+          name: parsed.name || "",
+          gender: parsed.gender || "male",
+          birthDate: parsed.birthDate || "2000-01-01",
+          calendarType: parsed.calendarType || "solar",
+          isLeapMonth: parsed.isLeapMonth || false,
+        });
+        return;
+      } catch {}
+    }
+    const heroBirth = getHeroBirthForForm();
+    if (heroBirth) {
+      form.setValue("birthDate", heroBirth.birthDate);
+      form.setValue("calendarType", heroBirth.calendarType);
     }
   }, [form]);
 

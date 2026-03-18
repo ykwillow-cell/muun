@@ -16,6 +16,7 @@ import { Star, Moon, Sun, Info, ChevronLeft, Sparkles, User, Compass, Zap, Shiel
 import { Link } from "wouter";
 import AstrologyContent from "@/components/AstrologyContent";
 import RecommendedContent from "@/components/RecommendedContent";
+import { getHeroBirthForForm } from "@/lib/user-birth";
 
 const formSchema = z.object({
   birthDate: z.string().min(1, "생년월일을 입력해주세요"),
@@ -196,17 +197,24 @@ const Astrology: React.FC = () => {
   useEffect(() => {
     const savedData = localStorage.getItem("muun_user_data");
     if (savedData) {
-      const parsed = JSON.parse(savedData);
-      form.reset({
-        birthDate: parsed.birthDate,
-        birthTime: parsed.birthTime,
-        birthCity: parsed.birthCity || "서울",
-      });
-      const city = MAJOR_CITIES.find(c => c.name === (parsed.birthCity || "서울"));
-      setSelectedCity(city || MAJOR_CITIES[0]);
-    } else {
-      setSelectedCity(MAJOR_CITIES[0]);
+      try {
+        const parsed = JSON.parse(savedData);
+        form.reset({
+          birthDate: parsed.birthDate,
+          birthTime: parsed.birthTime,
+          birthCity: parsed.birthCity || "서울",
+        });
+        const city = MAJOR_CITIES.find(c => c.name === (parsed.birthCity || "서울"));
+        setSelectedCity(city || MAJOR_CITIES[0]);
+        return;
+      } catch {}
     }
+    const heroBirth = getHeroBirthForForm();
+    if (heroBirth) {
+      form.setValue("birthDate", heroBirth.birthDate);
+      form.setValue("birthTime", heroBirth.birthTime);
+    }
+    setSelectedCity(MAJOR_CITIES[0]);
   }, [form]);
 
   const onSubmit = async (data: FormValues) => {
