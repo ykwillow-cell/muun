@@ -401,6 +401,36 @@
       "source": "/guide/90b3867b-6f9e-4345-b665-fb4bf9e80539",
       "destination": "/guide/family-family-communication-90b3867b",
       "statusCode": 301
+    },
+    {
+      "source": "/dream/비행기",
+      "destination": "/dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/뱀",
+      "destination": "/dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/이별",
+      "destination": "/dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/조상",
+      "destination": "/dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/싸우는꿈",
+      "destination": "/dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/춤추는꿈",
+      "destination": "/dream",
+      "statusCode": 301
     }
   ],
   "trailingSlash": false

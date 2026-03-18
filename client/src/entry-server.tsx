@@ -10,6 +10,14 @@ const dreamKeywordMap: Record<string, { keyword: string; metaTitle: string }> = 
   "ancestor-dressing-new-clothes-dream": { keyword: "돌아가신 부모님이 환하게 웃으며 새 옷을 입혀주시는 꿈", metaTitle: "부모님이 옷 입혀주는 꿈 해몽 조상의 덕으로 부자 되는 법 | 무운" },
   "ancestor-giving-money-dream": { keyword: "돌아가신 조상님이 보따리에 돈을 담아 건네주는 꿈", metaTitle: "조상님이 돈 주는 꿈 해몽 로또 당첨의 결정적 증거 | 무운" },
   "ancestors-smiling-dream": { keyword: "돌아가신 조상님이 환하게 웃으며 나타나는 꿈", metaTitle: "돌아가신 조상님이 웃는 꿈 해몽 귀인이 나타날 징조 | 무운" },
+  "celebrity-dating-dream-meaning": { keyword: "연예인과 즐겁게 데이트하는 꿈", metaTitle: "연예인 데이트 꿈 해몽 | 이상형과의 만남 신호 | 무운" },
+  "dating-boss-dream-meaning": { keyword: "직장 상사와 사귀는 꿈", metaTitle: "상사와 사귀는 꿈 해몽 | 인정과 승진의 암시 | 무운" },
+  "entering-palace-castle-dream": { keyword: "궁궐이나 성에 들어가는 꿈", metaTitle: "궁궐 들어가는 꿈 해몽 | 권력과 명예 상승의 신호 | 무운" },
+  "actor-kiss-dream-meaning": { keyword: "배우와 키스하는 꿈", metaTitle: "배우와 키스하는 꿈 해몽 | 새로운 인연과 행운의 예고 | 무운" },
+  "meeting-president-king-dream": { keyword: "대통령이나 왕을 만나는 꿈", metaTitle: "대통령·왕 만나는 꿈 해몽 | 큰 행운과 귀인의 등장 | 무운" },
+  "marrying-a-stranger-dream-meaning": { keyword: "모르는 사람과 결혼하는 꿈", metaTitle: "낯선 사람과 결혼하는 꿈 해몽 | 새로운 시작과 변화의 암시 | 무운" },
+  "meeting-president-celebrity-dream-2": { keyword: "대통령이나 유명인을 만나는 꿈", metaTitle: "유명인 만나는 꿈 해몽 | 귀인의 도움과 행운 | 무운" },
+  "celebrity-giving-money-dream": { keyword: "연예인이 돈을 주는 꿈", metaTitle: "연예인이 돈 주는 꿈 해몽 | 뜻밖의 재물운 상승 | 무운" },
   "ancient-jar-gold-coins-dream": { keyword: "깊은 땅속에서 수천 년 된 청자 항아리에 금화가 가득 담겨 나오는 꿈", metaTitle: "청자 항아리 금화 꿈 해몽 잠들었던 재물운이 깨어난다 | 무운" },
   "argument-person-disappearing-dream": { keyword: "소중한 사람과 말다툼을 하다가 상대방이 갑자기 증발하듯 사라지는 꿈", metaTitle: "다투다 사라지는 꿈 해몽 이별 불안 극복하기 | 무운" },
   "banquet-with-influential-people-dream": { keyword: "화려한 연회장에서 높은 분들과 함께 술을 마시며 즐거워하는 꿈", metaTitle: "연회 꿈 해몽 귀인을 만나 부자가 되는 지름길 | 무운" },
@@ -1379,6 +1387,18 @@ const metaData: Record<string, { title: string, description: string, h1?: string
           { href: '/fortune-dictionary', label: '운세 사전 목록' },
           { href: '/lifelong-saju', label: '평생 사주 분석' },
         ]
+      };
+    } else if (options.path.startsWith('/dream/') || options.path.startsWith('/guide/') || options.path.startsWith('/dictionary/')) {
+      // 알 수 없는 dream/guide/dictionary 하위 경로 → 404 반환 (Soft 404 방지)
+      return {
+        appHtml: '',
+        head: {
+          title: '<title>페이지를 찾을 수 없습니다 (404) | 무운</title>',
+          meta: '<meta name="robots" content="noindex, nofollow">',
+          link: '',
+        },
+        dehydratedState: {},
+        statusCode: 404,
       };
     } else {
       currentMeta = metaData['/'];
