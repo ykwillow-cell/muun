@@ -232,9 +232,9 @@ export default function Guide() {
               const chipColor = CHIP_COLORS[column.category] || 'bg-[#F3EEFF] text-[#6D28D9]';
               return (
                 <Link key={column.id} href={`/guide/${column.slug || column.id}`}>
-                  <div className="bg-white rounded-2xl overflow-hidden flex items-stretch border border-[#F0EDF8] hover:border-[#C4B5FD] hover:shadow-sm transition-all active:scale-[0.99] cursor-pointer">
-                    {/* 썸네일 */}
-                    <div className="w-[108px] flex-shrink-0 bg-gradient-to-br from-[#EDE9FE] to-[#DDD6FE] relative overflow-hidden">
+                  <div className="bg-white rounded-2xl overflow-hidden flex items-center border border-[#F0EDF8] hover:border-[#C4B5FD] hover:shadow-sm transition-all active:scale-[0.99] cursor-pointer">
+                    {/* 섬네일 - 정사각형 */}
+                    <div className="w-[96px] h-[96px] flex-shrink-0 bg-gradient-to-br from-[#EDE9FE] to-[#DDD6FE] relative overflow-hidden m-2 rounded-xl">
                       {column.thumbnail ? (
                         <img
                           src={column.thumbnail}
