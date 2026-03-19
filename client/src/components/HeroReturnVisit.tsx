@@ -78,9 +78,11 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
   const birth = userData?.birth ?? "";
   const fortune = getDailyFortune(birth);
   const birthYear = birth.slice(0, 4);
-
-  const today = new Date();
-  const todayStr = `${today.getMonth() + 1}월 ${today.getDate()}일`;
+  const birthMonth = birth.slice(4, 6);
+  const birthDay = birth.slice(6, 8);
+  const birthStr = birthYear && birthMonth && birthDay
+    ? `${parseInt(birthYear, 10)}년 ${parseInt(birthMonth, 10)}월 ${parseInt(birthDay, 10)}일생`
+    : birthYear ? `${birthYear}년생` : "";
 
   const menus = OHAENG_MENUS[fortune.ohaeng] ?? OHAENG_MENUS["수"];
 
@@ -118,7 +120,7 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
             <div className="mu-hero__greeting-line">
               <p className="mu-hero__greeting">오늘도 좋은 하루예요</p>
               <div className="mu-hero__greeting-meta">
-                <span>{todayStr} · {birthYear}년생</span>
+                <span>{birthStr}</span>
                 <button
                   className="mu-hero__info-btn"
                   onClick={(e) => { e.stopPropagation(); setShowTooltip((p) => !p); }}
