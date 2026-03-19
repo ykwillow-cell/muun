@@ -448,6 +448,7 @@ export default function YearlyFortune() {
                       <DatePickerInput
                         id="birthDate"
                         {...form.register("birthDate")}
+                        value={form.watch("birthDate")}
                         accentColor="primary"
                       />
                     </div>

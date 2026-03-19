@@ -271,6 +271,7 @@ export default function Manselyeok() {
                         <DatePickerInput
                           id="birthDate"
                           {...form.register("birthDate")}
+                          value={form.watch("birthDate")}
                           accentColor="emerald"
                         />
                       </div>

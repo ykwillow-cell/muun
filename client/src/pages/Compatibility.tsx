@@ -611,7 +611,7 @@ export default function Compatibility() {
                       <Label htmlFor="birthDate1" className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
                         <Calendar className="w-3.5 h-3.5 text-pink-600" /> 생년월일
                       </Label>
-                      <DatePickerInput id="birthDate1" {...form.register("birthDate1")} accentColor="pink" />
+                      <DatePickerInput id="birthDate1" {...form.register("birthDate1")} value={form.watch("birthDate1")} accentColor="pink" />
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div className="space-y-1.5">
@@ -698,7 +698,7 @@ export default function Compatibility() {
                       <Label htmlFor="birthDate2" className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
                         <Calendar className="w-3.5 h-3.5 text-red-600" /> 생년월일
                       </Label>
-                      <DatePickerInput id="birthDate2" {...form.register("birthDate2")} accentColor="red" />
+                      <DatePickerInput id="birthDate2" {...form.register("birthDate2")} value={form.watch("birthDate2")} accentColor="red" />
                     </div>
                     <div className="grid grid-cols-2 gap-3">
                       <div className="space-y-1.5">

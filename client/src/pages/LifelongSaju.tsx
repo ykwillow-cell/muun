@@ -336,6 +336,7 @@ export default function LifelongSaju() {
                       <DatePickerInput
                         id="birthDate"
                         {...form.register("birthDate")}
+                        value={form.watch("birthDate")}
                         accentColor="purple"
                       />
                     </div>

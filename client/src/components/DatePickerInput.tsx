@@ -15,10 +15,16 @@ interface DatePickerInputProps {
 
 /**
  * DatePickerInput - react-hook-form과 완벽 호환되는 날짜 입력 컴포넌트
- * 
+ *
  * - 텍스트 필드에 YYYY-MM-DD 형식으로 직접 입력 가능
  * - 캘린더 아이콘 클릭 시 네이티브 date picker 열림
  * - forwardRef로 내부 input을 직접 노출하여 react-hook-form과 완벽 호환
+ *
+ * 사용 방법:
+ *   <DatePickerInput
+ *     {...form.register("birthDate")}
+ *     value={form.watch("birthDate")}   ← 반드시 value를 명시적으로 전달해야 합니다
+ *   />
  */
 const DatePickerInput = forwardRef<HTMLInputElement, DatePickerInputProps>(
   ({ value, onChange, onBlur, name, id, className, placeholder, accentColor = "primary" }, ref) => {
@@ -31,15 +37,16 @@ const DatePickerInput = forwardRef<HTMLInputElement, DatePickerInputProps>(
       if (value !== undefined && value !== textValue) {
         setTextValue(value);
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value]);
 
     // 텍스트 입력 핸들러 - 자동 하이픈 삽입
     const handleTextChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
       let raw = e.target.value.replace(/[^0-9]/g, "");
-      
+
       // 최대 8자리 (YYYYMMDD)
       if (raw.length > 8) raw = raw.slice(0, 8);
-      
+
       // 자동 하이픈 삽입
       let formatted = raw;
       if (raw.length > 4) {
@@ -48,14 +55,14 @@ const DatePickerInput = forwardRef<HTMLInputElement, DatePickerInputProps>(
       if (raw.length > 6) {
         formatted = raw.slice(0, 4) + "-" + raw.slice(4, 6) + "-" + raw.slice(6);
       }
-      
+
       setTextValue(formatted);
 
       // YYYY-MM-DD 형식 완성 시 onChange 트리거
       if (/^\d{4}-\d{2}-\d{2}$/.test(formatted)) {
         const syntheticEvent = {
-          target: { 
-            value: formatted, 
+          target: {
+            value: formatted,
             name: name || "",
             id: elementId,
           },
@@ -70,8 +77,8 @@ const DatePickerInput = forwardRef<HTMLInputElement, DatePickerInputProps>(
       // YYYY-MM-DD 형식이면 onChange 트리거
       if (/^\d{4}-\d{2}-\d{2}$/.test(val)) {
         const syntheticEvent = {
-          target: { 
-            value: val, 
+          target: {
+            value: val,
             name: name || "",
             id: elementId,
           },
@@ -95,8 +102,8 @@ const DatePickerInput = forwardRef<HTMLInputElement, DatePickerInputProps>(
       if (dateVal) {
         setTextValue(dateVal);
         const syntheticEvent = {
-          target: { 
-            value: dateVal, 
+          target: {
+            value: dateVal,
             name: name || "",
             id: elementId,
           },
@@ -142,7 +149,7 @@ const DatePickerInput = forwardRef<HTMLInputElement, DatePickerInputProps>(
             className
           )}
         />
-        
+
         {/* 캘린더 아이콘 버튼 */}
         <button
           type="button"
@@ -153,7 +160,7 @@ const DatePickerInput = forwardRef<HTMLInputElement, DatePickerInputProps>(
         >
           <Calendar className="w-4 h-4 text-[#999891] hover:text-[#1a1a18] transition-colors" />
         </button>
-        
+
         {/* 숨겨진 네이티브 date picker */}
         <input
           ref={hiddenDateRef}

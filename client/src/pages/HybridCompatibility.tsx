@@ -897,7 +897,7 @@ export default function HybridCompatibilityPage() {
                       <Label htmlFor="birthDate1" className="text-[#1a1a18] text-sm font-medium flex items-center gap-1.5">
                         <Calendar className="w-3.5 h-3.5 text-purple-600" /> 생년월일
                       </Label>
-                      <DatePickerInput id="birthDate1" {...form.register("birthDate1")} accentColor="purple" />
+                      <DatePickerInput id="birthDate1" {...form.register("birthDate1")} value={form.watch("birthDate1")} accentColor="purple" />
                       {form.formState.errors.birthDate1 && <p className="text-xs text-red-600 mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{form.formState.errors.birthDate1.message}</p>}
                     </div>
                     <div className="grid grid-cols-2 gap-3">
@@ -993,7 +993,7 @@ export default function HybridCompatibilityPage() {
                       <Label htmlFor="birthDate2" className="text-[#1a1a18] text-sm font-medium flex items-center gap-1.5">
                         <Calendar className="w-3.5 h-3.5 text-pink-600" /> 생년월일
                       </Label>
-                      <DatePickerInput id="birthDate2" {...form.register("birthDate2")} accentColor="pink" />
+                      <DatePickerInput id="birthDate2" {...form.register("birthDate2")} value={form.watch("birthDate2")} accentColor="pink" />
                       {form.formState.errors.birthDate2 && <p className="text-xs text-red-600 mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{form.formState.errors.birthDate2.message}</p>}
                     </div>
                     <div className="grid grid-cols-2 gap-3">

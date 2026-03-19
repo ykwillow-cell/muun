@@ -795,6 +795,7 @@ export default function Naming() {
                       <DatePickerInput
                         id="birthDate"
                         {...form.register("birthDate")}
+                        value={form.watch("birthDate")}
                         accentColor="amber"
                       />
                     </div>
