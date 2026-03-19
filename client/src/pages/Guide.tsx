@@ -213,7 +213,7 @@ export default function Guide() {
         </div>
 
         {/* ── 칼럼 카드 리스트 ── */}
-        <div className="space-y-2 pb-6">
+        <div className="flex flex-col gap-[8px] pb-6">
           {isLoading ? (
             /* 스켈레톤 */
             Array.from({ length: 5 }).map((_, i) => (
