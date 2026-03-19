@@ -409,7 +409,7 @@ function CandidateCard({
           <span className="text-[#4E5968]">{char2.hanja}</span> {char2.hangul}({meaningKeywords.split(' · ')[1] ?? char2.meaning.split(/[,\s·]+/)[0]})
         </p>
         {firstEnglish && (
-          <Badge className="bg-blue-500/15 text-blue-300 border-blue-500/20 text-[10px] flex-shrink-0">
+          <Badge className="bg-blue-500/15 text-blue-700 border-blue-500/20 text-[10px] flex-shrink-0">
             <Globe className="w-2.5 h-2.5 mr-1" />{firstEnglish.name}
           </Badge>
         )}
@@ -1225,10 +1225,10 @@ export default function Naming() {
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
                               <div className="w-4 h-4 rounded-full bg-gradient-to-br from-white to-gray-800 border border-black/10" />
-                              <p className="text-sm font-bold text-purple-300">음양 균형 분석</p>
+                              <p className="text-sm font-bold text-purple-600">음양 균형 분석</p>
                             </div>
                             <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${
-                              isBalanced ? 'bg-emerald-500/20 text-emerald-600 font-bold' : 'bg-orange-500/20 text-orange-300'
+                              isBalanced ? 'bg-emerald-500/20 text-emerald-600 font-bold' : 'bg-orange-500/20 text-orange-700'
                             }`}>
                               {isBalanced ? '균형 좋음' : '편중 주의'}
                             </span>
@@ -1241,7 +1241,7 @@ export default function Naming() {
                                 <p className="text-2xl font-black text-[#191F28]">{ch.hanja}</p>
                                 <p className="text-xs text-[#8B95A1] mt-0.5">{ch.hangul}</p>
                                 <div className={`mt-1.5 inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-bold ${
-                                  ch.yy === '양' ? 'bg-orange-500/20 text-orange-300' : 'bg-blue-500/20 text-blue-300'
+                                  ch.yy === '양' ? 'bg-orange-500/20 text-orange-700' : 'bg-blue-500/20 text-blue-700'
                                 }`}>
                                   {ch.yy === '양' ? '☀ 양(陽)' : '☾ 음(陰)'}
                                 </div>
@@ -1302,14 +1302,14 @@ export default function Naming() {
                       <div className="rounded-xl bg-blue-500/5 border border-blue-500/15 p-4 space-y-3">
                         <div className="flex items-center gap-2">
                           <Globe className="w-4 h-4 text-blue-600" />
-                          <p className="text-sm font-bold text-blue-300">영어 이름 추천</p>
+                          <p className="text-sm font-bold text-blue-600">영어 이름 추천</p>
                           <span className="text-[11px] text-[#8B95A1] ml-auto">한자 의미 · 발음 기반</span>
                         </div>
                         <div className="grid grid-cols-3 gap-2">
                           {selectedCandidate.englishNames.map((en, idx) => (
                             <div key={idx} className="rounded-lg bg-blue-500/10 border border-blue-500/20 p-3 text-center">
                               <p className="text-base font-black text-[#191F28]">{en.name}</p>
-                              <p className="text-[10px] text-blue-300/70 mt-0.5">{en.reason}</p>
+                              <p className="text-[10px] text-blue-600/70 mt-0.5">{en.reason}</p>
                               {en.keyword && (
                                 <p className="text-[10px] text-[#8B95A1] mt-0.5">‘{en.keyword}’ 의미</p>
                               )}

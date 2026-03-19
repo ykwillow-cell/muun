@@ -24,7 +24,7 @@ const CATEGORIES = [
         label: "신년운세",
         desc: "2026 병오년 한 해 운세 풀이",
         badge: "인기",
-        badgeColor: "bg-yellow-500/20 text-yellow-300 border-yellow-500/30",
+        badgeColor: "bg-yellow-500/20 text-yellow-700 border-yellow-500/30",
       },
       {
         href: "/lifelong-saju",
@@ -33,7 +33,7 @@ const CATEGORIES = [
         label: "평생사주",
         desc: "사주팔자로 보는 평생 운명",
         badge: "인기",
-        badgeColor: "bg-yellow-500/20 text-yellow-300 border-yellow-500/30",
+        badgeColor: "bg-yellow-500/20 text-yellow-700 border-yellow-500/30",
       },
       {
         href: "/tojeong",
@@ -73,7 +73,7 @@ const CATEGORIES = [
         label: "궁합",
         desc: "사주로 보는 두 사람의 인연",
         badge: "인기",
-        badgeColor: "bg-yellow-500/20 text-yellow-300 border-yellow-500/30",
+        badgeColor: "bg-yellow-500/20 text-yellow-700 border-yellow-500/30",
       },
       {
         href: "/hybrid-compatibility",
@@ -82,7 +82,7 @@ const CATEGORIES = [
         label: "사주 × MBTI 궁합",
         desc: "사주와 MBTI를 결합한 궁합 분석",
         badge: "NEW",
-        badgeColor: "bg-purple-500/20 text-purple-300 border-purple-500/30",
+        badgeColor: "bg-purple-500/20 text-purple-700 border-purple-500/30",
       },
       {
         href: "/family-saju",
@@ -146,7 +146,7 @@ const CATEGORIES = [
         label: "작명소",
         desc: "81수리 기반 무료 이름 풀이",
         badge: "NEW",
-        badgeColor: "bg-emerald-500/20 text-emerald-300 border-emerald-500/30",
+        badgeColor: "bg-emerald-500/20 text-emerald-700 border-emerald-500/30",
       },
       {
         href: "/psychology",

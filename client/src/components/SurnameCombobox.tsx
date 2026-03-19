@@ -320,7 +320,7 @@ export default function SurnameCombobox({
         <div className="mt-1.5 flex items-center gap-1.5">
           <Badge
             variant="outline"
-            className="text-[11px] bg-amber-500/10 border-amber-500/30 text-amber-300 px-2 py-0.5"
+            className="text-[11px] bg-amber-500/10 border-amber-500/30 text-amber-700 px-2 py-0.5"
           >
             {value} — 원획수 {strokes}획
           </Badge>
@@ -331,7 +331,7 @@ export default function SurnameCombobox({
       {/* 동음이의 한자 선택 UI */}
       {homonymOptions.length > 1 && (
         <div className="mt-2 rounded-xl border border-amber-500/30 bg-amber-500/5 p-3 space-y-2">
-          <p className="text-xs text-amber-300 font-medium">
+          <p className="text-xs text-amber-700 font-medium">
             "{homonymOptions[0].hangul}" 성씨의 한자를 선택해주세요
           </p>
           <div className="grid grid-cols-2 gap-2">

@@ -51,7 +51,7 @@ export function TodayTermCard() {
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-1">
           <span className="text-[10px] font-bold tracking-[0.08em] uppercase text-purple-600/60">오늘의 사주 용어</span>
-          <span className="px-1.5 py-0.5 rounded text-[9px] font-medium bg-purple-500/20 text-purple-300 border border-purple-500/30">{todayTerm.categoryLabel}</span>
+          <span className="px-1.5 py-0.5 rounded text-[9px] font-medium bg-purple-500/20 text-purple-700 border border-purple-500/30">{todayTerm.categoryLabel}</span>
         </div>
         <h3 className="text-[14px] font-bold text-[#1a1a18] mb-1 leading-snug">{todayTerm.title}</h3>
         <p className="text-[12px] text-[#999891] leading-relaxed line-clamp-2">{todayTerm.modernInterpretation}</p>
@@ -59,7 +59,7 @@ export function TodayTermCard() {
 
       {/* 사전 링크 */}
       <Link href="/fortune-dictionary" className="flex-shrink-0">
-        <span className="flex items-center gap-0.5 text-[11px] text-purple-300/60 hover:text-purple-300 transition-colors whitespace-nowrap mt-0.5">
+        <span className="flex items-center gap-0.5 text-[11px] text-purple-500/70 hover:text-purple-600 transition-colors whitespace-nowrap mt-0.5">
           사전 <ArrowRight className="w-3 h-3" />
         </span>
       </Link>

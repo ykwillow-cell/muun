@@ -27,10 +27,10 @@ const SajuGlossary: React.FC = () => {
           </AccordionTrigger>
           <AccordionContent className="text-[#1a1a18]/90 space-y-4 pb-4">
             <p>
-              <strong className="text-blue-300">비견(比肩):</strong> 나를 상징하는 기운과 동일한 오행입니다. 자존감이 강하고 주관이 뚜렷하며, 독립적인 성향을 나타냅니다. 동료나 형제와의 평등한 관계를 중시합니다.
+              <strong className="text-blue-600">비견(比肩):</strong> 나를 상징하는 기운과 동일한 오행입니다. 자존감이 강하고 주관이 뚜렷하며, 독립적인 성향을 나타냅니다. 동료나 형제와의 평등한 관계를 중시합니다.
             </p>
             <p>
-              <strong className="text-blue-300">겁재(劫財):</strong> 나의 기운과 오행은 같지만 음양이 다른 경우입니다. 강력한 경쟁심과 승부욕을 상징하며, 때로는 예상치 못한 재물의 지출이 발생할 수 있으나 추진력이 뛰어난 장점이 있습니다.
+              <strong className="text-blue-600">겁재(劫財):</strong> 나의 기운과 오행은 같지만 음양이 다른 경우입니다. 강력한 경쟁심과 승부욕을 상징하며, 때로는 예상치 못한 재물의 지출이 발생할 수 있으나 추진력이 뛰어난 장점이 있습니다.
             </p>
           </AccordionContent>
         </AccordionItem>
@@ -46,10 +46,10 @@ const SajuGlossary: React.FC = () => {
           </AccordionTrigger>
           <AccordionContent className="text-[#1a1a18]/90 space-y-4 pb-4">
             <p>
-              <strong className="text-green-300">식신(食神):</strong> 내가 생해주는 기운으로 음양이 같은 경우입니다. 풍요로움과 먹을 복을 상징하며, 연구하고 탐구하는 능력, 그리고 한 분야에 몰입하는 기질이 강합니다.
+              <strong className="text-green-600">식신(食神):</strong> 내가 생해주는 기운으로 음양이 같은 경우입니다. 풍요로움과 먹을 복을 상징하며, 연구하고 탐구하는 능력, 그리고 한 분야에 몰입하는 기질이 강합니다.
             </p>
             <p>
-              <strong className="text-green-300">상관(傷官):</strong> 내가 생해주는 기운 중 음양이 다른 경우입니다. 뛰어난 언변과 예술적 재능, 비판적 사고를 나타냅니다. 자신을 드러내는 능력이 탁월하여 마케팅이나 예술 분야에 적합합니다.
+              <strong className="text-green-600">상관(傷官):</strong> 내가 생해주는 기운 중 음양이 다른 경우입니다. 뛰어난 언변과 예술적 재능, 비판적 사고를 나타냅니다. 자신을 드러내는 능력이 탁월하여 마케팅이나 예술 분야에 적합합니다.
             </p>
           </AccordionContent>
         </AccordionItem>
@@ -65,10 +65,10 @@ const SajuGlossary: React.FC = () => {
           </AccordionTrigger>
           <AccordionContent className="text-[#1a1a18]/90 space-y-4 pb-4">
             <p>
-              <strong className="text-yellow-300">편재(偏財):</strong> 내가 극하는 기운으로 음양이 같은 경우입니다. 고정적이지 않은 큰 재물, 사업 수완, 공간 지각 능력을 의미합니다. 모험심이 강하고 넓은 시야를 가진 것이 특징입니다.
+              <strong className="text-yellow-700">편재(偏財):</strong> 내가 극하는 기운으로 음양이 같은 경우입니다. 고정적이지 않은 큰 재물, 사업 수완, 공간 지각 능력을 의미합니다. 모험심이 강하고 넓은 시야를 가진 것이 특징입니다.
             </p>
             <p>
-              <strong className="text-yellow-300">정재(正財):</strong> 내가 극하는 기운 중 음양이 다른 경우입니다. 성실하게 쌓아 올리는 고정적인 수익과 신용을 상징합니다. 꼼꼼하고 계획적인 성향으로 안정적인 자산 관리에 능합니다.
+              <strong className="text-yellow-700">정재(正財):</strong> 내가 극하는 기운 중 음양이 다른 경우입니다. 성실하게 쌓아 올리는 고정적인 수익과 신용을 상징합니다. 꼼꼼하고 계획적인 성향으로 안정적인 자산 관리에 능합니다.
             </p>
           </AccordionContent>
         </AccordionItem>
@@ -84,10 +84,10 @@ const SajuGlossary: React.FC = () => {
           </AccordionTrigger>
           <AccordionContent className="text-[#1a1a18]/90 space-y-4 pb-4">
             <p>
-              <strong className="text-red-300">편관(偏官):</strong> 나를 극하는 기운으로 음양이 같은 경우입니다. 강력한 카리스마, 책임감, 인내심을 상징합니다. 어려운 상황을 돌파하는 힘이 있으며 명예를 중시합니다.
+              <strong className="text-red-600">편관(偏官):</strong> 나를 극하는 기운으로 음양이 같은 경우입니다. 강력한 카리스마, 책임감, 인내심을 상징합니다. 어려운 상황을 돌파하는 힘이 있으며 명예를 중시합니다.
             </p>
             <p>
-              <strong className="text-red-300">정관(正官):</strong> 나를 극하는 기운 중 음양이 다른 경우입니다. 합리적인 규칙 준수, 원칙주의, 안정적인 조직 생활을 의미합니다. 타인의 신뢰를 받는 도덕적 기준이 높습니다.
+              <strong className="text-red-600">정관(正官):</strong> 나를 극하는 기운 중 음양이 다른 경우입니다. 합리적인 규칙 준수, 원칙주의, 안정적인 조직 생활을 의미합니다. 타인의 신뢰를 받는 도덕적 기준이 높습니다.
             </p>
           </AccordionContent>
         </AccordionItem>
@@ -103,10 +103,10 @@ const SajuGlossary: React.FC = () => {
           </AccordionTrigger>
           <AccordionContent className="text-[#1a1a18]/90 space-y-4 pb-4">
             <p>
-              <strong className="text-purple-300">편인(偏印):</strong> 나를 생해주는 기운으로 음양이 같은 경우입니다. 독창적인 아이디어, 기술적 재능, 신비학적 관심 등을 나타냅니다. 남들이 보지 못하는 이면을 읽어내는 통찰력이 있습니다.
+              <strong className="text-purple-600">편인(偏印):</strong> 나를 생해주는 기운으로 음양이 같은 경우입니다. 독창적인 아이디어, 기술적 재능, 신비학적 관심 등을 나타냅니다. 남들이 보지 못하는 이면을 읽어내는 통찰력이 있습니다.
             </p>
             <p>
-              <strong className="text-purple-300">정인(正印):</strong> 나를 생해주는 기운 중 음양이 다른 경우입니다. 학문적 성취, 어머니의 사랑과 같은 무조건적인 지원, 수용성을 의미합니다. 학습 능력이 뛰어나고 인덕이 많은 편입니다.
+              <strong className="text-purple-600">정인(正印):</strong> 나를 생해주는 기운 중 음양이 다른 경우입니다. 학문적 성취, 어머니의 사랑과 같은 무조건적인 지원, 수용성을 의미합니다. 학습 능력이 뛰어나고 인덕이 많은 편입니다.
             </p>
           </AccordionContent>
         </AccordionItem>

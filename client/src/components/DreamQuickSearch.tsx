@@ -18,7 +18,7 @@ export const DreamQuickSearch: React.FC = () => {
       <div className="flex items-center gap-3 p-3.5 rounded-2xl bg-indigo-500/[0.07] border border-indigo-500/20 hover:border-indigo-500/30 transition-all">
         {/* 아이콘 */}
         <div className="w-9 h-9 rounded-xl bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center flex-shrink-0">
-          <CloudMoon className="w-4 h-4 text-indigo-300" />
+          <CloudMoon className="w-4 h-4 text-indigo-600" />
         </div>
 
         {/* 검색 폼 */}
@@ -35,13 +35,13 @@ export const DreamQuickSearch: React.FC = () => {
             className="flex-shrink-0 w-7 h-7 rounded-lg bg-indigo-500/20 hover:bg-indigo-500/40 flex items-center justify-center transition-colors"
             aria-label="꿈해몽 검색"
           >
-            <Search className="w-3.5 h-3.5 text-indigo-300" />
+            <Search className="w-3.5 h-3.5 text-indigo-600" />
           </button>
         </form>
 
         {/* 전체보기 링크 */}
         <Link href="/dream" className="flex-shrink-0">
-          <span className="flex items-center gap-0.5 text-[11px] text-indigo-300/60 hover:text-indigo-300 transition-colors whitespace-nowrap">
+          <span className="flex items-center gap-0.5 text-[11px] text-indigo-500/70 hover:text-indigo-600 transition-colors whitespace-nowrap">
             전체보기 <ArrowRight className="w-3 h-3" />
           </span>
         </Link>

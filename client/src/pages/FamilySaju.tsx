@@ -236,7 +236,7 @@ export default function FamilySaju() {
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="text-red-600 hover:text-red-300 hover:bg-red-500/10 min-w-[36px] min-h-[36px]"
+                          className="text-red-600 hover:text-red-700 hover:bg-red-500/10 min-w-[36px] min-h-[36px]"
                           onClick={() => removeMember(index)}
                         >
                           <Trash2 className="w-4 h-4" />
@@ -287,8 +287,8 @@ export default function FamilySaju() {
                           onValueChange={(v) => { if (v) updateMember(index, "gender", v); }}
                           className="w-full h-9 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1"
                         >
-                          <ToggleGroupItem value="male" className="h-full rounded-lg text-sm md:text-xs data-[state=on]:bg-blue-500/30 data-[state=on]:text-blue-300">남성</ToggleGroupItem>
-                          <ToggleGroupItem value="female" className="h-full rounded-lg text-sm md:text-xs data-[state=on]:bg-pink-500/30 data-[state=on]:text-pink-300">여성</ToggleGroupItem>
+                          <ToggleGroupItem value="male" className="h-full rounded-lg text-sm md:text-xs data-[state=on]:bg-blue-500/30 data-[state=on]:text-blue-700">남성</ToggleGroupItem>
+                          <ToggleGroupItem value="female" className="h-full rounded-lg text-sm md:text-xs data-[state=on]:bg-pink-500/30 data-[state=on]:text-pink-700">여성</ToggleGroupItem>
                         </ToggleGroup>
                       </div>
                     </div>

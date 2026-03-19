@@ -1112,14 +1112,14 @@ export default function DailyFortune() {
                         </div>
                         <div>
                           <p className="text-lg font-black text-[#1a1a18]">{extended.synergy.mbtiType}</p>
-                          <p className="text-sm text-purple-300">{extended.synergy.mbtiDescription}</p>
+                          <p className="text-sm text-purple-600">{extended.synergy.mbtiDescription}</p>
                         </div>
                       </div>
                       <div className="space-y-2">
                         <p className="text-sm text-[#5a5a56] leading-relaxed">{extended.synergy.reason}</p>
                         <div className="flex items-center gap-2 pt-1">
                           <div className="w-1 h-1 rounded-full bg-purple-400" />
-                          <p className="text-xs text-purple-300 italic">{extended.synergy.compatibility}</p>
+                          <p className="text-xs text-purple-600 italic">{extended.synergy.compatibility}</p>
                         </div>
                       </div>
                     </div>

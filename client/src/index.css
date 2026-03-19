@@ -57,6 +57,15 @@
   --radius-xl: calc(var(--radius) + 4px);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-foreground-secondary: var(--foreground-secondary);
+  --color-foreground-tertiary: var(--foreground-tertiary);
+  --color-primary-light: var(--primary-light);
+  --color-primary-tint: var(--primary-tint);
+  /* ── 텍스트 역할 별칭 (HybridCompatibilityContent 등 호환) ── */
+  --color-text-primary: var(--foreground);
+  --color-text-secondary: var(--foreground-secondary);
+  --color-text-tertiary: var(--foreground-tertiary);
+  --color-border-tertiary: var(--border);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
   --color-popover: var(--popover);

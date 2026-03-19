@@ -251,7 +251,7 @@ export default function PastLife() {
                       onClick={() => setGender(g)}
                       className={`py-2.5 rounded-xl text-sm font-bold transition-all border ${
                         gender === g
-                          ? "bg-violet-500/20 border-violet-500/50 text-violet-300"
+                          ? "bg-violet-500/20 border-violet-500/50 text-violet-700"
                           : "bg-black/[0.05] border-black/10 text-foreground/50 hover:bg-black/[0.06]"
                       }`}
                     >
@@ -265,7 +265,7 @@ export default function PastLife() {
               {errorMsg && (
                 <div className="flex items-start gap-3 rounded-xl border border-red-500/30 bg-red-500/10 p-4 mb-4">
                   <AlertCircle className="w-4 h-4 text-red-400 mt-0.5 flex-shrink-0" />
-                  <p className="text-sm text-red-300 whitespace-pre-line">{errorMsg}</p>
+                  <p className="text-sm text-red-600 whitespace-pre-line">{errorMsg}</p>
                 </div>
               )}
 

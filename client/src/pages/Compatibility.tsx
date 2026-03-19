@@ -987,7 +987,7 @@ export default function Compatibility() {
               <CardContent className="p-4 md:p-6">
                 <div className="space-y-4">
                   {overallInterpretation.map((para, idx) => (
-                    <p key={idx} className="text-sm md:text-[15px] text-[#1a1a18]/90 leading-relaxed" dangerouslySetInnerHTML={{ __html: para.replace(/\*\*(.*?)\*\*/g, '<strong class="text-pink-300">$1</strong>') }} />
+                    <p key={idx} className="text-sm md:text-[15px] text-[#1a1a18]/90 leading-relaxed" dangerouslySetInnerHTML={{ __html: para.replace(/\*\*(.*?)\*\*/g, '<strong class="text-pink-600">$1</strong>') }} />
                   ))}
                 </div>
               </CardContent>
@@ -1124,12 +1124,12 @@ export default function Compatibility() {
                     {cleanAIContent(elementAnalysis2.analysis)}
                   </p>
                   {elementAnalysis1.weakest !== elementAnalysis2.weakest && (
-                    <p className="text-base md:text-sm text-pink-300 leading-relaxed">
+                    <p className="text-base md:text-sm text-pink-600 leading-relaxed">
                       {name1}님에게 부족한 {withReading(elementAnalysis1.weakest)}의 기운을 {name2}님이 보완해줄 수 있고, {name2}님에게 부족한 {withReading(elementAnalysis2.weakest)}의 기운을 {name1}님이 채워줄 수 있는 상호 보완적인 관계입니다.
                     </p>
                   )}
                   {elementAnalysis1.weakest === elementAnalysis2.weakest && (
-                    <p className="text-base md:text-sm text-yellow-300 leading-relaxed">
+                    <p className="text-base md:text-sm text-yellow-700 leading-relaxed">
                       두 분 모두 {withReading(elementAnalysis1.weakest)}의 기운이 부족합니다. {elementAnalysis1.supplement} 함께 이 부분을 보충하는 활동을 하면 좋겠습니다.
                     </p>
                   )}

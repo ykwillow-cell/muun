@@ -51,7 +51,7 @@ export default function CallToAction({
         <div className="relative z-10 flex justify-center mb-4">
           <div className="flex items-center gap-1">
             <Star className="w-4 h-4 text-yellow-600 fill-yellow-400" />
-            <Sparkles className="w-5 h-5 text-yellow-300" />
+            <Sparkles className="w-5 h-5 text-yellow-500" />
             <Star className="w-4 h-4 text-yellow-600 fill-yellow-400" />
           </div>
         </div>

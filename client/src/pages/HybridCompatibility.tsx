@@ -284,8 +284,8 @@ function TimelineGraph({ timeline }: { timeline: HybridCompatResult['timeline'] 
     if (active && payload && payload.length) {
       const item = data.find(d => d.phase === label);
       return (
-        <div className="bg-[#1a1a2e] border border-purple-500/30 rounded-xl p-3 max-w-[200px] shadow-xl">
-          <p className="text-purple-300 font-bold text-sm mb-1">{label}</p>
+        <div className="bg-white border border-purple-500/30 rounded-xl p-3 max-w-[200px] shadow-xl">
+          <p className="text-purple-600 font-bold text-sm mb-1">{label}</p>
           <p className="text-[#1a1a18] font-bold text-lg">{payload[0].value}점</p>
           {item && <p className="text-[#999891] text-xs mt-1 leading-relaxed">{item.desc}</p>}
         </div>
@@ -1055,7 +1055,7 @@ export default function HybridCompatibilityPage() {
                       </div>
                       <ul className="space-y-1 pl-6">
                         {validationErrors.map((msg, i) => (
-                          <li key={i} className="text-xs text-red-300/80 list-disc">{msg}</li>
+                          <li key={i} className="text-xs text-red-600/80 list-disc">{msg}</li>
                         ))}
                       </ul>
                     </div>
