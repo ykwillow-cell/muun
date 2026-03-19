@@ -67,14 +67,31 @@ export default function GuideDetail() {
             "@type": "Article",
             "headline": column.title,
             "description": column.description,
+            "url": `https://muunsaju.com/guide/${column.slug || column.id}`,
+            "mainEntityOfPage": { "@type": "WebPage", "@id": `https://muunsaju.com/guide/${column.slug || column.id}` },
             "author": { "@type": "Person", "name": column.author },
             "datePublished": column.publishedDate,
-            "image": column.thumbnail,
+            "dateModified": column.publishedDate,
+            "image": { "@type": "ImageObject", "url": column.thumbnail, "width": 1200, "height": 630 },
             "publisher": {
               "@type": "Organization",
               "name": "무운 (MuUn)",
-              "logo": { "@type": "ImageObject", "url": "https://muunsaju.com/logo.png" }
-            }
+              "url": "https://muunsaju.com",
+              "logo": { "@type": "ImageObject", "url": "https://muunsaju.com/logo.png", "width": 200, "height": 60 }
+            },
+            "keywords": column.keywords?.join(', '),
+            "articleSection": "사주 칼럼"
+          })}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "홈", "item": "https://muunsaju.com" },
+              { "@type": "ListItem", "position": 2, "name": "칼럼", "item": "https://muunsaju.com/guide" },
+              { "@type": "ListItem", "position": 3, "name": column.title, "item": `https://muunsaju.com/guide/${column.slug || column.id}` }
+            ]
           })}
         </script>
       </Helmet>

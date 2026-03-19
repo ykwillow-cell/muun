@@ -528,6 +528,16 @@ export default function Compatibility() {
   // ===== 입력 화면 =====
   if (!result) {
     return (
+      <>
+      <Helmet>
+        <title>무료 궁합 보기 - 회원가입 없이 사주 궁합 분석 | 무운</title>
+        <meta name="description" content="회원가입 없이 두 사람의 생년월일만으로 바로 확인하는 무료 사주 궁합. 오행 궁합, 성격 궁합, 연애 궁합을 개인정보 저장 없이 100% 무료로 분석합니다." />
+        <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+        <link rel="canonical" href="https://muunsaju.com/compatibility" />
+        <script type="application/ld+json">{JSON.stringify({"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://muunsaju.com"},{"@type":"ListItem","position":2,"name":"무료 궁합","item":"https://muunsaju.com/compatibility"}]})}</script>
+        <script type="application/ld+json">{JSON.stringify({"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"궁합은 무료로 볼 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"네, 무운의 궁합 서비스는 100% 무료입니다. 회원가입이나 개인정보 저장 없이 두 사람의 생년월일만 입력하면 즉시 궁합을 확인할 수 있습니다."}},{"@type":"Question","name":"사주 궁합에서 무엇을 알 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"오행 조화, 음양 균형, 연애운, 재물운, 가정운 등 두 사람의 사주팔자를 기반으로 종합적인 궁합 점수와 상세 분석을 제공합니다."}},{"@type":"Question","name":"궁합은 연인과 부부 사이에만 해당되나요?","acceptedAnswer":{"@type":"Answer","text":"연인, 부부 사이는 물론 친구, 직장 동료, 사업 파트너 등 다양한 관계에서의 궁합도 확인할 수 있습니다."}},{"@type":"Question","name":"궁합 점수가 낙으면 나쁜 것인가요?","acceptedAnswer":{"@type":"Answer","text":"궁합 점수는 참고 지표일 뿐 절대적인 기준이 아닙니다. 점수가 낙더라도 서로의 노력과 이해로 충분히 좋은 관계를 만들어갈 수 있습니다."}}]})}</script>
+        <script type="application/ld+json">{JSON.stringify({"@context":"https://schema.org","@type":"Service","name":"무료 사주 궁합","description":"사주팔자 기반의 무료 궁합 분석 서비스","provider":{"@type":"Organization","name":"무운 (MuUn)","url":"https://muunsaju.com"},"url":"https://muunsaju.com/compatibility","serviceType":"궁합","areaServed":"KR","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}})}</script>
+      </Helmet>
       <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased">
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
           <div className="absolute top-[-10%] left-[-10%] w-[400px] h-[400px] bg-pink-500/10 rounded-full blur-[100px]" />
@@ -781,10 +791,10 @@ export default function Compatibility() {
           </motion.div>
         </main>
       </div>
+      </>
     );
   }
-
-  // ===== 결과 화면 =====
+  // ===== 결과 화면 ======
   const name1 = form.getValues("name1") || "첫 번째";
   const name2 = form.getValues("name2") || "두 번째";
   const { saju1, saju2 } = result;

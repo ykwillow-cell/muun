@@ -107,6 +107,42 @@ export default function Tojeong() {
         <meta property="og:locale" content="ko_KR" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "홈", "item": "https://muunsaju.com" },
+              { "@type": "ListItem", "position": 2, "name": "토정비결", "item": "https://muunsaju.com/tojeong" }
+            ]
+          })}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              { "@type": "Question", "name": "토정비결이란 무엇인가요?", "acceptedAnswer": { "@type": "Answer", "text": "토정비결은 조선시대 이지함 선생이 저술한 운세 예언서로, 생년월일을 바탕으로 1년의 운세를 12개월로 나누어 예측하는 전통 점술입니다." } },
+              { "@type": "Question", "name": "무운의 토정비결은 무료인가요?", "acceptedAnswer": { "@type": "Answer", "text": "네, 무운의 토정비결은 100% 무료입니다. 회원가입이나 개인정보 저장 없이 생년월일만 입력하면 즉시 확인할 수 있습니다." } },
+              { "@type": "Question", "name": "2026년 토정비결은 언제부터 보나요?", "acceptedAnswer": { "@type": "Answer", "text": "토정비결은 음력 기준으로 해를 나누며, 2026년 병오년 토정비결은 음력 1월 1일부터 적용됩니다. 양력 기준으로는 2026년 2월 이후부터입니다." } },
+              { "@type": "Question", "name": "토정비결과 사주의 차이는 무엇인가요?", "acceptedAnswer": { "@type": "Answer", "text": "사주는 태어난 년·월·일·시 전체를 분석하여 평생의 운을 보는 반면, 토정비결은 생년월일을 바탕으로 1년의 운세 흐름을 월별로 예측하는 다른 접근법입니다." } }
+            ]
+          })}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Service",
+            "name": "2026년 무료 토정비결",
+            "description": "이지함 선생의 원문 괴 계산법으로 보는 2026년 병오년 무료 토정비결",
+            "provider": { "@type": "Organization", "name": "무운 (MuUn)", "url": "https://muunsaju.com" },
+            "url": "https://muunsaju.com/tojeong",
+            "serviceType": "토정비결 운세",
+            "areaServed": "KR",
+            "isAccessibleForFree": true,
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" }
+          })}
+        </script>
 </Helmet>
       <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased">
         {/* Background Effects */}

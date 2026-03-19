@@ -46,7 +46,49 @@ export default function DictionaryDetail() {
         <meta name="keywords" content={`${entry.title}, ${entry.summary}, ${entry.categoryLabel}, 사주, 운세, ${(entry.tags || []).join(', ')}`} />
         <meta property="og:type" content="article" />
         <meta property="og:url" content={`https://muunsaju.com/dictionary/${entry.slug}`} />
+        <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
         <link rel="canonical" href={`https://muunsaju.com/dictionary/${entry.slug}`} />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'DefinedTerm',
+            name: entry.title,
+            description: entry.modernInterpretation,
+            inDefinedTermSet: 'https://muunsaju.com/fortune-dictionary',
+            url: `https://muunsaju.com/dictionary/${entry.slug}`,
+            author: { '@type': 'Organization', name: '무운(MuUn)', url: 'https://muunsaju.com' },
+          })}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Article',
+            headline: `${entry.title} - ${entry.summary}`,
+            description: entry.metaDescription || `${entry.title}이 내 사주에 있다면 어떤 의미일까요?`,
+            url: `https://muunsaju.com/dictionary/${entry.slug}`,
+            mainEntityOfPage: { '@type': 'WebPage', '@id': `https://muunsaju.com/dictionary/${entry.slug}` },
+            author: { '@type': 'Organization', name: '무운 (MuUn)', url: 'https://muunsaju.com' },
+            publisher: {
+              '@type': 'Organization',
+              name: '무운 (MuUn)',
+              url: 'https://muunsaju.com',
+              logo: { '@type': 'ImageObject', url: 'https://muunsaju.com/logo.png' }
+            },
+            keywords: `${entry.title}, ${entry.categoryLabel}, 사주, 운세, ${(entry.tags || []).join(', ')}`,
+            articleSection: '운세 사전'
+          })}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BreadcrumbList',
+            itemListElement: [
+              { '@type': 'ListItem', position: 1, name: '홈', item: 'https://muunsaju.com' },
+              { '@type': 'ListItem', position: 2, name: '운세 사전', item: 'https://muunsaju.com/fortune-dictionary' },
+              { '@type': 'ListItem', position: 3, name: entry.title, item: `https://muunsaju.com/dictionary/${entry.slug}` }
+            ]
+          })}
+        </script>
       </Helmet>
 
       {/* 헤더 */}
@@ -63,23 +105,6 @@ export default function DictionaryDetail() {
       </div>
 
       <main className="max-w-3xl mx-auto px-4 py-8 md:py-12">
-        {/* DefinedTerm Schema Markup */}
-        <script type="application/ld+json">
-          {JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'DefinedTerm',
-            name: entry.title,
-            description: entry.modernInterpretation,
-            inDefinedTermSet: 'https://muunsaju.com/fortune-dictionary',
-            url: `https://muunsaju.com/dictionary/${entry.slug}`,
-            author: {
-              '@type': 'Organization',
-              name: '무운(MuUn)',
-              url: 'https://muunsaju.com',
-            },
-          })}
-        </script>
-
         {/* 타이틀 영역 */}
         <div className="mb-8">
           <div className="inline-block px-3 py-1 bg-[#6B5FFF]/10 border border-[#6B5FFF]/20 rounded-full text-[#6B5FFF] text-xs font-semibold mb-4">

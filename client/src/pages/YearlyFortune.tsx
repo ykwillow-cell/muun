@@ -344,6 +344,16 @@ export default function YearlyFortune() {
 
   if (!result) {
     return (
+      <>
+      <Helmet>
+        <title>2026년 무료 신년운세 - 회원가입 없이 확인 | 무운</title>
+        <meta name="description" content="회원가입·개인정보 저장 없이 확인하는 2026년 병오년 무료 신년운세. 월별 운세, 재물운, 직업운, 애정운까지 100% 무료로 제공합니다." />
+        <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+        <link rel="canonical" href="https://muunsaju.com/yearly-fortune" />
+        <script type="application/ld+json">{JSON.stringify({"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://muunsaju.com"},{"@type":"ListItem","position":2,"name":"2026년 신년운세","item":"https://muunsaju.com/yearly-fortune"}]})}</script>
+        <script type="application/ld+json">{JSON.stringify({"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"2026년 신년운세는 무료인가요?","acceptedAnswer":{"@type":"Answer","text":"네, 무운의 2026년 신년운세는 100% 무료입니다. 회원가입이나 개인정보 저장 없이 생년월일만 입력하면 즉시 확인할 수 있습니다."}},{"@type":"Question","name":"2026년 병오년 신년운세에서 무엇을 알 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"월별 운세, 재물운, 직업운, 애정운, 건강운 등 2026년 한 해의 주요 운의 흐름을 사주팔자 기반으로 분석해드립니다."}},{"@type":"Question","name":"신년운세는 언제부터 보나요?","acceptedAnswer":{"@type":"Answer","text":"신년운세는 일반적으로 음력 새해 또는 입춘 이후부터 해당 년도의 운이 적용됩니다. 2026년 병오년은 2026년 입춘(2월 3일)부터 시작됩니다."}},{"@type":"Question","name":"신년운세와 평생사주의 차이는 무엇인가요?","acceptedAnswer":{"@type":"Answer","text":"신년운세는 한 해의 운의 흐름을 월별로 살펴보는 것이고, 평생사주는 태어난 날의 사주팔자를 바탕으로 평생의 운을 종합적으로 분석하는 것입니다."}}]})}</script>
+        <script type="application/ld+json">{JSON.stringify({"@context":"https://schema.org","@type":"Service","name":"2026년 무료 신년운세","description":"사주팔자 기반의 2026년 병오년 무료 신년운세 서비스","provider":{"@type":"Organization","name":"무운 (MuUn)","url":"https://muunsaju.com"},"url":"https://muunsaju.com/yearly-fortune","serviceType":"신년운세","areaServed":"KR","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}})}</script>
+      </Helmet>
       <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased">
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
           <div className="absolute top-[-10%] left-[-10%] w-[400px] h-[400px] bg-primary/10 rounded-full blur-[100px]" />
@@ -536,6 +546,7 @@ export default function YearlyFortune() {
           </motion.div>
         </main>
       </div>
+      </>
     );
   }
 

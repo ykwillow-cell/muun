@@ -120,6 +120,10 @@ export default function Manselyeok() {
         <meta name="twitter:title" content="무료 만세력 조회 - 회원가입 없이 사주팔자 확인 | 무운 (MuUn)" />
         <meta name="twitter:description" content="회원가입 없이 생년월일시만 입력하면 바로 확인하는 무료 만세력 분석. 사주팔자, 오행 구성, 천간지지를 개인정보 저장 없이 100% 무료로 제공합니다." />
         <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
+        <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+        <script type="application/ld+json">{JSON.stringify({"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://muunsaju.com"},{"@type":"ListItem","position":2,"name":"만세력","item":"https://muunsaju.com/manselyeok"}]})}</script>
+        <script type="application/ld+json">{JSON.stringify({"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"만세력이란 무엇인가요?","acceptedAnswer":{"@type":"Answer","text":"만세력은 사주팔자를 연월일시로 정리한 동양의 달력 체계입니다. 개인의 생년월일시에 해당하는 사주팔자(년주, 월주, 일주, 시주)를 확인할 수 있습니다."}},{"@type":"Question","name":"만세력 조회는 무료인가요?","acceptedAnswer":{"@type":"Answer","text":"네, 무운의 만세력 서비스는 100% 무료입니다. 회원가입이나 개인정보 저장 없이 생년월일시만 입력하면 즉시 확인할 수 있습니다."}},{"@type":"Question","name":"만세력에서 무엇을 알 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"사주팔자(년월일시 주), 오행(목화토금수) 구성, 천간지지 분석, 일주의 신살, 대운 등을 확인할 수 있습니다."}},{"@type":"Question","name":"양력과 음력 중 어떤 것을 선택해야 하나요?","acceptedAnswer":{"@type":"Answer","text":"일반적으로 양력을 선택하지만, 음력으로 태어난 경우 음력을 선택하세요. 확실하지 않다면 양력을 선택하는 것이 일반적입니다."}}]})}</script>
+        <script type="application/ld+json">{JSON.stringify({"@context":"https://schema.org","@type":"Service","name":"무료 만세력 조회","description":"사주팔자 기반의 무료 만세력 분석 서비스","provider":{"@type":"Organization","name":"무운 (MuUn)","url":"https://muunsaju.com"},"url":"https://muunsaju.com/manselyeok","serviceType":"만세력","areaServed":"KR","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}})}</script>
       </Helmet>
       {/* '시간 모름' 시 안내 라벨 */}
       {form.watch("birthTimeUnknown") && (

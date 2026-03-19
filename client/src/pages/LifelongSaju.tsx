@@ -481,6 +481,42 @@ export default function LifelongSaju() {
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
         <meta name="keywords" content="평생사주, 무료사주풀이, 사주분석, 타고난운명, 연애운, 결혼운, 재물운, 무료사주" />
         <link rel="canonical" href="https://muunsaju.com/lifelong-saju" />
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "홈", "item": "https://muunsaju.com" },
+              { "@type": "ListItem", "position": 2, "name": "평생사주", "item": "https://muunsaju.com/lifelong-saju" }
+            ]
+          })}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              { "@type": "Question", "name": "평생사주란 무엇인가요?", "acceptedAnswer": { "@type": "Answer", "text": "평생사주는 태어난 날의 년·월·일·시(4가지 기록)를 바탕으로 한 평생의 운의 흐름을 분석하는 전통 명리학입니다. 성격, 재물운, 직업운, 연애운, 결혼운 등을 종합적으로 알 수 있습니다." } },
+              { "@type": "Question", "name": "무운의 평생사주는 무료인가요?", "acceptedAnswer": { "@type": "Answer", "text": "네, 무운의 평생사주는 100% 무료입니다. 회원가입이나 개인정보 저장 없이 생년월일시만 입력하면 즉시 확인할 수 있습니다." } },
+              { "@type": "Question", "name": "평생사주에서 무엇을 알 수 있나요?", "acceptedAnswer": { "@type": "Answer", "text": "타고난 기질과 성격, 재물운과 직업운, 연애운과 결혼운, 인간관계와 건강운 등 평생의 주요 운의 흐름을 사주팔자 기반으로 분석해드립니다." } },
+              { "@type": "Question", "name": "태어난 시간을 모르면 평생사주를 받을 수 있나요?", "acceptedAnswer": { "@type": "Answer", "text": "네, 태어난 시간을 모르는 경우에도 년·월·일만으로 삼주(3가지 기록) 기반의 평생사주 분석이 가능합니다." } }
+            ]
+          })}
+        </script>
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Service",
+            "name": "무료 평생사주 풀이",
+            "description": "태어난 기운을 바탕으로 성격, 재물, 직업, 평생의 운을 분석하는 무료 사주 서비스",
+            "provider": { "@type": "Organization", "name": "무운 (MuUn)", "url": "https://muunsaju.com" },
+            "url": "https://muunsaju.com/lifelong-saju",
+            "serviceType": "사주팔자 분석",
+            "areaServed": "KR",
+            "isAccessibleForFree": true,
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" }
+          })}
+        </script>
       </Helmet>
     <div className="min-h-screen bg-background text-foreground pb-20">
       <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">

@@ -123,21 +123,80 @@ export default function DreamDetail() {
             "description": metaDescription,
             "author": {
               "@type": "Organization",
-              "name": "무운 (MuUn)"
+              "name": "무운 (MuUn)",
+              "url": "https://muunsaju.com"
             },
             "datePublished": dream.published_at || dream.created_at,
+            "dateModified": dream.published_at || dream.created_at,
             "publisher": {
               "@type": "Organization",
               "name": "무운 (MuUn)",
+              "url": "https://muunsaju.com",
               "logo": {
                 "@type": "ImageObject",
-                "url": "https://muunsaju.com/logo.png"
+                "url": "https://muunsaju.com/images/horse_mascot.png"
               }
             },
             "mainEntityOfPage": {
               "@type": "WebPage",
               "@id": canonicalUrl
-            }
+            },
+            "image": "https://muunsaju.com/og-image.png",
+            "articleSection": categoryLabel,
+            "keywords": `${dream.keyword}, ${dream.keyword} 꿈해몽, 꿈풀이, 꿈해몽 사전`
+          })}
+        </script>
+        {/* BreadcrumbList */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "홈", "item": "https://muunsaju.com" },
+              { "@type": "ListItem", "position": 2, "name": "꿈해몽", "item": "https://muunsaju.com/dream" },
+              { "@type": "ListItem", "position": 3, "name": `${dream.keyword} 꿈해몽`, "item": canonicalUrl }
+            ]
+          })}
+        </script>
+        {/* FAQPage - 꿈 데이터 기반 동적 FAQ */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": `${dream.keyword} 꿈은 무슨 의미인가요?`,
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": dream.interpretation
+                }
+              },
+              ...(dream.traditional_meaning ? [{
+                "@type": "Question",
+                "name": `${dream.keyword} 꿈의 전통적인 해석은 무엇인가요?`,
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": dream.traditional_meaning
+                }
+              }] : []),
+              ...(dream.psychological_meaning ? [{
+                "@type": "Question",
+                "name": `${dream.keyword} 꿈을 꾸는 심리적 의미는 무엇인가요?`,
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": dream.psychological_meaning
+                }
+              }] : []),
+              {
+                "@type": "Question",
+                "name": `${dream.keyword} 꿈은 길몽인가요 흉몽인가요?`,
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": dream.grade === 'great' ? `${dream.keyword} 꿈은 황금빛 길몽입니다. 재물, 성공, 경사를 상징하는 아주 좋은 꿈입니다.` : dream.grade === 'good' ? `${dream.keyword} 꿈은 평몽입니다. 일상의 변화나 심리적 안정을 나타내는 긍정적인 꿈입니다.` : `${dream.keyword} 꿈은 흉몽에 해당합니다. 주의와 액땜이 필요한 시기임을 알려주는 꿈입니다.`
+                }
+              }
+            ]
           })}
         </script>
       </Helmet>

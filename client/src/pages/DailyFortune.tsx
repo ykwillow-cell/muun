@@ -409,6 +409,16 @@ export default function DailyFortune() {
   // ── 입력 화면 (절대 수정 금지) ────────────────────────────────────────────
   if (!showResult) {
     return (
+      <>
+      <Helmet>
+        <title>오늘의 운세 - 회원가입 없이 무료 일별 운세 | 무운</title>
+        <meta name="description" content="회원가입 없이 생년월일만 입력하면 오늘 하루의 운세를 즉시 확인. 사주팔자 기반 일별 운세, 재물운, 애정운, 건강운을 100% 무료로 제공합니다." />
+        <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+        <link rel="canonical" href="https://muunsaju.com/daily-fortune" />
+        <script type="application/ld+json">{JSON.stringify({"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://muunsaju.com"},{"@type":"ListItem","position":2,"name":"오늘의 운세","item":"https://muunsaju.com/daily-fortune"}]})}</script>
+        <script type="application/ld+json">{JSON.stringify({"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"오늘의 운세는 무료인가요?","acceptedAnswer":{"@type":"Answer","text":"네, 무운의 일별 운세는 100% 무료입니다. 회원가입이나 개인정보 저장 없이 생년월일만 입력하면 즉시 확인할 수 있습니다."}},{"@type":"Question","name":"일별 운세에서 무엇을 알 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"오늘의 종합운, 재물운, 애정운, 건강운, 직업운과 함께 오늘의 행운의 방향성, 행운의 숫자, 행운의 색상을 사주팔자 기반으로 분석해드립니다."}},{"@type":"Question","name":"일별 운세는 매일 달라지나요?","acceptedAnswer":{"@type":"Answer","text":"네, 일별 운세는 매일의 일주(day pillar)에 따라 달라집니다. 같은 생년월일이라도 날마다 다른 운세를 확인할 수 있습니다."}},{"@type":"Question","name":"일별 운세는 언제 확인하는 게 좋은가요?","acceptedAnswer":{"@type":"Answer","text":"아침에 확인하는 것이 이상적입니다. 오늘의 운의 흐름을 미리 파악하고 중요한 일정이나 결정에 참고하세요."}}]})}</script>
+        <script type="application/ld+json">{JSON.stringify({"@context":"https://schema.org","@type":"Service","name":"무료 일별 운세","description":"사주팔자 기반의 무료 일별 운세 서비스","provider":{"@type":"Organization","name":"무운 (MuUn)","url":"https://muunsaju.com"},"url":"https://muunsaju.com/daily-fortune","serviceType":"일별운세","areaServed":"KR","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}})}</script>
+      </Helmet>
       <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased">
         {/* Background Effects */}
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
@@ -605,10 +615,10 @@ export default function DailyFortune() {
           </motion.div>
         </main>
       </div>
+      </>
     );
   }
-
-  // ── 결과 화면 (전면 개편) ────────────────────────────────────────────────
+  // ── 결과 화면면 (전면 개편) ────────────────────────────────────────────────
   if (!fortune) return null;
   const { extended } = fortune;
 
