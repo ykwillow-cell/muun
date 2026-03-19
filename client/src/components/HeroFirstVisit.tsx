@@ -214,7 +214,7 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
         .mu-hero--first {
           position: relative;
           background: linear-gradient(155deg, #12082e 0%, #1e0f4a 40%, #2a1060 70%, #1a0840 100%);
-          padding: 32px 18px 36px;
+          padding: var(--md-sp-8) var(--md-sp-4) var(--md-sp-10); /* 32px 16px 40px — MD3 4dp 배수 */
           overflow: hidden;
         }
 
@@ -267,18 +267,19 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           z-index: 1;
           display: flex;
           flex-direction: column;
-          gap: 20px;
+          gap: var(--md-sp-5); /* 20px — MD3 4dp 배수 */
         }
 
-        /* ── 상단 레이블 ── */
+        /* ── 상단 레이블 (MD3 Assist Chip 스타일) ── */
         .mu-hero__eyebrow-wrap {
           display: inline-flex;
           align-items: center;
-          gap: 6px;
+          gap: var(--md-sp-1); /* 4px */
           background: rgba(255,255,255,0.10);
-          border: 1px solid rgba(255,255,255,0.15);
-          border-radius: 100px;
-          padding: 5px 12px;
+          border: 1px solid rgba(255,255,255,0.20);
+          border-radius: var(--md-shape-sm); /* 8px — MD3 Chip shape */
+          padding: var(--md-sp-1) var(--md-sp-3); /* 4px 12px */
+          min-height: 32px; /* MD3 Chip 기본 높이 32dp */
           width: fit-content;
         }
         .mu-hero__eyebrow-dot {
@@ -289,10 +290,11 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           flex-shrink: 0;
         }
         .mu-hero__eyebrow-text {
-          font-size: 11px;
+          font-size: var(--md-label-small);      /* 11px — MD3 Label Small */
+          line-height: var(--md-label-small-lh);
+          letter-spacing: var(--md-label-small-ls);
           font-weight: 600;
           color: rgba(255,255,255,0.75);
-          letter-spacing: 0.02em;
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
 
@@ -300,14 +302,14 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
         .mu-hero__header {
           display: flex;
           flex-direction: column;
-          gap: 8px;
+          gap: var(--md-sp-2); /* 8px */
         }
         .mu-hero__title {
-          font-size: 30px;
+          font-size: var(--md-headline-large);      /* 32px — MD3 Headline Large */
+          line-height: var(--md-headline-large-lh); /* 40px */
+          letter-spacing: var(--md-headline-large-ls);
           font-weight: 900;
           color: #ffffff;
-          letter-spacing: -0.04em;
-          line-height: 1.2;
           margin: 0;
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
@@ -318,38 +320,40 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           background-clip: text;
         }
         .mu-hero__sub {
-          font-size: 14px;
+          font-size: var(--md-body-medium);      /* 14px — MD3 Body Medium */
+          line-height: var(--md-body-medium-lh); /* 20px */
+          letter-spacing: var(--md-body-medium-ls);
           font-weight: 500;
           color: rgba(255,255,255,0.55);
           margin: 0;
-          line-height: 1.5;
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
 
-        /* ── 폼 카드 (글래스모피즘) ── */
+        /* ── 폼 카드 (글래스모피즘 + MD3 Extra Large shape) ── */
         .mu-hero__form-card {
           background: rgba(255,255,255,0.10);
           backdrop-filter: blur(20px);
           -webkit-backdrop-filter: blur(20px);
           border: 1px solid rgba(255,255,255,0.18);
-          border-radius: 20px;
-          padding: 16px;
+          border-radius: var(--md-shape-xl); /* 28px — MD3 Extra Large */
+          padding: var(--md-sp-4); /* 16px */
           overflow: hidden;
           display: flex;
           flex-direction: column;
-          box-shadow: 0 8px 32px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.15);
+          box-shadow: var(--md-elev-3); /* MD3 Elevation 3 */
         }
 
-        /* ── 스텝 탭 ── */
+        /* ── 스텝 탭 (MD3 Navigation Bar 스타일) ── */
         .mu-hero__steps {
           padding: 0;
+          margin-bottom: var(--md-sp-3); /* 12px */
         }
         .mu-hero__step-tab-row {
           display: flex;
           background: rgba(0,0,0,0.25);
-          border-radius: 12px;
-          padding: 4px;
-          gap: 4px;
+          border-radius: var(--md-shape-md); /* 12px — MD3 Medium */
+          padding: var(--md-sp-1); /* 4px */
+          gap: var(--md-sp-1); /* 4px */
           overflow: hidden;
           margin: 0;
         }
@@ -358,14 +362,17 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 5px;
-          padding: 10px 0;
-          font-size: 13px;
+          gap: var(--md-sp-1); /* 4px */
+          padding: var(--md-sp-2) 0; /* 8px 0 */
+          min-height: 40px; /* MD3 탭 최소 높이 */
+          font-size: var(--md-label-large);      /* 14px — MD3 Label Large */
+          line-height: var(--md-label-large-lh);
+          letter-spacing: var(--md-label-large-ls);
           font-weight: 600;
           color: rgba(255,255,255,0.40);
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
           transition: all 0.2s;
-          border-radius: 9px;
+          border-radius: var(--md-shape-sm); /* 8px */
           border: none;
           box-shadow: none;
           background: transparent;
@@ -379,14 +386,14 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           box-shadow: 0 1px 4px rgba(0,0,0,0.15);
         }
         .mu-hero__step-num {
-          width: 18px;
-          height: 18px;
+          width: 20px;
+          height: 20px;
           border-radius: 50%;
           background: rgba(255,255,255,0.15);
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 9px;
+          font-size: var(--md-label-small); /* 11px */
           font-weight: 700;
           color: rgba(255,255,255,0.50);
         }
@@ -404,17 +411,22 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
         .mu-hero__step-body {
           display: flex;
           flex-direction: column;
-          gap: 10px;
-          padding: 12px 0 0;
+          gap: var(--md-sp-3); /* 12px — MD3 4dp 배수 */
+          padding: var(--md-sp-3) 0 0; /* 12px 0 0 */
         }
+        /* MD3 Filled Text Field */
         .mu-hero__input {
           width: 100%;
           box-sizing: border-box;
           background: rgba(255,255,255,0.12);
-          border: 1.5px solid rgba(255,255,255,0.20);
-          border-radius: 12px;
-          padding: 15px 16px;
-          font-size: 16px;
+          border: none;
+          border-bottom: 1.5px solid rgba(255,255,255,0.40);
+          border-radius: var(--md-shape-sm) var(--md-shape-sm) 0 0; /* 8px 8px 0 0 — MD3 Filled TextField */
+          padding: var(--md-sp-4); /* 16px */
+          height: 56px; /* MD3 Text Field 표준 높이 56dp */
+          font-size: var(--md-body-large);      /* 16px — MD3 Body Large */
+          line-height: var(--md-body-large-lh);
+          letter-spacing: var(--md-body-large-ls);
           font-weight: 500;
           color: #ffffff;
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
@@ -427,50 +439,55 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
         }
         .mu-hero__input:focus {
           background: rgba(255,255,255,0.18);
-          border-color: rgba(167,139,250,0.70);
-          box-shadow: 0 0 0 4px rgba(123,97,255,0.20);
+          border-bottom-color: var(--md-inverse-primary); /* #CFBCFF — MD3 Inverse Primary */
+          border-bottom-width: 2px; /* MD3 focused indicator */
+          box-shadow: none;
         }
         .mu-hero__input--error {
-          border-color: rgba(240,68,82,0.6);
-          box-shadow: 0 0 0 4px rgba(240,68,82,0.10);
+          border-bottom-color: var(--md-error-container); /* MD3 Error Container */
+          border-bottom-width: 2px;
         }
         .mu-hero__input-error {
-          font-size: 12px;
-          color: #fca5a5;
-          margin: -4px 0 0;
+          font-size: var(--md-body-small);      /* 12px — MD3 Body Small */
+          line-height: var(--md-body-small-lh);
+          letter-spacing: var(--md-body-small-ls);
+          color: var(--md-error-container); /* MD3 Error Container */
+          margin: calc(-1 * var(--md-sp-2)) 0 0; /* -8px 0 0 */
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
 
-        /* ── CTA 버튼 ── */
+        /* ── CTA 버튼 (MD3 Filled Button) ── */
         .mu-hero__cta {
           width: 100%;
-          height: 52px;
-          border-radius: 14px;
-          font-size: 15px;
+          height: 40px;    /* MD3 Filled Button 표준 높이 40dp */
+          min-height: 48px; /* MD3 터치타겟 최소 48dp */
+          border-radius: var(--md-shape-full); /* MD3 Filled Button 완전 둥근 */
+          font-size: var(--md-label-large);      /* 14px — MD3 Label Large */
+          line-height: var(--md-label-large-lh);
+          letter-spacing: var(--md-label-large-ls);
           font-weight: 700;
-          background: linear-gradient(135deg, #7B61FF 0%, #9B6DFF 100%);
-          color: #ffffff;
+          background: var(--md-primary); /* #6B5FFF */
+          color: var(--md-on-primary);   /* #ffffff */
           border: none;
           cursor: pointer;
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
           transition: all 0.15s;
-          letter-spacing: -0.2px;
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 6px;
-          box-shadow: 0 4px 16px rgba(123,97,255,0.45);
+          gap: var(--md-sp-2); /* 8px */
+          box-shadow: var(--md-elev-1);
         }
         .mu-hero__cta:hover {
-          background: linear-gradient(135deg, #6B51EF 0%, #8B5DEF 100%);
-          box-shadow: 0 6px 20px rgba(123,97,255,0.55);
-          transform: translateY(-1px);
+          background: var(--md-primary);
+          box-shadow: var(--md-elev-2);
+          opacity: 0.92;
         }
-        .mu-hero__cta:active { transform: scale(0.98); }
+        .mu-hero__cta:active { transform: scale(0.98); opacity: 0.85; }
         .mu-hero__cta.disabled,
         .mu-hero__cta:disabled {
           background: rgba(255,255,255,0.12);
-          color: rgba(255,255,255,0.30);
+          color: rgba(255,255,255,0.38); /* MD3 disabled: 38% opacity */
           cursor: not-allowed;
           box-shadow: none;
           transform: none;
@@ -480,8 +497,10 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
         .mu-hero__hint {
           display: flex;
           align-items: center;
-          gap: 5px;
-          font-size: 11px;
+          gap: var(--md-sp-1); /* 4px */
+          font-size: var(--md-label-small);      /* 11px — MD3 Label Small */
+          line-height: var(--md-label-small-lh);
+          letter-spacing: var(--md-label-small-ls);
           color: rgba(255,255,255,0.40);
           margin: 0;
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
@@ -494,44 +513,51 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           flex-shrink: 0;
         }
 
-        /* ── 양/음력 토글 ── */
+        /* ── 양/음력 토글 (MD3 Segmented Button) ── */
         .mu-hero__cal-toggle {
           display: flex;
-          gap: 6px;
+          gap: var(--md-sp-2); /* 8px */
         }
         .mu-hero__cal-btn {
           flex: 1;
-          height: 42px;
-          border-radius: 10px;
-          font-size: 13px;
+          height: 40px;    /* MD3 Segmented Button 높이 */
+          min-height: 48px; /* MD3 터치타겟 최소 48dp */
+          border-radius: var(--md-shape-full); /* MD3 Segmented Button 완전 둥근 */
+          font-size: var(--md-label-large);      /* 14px — MD3 Label Large */
+          line-height: var(--md-label-large-lh);
+          letter-spacing: var(--md-label-large-ls);
           font-weight: 600;
           background: rgba(255,255,255,0.10);
-          border: 1.5px solid rgba(255,255,255,0.15);
+          border: 1px solid rgba(255,255,255,0.20);
           color: rgba(255,255,255,0.60);
           cursor: pointer;
           transition: all 0.15s;
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
         .mu-hero__cal-btn--active {
-          background: #7B61FF;
-          border-color: #7B61FF;
-          color: #ffffff;
-          box-shadow: 0 2px 10px rgba(123,97,255,0.40);
+          background: var(--md-primary-container); /* #E8E4FF — MD3 Primary Container */
+          border-color: var(--md-primary-container);
+          color: var(--md-on-primary-container);   /* #1D0080 — MD3 On Primary Container */
+          box-shadow: none;
         }
 
         /* ── Step2 버튼 행 ── */
         .mu-hero__step2-actions {
           display: flex;
-          gap: 8px;
+          gap: var(--md-sp-2); /* 8px */
         }
+        /* MD3 Outlined Button */
         .mu-hero__back-btn {
-          height: 52px;
-          padding: 0 18px;
-          border-radius: 14px;
-          font-size: 14px;
+          height: 40px;    /* MD3 Outlined Button 표준 높이 40dp */
+          min-height: 48px; /* MD3 터치타겟 최소 48dp */
+          padding: 0 var(--md-sp-6); /* 0 24px — MD3 Outlined Button 패딩 */
+          border-radius: var(--md-shape-full); /* MD3 Outlined Button 완전 둥근 */
+          font-size: var(--md-label-large);      /* 14px — MD3 Label Large */
+          line-height: var(--md-label-large-lh);
+          letter-spacing: var(--md-label-large-ls);
           font-weight: 500;
-          background: rgba(255,255,255,0.10);
-          border: 1.5px solid rgba(255,255,255,0.15);
+          background: transparent;
+          border: 1px solid rgba(255,255,255,0.30); /* MD3 Outlined Button 테두리 */
           color: rgba(255,255,255,0.70);
           cursor: pointer;
           white-space: nowrap;
@@ -539,27 +565,30 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           transition: background 0.15s;
           flex-shrink: 0;
         }
-        .mu-hero__back-btn:hover { background: rgba(255,255,255,0.16); }
+        .mu-hero__back-btn:hover { background: rgba(255,255,255,0.08); } /* MD3 hover state layer */
         .mu-hero__cta--submit {
           flex: 1;
           width: auto;
         }
 
-        /* ── 신뢰 배지 ── */
+        /* ── 신뢰 배지 (MD3 Assist Chip) ── */
         .mu-hero__badges {
           display: flex;
-          gap: 8px;
+          gap: var(--md-sp-2); /* 8px */
           flex-wrap: wrap;
         }
         .mu-hero__badge {
           display: inline-flex;
           align-items: center;
-          gap: 5px;
-          padding: 6px 12px;
-          border-radius: 100px;
+          gap: var(--md-sp-1); /* 4px — MD3 Chip 아이콘 간격 */
+          padding: var(--md-sp-1) var(--md-sp-3); /* 4px 12px — MD3 Chip 패딩 */
+          min-height: 32px; /* MD3 Chip 기본 높이 32dp */
+          border-radius: var(--md-shape-sm); /* 8px — MD3 Chip shape */
           background: rgba(255,255,255,0.10);
-          border: 1px solid rgba(255,255,255,0.15);
-          font-size: 11px;
+          border: 1px solid rgba(255,255,255,0.20);
+          font-size: var(--md-label-small);      /* 11px — MD3 Label Small */
+          line-height: var(--md-label-small-lh);
+          letter-spacing: var(--md-label-small-ls);
           font-weight: 600;
           color: rgba(255,255,255,0.75);
           font-family: 'Pretendard Variable', Pretendard, sans-serif;

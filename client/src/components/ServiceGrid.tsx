@@ -114,8 +114,8 @@ export function ServiceGrid() {
       <style>{`
         /* ── 섹션 래퍼 ── */
         .mu-service-grid {
-          padding: 20px 16px 20px;
-          background: #F2F4F6;
+          padding: var(--md-sp-5) var(--md-sp-4); /* 20px 16px — MD3 4dp 배수 */
+          background: var(--md-surface-container); /* #F2F4F6 — MD3 Surface Container */
           display: flex;
           flex-direction: column;
           gap: 0;
@@ -124,44 +124,49 @@ export function ServiceGrid() {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          margin-bottom: 10px;
+          margin-bottom: var(--md-sp-3); /* 12px — MD3 4dp 배수 */
         }
         .mu-section-header--more {
-          margin-top: 16px;
+          margin-top: var(--md-sp-4); /* 16px */
         }
+        /* MD3 Title Large */
         .mu-section-label {
-          font-size: 18px;
+          font-size: var(--md-title-large);      /* 22px — MD3 Title Large */
+          line-height: var(--md-title-large-lh); /* 28px */
+          letter-spacing: var(--md-title-large-ls);
           font-weight: 800;
-          color: #191f28;
-          letter-spacing: -0.03em;
+          color: var(--md-on-surface); /* #1C1B1F — MD3 On Surface */
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
+        /* MD3 Label Medium */
         .mu-section-more {
-          font-size: 12px;
+          font-size: var(--md-label-medium);      /* 12px — MD3 Label Medium */
+          line-height: var(--md-label-medium-lh);
+          letter-spacing: var(--md-label-medium-ls);
           font-weight: 600;
-          color: #8b95a1;
+          color: var(--md-on-surface-variant); /* #49454F — MD3 On Surface Variant */
           text-decoration: none;
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
-        .mu-section-more:hover { color: #4e5968; }
+        .mu-section-more:hover { color: var(--md-on-surface); }
 
         /* ── 인기 서비스 2×2 ── */
         .mu-service-grid__popular {
           display: grid;
           grid-template-columns: repeat(2, 1fr);
-          gap: 8px;
-          margin-bottom: 12px;
+          gap: var(--md-sp-2); /* 8px — MD3 4dp 배수 */
+          margin-bottom: var(--md-sp-3); /* 12px */
         }
 
-        /* ── 인기 서비스 카드 ── */
+        /* ── 인기 서비스 카드 (MD3 Elevated Card) ── */
         .mu-pop-card {
           display: flex;
           flex-direction: column;
           align-items: flex-start;
-          gap: 6px;
-          padding: 16px 14px 14px;
-          border-radius: 16px;
-          background: #ffffff;
+          gap: var(--md-sp-1); /* 4px — MD3 4dp */
+          padding: var(--md-sp-4) var(--md-sp-4) var(--md-sp-3); /* 16px 16px 12px */
+          border-radius: var(--md-shape-lg); /* 16px — MD3 Large shape */
+          background: var(--md-surface-container-lowest); /* #ffffff — MD3 Surface Container Lowest */
           border: none;
           text-decoration: none;
           position: relative;
@@ -169,9 +174,9 @@ export function ServiceGrid() {
           transition: transform 0.12s, box-shadow 0.12s;
           -webkit-tap-highlight-color: transparent;
           min-height: 100px;
-          box-shadow: 0 1px 4px rgba(0,0,0,.05), 0 4px 12px rgba(0,0,0,.06);
+          box-shadow: var(--md-elev-1); /* MD3 Elevation 1 */
         }
-        .mu-pop-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,.10); }
+        .mu-pop-card:hover { transform: translateY(-2px); box-shadow: var(--md-elev-2); } /* MD3 Elevation 2 on hover */
         .mu-pop-card:active { transform: scale(0.97); }
         .mu-pop-card__top {
           display: flex;
@@ -182,7 +187,7 @@ export function ServiceGrid() {
         .mu-pop-card__icon {
           width: 40px;
           height: 40px;
-          border-radius: 12px;
+          border-radius: var(--md-shape-md); /* 12px — MD3 Medium shape */
           display: flex;
           align-items: center;
           justify-content: center;
@@ -195,92 +200,106 @@ export function ServiceGrid() {
           line-height: 1;
           font-weight: 300;
         }
+        /* MD3 Title Medium */
         .mu-pop-card__label {
-          font-size: 15px;
+          font-size: var(--md-title-medium);      /* 16px — MD3 Title Medium */
+          line-height: var(--md-title-medium-lh); /* 24px */
+          letter-spacing: var(--md-title-medium-ls);
           font-weight: 700;
-          color: #191f28;
-          letter-spacing: -0.3px;
+          color: var(--md-on-surface); /* #1C1B1F */
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
+        /* MD3 Body Small */
         .mu-pop-card__sub {
-          font-size: 11px;
-          color: #8b95a1;
-          line-height: 1.3;
+          font-size: var(--md-body-small);      /* 12px — MD3 Body Small */
+          line-height: var(--md-body-small-lh); /* 16px */
+          letter-spacing: var(--md-body-small-ls);
+          color: var(--md-on-surface-variant); /* #49454F */
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
 
-        /* ── 배지 ── */
+        /* ── 배지 (MD3 Badge) ── */
         .mu-badge {
           position: absolute;
-          top: 8px;
-          right: 8px;
-          font-size: 9px;
+          top: var(--md-sp-2); /* 8px */
+          right: var(--md-sp-2); /* 8px */
+          font-size: var(--md-label-small); /* 11px — MD3 Label Small */
           font-weight: 600;
-          padding: 2px 6px;
-          border-radius: 100px;
+          padding: 2px var(--md-sp-1); /* 2px 4px */
+          border-radius: var(--md-shape-full); /* MD3 Badge 완전 둥근 */
           line-height: 1.4;
           z-index: 2;
         }
         .mu-badge--new {
-          background: rgba(107,95,255,0.12);
-          color: #6B5FFF;
+          background: var(--md-primary-container); /* #E8E4FF — MD3 Primary Container */
+          color: var(--md-on-primary-container);   /* #1D0080 — MD3 On Primary Container */
         }
         .mu-badge--hot {
-          background: rgba(239,68,68,0.10);
-          color: #dc2626;
+          background: var(--md-error-container); /* #F9DEDC — MD3 Error Container */
+          color: var(--md-on-error-container);   /* #410E0B — MD3 On Error Container */
         }
 
-        /* ── 작명소 Spotlight ── */
+        /* ── 작명소 Spotlight (MD3 Filled Card) ── */
         .mu-naming-spotlight {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 18px 18px;
-          border-radius: 16px;
-          background: #f0edff;
+          padding: var(--md-sp-4); /* 16px — MD3 4dp 배수 */
+          border-radius: var(--md-shape-lg); /* 16px — MD3 Large shape */
+          background: var(--md-primary-container); /* #E8E4FF — MD3 Primary Container */
           text-decoration: none;
-          margin-bottom: 12px;
+          margin-bottom: var(--md-sp-3); /* 12px */
           overflow: hidden;
           transition: transform 0.12s;
           -webkit-tap-highlight-color: transparent;
           position: relative;
-          box-shadow: 0 1px 4px rgba(107,95,255,0.08);
+          box-shadow: none; /* MD3 Filled Card: no shadow */
         }
         .mu-naming-spotlight:hover { transform: translateY(-2px); }
         .mu-naming-spotlight:active { opacity: 0.90; }
         .mu-naming-spotlight__left { flex: 1; }
+        /* MD3 Label Medium */
         .mu-naming-spotlight__badge {
           display: inline-flex;
           align-items: center;
-          font-size: 10px;
+          font-size: var(--md-label-medium);      /* 12px — MD3 Label Medium */
+          line-height: var(--md-label-medium-lh);
+          letter-spacing: var(--md-label-medium-ls);
           font-weight: 800;
-          color: #ffffff;
-          background: #7B61FF;
-          border-radius: 100px;
-          padding: 3px 10px;
-          margin-bottom: 8px;
-          letter-spacing: 0.04em;
+          color: var(--md-on-primary);  /* #ffffff */
+          background: var(--md-primary); /* #6B5FFF */
+          border-radius: var(--md-shape-full); /* MD3 Badge 완전 둥근 */
+          padding: var(--md-sp-1) var(--md-sp-3); /* 4px 12px */
+          margin-bottom: var(--md-sp-2); /* 8px */
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
+        /* MD3 Title Medium */
         .mu-naming-spotlight__title {
-          font-size: 17px;
+          font-size: var(--md-title-medium);      /* 16px — MD3 Title Medium */
+          line-height: var(--md-title-medium-lh); /* 24px */
+          letter-spacing: var(--md-title-medium-ls);
           font-weight: 700;
-          color: #191f28;
-          letter-spacing: -0.4px;
-          margin: 0 0 4px;
+          color: var(--md-on-primary-container); /* #1D0080 — MD3 On Primary Container */
+          margin: 0 0 var(--md-sp-1); /* 0 0 4px */
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
+        /* MD3 Body Small */
         .mu-naming-spotlight__sub {
-          font-size: 12px;
-          color: #4e5968;
-          margin: 0 0 10px;
-          line-height: 1.4;
+          font-size: var(--md-body-small);      /* 12px — MD3 Body Small */
+          line-height: var(--md-body-small-lh); /* 16px */
+          letter-spacing: var(--md-body-small-ls);
+          color: var(--md-on-primary-container); /* #1D0080 — MD3 On Primary Container */
+          opacity: 0.75;
+          margin: 0 0 var(--md-sp-3); /* 0 0 12px */
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
+        /* MD3 Label Large */
         .mu-naming-spotlight__cta {
-          font-size: 13px;
+          font-size: var(--md-label-large);      /* 14px — MD3 Label Large */
+          line-height: var(--md-label-large-lh);
+          letter-spacing: var(--md-label-large-ls);
           font-weight: 600;
-          color: #6B5FFF;
+          color: var(--md-primary); /* #6B5FFF */
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
         .mu-naming-spotlight__visual {
@@ -298,33 +317,33 @@ export function ServiceGrid() {
         .mu-service-grid__more {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 6px;
+          gap: var(--md-sp-2); /* 8px — MD3 4dp 배수 */
         }
 
-        /* ── 더보기 카드 ── */
+        /* ── 더보기 카드 (MD3 Elevated Card) ── */
         .mu-more-card {
           display: flex;
           align-items: center;
-          gap: 9px;
-          padding: 11px 12px;
-          border-radius: 12px;
-          background: #ffffff;
+          gap: var(--md-sp-2); /* 8px — MD3 4dp */
+          padding: var(--md-sp-3); /* 12px — MD3 4dp */
+          border-radius: var(--md-shape-md); /* 12px — MD3 Medium shape */
+          background: var(--md-surface-container-lowest); /* #ffffff */
           text-decoration: none;
           transition: background 0.12s;
           -webkit-tap-highlight-color: transparent;
-          min-height: 50px;
-          box-shadow: 0 1px 4px rgba(0,0,0,.05), 0 4px 12px rgba(0,0,0,.06);
+          min-height: 48px; /* MD3 터치타겟 최소 48dp */
+          box-shadow: var(--md-elev-1); /* MD3 Elevation 1 */
         }
-        .mu-more-card:hover { background: #f8f9fa; }
+        .mu-more-card:hover { background: var(--md-surface-container-low); } /* MD3 hover: Surface Container Low */
         .mu-more-card:active { opacity: 0.80; }
         .mu-more-card--full {
           grid-column: 1 / -1;
         }
         .mu-more-card__icon {
-          width: 28px;
-          height: 28px;
-          border-radius: 8px;
-          background: #F2F4F6;
+          width: 32px; /* MD3 아이콘 컨테이너 크기 */
+          height: 32px;
+          border-radius: var(--md-shape-sm); /* 8px — MD3 Small shape */
+          background: var(--md-surface-container); /* #F2F4F6 — MD3 Surface Container */
           display: flex;
           align-items: center;
           justify-content: center;
@@ -339,16 +358,21 @@ export function ServiceGrid() {
           flex: 1;
           min-width: 0;
         }
+        /* MD3 Title Small */
         .mu-more-card__label {
-          font-size: 13px;
+          font-size: var(--md-title-small);      /* 14px — MD3 Title Small */
+          line-height: var(--md-title-small-lh); /* 20px */
+          letter-spacing: var(--md-title-small-ls);
           font-weight: 600;
-          color: #191f28;
-          letter-spacing: -0.2px;
+          color: var(--md-on-surface); /* #1C1B1F */
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
+        /* MD3 Body Small */
         .mu-more-card__desc {
-          font-size: 11px;
-          color: #8b95a1;
+          font-size: var(--md-body-small);      /* 12px — MD3 Body Small */
+          line-height: var(--md-body-small-lh); /* 16px */
+          letter-spacing: var(--md-body-small-ls);
+          color: var(--md-on-surface-variant); /* #49454F */
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
 

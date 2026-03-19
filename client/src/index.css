@@ -141,6 +141,78 @@
   --sidebar-accent-foreground: #6B5FFF;
   --sidebar-border: #e8ebed;
   --sidebar-ring: rgba(107,95,255,0.35);
+  /* ── MD3 Type Scale Tokens ── */
+  --md-display-large:   57px; --md-display-large-lh:   64px; --md-display-large-ls:   -0.25px;
+  --md-display-medium:  45px; --md-display-medium-lh:  52px; --md-display-medium-ls:  0px;
+  --md-display-small:   36px; --md-display-small-lh:   44px; --md-display-small-ls:   0px;
+  --md-headline-large:  32px; --md-headline-large-lh:  40px; --md-headline-large-ls:  0px;
+  --md-headline-medium: 28px; --md-headline-medium-lh: 36px; --md-headline-medium-ls: 0px;
+  --md-headline-small:  24px; --md-headline-small-lh:  32px; --md-headline-small-ls:  0px;
+  --md-title-large:     22px; --md-title-large-lh:     28px; --md-title-large-ls:     0px;
+  --md-title-medium:    16px; --md-title-medium-lh:    24px; --md-title-medium-ls:    0.15px;
+  --md-title-small:     14px; --md-title-small-lh:     20px; --md-title-small-ls:     0.1px;
+  --md-body-large:      16px; --md-body-large-lh:      24px; --md-body-large-ls:      0.5px;
+  --md-body-medium:     14px; --md-body-medium-lh:     20px; --md-body-medium-ls:     0.25px;
+  --md-body-small:      12px; --md-body-small-lh:      16px; --md-body-small-ls:      0.4px;
+  --md-label-large:     14px; --md-label-large-lh:     20px; --md-label-large-ls:     0.1px;
+  --md-label-medium:    12px; --md-label-medium-lh:    16px; --md-label-medium-ls:    0.5px;
+  --md-label-small:     11px; --md-label-small-lh:     16px; --md-label-small-ls:     0.5px;
+
+  /* ── MD3 Spacing Scale (4dp 배수) ── */
+  --md-sp-1:  4px;
+  --md-sp-2:  8px;
+  --md-sp-3:  12px;
+  --md-sp-4:  16px;
+  --md-sp-5:  20px;
+  --md-sp-6:  24px;
+  --md-sp-7:  28px;
+  --md-sp-8:  32px;
+  --md-sp-10: 40px;
+  --md-sp-12: 48px;
+
+  /* ── MD3 Shape Scale ── */
+  --md-shape-none:      0px;
+  --md-shape-xs:        4px;
+  --md-shape-sm:        8px;
+  --md-shape-md:        12px;
+  --md-shape-lg:        16px;
+  --md-shape-xl:        28px;
+  --md-shape-full:      9999px;
+
+  /* ── MD3 Elevation (box-shadow) ── */
+  --md-elev-1: 0 1px 2px rgba(0,0,0,0.30), 0 1px 3px 1px rgba(0,0,0,0.15);
+  --md-elev-2: 0 1px 2px rgba(0,0,0,0.30), 0 2px 6px 2px rgba(0,0,0,0.15);
+  --md-elev-3: 0 4px 8px 3px rgba(0,0,0,0.15), 0 1px 3px rgba(0,0,0,0.30);
+
+  /* ── MD3 Color Roles (브랜드 퍼플 기반) ── */
+  --md-primary:              #6B5FFF;
+  --md-on-primary:           #ffffff;
+  --md-primary-container:    #E8E4FF;
+  --md-on-primary-container: #1D0080;
+  --md-secondary:            #5C5C7A;
+  --md-on-secondary:         #ffffff;
+  --md-secondary-container:  #E2E0F9;
+  --md-on-secondary-container: #191631;
+  --md-surface:              #FEFBFF;
+  --md-surface-dim:          #DED8E1;
+  --md-surface-bright:       #FEFBFF;
+  --md-surface-container-lowest:  #ffffff;
+  --md-surface-container-low:     #F7F2FA;
+  --md-surface-container:         #F2F4F6;
+  --md-surface-container-high:    #ECE6F0;
+  --md-surface-container-highest: #E6E0E9;
+  --md-on-surface:           #1C1B1F;
+  --md-on-surface-variant:   #49454F;
+  --md-outline:              #79747E;
+  --md-outline-variant:      #CAC4D0;
+  --md-inverse-surface:      #313033;
+  --md-inverse-on-surface:   #F4EFF4;
+  --md-inverse-primary:      #CFBCFF;
+  --md-error:                #B3261E;
+  --md-on-error:             #ffffff;
+  --md-error-container:      #F9DEDC;
+  --md-on-error-container:   #410E0B;
+
   /* ── Galaxy AI Aurora 그라디언트 ── */
   --aurora: linear-gradient(135deg, #6B5FFF 0%, #60C8D4 60%, #A8E6CF 100%);
   --aurora-indigo: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);

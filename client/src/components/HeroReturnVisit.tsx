@@ -228,7 +228,7 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
         .mu-hero--return {
           position: relative;
           background: linear-gradient(155deg, #12082e 0%, #1e0f4a 40%, #2a1060 70%, #1a0840 100%);
-          padding: 20px 16px 24px;
+          padding: var(--md-sp-5) var(--md-sp-4) var(--md-sp-6); /* 20px 16px 24px — MD3 4dp 배수 */
           overflow: hidden;
         }
         .mu-hero--return::before {
@@ -256,7 +256,7 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           z-index: 1;
           display: flex;
           flex-direction: column;
-          gap: 10px;
+          gap: var(--md-sp-3); /* 12px — MD3 4dp 배수 */
         }
 
         /* ── 인사 행 ── */
@@ -264,34 +264,40 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           display: flex;
           align-items: flex-start;
           justify-content: space-between;
-          margin-bottom: 2px;
+          margin-bottom: var(--md-sp-1); /* 4px */
         }
+        /* MD3 Label Small */
         .mu-hero__eyebrow {
-          font-size: 11px;
-          font-weight: 600;
-          color: #a78bfa;
+          font-size: var(--md-label-small);      /* 11px — MD3 Label Small */
+          line-height: var(--md-label-small-lh);
           letter-spacing: 0.04em;
+          font-weight: 600;
+          color: var(--md-inverse-primary); /* #CFBCFF — MD3 Inverse Primary */
           text-transform: uppercase;
-          margin-bottom: 4px;
+          margin-bottom: var(--md-sp-1); /* 4px */
         }
         .mu-hero__greeting-line {
           display: flex;
           flex-direction: column;
-          gap: 2px;
+          gap: var(--md-sp-1); /* 4px */
         }
+        /* MD3 Headline Small */
         .mu-hero__greeting {
-          font-size: 22px;
+          font-size: var(--md-headline-small);      /* 24px — MD3 Headline Small */
+          line-height: var(--md-headline-small-lh); /* 32px */
+          letter-spacing: var(--md-headline-small-ls);
           font-weight: 800;
           color: #ffffff;
-          letter-spacing: -0.5px;
           margin: 0;
-          line-height: 1.2;
         }
+        /* MD3 Body Small */
         .mu-hero__greeting-meta {
           display: flex;
           align-items: center;
-          gap: 4px;
-          font-size: 12px;
+          gap: var(--md-sp-1); /* 4px */
+          font-size: var(--md-body-small);      /* 12px — MD3 Body Small */
+          line-height: var(--md-body-small-lh);
+          letter-spacing: var(--md-body-small-ls);
           color: rgba(255,255,255,0.45);
           position: relative;
         }
@@ -308,55 +314,63 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
         }
         .mu-hero__tooltip {
           position: absolute;
-          top: calc(100% + 6px);
+          top: calc(100% + var(--md-sp-1)); /* 4px */
           left: 0;
           z-index: 20;
           background: #1e0f4a;
           border: 1px solid rgba(255,255,255,0.15);
-          border-radius: 10px;
-          padding: 10px 12px;
-          font-size: 12px;
+          border-radius: var(--md-shape-md); /* 12px — MD3 Medium shape */
+          padding: var(--md-sp-3) var(--md-sp-3); /* 12px — MD3 4dp */
+          font-size: var(--md-body-small);      /* 12px — MD3 Body Small */
+          line-height: var(--md-body-small-lh);
+          letter-spacing: var(--md-body-small-ls);
           color: rgba(255,255,255,0.75);
-          line-height: 1.5;
           width: 220px;
-          box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+          box-shadow: var(--md-elev-3); /* MD3 Elevation 3 */
         }
+        /* MD3 Label Small */
         .mu-hero__delete-btn {
           display: flex;
           align-items: center;
-          gap: 3px;
-          font-size: 11px;
+          gap: var(--md-sp-1); /* 4px */
+          font-size: var(--md-label-small);      /* 11px — MD3 Label Small */
+          line-height: var(--md-label-small-lh);
+          letter-spacing: var(--md-label-small-ls);
           color: rgba(255,255,255,0.40);
           background: none;
           border: none;
           cursor: pointer;
-          padding: 4px 0;
+          padding: var(--md-sp-1) 0; /* 4px 0 */
+          min-height: 32px; /* 터치타겟 최소 */
           white-space: nowrap;
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
         .mu-hero__delete-btn:hover { color: rgba(255,255,255,0.65); }
 
-        /* ── 운세 카드 (글래스모피즘) ── */
+        /* ── 운세 카드 (글래스모피즘 + MD3 Extra Large shape) ── */
         .mu-fortune-card {
           background: rgba(255,255,255,0.10);
           backdrop-filter: blur(20px);
           -webkit-backdrop-filter: blur(20px);
           border: 1px solid rgba(255,255,255,0.18);
-          border-radius: 18px;
-          padding: 16px;
-          box-shadow: 0 8px 32px rgba(0,0,0,0.20), inset 0 1px 0 rgba(255,255,255,0.12);
+          border-radius: var(--md-shape-xl); /* 28px — MD3 Extra Large */
+          padding: var(--md-sp-4); /* 16px */
+          box-shadow: var(--md-elev-3); /* MD3 Elevation 3 */
         }
         .mu-fortune-card__header {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          margin-bottom: 8px;
+          margin-bottom: var(--md-sp-2); /* 8px */
         }
+        /* MD3 Body Small */
         .mu-fortune-card__eyebrow {
           display: flex;
           align-items: center;
-          gap: 5px;
-          font-size: 12px;
+          gap: var(--md-sp-1); /* 4px */
+          font-size: var(--md-body-small);      /* 12px — MD3 Body Small */
+          line-height: var(--md-body-small-lh);
+          letter-spacing: var(--md-body-small-ls);
           color: rgba(255,255,255,0.55);
           font-weight: 500;
         }
@@ -371,28 +385,32 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           0%, 100% { opacity: 1; transform: scale(1); }
           50% { opacity: 0.4; transform: scale(0.8); }
         }
+        /* MD3 Label Large */
         .mu-fortune-card__score-badge {
-          font-size: 13px;
+          font-size: var(--md-label-large);      /* 14px — MD3 Label Large */
+          line-height: var(--md-label-large-lh);
+          letter-spacing: var(--md-label-large-ls);
           font-weight: 700;
-          color: #c4b5fd;
+          color: var(--md-inverse-primary); /* #CFBCFF — MD3 Inverse Primary */
           background: rgba(123,97,255,0.25);
-          padding: 2px 10px;
-          border-radius: 20px;
+          padding: var(--md-sp-1) var(--md-sp-3); /* 4px 12px */
+          border-radius: var(--md-shape-full); /* MD3 Badge 완전 둥근 */
         }
+        /* MD3 Title Medium */
         .mu-fortune-card__title {
-          font-size: 17px;
+          font-size: var(--md-title-medium);      /* 16px — MD3 Title Medium */
+          line-height: var(--md-title-medium-lh); /* 24px */
+          letter-spacing: var(--md-title-medium-ls);
           font-weight: 700;
           color: #ffffff;
-          letter-spacing: -0.4px;
-          margin: 0 0 10px;
-          line-height: 1.3;
+          margin: 0 0 var(--md-sp-3); /* 0 0 12px */
         }
         .mu-fortune-card__gauge {
-          height: 3px;
+          height: 4px; /* MD3 Linear Progress 기본 높이 4dp */
           background: rgba(255,255,255,0.15);
-          border-radius: 2px;
+          border-radius: var(--md-shape-full);
           overflow: hidden;
-          margin-bottom: 10px;
+          margin-bottom: var(--md-sp-3); /* 12px */
         }
         .mu-fortune-card__gauge-fill {
           height: 100%;
@@ -404,34 +422,39 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           display: flex;
           align-items: flex-end;
           justify-content: space-between;
-          gap: 8px;
+          gap: var(--md-sp-2); /* 8px */
         }
+        /* MD3 Body Small */
         .mu-fortune-card__desc {
-          font-size: 12px;
+          font-size: var(--md-body-small);      /* 12px — MD3 Body Small */
+          line-height: var(--md-body-small-lh); /* 16px */
+          letter-spacing: var(--md-body-small-ls);
           color: rgba(255,255,255,0.55);
-          line-height: 1.6;
           margin: 0;
           white-space: pre-line;
           flex: 1;
         }
+        /* MD3 Label Large */
         .mu-fortune-card__cta {
-          font-size: 13px;
-          color: #c4b5fd;
+          font-size: var(--md-label-large);      /* 14px — MD3 Label Large */
+          line-height: var(--md-label-large-lh);
+          letter-spacing: var(--md-label-large-ls);
+          color: var(--md-inverse-primary); /* #CFBCFF */
           text-decoration: none;
           font-weight: 600;
           white-space: nowrap;
           flex-shrink: 0;
         }
 
-        /* ── 행운 메뉴 카드 ── */
+        /* ── 행운 메뉴 카드 (MD3 Large shape) ── */
         .mu-lunch-card {
           display: flex;
           align-items: center;
-          gap: 12px;
+          gap: var(--md-sp-3); /* 12px */
           background: rgba(255,255,255,0.08);
           border: 1px solid rgba(255,255,255,0.12);
-          border-radius: 16px;
-          padding: 14px 16px;
+          border-radius: var(--md-shape-lg); /* 16px — MD3 Large shape */
+          padding: var(--md-sp-3) var(--md-sp-4); /* 12px 16px */
         }
         .mu-lunch-card__emoji {
           font-size: 26px;
@@ -439,30 +462,39 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           flex-shrink: 0;
         }
         .mu-lunch-card__body { flex: 1; min-width: 0; }
+        /* MD3 Label Small */
         .mu-lunch-card__eyebrow {
-          font-size: 11px;
+          font-size: var(--md-label-small);      /* 11px — MD3 Label Small */
+          line-height: var(--md-label-small-lh);
+          letter-spacing: var(--md-label-small-ls);
           color: rgba(255,255,255,0.40);
-          margin-bottom: 2px;
+          margin-bottom: var(--md-sp-1); /* 4px */
         }
+        /* MD3 Title Medium */
         .mu-lunch-card__title {
-          font-size: 16px;
+          font-size: var(--md-title-medium);      /* 16px — MD3 Title Medium */
+          line-height: var(--md-title-medium-lh); /* 24px */
+          letter-spacing: var(--md-title-medium-ls);
           font-weight: 700;
           color: #ffffff;
-          letter-spacing: -0.3px;
-          margin: 0 0 2px;
+          margin: 0 0 var(--md-sp-1); /* 0 0 4px */
           transition: opacity 0.18s;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
         }
         .mu-lunch-card__title--fade { opacity: 0; }
+        /* MD3 Label Small */
         .mu-lunch-card__desc {
-          font-size: 11px;
+          font-size: var(--md-label-small);      /* 11px — MD3 Label Small */
+          line-height: var(--md-label-small-lh);
+          letter-spacing: var(--md-label-small-ls);
           color: rgba(255,255,255,0.40);
           margin: 0;
         }
+        /* MD3 Icon Button */
         .mu-lunch-card__refresh {
-          width: 32px; height: 32px;
+          width: 40px; height: 40px; /* MD3 Icon Button 기본 크기 40dp */
           border-radius: 50%;
           background: rgba(255,255,255,0.12);
           border: 1px solid rgba(255,255,255,0.15);
@@ -476,19 +508,20 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
         }
         .mu-lunch-card__refresh:hover { background: rgba(255,255,255,0.20); }
 
-        /* ── 바로가기 4버튼 ── */
+        /* ── 바로가기 4버튼 (MD3 Navigation Destination 스타일) ── */
         .mu-shortcuts {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
-          gap: 8px;
+          gap: var(--md-sp-2); /* 8px */
         }
         .mu-shortcut-btn {
           display: flex;
           flex-direction: column;
           align-items: center;
-          gap: 6px;
-          padding: 14px 4px 12px;
-          border-radius: 14px;
+          gap: var(--md-sp-1); /* 4px */
+          padding: var(--md-sp-3) var(--md-sp-1) var(--md-sp-3); /* 12px 4px 12px */
+          min-height: 64px; /* MD3 Navigation 최소 높이 */
+          border-radius: var(--md-shape-lg); /* 16px — MD3 Large shape */
           background: rgba(255,255,255,0.08);
           border: 1px solid rgba(255,255,255,0.12);
           text-decoration: none;
@@ -498,79 +531,96 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
         .mu-shortcut-btn:hover { background: rgba(255,255,255,0.14); }
         .mu-shortcut-btn:active { opacity: 0.8; }
         .mu-shortcut-btn__icon {
-          width: 36px; height: 36px;
-          border-radius: 12px;
+          width: 40px; height: 40px; /* MD3 터치타겟 최소 */
+          border-radius: var(--md-shape-md); /* 12px — MD3 Medium shape */
           background: rgba(123,97,255,0.25);
           display: flex;
           align-items: center;
           justify-content: center;
-          color: #c4b5fd;
+          color: var(--md-inverse-primary); /* #CFBCFF — MD3 Inverse Primary */
         }
+        /* MD3 Label Small */
         .mu-shortcut-btn__label {
-          font-size: 11px;
+          font-size: var(--md-label-small);      /* 11px — MD3 Label Small */
+          line-height: var(--md-label-small-lh);
+          letter-spacing: var(--md-label-small-ls);
           color: rgba(255,255,255,0.70);
           font-weight: 500;
           white-space: nowrap;
         }
 
-        /* ── 바텀시트 ── */
+        /* ── 바텐시트 (MD3 Bottom Sheet) ── */
         .mu-sheet-overlay {
           position: fixed;
           inset: 0;
           z-index: 200;
-          background: rgba(0,0,0,0.35);
+          background: rgba(0,0,0,0.35); /* MD3 Scrim */
           display: flex;
           align-items: flex-end;
         }
         .mu-sheet {
           width: 100%;
-          background: #ffffff;
-          border-radius: 20px 20px 0 0;
-          padding: 12px 20px calc(20px + var(--safe-area-bottom));
+          background: var(--md-surface-container-low); /* MD3 Surface Container Low */
+          border-radius: var(--md-shape-xl) var(--md-shape-xl) 0 0; /* 28px 28px 0 0 — MD3 Bottom Sheet */
+          padding: var(--md-sp-3) var(--md-sp-5) calc(var(--md-sp-5) + var(--safe-area-bottom, 0px)); /* 12px 20px */
         }
         .mu-sheet__handle {
-          width: 36px; height: 4px;
-          border-radius: 2px;
-          background: #e8ebed;
-          margin: 0 auto 20px;
+          width: 32px; height: 4px; /* MD3 Bottom Sheet 핸들 */
+          border-radius: var(--md-shape-full);
+          background: var(--md-outline-variant); /* MD3 Outline Variant */
+          margin: 0 auto var(--md-sp-5); /* 0 auto 20px */
         }
+        /* MD3 Title Large */
         .mu-sheet__title {
-          font-size: 17px;
+          font-size: var(--md-title-large);      /* 22px — MD3 Title Large */
+          line-height: var(--md-title-large-lh); /* 28px */
+          letter-spacing: var(--md-title-large-ls);
           font-weight: 700;
-          color: #191f28;
+          color: var(--md-on-surface); /* #1C1B1F */
           text-align: center;
-          margin: 0 0 8px;
+          margin: 0 0 var(--md-sp-2); /* 0 0 8px */
         }
+        /* MD3 Body Medium */
         .mu-sheet__desc {
-          font-size: 13px;
-          color: #4e5968;
+          font-size: var(--md-body-medium);      /* 14px — MD3 Body Medium */
+          line-height: var(--md-body-medium-lh); /* 20px */
+          letter-spacing: var(--md-body-medium-ls);
+          color: var(--md-on-surface-variant); /* #49454F */
           text-align: center;
-          margin: 0 0 20px;
+          margin: 0 0 var(--md-sp-5); /* 0 0 20px */
         }
         .mu-sheet__actions {
           display: flex;
-          gap: 10px;
+          gap: var(--md-sp-3); /* 12px */
         }
+        /* MD3 Tonal Button */
         .mu-sheet__cancel {
           flex: 1;
-          height: 50px;
-          border-radius: 14px;
-          background: #f2f4f6;
+          height: 40px;    /* MD3 Button 표준 높이 40dp */
+          min-height: 48px; /* MD3 터치타겟 최소 48dp */
+          border-radius: var(--md-shape-full); /* MD3 Button 완전 둥근 */
+          background: var(--md-secondary-container); /* #E2E0F9 — MD3 Secondary Container */
           border: none;
-          color: #4e5968;
-          font-size: 15px;
+          color: var(--md-on-secondary-container); /* #191631 */
+          font-size: var(--md-label-large);      /* 14px — MD3 Label Large */
+          line-height: var(--md-label-large-lh);
+          letter-spacing: var(--md-label-large-ls);
           font-weight: 600;
           cursor: pointer;
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
+        /* MD3 Filled Button (Error) */
         .mu-sheet__confirm {
           flex: 1;
-          height: 50px;
-          border-radius: 14px;
-          background: #dc2626;
+          height: 40px;    /* MD3 Button 표준 높이 40dp */
+          min-height: 48px; /* MD3 터치타겟 최소 48dp */
+          border-radius: var(--md-shape-full); /* MD3 Button 완전 둥근 */
+          background: var(--md-error); /* #B3261E — MD3 Error */
           border: none;
-          color: white;
-          font-size: 15px;
+          color: var(--md-on-error); /* #ffffff */
+          font-size: var(--md-label-large);      /* 14px — MD3 Label Large */
+          line-height: var(--md-label-large-lh);
+          letter-spacing: var(--md-label-large-ls);
           font-weight: 600;
           cursor: pointer;
           font-family: 'Pretendard Variable', Pretendard, sans-serif;

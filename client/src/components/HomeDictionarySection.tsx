@@ -50,110 +50,127 @@ export function HomeDictionarySection() {
       <style>{`
         /* ── 운세 사전 섹션 ── */
         .mu-dict-section {
-          padding: 20px 16px 20px;
+          padding: var(--md-sp-5) var(--md-sp-4); /* 20px 16px — MD3 4dp 배수 */
           margin-bottom: 0;
-          background: #F2F4F6;
+          background: var(--md-surface-container); /* #F2F4F6 — MD3 Surface Container */
         }
         .mu-dict-section__header {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          margin-bottom: 12px;
+          margin-bottom: var(--md-sp-3); /* 12px — MD3 4dp 배수 */
         }
+        /* MD3 Title Large */
         .mu-dict-section__title {
           display: flex;
           align-items: center;
-          gap: 6px;
-          font-size: 18px;
+          gap: var(--md-sp-1); /* 4px */
+          font-size: var(--md-title-large);      /* 22px — MD3 Title Large */
+          line-height: var(--md-title-large-lh); /* 28px */
+          letter-spacing: var(--md-title-large-ls);
           font-weight: 800;
-          color: #191f28;
-          letter-spacing: -0.03em;
+          color: var(--md-on-surface); /* #1C1B1F — MD3 On Surface */
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
-        .mu-dict-section__title svg { color: #6B5FFF; }
+        .mu-dict-section__title svg { color: var(--md-primary); } /* #6B5FFF — MD3 Primary */
+        /* MD3 Label Medium */
         .mu-dict-section__more {
           display: flex;
           align-items: center;
-          gap: 2px;
-          font-size: 12px;
+          gap: var(--md-sp-1); /* 4px */
+          font-size: var(--md-label-medium);      /* 12px — MD3 Label Medium */
+          line-height: var(--md-label-medium-lh);
+          letter-spacing: var(--md-label-medium-ls);
           font-weight: 600;
-          color: #8b95a1;
+          color: var(--md-on-surface-variant); /* #49454F — MD3 On Surface Variant */
           text-decoration: none;
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
-        .mu-dict-section__more:hover { color: #4e5968; }
+        .mu-dict-section__more:hover { color: var(--md-on-surface); }
 
         /* ── 용어 그리드 ── */
         .mu-dict-grid {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 8px;
-          margin-bottom: 8px;
+          gap: var(--md-sp-2); /* 8px — MD3 4dp 배수 */
+          margin-bottom: var(--md-sp-2); /* 8px */
         }
 
-        /* ── 용어 카드 ── */
+        /* ── 용어 카드 (MD3 Outlined Card) ── */
         .mu-dict-card {
           display: flex;
           flex-direction: column;
-          gap: 4px;
-          padding: 14px 16px;
-          background: #ffffff;
-          border: none;
-          border-radius: 12px;
+          gap: var(--md-sp-1); /* 4px — MD3 4dp */
+          padding: var(--md-sp-3) var(--md-sp-4); /* 12px 16px */
+          min-height: 48px; /* MD3 터치타겟 최소 48dp */
+          background: var(--md-surface-container-lowest); /* #ffffff */
+          border: 1px solid var(--md-outline-variant); /* MD3 Outlined Card 테두리 */
+          border-radius: var(--md-shape-md); /* 12px — MD3 Medium shape */
           text-decoration: none;
           box-shadow: none;
           transition: box-shadow 0.15s, transform 0.15s;
           -webkit-tap-highlight-color: transparent;
         }
         .mu-dict-card:hover {
-          box-shadow: 0 4px 12px rgba(107,95,255,0.12);
+          box-shadow: var(--md-elev-1); /* MD3 Elevation 1 on hover */
           transform: translateY(-1px);
         }
         .mu-dict-card:active { opacity: 0.85; }
+        /* MD3 Title Medium */
         .mu-dict-card__term {
-          font-size: 16px;
+          font-size: var(--md-title-medium);      /* 16px — MD3 Title Medium */
+          line-height: var(--md-title-medium-lh); /* 24px */
+          letter-spacing: var(--md-title-medium-ls);
           font-weight: 700;
-          color: #191f28;
-          letter-spacing: -0.3px;
+          color: var(--md-on-surface); /* #1C1B1F */
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
+        /* MD3 Body Small */
         .mu-dict-card__desc {
-          font-size: 11px;
-          color: #8b95a1;
-          line-height: 1.4;
+          font-size: var(--md-body-small);      /* 12px — MD3 Body Small */
+          line-height: var(--md-body-small-lh); /* 16px */
+          letter-spacing: var(--md-body-small-ls);
+          color: var(--md-on-surface-variant); /* #49454F */
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
 
-        /* ── 전체 사전 CTA ── */
+        /* ── 전체 사전 CTA (MD3 List Item 스타일) ── */
         .mu-dict-all {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 14px 16px;
-          background: #ffffff;
-          border: none;
-          border-radius: 12px;
+          padding: var(--md-sp-3) var(--md-sp-4); /* 12px 16px */
+          min-height: 48px; /* MD3 터치타겟 최소 48dp */
+          background: var(--md-surface-container-lowest); /* #ffffff */
+          border: 1px solid var(--md-outline-variant); /* MD3 Outlined Card */
+          border-radius: var(--md-shape-md); /* 12px — MD3 Medium shape */
           text-decoration: none;
           box-shadow: none;
           transition: background 0.15s;
           -webkit-tap-highlight-color: transparent;
         }
-        .mu-dict-all:hover { background: #f8f9fa; }
+        .mu-dict-all:hover { background: var(--md-surface-container-low); } /* MD3 hover: Surface Container Low */
         .mu-dict-all__body {
           display: flex;
           flex-direction: column;
-          gap: 3px;
+          gap: var(--md-sp-1); /* 4px */
         }
+        /* MD3 Title Small */
         .mu-dict-all__title {
-          font-size: 14px;
+          font-size: var(--md-title-small);      /* 14px — MD3 Title Small */
+          line-height: var(--md-title-small-lh); /* 20px */
+          letter-spacing: var(--md-title-small-ls);
           font-weight: 600;
-          color: #191f28;
+          color: var(--md-on-surface); /* #1C1B1F */
           margin: 0;
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
+        /* MD3 Body Small */
         .mu-dict-all__sub {
-          font-size: 12px;
-          color: #8b95a1;
+          font-size: var(--md-body-small);      /* 12px — MD3 Body Small */
+          line-height: var(--md-body-small-lh); /* 16px */
+          letter-spacing: var(--md-body-small-ls);
+          color: var(--md-on-surface-variant); /* #49454F */
           margin: 0;
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
@@ -161,11 +178,11 @@ export function HomeDictionarySection() {
           width: 32px;
           height: 32px;
           border-radius: 50%;
-          background: #f0edff;
+          background: var(--md-primary-container); /* #E8E4FF — MD3 Primary Container */
           display: flex;
           align-items: center;
           justify-content: center;
-          color: #6B5FFF;
+          color: var(--md-primary); /* #6B5FFF — MD3 Primary */
           flex-shrink: 0;
         }
       `}</style>
