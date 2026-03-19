@@ -160,15 +160,15 @@ export default function Guide() {
           </div>
         </div>
 
-        {/* ── 카테고리 필터 칩 ── */}
-        <div className="flex gap-2 overflow-x-auto pb-1 mb-4 scrollbar-hide">
+        {/* ── 카테고리 필터 칩 (flex-wrap 2줄 구조) ── */}
+        <div className="flex flex-wrap gap-x-2 gap-y-2 mb-4">
           {CHIP_CATEGORIES.map(cat => {
             const isActive = selectedCategory === cat.id;
             return (
               <button
                 key={String(cat.id)}
                 onClick={() => handleCategoryChange(cat.id)}
-                className={`flex-shrink-0 inline-flex items-center gap-1.5 px-4 h-9 rounded-full text-[13px] font-semibold border transition-all whitespace-nowrap ${
+                className={`inline-flex items-center gap-1.5 px-4 h-9 rounded-full text-[13px] font-semibold border transition-all whitespace-nowrap ${
                   isActive
                     ? 'bg-[#6D28D9] border-[#6D28D9] text-white shadow-sm'
                     : 'bg-white border-[#E0D9F5] text-[#5a5a56] hover:border-[#6D28D9]/40'
@@ -213,7 +213,7 @@ export default function Guide() {
         </div>
 
         {/* ── 칼럼 카드 리스트 ── */}
-        <div className="space-y-3 pb-6">
+        <div className="space-y-2 pb-6">
           {isLoading ? (
             /* 스켈레톤 */
             Array.from({ length: 5 }).map((_, i) => (
