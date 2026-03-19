@@ -32,6 +32,7 @@ import {
   RadarChart, PolarGrid, PolarAngleAxis, Radar, Legend
 } from "recharts";
 // import html2canvas from "html2canvas";
+import HybridCompatibilityContent from "@/components/HybridCompatibilityContent";
 
 const formSchema = z.object({
   name1: z.string().min(1, "첫 번째 이름을 입력해주세요"),
@@ -1069,6 +1070,7 @@ export default function HybridCompatibilityPage() {
           </motion.div>
         </main>
       </div>
+      <HybridCompatibilityContent />
     </>
   );
 }
