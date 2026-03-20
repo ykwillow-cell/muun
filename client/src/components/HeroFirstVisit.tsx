@@ -210,10 +210,10 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
       </div>
 
       <style>{`
-        /* ── Hero 섹션 래퍼 ── */
+        /* ── Hero 섹션 래퍼 (라이트 모드) ── */
         .mu-hero--first {
           position: relative;
-          background: linear-gradient(155deg, #12082e 0%, #1e0f4a 40%, #2a1060 70%, #1a0840 100%);
+          background: var(--aurora); /* linear-gradient(135deg, #6B5FFF 0%, #60C8D4 60%, #A8E6CF 100%) */
           padding: var(--md-sp-8) var(--md-sp-4) var(--md-sp-10); /* 32px 16px 40px — MD3 4dp 배수 */
           overflow: hidden;
         }
@@ -232,17 +232,17 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
         }
         .mu-hero__orb--1 {
           width: 260px; height: 260px;
-          background: radial-gradient(circle, rgba(123,97,255,0.35) 0%, transparent 70%);
+          background: radial-gradient(circle, rgba(255,255,255,0.30) 0%, transparent 70%);
           top: -80px; right: -60px;
         }
         .mu-hero__orb--2 {
           width: 200px; height: 200px;
-          background: radial-gradient(circle, rgba(160,120,255,0.20) 0%, transparent 70%);
+          background: radial-gradient(circle, rgba(255,255,255,0.20) 0%, transparent 70%);
           bottom: -40px; left: -40px;
         }
         .mu-hero__orb--3 {
           width: 140px; height: 140px;
-          background: radial-gradient(circle, rgba(200,160,255,0.15) 0%, transparent 70%);
+          background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
           top: 50%; left: 30%;
           transform: translateY(-50%);
         }
@@ -275,8 +275,8 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           display: inline-flex;
           align-items: center;
           gap: var(--md-sp-1); /* 4px */
-          background: rgba(255,255,255,0.10);
-          border: 1px solid rgba(255,255,255,0.20);
+          background: rgba(255,255,255,0.20);
+          border: 1px solid rgba(255,255,255,0.40);
           border-radius: var(--md-shape-sm); /* 8px — MD3 Chip shape */
           padding: var(--md-sp-1) var(--md-sp-3); /* 4px 12px */
           min-height: 32px; /* MD3 Chip 기본 높이 32dp */
@@ -285,7 +285,7 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
         .mu-hero__eyebrow-dot {
           width: 6px; height: 6px;
           border-radius: 50%;
-          background: #a78bfa;
+          background: #ffffff;
           animation: live-pulse 1.8s ease-in-out infinite;
           flex-shrink: 0;
         }
@@ -294,7 +294,7 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           line-height: var(--md-label-small-lh);
           letter-spacing: var(--md-label-small-ls);
           font-weight: 600;
-          color: rgba(255,255,255,0.75);
+          color: rgba(255,255,255,0.95);
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
 
@@ -311,10 +311,11 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           font-weight: 900;
           color: #ffffff;
           margin: 0;
+          text-shadow: 0 2px 8px rgba(0,0,0,0.15);
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
         .mu-hero__title-accent {
-          background: linear-gradient(90deg, #c4b5fd 0%, #a78bfa 50%, #818cf8 100%);
+          background: linear-gradient(90deg, #ffffff 0%, rgba(255,255,255,0.85) 50%, #e8e4ff 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           background-clip: text;
@@ -324,17 +325,17 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           line-height: var(--md-body-medium-lh); /* 20px */
           letter-spacing: var(--md-body-medium-ls);
           font-weight: 500;
-          color: rgba(255,255,255,0.55);
+          color: rgba(255,255,255,0.90);
           margin: 0;
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
 
         /* ── 폼 카드 (글래스모피즘 + MD3 Extra Large shape) ── */
         .mu-hero__form-card {
-          background: rgba(255,255,255,0.10);
+          background: rgba(255,255,255,0.22);
           backdrop-filter: blur(20px);
           -webkit-backdrop-filter: blur(20px);
-          border: 1px solid rgba(255,255,255,0.18);
+          border: 1px solid rgba(255,255,255,0.45);
           border-radius: var(--md-shape-xl); /* 28px — MD3 Extra Large */
           padding: var(--md-sp-4); /* 16px */
           overflow: hidden;
@@ -350,7 +351,7 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
         }
         .mu-hero__step-tab-row {
           display: flex;
-          background: rgba(0,0,0,0.25);
+          background: rgba(0,0,0,0.12);
           border-radius: var(--md-shape-md); /* 12px — MD3 Medium */
           padding: var(--md-sp-1); /* 4px */
           gap: var(--md-sp-1); /* 4px */
@@ -369,7 +370,7 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           line-height: var(--md-label-large-lh);
           letter-spacing: var(--md-label-large-ls);
           font-weight: 600;
-          color: rgba(255,255,255,0.40);
+          color: rgba(255,255,255,0.70);
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
           transition: all 0.2s;
           border-radius: var(--md-shape-sm); /* 8px */
@@ -389,13 +390,13 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           width: 20px;
           height: 20px;
           border-radius: 50%;
-          background: rgba(255,255,255,0.15);
+          background: rgba(255,255,255,0.25);
           display: flex;
           align-items: center;
           justify-content: center;
           font-size: var(--md-label-small); /* 11px */
           font-weight: 700;
-          color: rgba(255,255,255,0.50);
+          color: rgba(255,255,255,0.80);
         }
         .mu-hero__step-tab.active .mu-hero__step-num {
           background: #7B61FF;
@@ -418,9 +419,9 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
         .mu-hero__input {
           width: 100%;
           box-sizing: border-box;
-          background: rgba(255,255,255,0.12);
+          background: rgba(255,255,255,0.25);
           border: none;
-          border-bottom: 1.5px solid rgba(255,255,255,0.40);
+          border-bottom: 1.5px solid rgba(255,255,255,0.60);
           border-radius: var(--md-shape-sm) var(--md-shape-sm) 0 0; /* 8px 8px 0 0 — MD3 Filled TextField */
           padding: var(--md-sp-4); /* 16px */
           height: 56px; /* MD3 Text Field 표준 높이 56dp */
@@ -434,12 +435,12 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           transition: all 0.18s;
         }
         .mu-hero__input::placeholder {
-          color: rgba(255,255,255,0.35);
+          color: rgba(255,255,255,0.60);
           font-weight: 400;
         }
         .mu-hero__input:focus {
-          background: rgba(255,255,255,0.18);
-          border-bottom-color: var(--md-inverse-primary); /* #CFBCFF — MD3 Inverse Primary */
+          background: rgba(255,255,255,0.35);
+          border-bottom-color: #ffffff;
           border-bottom-width: 2px; /* MD3 focused indicator */
           box-shadow: none;
         }
@@ -486,8 +487,8 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
         .mu-hero__cta:active { transform: scale(0.98); opacity: 0.85; }
         .mu-hero__cta.disabled,
         .mu-hero__cta:disabled {
-          background: rgba(255,255,255,0.12);
-          color: rgba(255,255,255,0.38); /* MD3 disabled: 38% opacity */
+          background: rgba(255,255,255,0.20);
+          color: rgba(255,255,255,0.50); /* MD3 disabled: 38% opacity */
           cursor: not-allowed;
           box-shadow: none;
           transform: none;
@@ -501,7 +502,7 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           font-size: var(--md-label-small);      /* 11px — MD3 Label Small */
           line-height: var(--md-label-small-lh);
           letter-spacing: var(--md-label-small-ls);
-          color: rgba(255,255,255,0.40);
+          color: rgba(255,255,255,0.75);
           margin: 0;
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
@@ -509,7 +510,7 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           width: 4px;
           height: 4px;
           border-radius: 50%;
-          background: rgba(255,255,255,0.30);
+          background: rgba(255,255,255,0.60);
           flex-shrink: 0;
         }
 
@@ -527,9 +528,9 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           line-height: var(--md-label-large-lh);
           letter-spacing: var(--md-label-large-ls);
           font-weight: 600;
-          background: rgba(255,255,255,0.10);
-          border: 1px solid rgba(255,255,255,0.20);
-          color: rgba(255,255,255,0.60);
+          background: rgba(255,255,255,0.18);
+          border: 1px solid rgba(255,255,255,0.40);
+          color: rgba(255,255,255,0.85);
           cursor: pointer;
           transition: all 0.15s;
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
@@ -556,16 +557,16 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           line-height: var(--md-label-large-lh);
           letter-spacing: var(--md-label-large-ls);
           font-weight: 500;
-          background: transparent;
-          border: 1px solid rgba(255,255,255,0.30); /* MD3 Outlined Button 테두리 */
-          color: rgba(255,255,255,0.70);
+          background: rgba(255,255,255,0.15);
+          border: 1px solid rgba(255,255,255,0.50); /* MD3 Outlined Button 테두리 */
+          color: rgba(255,255,255,0.90);
           cursor: pointer;
           white-space: nowrap;
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
           transition: background 0.15s;
           flex-shrink: 0;
         }
-        .mu-hero__back-btn:hover { background: rgba(255,255,255,0.08); } /* MD3 hover state layer */
+        .mu-hero__back-btn:hover { background: rgba(255,255,255,0.30); } /* MD3 hover state layer */
         .mu-hero__cta--submit {
           flex: 1;
           width: auto;
@@ -584,17 +585,17 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           padding: var(--md-sp-1) var(--md-sp-3); /* 4px 12px — MD3 Chip 패딩 */
           min-height: 32px; /* MD3 Chip 기본 높이 32dp */
           border-radius: var(--md-shape-sm); /* 8px — MD3 Chip shape */
-          background: rgba(255,255,255,0.10);
-          border: 1px solid rgba(255,255,255,0.20);
+          background: rgba(255,255,255,0.20);
+          border: 1px solid rgba(255,255,255,0.40);
           font-size: var(--md-label-small);      /* 11px — MD3 Label Small */
           line-height: var(--md-label-small-lh);
           letter-spacing: var(--md-label-small-ls);
           font-weight: 600;
-          color: rgba(255,255,255,0.75);
+          color: rgba(255,255,255,0.95);
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
         .mu-hero__badge-icon {
-          color: #a78bfa;
+          color: #ffffff;
           font-size: 9px;
         }
 

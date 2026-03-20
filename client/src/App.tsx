@@ -112,7 +112,7 @@ function App() {
   return (
     <ErrorBoundary>
       <HelmetProvider>
-        <ThemeProvider defaultTheme="dark">
+        <ThemeProvider defaultTheme="light">
           <TooltipProvider>
             <Toaster />
             <div className="mu-page-shell">

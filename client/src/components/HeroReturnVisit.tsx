@@ -226,10 +226,10 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
       )}
 
       <style>{`
-        /* ── Hero 섹션 ── */
+        /* ── Hero 섹션 (라이트 모드) ── */
         .mu-hero--return {
           position: relative;
-          background: linear-gradient(155deg, #12082e 0%, #1e0f4a 40%, #2a1060 70%, #1a0840 100%);
+          background: var(--aurora); /* linear-gradient(135deg, #6B5FFF 0%, #60C8D4 60%, #A8E6CF 100%) */
           padding: var(--md-sp-5) var(--md-sp-4) var(--md-sp-6); /* 20px 16px 24px — MD3 4dp 배수 */
           overflow: hidden;
         }
@@ -239,7 +239,7 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           top: -80px; right: -60px;
           width: 260px; height: 260px;
           border-radius: 50%;
-          background: radial-gradient(circle, rgba(123,97,255,0.30) 0%, transparent 70%);
+          background: radial-gradient(circle, rgba(255,255,255,0.25) 0%, transparent 70%);
           filter: blur(50px);
           pointer-events: none;
         }
@@ -249,7 +249,7 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           bottom: -40px; left: -40px;
           width: 200px; height: 200px;
           border-radius: 50%;
-          background: radial-gradient(circle, rgba(160,120,255,0.18) 0%, transparent 70%);
+          background: radial-gradient(circle, rgba(255,255,255,0.18) 0%, transparent 70%);
           filter: blur(50px);
           pointer-events: none;
         }
@@ -274,7 +274,7 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           line-height: var(--md-label-small-lh);
           letter-spacing: 0.04em;
           font-weight: 600;
-          color: var(--md-inverse-primary); /* #CFBCFF — MD3 Inverse Primary */
+          color: rgba(255,255,255,0.90); /* Aurora 배경 위 화이트 */
           text-transform: uppercase;
           margin-bottom: var(--md-sp-1); /* 4px */
         }
@@ -291,6 +291,7 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           font-weight: 800;
           color: #ffffff;
           margin: 0;
+          text-shadow: 0 1px 4px rgba(0,0,0,0.15);
         }
         /* MD3 Body Small */
         .mu-hero__greeting-meta {
@@ -300,18 +301,18 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           font-size: var(--md-body-small);      /* 12px — MD3 Body Small */
           line-height: var(--md-body-small-lh);
           letter-spacing: var(--md-body-small-ls);
-          color: rgba(255,255,255,0.45);
+          color: rgba(255,255,255,0.80);
           position: relative;
         }
         .mu-hero__info-btn {
           width: 16px; height: 16px;
           border-radius: 50%;
-          background: rgba(255,255,255,0.12);
+          background: rgba(255,255,255,0.25);
           border: none;
           display: flex;
           align-items: center;
           justify-content: center;
-          color: rgba(255,255,255,0.50);
+          color: rgba(255,255,255,0.80);
           cursor: pointer;
         }
         .mu-hero__tooltip {
@@ -319,14 +320,14 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           top: calc(100% + var(--md-sp-1)); /* 4px */
           left: 0;
           z-index: 20;
-          background: #1e0f4a;
-          border: 1px solid rgba(255,255,255,0.15);
+          background: rgba(255,255,255,0.95);
+          border: 1px solid rgba(107,95,255,0.20);
           border-radius: var(--md-shape-md); /* 12px — MD3 Medium shape */
           padding: var(--md-sp-3) var(--md-sp-3); /* 12px — MD3 4dp */
           font-size: var(--md-body-small);      /* 12px — MD3 Body Small */
           line-height: var(--md-body-small-lh);
           letter-spacing: var(--md-body-small-ls);
-          color: rgba(255,255,255,0.75);
+          color: var(--foreground-secondary);
           width: 220px;
           box-shadow: var(--md-elev-3); /* MD3 Elevation 3 */
         }
@@ -338,7 +339,7 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           font-size: var(--md-label-small);      /* 11px — MD3 Label Small */
           line-height: var(--md-label-small-lh);
           letter-spacing: var(--md-label-small-ls);
-          color: rgba(255,255,255,0.40);
+          color: rgba(255,255,255,0.70);
           background: none;
           border: none;
           cursor: pointer;
@@ -347,14 +348,14 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           white-space: nowrap;
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
-        .mu-hero__delete-btn:hover { color: rgba(255,255,255,0.65); }
+        .mu-hero__delete-btn:hover { color: rgba(255,255,255,0.95); }
 
         /* ── 운세 카드 (글래스모피즘 + MD3 Extra Large shape) ── */
         .mu-fortune-card {
-          background: rgba(255,255,255,0.10);
+          background: rgba(255,255,255,0.22);
           backdrop-filter: blur(20px);
           -webkit-backdrop-filter: blur(20px);
-          border: 1px solid rgba(255,255,255,0.18);
+          border: 1px solid rgba(255,255,255,0.45);
           border-radius: var(--md-shape-xl); /* 28px — MD3 Extra Large */
           padding: var(--md-sp-4); /* 16px */
           box-shadow: var(--md-elev-3); /* MD3 Elevation 3 */
@@ -373,7 +374,7 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           font-size: var(--md-body-small);      /* 12px — MD3 Body Small */
           line-height: var(--md-body-small-lh);
           letter-spacing: var(--md-body-small-ls);
-          color: rgba(255,255,255,0.55);
+          color: rgba(255,255,255,0.85);
           font-weight: 500;
         }
         .mu-fortune-card__live-dot {
@@ -393,8 +394,8 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           line-height: var(--md-label-large-lh);
           letter-spacing: var(--md-label-large-ls);
           font-weight: 700;
-          color: var(--md-inverse-primary); /* #CFBCFF — MD3 Inverse Primary */
-          background: rgba(123,97,255,0.25);
+          color: #ffffff;
+          background: rgba(255,255,255,0.25);
           padding: var(--md-sp-1) var(--md-sp-3); /* 4px 12px */
           border-radius: var(--md-shape-full); /* MD3 Badge 완전 둥근 */
         }
@@ -405,11 +406,12 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           letter-spacing: var(--md-title-medium-ls);
           font-weight: 700;
           color: #ffffff;
+          text-shadow: 0 1px 3px rgba(0,0,0,0.10);
           margin: 0 0 var(--md-sp-3); /* 0 0 12px */
         }
         .mu-fortune-card__gauge {
           height: 4px; /* MD3 Linear Progress 기본 높이 4dp */
-          background: rgba(255,255,255,0.15);
+          background: rgba(255,255,255,0.30);
           border-radius: var(--md-shape-full);
           overflow: hidden;
           margin-bottom: var(--md-sp-3); /* 12px */
@@ -431,7 +433,7 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           font-size: var(--md-body-small);      /* 12px — MD3 Body Small */
           line-height: var(--md-body-small-lh); /* 16px */
           letter-spacing: var(--md-body-small-ls);
-          color: rgba(255,255,255,0.55);
+          color: rgba(255,255,255,0.90);
           margin: 0;
           white-space: pre-line;
           flex: 1;
@@ -441,7 +443,7 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           font-size: var(--md-label-large);      /* 14px — MD3 Label Large */
           line-height: var(--md-label-large-lh);
           letter-spacing: var(--md-label-large-ls);
-          color: var(--md-inverse-primary); /* #CFBCFF */
+          color: #ffffff;
           text-decoration: none;
           font-weight: 600;
           white-space: nowrap;
@@ -453,8 +455,8 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           display: flex;
           align-items: center;
           gap: var(--md-sp-3); /* 12px */
-          background: rgba(255,255,255,0.08);
-          border: 1px solid rgba(255,255,255,0.12);
+          background: rgba(255,255,255,0.18);
+          border: 1px solid rgba(255,255,255,0.35);
           border-radius: var(--md-shape-lg); /* 16px — MD3 Large shape */
           padding: var(--md-sp-3) var(--md-sp-4); /* 12px 16px */
         }
@@ -469,7 +471,7 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           font-size: var(--md-label-small);      /* 11px — MD3 Label Small */
           line-height: var(--md-label-small-lh);
           letter-spacing: var(--md-label-small-ls);
-          color: rgba(255,255,255,0.40);
+          color: rgba(255,255,255,0.75);
           margin-bottom: var(--md-sp-1); /* 4px */
         }
         /* MD3 Title Medium */
@@ -479,6 +481,7 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           letter-spacing: var(--md-title-medium-ls);
           font-weight: 700;
           color: #ffffff;
+          text-shadow: 0 1px 3px rgba(0,0,0,0.10);
           margin: 0 0 var(--md-sp-1); /* 0 0 4px */
           transition: opacity 0.18s;
           white-space: nowrap;
@@ -491,24 +494,24 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           font-size: var(--md-label-small);      /* 11px — MD3 Label Small */
           line-height: var(--md-label-small-lh);
           letter-spacing: var(--md-label-small-ls);
-          color: rgba(255,255,255,0.40);
+          color: rgba(255,255,255,0.75);
           margin: 0;
         }
         /* MD3 Icon Button */
         .mu-lunch-card__refresh {
           width: 40px; height: 40px; /* MD3 Icon Button 기본 크기 40dp */
           border-radius: 50%;
-          background: rgba(255,255,255,0.12);
-          border: 1px solid rgba(255,255,255,0.15);
+          background: rgba(255,255,255,0.25);
+          border: 1px solid rgba(255,255,255,0.40);
           display: flex;
           align-items: center;
           justify-content: center;
-          color: rgba(255,255,255,0.60);
+          color: rgba(255,255,255,0.85);
           cursor: pointer;
           flex-shrink: 0;
           transition: background 0.15s;
         }
-        .mu-lunch-card__refresh:hover { background: rgba(255,255,255,0.20); }
+        .mu-lunch-card__refresh:hover { background: rgba(255,255,255,0.40); }
 
         /* ── 바로가기 4버튼 (MD3 Navigation Destination 스타일) ── */
         .mu-shortcuts {
@@ -524,29 +527,29 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           padding: var(--md-sp-3) var(--md-sp-1) var(--md-sp-3); /* 12px 4px 12px */
           min-height: 64px; /* MD3 Navigation 최소 높이 */
           border-radius: var(--md-shape-lg); /* 16px — MD3 Large shape */
-          background: rgba(255,255,255,0.08);
-          border: 1px solid rgba(255,255,255,0.12);
+          background: rgba(255,255,255,0.18);
+          border: 1px solid rgba(255,255,255,0.35);
           text-decoration: none;
           transition: background 0.12s;
           -webkit-tap-highlight-color: transparent;
         }
-        .mu-shortcut-btn:hover { background: rgba(255,255,255,0.14); }
+        .mu-shortcut-btn:hover { background: rgba(255,255,255,0.30); }
         .mu-shortcut-btn:active { opacity: 0.8; }
         .mu-shortcut-btn__icon {
           width: 40px; height: 40px; /* MD3 터치타겟 최소 */
           border-radius: var(--md-shape-md); /* 12px — MD3 Medium shape */
-          background: rgba(123,97,255,0.25);
+          background: rgba(255,255,255,0.25);
           display: flex;
           align-items: center;
           justify-content: center;
-          color: var(--md-inverse-primary); /* #CFBCFF — MD3 Inverse Primary */
+          color: #ffffff;
         }
         /* MD3 Label Small */
         .mu-shortcut-btn__label {
           font-size: var(--md-label-small);      /* 11px — MD3 Label Small */
           line-height: var(--md-label-small-lh);
           letter-spacing: var(--md-label-small-ls);
-          color: rgba(255,255,255,0.70);
+          color: rgba(255,255,255,0.90);
           font-weight: 500;
           white-space: nowrap;
         }

@@ -48,7 +48,41 @@
   flex-direction: column;
 }
 
-@custom-variant dark (&:is(.dark *));
+/* @custom-variant dark 제거 — 라이트 모드 고정 (2단계 리팩토링) */
+/* dark 클래스가 붙어도 라이트 모드 변수를 유지하도록 명시적으로 재정의 */
+.dark {
+  --background: #f2f4f6;
+  --foreground: #191f28;
+  --foreground-secondary: #4e5968;
+  --foreground-tertiary: #8b95a1;
+  --card: #ffffff;
+  --card-foreground: #191f28;
+  --popover: #ffffff;
+  --popover-foreground: #191f28;
+  --primary: #6B5FFF;
+  --primary-foreground: #ffffff;
+  --primary-light: #8B7FFF;
+  --primary-tint: rgba(107,95,255,0.08);
+  --secondary: #f2f4f6;
+  --secondary-foreground: #191f28;
+  --muted: #f2f4f6;
+  --muted-foreground: #8b95a1;
+  --accent: rgba(107,95,255,0.08);
+  --accent-foreground: #6B5FFF;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --border: #e8ebed;
+  --input: #f2f4f6;
+  --ring: rgba(107,95,255,0.35);
+  --sidebar: #ffffff;
+  --sidebar-foreground: #191f28;
+  --sidebar-primary: #6B5FFF;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: rgba(107,95,255,0.08);
+  --sidebar-accent-foreground: #6B5FFF;
+  --sidebar-border: #e8ebed;
+  --sidebar-ring: rgba(107,95,255,0.35);
+}
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);

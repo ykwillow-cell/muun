@@ -164,7 +164,7 @@ export function MuSelect({
           font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
         .mu-select__label--dark {
-          color: rgba(255,255,255,0.55);
+          color: rgba(255,255,255,0.90);
         }
 
         /* ── 트리거 버튼 (라이트) ── */
@@ -190,25 +190,25 @@ export function MuSelect({
           background: #f5f4ef;
         }
 
-        /* ── 트리거 버튼 (다크) ── */
+        /* ── 트리거 버튼 (Aurora 배경 위 글래스) ── */
         .mu-select__trigger--dark {
-          background: rgba(255,255,255,0.12);
-          border: 1.5px solid rgba(255,255,255,0.20);
+          background: rgba(255,255,255,0.22);
+          border: 1.5px solid rgba(255,255,255,0.45);
           color: #ffffff;
         }
         .mu-select__trigger--dark:hover,
         .mu-select__trigger--dark.mu-select__trigger--open {
-          background: rgba(255,255,255,0.18);
-          border-color: rgba(167,139,250,0.70);
+          background: rgba(255,255,255,0.32);
+          border-color: rgba(255,255,255,0.70);
         }
         .mu-select__trigger--dark .mu-select__placeholder {
-          color: rgba(255,255,255,0.35);
+          color: rgba(255,255,255,0.65);
         }
         .mu-select__trigger--dark .mu-select__value {
           color: #ffffff;
         }
         .mu-select__trigger--dark .mu-select__chevron {
-          color: rgba(255,255,255,0.55);
+          color: rgba(255,255,255,0.80);
         }
 
         /* ── 공통 ── */
@@ -242,11 +242,11 @@ export function MuSelect({
           box-shadow: 0 8px 24px rgba(0,0,0,0.12);
         }
 
-        /* ── 드롭다운 (다크) ── */
+        /* ── 드롭다운 (Aurora 배경 위 글래스) ── */
         .mu-select__dropdown--dark {
-          background: #1e0f4a;
-          border: 1px solid rgba(255,255,255,0.18);
-          box-shadow: 0 8px 32px rgba(0,0,0,0.50);
+          background: rgba(255,255,255,0.95);
+          border: 1px solid rgba(107,95,255,0.20);
+          box-shadow: 0 8px 32px rgba(0,0,0,0.15);
         }
 
         .mu-select__dropdown::-webkit-scrollbar { width: 4px; }
@@ -256,7 +256,7 @@ export function MuSelect({
           border-radius: 2px;
         }
         .mu-select__dropdown--dark::-webkit-scrollbar-thumb {
-          background: rgba(255,255,255,0.15);
+          background: rgba(107,95,255,0.20);
         }
 
         /* ── 옵션 (라이트) ── */
@@ -282,17 +282,17 @@ export function MuSelect({
           color: #1a1a18;
         }
 
-        /* ── 옵션 (다크) ── */
+        /* ── 옵션 (Aurora 배경 위 글래스 드롭다운) ── */
         .mu-select__option--dark {
-          color: rgba(255,255,255,0.75);
+          color: var(--foreground-secondary);
         }
         .mu-select__option--dark:hover {
-          background: rgba(255,255,255,0.10);
-          color: #ffffff;
+          background: rgba(107,95,255,0.08);
+          color: var(--foreground);
         }
         .mu-select__option--dark.mu-select__option--selected {
-          background: rgba(123,97,255,0.25);
-          color: #ffffff;
+          background: rgba(107,95,255,0.12);
+          color: var(--primary);
         }
 
         .mu-select__option-label { flex: 1; }
@@ -301,10 +301,10 @@ export function MuSelect({
           color: #999891;
         }
         .mu-select__option-sub--dark {
-          color: rgba(255,255,255,0.35);
+          color: var(--foreground-tertiary);
         }
         .mu-select__option-check { color: #1a1a18; flex-shrink: 0; }
-        .mu-select__option-check--dark { color: #a78bfa; }
+        .mu-select__option-check--dark { color: var(--primary); }
       `}</style>
     </div>
   );
