@@ -1,7 +1,11 @@
 /**
  * useDesignTokens
  * Supabase에서 활성 테마를 런타임에 가져와 CSS 변수로 즉시 주입합니다.
- * 어드민에서 테마를 저장하면 사이트 새로고침만으로 반영됩니다.
+ *
+ * FOUC 방지 전략:
+ * 1. index.html <head>의 인라인 스크립트가 localStorage 캐시를 즉시 주입 (깜빡임 없음)
+ * 2. 앱 로드 후 Supabase에서 최신 테마를 백그라운드로 가져와 캐시 갱신
+ * 3. 다음 방문 시 갱신된 캐시가 즉시 적용되어 항상 최신 테마 유지
  */
 
 const SUPABASE_URL = 'https://vuifbmsdggnwygvgcrkj.supabase.co';
@@ -10,10 +14,6 @@ const SUPABASE_ANON_KEY =
 
 const STYLE_TAG_ID = 'muun-design-tokens-runtime';
 const CACHE_KEY = 'muun_design_tokens_cache';
-const CACHE_TIME_KEY = 'muun_design_tokens_cache_time';
-// 캐시 TTL: 0 (항상 최신 테마를 Supabase에서 가져옴)
-// 어드민에서 저장 즉시 새로고침만으로 반영되도록 캐시 비활성화
-const CACHE_TTL_MS = 0;
 
 interface DesignTheme {
   id: string;
@@ -74,23 +74,6 @@ function injectStyleTag(cssText: string): void {
 }
 
 async function fetchAndInject(): Promise<void> {
-  // 캐시 TTL이 0이면 항상 Supabase에서 최신 데이터를 가져옴
-  if (CACHE_TTL_MS > 0) {
-    try {
-      const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
-      const cachedCss = localStorage.getItem(CACHE_KEY);
-      if (cachedTime && cachedCss) {
-        const elapsed = Date.now() - parseInt(cachedTime, 10);
-        if (elapsed < CACHE_TTL_MS) {
-          injectStyleTag(cachedCss);
-          return;
-        }
-      }
-    } catch {
-      // localStorage 접근 실패 시 무시
-    }
-  }
-
   try {
     const res = await fetch(
       `${SUPABASE_URL}/rest/v1/design_themes?is_active=eq.true&limit=1`,
@@ -110,16 +93,15 @@ async function fetchAndInject(): Promise<void> {
     if (!themes || themes.length === 0) return;
 
     const cssText = buildCssText(themes[0]);
+
+    // 현재 페이지에 즉시 적용
     injectStyleTag(cssText);
 
-    // 캐시 저장 (TTL > 0인 경우에만)
-    if (CACHE_TTL_MS > 0) {
-      try {
-        localStorage.setItem(CACHE_KEY, cssText);
-        localStorage.setItem(CACHE_TIME_KEY, String(Date.now()));
-      } catch {
-        // localStorage 저장 실패 시 무시
-      }
+    // 다음 방문 시 FOUC 방지를 위해 localStorage에 저장
+    try {
+      localStorage.setItem(CACHE_KEY, cssText);
+    } catch {
+      // localStorage 저장 실패 시 무시
     }
   } catch (err) {
     // 네트워크 오류 등 — 기본 CSS 변수 유지
@@ -129,7 +111,8 @@ async function fetchAndInject(): Promise<void> {
 
 /**
  * 앱 최초 마운트 시 한 번 호출합니다.
- * React 훅이 아닌 일반 함수로 제공하여 main.tsx에서도 호출 가능합니다.
+ * index.html 인라인 스크립트가 이미 캐시를 주입했으므로,
+ * 여기서는 Supabase에서 최신 테마를 백그라운드로 가져와 캐시를 갱신합니다.
  */
 export function initDesignTokens(): void {
   // SSR 환경 방어
@@ -145,7 +128,6 @@ export function refreshDesignTokens(): void {
   if (typeof window === 'undefined') return;
   try {
     localStorage.removeItem(CACHE_KEY);
-    localStorage.removeItem(CACHE_TIME_KEY);
   } catch {
     // ignore
   }
