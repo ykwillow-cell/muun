@@ -1,19 +1,29 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { Link } from "wouter";
+import { createClient } from "@supabase/supabase-js";
+
+const supabaseUrl = "https://vuifbmsdggnwygvgcrkj.supabase.co";
+const supabaseAnonKey =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1aWZibXNkZ2dud3lndmdjcmtqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE4NzY0ODYsImV4cCI6MjA4NzQ1MjQ4Nn0.PhMK66O73HH98WIPAu66qk8FuXwJLU4Z2bhDcmDCpKI";
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 interface BannerItem {
   id: string;
-  tag: string;
+  tag: string | null;
   title: string;
-  sub: string;
+  sub: string | null;
   cta: string;
   href: string;
   gradient: string;
-  watermark: string;
+  watermark: string | null;
+  sort_order: number;
+  is_active: boolean;
 }
 
-const BANNERS: BannerItem[] = [
+// 기본 배너 (Supabase 테이블이 없거나 오류 시 폴백)
+const FALLBACK_BANNERS: BannerItem[] = [
   {
     id: "yearly",
     tag: "2026 병오년",
@@ -23,6 +33,8 @@ const BANNERS: BannerItem[] = [
     href: "/yearly-fortune",
     gradient: "linear-gradient(135deg, #7B61FF 0%, #6A4FE8 100%)",
     watermark: "丙\n午",
+    sort_order: 1,
+    is_active: true,
   },
   {
     id: "family",
@@ -33,6 +45,8 @@ const BANNERS: BannerItem[] = [
     href: "/family-saju",
     gradient: "linear-gradient(135deg, #6A4FE8 0%, #5940CC 100%)",
     watermark: "家\n運",
+    sort_order: 2,
+    is_active: true,
   },
   {
     id: "mbti",
@@ -43,6 +57,8 @@ const BANNERS: BannerItem[] = [
     href: "/hybrid-compatibility",
     gradient: "linear-gradient(135deg, #5940CC 0%, #4A31B0 100%)",
     watermark: "合\n命",
+    sort_order: 3,
+    is_active: true,
   },
   {
     id: "naming",
@@ -53,17 +69,47 @@ const BANNERS: BannerItem[] = [
     href: "/naming",
     gradient: "linear-gradient(135deg, #4A31B0 0%, #3A2490 100%)",
     watermark: "名\n字",
+    sort_order: 4,
+    is_active: true,
   },
 ];
 
 const AUTO_PLAY_INTERVAL = 3500;
 
 export function MainBanner() {
+  const [banners, setBanners] = useState<BannerItem[]>(FALLBACK_BANNERS);
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, dragFree: false });
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [progressKey, setProgressKey] = useState(0);
   const autoPlayRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const isHoveredRef = useRef(false);
+
+  // Supabase에서 배너 데이터 fetch
+  useEffect(() => {
+    const fetchBanners = async () => {
+      try {
+        const { data, error } = await supabase
+          .from("banners")
+          .select("*")
+          .eq("is_active", true)
+          .order("sort_order", { ascending: true });
+
+        if (error) {
+          // 테이블이 없거나 오류 시 폴백 사용
+          console.warn("배너 데이터 로드 실패, 기본 배너 사용:", error.message);
+          return;
+        }
+
+        if (data && data.length > 0) {
+          setBanners(data as BannerItem[]);
+        }
+      } catch (err) {
+        console.warn("배너 fetch 오류, 기본 배너 사용:", err);
+      }
+    };
+
+    fetchBanners();
+  }, []);
 
   const stopAutoPlay = useCallback(() => {
     if (autoPlayRef.current) clearInterval(autoPlayRef.current);
@@ -96,42 +142,71 @@ export function MainBanner() {
     };
   }, [emblaApi, onSelect, startAutoPlay, stopAutoPlay]);
 
-  const goTo = useCallback((idx: number) => {
-    emblaApi?.scrollTo(idx);
-    setProgressKey((k) => k + 1);
-  }, [emblaApi]);
+  // 배너 데이터가 변경되면 캐러셀 재초기화
+  useEffect(() => {
+    if (emblaApi) {
+      emblaApi.reInit();
+      setSelectedIndex(0);
+    }
+  }, [banners, emblaApi]);
+
+  const goTo = useCallback(
+    (idx: number) => {
+      emblaApi?.scrollTo(idx);
+      setProgressKey((k) => k + 1);
+    },
+    [emblaApi]
+  );
 
   return (
     <section
       className="mu-banner"
-      onMouseEnter={() => { isHoveredRef.current = true; }}
-      onMouseLeave={() => { isHoveredRef.current = false; }}
+      onMouseEnter={() => {
+        isHoveredRef.current = true;
+      }}
+      onMouseLeave={() => {
+        isHoveredRef.current = false;
+      }}
       aria-label="서비스 배너"
       aria-roledescription="carousel"
     >
       <div className="mu-banner__viewport" ref={emblaRef}>
         <div className="mu-banner__container">
-          {BANNERS.map((b, i) => (
+          {banners.map((b, i) => (
             <div
               key={b.id}
               className="mu-banner__slide"
               role="group"
               aria-roledescription="slide"
-              aria-label={`${i + 1} / ${BANNERS.length}: ${b.title.replace('\n', ' ')}`}
+              aria-label={`${i + 1} / ${banners.length}: ${b.title.replace("\n", " ")}`}
             >
               <Link
                 href={b.href}
                 className="mu-banner__card"
                 style={{ background: b.gradient }}
-                aria-label={b.title.replace('\n', ' ')}
+                aria-label={b.title.replace("\n", " ")}
               >
                 {/* 한자 워터마크 */}
-                <span className="mu-banner__watermark" aria-hidden="true" style={{ whiteSpace: 'pre-line' }}>{b.watermark}</span>
+                {b.watermark && (
+                  <span
+                    className="mu-banner__watermark"
+                    aria-hidden="true"
+                    style={{ whiteSpace: "pre-line" }}
+                  >
+                    {b.watermark}
+                  </span>
+                )}
 
                 {/* 콘텐츠 */}
                 <div className="mu-banner__card-body">
-                  <p className="mu-banner__title" style={{ whiteSpace: 'pre-line' }}>{b.title}</p>
-                  <p className="mu-banner__sub">{b.sub}</p>
+                  {b.tag && <span className="mu-banner__tag">{b.tag}</span>}
+                  <p
+                    className="mu-banner__title"
+                    style={{ whiteSpace: "pre-line" }}
+                  >
+                    {b.title}
+                  </p>
+                  {b.sub && <p className="mu-banner__sub">{b.sub}</p>}
                   <span className="mu-banner__cta">{b.cta} →</span>
                 </div>
               </Link>
@@ -142,7 +217,7 @@ export function MainBanner() {
 
       {/* 도트 프로그레스 */}
       <div className="mu-banner__dots" role="tablist" aria-label="배너 탐색">
-        {BANNERS.map((b, i) => (
+        {banners.map((b, i) => (
           <button
             key={b.id}
             className={`mu-banner__dot${i === selectedIndex ? " mu-banner__dot--active" : ""}`}
@@ -219,6 +294,14 @@ export function MainBanner() {
           display: flex;
           flex-direction: column;
           gap: 5px;
+        }
+        .mu-banner__tag {
+          font-size: 10px;
+          font-weight: 600;
+          color: rgba(255,255,255,0.70);
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          font-family: 'Pretendard Variable', Pretendard, sans-serif;
         }
         .mu-banner__title {
           font-size: 15px;
