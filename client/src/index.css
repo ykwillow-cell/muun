@@ -364,3 +364,170 @@
     text-align: left;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   어드민 컴포넌트 토큰 → 실제 UI 컴포넌트 연결 레이어
+   어드민에서 component_tokens를 변경하면 이 레이어를 통해 반영됩니다.
+   ═══════════════════════════════════════════════════════════════ */
+@layer components {
+
+  /* ── 버튼 ── */
+  [data-slot="button"] {
+    border-radius: var(--btn-radius-md, 0.375rem);
+    font-weight: var(--btn-font-weight, 500);
+    transition: var(--btn-transition, all 0.15s ease);
+  }
+  [data-slot="button"][data-size="sm"],
+  [data-slot="button"].h-8 {
+    height: var(--btn-height-sm, 2rem);
+    padding-left: var(--btn-padding-x-sm, 0.75rem);
+    padding-right: var(--btn-padding-x-sm, 0.75rem);
+    font-size: var(--btn-font-size-sm, 0.8125rem);
+    border-radius: var(--btn-radius-sm, 0.375rem);
+  }
+  [data-slot="button"][data-size="default"],
+  [data-slot="button"].h-9 {
+    height: var(--btn-height-md, 2.25rem);
+    padding-left: var(--btn-padding-x-md, 1rem);
+    padding-right: var(--btn-padding-x-md, 1rem);
+    font-size: var(--btn-font-size-md, 0.875rem);
+    border-radius: var(--btn-radius-md, 0.375rem);
+  }
+  [data-slot="button"][data-size="lg"],
+  [data-slot="button"].h-10 {
+    height: var(--btn-height-lg, 2.5rem);
+    padding-left: var(--btn-padding-x-lg, 1.5rem);
+    padding-right: var(--btn-padding-x-lg, 1.5rem);
+    font-size: var(--btn-font-size-lg, 1rem);
+    border-radius: var(--btn-radius-lg, 0.375rem);
+  }
+
+  /* ── 카드 ── */
+  [data-slot="card"] {
+    border-radius: var(--card-radius, 0.75rem);
+    padding: var(--card-padding, 1.5rem);
+    box-shadow: var(--card-shadow, none);
+    border-width: var(--card-border-width, 1px);
+    gap: var(--card-gap, 1rem);
+  }
+  [data-slot="card"]:hover {
+    box-shadow: var(--card-shadow-hover, var(--card-shadow, none));
+  }
+
+  /* ── 인풋 ── */
+  [data-slot="input"] {
+    height: var(--input-height-md, 3rem);
+    padding-left: var(--input-padding-x, 1rem);
+    padding-right: var(--input-padding-x, 1rem);
+    border-radius: var(--input-radius, 0.375rem);
+    border-width: var(--input-border-width, 1px);
+    font-size: var(--input-font-size, 1.125rem);
+  }
+  [data-slot="input"]:focus {
+    ring-width: var(--input-ring-width, 3px);
+    ring-color: var(--input-ring-color, var(--ring));
+  }
+
+  /* ── 다이얼로그 ── */
+  [data-slot="dialog-content"] {
+    border-radius: var(--dialog-radius, 0.5rem);
+    padding: var(--dialog-padding, 1.5rem);
+    box-shadow: var(--dialog-shadow, 0 20px 60px rgba(0,0,0,0.3));
+  }
+  [data-slot="dialog-overlay"] {
+    background: var(--dialog-overlay-bg, rgba(0,0,0,0.5));
+  }
+  [data-slot="dialog-title"] {
+    font-size: var(--dialog-title-size, 1.125rem);
+    font-weight: var(--dialog-title-weight, 600);
+  }
+
+  /* ── 배지 ── */
+  [data-slot="badge"] {
+    border-radius: var(--badge-radius, 9999px);
+    padding-left: var(--badge-padding-x, 0.625rem);
+    padding-right: var(--badge-padding-x, 0.625rem);
+    padding-top: var(--badge-padding-y, 0.125rem);
+    padding-bottom: var(--badge-padding-y, 0.125rem);
+    font-size: var(--badge-font-size, 0.75rem);
+    font-weight: var(--badge-font-weight, 500);
+    border-width: var(--badge-border-width, 1px);
+  }
+
+  /* ── 하단 네비게이션 ── */
+  .mu-bottom-nav {
+    height: var(--bottom-nav-height, 56px);
+    box-shadow: var(--bottom-nav-shadow, none);
+  }
+  .mu-bottom-nav__icon {
+    font-size: var(--bottom-nav-icon-size, 24px);
+    width: var(--bottom-nav-icon-size, 24px);
+    height: var(--bottom-nav-icon-size, 24px);
+  }
+  .mu-bottom-nav__label {
+    font-size: var(--bottom-nav-label-size, 10px);
+  }
+
+  /* ── GNB (상단 앱바) ── */
+  .mu-app-bar,
+  [class*="AppBar"],
+  header[class*="gnb"] {
+    height: var(--gnb-height, 56px);
+    padding-left: var(--gnb-padding-x, 1rem);
+    padding-right: var(--gnb-padding-x, 1rem);
+    box-shadow: var(--gnb-shadow, none);
+  }
+
+  /* ── 탭 ── */
+  [data-slot="tabs-list"] {
+    border-radius: var(--tabs-list-radius, 0.5rem);
+    padding: var(--tabs-list-padding, 0.25rem);
+  }
+  [data-slot="tabs-trigger"] {
+    height: var(--tabs-trigger-height, 2rem);
+    padding-left: var(--tabs-trigger-padding-x, 0.75rem);
+    padding-right: var(--tabs-trigger-padding-x, 0.75rem);
+    border-radius: var(--tabs-trigger-radius, 0.375rem);
+    font-size: var(--tabs-trigger-font-size, 0.875rem);
+    font-weight: var(--tabs-trigger-font-weight, 500);
+  }
+  [data-slot="tabs-trigger"][data-state="active"] {
+    box-shadow: var(--tabs-active-shadow, 0 1px 3px rgba(0,0,0,0.1));
+  }
+
+  /* ── 토스트 ── */
+  [data-sonner-toast] {
+    border-radius: var(--toast-radius, 0.75rem) !important;
+    padding-left: var(--toast-padding-x, 1rem) !important;
+    padding-right: var(--toast-padding-x, 1rem) !important;
+    padding-top: var(--toast-padding-y, 0.75rem) !important;
+    padding-bottom: var(--toast-padding-y, 0.75rem) !important;
+    box-shadow: var(--toast-shadow, 0 4px 12px rgba(0,0,0,0.15)) !important;
+    font-size: var(--toast-font-size, 0.875rem) !important;
+    font-weight: var(--toast-font-weight, 500) !important;
+  }
+
+  /* ── 셀렉트 ── */
+  [data-slot="select-trigger"] {
+    height: var(--select-trigger-height, 2.25rem);
+    padding-left: var(--select-trigger-padding-x, 0.75rem);
+    padding-right: var(--select-trigger-padding-x, 0.75rem);
+    border-radius: var(--select-trigger-radius, 0.375rem);
+  }
+  [data-slot="select-content"] {
+    border-radius: var(--select-content-radius, 0.5rem);
+    box-shadow: var(--select-content-shadow, 0 4px 16px rgba(0,0,0,0.12));
+  }
+  [data-slot="select-item"] {
+    height: var(--select-item-height, 2rem);
+    font-size: var(--select-item-font-size, 0.875rem);
+  }
+
+  /* ── 아바타 ── */
+  [data-slot="avatar"] {
+    width: var(--avatar-size-md, 2.5rem);
+    height: var(--avatar-size-md, 2.5rem);
+    border-radius: var(--avatar-radius, 9999px);
+    border-width: var(--avatar-border-width, 0px);
+  }
+}
