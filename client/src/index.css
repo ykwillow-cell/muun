@@ -415,6 +415,7 @@
   [class*="Card"],
   .mu-hero__form-card,
   .mu-hero__step-body {
+    --md-shape-xl: var(--card-radius, 0.75rem) !important;
     border-radius: var(--card-radius, 0.75rem) !important;
     padding: var(--card-padding, 1.5rem);
     box-shadow: var(--card-shadow, none);
