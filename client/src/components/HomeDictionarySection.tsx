@@ -104,7 +104,9 @@ export function HomeDictionarySection() {
           padding: var(--md-sp-3) var(--md-sp-4); /* 12px 16px */
           min-height: 48px; /* MD3 터치타겟 최소 48dp */
           background: var(--md-surface-container-lowest); /* #ffffff */
-          border: 1px solid var(--md-outline-variant); /* MD3 Outlined Card 테두리 */
+          border-style: solid;
+          border-color: var(--card-border-color, var(--md-outline-variant));
+          border-width: var(--card-border-width, 1px); /* 어드민 테두리 두께 토큰 */
           border-radius: var(--md-shape-md); /* 12px — MD3 Medium shape */
           text-decoration: none;
           box-shadow: none;
@@ -142,7 +144,9 @@ export function HomeDictionarySection() {
           padding: var(--md-sp-3) var(--md-sp-4); /* 12px 16px */
           min-height: 48px; /* MD3 터치타겟 최소 48dp */
           background: var(--md-surface-container-lowest); /* #ffffff */
-          border: 1px solid var(--md-outline-variant); /* MD3 Outlined Card */
+          border-style: solid;
+          border-color: var(--card-border-color, var(--md-outline-variant));
+          border-width: var(--card-border-width, 1px); /* 어드민 테두리 두께 토큰 */
           border-radius: var(--md-shape-md); /* 12px — MD3 Medium shape */
           text-decoration: none;
           box-shadow: none;

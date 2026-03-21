@@ -167,7 +167,9 @@ export function ServiceGrid() {
           padding: var(--md-sp-4) var(--md-sp-4) var(--md-sp-3); /* 16px 16px 12px */
           border-radius: var(--md-shape-lg); /* 16px — MD3 Large shape */
           background: var(--md-surface-container-lowest); /* #ffffff — MD3 Surface Container Lowest */
-          border: none;
+          border-style: solid;
+          border-color: var(--card-border-color, transparent);
+          border-width: var(--card-border-width, 0px); /* 어드민 테두리 두께 토큰 */
           text-decoration: none;
           position: relative;
           overflow: hidden;
@@ -328,6 +330,9 @@ export function ServiceGrid() {
           padding: var(--md-sp-3); /* 12px — MD3 4dp */
           border-radius: var(--md-shape-md); /* 12px — MD3 Medium shape */
           background: var(--md-surface-container-lowest); /* #ffffff */
+          border-style: solid;
+          border-color: var(--card-border-color, transparent);
+          border-width: var(--card-border-width, 0px); /* 어드민 테두리 두께 토큰 */
           text-decoration: none;
           transition: background 0.12s;
           -webkit-tap-highlight-color: transparent;
