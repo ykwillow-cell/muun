@@ -51,7 +51,7 @@ import {
 import { getHeroBirthForForm } from "@/lib/user-birth";
 
 const formSchema = z.object({
-  name: z.string().min(1, "이름을 입력해주세요"),
+  name: z.string().optional().default(""),
   gender: z.enum(["male", "female"]),
   birthDate: z.string().min(1, "생년월일을 입력해주세요"),
   birthTime: z.string(),
@@ -268,24 +268,58 @@ export default function YearlyFortune() {
     },
   });
 
+  // 생년월일 데이터로 직접 사주 계산 (히어로 자동 진입 등)
+  const autoCalculate = (data: FormValues) => {
+    let birthDateStr = data.birthDate;
+    if (typeof birthDateStr !== 'string') {
+      if (birthDateStr instanceof Date) {
+        birthDateStr = (birthDateStr as Date).toISOString().split('T')[0];
+      } else {
+        birthDateStr = String(birthDateStr);
+      }
+    }
+    const [year, month, day] = birthDateStr.split('-').map(Number);
+    const birthDateObj = new Date(year, month - 1, day);
+    const birthDateStrForConverter = `${birthDateObj.getFullYear()}-${String(birthDateObj.getMonth() + 1).padStart(2, '0')}-${String(birthDateObj.getDate()).padStart(2, '0')}`;
+    const time = data.birthTimeUnknown ? "12:00" : data.birthTime;
+    const date = convertToSolarDate(birthDateStrForConverter, time, data.calendarType, data.isLeapMonth);
+    const sajuResult = calculateSaju(date, data.gender);
+    if (!sajuResult) return;
+    setResult(sajuResult);
+    setExtraInfo(generateFortuneDetails(sajuResult));
+    setDetailedFortune(generate2026DetailedFortune(sajuResult));
+    setMonthlyFortune(generateMonthlyFortune(sajuResult));
+    window.scrollTo(0, 0);
+  };
+
   useEffect(() => {
+    // 저장된 데이터가 있으면 바로 결과 계산 (히어로 자세히 버튼 등)
     const savedData = localStorage.getItem("muun_user_data");
     if (savedData) {
       try {
         const parsed = JSON.parse(savedData);
         form.reset(parsed);
+        autoCalculate(parsed);
         return;
       } catch {}
     }
-    // muun_user_data 없으면 muun_user_birth에서 pre-fill
+    // muun_user_data 없으면 muun_user_birth에서 pre-fill 후 자동 계산
     const heroBirth = getHeroBirthForForm();
     if (heroBirth) {
-      form.setValue("birthDate", heroBirth.birthDate);
-      form.setValue("calendarType", heroBirth.calendarType);
-      form.setValue("birthTime", heroBirth.birthTime);
-      form.setValue("birthTimeUnknown", heroBirth.birthTimeUnknown);
+      const autoData = {
+        name: "",
+        gender: "male" as const,
+        birthDate: heroBirth.birthDate,
+        calendarType: heroBirth.calendarType,
+        birthTime: heroBirth.birthTime,
+        birthTimeUnknown: heroBirth.birthTimeUnknown,
+        isLeapMonth: false,
+      };
+      form.reset(autoData);
+      autoCalculate(autoData);
     }
-  }, [form]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onSubmit = (data: FormValues) => {
     // 생년월일 데이터를 GA4에 전송 (SEO 분석용)
