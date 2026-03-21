@@ -7,6 +7,10 @@ import superjson from "superjson";
 import App from "./App";
 import { getLoginUrl } from "./const";
 import "./index.css";
+import { initDesignTokens } from "./lib/useDesignTokens";
+
+// 앱 로드 즉시 Supabase 활성 테마를 가져와 CSS 변수에 주입
+initDesignTokens();
 
 const queryClient = new QueryClient();
 

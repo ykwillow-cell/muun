@@ -28,6 +28,20 @@
     <!-- Pretendard 웹폰트: 렌더링 차단 최소화 (preload + onload 패턴) -->
     <link rel="preload" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
     <noscript><link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" rel="stylesheet" /></noscript>
+    <!-- 디자인 토큰 FOUC 방지: localStorage 캐시를 렌더링 전 즉시 적용 -->
+    <script>
+      (function() {
+        try {
+          var css = localStorage.getItem('muun_design_tokens_cache');
+          if (css) {
+            var s = document.createElement('style');
+            s.id = 'muun-design-tokens-runtime';
+            s.textContent = css;
+            document.head.appendChild(s);
+          }
+        } catch(e) {}
+      })();
+    </script>
   </head>
 
   <body>
