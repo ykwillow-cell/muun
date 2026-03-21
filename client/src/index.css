@@ -544,4 +544,29 @@
     border-radius: var(--avatar-radius, 9999px);
     border-width: var(--avatar-border-width, 0px);
   }
+
+  /* ── 운세 결과 페이지 ── */
+  /* 결과 페이지 내 Card 래퍼 (bg-black/[0.05] border-black/10 패턴) */
+  .saju-result-card,
+  [data-result-card] {
+    background: var(--result-card-bg, rgba(0,0,0,0.04)) !important;
+    border-color: var(--result-card-border, rgba(0,0,0,0.08)) !important;
+    border-radius: var(--result-chart-radius, 1rem) !important;
+  }
+  /* 섹션 아이콘 배경 */
+  .result-icon-bg,
+  [data-result-icon-bg] {
+    background: var(--result-icon-bg, rgba(107,95,255,0.12)) !important;
+  }
+  /* 섹션 제목 */
+  .result-section-title,
+  [data-result-title] {
+    font-size: var(--result-section-title-size, 1.125rem);
+    font-weight: var(--result-section-title-weight, 700);
+  }
+  /* 결과 본문 */
+  .result-body,
+  [data-result-body] {
+    font-size: var(--result-body-size, 0.9375rem);
+  }
 }

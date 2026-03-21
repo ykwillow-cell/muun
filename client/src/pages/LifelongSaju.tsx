@@ -560,7 +560,7 @@ export default function LifelongSaju() {
               </div>
               <h2 className="text-lg font-bold text-[#1a1a18]">{userName}님의 사주팔자</h2>
             </div>
-            <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden">
+            <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden" data-result-card>
               <CardContent className="p-4 md:p-6">
                 <SajuChart result={result} theme="purple" />
               </CardContent>
@@ -579,7 +579,7 @@ export default function LifelongSaju() {
                 </div>
                 <h2 className="text-lg font-bold text-[#1a1a18]">일간(日干) 성격 분석</h2>
               </div>
-              <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden">
+              <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden" data-result-card>
                 <CardHeader className="border-b border-black/10 px-4 py-3">
                   <CardTitle className="text-sm md:text-base text-purple-600 flex items-center gap-2">
                     <span className={`text-lg ${ELEMENT_TEXT_COLOR[dayElement]}`}>{dayStem}</span>
@@ -641,7 +641,7 @@ export default function LifelongSaju() {
               </div>
               <h2 className="text-lg font-bold text-[#1a1a18]">오행(五行) 분석</h2>
             </div>
-            <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden">
+            <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden" data-result-card>
               <CardContent className="p-4 md:p-6 space-y-4">
                 <div className="space-y-3">
                   {elementBalance.map((element) => {
@@ -708,7 +708,7 @@ export default function LifelongSaju() {
                   </div>
                   <h2 className="text-lg font-bold text-[#1a1a18]">{fortunes.earlyLife.title}</h2>
                 </div>
-                <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden">
+                <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden" data-result-card>
                   <CardContent className="p-4">
                     <div className="text-base md:text-sm text-[#1a1a18] leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(cleanAIContent(fortunes.earlyLife.content))}</div>
                   </CardContent>
@@ -730,7 +730,7 @@ export default function LifelongSaju() {
                   </div>
                   <h2 className="text-lg font-bold text-[#1a1a18]">{fortunes.midLife.title}</h2>
                 </div>
-                <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden">
+                <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden" data-result-card>
                   <CardContent className="p-4">
                     <div className="text-base md:text-sm text-[#1a1a18] leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(cleanAIContent(fortunes.midLife.content))}</div>
                   </CardContent>
@@ -752,7 +752,7 @@ export default function LifelongSaju() {
                   </div>
                   <h2 className="text-lg font-bold text-[#1a1a18]">{fortunes.lateLife.title}</h2>
                 </div>
-                <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden">
+                <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden" data-result-card>
                   <CardContent className="p-4">
                     <div className="text-base md:text-sm text-[#1a1a18] leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(cleanAIContent(fortunes.lateLife.content))}</div>
                   </CardContent>
@@ -774,7 +774,7 @@ export default function LifelongSaju() {
                   </div>
                   <h2 className="text-lg font-bold text-[#1a1a18]">{fortunes.wealth.title}</h2>
                 </div>
-                <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden">
+                <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden" data-result-card>
                   <CardContent className="p-4">
                     <div className="text-base md:text-sm text-[#1a1a18] leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(cleanAIContent(fortunes.wealth.content))}</div>
                   </CardContent>
@@ -796,7 +796,7 @@ export default function LifelongSaju() {
                   </div>
                   <h2 className="text-lg font-bold text-[#1a1a18]">{fortunes.career.title}</h2>
                 </div>
-                <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden">
+                <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden" data-result-card>
                   <CardContent className="p-4">
                     <div className="text-base md:text-sm text-[#1a1a18] leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(cleanAIContent(fortunes.career.content))}</div>
                   </CardContent>
@@ -818,7 +818,7 @@ export default function LifelongSaju() {
                   </div>
                   <h2 className="text-lg font-bold text-[#1a1a18]">{loveFortune.title}</h2>
                 </div>
-                <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden">
+                <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden" data-result-card>
                   <CardContent className="p-4">
                     <div className="text-base md:text-sm text-[#1a1a18] leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(loveFortune.content)}</div>
                   </CardContent>
@@ -840,7 +840,7 @@ export default function LifelongSaju() {
                   </div>
                   <h2 className="text-lg font-bold text-[#1a1a18]">{healthFortune.title}</h2>
                 </div>
-                <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden">
+                <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden" data-result-card>
                   <CardContent className="p-4">
                     <div className="text-base md:text-sm text-[#1a1a18] leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(healthFortune.content)}</div>
                   </CardContent>
@@ -858,7 +858,7 @@ export default function LifelongSaju() {
                 </div>
                 <h2 className="text-lg font-bold text-[#1a1a18]">일주(日柱) 해석</h2>
               </div>
-              <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden">
+              <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden" data-result-card>
                 <CardContent className="p-4">
                   <p className="text-sm md:text-xs text-[#999891] mb-2">
                     일주: {pillarReading(result.dayPillar.stem, result.dayPillar.branch)}

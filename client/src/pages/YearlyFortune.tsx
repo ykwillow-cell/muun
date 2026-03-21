@@ -647,7 +647,7 @@ export default function YearlyFortune() {
               </div>
               <h2 className="text-lg font-bold text-[#1a1a18]">{userName}님의 사주팔자</h2>
             </div>
-            <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden">
+            <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden" data-result-card>
               <CardContent className="p-4 md:p-6">
                 <SajuChart result={result} theme="yellow" />
               </CardContent>
@@ -666,7 +666,7 @@ export default function YearlyFortune() {
                 </div>
                 <h2 className="text-lg font-bold text-[#1a1a18]">일간(日干) 성격 분석</h2>
               </div>
-              <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden">
+              <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden" data-result-card>
                 <CardHeader className="border-b border-black/10 px-4 py-3">
                   <CardTitle className="text-sm md:text-base text-purple-600 flex items-center gap-2">
                     <span className={`text-lg ${ELEMENT_TEXT_COLOR[dayElement]}`}>{dayStem}</span>
@@ -718,7 +718,7 @@ export default function YearlyFortune() {
               </div>
               <h2 className="text-lg font-bold text-[#1a1a18]">오행(五行) 분석</h2>
             </div>
-            <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden">
+            <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden" data-result-card>
               <CardContent className="p-4 md:p-6 space-y-4">
                 <div className="space-y-3">
                   {elementBalance.map((element) => {
@@ -778,7 +778,7 @@ export default function YearlyFortune() {
                 </div>
                 <h2 className="text-lg font-bold text-[#1a1a18]">2026년 병오년(丙午年) 총운</h2>
               </div>
-              <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden">
+              <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden" data-result-card>
                 <CardContent className="p-4 space-y-4">
                   {form.watch("birthTimeUnknown") && (
                     <div className="bg-primary/5 border border-primary/10 rounded-xl p-3 mb-2">
@@ -802,7 +802,7 @@ export default function YearlyFortune() {
                 </div>
                 <h2 className="text-lg font-bold text-[#1a1a18]">2026년 재물운</h2>
               </div>
-              <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden">
+              <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden" data-result-card>
                 <CardContent className="p-4">
                   <div className="text-base md:text-sm text-[#1a1a18] leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(detailedFortune.wealthFortune)}</div>
                 </CardContent>
@@ -819,7 +819,7 @@ export default function YearlyFortune() {
                 </div>
                 <h2 className="text-lg font-bold text-[#1a1a18]">2026년 직업운</h2>
               </div>
-              <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden">
+              <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden" data-result-card>
                 <CardContent className="p-4">
                   <div className="text-base md:text-sm text-[#1a1a18] leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(detailedFortune.careerFortune)}</div>
                 </CardContent>
@@ -836,7 +836,7 @@ export default function YearlyFortune() {
                 </div>
                 <h2 className="text-lg font-bold text-[#1a1a18]">2026년 애정운</h2>
               </div>
-              <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden">
+              <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden" data-result-card>
                 <CardContent className="p-4">
                   <div className="text-base md:text-sm text-[#1a1a18] leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(detailedFortune.loveFortune)}</div>
                 </CardContent>
@@ -853,7 +853,7 @@ export default function YearlyFortune() {
                 </div>
                 <h2 className="text-lg font-bold text-[#1a1a18]">2026년 건강운</h2>
               </div>
-              <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden">
+              <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden" data-result-card>
                 <CardContent className="p-4">
                   <div className="text-base md:text-sm text-[#1a1a18] leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(detailedFortune.healthFortune)}</div>
                 </CardContent>
@@ -870,7 +870,7 @@ export default function YearlyFortune() {
                 </div>
                 <h2 className="text-lg font-bold text-[#1a1a18]">2026년 월별 운세</h2>
               </div>
-              <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden">
+              <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden" data-result-card>
                 <CardContent className="p-4 space-y-2">
                   {monthlyFortune.map((m) => (
                     <div key={m.month} className="border border-black/10 rounded-xl overflow-hidden">
@@ -929,7 +929,7 @@ export default function YearlyFortune() {
                 </div>
                 <h2 className="text-lg font-bold text-[#1a1a18]">일주(日柱) 해석</h2>
               </div>
-              <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden">
+              <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden" data-result-card>
                 <CardContent className="p-4">
                   <p className="text-sm md:text-xs text-[#999891] mb-2">
                     일주: {pillarReading(result.dayPillar.stem, result.dayPillar.branch)}

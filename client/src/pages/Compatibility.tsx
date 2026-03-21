@@ -761,7 +761,7 @@ export default function Compatibility() {
             </Card>
 
             <div className="grid grid-cols-3 gap-2 md:gap-3">
-              <Card className="bg-black/[0.05] border-black/10 rounded-xl">
+              <Card className="bg-black/[0.05] border-black/10 rounded-xl" data-result-card>
                 <CardContent className="p-2.5 md:p-3 text-center space-y-1">
                   <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-pink-500/10 flex items-center justify-center mx-auto">
                     <Heart className="w-4 h-4 text-pink-600" />
@@ -769,7 +769,7 @@ export default function Compatibility() {
                   <p className="text-[10px] md:text-sm md:text-xs font-medium text-[#1a1a18]">궁합 점수</p>
                 </CardContent>
               </Card>
-              <Card className="bg-black/[0.05] border-black/10 rounded-xl">
+              <Card className="bg-black/[0.05] border-black/10 rounded-xl" data-result-card>
                 <CardContent className="p-2.5 md:p-3 text-center space-y-1">
                   <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-red-500/10 flex items-center justify-center mx-auto">
                     <Activity className="w-4 h-4 text-red-600" />
@@ -777,7 +777,7 @@ export default function Compatibility() {
                   <p className="text-[10px] md:text-sm md:text-xs font-medium text-[#1a1a18]">오행 분석</p>
                 </CardContent>
               </Card>
-              <Card className="bg-black/[0.05] border-black/10 rounded-xl">
+              <Card className="bg-black/[0.05] border-black/10 rounded-xl" data-result-card>
                 <CardContent className="p-2.5 md:p-3 text-center space-y-1">
                   <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-purple-500/10 flex items-center justify-center mx-auto">
                     <Users className="w-4 h-4 text-purple-600" />
@@ -918,7 +918,7 @@ export default function Compatibility() {
               <TrendingUp className="w-5 h-5 text-pink-600" />
               세부 궁합 점수
             </h2>
-            <Card className="bg-black/[0.05] border-black/10 rounded-xl overflow-hidden">
+            <Card className="bg-black/[0.05] border-black/10 rounded-xl overflow-hidden" data-result-card>
               <CardContent className="p-4 md:p-6 space-y-4">
                 {scoreItems.map((item, idx) => (
                   <div key={idx} className="space-y-1.5">
@@ -956,7 +956,7 @@ export default function Compatibility() {
                 <div className="w-5 h-5 rounded-full bg-pink-500 text-[#1a1a18] text-xs md:text-[10px] font-bold flex items-center justify-center">1</div>
                 <span className="text-base md:text-sm font-bold text-pink-600">{name1}님의 사주</span>
               </div>
-              <Card className="bg-black/[0.05] border-black/10 rounded-xl overflow-hidden">
+              <Card className="bg-black/[0.05] border-black/10 rounded-xl overflow-hidden" data-result-card>
                 <CardContent className="p-3 md:p-4">
                   <SajuChart result={saju1} theme="purple" />
                 </CardContent>
@@ -969,7 +969,7 @@ export default function Compatibility() {
                 <div className="w-5 h-5 rounded-full bg-red-500 text-[#1a1a18] text-xs md:text-[10px] font-bold flex items-center justify-center">2</div>
                 <span className="text-base md:text-sm font-bold text-red-600">{name2}님의 사주</span>
               </div>
-              <Card className="bg-black/[0.05] border-black/10 rounded-xl overflow-hidden">
+              <Card className="bg-black/[0.05] border-black/10 rounded-xl overflow-hidden" data-result-card>
                 <CardContent className="p-3 md:p-4">
                   <SajuChart result={saju2} theme="purple" />
                 </CardContent>
@@ -983,7 +983,7 @@ export default function Compatibility() {
               <Quote className="w-5 h-5 text-pink-600" />
               일간(日干) 궁합 종합 해석
             </h2>
-            <Card className="bg-black/[0.05] border-black/10 rounded-xl overflow-hidden">
+            <Card className="bg-black/[0.05] border-black/10 rounded-xl overflow-hidden" data-result-card>
               <CardContent className="p-4 md:p-6">
                 <div className="space-y-4">
                   {overallInterpretation.map((para, idx) => (
@@ -1075,7 +1075,7 @@ export default function Compatibility() {
               <Activity className="w-5 h-5 text-pink-600" />
               오행(五行) 조화 비교
             </h2>
-            <Card className="bg-black/[0.05] border-black/10 rounded-xl overflow-hidden">
+            <Card className="bg-black/[0.05] border-black/10 rounded-xl overflow-hidden" data-result-card>
               <CardContent className="p-4 md:p-6 space-y-5">
                 {/* 오행 비교 바 차트 */}
                 {['木', '火', '土', '金', '水'].map((elem) => {
@@ -1145,7 +1145,7 @@ export default function Compatibility() {
               애정운 궁합
               <span className={`text-base md:text-sm font-bold ${getScoreColor(scores.loveScore)}`}>({scores.loveScore}점)</span>
             </h2>
-            <Card className="bg-black/[0.05] border-black/10 rounded-xl overflow-hidden">
+            <Card className="bg-black/[0.05] border-black/10 rounded-xl overflow-hidden" data-result-card>
               <CardContent className="p-4 md:p-6 space-y-4">
                 {loveInterpretation.map((para, idx) => (
                   <p key={idx} className="text-sm md:text-[15px] text-[#1a1a18]/90 leading-relaxed">{para}</p>
@@ -1161,7 +1161,7 @@ export default function Compatibility() {
               재물 궁합
               <span className={`text-base md:text-sm font-bold ${getScoreColor(scores.wealthScore)}`}>({scores.wealthScore}점)</span>
             </h2>
-            <Card className="bg-black/[0.05] border-black/10 rounded-xl overflow-hidden">
+            <Card className="bg-black/[0.05] border-black/10 rounded-xl overflow-hidden" data-result-card>
               <CardContent className="p-4 md:p-6 space-y-4">
                 {wealthInterpretation.map((para, idx) => (
                   <p key={idx} className="text-sm md:text-[15px] text-[#1a1a18]/90 leading-relaxed">{para}</p>
@@ -1177,7 +1177,7 @@ export default function Compatibility() {
               가정운 궁합
               <span className={`text-base md:text-sm font-bold ${getScoreColor(scores.familyScore)}`}>({scores.familyScore}점)</span>
             </h2>
-            <Card className="bg-black/[0.05] border-black/10 rounded-xl overflow-hidden">
+            <Card className="bg-black/[0.05] border-black/10 rounded-xl overflow-hidden" data-result-card>
               <CardContent className="p-4 md:p-6 space-y-4">
                 {familyInterpretation.map((para, idx) => (
                   <p key={idx} className="text-sm md:text-[15px] text-[#1a1a18]/90 leading-relaxed">{para}</p>

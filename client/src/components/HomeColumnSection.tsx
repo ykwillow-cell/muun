@@ -158,10 +158,12 @@ export function HomeColumnSection() {
 
         /* ── 카드 목록 ── */
         .mu-column-list {
-          background: #ffffff;
-          border-radius: 16px;
+          background: var(--card, #ffffff);
+          border-radius: var(--card-radius, 16px);
           overflow: hidden;
-          border: 1px solid #e5e8eb;
+          border-style: solid;
+          border-color: var(--card-border-color, var(--border, #e5e8eb));
+          border-width: var(--card-border-width, 1px);
         }
 
         /* ── 칼럼 아이템 ── */
@@ -176,7 +178,9 @@ export function HomeColumnSection() {
         }
         .mu-column-item:hover { background: #f8f9fa; }
         .mu-column-item--border {
-          border-bottom: 1px solid #e5e8eb;
+          border-bottom-style: solid;
+          border-bottom-color: var(--card-border-color, var(--border, #e5e8eb));
+          border-bottom-width: var(--card-border-width, 1px);
         }
 
         /* ── 썸네일 ── */

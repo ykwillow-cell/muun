@@ -61,9 +61,10 @@ export function BottomNav() {
           z-index: 50;
           display: flex;
           align-items: stretch;
-          background: #ffffff;
-          border-top: 1px solid #e8ebed;
-          height: var(--bottom-nav-height);
+          background: var(--bottom-nav-bg, #ffffff);
+          border-top: var(--bottom-nav-border-top, 1px solid #e8ebed);
+          height: var(--bottom-nav-height, 56px);
+          box-shadow: var(--bottom-nav-shadow, none);
         }
 
         /* ── 탭 ── */
@@ -78,20 +79,22 @@ export function BottomNav() {
           min-height: 56px;
           position: relative;
           text-decoration: none;
-          color: #c5ccd4;
+          color: var(--bottom-nav-inactive-color, #c5ccd4);
           transition: color 0.15s;
           -webkit-tap-highlight-color: transparent;
         }
         .mu-bottom-nav__tab:hover {
-          color: #8b95a1;
+          color: var(--foreground-secondary, #8b95a1);
         }
         .mu-bottom-nav__tab--active {
-          color: #6B5FFF;
+          color: var(--bottom-nav-active-color, var(--primary, #6B5FFF));
         }
 
         /* ── 아이콘 ── */
         .mu-bottom-nav__icon {
           transition: transform 0.15s;
+          width: var(--bottom-nav-icon-size, 22px);
+          height: var(--bottom-nav-icon-size, 22px);
         }
         .mu-bottom-nav__tab--active .mu-bottom-nav__icon {
           transform: scale(1.05);
@@ -99,7 +102,7 @@ export function BottomNav() {
 
         /* ── 레이블 ── */
         .mu-bottom-nav__label {
-          font-size: 10px;
+          font-size: var(--bottom-nav-label-size, 10px);
           font-weight: 500;
           letter-spacing: -0.01em;
           white-space: nowrap;
@@ -112,10 +115,10 @@ export function BottomNav() {
           bottom: 5px;
           left: 50%;
           transform: translateX(-50%);
-          width: 16px;
+          width: var(--bottom-nav-dot-size, 16px);
           height: 3px;
           border-radius: 2px;
-          background: #6B5FFF;
+          background: var(--bottom-nav-dot-color, var(--primary, #6B5FFF));
         }
       `}</style>
     </>

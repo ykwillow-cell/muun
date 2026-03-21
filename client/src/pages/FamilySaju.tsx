@@ -225,7 +225,7 @@ export default function FamilySaju() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
               >
-                <Card className="bg-white/[0.03] border-black/10">
+                <Card className="bg-white/[0.03] border-black/10" data-result-card>
                   <CardHeader className="pb-3">
                     <div className="flex items-center justify-between">
                       <CardTitle className="text-base text-[#1a1a18] flex items-center gap-2">
@@ -496,7 +496,7 @@ export default function FamilySaju() {
               const analysis = analyzeElementBalance(balance);
 
               return (
-                <Card key={idx} className="bg-white/[0.03] border-black/10">
+                <Card key={idx} className="bg-white/[0.03] border-black/10" data-result-card>
                   <CardContent className="pt-4 pb-4">
                     <div className="flex items-start gap-3">
                       <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-lg shrink-0">
@@ -545,7 +545,7 @@ export default function FamilySaju() {
             <Star className="w-5 h-5 text-primary" />
             가족 오행 분포
           </h2>
-          <Card className="bg-white/[0.03] border-black/10">
+          <Card className="bg-white/[0.03] border-black/10" data-result-card>
             <CardContent className="pt-4 pb-4 space-y-4">
               {familyBalance.distribution.map((elem, idx) => {
                 const maxVal = Math.max(...familyBalance.distribution.map(d => d.value), 1);
@@ -598,7 +598,7 @@ export default function FamilySaju() {
             <TrendingUp className="w-5 h-5 text-primary" />
             가족의 강점과 조언
           </h2>
-          <Card className="bg-white/[0.03] border-black/10">
+          <Card className="bg-white/[0.03] border-black/10" data-result-card>
             <CardContent className="pt-4 pb-4 space-y-4">
               {/* 강점 */}
               <div>
@@ -779,7 +779,7 @@ function FamilySajuInfoContent() {
             { title: "형제자매 관계", desc: "형제자매 간의 성격 차이와 상호 보완 관계를 분석합니다." },
             { title: "가족 화합 방법", desc: "가족 전체의 기운을 고려한 맞춤형 화합 활동과 조언을 제공합니다." },
           ].map((item, idx) => (
-            <Card key={idx} className="bg-white/[0.03] border-black/10">
+            <Card key={idx} className="bg-white/[0.03] border-black/10" data-result-card>
               <CardContent className="pt-4 pb-4">
                 <h3 className="text-base font-bold text-[#1a1a18] mb-1">{item.title}</h3>
                 <p className="text-base md:text-sm text-[#5a5a56]">{item.desc}</p>
