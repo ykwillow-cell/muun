@@ -112,7 +112,7 @@ export function HomeDictionarySection() {
           -webkit-tap-highlight-color: transparent;
         }
         .mu-dict-card:hover {
-          box-shadow: var(--md-elev-1); /* MD3 Elevation 1 on hover */
+          box-shadow: var(--card-shadow-hover, var(--md-elev-1)); /* 어드민 card-shadow-hover 우선, fallback: MD3 Elevation 1 */
           transform: translateY(-1px);
         }
         .mu-dict-card:active { opacity: 0.85; }

@@ -174,9 +174,9 @@ export function ServiceGrid() {
           transition: transform 0.12s, box-shadow 0.12s;
           -webkit-tap-highlight-color: transparent;
           min-height: 100px;
-          box-shadow: var(--md-elev-1); /* MD3 Elevation 1 */
+          box-shadow: var(--card-shadow, var(--md-elev-1)); /* 어드민 card-shadow 우선, fallback: MD3 Elevation 1 */
         }
-        .mu-pop-card:hover { transform: translateY(-2px); box-shadow: var(--md-elev-2); } /* MD3 Elevation 2 on hover */
+        .mu-pop-card:hover { transform: translateY(-2px); box-shadow: var(--card-shadow-hover, var(--md-elev-2)); } /* 어드민 card-shadow-hover 우선, fallback: MD3 Elevation 2 */
         .mu-pop-card:active { transform: scale(0.97); }
         .mu-pop-card__top {
           display: flex;
@@ -332,7 +332,7 @@ export function ServiceGrid() {
           transition: background 0.12s;
           -webkit-tap-highlight-color: transparent;
           min-height: 48px; /* MD3 터치타겟 최소 48dp */
-          box-shadow: var(--md-elev-1); /* MD3 Elevation 1 */
+          box-shadow: var(--card-shadow, var(--md-elev-1)); /* 어드민 card-shadow 우선, fallback: MD3 Elevation 1 */
         }
         .mu-more-card:hover { background: var(--md-surface-container-low); } /* MD3 hover: Surface Container Low */
         .mu-more-card:active { opacity: 0.80; }
