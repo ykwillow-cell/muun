@@ -3,6 +3,8 @@
 /* KRDS 토큰 + 컴포넌트 */
 @import "./_core/krds_tokens.css";
 @import "./_core/krds_component.css";
+/* 어드민에서 관리되는 디자인 토큰 (빌드 타임 자동 생성) */
+@import "./_core/design-tokens.generated.css";
 
 /* ── 무운(MuUn) KRDS 토큰 오버라이드 ── */
 :root {
