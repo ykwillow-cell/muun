@@ -75,6 +75,43 @@ function generateCss(theme) {
     for (const [key, value] of Object.entries(theme.gradients)) {
       lines.push(`  ${key}: ${value};`);
     }
+    lines.push('');
+  }
+
+  // 컴포넌트 토큰 (섹션별 플랫 주입)
+  if (theme.component_tokens && Object.keys(theme.component_tokens).length > 0) {
+    const componentTokens = theme.component_tokens;
+    const SECTION_LABELS = {
+      global: '전역 Shape/Radius',
+      button: '버튼',
+      card: '카드',
+      input: '인풋/텍스트에어리어',
+      badge: '배지',
+      'bottom-nav': '바텀 네비게이션',
+      gnb: 'GNB 상단 네비게이션',
+      dialog: '다이얼로그/모달',
+      tabs: '탭',
+      toast: '토스트/알림',
+      select: '셀렉트/드롭다운',
+      avatar: '아바타',
+      divider: '구분선',
+      scrollbar: '스크롤바',
+    };
+
+    let hasComponentTokens = false;
+    for (const [sectionId, group] of Object.entries(componentTokens)) {
+      if (!group || Object.keys(group).length === 0) continue;
+      if (!hasComponentTokens) {
+        lines.push(`  /* === 컴포넌트 토큰 === */`);
+        hasComponentTokens = true;
+      }
+      const label = SECTION_LABELS[sectionId] || sectionId;
+      lines.push(`  /* -- ${label} -- */`);
+      for (const [key, value] of Object.entries(group)) {
+        lines.push(`  ${key}: ${value};`);
+      }
+      lines.push('');
+    }
   }
 
   lines.push(`}`);
@@ -109,9 +146,13 @@ async function main() {
     }
 
     console.log(`✅ 활성 테마 발견: "${theme.name}"`);
+    const componentTokenCount = theme.component_tokens
+      ? Object.values(theme.component_tokens).reduce((acc, group) => acc + (group ? Object.keys(group).length : 0), 0)
+      : 0;
     console.log(`   색상 토큰: ${Object.keys(theme.colors || {}).length}개`);
     console.log(`   타이포그래피 토큰: ${Object.keys(theme.typography || {}).length}개`);
     console.log(`   그라디언트 토큰: ${Object.keys(theme.gradients || {}).length}개`);
+    console.log(`   컴포넌트 토큰: ${componentTokenCount}개`);
 
     const css = generateCss(theme);
     fs.writeFileSync(OUTPUT_PATH, css, 'utf-8');
