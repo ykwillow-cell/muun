@@ -9,8 +9,11 @@ const SUPABASE_ANON_KEY =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1aWZibXNkZ2dud3lndmdjcmtqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE4NzY0ODYsImV4cCI6MjA4NzQ1MjQ4Nn0.PhMK66O73HH98WIPAu66qk8FuXwJLU4Z2bhDcmDCpKI';
 
 const STYLE_TAG_ID = 'muun-design-tokens-runtime';
-// 캐시 TTL: 5분 (너무 자주 Supabase를 호출하지 않도록)
-const CACHE_TTL_MS = 5 * 60 * 1000;
+const CACHE_KEY = 'muun_design_tokens_cache';
+const CACHE_TIME_KEY = 'muun_design_tokens_cache_time';
+// 캐시 TTL: 0 (항상 최신 테마를 Supabase에서 가져옴)
+// 어드민에서 저장 즉시 새로고침만으로 반영되도록 캐시 비활성화
+const CACHE_TTL_MS = 0;
 
 interface DesignTheme {
   id: string;
@@ -71,21 +74,21 @@ function injectStyleTag(cssText: string): void {
 }
 
 async function fetchAndInject(): Promise<void> {
-  // 캐시 확인
-  const cacheKey = 'muun_design_tokens_cache';
-  const cacheTimeKey = 'muun_design_tokens_cache_time';
-  try {
-    const cachedTime = localStorage.getItem(cacheTimeKey);
-    const cachedCss = localStorage.getItem(cacheKey);
-    if (cachedTime && cachedCss) {
-      const elapsed = Date.now() - parseInt(cachedTime, 10);
-      if (elapsed < CACHE_TTL_MS) {
-        injectStyleTag(cachedCss);
-        return;
+  // 캐시 TTL이 0이면 항상 Supabase에서 최신 데이터를 가져옴
+  if (CACHE_TTL_MS > 0) {
+    try {
+      const cachedTime = localStorage.getItem(CACHE_TIME_KEY);
+      const cachedCss = localStorage.getItem(CACHE_KEY);
+      if (cachedTime && cachedCss) {
+        const elapsed = Date.now() - parseInt(cachedTime, 10);
+        if (elapsed < CACHE_TTL_MS) {
+          injectStyleTag(cachedCss);
+          return;
+        }
       }
+    } catch {
+      // localStorage 접근 실패 시 무시
     }
-  } catch {
-    // localStorage 접근 실패 시 무시
   }
 
   try {
@@ -96,7 +99,7 @@ async function fetchAndInject(): Promise<void> {
           apikey: SUPABASE_ANON_KEY,
           Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
         },
-        // 캐시 무시하여 항상 최신 테마 가져오기
+        // 항상 최신 테마 가져오기 (브라우저 캐시 무시)
         cache: 'no-store',
       }
     );
@@ -109,12 +112,14 @@ async function fetchAndInject(): Promise<void> {
     const cssText = buildCssText(themes[0]);
     injectStyleTag(cssText);
 
-    // 캐시 저장
-    try {
-      localStorage.setItem(cacheKey, cssText);
-      localStorage.setItem(cacheTimeKey, String(Date.now()));
-    } catch {
-      // localStorage 저장 실패 시 무시
+    // 캐시 저장 (TTL > 0인 경우에만)
+    if (CACHE_TTL_MS > 0) {
+      try {
+        localStorage.setItem(CACHE_KEY, cssText);
+        localStorage.setItem(CACHE_TIME_KEY, String(Date.now()));
+      } catch {
+        // localStorage 저장 실패 시 무시
+      }
     }
   } catch (err) {
     // 네트워크 오류 등 — 기본 CSS 변수 유지
@@ -139,8 +144,8 @@ export function initDesignTokens(): void {
 export function refreshDesignTokens(): void {
   if (typeof window === 'undefined') return;
   try {
-    localStorage.removeItem('muun_design_tokens_cache');
-    localStorage.removeItem('muun_design_tokens_cache_time');
+    localStorage.removeItem(CACHE_KEY);
+    localStorage.removeItem(CACHE_TIME_KEY);
   } catch {
     // ignore
   }

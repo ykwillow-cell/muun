@@ -28,17 +28,13 @@
     <!-- Pretendard 웹폰트: 렌더링 차단 최소화 (preload + onload 패턴) -->
     <link rel="preload" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
     <noscript><link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css" rel="stylesheet" /></noscript>
-    <!-- 디자인 토큰 FOUC 방지: localStorage 캐시를 렌더링 전 즉시 적용 -->
+    <!-- 디자인 토큰 FOUC 방지: 이전 캐시 제거 후 Supabase에서 항상 최신 테마 로드 -->
     <script>
       (function() {
         try {
-          var css = localStorage.getItem('muun_design_tokens_cache');
-          if (css) {
-            var s = document.createElement('style');
-            s.id = 'muun-design-tokens-runtime';
-            s.textContent = css;
-            document.head.appendChild(s);
-          }
+          // 캐시 TTL이 0이므로 기존 캐시를 즉시 삭제하여 항상 최신 테마를 fetch하도록 함
+          localStorage.removeItem('muun_design_tokens_cache');
+          localStorage.removeItem('muun_design_tokens_cache_time');
         } catch(e) {}
       })();
     </script>
