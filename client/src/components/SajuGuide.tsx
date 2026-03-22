@@ -8,7 +8,7 @@ interface SajuGuideProps {
 }
 
 const SajuGuide: React.FC<SajuGuideProps> = ({ userName, theme = 'yellow' }) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   const accentColor = theme === 'purple' ? 'purple' : 'primary';
   const accentBg = theme === 'purple' ? 'bg-purple-500/10 border-purple-500/20' : 'bg-primary/10 border-primary/20';
