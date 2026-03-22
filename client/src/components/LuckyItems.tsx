@@ -85,7 +85,7 @@ export default function LuckyItems({ result }: LuckyItemsProps) {
   
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 gap-4">
         <Card className="bg-card border-black/10">
           <CardContent className="p-6 flex flex-col items-center text-center gap-2">
             <Palette className="w-8 h-8 text-pink-600" />
