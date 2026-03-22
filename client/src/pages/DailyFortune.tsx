@@ -691,7 +691,7 @@ export default function DailyFortune() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden" data-daily-card>
+              <Card className=" rounded-2xl overflow-hidden" data-daily-card>
                 {/* 그라디언트 상단 바 */}
                 <div className="h-1 bg-gradient-to-r from-orange-500 via-yellow-400 to-orange-600" />
                 <CardContent className="p-6 space-y-5">
@@ -747,7 +747,7 @@ export default function DailyFortune() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.1 }}
             >
-              <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden" data-daily-card>
+              <Card className=" rounded-2xl overflow-hidden" data-daily-card>
                 <div className="h-1 bg-gradient-to-r from-green-500 via-blue-400 to-purple-500" />
                 <CardContent className="p-6 space-y-6">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20">
@@ -829,7 +829,7 @@ export default function DailyFortune() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.15 }}
             >
-              <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden" data-daily-card>
+              <Card className=" rounded-2xl overflow-hidden" data-daily-card>
                 <div className="h-1 bg-gradient-to-r from-yellow-500 via-orange-400 to-red-500" />
                 <CardContent className="p-6 space-y-5">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-yellow-500/10 border border-yellow-500/20">
@@ -897,7 +897,7 @@ export default function DailyFortune() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden" data-daily-card>
+              <Card className=" rounded-2xl overflow-hidden" data-daily-card>
                 <div className="h-1 bg-gradient-to-r from-red-600 via-red-400 to-orange-500" />
                 <CardContent className="p-6 space-y-5">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-500/10 border border-red-500/20">
@@ -949,7 +949,7 @@ export default function DailyFortune() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.25 }}
             >
-              <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden" data-daily-card>
+              <Card className=" rounded-2xl overflow-hidden" data-daily-card>
                 <div className="h-1 bg-gradient-to-r from-green-500 via-emerald-400 to-teal-500" />
                 <CardContent className="p-6 space-y-5">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20">
@@ -1004,7 +1004,7 @@ export default function DailyFortune() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
-              <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden" data-daily-card>
+              <Card className=" rounded-2xl overflow-hidden" data-daily-card>
                 <div className="h-1 bg-gradient-to-r from-blue-500 via-cyan-400 to-teal-500" />
                 <CardContent className="p-6 space-y-5">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20">
@@ -1087,7 +1087,7 @@ export default function DailyFortune() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.35 }}
             >
-              <Card className="bg-black/[0.05] border-black/10 rounded-2xl overflow-hidden" data-daily-card>
+              <Card className=" rounded-2xl overflow-hidden" data-daily-card>
                 <div className="h-1 bg-gradient-to-r from-purple-600 via-pink-500 to-rose-500" />
                 <CardContent className="p-6 space-y-5">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20">

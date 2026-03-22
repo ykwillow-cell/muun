@@ -688,7 +688,7 @@ export default function Naming() {
             </div>
 
             {/* 입력 폼 */}
-            <Card className="glass-panel border-black/10 shadow-xl rounded-2xl overflow-hidden">
+            <Card data-naming-card className="glass-panel border-black/10 shadow-xl rounded-2xl overflow-hidden">
               <CardHeader className="border-b border-black/10 px-4 py-3 md:px-6 md:py-4">
                 <CardTitle className="text-[#191F28] flex items-center gap-2 text-base md:text-lg">
                   <div className="w-8 h-8 rounded-lg bg-[#6B5FFF]/20 flex items-center justify-center">
@@ -1035,7 +1035,7 @@ export default function Naming() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <Card className="glass-panel border-[#6B5FFF]/20 shadow-xl rounded-2xl overflow-hidden">
+            <Card data-naming-card className="glass-panel border-[#6B5FFF]/20 shadow-xl rounded-2xl overflow-hidden">
               <CardContent className="p-4 md:p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -1077,7 +1077,7 @@ export default function Naming() {
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.4 }}
               >
-                <Card className="glass-panel border-[#6B5FFF]/20 shadow-xl rounded-2xl overflow-hidden">
+                <Card data-naming-card className="glass-panel border-[#6B5FFF]/20 shadow-xl rounded-2xl overflow-hidden">
                   <CardHeader className="border-b border-black/10 px-4 py-3 md:px-6 md:py-4">
                     <CardTitle className="text-[#191F28] flex items-center gap-2 text-base">
                       <div className="w-7 h-7 rounded-lg bg-[#6B5FFF]/20 flex items-center justify-center">
@@ -1343,7 +1343,7 @@ export default function Naming() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <Card className="glass-panel border-black/10 shadow-xl rounded-2xl overflow-hidden">
+            <Card data-naming-card className="glass-panel border-black/10 shadow-xl rounded-2xl overflow-hidden">
               <CardHeader className="border-b border-black/10 px-4 py-3 md:px-6 md:py-4">
                 <CardTitle className="text-[#191F28] flex items-center gap-2 text-base">
                   <div className="w-7 h-7 rounded-lg bg-[#6B5FFF]/20 flex items-center justify-center">
