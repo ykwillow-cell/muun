@@ -13,6 +13,7 @@ import { calculateAstrology, ZODIAC_SIGNS, PLANETS } from '../lib/astrology';
 import { MAJOR_CITIES, City } from '../lib/cities';
 import zodiacData from '../lib/zodiac-data.json';
 import { Star, Moon, Sun, Info, ChevronLeft, Sparkles, User, Compass, Zap, Shield, Globe, MapPin, Search } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 import { Link } from "wouter";
 import AstrologyContent from "@/components/AstrologyContent";
 import RecommendedContent from "@/components/RecommendedContent";
@@ -446,125 +447,135 @@ const Astrology: React.FC = () => {
         </div>
       </header>
 
-      <main className="relative z-10 px-4 py-6 md:py-8 max-w-5xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* 왼쪽: 시각적 차트 */}
-          <div className="lg:col-span-5 space-y-6">
-            <Card className="bg-white/80 border-black/10 backdrop-blur-xl p-6 sticky top-24">
-              <div className="text-center mb-6">
-                <h3 className="text-lg font-bold text-[#1a1a18] flex items-center justify-center gap-2">
+      <main className="relative z-10 px-3 py-4 max-w-2xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="space-y-4"
+        >
+          {/* 핵심 요약 배너 */}
+          <div className="bg-gradient-to-br from-primary/15 to-purple-500/15 border border-primary/20 rounded-2xl p-5 relative overflow-hidden">
+            <div className="absolute top-2 right-2 opacity-10">
+              <Sparkles className="w-16 h-16 text-primary" />
+            </div>
+            <p className="text-xs font-semibold text-primary mb-1 uppercase tracking-wider">나의 태양 별자리</p>
+            <h2 className="text-xl font-black text-[#1a1a18] leading-snug mb-2">
+              {result.sun.sign.name}의 기운을 타고난<br/>
+              <span className="text-primary">당신은 어떤 사람일까요?</span>
+            </h2>
+            <p className="text-sm text-[#5a5a56] leading-relaxed">
+              점성술에서 '태양'은 당신의 가장 핵심적인 모습과 삶을 대하는 태도를 말해줘요. {result.sun.sign.name}의 에너지를 품은 당신이 가진 특별한 매력을 아래에서 확인해보세요.
+            </p>
+          </div>
+
+          {/* 네이탈 차트 + 행성 요약 */}
+          <Card className="bg-white/80 border-black/10 backdrop-blur-xl overflow-hidden">
+            <div className="p-4 pb-0">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-sm font-bold text-[#1a1a18] flex items-center gap-1.5">
                   <Globe className="w-4 h-4 text-primary" />
                   Natal Chart
                 </h3>
-                <p className="text-xs text-[#999891]">당신이 태어난 순간의 하늘</p>
                 {result.city && (
-                  <p className="text-xs text-primary mt-2 flex items-center justify-center gap-1">
+                  <p className="text-[10px] text-primary flex items-center gap-1">
                     <MapPin className="w-3 h-3" />
-                    {result.city.name} ({result.city.lat.toFixed(2)}°N, {Math.abs(result.city.lng).toFixed(2)}°{result.city.lng > 0 ? 'E' : 'W'})
+                    {result.city.name}
                   </p>
                 )}
               </div>
-              <AstrologyChart planets={result.planets} />
-              <div className="mt-8 grid grid-cols-2 gap-2">
-                {result.planets.slice(0, 4).map((p: any) => (
-                  <div key={p.en} className="flex items-center gap-2 bg-black/[0.05] p-2 rounded-lg border border-black/10">
-                    <span className="text-lg">{p.icon}</span>
-                    <div className="text-[10px]">
-                      <div className="text-[#999891]">{p.name}</div>
-                      <div className="text-[#1a1a18] font-bold">{p.sign.name}</div>
-                    </div>
+            </div>
+            {/* 차트 - 모바일에서 작게 */}
+            <div className="px-4">
+              <div className="max-w-[220px] mx-auto">
+                <AstrologyChart planets={result.planets} />
+              </div>
+            </div>
+            {/* 행성 요약 그리드 - 2열 */}
+            <div className="p-4 pt-3 grid grid-cols-2 gap-2">
+              {result.planets.slice(0, 4).map((p: any) => (
+                <div key={p.en} className="flex items-center gap-2 bg-black/[0.04] p-2.5 rounded-xl border border-black/[0.06]">
+                  <span className="text-xl flex-shrink-0">{p.icon}</span>
+                  <div className="min-w-0">
+                    <div className="text-[10px] text-[#999891] truncate">{p.name}</div>
+                    <div className="text-xs text-[#1a1a18] font-bold truncate">{p.sign.name}</div>
                   </div>
-                ))}
-              </div>
-            </Card>
+                </div>
+              ))}
+            </div>
+          </Card>
+
+          {/* 행성별 상세 분석 */}
+          <div className="space-y-3">
+            <h3 className="text-base font-bold text-[#1a1a18] flex items-center gap-2 px-1">
+              <Zap className="w-4 h-4 text-yellow-600" />
+              하늘의 행성들이 보내는 메시지
+            </h3>
+
+            <div className="space-y-3">
+              {result.planets.map((p: any, i: number) => (
+                <motion.div
+                  key={p.en}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.07 }}
+                >
+                  <Card className="bg-white/80 border-black/10 overflow-hidden">
+                    {/* 카드 헤더 */}
+                    <div className="px-4 py-3 bg-black/[0.04] flex items-center justify-between border-b border-black/[0.06]">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-9 h-9 rounded-full bg-white flex items-center justify-center text-lg border border-black/10 flex-shrink-0">
+                          {p.icon}
+                        </div>
+                        <div>
+                          <div className="text-sm font-bold text-[#1a1a18] leading-tight">
+                            {p.en === 'Sun' ? '나의 본모습' :
+                             p.en === 'Moon' ? '나의 속마음' :
+                             p.en === 'Mercury' ? '나의 소통 방식' :
+                             p.en === 'Venus' ? '나의 사랑과 취향' :
+                             p.en === 'Mars' ? '나의 열정과 에너지' :
+                             p.en === 'Jupiter' ? '나의 행운과 성장' :
+                             p.en === 'Saturn' ? '나의 책임과 교훈' : p.name}
+                          </div>
+                          <div className="text-[10px] text-primary font-semibold mt-0.5">
+                            {p.name} · {p.sign.name} {p.longitude.toFixed(1)}°
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {/* 카드 본문 - 마크다운 렌더링 */}
+                    <div className="px-4 py-4">
+                      <div className="prose prose-sm max-w-none text-[#5a5a56] leading-relaxed
+                        [&_h3]:text-sm [&_h3]:font-bold [&_h3]:text-[#1a1a18] [&_h3]:mt-3 [&_h3]:mb-1.5 [&_h3]:first:mt-0
+                        [&_strong]:text-[#1a1a18] [&_strong]:font-semibold
+                        [&_p]:text-sm [&_p]:mb-2 [&_p]:last:mb-0
+                        [&_ul]:pl-4 [&_ul]:space-y-1 [&_li]:text-sm">
+                        <ReactMarkdown>
+                          {(zodiacData as any)[p.sign.en] || "상세 분석 데이터를 준비 중입니다."}
+                        </ReactMarkdown>
+                      </div>
+                    </div>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
           </div>
 
-          {/* 오른쪽: 상세 해석 */}
-          <div className="lg:col-span-7 space-y-6">
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="space-y-6"
-            >
-              {/* 핵심 요약 */}
-              <div className="bg-gradient-to-br from-primary/20 to-purple-500/20 border border-primary/20 rounded-3xl p-8 relative overflow-hidden">
-                <div className="absolute top-0 right-0 p-4 opacity-10">
-                  <Sparkles className="w-24 h-24 text-primary" />
-                </div>
-                <h2 className="text-2xl font-black text-[#1a1a18] mb-4">
-                  {result.sun.sign.name}의 기운을 타고난 <br/>
-                  <span className="text-primary">당신은 어떤 사람일까요?</span>
-                </h2>
-                <p className="text-[#5a5a56] leading-relaxed">
-                  점성술에서 '태양'은 당신의 가장 핵심적인 모습과 삶을 대하는 태도를 말해줘요. {result.sun.sign.name}의 에너지를 품은 당신이 가진 특별한 매력을 아래에서 확인해보세요.
-                </p>
-              </div>
+          {/* 안내 문구 */}
+          <Card className="bg-blue-500/5 border-blue-500/20">
+            <CardContent className="p-4 flex items-start gap-3">
+              <Info className="text-blue-600 mt-0.5 flex-shrink-0" size={16} />
+              <p className="text-xs text-blue-600/80 leading-relaxed">
+                이 분석은 당신이 태어난 순간, 하늘의 행성들이 어디에 있었는지를 계산한 결과예요.
+                태양은 당신의 겉모습을, 달은 숨겨진 감정을, 금성은 사랑의 방식을 알려준답니다.
+                나를 더 깊이 이해하는 재미있는 가이드로 활용해보세요!
+              </p>
+            </CardContent>
+          </Card>
 
-              {/* 행성별 상세 분석 */}
-              <div className="space-y-4">
-                <h3 className="text-xl font-bold text-[#1a1a18] flex items-center gap-2 px-2">
-                  <Zap className="w-5 h-5 text-yellow-600" />
-                  하늘의 행성들이 보내는 메시지
-                </h3>
-                
-                <div className="grid gap-4">
-                  {result.planets.map((p: any, i: number) => (
-                    <motion.div
-                      key={p.en}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: i * 0.1 }}
-                    >
-                      <Card className="bg-white/80 border-black/10 hover:border-primary/30 transition-colors overflow-hidden group">
-                        <CardHeader className="p-4 bg-black/[0.05] flex flex-row items-center justify-between">
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-background flex items-center justify-center text-xl border border-black/10 group-hover:scale-110 transition-transform">
-                              {p.icon}
-                            </div>
-                            <div>
-                              <CardTitle className="text-sm font-bold text-[#1a1a18]">
-                                {p.en === 'Sun' ? '나의 본모습' : 
-                                 p.en === 'Moon' ? '나의 속마음' : 
-                                 p.en === 'Mercury' ? '나의 소통 방식' : 
-                                 p.en === 'Venus' ? '나의 사랑과 취향' : 
-                                 p.en === 'Mars' ? '나의 열정과 에너지' : 
-                                 p.en === 'Jupiter' ? '나의 행운과 성장' : 
-                                 p.en === 'Saturn' ? '나의 책임과 교훈' : p.name}
-                              </CardTitle>
-                              <div className="text-[10px] text-primary font-bold">{p.name}이(가) {p.sign.name}에 머물 때</div>
-                            </div>
-                          </div>
-                          <div className="text-[10px] text-[#999891] font-mono">
-                            {p.longitude.toFixed(2)}°
-                          </div>
-                        </CardHeader>
-                        <CardContent className="p-5">
-                          <div className="text-sm text-[#5a5a56] leading-relaxed whitespace-pre-wrap">
-                            {(zodiacData as any)[p.sign.en] || "상세 분석 데이터를 준비 중입니다."}
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-
-              {/* 안내 문구 */}
-              <Card className="bg-blue-500/5 border-blue-500/20">
-                <CardContent className="p-4 flex items-start gap-3">
-                  <Info className="text-blue-600 mt-1 flex-shrink-0" size={18} />
-                  <p className="text-xs text-blue-600/80 leading-relaxed">
-                    이 분석은 당신이 태어난 순간, 하늘의 행성들이 어디에 있었는지를 계산한 결과예요. 
-                    태양은 당신의 겉모습을, 달은 숨겨진 감정을, 금성은 사랑의 방식을 알려준답니다. 
-                    나를 더 깊이 이해하는 재미있는 가이드로 활용해보세요!
-                  </p>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </div>
           {/* 콘텐츠 추천 섹션 */}
           <RecommendedContent />
-        </div>
+        </motion.div>
       </main>
     </div>
   );
