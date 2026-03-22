@@ -108,12 +108,12 @@ export default function GuideDetail() {
     basic: [
       { href: '/lifelong-saju', label: '무료 평생사주 풍이', description: '타고난 기질과 인생 전체의 운세 흐름을 분석합니다.', emoji: '🔮' },
       { href: '/dictionary', label: '사주 사전', description: '사주팔자의 핵심 용어를 쉽고 재미있게 풀어드립니다.', emoji: '📖' },
-      { href: '/past-life', label: '전생', description: '전생에서 나는 어떤 사람이었는지 확인해보세요.', emoji: '✨' },
+      { href: '/yearly-fortune', label: '2026년 신년운세', description: '병오년 한 해의 운세 흐름을 미리 확인하세요.', emoji: '📅' },
     ],
     flow: [
       { href: '/lifelong-saju', label: '무료 평생사주 풍이', description: '타고난 기질과 인생 전체의 운세 흐름을 분석합니다.', emoji: '🔮' },
       { href: '/dictionary', label: '사주 사전', description: '사주팔자의 핵심 용어를 쉽고 재미있게 풀어드립니다.', emoji: '📖' },
-      { href: '/past-life', label: '전생', description: '전생에서 나는 어떤 사람이었는지 확인해보세요.', emoji: '✨' },
+      { href: '/yearly-fortune', label: '2026년 신년운세', description: '병오년 한 해의 운세 흐름을 미리 확인하세요.', emoji: '📅' },
     ],
     family: [
       { href: '/family-saju', label: '가족사주', description: '가족 구성원의 사주를 함께 분석합니다.', emoji: '👨‍👩‍👧‍👦' },
