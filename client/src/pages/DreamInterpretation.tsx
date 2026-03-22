@@ -308,7 +308,7 @@ const DreamInterpretation: React.FC = () => {
                             transition={{ duration: 0.3, delay: idx * 0.04 }}
                             whileTap={{ scale: 0.98 }}
                             onClick={() => handleSelectDream(dream)}
-                            className="group flex items-center justify-between p-5 rounded-2xl bg-black/[0.05] border border-black/10 hover:border-primary/50 hover:bg-black/[0.06] transition-all cursor-pointer"
+                            className="group flex items-center justify-between p-5 rounded-2xl bg-black/[0.05] border border-black/10 hover:border-primary/50 hover:bg-black/[0.06] transition-all cursor-pointer" data-dream-card
                           >
                             <div className="flex items-center gap-4">
                               <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors ${gradeConfig[grade].bg.replace('from-', 'bg-').replace('/20 to-transparent', '/20')} border ${gradeConfig[grade].border}`}>

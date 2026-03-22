@@ -197,7 +197,7 @@ export default function PastLife() {
               </div>
 
               {/* 생년월일 입력 */}
-              <div className="rounded-2xl border border-black/10 bg-black/[0.05] p-6 mb-4">
+              <div className="rounded-2xl border border-black/10 bg-black/[0.05] p-6 mb-4" data-misc-card>
                 <h2 className="text-sm font-bold text-foreground/60 uppercase tracking-widest mb-4">
                   생년월일 입력
                 </h2>

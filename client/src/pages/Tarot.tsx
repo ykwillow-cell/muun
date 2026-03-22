@@ -214,7 +214,7 @@ export default function Tarot() {
       {/* Background Effects */}
       <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
         <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px]" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-purple-900/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full blur-[120px]" data-tarot-glow-2 />
       </div>
 
       <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
@@ -429,7 +429,7 @@ export default function Tarot() {
                 </div>
 
                 {isLoading ? (
-                  <div className="bg-black/[0.05] border border-black/10 rounded-2xl p-6 md:p-10 space-y-6">
+                  <div className="bg-black/[0.05] border border-black/10 rounded-2xl p-6 md:p-10 space-y-6" data-tarot-result-card>
                     <div className="flex flex-col items-center justify-center py-8 space-y-4">
                       <div className="relative">
                         <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
@@ -474,7 +474,7 @@ export default function Tarot() {
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="bg-black/[0.05] border border-black/10 rounded-2xl p-5 md:p-8 space-y-6"
+                    className="bg-black/[0.05] border border-black/10 rounded-2xl p-5 md:p-8 space-y-6" data-tarot-result-card
                   >
                     <div>
                       <h3 className="text-lg md:text-xl font-bold text-primary mb-4">타로의 메시지</h3>

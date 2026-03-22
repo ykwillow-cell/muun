@@ -344,7 +344,7 @@ export default function LuckyLunch() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
-                  <Card className="glass-panel border-black/10 overflow-hidden hover:border-amber-500/50 transition-all h-full group">
+                  <Card className="glass-panel border-black/10 overflow-hidden hover:border-amber-500/50 transition-all h-full group" data-lunch-card>
                     <CardHeader className="border-b border-black/10 pb-3 group-hover:border-amber-500/30 transition-colors">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
@@ -395,7 +395,7 @@ export default function LuckyLunch() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            <Card className="glass-panel border-black/10 overflow-hidden">
+            <Card className="glass-panel border-black/10 overflow-hidden" data-misc-card>
               <CardHeader className="border-b border-black/10 bg-gradient-to-r from-amber-500/10 to-transparent">
                 <CardTitle className="text-[#1a1a18] text-lg flex items-center gap-2">
                   <Zap className="w-5 h-5 text-amber-400" />

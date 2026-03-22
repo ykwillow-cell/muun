@@ -196,7 +196,7 @@ export default function Psychology() {
                   </p>
                 </section>
 
-                <Card className="bg-black/[0.05] border-black/10 overflow-hidden rounded-2xl">
+                <Card className="bg-black/[0.05] border-black/10 overflow-hidden rounded-2xl" data-misc-card>
                   <div className="aspect-video bg-gradient-to-br from-purple-600/50 to-pink-600/50 flex items-center justify-center">
                     <div className="w-20 h-20 md:w-24 md:h-24 rounded-3xl bg-black/06 backdrop-blur-xl flex items-center justify-center">
                       <Sparkles className="w-10 h-10 md:w-12 md:h-12 text-[#1a1a18] animate-pulse" />
@@ -243,7 +243,7 @@ export default function Psychology() {
                   </div>
                 </div>
                 
-                <Card className="bg-black/[0.05] border-black/10 rounded-2xl p-6 md:p-8">
+                <Card className="bg-black/[0.05] border-black/10 rounded-2xl p-6 md:p-8" data-misc-card>
                   <h2 className="text-lg md:text-xl font-bold text-[#1a1a18] leading-relaxed mb-6 md:mb-8">
                     {test.questions[currentQuestion].question}
                   </h2>
@@ -271,7 +271,7 @@ export default function Psychology() {
                 animate={{ opacity: 1, scale: 1 }}
                 className="space-y-6 md:space-y-8"
               >
-                <Card className="bg-black/[0.05] border-black/10 overflow-hidden rounded-2xl">
+                <Card className="bg-black/[0.05] border-black/10 overflow-hidden rounded-2xl" data-misc-card>
                   <div className="p-6 md:p-8 text-center space-y-6">
                     <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-primary/20 flex items-center justify-center mx-auto">
                       <Target className="w-8 h-8 md:w-10 md:h-10 text-primary" />
