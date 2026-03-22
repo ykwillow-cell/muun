@@ -447,7 +447,7 @@ export default function FortuneShareCard(props: FortuneShareCardProps) {
       </div>
 
       {/* 이미지 저장 버튼 */}
-      <div className="flex justify-center">
+      <div className="hidden">
         <Button
           onClick={captureAndDownload}
           disabled={isCapturing}
