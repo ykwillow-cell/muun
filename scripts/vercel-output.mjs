@@ -47,16 +47,20 @@ console.log(`✅ Copied dist/public → .vercel/output/static`);
 const deletedUrls = [
   // Dictionary 페이지
   '/dictionary/baekho-sal', '/dictionary/bi-gyeop', '/dictionary/byeong-hwa',
+  '/dictionary/gab-mok',
   '/dictionary/chung', '/dictionary/dae-un', '/dictionary/earthly-branches',
   '/dictionary/eul-mok', '/dictionary/fire-element', '/dictionary/gi-sin',
-  '/dictionary/gi-to', '/dictionary/gong-mang', '/dictionary/gwanseong',
-  '/dictionary/gwimun-sal', '/dictionary/gye-su', '/dictionary/hap',
+  '/dictionary/gi-to', '/dictionary/gwanseong',
+  '/dictionary/gwimun-sal', '/dictionary/gye-su',
   '/dictionary/heavenly-stems', '/dictionary/hui-sin', '/dictionary/hwagae-sal',
   '/dictionary/hyeong', '/dictionary/im-su', '/dictionary/inseong',
   '/dictionary/jaeseong', '/dictionary/jeong-hwa', '/dictionary/metal-element',
   '/dictionary/mu-to', '/dictionary/sam-jae', '/dictionary/se-un',
   '/dictionary/siksang', '/dictionary/sin-geum', '/dictionary/wonjin-sal',
   '/dictionary/wood-element', '/dictionary/yin-yang-five-elements', '/dictionary/yong-sin',
+  // Guide 페이지 (이전 하드코딩 slug URL)
+  '/guide/column-001', '/guide/column-002', '/guide/column-003',
+  '/guide/saju-basics',
   // Dream 페이지
   '/dream/가위', '/dream/강도', '/dream/개', '/dream/거미', '/dream/거북이',
   '/dream/거울', '/dream/거지', '/dream/결혼', '/dream/경찰', '/dream/고래',
@@ -86,10 +90,15 @@ function escapeRegex(str) {
 // 모든 리다이렉트 규칙 생성 (원본 + 인코딩 버전)
 const redirectRoutes = deletedUrls.flatMap(url => {
   const escapedUrl = escapeRegex(url);
+  // 관련 페이지로 리디렉션 (dictionary → /fortune-dictionary, dream → /dream)
+  const destination = url.startsWith('/dictionary/') ? '/fortune-dictionary'
+    : url.startsWith('/dream/') ? '/dream'
+    : url.startsWith('/guide/') ? '/guide'
+    : '/';
   const routes = [{
     src: `^${escapedUrl}$`,
     status: 301,
-    headers: { 'Location': '/' }
+    headers: { 'Location': destination }
   }];
   
   // 한글이 포함되면 인코딩 버전도 추가
@@ -99,18 +108,29 @@ const redirectRoutes = deletedUrls.flatMap(url => {
     routes.push({
       src: `^${escapedEncoded}$`,
       status: 301,
-      headers: { 'Location': '/' }
+      headers: { 'Location': destination }
     });
   }
   
   return routes;
 });
 
+// Guide UUID → slug 리디렉션 규칙 (이전 UUID 기반 URL을 slug URL로 301 리디렉션)
+const guideUuidRedirects = [
+  { src: '^/guide/f16e40e9-e4dd-4d8b-94e2-d442294b56c8$', dest: '/guide/family-f16e40e9' },
+];
+
 // config.json 생성 (SPA 라우팅 + 캐시 헤더 설정)
 const config = {
   version: 3,
   routes: [
-    // 0. 삭제된 페이지 리다이렉트 (301 Moved Permanently)
+    // 0a. Guide UUID → slug 리디렉션 (301)
+    ...guideUuidRedirects.map(r => ({
+      src: r.src,
+      status: 301,
+      headers: { 'Location': r.dest }
+    })),
+    // 0b. 삭제된 페이지 리다이렉트 (301 Moved Permanently)
     ...redirectRoutes,
     // 1. 정적 에셋 (assets/) - 1년 캐시
     {
