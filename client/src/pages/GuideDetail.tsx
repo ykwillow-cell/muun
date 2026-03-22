@@ -48,6 +48,85 @@ export default function GuideDetail() {
 
   const categoryColor = COLUMN_CATEGORIES[column.category]?.color || 'bg-black/06 text-[#5a5a56]';
 
+  // 카테고리별 CTA 배너 설정
+  const ctaConfig: Record<string, { message: string; targetPath: string; buttonLabel: string }> = {
+    relationship: {
+      message: '나와 어울리는 사람, 무료로 확인해보세요',
+      targetPath: '/compatibility',
+      buttonLabel: '무료 궁합 보러가기',
+    },
+    love: {
+      message: '나와 어울리는 사람, 무료로 확인해보세요',
+      targetPath: '/compatibility',
+      buttonLabel: '무료 궁합 보러가기',
+    },
+    family: {
+      message: '우리 가족의 운세를 함께 확인해보세요',
+      targetPath: '/family-saju',
+      buttonLabel: '가족사주 보러가기',
+    },
+  };
+  const cta = ctaConfig[column.category] || {
+    message: '오늘 나의 운세도 확인해 보세요',
+    targetPath: '/daily-fortune',
+    buttonLabel: '무료 운세 보러가기',
+  };
+
+  // 카테고리별 하단 추천 서비스 매핑
+  type ServiceItem = { href: string; label: string; description: string; emoji: string };
+  const relatedServicesMap: Record<string, ServiceItem[]> = {
+    relationship: [
+      { href: '/compatibility', label: '무료 궁합 풍이', description: '사주로 보는 두 사람의 콘테츠와 궁합을 분석합니다.', emoji: '💕' },
+      { href: '/hybrid-compatibility', label: '사주×MBTI 궁합', description: '사주와 MBTI를 결합한 새로운 궁합 분석입니다.', emoji: '🧠' },
+      { href: '/lifelong-saju', label: '무료 평생사주 풍이', description: '타고난 기질과 인생 전체의 운세 흐름을 분석합니다.', emoji: '🔮' },
+    ],
+    love: [
+      { href: '/compatibility', label: '무료 궁합 풍이', description: '사주로 보는 두 사람의 콘테츠와 궁합을 분석합니다.', emoji: '💕' },
+      { href: '/hybrid-compatibility', label: '사주×MBTI 궁합', description: '사주와 MBTI를 결합한 새로운 궁합 분석입니다.', emoji: '🧠' },
+      { href: '/lifelong-saju', label: '무료 평생사주 풍이', description: '타고난 기질과 인생 전체의 운세 흐름을 분석합니다.', emoji: '🔮' },
+    ],
+    money: [
+      { href: '/lifelong-saju', label: '무료 평생사주 풍이', description: '타고난 기질과 인생 전체의 운세 흐름을 분석합니다.', emoji: '🔮' },
+      { href: '/yearly-fortune', label: '2026년 신년운세', description: '병오년 한 해의 재물운을 미리 확인하세요.', emoji: '📅' },
+      { href: '/tojeong', label: '토정비결', description: '전통 토정비결으로 한 해의 운세를 확인합니다.', emoji: '📜' },
+    ],
+    career: [
+      { href: '/lifelong-saju', label: '무료 평생사주 풍이', description: '타고난 기질과 인생 전체의 운세 흐름을 분석합니다.', emoji: '🔮' },
+      { href: '/yearly-fortune', label: '2026년 신년운세', description: '병오년 한 해의 직장운을 미리 확인하세요.', emoji: '📅' },
+      { href: '/tojeong', label: '토정비결', description: '전통 토정비결으로 한 해의 운세를 확인합니다.', emoji: '📜' },
+    ],
+    health: [
+      { href: '/daily-fortune', label: '오늘의 운세', description: '오늘 하루의 기운과 건강운을 미리 확인하세요.', emoji: '☀️' },
+      { href: '/lifelong-saju', label: '무료 평생사주 풍이', description: '타고난 기질과 인생 전체의 운세 흐름을 분석합니다.', emoji: '🔮' },
+      { href: '/tarot', label: 'AI 타로 상담', description: '오늘 마음속 고민을 타로 카드로 풀어보세요.', emoji: '🎠' },
+    ],
+    luck: [
+      { href: '/daily-fortune', label: '오늘의 운세', description: '오늘 하루의 기운과 행운을 미리 확인하세요.', emoji: '☀️' },
+      { href: '/lifelong-saju', label: '무료 평생사주 풍이', description: '타고난 기질과 인생 전체의 운세 흐름을 분석합니다.', emoji: '🔮' },
+      { href: '/tarot', label: 'AI 타로 상담', description: '오늘 마음속 고민을 타로 카드로 풀어보세요.', emoji: '🎠' },
+    ],
+    basic: [
+      { href: '/lifelong-saju', label: '무료 평생사주 풍이', description: '타고난 기질과 인생 전체의 운세 흐름을 분석합니다.', emoji: '🔮' },
+      { href: '/dictionary', label: '사주 사전', description: '사주팔자의 핵심 용어를 쉽고 재미있게 풀어드립니다.', emoji: '📖' },
+      { href: '/past-life', label: '전생', description: '전생에서 나는 어떤 사람이었는지 확인해보세요.', emoji: '✨' },
+    ],
+    flow: [
+      { href: '/lifelong-saju', label: '무료 평생사주 풍이', description: '타고난 기질과 인생 전체의 운세 흐름을 분석합니다.', emoji: '🔮' },
+      { href: '/dictionary', label: '사주 사전', description: '사주팔자의 핵심 용어를 쉽고 재미있게 풀어드립니다.', emoji: '📖' },
+      { href: '/past-life', label: '전생', description: '전생에서 나는 어떤 사람이었는지 확인해보세요.', emoji: '✨' },
+    ],
+    family: [
+      { href: '/family-saju', label: '가족사주', description: '가족 구성원의 사주를 함께 분석합니다.', emoji: '👨‍👩‍👧‍👦' },
+      { href: '/compatibility', label: '무료 궁합 풍이', description: '사주로 보는 두 사람의 콘테츠와 궁합을 분석합니다.', emoji: '💕' },
+      { href: '/lifelong-saju', label: '무료 평생사주 풍이', description: '타고난 기질과 인생 전체의 운세 흐름을 분석합니다.', emoji: '🔮' },
+    ],
+  };
+  const relatedServicesList = relatedServicesMap[column.category] || [
+    { href: '/lifelong-saju', label: '무료 평생사주 풍이', description: '타고난 기질과 인생 전체의 운세 흐름을 분석합니다.', emoji: '🔮' },
+    { href: '/yearly-fortune', label: '2026년 신년운세', description: '병오년 한 해의 운세 흐름을 미리 확인하세요.', emoji: '📅' },
+    { href: '/daily-fortune', label: '오늘의 운세', description: '오늘 하루의 기운을 미리 확인하세요.', emoji: '☀️' },
+  ];
+
   return (
     <div className="min-h-screen bg-background text-[#1a1a18]">
       <Helmet>
@@ -167,40 +246,16 @@ export default function GuideDetail() {
           dangerouslySetInnerHTML={{ __html: column.content }}
         />
 
-        {/* CTA - 무료 운세 전환 유도 */}
+        {/* CTA - 카테고리별 맞춤 전환 유도 */}
         <CallToAction
-          message="오늘 나의 운세도 확인해 보세요"
-          targetPath="/daily-fortune"
+          message={cta.message}
+          targetPath={cta.targetPath}
+          buttonLabel={cta.buttonLabel}
         />
-        {/* 관련 서비스 내부 링크 */}
+        {/* 관련 서비스 내부 링크 - 카테고리별 맞춤 */}
         <RelatedServices
           title="칼럼과 함께 보면 좋은 서비스"
-          services={[
-            {
-              href: "/lifelong-saju",
-              label: "무료 평생사주 풀이",
-              description: "타고난 기질과 인생 전체의 운세 흐름을 사주팔자로 분석합니다.",
-              emoji: "🔮",
-            },
-            {
-              href: "/yearly-fortune",
-              label: "2026년 신년운세",
-              description: "병오년 한 해의 운세 흐름을 미리 확인하세요.",
-              emoji: "📅",
-            },
-            {
-              href: "/manselyeok",
-              label: "만세력",
-              description: "내 사주팔자 원국과 대운·세운의 흐름을 한눈에 확인합니다.",
-              emoji: "📖",
-            },
-            {
-              href: "/dream",
-              label: "꿈해몽 사전",
-              description: "1만여 건의 꿈 해석을 무료로 찾아보세요.",
-              emoji: "🌙",
-            },
-          ]}
+          services={relatedServicesList}
         />
 
         {/* 관련 칼럼 */}
