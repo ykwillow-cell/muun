@@ -553,7 +553,7 @@
 /* 결과 페이지 내 Card 래퍼 (bg-black/[0.05] border-black/10 패턴) */
 .saju-result-card,
 [data-result-card] {
-  background: var(--result-card-bg, rgba(0,0,0,0.04)) !important;
+  background: var(--result-card-bg, #ffffff) !important;
   border-color: var(--result-card-border, rgba(0,0,0,0.08)) !important;
   border-radius: var(--result-chart-radius, 1rem) !important;
 }
@@ -576,11 +576,11 @@
 
 /* ── 타로 결과 페이지 ── */
 [data-tarot-card] {
-  background: var(--tarot-card-bg, rgba(0,0,0,0.05)) !important;
+  background: var(--tarot-card-bg, #ffffff) !important;
   border-color: var(--tarot-card-border, rgba(0,0,0,0.10)) !important;
 }
 [data-tarot-result-card] {
-  background: var(--tarot-result-card-bg, rgba(0,0,0,0.05)) !important;
+  background: var(--tarot-result-card-bg, #ffffff) !important;
   border-color: var(--tarot-card-border, rgba(0,0,0,0.10)) !important;
 }
 [data-tarot-glow-1] {
@@ -595,7 +595,7 @@
 
 /* ── 오늘의운세 / 토정비결 결과 페이지 ── */
 [data-daily-card] {
-  background: var(--daily-result-card-bg, rgba(0,0,0,0.05)) !important;
+  background: var(--daily-result-card-bg, #ffffff) !important;
   border-color: var(--daily-result-card-border, rgba(0,0,0,0.10)) !important;
 }
 [data-daily-icon-bg] {
@@ -610,7 +610,7 @@
 
 /* ── 작명 결과 페이지 ── */
 [data-naming-card] {
-  background: var(--naming-card-bg, rgba(0,0,0,0.05)) !important;
+  background: var(--naming-card-bg, #ffffff) !important;
   border-color: var(--naming-card-border, rgba(0,0,0,0.10)) !important;
 }
 [data-naming-selected] {
@@ -632,7 +632,7 @@
 
 /* ── 꿈해몽 결과 페이지 ── */
 [data-dream-card] {
-  background: var(--dream-result-card-bg, rgba(0,0,0,0.05)) !important;
+  background: var(--dream-result-card-bg, #ffffff) !important;
   border-color: var(--dream-result-card-border, rgba(0,0,0,0.10)) !important;
 }
 [data-dream-hero] {
@@ -647,7 +647,7 @@
 
 /* ── 기타 서비스 결과 페이지 ── */
 [data-misc-card] {
-  background: var(--misc-result-card-bg, rgba(0,0,0,0.05)) !important;
+  background: var(--misc-result-card-bg, #ffffff) !important;
   border-color: var(--misc-result-card-border, rgba(0,0,0,0.10)) !important;
 }
 [data-lunch-card] {

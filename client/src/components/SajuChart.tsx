@@ -38,8 +38,11 @@ export default function SajuChart({ result, theme = 'yellow' }: SajuChartProps) 
 
   return (
     <div className="space-y-4">
-      {/* 사주팔자표 */}
-      <div className="overflow-x-auto">
+      {/* 사주팔자표 — 어드민 result-chart-bg 적용 */}
+      <div 
+        className="overflow-x-auto rounded-xl p-2"
+        style={{ background: 'var(--result-chart-bg)' }}
+      >
         <table className="w-full border-collapse">
           <thead>
             <tr>
