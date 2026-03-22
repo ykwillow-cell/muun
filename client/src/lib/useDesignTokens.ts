@@ -63,14 +63,21 @@ function buildCssText(theme: DesignTheme): string {
 }
 
 function injectStyleTag(cssText: string): void {
-  let tag = document.getElementById(STYLE_TAG_ID) as HTMLStyleElement | null;
-  if (!tag) {
-    tag = document.createElement('style');
-    tag.id = STYLE_TAG_ID;
-    // <head> 마지막에 추가하여 기본 CSS보다 우선순위 높게
+  // 기존 태그 제거 후 재생성 (위치 재배치를 위해)
+  const existing = document.getElementById(STYLE_TAG_ID);
+  if (existing) existing.remove();
+
+  const tag = document.createElement('style');
+  tag.id = STYLE_TAG_ID;
+  tag.textContent = cssText;
+
+  // <body> 끝에 추가하여 빌드 타임 CSS(<head>의 <link>)보다 나중에 로드되도록 보장
+  // CSS 소스 순서상 뒤에 위치할수록 우선순위가 높아 빌드 CSS 값을 덮어씀
+  if (document.body) {
+    document.body.appendChild(tag);
+  } else {
     document.head.appendChild(tag);
   }
-  tag.textContent = cssText;
 }
 
 async function fetchAndInject(): Promise<void> {
