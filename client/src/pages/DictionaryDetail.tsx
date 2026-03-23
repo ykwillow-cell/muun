@@ -28,11 +28,11 @@ import { trackCustomEvent } from '@/lib/ga4';
 
 // 관련 서비스 데이터 (1 Featured + 3 Small)
 const FEATURED_SERVICE = {
-  path: '/lifelong-saju',
-  title: '평생사주',
-  desc: '타고난 기질과 운명, 직업운·재물운·대인관계를 한눈에',
-  badge: '가장 많이 찾는 서비스',
-  emoji: '✨',
+  path: '/family-saju',
+  title: '가족사주',
+  desc: '가족 구성원의 사주를 한 번에 분석해 관계와 운명의 흐름을 파악하세요',
+  badge: '함께 보면 좋은 서비스',
+  emoji: '👨‍👩‍👧‍👦',
 };
 
 const SMALL_SERVICES = [
