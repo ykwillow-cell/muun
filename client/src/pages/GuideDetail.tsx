@@ -67,9 +67,9 @@ export default function GuideDetail() {
     },
   };
   const cta = ctaConfig[column.category] || {
-    message: '오늘 나의 운세도 확인해 보세요',
-    targetPath: '/daily-fortune',
-    buttonLabel: '무료 운세 보러가기',
+    message: '타고난 기질과 운명, 지금 확인해 보세요',
+    targetPath: '/lifelong-saju',
+    buttonLabel: '평생사주 무료로 보기',
   };
 
   // 카테고리별 하단 추천 서비스 매핑
@@ -122,7 +122,7 @@ export default function GuideDetail() {
     ],
   };
   const relatedServicesList = relatedServicesMap[column.category] || [
-    { href: '/lifelong-saju', label: '무료 평생사주 풍이', description: '타고난 기질과 인생 전체의 운세 흐름을 분석합니다.', emoji: '🔮' },
+    { href: '/family-saju', label: '가족사주', description: '가족 구성원의 사주를 함께 분석하여 오행의 조화를 확인합니다.', emoji: '👨‍👩‍👧' },
     { href: '/yearly-fortune', label: '2026년 신년운세', description: '병오년 한 해의 운세 흐름을 미리 확인하세요.', emoji: '📅' },
     { href: '/daily-fortune', label: '오늘의 운세', description: '오늘 하루의 기운을 미리 확인하세요.', emoji: '☀️' },
   ];

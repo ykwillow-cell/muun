@@ -164,7 +164,7 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           </div>
           <div className="mu-fortune-card__footer">
             <p className="mu-fortune-card__desc">{fortune.desc}</p>
-            <Link href="/yearly-fortune" className="mu-fortune-card__cta">
+            <Link href="/daily-fortune" className="mu-fortune-card__cta">
               자세히 →
             </Link>
           </div>
