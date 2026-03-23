@@ -37,7 +37,7 @@ import { calculateSaju, SajuResult, calculateElementBalance, STEM_ELEMENTS, BRAN
 import { convertToSolarDate } from "@/lib/lunar-converter";
 import SajuChart from "@/components/SajuChart";
 import SajuGlossary from "@/components/SajuGlossary";
-import CompatibilityContent from "@/components/CompatibilityContent";
+import CompatibilityContent, { CompatibilityRelatedServices } from "@/components/CompatibilityContent";
 import RecommendedContent from "@/components/RecommendedContent";
 import FortuneShareCard from "@/components/FortuneShareCard";
 import { trackEvent, trackCustomEvent } from "@/lib/ga4";
@@ -748,21 +748,21 @@ export default function Compatibility() {
  {/* 두 번째 사람 */}
  <div className="space-y-3">
  <div className="flex items-center gap-2">
- <div className="w-6 h-6 rounded-full bg-red-500 text-white text-sm md:text-xs font-bold flex items-center justify-center">2</div>
+ <div className="w-6 h-6 rounded-full bg-[#E8387A] text-white text-sm md:text-xs font-bold flex items-center justify-center">2</div>
  <h3 className="text-[#1a1a18] font-bold text-base md:text-sm">두 번째 사람</h3>
  </div>
  <div className="grid grid-cols-2 gap-3">
  <div className="space-y-1.5">
  <Label htmlFor="name2" className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
- <User className="w-3.5 h-3.5 text-red-600" /> 이름
+ <User className="w-3.5 h-3.5 text-[#E8387A]" /> 이름
  </Label>
- <Input id="name2" placeholder="이름" {...form.register("name2")} className="h-11 bg-black/[0.05] border-black/10 text-[#1a1a18] placeholder:text-[#999891] rounded-xl focus:ring-red-500/50 focus:border-red-500 transition-all text-base md:text-sm" />
+ <Input id="name2" placeholder="이름" {...form.register("name2")} className="h-11 bg-black/[0.05] border-black/10 text-[#1a1a18] placeholder:text-[#999891] rounded-xl focus:ring-pink-500/50 focus:border-pink-500 transition-all text-base md:text-sm" />
  {/* 4단계: 이름 마이크로카피 */}
  <p className="text-[11px] text-[#999891] leading-tight">이름은 결과 화면에만 표시되며 저장되지 않습니다</p>
  </div>
  <div className="space-y-1.5">
  <Label className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
- <Sparkles className="w-3.5 h-3.5 text-red-600" /> 성별
+ <Sparkles className="w-3.5 h-3.5 text-[#E8387A]" /> 성별
  </Label>
  {/* 4단계: 두 번째 성별 — 미선택 상태 가능, 연동 로직 override */}
  <ToggleGroup
@@ -778,11 +778,11 @@ export default function Compatibility() {
  >
  <ToggleGroupItem
    value="male"
-   className="h-full rounded-lg data-[state=on]:bg-red-500 data-[state=on]:text-white data-[state=off]:text-[#5a5a56] data-[state=off]:border data-[state=off]:border-[#c0bdb4] transition-all font-medium text-base md:text-sm min-h-[44px]"
+   className="h-full rounded-lg data-[state=on]:bg-[#E8387A] data-[state=on]:text-white data-[state=off]:text-[#5a5a56] data-[state=off]:border data-[state=off]:border-[#c0bdb4] transition-all font-medium text-base md:text-sm min-h-[44px]"
  >남성</ToggleGroupItem>
  <ToggleGroupItem
    value="female"
-   className="h-full rounded-lg data-[state=on]:bg-red-500 data-[state=on]:text-white data-[state=off]:text-[#5a5a56] data-[state=off]:border data-[state=off]:border-[#c0bdb4] transition-all font-medium text-base md:text-sm min-h-[44px]"
+   className="h-full rounded-lg data-[state=on]:bg-[#E8387A] data-[state=on]:text-white data-[state=off]:text-[#5a5a56] data-[state=off]:border data-[state=off]:border-[#c0bdb4] transition-all font-medium text-base md:text-sm min-h-[44px]"
  >여성</ToggleGroupItem>
  </ToggleGroup>
  {(form.formState.errors as any)?.gender2 && (
@@ -792,26 +792,26 @@ export default function Compatibility() {
  </div>
  <div className="space-y-1.5">
  <Label htmlFor="birthDate2" className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
- <Calendar className="w-3.5 h-3.5 text-red-600" /> 생년월일
+ <Calendar className="w-3.5 h-3.5 text-[#E8387A]" /> 생년월일
  </Label>
- <DatePickerInput id="birthDate2" {...form.register("birthDate2")} value={form.watch("birthDate2")} accentColor="red" />
+ <DatePickerInput id="birthDate2" {...form.register("birthDate2")} value={form.watch("birthDate2")} accentColor="pink" />
  </div>
  <div className="grid grid-cols-2 gap-3">
  <div className="space-y-1.5">
  <Label htmlFor="birthTime2" className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
- <Clock className="w-3.5 h-3.5 text-red-600" /> 태어난 시간
+ <Clock className="w-3.5 h-3.5 text-[#E8387A]" /> 태어난 시간
  </Label>
  <BirthTimeSelect
  value={form.watch("birthTime2")}
  onChange={(val) => form.setValue("birthTime2", val)}
  onUnknownChange={(isUnknown) => form.setValue("birthTimeUnknown2", isUnknown)}
  isUnknown={form.watch("birthTimeUnknown2")}
- accentClass="focus:ring-red-500/50 focus:border-red-500"
+ accentClass="focus:ring-pink-500/50 focus:border-pink-500"
  />
  </div>
  <div className="space-y-1.5">
  <Label className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
- <Star className="w-3.5 h-3.5 text-red-600" /> 양력/음력
+ <Star className="w-3.5 h-3.5 text-[#E8387A]" /> 양력/음력
  </Label>
  <ToggleGroup
  type="single"
@@ -825,15 +825,15 @@ export default function Compatibility() {
  >
  <ToggleGroupItem
    value="solar"
-   className="h-full rounded-lg data-[state=on]:bg-red-500 data-[state=on]:text-white data-[state=off]:text-[#5a5a56] data-[state=off]:border data-[state=off]:border-[#c0bdb4] transition-all font-medium text-base md:text-sm min-h-[44px]"
+   className="h-full rounded-lg data-[state=on]:bg-[#E8387A] data-[state=on]:text-white data-[state=off]:text-[#5a5a56] data-[state=off]:border data-[state=off]:border-[#c0bdb4] transition-all font-medium text-base md:text-sm min-h-[44px]"
  >
- 양력
+양력
  </ToggleGroupItem>
  <ToggleGroupItem
    value="lunar"
-   className="h-full rounded-lg data-[state=on]:bg-red-500 data-[state=on]:text-white data-[state=off]:text-[#5a5a56] data-[state=off]:border data-[state=off]:border-[#c0bdb4] transition-all font-medium text-base md:text-sm min-h-[44px]"
+   className="h-full rounded-lg data-[state=on]:bg-[#E8387A] data-[state=on]:text-white data-[state=off]:text-[#5a5a56] data-[state=off]:border data-[state=off]:border-[#c0bdb4] transition-all font-medium text-base md:text-sm min-h-[44px]"
  >
- 음력
+음력
  </ToggleGroupItem>
  </ToggleGroup>
  {form.watch("calendarType2") === "lunar" && (
@@ -898,23 +898,26 @@ export default function Compatibility() {
  </CardContent>
  </Card>
 
- {/* 2단계: 피처 아이콘 3개 — Case B: 인라인 수평 나열, pointer-events:none */}
- <div className="flex items-center justify-center gap-0 rounded-xl bg-black/[0.03] border border-black/[0.06] overflow-hidden">
-   <div className="flex-1 flex items-center justify-center gap-2 py-3 px-2" style={{ pointerEvents: 'none' }}>
-     <Heart className="w-4 h-4 text-[var(--compatibility-accent,#E8387A)] flex-shrink-0" />
-     <span className="text-xs font-medium text-[#1a1a18]">궁합 점수</span>
+ {/* 2단계: 피처 아이콘 3개 — Case B: 배경/테두리 없는 인라인 텍스트+아이콘 */}
+ <div className="flex items-center justify-center gap-0" style={{ pointerEvents: 'none' }}>
+   <div className="flex-1 flex items-center justify-center gap-1.5 py-2 px-2">
+     <Heart className="w-3.5 h-3.5 text-[#E8387A] flex-shrink-0" />
+     <span className="text-xs text-[#5a5a56]">궁합 점수</span>
    </div>
-   <div className="w-px h-8 bg-black/[0.08]" />
-   <div className="flex-1 flex items-center justify-center gap-2 py-3 px-2" style={{ pointerEvents: 'none' }}>
-     <Activity className="w-4 h-4 text-[var(--compatibility-accent,#E8387A)] flex-shrink-0" />
-     <span className="text-xs font-medium text-[#1a1a18]">오행 분석</span>
+   <div className="w-px h-4 bg-black/[0.12]" />
+   <div className="flex-1 flex items-center justify-center gap-1.5 py-2 px-2">
+     <Activity className="w-3.5 h-3.5 text-[#E8387A] flex-shrink-0" />
+     <span className="text-xs text-[#5a5a56]">오행 분석</span>
    </div>
-   <div className="w-px h-8 bg-black/[0.08]" />
-   <div className="flex-1 flex items-center justify-center gap-2 py-3 px-2" style={{ pointerEvents: 'none' }}>
-     <Users className="w-4 h-4 text-[var(--compatibility-accent,#E8387A)] flex-shrink-0" />
-     <span className="text-xs font-medium text-[#1a1a18]">상세 해석</span>
+   <div className="w-px h-4 bg-black/[0.12]" />
+   <div className="flex-1 flex items-center justify-center gap-1.5 py-2 px-2">
+     <Users className="w-3.5 h-3.5 text-[#E8387A] flex-shrink-0" />
+     <span className="text-xs text-[#5a5a56]">상세 해석</span>
    </div>
  </div>
+
+ {/* ① 관련 서비스 — 입력 폼 아래(CTA 이후) */}
+ <CompatibilityRelatedServices />
 
  </motion.div>
  </main>
