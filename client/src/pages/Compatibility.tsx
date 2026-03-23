@@ -1,4 +1,18 @@
-import { useState, useEffect } from "react";
+/**
+ * Compatibility.tsx
+ * 무운 궁합 페이지
+ *
+ * [개선 2026-03-23]
+ * 1단계: 페이지 구조 재편 — 에디토리얼 요약(접힘)을 입력 폼 위로 이동
+ * 2단계: 피처 아이콘 3개 → Case B (단순 배지) — 카드 제거, 인라인 수평 나열, pointer-events:none
+ * 3단계: 로딩 상태 피드백 — disabled 처리, 스피너 + 텍스트, 스켈레톤 UI, fade-in
+ * 4단계: 입력 폼 개선 — 이름 마이크로카피, 성별 터치 타깃 44px, 두 번째 성별 기본값 미선택 + 연동 로직
+ * 5단계: 공유 버튼 — 결과 영역 하단에 Web Share API 버튼 추가
+ * 6단계: 관련 서비스 계층화 — CompatibilityContent에서 처리
+ * 7단계: tintColor 통일 — --compatibility-accent: #E8387A CSS 변수 적용
+ * 8단계: 헤더 뒤로가기 레이블 — 이전 경로 기반 레이블 표시
+ */
+import { useState, useEffect, useRef } from "react";
 import { useCanonical } from '@/lib/use-canonical';
 import { setCompatibilityOGTags } from '@/lib/og-tags';
 import { useForm } from "react-hook-form";
@@ -6,9 +20,9 @@ import { Helmet } from "react-helmet-async";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, Heart, Share2, Sparkles, User, Activity, Calendar, Clock, Users, Star, Zap, Briefcase, Shield, Home, ChevronDown, ChevronUp, Quote, AlertTriangle, CheckCircle2, TrendingUp } from "lucide-react";
+import { ChevronLeft, Heart, Share2, Sparkles, User, Activity, Calendar, Clock, Users, Star, Zap, Briefcase, Shield, Home, ChevronDown, ChevronUp, Quote, AlertTriangle, CheckCircle2, TrendingUp, Loader2, Copy, Check } from "lucide-react";
 import DatePickerInput from "@/components/DatePickerInput";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { shareContent } from "@/lib/share";
 import { autoLinkKeywordsToJSX } from "@/lib/auto-link-keywords";
 
@@ -49,7 +63,7 @@ const formSchema = z.object({
  calendarType1: z.enum(["solar", "lunar"]),
  isLeapMonth1: z.boolean().optional(),
  name2: z.string().min(1, "두 번째 이름을 입력해주세요"),
- gender2: z.enum(["male", "female"]),
+ gender2: z.enum(["male", "female"]).optional(),
  birthDate2: z.string().min(1, "두 번째 생년월일을 입력해주세요"),
  birthTime2: z.string().default("12:30"),
  birthTimeUnknown2: z.boolean().default(false),
@@ -57,7 +71,23 @@ const formSchema = z.object({
  isLeapMonth2: z.boolean().optional(),
 });
 
-type FormValues = z.infer<typeof formSchema>;
+// gender2를 optional로 처리하기 위한 확장 타입
+type FormValues = {
+ name1: string;
+ gender1: "male" | "female";
+ birthDate1: string;
+ birthTime1: string;
+ birthTimeUnknown1: boolean;
+ calendarType1: "solar" | "lunar";
+ isLeapMonth1?: boolean;
+ name2: string;
+ gender2?: "male" | "female";
+ birthDate2: string;
+ birthTime2: string;
+ birthTimeUnknown2: boolean;
+ calendarType2: "solar" | "lunar";
+ isLeapMonth2?: boolean;
+};
 
 // 오행 매핑
 const elementMap: Record<string, string> = {
@@ -268,135 +298,91 @@ function generateLoveInterpretation(saju1: SajuResult, saju2: SajuResult, name1:
  }
  
  if (score >= 85) {
- paragraphs.push(
- `두 분의 애정 궁합은 매우 좋습니다. 서로의 감정을 깊이 이해하고, 자연스럽게 상대방이 원하는 것을 알아차리는 능력이 있습니다. 함께 있을 때 편안함과 설렘이 공존하는 이상적인 관계를 만들어갈 수 있습니다. 다만 너무 편안해져서 서로에 대한 관심이 줄어들지 않도록 꾸준한 노력이 필요합니다.`
- );
+ paragraphs.push(`두 분의 애정 궁합은 매우 좋습니다. 서로에 대한 감정이 자연스럽게 깊어지는 관계로, 함께할수록 더 큰 행복을 느낄 수 있습니다.`);
  } else if (score >= 70) {
- paragraphs.push(
- `두 분의 애정 궁합은 양호합니다. 서로에 대한 호감과 존중이 바탕이 되어 안정적인 관계를 유지할 수 있습니다. 가끔 의견 차이가 있을 수 있지만, 대화를 통해 충분히 해결할 수 있는 수준입니다. 서로의 사랑 표현 방식이 다를 수 있으니, 상대방의 방식을 이해하려는 노력이 중요합니다.`
- );
+ paragraphs.push(`두 분의 애정 궁합은 좋은 편입니다. 서로를 이해하고 배려하는 마음이 있다면 아름다운 연애를 할 수 있습니다.`);
  } else if (score >= 55) {
- paragraphs.push(
- `두 분의 애정 궁합은 보통 수준입니다. 서로 다른 감정 표현 방식으로 인해 오해가 생길 수 있지만, 이를 극복하면 오히려 더 깊은 유대감을 형성할 수 있습니다. 상대방의 감정을 먼저 헤아려주는 배려가 관계를 더욱 발전시키는 열쇠입니다.`
- );
+ paragraphs.push(`두 분의 애정 궁합은 보통 수준입니다. 서로의 다른 점을 인정하고 노력한다면 좋은 관계를 만들어 갈 수 있습니다.`);
  } else {
- paragraphs.push(
- `두 분의 애정 궁합에서는 서로 다른 감정 패턴으로 인한 갈등이 예상됩니다. 하지만 이는 극복할 수 없는 것이 아닙니다. 오히려 서로의 다름을 인정하고 받아들이는 과정에서 더욱 성숙한 사랑을 경험할 수 있습니다. 정기적인 대화 시간을 갖고, 서로의 감정을 솔직하게 나누는 것이 중요합니다.`
- );
+ paragraphs.push(`두 분의 애정 궁합에서는 주의가 필요합니다. 서로의 차이를 이해하고 많은 대화와 배려가 필요합니다.`);
  }
  
  return paragraphs;
 }
 
-// 재물 궁합 해석
+// 재물운 해석
 function generateWealthInterpretation(saju1: SajuResult, saju2: SajuResult, name1: string, name2: string, score: number): string[] {
  const elem1 = elementMap[saju1.dayPillar.stem];
  const elem2 = elementMap[saju2.dayPillar.stem];
  const paragraphs: string[] = [];
  
- if (score >= 80) {
- paragraphs.push(
- `두 분의 재물 궁합은 매우 좋습니다. 함께 재물을 모으고 관리하는 데 있어 시너지가 발생합니다. 한 분이 돈을 벌어오는 능력이 뛰어나다면, 다른 분은 이를 잘 관리하고 불려나가는 능력이 있어 재정적으로 안정된 가정을 꾸릴 수 있습니다.`
- );
- paragraphs.push(
- `부동산이나 장기 투자에서 좋은 결과를 얻을 가능성이 높으며, 함께 사업을 하더라도 서로의 역할 분담이 자연스럽게 이루어집니다. 다만 큰 지출에 대해서는 반드시 상의하는 습관을 들이세요.`
- );
- } else if (score >= 65) {
- paragraphs.push(
- `두 분의 재물 궁합은 양호한 편입니다. 돈에 대한 가치관이 크게 다르지 않아 재정 관리에서 큰 갈등은 없을 것입니다. 다만 저축과 소비의 균형에 대해 미리 합의해두면 더욱 좋습니다.`
- );
- paragraphs.push(
- `함께 재테크 목표를 세우고 정기적으로 재정 상태를 점검하는 습관을 들이면, 안정적인 경제 기반을 마련할 수 있습니다. 각자의 용돈은 간섭하지 않되, 가정 경제는 투명하게 운영하는 것이 좋습니다.`
- );
+ if (score >= 85) {
+ paragraphs.push(`두 분이 함께하면 재물운이 크게 상승합니다. 서로의 재물 관리 스타일이 잘 맞아 함께 부를 쌓아나갈 수 있는 관계입니다.`);
+ } else if (score >= 70) {
+ paragraphs.push(`두 분의 재물 궁합은 좋은 편입니다. 서로의 경제적 가치관을 존중하면서 함께 안정적인 재정을 만들어갈 수 있습니다.`);
+ } else if (score >= 55) {
+ paragraphs.push(`두 분의 재물 궁합은 보통입니다. 재물 관리에 대한 충분한 대화와 합의가 필요합니다.`);
  } else {
- paragraphs.push(
- `두 분의 재물 궁합에서는 돈에 대한 가치관 차이가 있을 수 있습니다. 한 분은 저축을 중시하고 다른 분은 소비를 즐기는 등의 차이가 갈등의 원인이 될 수 있습니다.`
- );
- paragraphs.push(
- `이를 해결하기 위해서는 결혼 전에 재정 관리 방식에 대해 충분히 대화하고, 공동 계좌와 개인 계좌를 분리하는 등의 구체적인 방법을 미리 정해두는 것이 좋습니다. 서로의 소비 패턴을 비난하기보다는 이해하려는 노력이 필요합니다.`
- );
+ paragraphs.push(`두 분의 재물 관리 스타일에 차이가 있을 수 있습니다. 재정 계획에 대해 충분히 소통하고 서로의 방식을 이해하는 것이 중요합니다.`);
  }
+ 
+ paragraphs.push(`${elem1}과 ${elem2}의 오행 관계를 고려할 때, 두 분이 함께 재물을 관리할 때는 서로의 강점을 살리는 역할 분담이 효과적입니다.`);
  
  return paragraphs;
 }
 
 // 가정운 해석
 function generateFamilyInterpretation(saju1: SajuResult, saju2: SajuResult, name1: string, name2: string, score: number): string[] {
- const yang1 = STEM_YIN_YANG[saju1.dayPillar.stem];
- const yang2 = STEM_YIN_YANG[saju2.dayPillar.stem];
  const paragraphs: string[] = [];
  
- if (yang1 !== yang2) {
- paragraphs.push(
- `두 분은 음양(陰陽)이 조화를 이루는 관계입니다. ${yang1 ? name1 + '님이 양(陽)' : name1 + '님이 음(陰)'}의 기운, ${yang2 ? name2 + '님이 양(陽)' : name2 + '님이 음(陰)'}의 기운을 가지고 있어 가정 내에서 자연스러운 역할 분담이 이루어집니다. 한 분이 적극적으로 나아갈 때 다른 분이 뒤에서 든든하게 받쳐주는 이상적인 조합입니다.`
- );
+ if (score >= 85) {
+ paragraphs.push(`두 분이 함께 가정을 이루면 매우 화목한 가정을 만들 수 있습니다. 서로에 대한 배려와 존중이 자연스럽게 이루어지는 관계입니다.`);
+ } else if (score >= 70) {
+ paragraphs.push(`두 분의 가정운 궁합은 좋습니다. 서로의 역할을 인정하고 협력한다면 행복한 가정을 꾸릴 수 있습니다.`);
+ } else if (score >= 55) {
+ paragraphs.push(`두 분의 가정운 궁합은 보통입니다. 가정 내 역할과 책임에 대한 충분한 대화가 필요합니다.`);
  } else {
- paragraphs.push(
- `두 분은 같은 ${yang1 ? '양(陽)' : '음(陰)'}의 기운을 가지고 있습니다. 비슷한 에너지를 가지고 있어 서로를 잘 이해할 수 있지만, 가정 내에서 주도권 다툼이 생길 수 있습니다. 서로 양보하고 배려하는 마음이 중요합니다.`
- );
+ paragraphs.push(`두 분의 가정 생활에서는 서로 다른 가치관으로 인한 갈등이 생길 수 있습니다. 서로의 차이를 인정하고 타협점을 찾는 노력이 필요합니다.`);
  }
  
- if (score >= 80) {
- paragraphs.push(
- `가정운이 매우 좋은 조합입니다. 결혼 후 안정적이고 화목한 가정을 꾸릴 수 있으며, 자녀 교육에서도 좋은 시너지를 발휘합니다. 시댁이나 처가와의 관계도 원만하게 유지할 가능성이 높습니다. 서로를 존중하는 태도가 행복한 가정의 기초가 됩니다.`
- );
- } else if (score >= 65) {
- paragraphs.push(
- `가정운은 양호한 편입니다. 큰 문제 없이 안정적인 가정을 꾸릴 수 있지만, 가사 분담이나 양육 방식에 대해 미리 충분한 대화가 필요합니다. 서로의 가정환경이 다를 수 있으니, 새로운 가정의 규칙을 함께 만들어가는 과정이 중요합니다.`
- );
- } else {
- paragraphs.push(
- `가정운에서는 생활 습관이나 가치관의 차이로 인한 마찰이 예상됩니다. 하지만 이는 대부분의 부부가 겪는 자연스러운 과정입니다. 중요한 것은 문제가 생겼을 때 회피하지 않고 함께 해결하려는 의지입니다. 정기적인 부부 대화 시간을 갖는 것을 추천합니다.`
- );
- }
+ paragraphs.push(`자녀 교육과 가정 운영에 있어서 두 분이 함께 의논하고 결정하는 습관을 들이면 더욱 안정적인 가정을 만들 수 있습니다.`);
  
  return paragraphs;
 }
 
 // 갈등 포인트 및 해결 방법
 function generateConflictAdvice(saju1: SajuResult, saju2: SajuResult, name1: string, name2: string): { conflicts: string[]; solutions: string[] } {
- const personality1 = STEM_PERSONALITY[saju1.dayPillar.stem];
- const personality2 = STEM_PERSONALITY[saju2.dayPillar.stem];
  const elem1 = elementMap[saju1.dayPillar.stem];
  const elem2 = elementMap[saju2.dayPillar.stem];
+ const personality1 = STEM_PERSONALITY[saju1.dayPillar.stem];
+ const personality2 = STEM_PERSONALITY[saju2.dayPillar.stem];
  
  const conflicts: string[] = [];
  const solutions: string[] = [];
  
- // 성격 기반 갈등 포인트
  if (personality1 && personality2) {
- // 약점 기반 갈등
- conflicts.push(`${name1}님의 '${personality1.weakness[0].toLowerCase()}' 성향과 ${name2}님의 '${personality2.weakness[0].toLowerCase()}' 성향이 부딪힐 수 있습니다.`);
- 
- if (personality1.weakness.length > 1 && personality2.weakness.length > 1) {
- conflicts.push(`${name1}님이 '${personality1.weakness[1].toLowerCase()}'일 때, ${name2}님도 '${personality2.weakness[1].toLowerCase()}'이면 갈등이 깊어질 수 있습니다.`);
+ if (personality1.weakness.length > 0 && personality2.weakness.length > 0) {
+ conflicts.push(`${name1}님의 ${personality1.weakness[0]} 성향과 ${name2}님의 ${personality2.weakness[0]} 성향이 충돌할 수 있습니다.`);
  }
  }
- 
- // 오행 기반 갈등
- if (isOvercoming(elem1, elem2)) {
- conflicts.push(`${withReading(elem1)}과(와) ${withReading(elem2)}의 상극(相剋) 관계로 인해 의견 충돌이 잦을 수 있습니다. 특히 중요한 결정을 내릴 때 서로 다른 방향을 원할 수 있습니다.`);
- }
- 
- if (elem1 === elem2) {
- conflicts.push(`같은 오행끼리는 서로 이해는 잘 되지만, 비슷한 약점도 공유하기 때문에 함께 같은 실수를 반복할 수 있습니다.`);
- }
- 
- // 해결 방법
- solutions.push(`서로의 감정을 비난하지 말고, "나는 이렇게 느꼈어"라는 '나 전달법(I-message)'으로 대화하세요.`);
- solutions.push(`갈등이 생겼을 때 바로 해결하려 하지 말고, 서로 냉각 시간을 가진 후 차분하게 이야기하세요.`);
- solutions.push(`매주 한 번은 '부부(연인) 회의 시간'을 정해 서로의 감정과 생각을 나누는 시간을 가지세요.`);
  
  if (isOvercoming(elem1, elem2)) {
- solutions.push(`상극 관계를 중화시키기 위해, 두 오행 사이의 중재 역할을 하는 오행의 기운을 생활에 활용하세요. 예를 들어 함께 자연 속에서 시간을 보내거나, 공통 취미를 만드는 것이 좋습니다.`);
+ conflicts.push(`오행의 상극 관계로 인해 서로의 방식이 맞지 않는다고 느낄 수 있습니다.`);
+ conflicts.push(`의사결정 방식의 차이로 인한 갈등이 발생할 수 있습니다.`);
+ solutions.push(`서로 다른 점을 단점이 아닌 보완 관계로 바라보는 시각 전환이 필요합니다.`);
+ } else {
+ conflicts.push(`비슷한 성향으로 인해 서로의 단점이 증폭될 수 있습니다.`);
+ conflicts.push(`의견 충돌 시 양보하지 않으려는 경향이 나타날 수 있습니다.`);
+ solutions.push(`서로의 강점을 인정하고 역할을 분담하면 시너지 효과를 낼 수 있습니다.`);
  }
  
- solutions.push(`상대방의 장점을 매일 하나씩 말해주는 '칭찬 릴레이'를 실천해보세요. 작은 감사의 표현이 관계를 크게 변화시킵니다.`);
+ solutions.push(`정기적인 대화 시간을 갖고 서로의 감정과 필요를 솔직하게 표현하세요.`);
+ solutions.push(`갈등 상황에서는 즉각적인 반응보다 충분한 시간을 두고 생각한 후 대화하세요.`);
  
  return { conflicts, solutions };
 }
 
-// 종합 조언 생성
+// 종합 조언
 function generateFinalAdvice(saju1: SajuResult, saju2: SajuResult, scores: ReturnType<typeof calculateTotalCompatibility>): string[] {
  const paragraphs: string[] = [];
  
@@ -434,9 +420,40 @@ export default function Compatibility() {
  }, []);
 
  const [result, setResult] = useState<{ saju1: SajuResult; saju2: SajuResult } | null>(null);
+ // 3단계: 로딩 상태
+ const [isLoading, setIsLoading] = useState(false);
+ const [loadError, setLoadError] = useState<string | null>(null);
+ // 5단계: 공유 버튼 복사 상태
+ const [shareCopied, setShareCopied] = useState(false);
+ // 4단계: gender2 연동 로직 — 사용자가 직접 변경했는지 추적
+ const gender2ManuallySet = useRef(false);
+
+ // 8단계: 이전 경로 기반 뒤로가기 레이블
+ const [, navigate] = useLocation();
+ const [backLabel, setBackLabel] = useState("홈");
+ useEffect(() => {
+   const ref = document.referrer;
+   if (ref) {
+     try {
+       const url = new URL(ref);
+       const path = url.pathname;
+       if (path === "/" || path === "") {
+         setBackLabel("홈");
+       } else if (path.includes("more") || path.includes("menu")) {
+         setBackLabel("전체메뉴");
+       } else {
+         setBackLabel("홈");
+       }
+     } catch {
+       setBackLabel("홈");
+     }
+   } else {
+     setBackLabel("홈");
+   }
+ }, []);
  
  const form = useForm<FormValues>({
- resolver: zodResolver(formSchema),
+ resolver: zodResolver(formSchema) as any,
  defaultValues: {
  name1: "",
  gender1: "male",
@@ -445,7 +462,7 @@ export default function Compatibility() {
  birthTimeUnknown1: false,
  calendarType1: "solar",
  name2: "",
- gender2: "female",
+ gender2: undefined, // 4단계: 기본값 미선택
  birthDate2: "2000-01-01",
  birthTime2: "12:30",
  birthTimeUnknown2: false,
@@ -465,7 +482,7 @@ export default function Compatibility() {
  birthTimeUnknown1: false,
  calendarType1: parsed.calendarType || "solar",
  name2: "",
- gender2: "female",
+ gender2: undefined, // 4단계: 기본값 미선택
  birthDate2: "2000-01-01",
  birthTime2: "12:30",
  birthTimeUnknown2: false,
@@ -474,7 +491,22 @@ export default function Compatibility() {
  }
  }, [form]);
 
+ // 4단계: 첫 번째 사람 성별 선택 시 두 번째 사람 성별 자동 설정
+ const gender1Value = form.watch("gender1");
+ useEffect(() => {
+   if (!gender2ManuallySet.current) {
+     const opposite = gender1Value === "male" ? "female" : "male";
+     form.setValue("gender2", opposite);
+   }
+ }, [gender1Value, form]);
+
  const onSubmit = (data: FormValues) => {
+  // gender2 미선택 시 오류
+  if (!data.gender2) {
+    form.setError("gender2" as any, { message: "두 번째 사람의 성별을 선택해주세요" });
+    return;
+  }
+
  // 두 사람의 생년월일 데이터를 GA4에 전송 (SEO 분석용)
  let birthDateStr1 = data.birthDate1;
  if (typeof birthDateStr1 !== 'string') {
@@ -506,21 +538,33 @@ export default function Compatibility() {
  calendar_type_1: data.calendarType1,
  calendar_type_2: data.calendarType2,
  });
- 
- // convertToSolarDate는 문자열 형식의 날짜를 받아야 함 (YYYY-MM-DD)
- const birthDateStrForConverter1 = `${birthDateObj1.getFullYear()}-${String(birthDateObj1.getMonth() + 1).padStart(2, '0')}-${String(birthDateObj1.getDate()).padStart(2, '0')}`;
- const birthDateStrForConverter2 = `${birthDateObj2.getFullYear()}-${String(birthDateObj2.getMonth() + 1).padStart(2, '0')}-${String(birthDateObj2.getDate()).padStart(2, '0')}`;
- const time1 = data.birthTimeUnknown1 ? "12:00" : data.birthTime1;
- const time2 = data.birthTimeUnknown2 ? "12:00" : data.birthTime2;
- const date1 = convertToSolarDate(birthDateStrForConverter1, time1, data.calendarType1);
- const date2 = convertToSolarDate(birthDateStrForConverter2, time2, data.calendarType2);
- const saju1 = calculateSaju(date1, data.gender1);
- const saju2 = calculateSaju(date2, data.gender2);
- 
- setResult({ saju1, saju2 });
- window.scrollTo(0, 0);
- 
- try { trackEvent('compatibility_result', 'engagement', 'compatibility_calculated'); } catch {}
+
+ // 3단계: 로딩 상태 시작
+ setIsLoading(true);
+ setLoadError(null);
+
+ // 약간의 딜레이로 로딩 피드백 표시 (클라이언트 계산이지만 UX 피드백 제공)
+ setTimeout(() => {
+   try {
+     const birthDateStrForConverter1 = `${birthDateObj1.getFullYear()}-${String(birthDateObj1.getMonth() + 1).padStart(2, '0')}-${String(birthDateObj1.getDate()).padStart(2, '0')}`;
+     const birthDateStrForConverter2 = `${birthDateObj2.getFullYear()}-${String(birthDateObj2.getMonth() + 1).padStart(2, '0')}-${String(birthDateObj2.getDate()).padStart(2, '0')}`;
+     const time1 = data.birthTimeUnknown1 ? "12:00" : data.birthTime1;
+     const time2 = data.birthTimeUnknown2 ? "12:00" : data.birthTime2;
+     const date1 = convertToSolarDate(birthDateStrForConverter1, time1, data.calendarType1);
+     const date2 = convertToSolarDate(birthDateStrForConverter2, time2, data.calendarType2);
+     const saju1 = calculateSaju(date1, data.gender1);
+     const saju2 = calculateSaju(date2, data.gender2!);
+     
+     setResult({ saju1, saju2 });
+     setIsLoading(false);
+     window.scrollTo(0, 0);
+     
+     try { trackEvent('compatibility_result', 'engagement', 'compatibility_calculated'); } catch {}
+   } catch (err) {
+     setIsLoading(false);
+     setLoadError("계산 중 오류가 발생했습니다. 다시 시도해 주세요.");
+   }
+ }, 800);
  };
 
  const commonMaxWidth = "w-full max-w-2xl mx-auto";
@@ -538,17 +582,23 @@ export default function Compatibility() {
  <script type="application/ld+json">{JSON.stringify({"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"궁합은 무료로 볼 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"네, 무운의 궁합 서비스는 100% 무료입니다. 회원가입이나 개인정보 저장 없이 두 사람의 생년월일만 입력하면 즉시 궁합을 확인할 수 있습니다."}},{"@type":"Question","name":"사주 궁합에서 무엇을 알 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"오행 조화, 음양 균형, 연애운, 재물운, 가정운 등 두 사람의 사주팔자를 기반으로 종합적인 궁합 점수와 상세 분석을 제공합니다."}},{"@type":"Question","name":"궁합은 연인과 부부 사이에만 해당되나요?","acceptedAnswer":{"@type":"Answer","text":"연인, 부부 사이는 물론 친구, 직장 동료, 사업 파트너 등 다양한 관계에서의 궁합도 확인할 수 있습니다."}},{"@type":"Question","name":"궁합 점수가 낙으면 나쁜 것인가요?","acceptedAnswer":{"@type":"Answer","text":"궁합 점수는 참고 지표일 뿐 절대적인 기준이 아닙니다. 점수가 낙더라도 서로의 노력과 이해로 충분히 좋은 관계를 만들어갈 수 있습니다."}}]})}</script>
  <script type="application/ld+json">{JSON.stringify({"@context":"https://schema.org","@type":"Service","name":"무료 사주 궁합","description":"사주팔자 기반의 무료 궁합 분석 서비스","provider":{"@type":"Organization","name":"무운 (MuUn)","url":"https://muunsaju.com"},"url":"https://muunsaju.com/compatibility","serviceType":"궁합","areaServed":"KR","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}})}</script>
  </Helmet>
- <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased">
+ {/* 7단계: tintColor CSS 변수 정의 */}
+ <style>{`
+   .compatibility-page { --compatibility-accent: #E8387A; }
+ `}</style>
+ <div className="compatibility-page min-h-screen bg-background text-foreground pb-16 relative antialiased">
  <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
  <div className="absolute top-[-10%] left-[-10%] w-[400px] h-[400px] bg-pink-500/10 rounded-full blur-[100px]" />
  <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-red-500/10 rounded-full blur-[100px]" />
  </div>
 
+ {/* 8단계: 헤더 뒤로가기 레이블 */}
  <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
  <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
  <Link href="/">
- <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
- <ChevronLeft className="h-5 w-5" />
+ <Button variant="ghost" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px] flex items-center gap-1 px-2">
+   <ChevronLeft className="h-5 w-5" />
+   <span className="text-sm font-medium">{backLabel}</span>
  </Button>
  </Link>
  <h2 className="text-base md:text-lg font-bold text-[#1a1a18]">궁합 풀이</h2>
@@ -573,6 +623,9 @@ export default function Compatibility() {
  </p>
  </div>
 
+ {/* 1단계: 에디토리얼 요약(접힘) — 입력 폼 위로 이동 */}
+ <CompatibilityContent />
+
  <Card className="glass-panel border-black/10 shadow-xl rounded-2xl overflow-hidden">
  <CardHeader className="border-b border-black/10 px-4 py-3 md:px-6 md:py-4">
  <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-base md:text-lg">
@@ -587,36 +640,50 @@ export default function Compatibility() {
  {/* 첫 번째 사람 */}
  <div className="space-y-3">
  <div className="flex items-center gap-2">
- <div className="w-6 h-6 rounded-full bg-pink-500 text-[#1a1a18] text-sm md:text-xs font-bold flex items-center justify-center">1</div>
+ <div className="w-6 h-6 rounded-full bg-[var(--compatibility-accent,#E8387A)] text-white text-sm md:text-xs font-bold flex items-center justify-center">1</div>
  <h3 className="text-[#1a1a18] font-bold text-base md:text-sm">첫 번째 사람</h3>
  </div>
  <div className="grid grid-cols-2 gap-3">
  <div className="space-y-1.5">
  <Label htmlFor="name1" className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
- <User className="w-3.5 h-3.5 text-pink-600" /> 이름
+ <User className="w-3.5 h-3.5 text-[var(--compatibility-accent,#E8387A)]" /> 이름
  </Label>
  <Input id="name1" placeholder="이름" {...form.register("name1")} className="h-11 bg-black/[0.05] border-black/10 text-[#1a1a18] placeholder:text-[#999891] rounded-xl focus:ring-pink-500/50 focus:border-pink-500 transition-all text-base md:text-sm" />
+ {/* 4단계: 이름 마이크로카피 */}
+ <p className="text-[11px] text-[#999891] leading-tight">이름은 결과 화면에만 표시되며 저장되지 않습니다</p>
  </div>
  <div className="space-y-1.5">
  <Label className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
- <Sparkles className="w-3.5 h-3.5 text-pink-600" /> 성별
+ <Sparkles className="w-3.5 h-3.5 text-[var(--compatibility-accent,#E8387A)]" /> 성별
  </Label>
- <ToggleGroup type="single" value={form.watch("gender1")} onValueChange={(v) => { if (v) form.setValue("gender1", v as "male" | "female"); }} className="w-full h-11 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1">
- <ToggleGroupItem value="male" className="h-full rounded-lg data-[state=on]:bg-pink-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-base md:text-sm">남성</ToggleGroupItem>
- <ToggleGroupItem value="female" className="h-full rounded-lg data-[state=on]:bg-pink-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-base md:text-sm">여성</ToggleGroupItem>
+ {/* 4단계: 성별 토글 터치 타깃 44px, 미선택 border 추가, 7단계: accent 통일 */}
+ <ToggleGroup
+   type="single"
+   value={form.watch("gender1")}
+   onValueChange={(v) => { if (v) form.setValue("gender1", v as "male" | "female"); }}
+   className="w-full h-11 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1"
+ >
+ <ToggleGroupItem
+   value="male"
+   className="h-full rounded-lg data-[state=on]:bg-[var(--compatibility-accent,#E8387A)] data-[state=on]:text-white data-[state=off]:text-[#5a5a56] data-[state=off]:border data-[state=off]:border-[#c0bdb4] transition-all font-medium text-base md:text-sm min-h-[44px]"
+ >남성</ToggleGroupItem>
+ <ToggleGroupItem
+   value="female"
+   className="h-full rounded-lg data-[state=on]:bg-[var(--compatibility-accent,#E8387A)] data-[state=on]:text-white data-[state=off]:text-[#5a5a56] data-[state=off]:border data-[state=off]:border-[#c0bdb4] transition-all font-medium text-base md:text-sm min-h-[44px]"
+ >여성</ToggleGroupItem>
  </ToggleGroup>
  </div>
  </div>
  <div className="space-y-1.5">
  <Label htmlFor="birthDate1" className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
- <Calendar className="w-3.5 h-3.5 text-pink-600" /> 생년월일
+ <Calendar className="w-3.5 h-3.5 text-[var(--compatibility-accent,#E8387A)]" /> 생년월일
  </Label>
  <DatePickerInput id="birthDate1" {...form.register("birthDate1")} value={form.watch("birthDate1")} accentColor="pink" />
  </div>
  <div className="grid grid-cols-2 gap-3">
  <div className="space-y-1.5">
  <Label htmlFor="birthTime1" className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
- <Clock className="w-3.5 h-3.5 text-pink-600" /> 태어난 시간
+ <Clock className="w-3.5 h-3.5 text-[var(--compatibility-accent,#E8387A)]" /> 태어난 시간
  </Label>
  <BirthTimeSelect
  value={form.watch("birthTime1")}
@@ -628,8 +695,9 @@ export default function Compatibility() {
  </div>
  <div className="space-y-1.5">
  <Label className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
- <Star className="w-3.5 h-3.5 text-pink-600" /> 양력/음력
+ <Star className="w-3.5 h-3.5 text-[var(--compatibility-accent,#E8387A)]" /> 양력/음력
  </Label>
+ {/* 4단계: 양력/음력 토글 터치 타깃 44px, 미선택 border 추가 */}
  <ToggleGroup
  type="single"
  value={form.watch("calendarType1")}
@@ -640,10 +708,16 @@ export default function Compatibility() {
  }}
  className="w-full h-11 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1"
  >
- <ToggleGroupItem value="solar" className="h-full rounded-lg data-[state=on]:bg-pink-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-base md:text-sm">
+ <ToggleGroupItem
+   value="solar"
+   className="h-full rounded-lg data-[state=on]:bg-[var(--compatibility-accent,#E8387A)] data-[state=on]:text-white data-[state=off]:text-[#5a5a56] data-[state=off]:border data-[state=off]:border-[#c0bdb4] transition-all font-medium text-base md:text-sm min-h-[44px]"
+ >
  양력
  </ToggleGroupItem>
- <ToggleGroupItem value="lunar" className="h-full rounded-lg data-[state=on]:bg-pink-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-base md:text-sm">
+ <ToggleGroupItem
+   value="lunar"
+   className="h-full rounded-lg data-[state=on]:bg-[var(--compatibility-accent,#E8387A)] data-[state=on]:text-white data-[state=off]:text-[#5a5a56] data-[state=off]:border data-[state=off]:border-[#c0bdb4] transition-all font-medium text-base md:text-sm min-h-[44px]"
+ >
  음력
  </ToggleGroupItem>
  </ToggleGroup>
@@ -667,14 +741,14 @@ export default function Compatibility() {
 
  <div className="flex items-center gap-3">
  <div className="flex-1 h-px bg-black/06"></div>
- <Heart className="w-4 h-4 text-pink-600" />
+ <Heart className="w-4 h-4 text-[var(--compatibility-accent,#E8387A)]" />
  <div className="flex-1 h-px bg-black/06"></div>
  </div>
 
  {/* 두 번째 사람 */}
  <div className="space-y-3">
  <div className="flex items-center gap-2">
- <div className="w-6 h-6 rounded-full bg-red-500 text-[#1a1a18] text-sm md:text-xs font-bold flex items-center justify-center">2</div>
+ <div className="w-6 h-6 rounded-full bg-red-500 text-white text-sm md:text-xs font-bold flex items-center justify-center">2</div>
  <h3 className="text-[#1a1a18] font-bold text-base md:text-sm">두 번째 사람</h3>
  </div>
  <div className="grid grid-cols-2 gap-3">
@@ -683,15 +757,37 @@ export default function Compatibility() {
  <User className="w-3.5 h-3.5 text-red-600" /> 이름
  </Label>
  <Input id="name2" placeholder="이름" {...form.register("name2")} className="h-11 bg-black/[0.05] border-black/10 text-[#1a1a18] placeholder:text-[#999891] rounded-xl focus:ring-red-500/50 focus:border-red-500 transition-all text-base md:text-sm" />
+ {/* 4단계: 이름 마이크로카피 */}
+ <p className="text-[11px] text-[#999891] leading-tight">이름은 결과 화면에만 표시되며 저장되지 않습니다</p>
  </div>
  <div className="space-y-1.5">
  <Label className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
  <Sparkles className="w-3.5 h-3.5 text-red-600" /> 성별
  </Label>
- <ToggleGroup type="single" value={form.watch("gender2")} onValueChange={(v) => { if (v) form.setValue("gender2", v as "male" | "female"); }} className="w-full h-11 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1">
- <ToggleGroupItem value="male" className="h-full rounded-lg data-[state=on]:bg-red-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-base md:text-sm">남성</ToggleGroupItem>
- <ToggleGroupItem value="female" className="h-full rounded-lg data-[state=on]:bg-red-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-base md:text-sm">여성</ToggleGroupItem>
+ {/* 4단계: 두 번째 성별 — 미선택 상태 가능, 연동 로직 override */}
+ <ToggleGroup
+   type="single"
+   value={form.watch("gender2") || ""}
+   onValueChange={(v) => {
+     if (v) {
+       gender2ManuallySet.current = true;
+       form.setValue("gender2", v as "male" | "female");
+     }
+   }}
+   className="w-full h-11 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1"
+ >
+ <ToggleGroupItem
+   value="male"
+   className="h-full rounded-lg data-[state=on]:bg-red-500 data-[state=on]:text-white data-[state=off]:text-[#5a5a56] data-[state=off]:border data-[state=off]:border-[#c0bdb4] transition-all font-medium text-base md:text-sm min-h-[44px]"
+ >남성</ToggleGroupItem>
+ <ToggleGroupItem
+   value="female"
+   className="h-full rounded-lg data-[state=on]:bg-red-500 data-[state=on]:text-white data-[state=off]:text-[#5a5a56] data-[state=off]:border data-[state=off]:border-[#c0bdb4] transition-all font-medium text-base md:text-sm min-h-[44px]"
+ >여성</ToggleGroupItem>
  </ToggleGroup>
+ {(form.formState.errors as any)?.gender2 && (
+   <p className="text-[11px] text-red-500">{(form.formState.errors as any).gender2?.message}</p>
+ )}
  </div>
  </div>
  <div className="space-y-1.5">
@@ -727,10 +823,16 @@ export default function Compatibility() {
  }}
  className="w-full h-11 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1"
  >
- <ToggleGroupItem value="solar" className="h-full rounded-lg data-[state=on]:bg-red-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-base md:text-sm">
+ <ToggleGroupItem
+   value="solar"
+   className="h-full rounded-lg data-[state=on]:bg-red-500 data-[state=on]:text-white data-[state=off]:text-[#5a5a56] data-[state=off]:border data-[state=off]:border-[#c0bdb4] transition-all font-medium text-base md:text-sm min-h-[44px]"
+ >
  양력
  </ToggleGroupItem>
- <ToggleGroupItem value="lunar" className="h-full rounded-lg data-[state=on]:bg-red-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-base md:text-sm">
+ <ToggleGroupItem
+   value="lunar"
+   className="h-full rounded-lg data-[state=on]:bg-red-500 data-[state=on]:text-white data-[state=off]:text-[#5a5a56] data-[state=off]:border data-[state=off]:border-[#c0bdb4] transition-all font-medium text-base md:text-sm min-h-[44px]"
+ >
  음력
  </ToggleGroupItem>
  </ToggleGroup>
@@ -752,42 +854,68 @@ export default function Compatibility() {
  </div>
  </div>
 
- <Button type="submit" className="w-full h-12 bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-[#1a1a18] font-bold text-sm md:text-base rounded-xl shadow-lg shadow-pink-500/20 transition-all hover:scale-[1.02] active:scale-[0.98] mt-2">
- <Heart className="w-4 h-4 mr-2" />
- 궁합 결과 보기
+ {/* 3단계: 로딩 에러 메시지 */}
+ {loadError && (
+   <p className="text-sm text-red-500 text-center">{loadError}</p>
+ )}
+
+ {/* 3단계: CTA 버튼 — 로딩 중 disabled + 스피너 */}
+ <Button
+   type="submit"
+   disabled={isLoading}
+   className="w-full h-12 bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white font-bold text-sm md:text-base rounded-xl shadow-lg shadow-pink-500/20 transition-all hover:scale-[1.02] active:scale-[0.98] mt-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:scale-100"
+ >
+   {isLoading ? (
+     <>
+       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+       궁합을 분석하고 있어요...
+     </>
+   ) : (
+     <>
+       <Heart className="w-4 h-4 mr-2" />
+       궁합 결과 보기
+     </>
+   )}
  </Button>
+
+ {/* 3단계: 스켈레톤 UI */}
+ <AnimatePresence>
+   {isLoading && (
+     <motion.div
+       initial={{ opacity: 0 }}
+       animate={{ opacity: 1 }}
+       exit={{ opacity: 0 }}
+       transition={{ duration: 0.2 }}
+       className="space-y-3 pt-2"
+     >
+       {[1, 2, 3].map((i) => (
+         <div key={i} className="h-20 bg-black/[0.05] rounded-xl animate-pulse" />
+       ))}
+     </motion.div>
+   )}
+ </AnimatePresence>
  </form>
  </CardContent>
  </Card>
 
- <div className="grid grid-cols-3 gap-2 md:gap-3">
- <Card className="rounded-xl" data-result-card>
- <CardContent className="p-2.5 md:p-3 text-center space-y-1">
- <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-pink-500/10 flex items-center justify-center mx-auto">
- <Heart className="w-4 h-4 text-pink-600" />
- </div>
- <p className="text-[10px] md:text-sm md:text-xs font-medium text-[#1a1a18]">궁합 점수</p>
- </CardContent>
- </Card>
- <Card className="rounded-xl" data-result-card>
- <CardContent className="p-2.5 md:p-3 text-center space-y-1">
- <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-red-500/10 flex items-center justify-center mx-auto">
- <Activity className="w-4 h-4 text-red-600" />
- </div>
- <p className="text-[10px] md:text-sm md:text-xs font-medium text-[#1a1a18]">오행 분석</p>
- </CardContent>
- </Card>
- <Card className="rounded-xl" data-result-card>
- <CardContent className="p-2.5 md:p-3 text-center space-y-1">
- <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-purple-500/10 flex items-center justify-center mx-auto">
- <Users className="w-4 h-4 text-purple-600" />
- </div>
- <p className="text-[10px] md:text-sm md:text-xs font-medium text-[#1a1a18]">상세 해석</p>
- </CardContent>
- </Card>
+ {/* 2단계: 피처 아이콘 3개 — Case B: 인라인 수평 나열, pointer-events:none */}
+ <div className="flex items-center justify-center gap-0 rounded-xl bg-black/[0.03] border border-black/[0.06] overflow-hidden">
+   <div className="flex-1 flex items-center justify-center gap-2 py-3 px-2" style={{ pointerEvents: 'none' }}>
+     <Heart className="w-4 h-4 text-[var(--compatibility-accent,#E8387A)] flex-shrink-0" />
+     <span className="text-xs font-medium text-[#1a1a18]">궁합 점수</span>
+   </div>
+   <div className="w-px h-8 bg-black/[0.08]" />
+   <div className="flex-1 flex items-center justify-center gap-2 py-3 px-2" style={{ pointerEvents: 'none' }}>
+     <Activity className="w-4 h-4 text-[var(--compatibility-accent,#E8387A)] flex-shrink-0" />
+     <span className="text-xs font-medium text-[#1a1a18]">오행 분석</span>
+   </div>
+   <div className="w-px h-8 bg-black/[0.08]" />
+   <div className="flex-1 flex items-center justify-center gap-2 py-3 px-2" style={{ pointerEvents: 'none' }}>
+     <Users className="w-4 h-4 text-[var(--compatibility-accent,#E8387A)] flex-shrink-0" />
+     <span className="text-xs font-medium text-[#1a1a18]">상세 해석</span>
+   </div>
  </div>
 
- <CompatibilityContent />
  </motion.div>
  </main>
  </div>
@@ -827,6 +955,34 @@ export default function Compatibility() {
  { label: '가정운', score: scores.familyScore, icon: <Home className="w-4 h-4" /> },
  ];
 
+ // 5단계: 공유 핸들러
+ const handleShare = async () => {
+   const shareText = `우리 궁합 결과가 나왔어요! 🔮\n두 사람의 오행 궁합 점수는 ${scores.total}점\n무운에서 무료로 확인해보세요 👇`;
+   const shareUrl = "https://muunsaju.com/compatibility";
+   try {
+     trackCustomEvent('share_click', { source_page: shareUrl, button_type: 'compatibility_result' });
+   } catch {}
+   try {
+     if (navigator.share && navigator.canShare) {
+       await navigator.share({ title: '무운 궁합 결과', text: shareText, url: shareUrl });
+       try { trackCustomEvent('share_success', { method: 'native_share', page: 'compatibility' }); } catch {}
+     } else {
+       await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
+       setShareCopied(true);
+       setTimeout(() => setShareCopied(false), 2000);
+       try { trackCustomEvent('share_success', { method: 'clipboard_copy', page: 'compatibility' }); } catch {}
+     }
+   } catch (err) {
+     if ((err as Error).name !== 'AbortError') {
+       try {
+         await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
+         setShareCopied(true);
+         setTimeout(() => setShareCopied(false), 2000);
+       } catch {}
+     }
+   }
+ };
+
  return (
  <>
  <Helmet>
@@ -840,12 +996,15 @@ export default function Compatibility() {
  <meta property="og:locale" content="ko_KR" />
  <meta name="twitter:card" content="summary_large_image" />
  <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
-{/* 사용자 입력 기반 결과 페이지 - 개인정보 보호 및 SEO 품질 관리 */}
  <meta name="robots" content="noindex, nofollow" />
  <meta name="keywords" content="궁합, 무료궁합, 사주궁합, 연애궁합, 결혼궁합, 오행궁합, 무료궁합보기, 커플궁합" />
  <link rel="canonical" href="https://muunsaju.com/compatibility" />
  </Helmet>
- <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased">
+ {/* 7단계: tintColor CSS 변수 정의 */}
+ <style>{`
+   .compatibility-page { --compatibility-accent: #E8387A; }
+ `}</style>
+ <div className="compatibility-page min-h-screen bg-background text-foreground pb-16 relative antialiased">
  <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
  <div className="absolute top-[-10%] left-[-10%] w-[400px] h-[400px] bg-pink-500/10 rounded-full blur-[100px]" />
  <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-red-500/10 rounded-full blur-[100px]" />
@@ -855,12 +1014,13 @@ export default function Compatibility() {
  <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
  <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
  <div className="flex items-center">
- <Button variant="ghost" size="icon" onClick={() => setResult(null)} className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
- <ChevronLeft className="h-5 w-5" />
+ <Button variant="ghost" onClick={() => setResult(null)} className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px] flex items-center gap-1 px-2">
+   <ChevronLeft className="h-5 w-5" />
+   <span className="text-sm font-medium">궁합 입력</span>
  </Button>
  <h1 className="text-base md:text-lg font-bold text-[#1a1a18]">궁합 결과</h1>
  </div>
- <Button variant="ghost" size="icon" className="text-pink-600 min-w-[44px] min-h-[44px]" onClick={() => shareContent({ title: '무운 궁합 결과', text: `우리 궁합 점수는 ${scores.total}점! 궁합 결과를 확인해보세요.`, page: 'compatibility', buttonType: 'icon' })}>
+ <Button variant="ghost" size="icon" className="text-[var(--compatibility-accent,#E8387A)] min-w-[44px] min-h-[44px]" onClick={handleShare}>
  <Share2 className="h-5 w-5" />
  </Button>
  </div>
@@ -875,8 +1035,8 @@ export default function Compatibility() {
  {/* ===== 1. 궁합 점수 원형 그래프 ===== */}
  <section className="flex flex-col items-center justify-center space-y-4 py-4">
  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-pink-500/10 border border-pink-500/30 backdrop-blur-xl">
- <Heart className="w-3.5 h-3.5 text-pink-600" />
- <span className="text-[10px] md:text-sm md:text-xs font-bold tracking-wider text-pink-600 uppercase">궁합 종합 점수</span>
+ <Heart className="w-3.5 h-3.5 text-[var(--compatibility-accent,#E8387A)]" />
+ <span className="text-[10px] md:text-sm md:text-xs font-bold tracking-wider text-[var(--compatibility-accent,#E8387A)] uppercase">궁합 종합 점수</span>
  </div>
  
  <div className="relative w-36 h-36 md:w-44 md:h-44 mx-auto">
@@ -894,20 +1054,20 @@ export default function Compatibility() {
  />
  <defs>
  <linearGradient id="compat-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
- <stop offset="0%" stopColor="#ec4899" />
+ <stop offset="0%" stopColor="#E8387A" />
  <stop offset="100%" stopColor="#ef4444" />
  </linearGradient>
  </defs>
  </svg>
  <div className="absolute inset-0 flex flex-col items-center justify-center">
  <span className="text-4xl md:text-5xl font-black text-[#1a1a18]">{scores.total}</span>
- <span className="text-[10px] md:text-sm md:text-xs text-pink-600 font-bold mt-0.5">{getScoreLabel(scores.total)}</span>
+ <span className="text-[10px] md:text-sm md:text-xs text-[var(--compatibility-accent,#E8387A)] font-bold mt-0.5">{getScoreLabel(scores.total)}</span>
  </div>
  </div>
  
  <div className="flex items-center justify-center gap-3 text-base">
- <span className="text-pink-600 font-bold">{name1}</span>
- <Heart className="w-5 h-5 text-pink-600 animate-pulse" />
+ <span className="text-[var(--compatibility-accent,#E8387A)] font-bold">{name1}</span>
+ <Heart className="w-5 h-5 text-[var(--compatibility-accent,#E8387A)] animate-pulse" />
  <span className="text-red-600 font-bold">{name2}</span>
  </div>
  </section>
@@ -915,7 +1075,7 @@ export default function Compatibility() {
  {/* ===== 2. 세부 점수 그래프 ===== */}
  <section>
  <h2 className="text-lg md:text-xl font-bold text-[#1a1a18] flex items-center gap-2 mb-4">
- <TrendingUp className="w-5 h-5 text-pink-600" />
+ <TrendingUp className="w-5 h-5 text-[var(--compatibility-accent,#E8387A)]" />
  세부 궁합 점수
  </h2>
  <Card className="rounded-xl overflow-hidden" data-result-card>
@@ -946,15 +1106,15 @@ export default function Compatibility() {
  {/* ===== 3. 두 사람의 사주팔자표 ===== */}
  <section>
  <h2 className="text-lg md:text-xl font-bold text-[#1a1a18] flex items-center gap-2 mb-4">
- <Users className="w-5 h-5 text-pink-600" />
+ <Users className="w-5 h-5 text-[var(--compatibility-accent,#E8387A)]" />
  두 사람의 사주팔자(四柱八字)
  </h2>
  
  {/* 첫 번째 사람 */}
  <div className="mb-4">
  <div className="flex items-center gap-2 mb-2">
- <div className="w-5 h-5 rounded-full bg-pink-500 text-[#1a1a18] text-xs md:text-[10px] font-bold flex items-center justify-center">1</div>
- <span className="text-base md:text-sm font-bold text-pink-600">{name1}님의 사주</span>
+ <div className="w-5 h-5 rounded-full bg-[var(--compatibility-accent,#E8387A)] text-white text-xs md:text-[10px] font-bold flex items-center justify-center">1</div>
+ <span className="text-base md:text-sm font-bold text-[var(--compatibility-accent,#E8387A)]">{name1}님의 사주</span>
  </div>
  <Card className="rounded-xl overflow-hidden" data-result-card>
  <CardContent className="p-3 md:p-4">
@@ -966,7 +1126,7 @@ export default function Compatibility() {
  {/* 두 번째 사람 */}
  <div>
  <div className="flex items-center gap-2 mb-2">
- <div className="w-5 h-5 rounded-full bg-red-500 text-[#1a1a18] text-xs md:text-[10px] font-bold flex items-center justify-center">2</div>
+ <div className="w-5 h-5 rounded-full bg-red-500 text-white text-xs md:text-[10px] font-bold flex items-center justify-center">2</div>
  <span className="text-base md:text-sm font-bold text-red-600">{name2}님의 사주</span>
  </div>
  <Card className="rounded-xl overflow-hidden" data-result-card>
@@ -980,7 +1140,7 @@ export default function Compatibility() {
  {/* ===== 4. 일간 궁합 종합 해석 ===== */}
  <section>
  <h2 className="text-lg md:text-xl font-bold text-[#1a1a18] flex items-center gap-2 mb-4">
- <Quote className="w-5 h-5 text-pink-600" />
+ <Quote className="w-5 h-5 text-[var(--compatibility-accent,#E8387A)]" />
  일간(日干) 궁합 종합 해석
  </h2>
  <Card className="rounded-xl overflow-hidden" data-result-card>
@@ -998,15 +1158,15 @@ export default function Compatibility() {
  {personality1 && personality2 && (
  <section>
  <h2 className="text-lg md:text-xl font-bold text-[#1a1a18] flex items-center gap-2 mb-4">
- <User className="w-5 h-5 text-pink-600" />
+ <User className="w-5 h-5 text-[var(--compatibility-accent,#E8387A)]" />
  성격 궁합 비교
  </h2>
  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
  {/* 첫 번째 사람 성격 */}
  <Card className="bg-black/[0.05] border-pink-500/20 rounded-xl overflow-hidden">
  <CardHeader className="bg-pink-500/5 border-b border-black/10 py-3 px-4">
- <CardTitle className="text-base md:text-sm font-bold text-pink-600 flex items-center gap-2">
- <div className="w-5 h-5 rounded-full bg-pink-500 text-[#1a1a18] text-xs md:text-[10px] font-bold flex items-center justify-center">1</div>
+ <CardTitle className="text-base md:text-sm font-bold text-[var(--compatibility-accent,#E8387A)] flex items-center gap-2">
+ <div className="w-5 h-5 rounded-full bg-[var(--compatibility-accent,#E8387A)] text-white text-xs md:text-[10px] font-bold flex items-center justify-center">1</div>
  {name1}님 — {personality1.name}
  </CardTitle>
  </CardHeader>
@@ -1038,7 +1198,7 @@ export default function Compatibility() {
  <Card className="bg-black/[0.05] border-red-500/20 rounded-xl overflow-hidden">
  <CardHeader className="bg-red-500/5 border-b border-black/10 py-3 px-4">
  <CardTitle className="text-base md:text-sm font-bold text-red-600 flex items-center gap-2">
- <div className="w-5 h-5 rounded-full bg-red-500 text-[#1a1a18] text-xs md:text-[10px] font-bold flex items-center justify-center">2</div>
+ <div className="w-5 h-5 rounded-full bg-red-500 text-white text-xs md:text-[10px] font-bold flex items-center justify-center">2</div>
  {name2}님 — {personality2.name}
  </CardTitle>
  </CardHeader>
@@ -1072,7 +1232,7 @@ export default function Compatibility() {
  {/* ===== 6. 오행 조화 비교 분석 ===== */}
  <section>
  <h2 className="text-lg md:text-xl font-bold text-[#1a1a18] flex items-center gap-2 mb-4">
- <Activity className="w-5 h-5 text-pink-600" />
+ <Activity className="w-5 h-5 text-[var(--compatibility-accent,#E8387A)]" />
  오행(五行) 조화 비교
  </h2>
  <Card className="rounded-xl overflow-hidden" data-result-card>
@@ -1089,7 +1249,7 @@ export default function Compatibility() {
  </div>
  <div className="grid grid-cols-2 gap-1">
  <div className="flex items-center gap-1">
- <span className="text-xs md:text-[10px] text-pink-600 w-6">{name1.slice(0, 1)}</span>
+ <span className="text-xs md:text-[10px] text-[var(--compatibility-accent,#E8387A)] w-6">{name1.slice(0, 1)}</span>
  <div className="flex-1 h-2 bg-black/[0.05] rounded-full overflow-hidden">
  <motion.div
  initial={{ width: 0 }}
@@ -1124,7 +1284,7 @@ export default function Compatibility() {
  {cleanAIContent(elementAnalysis2.analysis)}
  </p>
  {elementAnalysis1.weakest !== elementAnalysis2.weakest && (
- <p className="text-base md:text-sm text-pink-600 leading-relaxed">
+ <p className="text-base md:text-sm text-[var(--compatibility-accent,#E8387A)] leading-relaxed">
  {name1}님에게 부족한 {withReading(elementAnalysis1.weakest)}의 기운을 {name2}님이 보완해줄 수 있고, {name2}님에게 부족한 {withReading(elementAnalysis2.weakest)}의 기운을 {name1}님이 채워줄 수 있는 상호 보완적인 관계입니다.
  </p>
  )}
@@ -1141,7 +1301,7 @@ export default function Compatibility() {
  {/* ===== 7. 애정운 궁합 ===== */}
  <section>
  <h2 className="text-lg md:text-xl font-bold text-[#1a1a18] flex items-center gap-2 mb-4">
- <Heart className="w-5 h-5 text-pink-600" />
+ <Heart className="w-5 h-5 text-[var(--compatibility-accent,#E8387A)]" />
  애정운 궁합
  <span className={`text-base md:text-sm font-bold ${getScoreColor(scores.loveScore)}`}>({scores.loveScore}점)</span>
  </h2>
@@ -1233,7 +1393,7 @@ export default function Compatibility() {
  {/* ===== 11. 종합 조언 ===== */}
  <section>
  <h2 className="text-lg md:text-xl font-bold text-[#1a1a18] flex items-center gap-2 mb-4">
- <Sparkles className="w-5 h-5 text-pink-600" />
+ <Sparkles className="w-5 h-5 text-[var(--compatibility-accent,#E8387A)]" />
  전문가 종합 조언
  </h2>
  <Card className="bg-gradient-to-br from-pink-500/10 to-red-500/10 border-pink-500/20 rounded-xl overflow-hidden">
@@ -1265,13 +1425,25 @@ export default function Compatibility() {
  familyScore={scores.familyScore}
  />
  )}
- <Button 
- className="w-full bg-black/[0.05] border border-black/10 text-[#1a1a18] hover:bg-black/[0.06] h-11 rounded-xl font-medium text-base md:text-sm"
- onClick={() => shareContent({ title: '무운 궁합 결과', text: `우리 궁합 점수는 ${scores.total}점! 궁합 결과를 확인해보세요.`, page: 'compatibility', buttonType: 'text_button' })}
+
+ {/* 5단계: 공유 버튼 — Web Share API 스타일 (DictionaryDetail 동일 패턴) */}
+ <button
+   onClick={handleShare}
+   className="w-full inline-flex items-center justify-center gap-2 h-11 rounded-xl border border-black/10 bg-white/80 text-sm font-medium text-[#4E5968] hover:border-[var(--compatibility-accent,#E8387A)]/40 hover:text-[var(--compatibility-accent,#E8387A)] hover:bg-[var(--compatibility-accent,#E8387A)]/05 transition-all shadow-sm"
  >
- <Share2 className="w-4 h-4 mr-2" />
- 친구에게 공유하기
- </Button>
+   {shareCopied ? (
+     <>
+       <Check className="w-4 h-4 text-[var(--compatibility-accent,#E8387A)]" />
+       링크 복사됨
+     </>
+   ) : (
+     <>
+       <Share2 className="w-4 h-4" />
+       친구에게 공유하기
+     </>
+   )}
+ </button>
+
  <Button 
  variant="ghost"
  className="w-full text-[#5a5a56] hover:text-[#1a1a18] hover:bg-black/[0.05] h-11 rounded-xl font-medium text-base md:text-sm"
