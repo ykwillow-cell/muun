@@ -1,17 +1,51 @@
+/**
+ * DictionaryDetail.tsx
+ * 운세 사전 개별 항목 상세 페이지
+ *
+ * [개선 2026-03-23]
+ * ① CTA 별점(☆☆★) 제거 → CallToAction variant='lifelong' (평생사주) 적용
+ * ② CTA 카피 평생사주로 변경 (운세 사전 독자의 검색 의도 일치)
+ * ③ 관련 사전어 섹션: RelatedTermsSection을 CTA 블록 위에 삽입
+ *    (related_terms DB 필드 없음 → 태그 기반 유사 항목 추천으로 대체)
+ * ④ 카테고리 배지 → /fortune-dictionary?category={id} 필터 링크로 전환
+ * ⑤ 관련 서비스 그리드: 1 Featured(평생사주) + 3 Small 계층 구조로 개선
+ *    (RelatedServices는 공유 컴포넌트이므로 DictionaryDetail 내부에서 직접 구현)
+ * ⑥ 공유 버튼: 히어로 하단에 Web Share API + 링크 복사 fallback 추가
+ * ⑦ 하단 내비게이션 active: /fortune-dictionary·/dictionary 경로에서 '전체메뉴' active 처리
+ *    (BottomNav는 /more 기준이므로 DictionaryDetail 전용 헤더에서 breadcrumb 강화)
+ */
 import { useParams, useLocation } from 'wouter';
 import { Helmet } from 'react-helmet-async';
 import NotFound from '@/pages/NotFound';
-import { ChevronLeft, ArrowRight, Loader2 } from 'lucide-react';
+import { ChevronLeft, ArrowRight, Loader2, Share2, Copy, Check, Star } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { fetchDictionaryEntryBySlug, type DictionaryEntry } from '@/lib/fortune-dictionary';
 import CallToAction from '@/components/CallToAction';
+import { RelatedTermsSection } from '@/components/RelatedTermsSection';
 import { Button } from '@/components/ui/button';
 import { Link } from 'wouter';
+import { trackCustomEvent } from '@/lib/ga4';
+
+// 관련 서비스 데이터 (1 Featured + 3 Small)
+const FEATURED_SERVICE = {
+  path: '/lifelong-saju',
+  title: '평생사주',
+  desc: '타고난 기질과 운명, 직업운·재물운·대인관계를 한눈에',
+  badge: '가장 많이 찾는 서비스',
+  emoji: '✨',
+};
+
+const SMALL_SERVICES = [
+  { path: '/yearly-fortune', title: '신년운세', desc: '2026년 총운 확인', emoji: '📅' },
+  { path: '/compatibility', title: '궁합', desc: '찰떡궁합 확인', emoji: '💑' },
+  { path: '/tarot', title: '타로', desc: '카드가 전하는 인사이트', emoji: '🃏' },
+];
 
 export default function DictionaryDetail() {
   const { id } = useParams<{ id: string }>();
   const [, navigate] = useLocation();
   const [entry, setEntry] = useState<DictionaryEntry | null | undefined>(undefined);
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     if (!id) {
@@ -22,6 +56,37 @@ export default function DictionaryDetail() {
       setEntry(data);
     });
   }, [id]);
+
+  // ⑥ 공유 핸들러: Web Share API → 링크 복사 fallback
+  const handleShare = async () => {
+    if (!entry) return;
+    const shareUrl = `https://muunsaju.com/dictionary/${entry.slug}`;
+    const shareData = {
+      title: entry.metaTitle || `${entry.title} - ${entry.summary} | 무운 운세 사전`,
+      text: `${entry.title}이 내 사주에 있다면? 무운 운세 사전에서 확인해 보세요.`,
+      url: shareUrl,
+    };
+    try {
+      trackCustomEvent('share_click', {
+        source_page: shareUrl,
+        button_type: 'dictionary_hero',
+        entry_title: entry.title,
+      });
+    } catch {}
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+        try { trackCustomEvent('share_success', { method: 'native_share', entry: entry.slug }); } catch {}
+      } else {
+        await navigator.clipboard.writeText(shareUrl);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+        try { trackCustomEvent('share_success', { method: 'clipboard_copy', entry: entry.slug }); } catch {}
+      }
+    } catch (err) {
+      // 사용자가 취소한 경우 무시
+    }
+  };
 
   // 로딩 중
   if (entry === undefined) {
@@ -46,6 +111,7 @@ export default function DictionaryDetail() {
         <meta name="keywords" content={`${entry.title}, ${entry.summary}, ${entry.categoryLabel}, 사주, 운세, ${(entry.tags || []).join(', ')}`} />
         <meta property="og:type" content="article" />
         <meta property="og:url" content={`https://muunsaju.com/dictionary/${entry.slug}`} />
+        <meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png" />
         <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
         <link rel="canonical" href={`https://muunsaju.com/dictionary/${entry.slug}`} />
         <script type="application/ld+json">
@@ -100,18 +166,50 @@ export default function DictionaryDetail() {
             </Button>
           </Link>
           <span className="text-sm font-semibold text-[#4E5968]">운세 사전</span>
-          <div className="w-11" /> {/* Spacer for centering */}
+          {/* ⑥ 공유 버튼 (헤더 우측) */}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleShare}
+            className="text-[#4E5968] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]"
+            aria-label="이 페이지 공유하기"
+          >
+            {copied ? <Check className="w-5 h-5 text-[#6B5FFF]" /> : <Share2 className="w-5 h-5" />}
+          </Button>
         </div>
       </div>
 
       <main className="max-w-3xl mx-auto px-4 py-8 md:py-12">
         {/* 타이틀 영역 */}
         <div className="mb-8">
-          <div className="inline-block px-3 py-1 bg-[#6B5FFF]/10 border border-[#6B5FFF]/20 rounded-full text-[#6B5FFF] text-xs font-semibold mb-4">
-            {entry.categoryLabel}
-          </div>
+          {/* ④ 카테고리 배지 → 필터 링크로 전환 */}
+          <Link href={`/fortune-dictionary?category=${entry.category}`}>
+            <span className="inline-block px-3 py-1 bg-[#6B5FFF]/10 border border-[#6B5FFF]/20 rounded-full text-[#6B5FFF] text-xs font-semibold mb-4 hover:bg-[#6B5FFF]/20 transition-colors cursor-pointer">
+              {entry.categoryLabel}
+            </span>
+          </Link>
           <h1 className="text-3xl md:text-4xl font-bold text-[#191F28] mb-3">{entry.title}</h1>
           {entry.subtitle && <p className="text-[#4E5968] text-lg">{entry.subtitle}</p>}
+
+          {/* ⑥ 공유 버튼 (히어로 하단) */}
+          <div className="mt-5 flex items-center gap-2">
+            <button
+              onClick={handleShare}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-black/10 bg-white text-sm font-medium text-[#4E5968] hover:border-[#6B5FFF]/40 hover:text-[#6B5FFF] hover:bg-[#6B5FFF]/05 transition-all shadow-sm"
+            >
+              {copied ? (
+                <>
+                  <Check className="w-4 h-4 text-[#6B5FFF]" />
+                  링크 복사됨
+                </>
+              ) : (
+                <>
+                  <Share2 className="w-4 h-4" />
+                  이 용어 공유하기
+                </>
+              )}
+            </button>
+          </div>
         </div>
 
         {/* 콘텐츠 영역 */}
@@ -151,34 +249,56 @@ export default function DictionaryDetail() {
           )}
         </div>
 
-        {/* CTA - 무료 운세 전환 유도 */}
-        <CallToAction
-          message="오늘 나의 운세도 확인해 보세요"
-          targetPath="/daily-fortune"
-        />
+        {/* ③ 관련 사전어 섹션 (CTA 블록 위) */}
+        {entry.tags && entry.tags.length > 0 && (
+          <RelatedTermsSection
+            currentTermId={entry.id}
+            currentTags={entry.tags}
+            maxItems={4}
+          />
+        )}
 
-        {/* 관련 서비스 링크 */}
+        {/* ①② CTA - 평생사주 전환 유도 (별점 제거, 신뢰 배지 3개) */}
+        <CallToAction variant="lifelong" />
+
+        {/* ⑤ 관련 서비스 링크 - 1 Featured + 3 Small 계층 구조 */}
         <div className="mt-12 pt-8 border-t border-black/10">
           <h3 className="text-xl font-bold text-[#191F28] mb-6">관련 서비스 둘러보기</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {[
-              { path: '/yearly-fortune', title: '신년운세', desc: '2026년 총운 확인' },
-              { path: '/lifelong-saju', title: '평생사주', desc: '타고난 기질과 운명' },
-              { path: '/compatibility', title: '궁합', desc: '찰떡궁합 확인' },
-              { path: '/tarot', title: '타로', desc: '카드가 전하는 인사이트' }
-            ].map((service) => (
+
+          {/* Featured 카드 (평생사주) */}
+          <button
+            onClick={() => navigate(FEATURED_SERVICE.path)}
+            className="w-full mb-4 p-6 bg-gradient-to-br from-[#6B5FFF]/08 to-[#6B5FFF]/03 border border-[#6B5FFF]/25 rounded-2xl hover:border-[#6B5FFF]/50 hover:shadow-md transition-all group text-left"
+          >
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-xl">{FEATURED_SERVICE.emoji}</span>
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-[#6B5FFF]/15 rounded-full text-[10px] font-bold text-[#6B5FFF] uppercase tracking-wide">
+                    <Star className="w-2.5 h-2.5 fill-[#6B5FFF]" />
+                    {FEATURED_SERVICE.badge}
+                  </span>
+                </div>
+                <h4 className="text-lg font-bold text-[#191F28] group-hover:text-[#6B5FFF] transition-colors mb-1">
+                  {FEATURED_SERVICE.title}
+                </h4>
+                <p className="text-sm text-[#4E5968] leading-relaxed">{FEATURED_SERVICE.desc}</p>
+              </div>
+              <ArrowRight className="w-5 h-5 text-[#8B95A1] group-hover:text-[#6B5FFF] group-hover:translate-x-1 transition-all flex-shrink-0 mt-1" />
+            </div>
+          </button>
+
+          {/* Small 카드 3개 */}
+          <div className="grid grid-cols-3 gap-3">
+            {SMALL_SERVICES.map((service) => (
               <button
                 key={service.path}
                 onClick={() => navigate(service.path)}
-                className="p-5 bg-white border border-black/10 rounded-2xl hover:border-[#6B5FFF]/30 hover:bg-[#6B5FFF]/05 transition-all group shadow-sm text-left"
+                className="p-4 bg-white border border-black/10 rounded-2xl hover:border-[#6B5FFF]/30 hover:bg-[#6B5FFF]/05 transition-all group shadow-sm text-left"
               >
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="font-bold text-[#191F28] group-hover:text-[#6B5FFF] transition-colors">{service.title}</h4>
-                    <p className="text-sm text-[#4E5968] mt-1">{service.desc}</p>
-                  </div>
-                  <ArrowRight className="w-5 h-5 text-[#8B95A1] group-hover:text-[#6B5FFF] group-hover:translate-x-1 transition-all" />
-                </div>
+                <span className="text-xl mb-2 block">{service.emoji}</span>
+                <h4 className="font-bold text-[#191F28] group-hover:text-[#6B5FFF] transition-colors text-sm">{service.title}</h4>
+                <p className="text-xs text-[#4E5968] mt-0.5 leading-snug">{service.desc}</p>
               </button>
             ))}
           </div>

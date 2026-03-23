@@ -1,5 +1,6 @@
 import React, { useMemo, useState, useEffect } from 'react';
 import { Link } from 'wouter';
+import { ArrowRight } from 'lucide-react';
 import { fetchFortuneDictionary, type DictionaryEntry } from '@/lib/fortune-dictionary';
 
 interface RelatedTermsSectionProps {
@@ -64,40 +65,35 @@ export function RelatedTermsSection({
 
   return (
     <div className="mt-12 pt-8 border-t border-black/10">
-      <h3 className="text-lg font-semibold text-[#1a1a18] mb-6">함께 보면 좋은 기운</h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <h3 className="text-lg font-semibold text-[#191F28] mb-4">함께 보면 좋은 사전어</h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         {relatedTerms.map((term) => (
-          <Link key={term.id} href={`/dictionary/${term.slug}`}>
-            <a className="group p-4 bg-[#f5f4ef] border border-black/10 rounded-lg hover:border-black/20 hover:bg-white transition-all duration-200">
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <h4 className="font-semibold text-[#1a1a18] group-hover:text-yellow-600 transition-colors mb-2">
-                    {term.title}
-                  </h4>
-                  <p className="text-sm text-[#5a5a56] line-clamp-2">{term.summary}</p>
-                </div>
-                <div className="ml-2 text-yellow-600 opacity-0 group-hover:opacity-100 transition-opacity">
-                  →
-                </div>
+          <Link
+            key={term.id}
+            href={`/dictionary/${term.slug}`}
+            className="group p-4 bg-white border border-black/10 rounded-2xl hover:border-[#6B5FFF]/30 hover:bg-[#6B5FFF]/05 transition-all duration-200 shadow-sm block"
+          >
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex-1 min-w-0">
+                <h4 className="font-bold text-[#191F28] group-hover:text-[#6B5FFF] transition-colors mb-1 text-sm">
+                  {term.title}
+                </h4>
+                <p className="text-xs text-[#4E5968] line-clamp-2 leading-relaxed">{term.summary}</p>
               </div>
-              {term.tags && term.tags.length > 0 && (
-                <div className="mt-3 flex flex-wrap gap-1">
-                  {term.tags.slice(0, 2).map((tag) => (
-                    <span
-                      key={tag}
-                      className="text-xs px-2 py-1 bg-[#f5f4ef] text-[#5a5a56] rounded-full"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                  {term.tags.length > 2 && (
-                    <span className="text-xs px-2 py-1 bg-[#f5f4ef] text-[#5a5a56] rounded-full">
-                      +{term.tags.length - 2}
-                    </span>
-                  )}
-                </div>
-              )}
-            </a>
+              <ArrowRight className="w-4 h-4 text-[#8B95A1] group-hover:text-[#6B5FFF] group-hover:translate-x-0.5 transition-all flex-shrink-0 mt-0.5" />
+            </div>
+            {term.tags && term.tags.length > 0 && (
+              <div className="mt-2 flex flex-wrap gap-1">
+                {term.tags.slice(0, 2).map((tag) => (
+                  <span
+                    key={tag}
+                    className="text-[10px] px-2 py-0.5 bg-[#F2F4F6] text-[#4E5968] rounded-full font-medium"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
           </Link>
         ))}
       </div>

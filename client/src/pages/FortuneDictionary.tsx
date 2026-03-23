@@ -20,7 +20,12 @@ export default function FortuneDictionary() {
   }, []);
 
   const [, navigate] = useLocation();
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+
+  // URL ?category= 쿼리파라미터로 초기 카테고리 설정 (사전 디테일 페이지에서 카테고리 배지 클릭 시)
+  const initialCategory = typeof window !== 'undefined'
+    ? new URLSearchParams(window.location.search).get('category')
+    : null;
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(initialCategory);
   const [searchQuery, setSearchQuery] = useState('');
   const [entries, setEntries] = useState<DictionaryEntry[]>([]);
   const [loading, setLoading] = useState(true);

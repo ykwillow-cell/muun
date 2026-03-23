@@ -12,8 +12,15 @@ const NAV_ITEMS = [
 export function BottomNav() {
   const [location] = useLocation();
 
+  // /fortune-dictionary, /dictionary/* 경로는 '전체메뉴(/more)' 탭에 active 표시
+  const isDictionaryPage =
+    location === '/fortune-dictionary' ||
+    location.startsWith('/fortune-dictionary/') ||
+    location.startsWith('/dictionary/');
+
   const isActive = (href: string) => {
     if (href === "/") return location === "/";
+    if (href === "/more" && isDictionaryPage) return true;
     return location.startsWith(href);
   };
 
