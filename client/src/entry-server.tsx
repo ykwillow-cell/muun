@@ -1425,6 +1425,25 @@ const metaData: Record<string, { title: string, description: string, h1?: string
           </fieldset>
           <button type="submit">궁합 결과 보기</button>
         </form>
+        <section aria-label="궁합 결과" style="position:absolute;clip:rect(0,0,0,0);width:1px;height:1px;overflow:hidden;">
+          <h2>궁합 분석 결과</h2>
+          <div>
+            <h3>오행 궁합</h3>
+            <p>두 사람의 오행 조화를 분석한 결과입니다.</p>
+          </div>
+          <div>
+            <h3>성격 궁합</h3>
+            <p>일간(日干)을 기반으로 한 성격 조화도입니다.</p>
+          </div>
+          <div>
+            <h3>연애 궁합</h3>
+            <p>연애 스타일 일치도와 주요 갈등 요인입니다.</p>
+          </div>
+          <div>
+            <h3>종합 점수</h3>
+            <p>전체 궁합 종합 점수입니다.</p>
+          </div>
+        </section>
       `,
       services: [
         { href: '/hybrid-compatibility', label: '사주×MBTI 하이브리드 궁합' },
@@ -2450,13 +2469,9 @@ const metaData: Record<string, { title: string, description: string, h1?: string
   const navLinks = [
     { href: '/', label: '홈' },
     { href: '/yearly-fortune', label: '신년운세' },
-    { href: '/manselyeok', label: '만세력' },
-    { href: '/lifelong-saju', label: '평생사주' },
     { href: '/compatibility', label: '궁합' },
-    { href: '/tojeong', label: '토정비결' },
-    { href: '/tarot', label: '타로' },
-    { href: '/dream', label: '꿈해몽' },
-    { href: '/guide', label: '칼럼' },
+    { href: '/lifelong-saju', label: '평생사주' },
+    { href: '/naming', label: '작명' },
   ];
 
   // 서비스 링크 HTML 생성
