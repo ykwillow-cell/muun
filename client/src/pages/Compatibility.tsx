@@ -734,27 +734,31 @@ export default function Compatibility() {
  <ToggleGroupItem value="solar" className="compat-segment-item">양력</ToggleGroupItem>
  <ToggleGroupItem value="lunar" className="compat-segment-item">음력</ToggleGroupItem>
  </ToggleGroup>
+ {/* 윤달 체크박스 — 음력 선택 시에만 표시, 공간 없이 완전 숨김 */}
  {form.watch("calendarType1") === "lunar" && (
- <div className="flex items-center justify-end gap-2 pr-1 pt-0.5">
- <input
- type="checkbox"
- id="isLeapMonth1"
- checked={form.watch("isLeapMonth1") || false}
- onChange={(e) => form.setValue("isLeapMonth1", e.target.checked)}
- className="w-3.5 h-3.5 rounded border-[#E8E5E0] bg-[#F7F5F3] text-[#E8387A] focus:ring-[#E8387A]/30"
- />
- <Label htmlFor="isLeapMonth1" className="text-[#5a5a56] text-[11px] cursor-pointer">
- 윤달입니다
- </Label>
- </div>
+   <div className="flex items-center gap-1.5 pt-1.5">
+     <input
+       type="checkbox"
+       id="isLeapMonth1"
+       checked={form.watch("isLeapMonth1") || false}
+       onChange={(e) => form.setValue("isLeapMonth1", e.target.checked)}
+       className="w-3.5 h-3.5 rounded"
+       style={{ accentColor: '#D4537E' }}
+     />
+     <Label htmlFor="isLeapMonth1" className="cursor-pointer" style={{ fontSize: '11px', color: 'var(--color-text-secondary, #999891)' }}>
+       윤달
+     </Label>
+   </div>
  )}
  </div>
  </div>
  </div>
 
- {/* 구분선 — 시안: Heart 아이콘만 */}
- <div className="flex items-center justify-center py-1">
- <Heart className="w-4 h-4 text-[#E8387A]/60" />
+ {/* 구분선 — [---- ♡ ----] 점선 + 중앙 하트 */}
+ <div className="flex items-center gap-3 my-4">
+   <div className="flex-1 border-t border-dashed border-[#ffd6e4]" style={{ borderWidth: '0.5px' }} />
+   <Heart className="w-3.5 h-3.5 text-[#ED93B1] flex-shrink-0" />
+   <div className="flex-1 border-t border-dashed border-[#ffd6e4]" style={{ borderWidth: '0.5px' }} />
  </div>
 
  {/* 두 번째 사람 */}
@@ -823,19 +827,21 @@ export default function Compatibility() {
  <ToggleGroupItem value="solar" className="compat-segment-item">양력</ToggleGroupItem>
  <ToggleGroupItem value="lunar" className="compat-segment-item">음력</ToggleGroupItem>
  </ToggleGroup>
+ {/* 윤달 체크박스 — 음력 선택 시에만 표시, 공간 없이 완전 숨김 */}
  {form.watch("calendarType2") === "lunar" && (
- <div className="flex items-center justify-end gap-2 pr-1 pt-0.5">
- <input
- type="checkbox"
- id="isLeapMonth2"
- checked={form.watch("isLeapMonth2") || false}
- onChange={(e) => form.setValue("isLeapMonth2", e.target.checked)}
- className="w-3.5 h-3.5 rounded border-[#E8E5E0] bg-[#F7F5F3] text-[#E8387A] focus:ring-[#E8387A]/30"
- />
- <Label htmlFor="isLeapMonth2" className="text-[#5a5a56] text-[11px] cursor-pointer">
- 윤달입니다
- </Label>
- </div>
+   <div className="flex items-center gap-1.5 pt-1.5">
+     <input
+       type="checkbox"
+       id="isLeapMonth2"
+       checked={form.watch("isLeapMonth2") || false}
+       onChange={(e) => form.setValue("isLeapMonth2", e.target.checked)}
+       className="w-3.5 h-3.5 rounded"
+       style={{ accentColor: '#D4537E' }}
+     />
+     <Label htmlFor="isLeapMonth2" className="cursor-pointer" style={{ fontSize: '11px', color: 'var(--color-text-secondary, #999891)' }}>
+       윤달
+     </Label>
+   </div>
  )}
  </div>
  </div>
