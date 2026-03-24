@@ -512,22 +512,20 @@ export default function Compatibility() {
   }
 
  // 두 사람의 생년월일 데이터를 GA4에 전송 (SEO 분석용)
- let birthDateStr1 = data.birthDate1;
- if (typeof birthDateStr1 !== 'string') {
- if (birthDateStr1 instanceof Date) {
- birthDateStr1 = birthDateStr1.toISOString().split('T')[0];
- } else {
- birthDateStr1 = String(birthDateStr1);
- }
- }
- let birthDateStr2 = data.birthDate2;
- if (typeof birthDateStr2 !== 'string') {
- if (birthDateStr2 instanceof Date) {
- birthDateStr2 = birthDateStr2.toISOString().split('T')[0];
- } else {
- birthDateStr2 = String(birthDateStr2);
- }
- }
+ // YYYY. MM. DD 표시 포맷 → YYYY-MM-DD ISO 포맷으로 정규화
+ const normalizeDate = (v: string): string => {
+   if (typeof v !== 'string') return String(v);
+   // YYYY. MM. DD 포맷 처리
+   const dotMatch = v.match(/^(\d{4})\s*\.\s*(\d{1,2})\s*\.\s*(\d{1,2})$/);
+   if (dotMatch) {
+     return `${dotMatch[1]}-${dotMatch[2].padStart(2,'0')}-${dotMatch[3].padStart(2,'0')}`;
+   }
+   // 이미 YYYY-MM-DD이면 그대로
+   if (/^\d{4}-\d{2}-\d{2}$/.test(v)) return v;
+   return v;
+ };
+ let birthDateStr1 = normalizeDate(data.birthDate1);
+ let birthDateStr2 = normalizeDate(data.birthDate2);
  const [year1, month1, day1] = birthDateStr1.split('-').map(Number);
  const [year2, month2, day2] = birthDateStr2.split('-').map(Number);
  const birthDateObj1 = new Date(year1, month1 - 1, day1);
@@ -554,8 +552,8 @@ export default function Compatibility() {
      const birthDateStrForConverter2 = `${birthDateObj2.getFullYear()}-${String(birthDateObj2.getMonth() + 1).padStart(2, '0')}-${String(birthDateObj2.getDate()).padStart(2, '0')}`;
      const time1 = data.birthTimeUnknown1 ? "12:00" : data.birthTime1;
      const time2 = data.birthTimeUnknown2 ? "12:00" : data.birthTime2;
-     const date1 = convertToSolarDate(birthDateStrForConverter1, time1, data.calendarType1);
-     const date2 = convertToSolarDate(birthDateStrForConverter2, time2, data.calendarType2);
+     const date1 = convertToSolarDate(birthDateStrForConverter1, time1, data.calendarType1, data.isLeapMonth1 || false);
+     const date2 = convertToSolarDate(birthDateStrForConverter2, time2, data.calendarType2, data.isLeapMonth2 || false);
      const saju1 = calculateSaju(date1, data.gender1);
      const saju2 = calculateSaju(date2, data.gender2!);
      
