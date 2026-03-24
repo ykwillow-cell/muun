@@ -1113,6 +1113,38 @@ const metaData: Record<string, { title: string, description: string, h1?: string
           </ul>
           <p>생년월일만 입력하면 회원가입 없이 즉시 확인할 수 있으며, 개인정보는 서버에 저장되지 않습니다.</p>
         </section>
+        <form aria-label="신년운세 입력 폼">
+          <fieldset>
+            <legend>생년월일 입력</legend>
+            <label for="yf-name">이름</label>
+            <input id="yf-name" type="text" name="name" placeholder="이름" autocomplete="off" />
+            <label>성별</label>
+            <label><input type="radio" name="gender" value="male" /> 남성</label>
+            <label><input type="radio" name="gender" value="female" /> 여성</label>
+            <label for="yf-birth">생년월일</label>
+            <input id="yf-birth" type="text" name="birthDate" placeholder="YYYY. MM. DD" />
+            <label for="yf-time">태어난 시간</label>
+            <select id="yf-time" name="birthTime">
+              <option value="">모름 / 미입력</option>
+              <option value="23:31">자시 (23:31~01:30)</option>
+              <option value="01:31">축시 (01:31~03:30)</option>
+              <option value="03:31">인시 (03:31~05:30)</option>
+              <option value="05:31">묘시 (05:31~07:30)</option>
+              <option value="07:31">진시 (07:31~09:30)</option>
+              <option value="09:31">사시 (09:31~11:30)</option>
+              <option value="11:31">오시 (11:31~13:30)</option>
+              <option value="13:31">미시 (13:31~15:30)</option>
+              <option value="15:31">신시 (15:31~17:30)</option>
+              <option value="17:31">유시 (17:31~19:30)</option>
+              <option value="19:31">술시 (19:31~21:30)</option>
+              <option value="21:31">해시 (21:31~23:30)</option>
+            </select>
+            <label>양력/음력</label>
+            <label><input type="radio" name="calendarType" value="solar" checked /> 양력</label>
+            <label><input type="radio" name="calendarType" value="lunar" /> 음력</label>
+          </fieldset>
+          <button type="submit">신년운세 보기</button>
+        </form>
       `,
       services: [
         { href: '/manselyeok', label: '만세력 분석' },
@@ -1138,6 +1170,33 @@ const metaData: Record<string, { title: string, description: string, h1?: string
           </ul>
           <p>무운의 만세력은 양력과 음력을 모두 지원하며, 태어난 시간을 모르는 경우에도 조회가 가능합니다.</p>
         </section>
+        <form aria-label="만세력 조회 폼">
+          <fieldset>
+            <legend>생년월일 입력</legend>
+            <label for="ms-birth">생년월일</label>
+            <input id="ms-birth" type="text" name="birthDate" placeholder="YYYY. MM. DD" />
+            <label for="ms-time">태어난 시간</label>
+            <select id="ms-time" name="birthTime">
+              <option value="">모름 / 미입력</option>
+              <option value="23:31">자시 (23:31~01:30)</option>
+              <option value="01:31">축시 (01:31~03:30)</option>
+              <option value="03:31">인시 (03:31~05:30)</option>
+              <option value="05:31">묘시 (05:31~07:30)</option>
+              <option value="07:31">진시 (07:31~09:30)</option>
+              <option value="09:31">사시 (09:31~11:30)</option>
+              <option value="11:31">오시 (11:31~13:30)</option>
+              <option value="13:31">미시 (13:31~15:30)</option>
+              <option value="15:31">신시 (15:31~17:30)</option>
+              <option value="17:31">유시 (17:31~19:30)</option>
+              <option value="19:31">술시 (19:31~21:30)</option>
+              <option value="21:31">해시 (21:31~23:30)</option>
+            </select>
+            <label>양력/음력</label>
+            <label><input type="radio" name="calendarType" value="solar" checked /> 양력</label>
+            <label><input type="radio" name="calendarType" value="lunar" /> 음력</label>
+          </fieldset>
+          <button type="submit">만세력 조회</button>
+        </form>
       `,
       services: [
         { href: '/yearly-fortune', label: '신년운세' },
@@ -1161,6 +1220,38 @@ const metaData: Record<string, { title: string, description: string, h1?: string
             <li>행운의 색상, 숫자, 방향</li>
           </ul>
         </section>
+        <form aria-label="오늘운세 입력 폼">
+          <fieldset>
+            <legend>생년월일 입력</legend>
+            <label for="df-name">이름</label>
+            <input id="df-name" type="text" name="name" placeholder="이름" autocomplete="off" />
+            <label>성별</label>
+            <label><input type="radio" name="gender" value="male" /> 남성</label>
+            <label><input type="radio" name="gender" value="female" /> 여성</label>
+            <label for="df-birth">생년월일</label>
+            <input id="df-birth" type="text" name="birthDate" placeholder="YYYY. MM. DD" />
+            <label for="df-time">태어난 시간</label>
+            <select id="df-time" name="birthTime">
+              <option value="">모름 / 미입력</option>
+              <option value="23:31">자시 (23:31~01:30)</option>
+              <option value="01:31">축시 (01:31~03:30)</option>
+              <option value="03:31">인시 (03:31~05:30)</option>
+              <option value="05:31">묘시 (05:31~07:30)</option>
+              <option value="07:31">진시 (07:31~09:30)</option>
+              <option value="09:31">사시 (09:31~11:30)</option>
+              <option value="11:31">오시 (11:31~13:30)</option>
+              <option value="13:31">미시 (13:31~15:30)</option>
+              <option value="15:31">신시 (15:31~17:30)</option>
+              <option value="17:31">유시 (17:31~19:30)</option>
+              <option value="19:31">술시 (19:31~21:30)</option>
+              <option value="21:31">해시 (21:31~23:30)</option>
+            </select>
+            <label>양력/음력</label>
+            <label><input type="radio" name="calendarType" value="solar" checked /> 양력</label>
+            <label><input type="radio" name="calendarType" value="lunar" /> 음력</label>
+          </fieldset>
+          <button type="submit">오늘운세 보기</button>
+        </form>
       `,
       services: [
         { href: '/yearly-fortune', label: '신년운세' },
@@ -1216,6 +1307,38 @@ const metaData: Record<string, { title: string, description: string, h1?: string
           </ul>
           <p>무운의 평생사주는 30년 내공의 역술인이 검증한 알고리즘을 기반으로, 회원가입 없이 생년월일만 입력하면 즉시 확인할 수 있습니다.</p>
         </section>
+        <form aria-label="평생사주 입력 폼">
+          <fieldset>
+            <legend>생년월일 입력</legend>
+            <label for="ls-name">이름</label>
+            <input id="ls-name" type="text" name="name" placeholder="이름" autocomplete="off" />
+            <label>성별</label>
+            <label><input type="radio" name="gender" value="male" /> 남성</label>
+            <label><input type="radio" name="gender" value="female" /> 여성</label>
+            <label for="ls-birth">생년월일</label>
+            <input id="ls-birth" type="text" name="birthDate" placeholder="YYYY. MM. DD" />
+            <label for="ls-time">태어난 시간</label>
+            <select id="ls-time" name="birthTime">
+              <option value="">모름 / 미입력</option>
+              <option value="23:31">자시 (23:31~01:30)</option>
+              <option value="01:31">축시 (01:31~03:30)</option>
+              <option value="03:31">인시 (03:31~05:30)</option>
+              <option value="05:31">묘시 (05:31~07:30)</option>
+              <option value="07:31">진시 (07:31~09:30)</option>
+              <option value="09:31">사시 (09:31~11:30)</option>
+              <option value="11:31">오시 (11:31~13:30)</option>
+              <option value="13:31">미시 (13:31~15:30)</option>
+              <option value="15:31">신시 (15:31~17:30)</option>
+              <option value="17:31">유시 (17:31~19:30)</option>
+              <option value="19:31">술시 (19:31~21:30)</option>
+              <option value="21:31">해시 (21:31~23:30)</option>
+            </select>
+            <label>양력/음력</label>
+            <label><input type="radio" name="calendarType" value="solar" checked /> 양력</label>
+            <label><input type="radio" name="calendarType" value="lunar" /> 음력</label>
+          </fieldset>
+          <button type="submit">평생사주 보기</button>
+        </form>
       `,
       services: [
         { href: '/yearly-fortune', label: '신년운세' },
@@ -1325,6 +1448,45 @@ const metaData: Record<string, { title: string, description: string, h1?: string
             <li>갈등 처방전: 두 사람의 차이를 극복하는 구체적인 방법 제시</li>
           </ul>
         </section>
+        <form aria-label="하이브리드 궁합 입력 폼">
+          <fieldset>
+            <legend>첫 번째 사람</legend>
+            <label for="hc-name1">이름</label>
+            <input id="hc-name1" type="text" name="name1" placeholder="이름" autocomplete="off" />
+            <label>성별</label>
+            <label><input type="radio" name="gender1" value="male" /> 남성</label>
+            <label><input type="radio" name="gender1" value="female" checked /> 여성</label>
+            <label for="hc-birth1">생년월일</label>
+            <input id="hc-birth1" type="text" name="birthDate1" placeholder="YYYY. MM. DD" />
+            <label for="hc-mbti1">MBTI</label>
+            <select id="hc-mbti1" name="mbti1">
+              <option value="">MBTI 선택</option>
+              <option>INTJ</option><option>INTP</option><option>ENTJ</option><option>ENTP</option>
+              <option>INFJ</option><option>INFP</option><option>ENFJ</option><option>ENFP</option>
+              <option>ISTJ</option><option>ISFJ</option><option>ESTJ</option><option>ESFJ</option>
+              <option>ISTP</option><option>ISFP</option><option>ESTP</option><option>ESFP</option>
+            </select>
+          </fieldset>
+          <fieldset>
+            <legend>두 번째 사람</legend>
+            <label for="hc-name2">이름</label>
+            <input id="hc-name2" type="text" name="name2" placeholder="이름" autocomplete="off" />
+            <label>성별</label>
+            <label><input type="radio" name="gender2" value="male" checked /> 남성</label>
+            <label><input type="radio" name="gender2" value="female" /> 여성</label>
+            <label for="hc-birth2">생년월일</label>
+            <input id="hc-birth2" type="text" name="birthDate2" placeholder="YYYY. MM. DD" />
+            <label for="hc-mbti2">MBTI</label>
+            <select id="hc-mbti2" name="mbti2">
+              <option value="">MBTI 선택</option>
+              <option>INTJ</option><option>INTP</option><option>ENTJ</option><option>ENTP</option>
+              <option>INFJ</option><option>INFP</option><option>ENFJ</option><option>ENFP</option>
+              <option>ISTJ</option><option>ISFJ</option><option>ESTJ</option><option>ESFJ</option>
+              <option>ISTP</option><option>ISFP</option><option>ESTP</option><option>ESFP</option>
+            </select>
+          </fieldset>
+          <button type="submit">하이브리드 궁합 보기</button>
+        </form>
       `,
       services: [
         { href: '/compatibility', label: '정밀 궁합 분석' },
@@ -1349,6 +1511,22 @@ const metaData: Record<string, { title: string, description: string, h1?: string
           </ul>
           <p>무운의 토정비결은 이지함 선생의 원문 괘 계산법을 충실히 재현하여, 회원가입 없이 생년월일만 입력하면 즉시 확인할 수 있습니다.</p>
         </section>
+        <form aria-label="토정비결 입력 폼">
+          <fieldset>
+            <legend>생년월일 입력</legend>
+            <label for="tj-name">이름</label>
+            <input id="tj-name" type="text" name="name" placeholder="이름" autocomplete="off" />
+            <label>성별</label>
+            <label><input type="radio" name="gender" value="male" /> 남성</label>
+            <label><input type="radio" name="gender" value="female" /> 여성</label>
+            <label for="tj-birth">생년월일</label>
+            <input id="tj-birth" type="text" name="birthDate" placeholder="YYYY. MM. DD" />
+            <label>양력/음력</label>
+            <label><input type="radio" name="calendarType" value="solar" checked /> 양력</label>
+            <label><input type="radio" name="calendarType" value="lunar" /> 음력</label>
+          </fieldset>
+          <button type="submit">토정비결 보기</button>
+        </form>
       `,
       services: [
         { href: '/yearly-fortune', label: '신년운세' },
@@ -1394,6 +1572,14 @@ const metaData: Record<string, { title: string, description: string, h1?: string
           </ul>
           <p>회원가입 없이 바로 시작할 수 있으며, 개인정보는 서버에 저장되지 않습니다.</p>
         </section>
+        <form aria-label="타로 상담 폼">
+          <fieldset>
+            <legend>타로 상담 시작</legend>
+            <label for="tarot-question">고민 또는 질문</label>
+            <input id="tarot-question" type="text" name="question" placeholder="오늘의 고민을 입력하세요" autocomplete="off" />
+          </fieldset>
+          <button type="submit">타로 카드 뽑기</button>
+        </form>
       `,
       services: [
         { href: '/psychology', label: '심리테스트' },
@@ -1446,6 +1632,26 @@ const metaData: Record<string, { title: string, description: string, h1?: string
           <h2>가족사주가 중요한 이유</h2>
           <p>사주명리학에서는 가족 구성원의 사주가 서로 영향을 주고받는다고 봅니다. 예를 들어, 화(火) 기운이 강한 아버지와 수(水) 기운이 강한 어머니는 상극(相剋) 관계이지만, 이 사이에서 태어난 목(木) 기운의 자녀가 완충 역할을 할 수 있습니다. 이처럼 가족사주 분석을 통해 가족 내 역학 관계를 이해하고, 더 조화로운 가정을 만드는 데 도움을 받을 수 있습니다.</p>
         </section>
+        <form aria-label="가족사주 입력 폼">
+          <fieldset>
+            <legend>가족 구성원 정보 입력</legend>
+            <label for="fs-name1">구성원 1 이름</label>
+            <input id="fs-name1" type="text" name="name1" placeholder="이름" autocomplete="off" />
+            <label>성별</label>
+            <label><input type="radio" name="gender1" value="male" /> 남성</label>
+            <label><input type="radio" name="gender1" value="female" /> 여성</label>
+            <label for="fs-birth1">생년월일</label>
+            <input id="fs-birth1" type="text" name="birthDate1" placeholder="YYYY. MM. DD" />
+            <label for="fs-name2">구성원 2 이름</label>
+            <input id="fs-name2" type="text" name="name2" placeholder="이름" autocomplete="off" />
+            <label>성별</label>
+            <label><input type="radio" name="gender2" value="male" /> 남성</label>
+            <label><input type="radio" name="gender2" value="female" /> 여성</label>
+            <label for="fs-birth2">생년월일</label>
+            <input id="fs-birth2" type="text" name="birthDate2" placeholder="YYYY. MM. DD" />
+          </fieldset>
+          <button type="submit">가족사주 분석하기</button>
+        </form>
       `,
       services: [
         { href: '/compatibility', label: '정밀 궁합 분석' },
@@ -1507,11 +1713,209 @@ const metaData: Record<string, { title: string, description: string, h1?: string
           </ol>
           <p>한자 이름부터 영어 이름까지, 아이의 이름을 한 번에 완성하세요.</p>
         </section>
+        <form aria-label="작명 입력 폼">
+          <fieldset>
+            <legend>아기 정보 입력</legend>
+            <label for="nm-surname">성(姓)</label>
+            <input id="nm-surname" type="text" name="surname" placeholder="성씨 (예: 김)" autocomplete="off" maxlength="2" />
+            <label>성별</label>
+            <label><input type="radio" name="gender" value="male" /> 남아</label>
+            <label><input type="radio" name="gender" value="female" /> 여아</label>
+            <label for="nm-birth">생년월일</label>
+            <input id="nm-birth" type="text" name="birthDate" placeholder="YYYY. MM. DD" />
+            <label for="nm-time">태어난 시간</label>
+            <select id="nm-time" name="birthTime">
+              <option value="">모름 / 미입력</option>
+              <option value="23:31">자시 (23:31~01:30)</option>
+              <option value="01:31">축시 (01:31~03:30)</option>
+              <option value="03:31">인시 (03:31~05:30)</option>
+              <option value="05:31">묘시 (05:31~07:30)</option>
+              <option value="07:31">진시 (07:31~09:30)</option>
+              <option value="09:31">사시 (09:31~11:30)</option>
+              <option value="11:31">오시 (11:31~13:30)</option>
+              <option value="13:31">미시 (13:31~15:30)</option>
+              <option value="15:31">신시 (15:31~17:30)</option>
+              <option value="17:31">유시 (17:31~19:30)</option>
+              <option value="19:31">술시 (19:31~21:30)</option>
+              <option value="21:31">해시 (21:31~23:30)</option>
+            </select>
+            <label>양력/음력</label>
+            <label><input type="radio" name="calendarType" value="solar" checked /> 양력</label>
+            <label><input type="radio" name="calendarType" value="lunar" /> 음력</label>
+          </fieldset>
+          <button type="submit">이름 추천받기</button>
+        </form>
       `,
       services: [
         { href: '/lifelong-saju', label: '평생 사주 분석' },
         { href: '/yearly-fortune', label: '신년운세' },
         { href: '/compatibility', label: '궁합 분석' },
+      ]
+    },
+    '/naming-service': {
+      title: "전문 작명 서비스 - 사주 맞춤 이름 추천 | 무운",
+      description: "사주 오행과 81수리 성명학을 결합한 전문 작명 서비스. 아기 이름, 개명, 상호명까지 생년월일 기반으로 최적의 이름을 추천합니다.",
+      h1: "전문 작명 서비스",
+      bodyContent: `
+        <section>
+          <h2>무운 작명 서비스란?</h2>
+          <p>사주팔자(四柱八字) 오행 분석과 전통 성명학의 81수리(數理) 이론을 결합하여, 아이에게 가장 잘 맞는 이름 후보를 자동으로 추천하는 전문 작명 서비스입니다. 아기 이름, 개명, 상호명 등 다양한 작명 목적에 맞춰 이용하실 수 있습니다.</p>
+          <h2>작명 서비스 특징</h2>
+          <ul>
+            <li>사주 오행 보완: 부족한 오행을 채워주는 한자 우선 추천</li>
+            <li>81수리 길흉 검증: 원격·형격·이격·정격 4격 모두 길수인 이름만 추천</li>
+            <li>대법원 인명용 한자: 5,382자 중 선별된 검증된 한자 사용</li>
+            <li>음운 조화 검토: 성씨와 이름의 초성 오행 상생 관계 확인</li>
+          </ul>
+        </section>
+        <form aria-label="작명 서비스 입력 폼">
+          <fieldset>
+            <legend>작명 정보 입력</legend>
+            <label for="ns-surname">성(姓)</label>
+            <input id="ns-surname" type="text" name="surname" placeholder="성씨 (예: 김)" autocomplete="off" maxlength="2" />
+            <label>성별</label>
+            <label><input type="radio" name="gender" value="male" /> 남아</label>
+            <label><input type="radio" name="gender" value="female" /> 여아</label>
+            <label for="ns-birth">생년월일</label>
+            <input id="ns-birth" type="text" name="birthDate" placeholder="YYYY. MM. DD" />
+            <label for="ns-time">태어난 시간</label>
+            <select id="ns-time" name="birthTime">
+              <option value="">모름 / 미입력</option>
+              <option value="23:31">자시 (23:31~01:30)</option>
+              <option value="01:31">축시 (01:31~03:30)</option>
+              <option value="03:31">인시 (03:31~05:30)</option>
+              <option value="05:31">묘시 (05:31~07:30)</option>
+              <option value="07:31">진시 (07:31~09:30)</option>
+              <option value="09:31">사시 (09:31~11:30)</option>
+              <option value="11:31">오시 (11:31~13:30)</option>
+              <option value="13:31">미시 (13:31~15:30)</option>
+              <option value="15:31">신시 (15:31~17:30)</option>
+              <option value="17:31">유시 (17:31~19:30)</option>
+              <option value="19:31">술시 (19:31~21:30)</option>
+              <option value="21:31">해시 (21:31~23:30)</option>
+            </select>
+            <label>양력/음력</label>
+            <label><input type="radio" name="calendarType" value="solar" checked /> 양력</label>
+            <label><input type="radio" name="calendarType" value="lunar" /> 음력</label>
+          </fieldset>
+          <button type="submit">이름 추천받기</button>
+        </form>
+      `,
+      services: [
+        { href: '/naming', label: '무료 작명소' },
+        { href: '/baby-naming', label: '아기 작명' },
+        { href: '/lifelong-saju', label: '평생 사주 분석' },
+      ]
+    },
+    '/baby-naming': {
+      title: "무료 아기 작명 - 사주로 짓는 신생아 이름 추천 | 무운",
+      description: "신생아 아기 이름을 사주 오행과 81수리 성명학으로 추천합니다. 회원가입 없이 생년월일만 입력하면 한자 이름과 영어 이름을 함께 추천해드립니다.",
+      h1: "무료 아기 작명 - 신생아 이름 추천",
+      bodyContent: `
+        <section>
+          <h2>아기 작명이란?</h2>
+          <p>아기의 생년월일시로 사주팔자를 분석하여 부족한 오행(五行)을 파악하고, 해당 오행의 기운을 보완하는 한자를 우선 추천하는 신생아 이름 추천 서비스입니다. 81수리 성명학의 원격·형격·이격·정격 4격이 모두 길수인 이름만 추천합니다.</p>
+          <h2>아기 작명 방법</h2>
+          <ul>
+            <li>성씨와 아기의 생년월일 입력</li>
+            <li>사주팔자 오행 분석으로 보완할 기운 파악</li>
+            <li>81수리 검증을 통과한 길한 이름 후보 추천</li>
+            <li>한자 이름과 영어 이름 동시 추천</li>
+          </ul>
+        </section>
+        <form aria-label="아기 작명 입력 폼">
+          <fieldset>
+            <legend>아기 정보 입력</legend>
+            <label for="bn-surname">성(姓)</label>
+            <input id="bn-surname" type="text" name="surname" placeholder="성씨 (예: 김)" autocomplete="off" maxlength="2" />
+            <label>성별</label>
+            <label><input type="radio" name="gender" value="male" /> 남아</label>
+            <label><input type="radio" name="gender" value="female" /> 여아</label>
+            <label for="bn-birth">생년월일</label>
+            <input id="bn-birth" type="text" name="birthDate" placeholder="YYYY. MM. DD" />
+            <label for="bn-time">태어난 시간</label>
+            <select id="bn-time" name="birthTime">
+              <option value="">모름 / 미입력</option>
+              <option value="23:31">자시 (23:31~01:30)</option>
+              <option value="01:31">축시 (01:31~03:30)</option>
+              <option value="03:31">인시 (03:31~05:30)</option>
+              <option value="05:31">묘시 (05:31~07:30)</option>
+              <option value="07:31">진시 (07:31~09:30)</option>
+              <option value="09:31">사시 (09:31~11:30)</option>
+              <option value="11:31">오시 (11:31~13:30)</option>
+              <option value="13:31">미시 (13:31~15:30)</option>
+              <option value="15:31">신시 (15:31~17:30)</option>
+              <option value="17:31">유시 (17:31~19:30)</option>
+              <option value="19:31">술시 (19:31~21:30)</option>
+              <option value="21:31">해시 (21:31~23:30)</option>
+            </select>
+            <label>양력/음력</label>
+            <label><input type="radio" name="calendarType" value="solar" checked /> 양력</label>
+            <label><input type="radio" name="calendarType" value="lunar" /> 음력</label>
+          </fieldset>
+          <button type="submit">아기 이름 추천받기</button>
+        </form>
+      `,
+      services: [
+        { href: '/naming', label: '무료 작명소' },
+        { href: '/naming-service', label: '전문 작명 서비스' },
+        { href: '/lifelong-saju', label: '평생 사주 분석' },
+      ]
+    },
+    '/monthly-fortune': {
+      title: "무료 이달의 운세 - 회원가입 없이 이번 달 운세 확인 | 무운 (MuUn)",
+      description: "회원가입 없이 생년월일만 입력하면 바로 확인하는 무료 이달의 운세. 사주팔자를 기반으로 이번 달 총운·재물운·애정운·건강운을 개인정보 저장 없이 100% 무료로 제공합니다.",
+      h1: "무료 이달의 운세",
+      bodyContent: `
+        <section>
+          <h2>이달의 운세란? - 회원가입 없이 무료로 확인</h2>
+          <p>회원가입 없이, 개인정보 저장 없이, 생년월일만 입력하면 바로 확인하는 무료 이달의 운세 서비스입니다. 사주팔자(四柱八字)와 이번 달의 월운(月運)을 결합하여 개인별 맞춤 월간 운세를 제공합니다.</p>
+          <h2>이달의 운세에서 확인할 수 있는 내용</h2>
+          <ul>
+            <li>이달의 총운(總運): 이번 달 전반적인 운세의 흐름</li>
+            <li>재물운(財物運): 이번 달 금전 운세와 투자 적합도</li>
+            <li>애정운(愛情運): 이번 달 연애 및 인간관계 운세</li>
+            <li>건강운(健康運): 이번 달 주의해야 할 건강 포인트</li>
+            <li>직업운(職業運): 이번 달 직장 및 사업 운세</li>
+          </ul>
+        </section>
+        <form aria-label="이달운세 입력 폼">
+          <fieldset>
+            <legend>생년월일 입력</legend>
+            <label for="mf-name">이름</label>
+            <input id="mf-name" type="text" name="name" placeholder="이름" autocomplete="off" />
+            <label>성별</label>
+            <label><input type="radio" name="gender" value="male" /> 남성</label>
+            <label><input type="radio" name="gender" value="female" /> 여성</label>
+            <label for="mf-birth">생년월일</label>
+            <input id="mf-birth" type="text" name="birthDate" placeholder="YYYY. MM. DD" />
+            <label for="mf-time">태어난 시간</label>
+            <select id="mf-time" name="birthTime">
+              <option value="">모름 / 미입력</option>
+              <option value="23:31">자시 (23:31~01:30)</option>
+              <option value="01:31">축시 (01:31~03:30)</option>
+              <option value="03:31">인시 (03:31~05:30)</option>
+              <option value="05:31">묘시 (05:31~07:30)</option>
+              <option value="07:31">진시 (07:31~09:30)</option>
+              <option value="09:31">사시 (09:31~11:30)</option>
+              <option value="11:31">오시 (11:31~13:30)</option>
+              <option value="13:31">미시 (13:31~15:30)</option>
+              <option value="15:31">신시 (15:31~17:30)</option>
+              <option value="17:31">유시 (17:31~19:30)</option>
+              <option value="19:31">술시 (19:31~21:30)</option>
+              <option value="21:31">해시 (21:31~23:30)</option>
+            </select>
+            <label>양력/음력</label>
+            <label><input type="radio" name="calendarType" value="solar" checked /> 양력</label>
+            <label><input type="radio" name="calendarType" value="lunar" /> 음력</label>
+          </fieldset>
+          <button type="submit">이달운세 보기</button>
+        </form>
+      `,
+      services: [
+        { href: '/daily-fortune', label: '오늘의 운세' },
+        { href: '/yearly-fortune', label: '신년운세' },
+        { href: '/lifelong-saju', label: '평생 사주 분석' },
       ]
     },
     '/lucky-lunch': {
