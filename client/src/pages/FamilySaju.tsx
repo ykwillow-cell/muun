@@ -205,8 +205,8 @@ export default function FamilySaju() {
  animate={{ opacity: 1, y: 0 }}
  className="text-center space-y-2"
  >
- <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-base md:text-sm font-medium">
- <Users className="w-4 h-4" />
+ <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-primary/20 text-primary text-xs font-medium">
+ <Users className="w-3 h-3" />
  우리 가족의 사주 조화
  </div>
  <h2 className="text-2xl font-bold text-[#1a1a18]">가족사주 분석</h2>
@@ -447,8 +447,8 @@ export default function FamilySaju() {
  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
  <Card className="bg-gradient-to-br from-primary/10 to-yellow-500/5 border-primary/20 overflow-hidden">
  <CardContent className="pt-6 pb-6 text-center space-y-4">
- <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-base md:text-sm font-medium">
- <Users className="w-4 h-4" />
+ <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-primary/20 text-primary text-xs font-medium">
+ <Users className="w-3 h-3" />
  우리 가족의 사주 조화
  </div>
  <div className="relative inline-flex items-center justify-center">

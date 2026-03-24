@@ -278,13 +278,7 @@ const Astrology: React.FC = () => {
             }
           }`}</script>
         </Helmet>
-        {/* Background Effects */}
-        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-purple-900/10 rounded-full blur-[120px]" />
-          <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-blue-900/10 rounded-full blur-[120px]" />
-        </div>
-
-        <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
+        <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06]">
           <div className={`${commonMaxWidth} px-4 h-14 flex items-center`}>
             <Link href="/">
               <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
@@ -295,7 +289,7 @@ const Astrology: React.FC = () => {
           </div>
         </header>
 
-        <main className="relative z-10 px-4 py-6 md:py-8">
+        <main className="px-4 py-6 md:py-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -304,9 +298,9 @@ const Astrology: React.FC = () => {
           >
             {/* Hero Section */}
             <div className="text-center space-y-4 py-4 md:py-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/30 backdrop-blur-xl">
-                <Compass className="w-4 h-4 text-purple-600" />
-                <span className="text-[11px] md:text-xs font-bold tracking-widest text-purple-600 uppercase">Birth Chart</span>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-purple-500/20 text-purple-600 text-xs font-medium">
+                <Compass className="w-3 h-3" />
+                <span>Birth Chart</span>
               </div>
               <h2 className="text-2xl md:text-4xl font-bold tracking-tight text-[#1a1a18]">
                 당신의 탄생 차트 분석
@@ -407,7 +401,7 @@ const Astrology: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased">
+    <div className="min-h-screen bg-[#F5F4F8] text-foreground pb-20 antialiased">
       <Helmet>
         <title>{result.sun.sign.name} 태양 별자리 - 나의 네이탈 차트 점성술 분석 결과 | 무운 (MuUn)</title>
         <meta name="description" content={`태양 ${result.sun.sign.name}, 달 ${result.moon?.sign?.name || ''} 별자리의 네이탈 차트 분석 결과입니다. 태양·달·수성·금성·화성 등 7개 행성의 별자리 위치를 분석해 성격과 운명을 확인해보세요.`} />
@@ -432,13 +426,7 @@ const Astrology: React.FC = () => {
           </p>
         </div>
       )}
-      {/* Background Effects */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-purple-900/10 rounded-full blur-[120px]" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-blue-900/10 rounded-full blur-[120px]" />
-      </div>
-
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
+      <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06]">
         <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
             <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]" onClick={() => setResult(null)}>

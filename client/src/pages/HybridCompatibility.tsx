@@ -591,18 +591,11 @@ export default function HybridCompatibilityPage() {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
 {/* 개인정보 인덱싱 방지 */}
-          <meta name="robots" content="noindex, nofollow" />
-        </Helmet>
-
-        <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased">
-          {/* 배경 */}
-          <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-            <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] rounded-full blur-[120px]" style={{ background: `${elem1Color}15` }} />
-            <div className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] rounded-full blur-[120px]" style={{ background: `${elem2Color}15` }} />
-          </div>
+          <meta name="robots" content="noindex, nofollow          {/* 결과 화면 */}
+        <div className="min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
 
           {/* 헤더 */}
-          <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
+          <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06]">
             <div className={`${commonMaxWidth} container mx-auto px-4 py-3 flex items-center justify-between`}>
               <button onClick={() => setResult(null)} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
                 <ChevronLeft className="w-5 h-5" />
@@ -624,8 +617,8 @@ export default function HybridCompatibilityPage() {
 
               {/* ① 에너지 저울 */}
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
-                <Card className="glass-panel border-black/10 shadow-xl rounded-2xl overflow-hidden">
-                  <CardHeader className="border-b border-black/10 px-4 py-3 md:px-6 md:py-4">
+                <Card className="bg-white rounded-2xl shadow-sm border border-black/[0.06] overflow-hidden">
+                  <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6 md:py-4">
                     <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-sm md:text-base">
                       <div className="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center">
                         <Sparkles className="w-4 h-4 text-purple-600" />
@@ -645,7 +638,7 @@ export default function HybridCompatibilityPage() {
                       mbti1={mbti1}
                       mbti2={mbti2}
                     />
-                    <div className="mt-4 p-3 rounded-xl bg-black/[0.05] border border-black/10">
+                    <div className="mt-4 p-3 rounded-xl bg-[#F7F5F3] border border-black/[0.06]">
                       <p className="text-xs text-[#5a5a56] leading-relaxed text-center">{hybrid.energyBalance.description}</p>
                     </div>
                     <p className="mt-3 text-xs text-[#999891] leading-relaxed">{hybrid.energyScale.description}</p>
@@ -655,7 +648,7 @@ export default function HybridCompatibilityPage() {
 
               {/* ② 시너지 카드 */}
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.1 }}>
-                <Card className="glass-panel border-black/10 shadow-xl rounded-2xl overflow-hidden" style={{ background: `linear-gradient(135deg, ${elem1Color}10, ${elem2Color}10)` }}>
+                <Card className="bg-white rounded-2xl shadow-sm border border-black/[0.06] overflow-hidden" style={{ background: `linear-gradient(135deg, ${elem1Color}08, ${elem2Color}08)` }}>
                   <CardContent className="p-4 md:p-6">
                     <div className="text-center space-y-4">
                       {/* 종합 점수 대형 표시 */}
@@ -713,8 +706,8 @@ export default function HybridCompatibilityPage() {
 
               {/* ③ 4대 영역 레이더 + 아코디언 */}
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
-                <Card className="glass-panel border-black/10 shadow-xl rounded-2xl overflow-hidden">
-                  <CardHeader className="border-b border-black/10 px-4 py-3 md:px-6 md:py-4">
+                <Card className="bg-white rounded-2xl shadow-sm border border-black/[0.06] overflow-hidden">
+                  <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6 md:py-4">
                     <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-sm md:text-base">
                       <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center">
                         <Brain className="w-4 h-4 text-blue-600" />
@@ -745,8 +738,8 @@ export default function HybridCompatibilityPage() {
 
               {/* ④ 인연 타임라인 */}
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }}>
-                <Card className="glass-panel border-black/10 shadow-xl rounded-2xl overflow-hidden">
-                  <CardHeader className="border-b border-black/10 px-4 py-3 md:px-6 md:py-4">
+                <Card className="bg-white rounded-2xl shadow-sm border border-black/[0.06] overflow-hidden">
+                  <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6 md:py-4">
                     <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-sm md:text-base">
                       <div className="w-8 h-8 rounded-lg bg-green-500/20 flex items-center justify-center">
                         <TrendingUp className="w-4 h-4 text-green-600" />
@@ -762,8 +755,8 @@ export default function HybridCompatibilityPage() {
 
               {/* ⑤ 처방전 */}
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.4 }}>
-                <Card className="glass-panel border-black/10 shadow-xl rounded-2xl overflow-hidden">
-                  <CardHeader className="border-b border-black/10 px-4 py-3 md:px-6 md:py-4">
+                <Card className="bg-white rounded-2xl shadow-sm border border-black/[0.06] overflow-hidden">
+                  <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6 md:py-4">
                     <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-sm md:text-base">
                       <div className="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center">
                         <Lightbulb className="w-4 h-4 text-amber-600" />
@@ -819,13 +812,9 @@ export default function HybridCompatibilityPage() {
         <meta property="og:description" content="전통 사주 오행과 MBTI 성격 유형을 결합한 하이브리드 궁합 분석. 회원가입·개인정보 저장 없이 100% 무료로 제공합니다." />
         <link rel="canonical" href="https://muunsaju.com/hybrid-compatibility" />
       </Helmet>
-      <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased">
-        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-[-10%] left-[-10%] w-[400px] h-[400px] bg-purple-500/10 rounded-full blur-[100px]" />
-          <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-pink-500/10 rounded-full blur-[100px]" />
-        </div>
+      <div className="min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
 
-        <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
+        <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06]">
           <div className={`${commonMaxWidth} container mx-auto px-4 py-3 md:py-4 flex items-center justify-between`}>
             <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
               <ChevronLeft className="w-5 h-5" />
@@ -851,8 +840,8 @@ export default function HybridCompatibilityPage() {
               </p>
             </div>
 
-            <Card className="glass-panel border-black/10 shadow-xl rounded-2xl overflow-hidden">
-              <CardHeader className="border-b border-black/10 px-4 py-3 md:px-6 md:py-4">
+            <Card className="bg-white rounded-2xl shadow-sm border border-black/[0.06] overflow-hidden">
+              <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6 md:py-4">
                 <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-base md:text-lg">
                   <div className="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center">
                     <Users className="w-4 h-4 text-purple-600" />
@@ -874,7 +863,7 @@ export default function HybridCompatibilityPage() {
                           <User className="w-3.5 h-3.5 text-purple-600" /> 이름
                         </Label>
                         <div ref={name1Ref}>
-                        <Input id="name1" placeholder="이름" {...form.register("name1")} className={`h-11 bg-black/[0.05] border-black/10 text-[#1a1a18] placeholder:text-[#1a1a18]/30 rounded-xl focus:ring-purple-500/50 focus:border-purple-500 transition-all text-sm ${form.formState.errors.name1 ? 'border-red-500/60 ring-1 ring-red-500/40' : ''}`} />
+                        <Input id="name1" placeholder="이름" {...form.register("name1")} className={`h-11 bg-[#F7F5F3] border-[#E8E5E0] text-[#1a1a18] placeholder:text-[#b0ada6] rounded-xl focus:ring-purple-500/30 focus:border-purple-500 transition-all text-sm ${form.formState.errors.name1 ? 'border-red-500/60 ring-1 ring-red-500/40' : ''}`} />
                         {form.formState.errors.name1 && <p className="text-xs text-red-600 mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{form.formState.errors.name1.message}</p>}
                       </div>
                       </div>
@@ -886,10 +875,10 @@ export default function HybridCompatibilityPage() {
                           type="single"
                           value={form.watch("gender1")}
                           onValueChange={(value) => { if (value) form.setValue("gender1", value as "male" | "female"); }}
-                          className="w-full h-11 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1"
+                          className="w-full h-11 grid grid-cols-2 gap-[3px] bg-[#EDE8E8] rounded-xl p-[3px]"
                         >
-                          <ToggleGroupItem value="male" className="h-full rounded-lg data-[state=on]:bg-purple-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-sm">남</ToggleGroupItem>
-                          <ToggleGroupItem value="female" className="h-full rounded-lg data-[state=on]:bg-purple-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-sm">여</ToggleGroupItem>
+                          <ToggleGroupItem value="male" className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-purple-600 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-sm">남</ToggleGroupItem>
+                          <ToggleGroupItem value="female" className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-purple-600 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-sm">여</ToggleGroupItem>
                         </ToggleGroup>
                       </div>
                     </div>
@@ -921,10 +910,10 @@ export default function HybridCompatibilityPage() {
                           type="single"
                           value={form.watch("calendarType1")}
                           onValueChange={(value) => { if (value) form.setValue("calendarType1", value as "solar" | "lunar"); }}
-                          className="w-full h-11 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1"
+                          className="w-full h-11 grid grid-cols-2 gap-[3px] bg-[#EDE8E8] rounded-xl p-[3px]"
                         >
-                          <ToggleGroupItem value="solar" className="h-full rounded-lg data-[state=on]:bg-purple-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-sm">양력</ToggleGroupItem>
-                          <ToggleGroupItem value="lunar" className="h-full rounded-lg data-[state=on]:bg-purple-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-sm">음력</ToggleGroupItem>
+                          <ToggleGroupItem value="solar" className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-purple-600 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-sm">양력</ToggleGroupItem>
+                          <ToggleGroupItem value="lunar" className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-purple-600 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-sm">음력</ToggleGroupItem>
                         </ToggleGroup>
                         {form.watch("calendarType1") === "lunar" && (
                           <div className="flex items-center justify-end gap-2 pr-1 pt-0.5">
@@ -970,7 +959,7 @@ export default function HybridCompatibilityPage() {
                           <User className="w-3.5 h-3.5 text-pink-600" /> 이름
                         </Label>
                         <div ref={name2Ref}>
-                        <Input id="name2" placeholder="이름" {...form.register("name2")} className={`h-11 bg-black/[0.05] border-black/10 text-[#1a1a18] placeholder:text-[#1a1a18]/30 rounded-xl focus:ring-pink-500/50 focus:border-pink-500 transition-all text-sm ${form.formState.errors.name2 ? 'border-red-500/60 ring-1 ring-red-500/40' : ''}`} />
+                        <Input id="name2" placeholder="이름" {...form.register("name2")} className={`h-11 bg-[#F7F5F3] border-[#E8E5E0] text-[#1a1a18] placeholder:text-[#b0ada6] rounded-xl focus:ring-pink-500/30 focus:border-pink-500 transition-all text-sm ${form.formState.errors.name2 ? 'border-red-500/60 ring-1 ring-red-500/40' : ''}`} />
                         {form.formState.errors.name2 && <p className="text-xs text-red-600 mt-1 flex items-center gap-1"><AlertCircle className="w-3 h-3" />{form.formState.errors.name2.message}</p>}
                       </div>
                       </div>
@@ -982,10 +971,10 @@ export default function HybridCompatibilityPage() {
                           type="single"
                           value={form.watch("gender2")}
                           onValueChange={(value) => { if (value) form.setValue("gender2", value as "male" | "female"); }}
-                          className="w-full h-11 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1"
+                          className="w-full h-11 grid grid-cols-2 gap-[3px] bg-[#EDE8E8] rounded-xl p-[3px]"
                         >
-                          <ToggleGroupItem value="male" className="h-full rounded-lg data-[state=on]:bg-pink-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-sm">남</ToggleGroupItem>
-                          <ToggleGroupItem value="female" className="h-full rounded-lg data-[state=on]:bg-pink-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-sm">여</ToggleGroupItem>
+                          <ToggleGroupItem value="male" className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-pink-600 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-sm">남</ToggleGroupItem>
+                          <ToggleGroupItem value="female" className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-pink-600 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-sm">여</ToggleGroupItem>
                         </ToggleGroup>
                       </div>
                     </div>
@@ -1017,10 +1006,10 @@ export default function HybridCompatibilityPage() {
                           type="single"
                           value={form.watch("calendarType2")}
                           onValueChange={(value) => { if (value) form.setValue("calendarType2", value as "solar" | "lunar"); }}
-                          className="w-full h-11 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1"
+                          className="w-full h-11 grid grid-cols-2 gap-[3px] bg-[#EDE8E8] rounded-xl p-[3px]"
                         >
-                          <ToggleGroupItem value="solar" className="h-full rounded-lg data-[state=on]:bg-pink-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-sm">양력</ToggleGroupItem>
-                          <ToggleGroupItem value="lunar" className="h-full rounded-lg data-[state=on]:bg-pink-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-sm">음력</ToggleGroupItem>
+                          <ToggleGroupItem value="solar" className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-pink-600 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-sm">양력</ToggleGroupItem>
+                          <ToggleGroupItem value="lunar" className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-pink-600 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-sm">음력</ToggleGroupItem>
                         </ToggleGroup>
                         {form.watch("calendarType2") === "lunar" && (
                           <div className="flex items-center justify-end gap-2 pr-1 pt-0.5">

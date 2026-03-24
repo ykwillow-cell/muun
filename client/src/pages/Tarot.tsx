@@ -194,7 +194,7 @@ export default function Tarot() {
   }, [shuffledDeck]);
 
   return (
-    <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased overflow-x-hidden">
+    <div className="min-h-screen bg-[#F5F4F8] text-foreground pb-20 antialiased overflow-x-hidden">
       <Helmet>
         <title>무료 타로 상담 - 회원가입 없이 무료로 | 무운 (MuUn)</title>
         <meta name="description" content="회원가입 없이 바로 시작하는 무료 타로 상담. 고민되는 문제에 대한 해답을 개인정보 저장 없이 100% 무료로 확인하세요." />
@@ -211,13 +211,7 @@ export default function Tarot() {
         <meta name="twitter:description" content="회원가입 없이 바로 시작하는 무료 타로 상담. 고민되는 문제에 대한 해답을 개인정보 저장 없이 100% 무료로 확인하세요." />
         <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
       </Helmet>
-      {/* Background Effects */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-primary/10 rounded-full blur-[120px]" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] rounded-full blur-[120px]" data-tarot-glow-2 />
-      </div>
-
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
+      <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06]">
         <div className={`${commonMaxWidth} px-4 h-14 flex items-center`}>
           <Link href="/">
             <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
@@ -228,14 +222,14 @@ export default function Tarot() {
         </div>
       </header>
 
-      <main className="relative z-10 px-4 py-6 md:py-8">
+      <main className="px-4 py-6 md:py-8">
         <div className={commonMaxWidth}>
           {/* Hero Section */}
           <div className="text-center space-y-2 mb-4 md:mb-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-md"
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-primary/20 text-primary text-xs font-medium"
             >
               <Sparkles className="w-3.5 h-3.5 text-primary" />
               <span className="text-[10px] md:text-xs font-bold tracking-widest text-primary uppercase">Tarot Reading</span>

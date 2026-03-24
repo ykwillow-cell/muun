@@ -144,7 +144,7 @@ export default function PastLife() {
   const elementEmoji = result ? (ELEMENT_EMOJI[result.element] ?? "✨") : "";
 
   return (
-    <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased">
+    <div className="min-h-screen bg-[#F5F4F8] text-foreground pb-20 antialiased">
       <Helmet>
         <title>전생 체험 - 나의 전생은? | 무운 (MuUn)</title>
         <meta
@@ -157,12 +157,7 @@ export default function PastLife() {
         <meta property="og:description" content="생년월일로 알아보는 나의 전생 이야기. AI가 당신의 전생을 생생하게 묘사해드립니다." />
       </Helmet>
 
-      {/* Background Effects */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-violet-900/10 rounded-full blur-[120px]" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-pink-900/10 rounded-full blur-[120px]" />
-      </div>
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
+      <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06]">
         <div className="max-w-2xl mx-auto px-4 h-14 flex items-center">
           <Link href="/">
             <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
@@ -172,7 +167,7 @@ export default function PastLife() {
           <h1 className="text-lg md:text-xl font-bold text-[#1a1a18]">무료 전생 체험</h1>
         </div>
       </header>
-      <main className="relative z-10 px-4 py-6 md:py-8">
+      <main className="px-4 py-6 md:py-8">
       <div className="max-w-2xl mx-auto">
 
         <AnimatePresence mode="wait">
@@ -188,9 +183,9 @@ export default function PastLife() {
             >
               {/* 헤더 타이틀 */}
               <div className="text-center space-y-2">
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 backdrop-blur-xl">
-                  <Scroll className="w-3 h-3 text-violet-500" />
-                  <span className="text-[10px] md:text-xs font-bold tracking-wider text-violet-500 uppercase">Past Life Reading</span>
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-violet-500/20 text-violet-500 text-xs font-medium">
+                  <Scroll className="w-3 h-3" />
+                  <span>Past Life Reading</span>
                 </div>
                 <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-[#1a1a18]">전생 체험</h2>
                 <p className="text-muted-foreground text-xs md:text-sm">생년월일로 알아보는 나의 전생 이야기</p>
@@ -342,14 +337,14 @@ export default function PastLife() {
 
                 {/* 시대 & 지역 */}
                 <div className="grid grid-cols-2 gap-3 mb-5">
-                  <div className="rounded-xl bg-black/[0.05] p-3">
+                  <div className="rounded-xl bg-[#F7F5F3] border border-black/[0.06] p-3">
                     <div className="flex items-center gap-1.5 mb-1">
                       <Scroll className="w-3.5 h-3.5 text-foreground/40" />
                       <span className="text-[10px] text-foreground/40 uppercase tracking-widest font-bold">시대</span>
                     </div>
                     <div className="text-sm font-bold">{result.era}</div>
                   </div>
-                  <div className="rounded-xl bg-black/[0.05] p-3">
+                  <div className="rounded-xl bg-[#F7F5F3] border border-black/[0.06] p-3">
                     <div className="flex items-center gap-1.5 mb-1">
                       <Globe className="w-3.5 h-3.5 text-foreground/40" />
                       <span className="text-[10px] text-foreground/40 uppercase tracking-widest font-bold">지역</span>
@@ -359,7 +354,7 @@ export default function PastLife() {
                 </div>
 
                 {/* 전생 이야기 */}
-                <div className="rounded-xl bg-black/[0.05] p-4 mb-4">
+                <div className="rounded-xl bg-[#F7F5F3] border border-black/[0.06] p-4 mb-4">
                   <div className="flex items-center gap-1.5 mb-2">
                     <BookOpen className="w-3.5 h-3.5 text-foreground/40" />
                     <span className="text-[10px] text-foreground/40 uppercase tracking-widest font-bold">전생 이야기</span>
@@ -368,7 +363,7 @@ export default function PastLife() {
                 </div>
 
                 {/* 교훈 */}
-                <div className="rounded-xl bg-black/[0.05] p-4 mb-4">
+                <div className="rounded-xl bg-[#F7F5F3] border border-black/[0.06] p-4 mb-4">
                   <div className="flex items-center gap-1.5 mb-2">
                     <Flame className="w-3.5 h-3.5 text-foreground/40" />
                     <span className="text-[10px] text-foreground/40 uppercase tracking-widest font-bold">이번 생의 사명</span>
@@ -377,7 +372,7 @@ export default function PastLife() {
                 </div>
 
                 {/* 카르마 */}
-                <div className="rounded-xl bg-black/[0.05] p-4">
+                <div className="rounded-xl bg-[#F7F5F3] border border-black/[0.06] p-4">
                   <div className="flex items-center gap-1.5 mb-2">
                     <Link2 className="w-3.5 h-3.5 text-foreground/40" />
                     <span className="text-[10px] text-foreground/40 uppercase tracking-widest font-bold">현생과의 연결</span>
@@ -387,14 +382,16 @@ export default function PastLife() {
               </div>
 
               {/* 다시 탐색 버튼 */}
-              <Button
-                onClick={handleReset}
-                variant="outline"
-                className="w-full h-11 rounded-xl border-black/10 text-[#1a1a18] hover:bg-black/[0.05] font-medium"
-              >
-                <RefreshCw className="w-4 h-4 mr-2" />
-                다시 탐색하기
-              </Button>
+              <div className="flex gap-2">
+                <Button
+                  onClick={handleReset}
+                  className="flex-1 h-11 font-bold text-sm rounded-xl text-white"
+                  style={{ background: 'linear-gradient(135deg, #8B5CF6, #7C3AED)' }}
+                >
+                  <RefreshCw className="w-4 h-4 mr-2" />
+                  다시 탐색
+                </Button>
+              </div>
 
               {/* 다른 서비스 추천 */}
               <div className="mt-6 rounded-2xl border border-black/10 bg-white p-4">
@@ -403,13 +400,13 @@ export default function PastLife() {
                 </p>
                 <div className="grid grid-cols-2 gap-2">
                   <Link href="/lifelong-saju">
-                    <div className="rounded-xl bg-black/[0.05] hover:bg-black/[0.06] transition-colors p-3 text-center cursor-pointer">
+                    <div className="rounded-xl bg-white border border-black/[0.06] hover:bg-[#F7F5F3] transition-colors p-3 text-center cursor-pointer shadow-sm">
                       <div className="text-lg mb-1">✨</div>
                       <div className="text-xs font-bold">평생사주</div>
                     </div>
                   </Link>
                   <Link href="/tarot">
-                    <div className="rounded-xl bg-black/[0.05] hover:bg-black/[0.06] transition-colors p-3 text-center cursor-pointer">
+                    <div className="rounded-xl bg-white border border-black/[0.06] hover:bg-[#F7F5F3] transition-colors p-3 text-center cursor-pointer shadow-sm">
                       <div className="text-lg mb-1">🃏</div>
                       <div className="text-xs font-bold">타로</div>
                     </div>

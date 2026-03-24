@@ -143,7 +143,7 @@ const DreamInterpretation: React.FC = () => {
   const isShowingResults = !!(searchTerm.trim() || activeCategory);
 
   return (
-    <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased">
+    <div className="min-h-screen bg-[#F5F4F8] text-foreground pb-20 antialiased">
       <Helmet>
         <title>무료 꿈해몽 사전 - 회원가입 없이 꿈 풀이 확인 | 무운 (MuUn)</title>
         <meta name="description" content="어젯밤 꿈의 의미가 궁금하신가요? 회원가입 없이 바로 검색하는 무료 꿈해몽 사전. 방대한 데이터를 바탕으로 정확한 꿈 풀이를 개인정보 저장 없이 100% 무료로 제공합니다." />
@@ -163,15 +163,15 @@ const DreamInterpretation: React.FC = () => {
       </Helmet>
 
       {/* Hero Section */}
-      <section className="px-4 pt-12 pb-8 text-center bg-gradient-to-b from-purple-900/10 to-transparent">
+      <section className="px-4 pt-12 pb-8 text-center">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="max-w-4xl mx-auto space-y-6"
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 border border-primary/30 backdrop-blur-xl">
-            <CloudMoon className="w-4 h-4 text-primary" />
-            <span className="text-xs font-bold tracking-widest text-primary uppercase">신비로운 꿈의 해석</span>
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-primary/20 text-primary text-xs font-medium">
+            <CloudMoon className="w-3 h-3" />
+            <span>신비로운 꼭의 해석</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-[#1a1a18]">무운 꿈해몽 사전</h1>
           <p className="text-muted-foreground text-sm md:text-base max-w-lg mx-auto">
@@ -222,7 +222,7 @@ const DreamInterpretation: React.FC = () => {
                 className={`px-3 py-1.5 rounded-full border text-xs transition-all whitespace-nowrap ${
                   searchTerm === tag 
                   ? "bg-primary border-primary text-[#1a1a18] font-bold" 
-                  : "bg-black/[0.05] border-black/10 text-muted-foreground hover:bg-primary/20 hover:text-primary hover:border-primary/30"
+                  : "bg-white border-black/[0.06] text-muted-foreground hover:bg-primary/10 hover:text-primary hover:border-primary/20"
                 }`}
               >
                 #{tag}
@@ -244,7 +244,7 @@ const DreamInterpretation: React.FC = () => {
                 className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold border transition-all min-h-[40px] ${
                   activeCategory === null
                   ? 'bg-primary border-primary text-[#1a1a18] shadow-md shadow-primary/20'
-                  : 'bg-black/[0.05] border-black/10 text-[#999891] hover:bg-black/[0.06] hover:text-[#1a1a18] hover:border-black/10'
+                  : 'bg-white border-black/[0.06] text-[#999891] hover:bg-black/[0.04] hover:text-[#1a1a18]'
                 }`}
               >
                 <Layers className="w-3.5 h-3.5" />
@@ -257,7 +257,7 @@ const DreamInterpretation: React.FC = () => {
                   className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold border transition-all min-h-[40px] active:scale-[0.97] ${
                     activeCategory === cat.id
                     ? 'bg-primary border-primary text-[#1a1a18] shadow-md shadow-primary/20'
-                    : 'bg-black/[0.05] border-black/10 text-[#999891] hover:bg-black/[0.06] hover:text-[#1a1a18] hover:border-black/10'
+                    : 'bg-white border-black/[0.06] text-[#999891] hover:bg-black/[0.04] hover:text-[#1a1a18]'
                   }`}
                 >
                   <cat.icon className={`w-3.5 h-3.5 ${activeCategory === cat.id ? 'text-[#1a1a18]' : cat.color}`} />

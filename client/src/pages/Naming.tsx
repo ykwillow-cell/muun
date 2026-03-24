@@ -636,15 +636,7 @@ export default function Naming() {
           <title>작명소 - 81수리 성명학 이름 분석 | MUUN 무운</title>
           <meta
             name="description"
-            content="81수리 성명학 기반으로 원격·형격·이격·정격 4격을 분석하고 길수 이름 후보를 추천합니다. 사주 오행을 반영한 맞춤 작명 서비스."
-          />
-        </Helmet>
-
-        {/* 배경 그라데이션 */}
-        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-[-10%] left-[-10%] w-[400px] h-[400px] bg-[#6B5FFF]/08 rounded-full blur-[100px]" />
-          <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-yellow-500/8 rounded-full blur-[100px]" />
-        </div>
+            content="8        <div className="min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
 
         {/* 헤더 */}
         <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
@@ -691,8 +683,8 @@ export default function Naming() {
             </div>
 
             {/* 입력 폼 */}
-            <Card data-naming-card className="glass-panel border-black/10 shadow-xl rounded-2xl overflow-hidden">
-              <CardHeader className="border-b border-black/10 px-4 py-3 md:px-6 md:py-4">
+            <Card data-naming-card className="bg-white rounded-2xl shadow-sm border border-black/[0.06] overflow-hidden">
+              <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6 md:py-4">
                 <CardTitle className="text-[#191F28] flex items-center gap-2 text-base md:text-lg">
                   <div className="w-8 h-8 rounded-lg bg-[#6B5FFF]/20 flex items-center justify-center">
                     <PenLine className="w-4 h-4 text-[#6B5FFF]" />
@@ -967,9 +959,7 @@ export default function Naming() {
                 { icon: "📄", title: "PDF 저장", desc: "결과 다운로드" },
               ].map((f) => (
                 <Card
-                  key={f.title}
-                  className="bg-black/[0.05] border-black/10 rounded-xl"
-                >
+                  key={f.ti                  <Card className="bg-white border border-black/[0.06] rounded-xl shadow-sm">               >
                   <CardContent className="p-3 text-center space-y-1">
                     <div className="text-2xl">{f.icon}</div>
                     <p className="text-xs font-bold text-[#191F28]">{f.title}</p>
@@ -987,7 +977,7 @@ export default function Naming() {
   // ── 결과 단계 ──────────────────────────────────
   return (
     <div
-      className="min-h-screen bg-background text-foreground pb-16 relative antialiased"
+      className="min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased"
       ref={resultRef}
     >
       <Helmet>
@@ -1005,7 +995,7 @@ export default function Naming() {
       </div>
 
       {/* 헤더 */}
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10 print:hidden">
+      <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06] print:hidden">
         <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
             <Button
@@ -1052,7 +1042,7 @@ export default function Naming() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <Card data-naming-card className="glass-panel border-[#6B5FFF]/20 shadow-xl rounded-2xl overflow-hidden">
+                <Card data-naming-card className="bg-white rounded-2xl shadow-sm border border-black/[0.06] overflow-hidden">
               <CardContent className="p-4 md:p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -1094,7 +1084,7 @@ export default function Naming() {
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.4 }}
               >
-                <Card data-naming-card className="glass-panel border-[#6B5FFF]/20 shadow-xl rounded-2xl overflow-hidden">
+                <Card data-naming-card className="bg-white rounded-2xl shadow-sm border border-black/[0.06] overflow-hidden">
                   <CardHeader className="border-b border-black/10 px-4 py-3 md:px-6 md:py-4">
                     <CardTitle className="text-[#191F28] flex items-center gap-2 text-base">
                       <div className="w-7 h-7 rounded-lg bg-[#6B5FFF]/20 flex items-center justify-center">
@@ -1360,8 +1350,8 @@ export default function Naming() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <Card data-naming-card className="glass-panel border-black/10 shadow-xl rounded-2xl overflow-hidden">
-              <CardHeader className="border-b border-black/10 px-4 py-3 md:px-6 md:py-4">
+            <Card data-naming-card className="bg-white rounded-2xl shadow-sm border border-black/[0.06] overflow-hidden">
+              <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6 md:py-4">
                 <CardTitle className="text-[#191F28] flex items-center gap-2 text-base">
                   <div className="w-7 h-7 rounded-lg bg-[#6B5FFF]/20 flex items-center justify-center">
                     <PenLine className="w-4 h-4 text-[#6B5FFF]" />
