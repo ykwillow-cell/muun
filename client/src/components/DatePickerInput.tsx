@@ -32,37 +32,50 @@ const DatePickerInput = forwardRef<HTMLInputElement, DatePickerInputProps>(
     const hiddenDateRef = useRef<HTMLInputElement>(null);
     const [textValue, setTextValue] = useState(value || "");
 
+    // YYYY-MM-DD → YYYY. MM. DD 표시 포맷 변환
+    const toDisplayFormat = (v: string) => {
+      if (/^\d{4}-\d{2}-\d{2}$/.test(v)) {
+        const [y, m, d] = v.split('-');
+        return `${y}. ${m}. ${d}`;
+      }
+      return v;
+    };
+
     // 외부 value 변경 시 동기화
     useEffect(() => {
-      if (value !== undefined && value !== textValue) {
-        setTextValue(value);
+      if (value !== undefined) {
+        const display = toDisplayFormat(value);
+        if (display !== textValue) {
+          setTextValue(display);
+        }
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value]);
 
-    // 텍스트 입력 핸들러 - 자동 하이픈 삽입
+    // 텍스트 입력 핸들러 - 자동 점(.) 삽입 (YYYY. MM. DD 포맷)
     const handleTextChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
       let raw = e.target.value.replace(/[^0-9]/g, "");
 
       // 최대 8자리 (YYYYMMDD)
       if (raw.length > 8) raw = raw.slice(0, 8);
 
-      // 자동 하이픈 삽입
-      let formatted = raw;
+      // 자동 점 삽입 → 표시 포맷: YYYY. MM. DD
+      let display = raw;
       if (raw.length > 4) {
-        formatted = raw.slice(0, 4) + "-" + raw.slice(4);
+        display = raw.slice(0, 4) + ". " + raw.slice(4);
       }
       if (raw.length > 6) {
-        formatted = raw.slice(0, 4) + "-" + raw.slice(4, 6) + "-" + raw.slice(6);
+        display = raw.slice(0, 4) + ". " + raw.slice(4, 6) + ". " + raw.slice(6);
       }
 
-      setTextValue(formatted);
+      setTextValue(display);
 
-      // YYYY-MM-DD 형식 완성 시 onChange 트리거
-      if (/^\d{4}-\d{2}-\d{2}$/.test(formatted)) {
+      // 내부 value는 YYYY-MM-DD 형식으로 onChange 트리거
+      if (raw.length === 8) {
+        const isoFormatted = raw.slice(0, 4) + "-" + raw.slice(4, 6) + "-" + raw.slice(6);
         const syntheticEvent = {
           target: {
-            value: formatted,
+            value: isoFormatted,
             name: name || "",
             id: elementId,
           },
@@ -73,12 +86,13 @@ const DatePickerInput = forwardRef<HTMLInputElement, DatePickerInputProps>(
 
     // 텍스트 필드 blur 시 유효성 검사 및 onChange 트리거
     const handleTextBlur = useCallback((e: React.FocusEvent<HTMLInputElement>) => {
-      const val = textValue;
-      // YYYY-MM-DD 형식이면 onChange 트리거
-      if (/^\d{4}-\d{2}-\d{2}$/.test(val)) {
+      const raw = textValue.replace(/[^0-9]/g, "");
+      // 8자리 숫자이면 YYYY-MM-DD로 변환하여 onChange 트리거
+      if (raw.length === 8) {
+        const isoVal = raw.slice(0, 4) + "-" + raw.slice(4, 6) + "-" + raw.slice(6);
         const syntheticEvent = {
           target: {
-            value: val,
+            value: isoVal,
             name: name || "",
             id: elementId,
           },
@@ -96,14 +110,14 @@ const DatePickerInput = forwardRef<HTMLInputElement, DatePickerInputProps>(
       }
     }, []);
 
-    // 숨겨진 date input에서 날짜 선택 시
+    // 숨겨진 date input에서 날짜 선택 시 (YYYY-MM-DD → YYYY. MM. DD 표시)
     const handleDatePickerChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-      const dateVal = e.target.value;
+      const dateVal = e.target.value; // YYYY-MM-DD
       if (dateVal) {
-        setTextValue(dateVal);
+        setTextValue(toDisplayFormat(dateVal)); // 표시: YYYY. MM. DD
         const syntheticEvent = {
           target: {
-            value: dateVal,
+            value: dateVal, // 내부 value: YYYY-MM-DD
             name: name || "",
             id: elementId,
           },
@@ -138,11 +152,11 @@ const DatePickerInput = forwardRef<HTMLInputElement, DatePickerInputProps>(
           value={textValue}
           onChange={handleTextChange}
           onBlur={handleTextBlur}
-          placeholder={placeholder || "YYYY-MM-DD"}
+          placeholder={placeholder || "YYYY. MM. DD"}
           maxLength={10}
           autoComplete="off"
           className={cn(
-            "flex h-11 w-full rounded-xl border bg-black/[0.05] border-black/10 px-3 pr-10 py-2 text-sm text-[#1a1a18] ring-offset-background transition-all",
+            "flex h-11 w-full rounded-xl border bg-[#F7F5F3] border-[#E8E5E0] px-3 pr-10 py-2 text-sm text-[#1a1a18] ring-offset-background transition-all",
             "placeholder:text-muted-foreground",
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-0",
             focusClass,
@@ -165,7 +179,7 @@ const DatePickerInput = forwardRef<HTMLInputElement, DatePickerInputProps>(
         <input
           ref={hiddenDateRef}
           type="date"
-          value={/^\d{4}-\d{2}-\d{2}$/.test(textValue) ? textValue : ""}
+          value={/^\d{4}-\d{2}-\d{2}$/.test(value || "") ? (value || "") : ""}
           onChange={handleDatePickerChange}
           tabIndex={-1}
           aria-hidden="true"

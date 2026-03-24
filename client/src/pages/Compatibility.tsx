@@ -585,8 +585,38 @@ export default function Compatibility() {
  {/* 시안 기반 전면 개선: 연한 핑크 베이지 배경, 클린 카드 UI */}
  <style>{`
    .compatibility-page { --compatibility-accent: #E8387A; }
-   .compat-toggle-item[data-state=on] { background-color: #E8387A; color: white; border-color: #E8387A; }
-   .compat-toggle-item[data-state=off] { background-color: white; color: #5a5a56; border: 1.5px solid #e0ddd8; }
+   /* 세그먼트 컨트롤: 트랙(배경 컨테이너) 안에 옵션이 floating */
+   .compat-segment-track {
+     display: grid;
+     grid-template-columns: 1fr 1fr;
+     gap: 3px;
+     background-color: #EDE8E8;
+     border-radius: 12px;
+     padding: 3px;
+     height: 44px;
+   }
+   .compat-segment-item {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     border-radius: 9px;
+     font-size: 14px;
+     font-weight: 500;
+     cursor: pointer;
+     transition: all 0.15s ease;
+     border: none;
+     background: transparent;
+     color: #6b6b67;
+     min-height: 38px;
+   }
+   .compat-segment-item[data-state=on] {
+     background-color: white;
+     color: #E8387A;
+     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
+   }
+   .compat-segment-item[data-state=off]:hover {
+     color: #1a1a18;
+   }
  `}</style>
  <div className="compatibility-page min-h-screen bg-[#FBF3F3] text-foreground pb-16 antialiased">
 
@@ -642,8 +672,8 @@ export default function Compatibility() {
    <CompatibilityContent />
  </div>
 
- {/* 입력 카드 — 헤더 없는 흰색 카드, 시안과 동일 */}
- <div className="bg-white rounded-2xl shadow-sm border border-black/[0.06] p-5 md:p-6">
+ {/* 입력 카드 — 헤더 없는 흰색 카드, 좌우 패딩 추가 */}
+ <div className="bg-white rounded-2xl shadow-sm border border-black/[0.06] p-5 md:p-8">
  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
  {/* 첫 번째 사람 */}
  <div className="space-y-4">
@@ -651,7 +681,8 @@ export default function Compatibility() {
  <div className="w-6 h-6 rounded-full bg-[#E8387A] text-white text-xs font-bold flex items-center justify-center">1</div>
  <h3 className="text-[#1a1a18] font-bold text-sm">첫 번째 사람</h3>
  </div>
- <div className="grid grid-cols-2 gap-3">
+ {/* ①② 수직 정렬: items-start 적용, 성별 컨테이너 동일 높이 확보 */}
+ <div className="grid grid-cols-2 gap-3 items-start">
  <div className="space-y-1.5">
  <Label htmlFor="name1" className="text-[#1a1a18] text-sm font-medium">이름</Label>
  <Input id="name1" placeholder="이름" {...form.register("name1")} className="h-11 bg-[#F7F5F3] border-[#E8E5E0] text-[#1a1a18] placeholder:text-[#b0ada6] rounded-xl focus:ring-[#E8387A]/30 focus:border-[#E8387A] transition-all text-sm" />
@@ -659,22 +690,18 @@ export default function Compatibility() {
  </div>
  <div className="space-y-1.5">
  <Label className="text-[#1a1a18] text-sm font-medium">성별</Label>
- {/* 시안: 흰색 래퍼, 활성 버튼 핑크 아웃라인 */}
+ {/* 세그먼트 컨트롤: 트랙 안에 옵션 floating */}
  <ToggleGroup
    type="single"
    value={form.watch("gender1")}
    onValueChange={(v) => { if (v) form.setValue("gender1", v as "male" | "female"); }}
-   className="w-full h-11 bg-[#F2EDED] p-1 rounded-xl grid grid-cols-2 gap-1"
+   className="compat-segment-track w-full"
  >
- <ToggleGroupItem
-   value="male"
-   className="compat-toggle-item h-full rounded-lg transition-all font-medium text-sm min-h-[44px]"
- >남성</ToggleGroupItem>
- <ToggleGroupItem
-   value="female"
-   className="compat-toggle-item h-full rounded-lg transition-all font-medium text-sm min-h-[44px]"
- >여성</ToggleGroupItem>
+ <ToggleGroupItem value="male" className="compat-segment-item">남성</ToggleGroupItem>
+ <ToggleGroupItem value="female" className="compat-segment-item">여성</ToggleGroupItem>
  </ToggleGroup>
+ {/* ② 수직 정렬: 마이크로카피와 동일 높이 spacer */}
+ <div className="h-[14px]" />
  </div>
  </div>
  <div className="space-y-1.5">
@@ -702,20 +729,10 @@ export default function Compatibility() {
  form.setValue("calendarType1", value as "solar" | "lunar");
  }
  }}
- className="w-full h-11 bg-[#F2EDED] p-1 rounded-xl grid grid-cols-2 gap-1"
+ className="compat-segment-track w-full"
  >
- <ToggleGroupItem
-   value="solar"
-   className="compat-toggle-item h-full rounded-lg transition-all font-medium text-sm min-h-[44px]"
- >
- 양력
- </ToggleGroupItem>
- <ToggleGroupItem
-   value="lunar"
-   className="compat-toggle-item h-full rounded-lg transition-all font-medium text-sm min-h-[44px]"
- >
- 음력
- </ToggleGroupItem>
+ <ToggleGroupItem value="solar" className="compat-segment-item">양력</ToggleGroupItem>
+ <ToggleGroupItem value="lunar" className="compat-segment-item">음력</ToggleGroupItem>
  </ToggleGroup>
  {form.watch("calendarType1") === "lunar" && (
  <div className="flex items-center justify-end gap-2 pr-1 pt-0.5">
@@ -746,7 +763,8 @@ export default function Compatibility() {
  <div className="w-6 h-6 rounded-full bg-[#E8387A] text-white text-xs font-bold flex items-center justify-center">2</div>
  <h3 className="text-[#1a1a18] font-bold text-sm">두 번째 사람</h3>
  </div>
- <div className="grid grid-cols-2 gap-3">
+ {/* ①② 수직 정렬: items-start 적용, 성별 컨테이너 동일 높이 확보 */}
+ <div className="grid grid-cols-2 gap-3 items-start">
  <div className="space-y-1.5">
  <Label htmlFor="name2" className="text-[#1a1a18] text-sm font-medium">이름</Label>
  <Input id="name2" placeholder="이름" {...form.register("name2")} className="h-11 bg-[#F7F5F3] border-[#E8E5E0] text-[#1a1a18] placeholder:text-[#b0ada6] rounded-xl focus:ring-[#E8387A]/30 focus:border-[#E8387A] transition-all text-sm" />
@@ -763,20 +781,16 @@ export default function Compatibility() {
        form.setValue("gender2", v as "male" | "female");
      }
    }}
-   className="w-full h-11 bg-[#F2EDED] p-1 rounded-xl grid grid-cols-2 gap-1"
+   className="compat-segment-track w-full"
  >
- <ToggleGroupItem
-   value="male"
-   className="compat-toggle-item h-full rounded-lg transition-all font-medium text-sm min-h-[44px]"
- >남성</ToggleGroupItem>
- <ToggleGroupItem
-   value="female"
-   className="compat-toggle-item h-full rounded-lg transition-all font-medium text-sm min-h-[44px]"
- >여성</ToggleGroupItem>
+ <ToggleGroupItem value="male" className="compat-segment-item">남성</ToggleGroupItem>
+ <ToggleGroupItem value="female" className="compat-segment-item">여성</ToggleGroupItem>
  </ToggleGroup>
  {(form.formState.errors as any)?.gender2 && (
    <p className="text-[11px] text-red-500">{(form.formState.errors as any).gender2?.message}</p>
  )}
+ {/* ② 수직 정렬: 마이크로카피와 동일 높이 spacer */}
+ <div className="h-[14px]" />
  </div>
  </div>
  <div className="space-y-1.5">
@@ -804,20 +818,10 @@ export default function Compatibility() {
  form.setValue("calendarType2", value as "solar" | "lunar");
  }
  }}
- className="w-full h-11 bg-[#F2EDED] p-1 rounded-xl grid grid-cols-2 gap-1"
+ className="compat-segment-track w-full"
  >
- <ToggleGroupItem
-   value="solar"
-   className="compat-toggle-item h-full rounded-lg transition-all font-medium text-sm min-h-[44px]"
- >
-양력
- </ToggleGroupItem>
- <ToggleGroupItem
-   value="lunar"
-   className="compat-toggle-item h-full rounded-lg transition-all font-medium text-sm min-h-[44px]"
- >
-음력
- </ToggleGroupItem>
+ <ToggleGroupItem value="solar" className="compat-segment-item">양력</ToggleGroupItem>
+ <ToggleGroupItem value="lunar" className="compat-segment-item">음력</ToggleGroupItem>
  </ToggleGroup>
  {form.watch("calendarType2") === "lunar" && (
  <div className="flex items-center justify-end gap-2 pr-1 pt-0.5">
