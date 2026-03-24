@@ -153,7 +153,7 @@ const DatePickerInput = forwardRef<HTMLInputElement, DatePickerInputProps>(
           onChange={handleTextChange}
           onBlur={handleTextBlur}
           placeholder={placeholder || "YYYY. MM. DD"}
-          maxLength={10}
+          maxLength={12}
           autoComplete="off"
           className={cn(
             "flex h-11 w-full rounded-xl border bg-[#F7F5F3] border-[#E8E5E0] px-3 pr-10 py-2 text-sm text-[#1a1a18] ring-offset-background transition-all",

@@ -15,7 +15,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useCanonical } from '@/lib/use-canonical';
 import { setCompatibilityOGTags } from '@/lib/og-tags';
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { Helmet } from "react-helmet-async";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -491,6 +491,10 @@ export default function Compatibility() {
  }
  }, [form]);
 
+ // 윤달 체크박스 표시 조건 — useWatch로 즉각 반응 보장
+ const calendarType1 = useWatch({ control: form.control, name: "calendarType1" });
+ const calendarType2 = useWatch({ control: form.control, name: "calendarType2" });
+
  // 4단계: 첫 번째 사람 성별 선택 시 두 번째 사람 성별 자동 설정
  const gender1Value = form.watch("gender1");
  useEffect(() => {
@@ -686,7 +690,6 @@ export default function Compatibility() {
  <div className="space-y-1.5">
  <Label htmlFor="name1" className="text-[#1a1a18] text-sm font-medium">이름</Label>
  <Input id="name1" placeholder="이름" {...form.register("name1")} className="h-11 bg-[#F7F5F3] border-[#E8E5E0] text-[#1a1a18] placeholder:text-[#b0ada6] rounded-xl focus:ring-[#E8387A]/30 focus:border-[#E8387A] transition-all text-sm" />
- <p className="text-[11px] text-[#b0ada6] leading-tight">저장되지 않음</p>
  </div>
  <div className="space-y-1.5">
  <Label className="text-[#1a1a18] text-sm font-medium">성별</Label>
@@ -735,7 +738,7 @@ export default function Compatibility() {
  <ToggleGroupItem value="lunar" className="compat-segment-item">음력</ToggleGroupItem>
  </ToggleGroup>
  {/* 윤달 체크박스 — 음력 선택 시에만 표시, 공간 없이 완전 숨김 */}
- {form.watch("calendarType1") === "lunar" && (
+ {calendarType1 === "lunar" && (
    <div className="flex items-center gap-1.5 pt-1.5">
      <input
        type="checkbox"
@@ -772,7 +775,6 @@ export default function Compatibility() {
  <div className="space-y-1.5">
  <Label htmlFor="name2" className="text-[#1a1a18] text-sm font-medium">이름</Label>
  <Input id="name2" placeholder="이름" {...form.register("name2")} className="h-11 bg-[#F7F5F3] border-[#E8E5E0] text-[#1a1a18] placeholder:text-[#b0ada6] rounded-xl focus:ring-[#E8387A]/30 focus:border-[#E8387A] transition-all text-sm" />
- <p className="text-[11px] text-[#b0ada6] leading-tight">저장되지 않음</p>
  </div>
  <div className="space-y-1.5">
  <Label className="text-[#1a1a18] text-sm font-medium">성별</Label>
@@ -828,7 +830,7 @@ export default function Compatibility() {
  <ToggleGroupItem value="lunar" className="compat-segment-item">음력</ToggleGroupItem>
  </ToggleGroup>
  {/* 윤달 체크박스 — 음력 선택 시에만 표시, 공간 없이 완전 숨김 */}
- {form.watch("calendarType2") === "lunar" && (
+ {calendarType2 === "lunar" && (
    <div className="flex items-center gap-1.5 pt-1.5">
      <input
        type="checkbox"
