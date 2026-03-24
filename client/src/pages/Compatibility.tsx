@@ -922,17 +922,47 @@ export default function Compatibility() {
  const conflictAdvice = generateConflictAdvice(saju1, saju2, name1, name2);
  const finalAdvice = generateFinalAdvice(saju1, saju2, scores);
 
- // 세부 점수 항목
+ // 시안 기반 세부 점수 항목 — 각 항목 고유 컬러
  const scoreItems = [
- { label: '오행 조화', score: scores.elementScore, icon: <Activity className="w-4 h-4" /> },
- { label: '음양 균형', score: scores.yinYangScore, icon: <Star className="w-4 h-4" /> },
- { label: '오행 보완', score: scores.complementScore, icon: <Shield className="w-4 h-4" /> },
- { label: '애정운', score: scores.loveScore, icon: <Heart className="w-4 h-4" /> },
- { label: '재물운', score: scores.wealthScore, icon: <Zap className="w-4 h-4" /> },
- { label: '가정운', score: scores.familyScore, icon: <Home className="w-4 h-4" /> },
+   { label: '오행 조화', score: scores.elementScore, barColor: 'bg-[#E8387A]', textColor: 'text-[#E8387A]' },
+   { label: '음양 균형', score: scores.yinYangScore, barColor: 'bg-[#7C5CFC]', textColor: 'text-[#7C5CFC]' },
+   { label: '오행 보완', score: scores.complementScore, barColor: 'bg-[#22C55E]', textColor: 'text-[#22C55E]' },
+   { label: '애정운', score: scores.loveScore, barColor: 'bg-[#E8387A]', textColor: 'text-[#E8387A]' },
+   { label: '재물운', score: scores.wealthScore, barColor: 'bg-[#F59E0B]', textColor: 'text-[#F59E0B]' },
+   { label: '가정운', score: scores.familyScore, barColor: 'bg-[#3B82F6]', textColor: 'text-[#3B82F6]' },
  ];
 
- // 5단계: 공유 핸들러
+ // 궁합 등급 레이블
+ const getCompatibilityGradeLabel = (score: number) => {
+   if (score >= 90) return "최고의 궁합";
+   if (score >= 80) return "좋은 궁합";
+   if (score >= 70) return "보통의 궁합";
+   if (score >= 60) return "노력이 필요한 궁합";
+   return "도전적인 궁합";
+ };
+ const getCompatibilitySubLabel = (score: number) => {
+   if (score >= 90) return "천생연분에 가까운 관계입니다";
+   if (score >= 80) return "서로를 잘 이해하고 보완하는 관계";
+   if (score >= 70) return "노력하면 충분히 좋아질 수 있는 관계";
+   if (score >= 60) return "서로의 차이를 이해하는 노력이 필요";
+   return "많은 대화와 배려가 필요한 관계";
+ };
+ const getCompatibilityHashtags = (score: number, e1: string, e2: string): string[] => {
+   const tags: string[] = [];
+   if (isGenerating(e1, e2)) tags.push('#상생관계');
+   else if (isOvercoming(e1, e2)) tags.push('#상극관계');
+   else tags.push('#비화관계');
+   if (score >= 80) tags.push('#좋은궁합');
+   if (scores.loveScore >= 80) tags.push('#애정운최상');
+   if (scores.complementScore >= 80) tags.push('#서로보완');
+   if (scores.yinYangScore >= 80) tags.push('#음양조화');
+   tags.push('#소울메이트');
+   tags.push('#운명적만남');
+   return tags.slice(0, 4);
+ };
+ const hashtags = getCompatibilityHashtags(scores.total, elem1, elem2);
+
+ // 공유 핸들러
  const handleShare = async () => {
    const shareText = `우리 궁합 결과가 나왔어요! 🔮\n두 사람의 오행 궁합 점수는 ${scores.total}점\n무운에서 무료로 확인해보세요 👇`;
    const shareUrl = "https://muunsaju.com/compatibility";
@@ -960,479 +990,582 @@ export default function Compatibility() {
    }
  };
 
+ // 일간 해석 첫 문장 인용구 추출
+ const firstPara = overallInterpretation[0] || "";
+ const quoteMatch = firstPara.match(/['"'"](.*?)['"'"]/);
+ const quoteText = quoteMatch ? quoteMatch[0] : `"${elem1}과 ${elem2}, 서로 다르기에 서로가 필요한 관계"`;
+
  return (
  <>
  <Helmet>
- <title>무료 궁합 보기 - 회원가입 없이 사주 궁합 분석 | 무운 (MuUn)</title>
- <meta name="description" content={`두 분의 사주를 기반으로 한 궁합 분석 결과입니다. 총 궁합 점수: ${scores.total}점`} />
- <meta property="og:title" content="무료 궁합 보기 - 회원가입 없이 사주 궁합 분석 | 무운 (MuUn)" />
- <meta property="og:description" content="회원가입 없이 두 사람의 생년월일만으로 바로 확인하는 무료 사주 궁합. 오행 궁합, 성격 궁합, 연애 궁합을 개인정보 저장 없이 100% 무료로 분석합니다." />
- <meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png" />
- <meta property="og:type" content="website" />
- <meta property="og:site_name" content="무운 (MuUn)" />
- <meta property="og:locale" content="ko_KR" />
- <meta name="twitter:card" content="summary_large_image" />
- <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
- <meta name="robots" content="noindex, nofollow" />
- <meta name="keywords" content="궁합, 무료궁합, 사주궁합, 연애궁합, 결혼궁합, 오행궁합, 무료궁합보기, 커플궁합" />
- <link rel="canonical" href="https://muunsaju.com/compatibility" />
+   <title>무료 궁합 보기 - 회원가입 없이 사주 궁합 분석 | 무운 (MuUn)</title>
+   <meta name="description" content={`두 분의 사주를 기반으로 한 궁합 분석 결과입니다. 총 궁합 점수: ${scores.total}점`} />
+   <meta property="og:title" content="무료 궁합 보기 - 회원가입 없이 사주 궁합 분석 | 무운 (MuUn)" />
+   <meta property="og:description" content="회원가입 없이 두 사람의 생년월일만으로 바로 확인하는 무료 사주 궁합. 오행 궁합, 성격 궁합, 연애 궁합을 개인정보 저장 없이 100% 무료로 분석합니다." />
+   <meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png" />
+   <meta property="og:type" content="website" />
+   <meta property="og:site_name" content="무운 (MuUn)" />
+   <meta property="og:locale" content="ko_KR" />
+   <meta name="twitter:card" content="summary_large_image" />
+   <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
+   <meta name="robots" content="noindex, nofollow" />
+   <meta name="keywords" content="궁합, 무료궁합, 사주궁합, 연애궁합, 결혼궁합, 오행궁합, 무료궁합보기, 커플궁합" />
+   <link rel="canonical" href="https://muunsaju.com/compatibility" />
  </Helmet>
- {/* 7단계: tintColor CSS 변수 정의 */}
  <style>{`
    .compatibility-page { --compatibility-accent: #E8387A; }
+   .compat-segment-track {
+     display: grid;
+     grid-template-columns: 1fr 1fr;
+     gap: 3px;
+     background-color: #EDE8E8;
+     border-radius: 12px;
+     padding: 3px;
+     height: 44px;
+   }
+   .compat-segment-item {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     border-radius: 9px;
+     font-size: 14px;
+     font-weight: 500;
+     cursor: pointer;
+     transition: all 0.15s ease;
+     border: none;
+     background: transparent;
+     color: #6b6b67;
+     min-height: 38px;
+   }
+   .compat-segment-item[data-state=on] {
+     background-color: white;
+     color: #E8387A;
+     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
+   }
+   .result-card {
+     background: white;
+     border-radius: 16px;
+     border: 1px solid rgba(0,0,0,0.06);
+     overflow: hidden;
+   }
+   .result-section-header {
+     display: flex;
+     align-items: center;
+     gap: 8px;
+     font-size: 15px;
+     font-weight: 700;
+     color: #1a1a18;
+     margin-bottom: 16px;
+   }
  `}</style>
- <div className="compatibility-page min-h-screen bg-background text-foreground pb-16 relative antialiased">
- <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
- <div className="absolute top-[-10%] left-[-10%] w-[400px] h-[400px] bg-pink-500/10 rounded-full blur-[100px]" />
- <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-red-500/10 rounded-full blur-[100px]" />
- </div>
+ <div className="compatibility-page min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
 
- {/* Header */}
- <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
- <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
- <div className="flex items-center">
- <Button variant="ghost" onClick={() => setResult(null)} className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px] flex items-center gap-1 px-2">
-   <ChevronLeft className="h-5 w-5" />
-   <span className="text-sm font-medium">궁합 입력</span>
- </Button>
- <h1 className="text-base md:text-lg font-bold text-[#1a1a18]">궁합 결과</h1>
- </div>
- <Button variant="ghost" size="icon" className="text-[var(--compatibility-accent,#E8387A)] min-w-[44px] min-h-[44px]" onClick={handleShare}>
- <Share2 className="h-5 w-5" />
- </Button>
- </div>
- </header>
+   {/* ===== 헤더 ===== */}
+   <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06]">
+     <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
+       <div className="flex items-center">
+         <Button variant="ghost" onClick={() => setResult(null)} className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px] flex items-center gap-1 px-2">
+           <ChevronLeft className="h-5 w-5" />
+           <span className="text-sm font-medium">궁합 입력</span>
+         </Button>
+         <h1 className="text-base font-bold text-[#1a1a18]">궁합 결과</h1>
+       </div>
+       <Button variant="ghost" size="icon" className="text-[#7C5CFC] min-w-[44px] min-h-[44px]" onClick={handleShare}>
+         <Share2 className="h-5 w-5" />
+       </Button>
+     </div>
+   </header>
 
- <main className="relative z-10 px-4 py-5 md:py-6">
- <motion.div
- initial={{ opacity: 0, y: 20 }}
- animate={{ opacity: 1, y: 0 }}
- className={`${commonMaxWidth} space-y-6 md:space-y-8`}
- >
- {/* ===== 1. 궁합 점수 원형 그래프 ===== */}
- <section className="flex flex-col items-center justify-center space-y-4 py-4">
- <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-pink-500/10 border border-pink-500/30 backdrop-blur-xl">
- <Heart className="w-3.5 h-3.5 text-[var(--compatibility-accent,#E8387A)]" />
- <span className="text-[10px] md:text-sm md:text-xs font-bold tracking-wider text-[var(--compatibility-accent,#E8387A)] uppercase">궁합 종합 점수</span>
- </div>
- 
- <div className="relative w-36 h-36 md:w-44 md:h-44 mx-auto">
- <svg className="w-full h-full" viewBox="0 0 100 100">
- <circle cx="50" cy="50" r="45" fill="none" stroke="currentColor" strokeWidth="8" className="text-[#1a1a18]/5" />
- <motion.circle
- cx="50" cy="50" r="45" fill="none"
- stroke="url(#compat-gradient)" strokeWidth="8"
- strokeDasharray="283"
- initial={{ strokeDashoffset: 283 }}
- animate={{ strokeDashoffset: 283 - (283 * scores.total) / 100 }}
- transition={{ duration: 1.5, ease: "easeOut" }}
- strokeLinecap="round"
- transform="rotate(-90 50 50)"
- />
- <defs>
- <linearGradient id="compat-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
- <stop offset="0%" stopColor="#E8387A" />
- <stop offset="100%" stopColor="#ef4444" />
- </linearGradient>
- </defs>
- </svg>
- <div className="absolute inset-0 flex flex-col items-center justify-center">
- <span className="text-4xl md:text-5xl font-black text-[#1a1a18]">{scores.total}</span>
- <span className="text-[10px] md:text-sm md:text-xs text-[var(--compatibility-accent,#E8387A)] font-bold mt-0.5">{getScoreLabel(scores.total)}</span>
- </div>
- </div>
- 
- <div className="flex items-center justify-center gap-3 text-base">
- <span className="text-[var(--compatibility-accent,#E8387A)] font-bold">{name1}</span>
- <Heart className="w-5 h-5 text-[var(--compatibility-accent,#E8387A)] animate-pulse" />
- <span className="text-red-600 font-bold">{name2}</span>
- </div>
- </section>
+   <main className="px-4 pb-8">
+     <motion.div
+       initial={{ opacity: 0, y: 20 }}
+       animate={{ opacity: 1, y: 0 }}
+       className={`${commonMaxWidth} space-y-4`}
+     >
 
- {/* ===== 2. 세부 점수 그래프 ===== */}
- <section>
- <h2 className="text-lg md:text-xl font-bold text-[#1a1a18] flex items-center gap-2 mb-4">
- <TrendingUp className="w-5 h-5 text-[var(--compatibility-accent,#E8387A)]" />
- 세부 궁합 점수
- </h2>
- <Card className="rounded-xl overflow-hidden" data-result-card>
- <CardContent className="p-4 md:p-6 space-y-4">
- {scoreItems.map((item, idx) => (
- <div key={idx} className="space-y-1.5">
- <div className="flex items-center justify-between">
- <div className="flex items-center gap-2">
- <span className={getScoreColor(item.score)}>{item.icon}</span>
- <span className="text-base md:text-sm text-[#1a1a18] font-medium">{item.label}</span>
- </div>
- <span className={`text-base md:text-sm font-bold ${getScoreColor(item.score)}`}>{item.score}점</span>
- </div>
- <div className="w-full h-2.5 bg-black/[0.05] rounded-full overflow-hidden">
- <motion.div
- initial={{ width: 0 }}
- animate={{ width: `${item.score}%` }}
- transition={{ duration: 1, delay: idx * 0.1, ease: "easeOut" }}
- className={`h-full rounded-full ${getScoreBarColor(item.score)}`}
- />
- </div>
- </div>
- ))}
- </CardContent>
- </Card>
- </section>
+       {/* ===== 1. 히어로 — 다크 보라 그라데이션 카드 ===== */}
+       <section
+         className="rounded-2xl overflow-hidden"
+         style={{ background: 'linear-gradient(160deg, #2D1B5E 0%, #1A0F3C 50%, #2A1060 100%)' }}
+       >
+         <div className="px-6 pt-8 pb-8 flex flex-col items-center text-center space-y-5">
+           {/* 이름 칩 + 하트 */}
+           <div className="flex items-center gap-3">
+             <span className="px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-white font-semibold text-sm backdrop-blur-sm">
+               {name1}
+             </span>
+             <Heart className="w-5 h-5 text-[#E8387A] animate-pulse flex-shrink-0" />
+             <span className="px-4 py-1.5 rounded-full bg-white/10 border border-white/20 text-white font-semibold text-sm backdrop-blur-sm">
+               {name2}
+             </span>
+           </div>
 
- {/* ===== 3. 두 사람의 사주팔자표 ===== */}
- <section>
- <h2 className="text-lg md:text-xl font-bold text-[#1a1a18] flex items-center gap-2 mb-4">
- <Users className="w-5 h-5 text-[var(--compatibility-accent,#E8387A)]" />
- 두 사람의 사주팔자(四柱八字)
- </h2>
- 
- {/* 첫 번째 사람 */}
- <div className="mb-4">
- <div className="flex items-center gap-2 mb-2">
- <div className="w-5 h-5 rounded-full bg-[var(--compatibility-accent,#E8387A)] text-white text-xs md:text-[10px] font-bold flex items-center justify-center">1</div>
- <span className="text-base md:text-sm font-bold text-[var(--compatibility-accent,#E8387A)]">{name1}님의 사주</span>
- </div>
- <Card className="rounded-xl overflow-hidden" data-result-card>
- <CardContent className="p-3 md:p-4">
- <SajuChart result={saju1} theme="purple" />
- </CardContent>
- </Card>
- </div>
- 
- {/* 두 번째 사람 */}
- <div>
- <div className="flex items-center gap-2 mb-2">
- <div className="w-5 h-5 rounded-full bg-red-500 text-white text-xs md:text-[10px] font-bold flex items-center justify-center">2</div>
- <span className="text-base md:text-sm font-bold text-red-600">{name2}님의 사주</span>
- </div>
- <Card className="rounded-xl overflow-hidden" data-result-card>
- <CardContent className="p-3 md:p-4">
- <SajuChart result={saju2} theme="purple" />
- </CardContent>
- </Card>
- </div>
- </section>
+           {/* 원형 그래프 — 보라→핑크 그라데이션, 두꺼운 stroke */}
+           <div className="relative w-40 h-40 mx-auto">
+             <svg className="w-full h-full" viewBox="0 0 100 100">
+               <circle cx="50" cy="50" r="42" fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="10" />
+               <motion.circle
+                 cx="50" cy="50" r="42" fill="none"
+                 stroke="url(#hero-gradient)" strokeWidth="10"
+                 strokeDasharray="264"
+                 initial={{ strokeDashoffset: 264 }}
+                 animate={{ strokeDashoffset: 264 - (264 * scores.total) / 100 }}
+                 transition={{ duration: 1.8, ease: "easeOut" }}
+                 strokeLinecap="round"
+                 transform="rotate(-90 50 50)"
+               />
+               <defs>
+                 <linearGradient id="hero-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                   <stop offset="0%" stopColor="#7C5CFC" />
+                   <stop offset="100%" stopColor="#E8387A" />
+                 </linearGradient>
+               </defs>
+             </svg>
+             <div className="absolute inset-0 flex flex-col items-center justify-center">
+               <span className="text-5xl font-black text-white leading-none">{scores.total}</span>
+               <span className="text-xs text-white/60 mt-1">/ 100</span>
+             </div>
+           </div>
 
- {/* ===== 4. 일간 궁합 종합 해석 ===== */}
- <section>
- <h2 className="text-lg md:text-xl font-bold text-[#1a1a18] flex items-center gap-2 mb-4">
- <Quote className="w-5 h-5 text-[var(--compatibility-accent,#E8387A)]" />
- 일간(日干) 궁합 종합 해석
- </h2>
- <Card className="rounded-xl overflow-hidden" data-result-card>
- <CardContent className="p-4 md:p-6">
- <div className="space-y-4">
- {overallInterpretation.map((para, idx) => (
- <p key={idx} className="text-sm md:text-[15px] text-[#1a1a18]/90 leading-relaxed" dangerouslySetInnerHTML={{ __html: para.replace(/\*\*(.*?)\*\*/g, '<strong class="text-pink-600">$1</strong>') }} />
- ))}
- </div>
- </CardContent>
- </Card>
- </section>
+           {/* 등급 레이블 */}
+           <div className="space-y-1">
+             <p className="text-xl font-bold text-white">'{getCompatibilityGradeLabel(scores.total)}'</p>
+             <p className="text-sm text-white/60">{getCompatibilitySubLabel(scores.total)}</p>
+           </div>
 
- {/* ===== 5. 성격 궁합 비교 ===== */}
- {personality1 && personality2 && (
- <section>
- <h2 className="text-lg md:text-xl font-bold text-[#1a1a18] flex items-center gap-2 mb-4">
- <User className="w-5 h-5 text-[var(--compatibility-accent,#E8387A)]" />
- 성격 궁합 비교
- </h2>
- <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
- {/* 첫 번째 사람 성격 */}
- <Card className="bg-black/[0.05] border-pink-500/20 rounded-xl overflow-hidden">
- <CardHeader className="bg-pink-500/5 border-b border-black/10 py-3 px-4">
- <CardTitle className="text-base md:text-sm font-bold text-[var(--compatibility-accent,#E8387A)] flex items-center gap-2">
- <div className="w-5 h-5 rounded-full bg-[var(--compatibility-accent,#E8387A)] text-white text-xs md:text-[10px] font-bold flex items-center justify-center">1</div>
- {name1}님 — {personality1.name}
- </CardTitle>
- </CardHeader>
- <CardContent className="p-4 space-y-3">
- <div>
- <p className="text-xs md:text-[10px] text-[#999891] mb-1">상징</p>
- <p className="text-base md:text-sm text-[#1a1a18]/90">{personality1.nature} ({personality1.symbol})</p>
- </div>
- <div>
- <p className="text-xs md:text-[10px] text-green-600 mb-1">강점</p>
- <div className="flex flex-wrap gap-1.5">
- {personality1.strength.map((s, i) => (
- <span key={i} className="text-[11px] px-2 py-0.5 bg-green-500/10 border border-green-500/20 rounded-full text-green-600">{s}</span>
- ))}
- </div>
- </div>
- <div>
- <p className="text-xs md:text-[10px] text-red-600 mb-1">약점</p>
- <div className="flex flex-wrap gap-1.5">
- {personality1.weakness.map((w, i) => (
- <span key={i} className="text-[11px] px-2 py-0.5 bg-red-500/10 border border-red-500/20 rounded-full text-red-600">{w}</span>
- ))}
- </div>
- </div>
- </CardContent>
- </Card>
+           {/* 해시태그 칩 */}
+           <div className="flex flex-wrap justify-center gap-2">
+             {hashtags.map((tag, i) => (
+               <span
+                 key={i}
+                 className={`px-3 py-1 rounded-full text-xs font-medium ${
+                   i === 1
+                     ? 'bg-[#E8387A]/80 text-white'
+                     : 'bg-white/10 text-white/80 border border-white/20'
+                 }`}
+               >
+                 {tag}
+               </span>
+             ))}
+           </div>
+         </div>
+       </section>
 
- {/* 두 번째 사람 성격 */}
- <Card className="bg-black/[0.05] border-red-500/20 rounded-xl overflow-hidden">
- <CardHeader className="bg-red-500/5 border-b border-black/10 py-3 px-4">
- <CardTitle className="text-base md:text-sm font-bold text-red-600 flex items-center gap-2">
- <div className="w-5 h-5 rounded-full bg-red-500 text-white text-xs md:text-[10px] font-bold flex items-center justify-center">2</div>
- {name2}님 — {personality2.name}
- </CardTitle>
- </CardHeader>
- <CardContent className="p-4 space-y-3">
- <div>
- <p className="text-xs md:text-[10px] text-[#999891] mb-1">상징</p>
- <p className="text-base md:text-sm text-[#1a1a18]/90">{personality2.nature} ({personality2.symbol})</p>
- </div>
- <div>
- <p className="text-xs md:text-[10px] text-green-600 mb-1">강점</p>
- <div className="flex flex-wrap gap-1.5">
- {personality2.strength.map((s, i) => (
- <span key={i} className="text-[11px] px-2 py-0.5 bg-green-500/10 border border-green-500/20 rounded-full text-green-600">{s}</span>
- ))}
- </div>
- </div>
- <div>
- <p className="text-xs md:text-[10px] text-red-600 mb-1">약점</p>
- <div className="flex flex-wrap gap-1.5">
- {personality2.weakness.map((w, i) => (
- <span key={i} className="text-[11px] px-2 py-0.5 bg-red-500/10 border border-red-500/20 rounded-full text-red-600">{w}</span>
- ))}
- </div>
- </div>
- </CardContent>
- </Card>
- </div>
- </section>
- )}
+       {/* ===== 2. 세부 궁합 점수 ===== */}
+       <section className="result-card p-5">
+         <div className="result-section-header">
+           <Activity className="w-4 h-4 text-[#7C5CFC]" />
+           세부 궁합 점수
+         </div>
+         <div className="space-y-3.5">
+           {scoreItems.map((item, idx) => (
+             <div key={idx} className="flex items-center gap-3">
+               <span className="text-sm text-[#555] w-16 flex-shrink-0">{item.label}</span>
+               <div className="flex-1 h-2 bg-[#F0EEF8] rounded-full overflow-hidden">
+                 <motion.div
+                   initial={{ width: 0 }}
+                   animate={{ width: `${item.score}%` }}
+                   transition={{ duration: 1, delay: idx * 0.1, ease: "easeOut" }}
+                   className={`h-full rounded-full ${item.barColor}`}
+                 />
+               </div>
+               <span className={`text-sm font-bold w-8 text-right flex-shrink-0 ${item.textColor}`}>{item.score}</span>
+             </div>
+           ))}
+         </div>
+       </section>
 
- {/* ===== 6. 오행 조화 비교 분석 ===== */}
- <section>
- <h2 className="text-lg md:text-xl font-bold text-[#1a1a18] flex items-center gap-2 mb-4">
- <Activity className="w-5 h-5 text-[var(--compatibility-accent,#E8387A)]" />
- 오행(五行) 조화 비교
- </h2>
- <Card className="rounded-xl overflow-hidden" data-result-card>
- <CardContent className="p-4 md:p-6 space-y-5">
- {/* 오행 비교 바 차트 */}
- {['木', '火', '土', '金', '水'].map((elem) => {
- const v1 = balance1.find(b => b.name === elem)?.value || 0;
- const v2 = balance2.find(b => b.name === elem)?.value || 0;
- return (
- <div key={elem} className="space-y-1.5">
- <div className="flex items-center justify-between">
- <span className={`text-base md:text-sm font-bold ${ELEMENT_TEXT[elem]}`}>{withReading(elem)}</span>
- <span className="text-sm md:text-xs text-[#999891]">{name1}: {v1}개 / {name2}: {v2}개</span>
- </div>
- <div className="grid grid-cols-2 gap-1">
- <div className="flex items-center gap-1">
- <span className="text-xs md:text-[10px] text-[var(--compatibility-accent,#E8387A)] w-6">{name1.slice(0, 1)}</span>
- <div className="flex-1 h-2 bg-black/[0.05] rounded-full overflow-hidden">
- <motion.div
- initial={{ width: 0 }}
- animate={{ width: `${(v1 / 8) * 100}%` }}
- transition={{ duration: 0.8 }}
- className={`h-full rounded-full ${ELEMENT_BAR_COLOR[elem]} opacity-80`}
- />
- </div>
- </div>
- <div className="flex items-center gap-1">
- <span className="text-xs md:text-[10px] text-red-600 w-6">{name2.slice(0, 1)}</span>
- <div className="flex-1 h-2 bg-black/[0.05] rounded-full overflow-hidden">
- <motion.div
- initial={{ width: 0 }}
- animate={{ width: `${(v2 / 8) * 100}%` }}
- transition={{ duration: 0.8 }}
- className={`h-full rounded-full ${ELEMENT_BAR_COLOR[elem]} opacity-60`}
- />
- </div>
- </div>
- </div>
- </div>
- );
- })}
- 
- {/* 오행 보완 분석 */}
- <div className="border-t border-black/10 pt-4 space-y-3">
- <p className="text-base md:text-sm text-[#1a1a18]/90 leading-relaxed">
- {cleanAIContent(elementAnalysis1.analysis)}
- </p>
- <p className="text-base md:text-sm text-[#1a1a18]/90 leading-relaxed">
- {cleanAIContent(elementAnalysis2.analysis)}
- </p>
- {elementAnalysis1.weakest !== elementAnalysis2.weakest && (
- <p className="text-base md:text-sm text-[var(--compatibility-accent,#E8387A)] leading-relaxed">
- {name1}님에게 부족한 {withReading(elementAnalysis1.weakest)}의 기운을 {name2}님이 보완해줄 수 있고, {name2}님에게 부족한 {withReading(elementAnalysis2.weakest)}의 기운을 {name1}님이 채워줄 수 있는 상호 보완적인 관계입니다.
- </p>
- )}
- {elementAnalysis1.weakest === elementAnalysis2.weakest && (
- <p className="text-base md:text-sm text-yellow-700 leading-relaxed">
- 두 분 모두 {withReading(elementAnalysis1.weakest)}의 기운이 부족합니다. {elementAnalysis1.supplement} 함께 이 부분을 보충하는 활동을 하면 좋겠습니다.
- </p>
- )}
- </div>
- </CardContent>
- </Card>
- </section>
+       {/* ===== 3. 일간(日干) 궁합 종합 해석 ===== */}
+       <section className="result-card p-5">
+         <div className="result-section-header">
+           <Quote className="w-4 h-4 text-[#7C5CFC]" />
+           일간(日干) 궁합 종합 해석
+         </div>
+         {/* 인용구 강조 */}
+         <blockquote className="text-base font-bold text-[#1a1a18] leading-snug mb-4 border-l-0">
+           {`"${elementKoreanMap[elem1]}과 ${elementKoreanMap[elem2]}, 서로 다르기에 서로가 필요한 관계"`}
+         </blockquote>
+         <div className="space-y-3">
+           {overallInterpretation.map((para, idx) => (
+             <p
+               key={idx}
+               className="text-sm text-[#444] leading-relaxed"
+               dangerouslySetInnerHTML={{ __html: para.replace(/\*\*(.*?)\*\*/g, '<strong class="text-[#7C5CFC]">$1</strong>') }}
+             />
+           ))}
+         </div>
+       </section>
 
- {/* ===== 7. 애정운 궁합 ===== */}
- <section>
- <h2 className="text-lg md:text-xl font-bold text-[#1a1a18] flex items-center gap-2 mb-4">
- <Heart className="w-5 h-5 text-[var(--compatibility-accent,#E8387A)]" />
- 애정운 궁합
- <span className={`text-base md:text-sm font-bold ${getScoreColor(scores.loveScore)}`}>({scores.loveScore}점)</span>
- </h2>
- <Card className="rounded-xl overflow-hidden" data-result-card>
- <CardContent className="p-4 md:p-6 space-y-4">
- {loveInterpretation.map((para, idx) => (
- <p key={idx} className="text-sm md:text-[15px] text-[#1a1a18]/90 leading-relaxed">{para}</p>
- ))}
- </CardContent>
- </Card>
- </section>
+       {/* ===== 4. 성격 궁합 비교 ===== */}
+       {personality1 && personality2 && (
+         <section className="result-card p-5">
+           <div className="result-section-header">
+             <User className="w-4 h-4 text-[#7C5CFC]" />
+             성격 궁합 비교
+           </div>
+           <div className="grid grid-cols-2 gap-3 mb-4">
+             {/* 첫 번째 사람 */}
+             <div className="rounded-xl border border-[#E8E5F0] bg-[#FAFAFE] p-3 space-y-2.5">
+               <div className="flex items-center gap-1.5">
+                 <span className="w-1.5 h-1.5 rounded-full bg-[#7C5CFC]" />
+                 <span className="text-xs text-[#7C5CFC] font-medium">{name1}님</span>
+               </div>
+               <p className="text-base font-bold text-[#1a1a18] leading-tight">
+                 {STEM_YIN_YANG[saju1.dayPillar.stem] ? '양(陽)' : '음(陰)'}의 {elementKoreanMap[elem1] || elem1}
+               </p>
+               <div className="space-y-1.5">
+                 {personality1.strength.slice(0, 3).map((s, i) => (
+                   <span key={i} className="block text-xs px-2 py-1 bg-[#EEF2FF] text-[#4F46E5] rounded-md">{s}</span>
+                 ))}
+                 {personality1.weakness.slice(0, 2).map((w, i) => (
+                   <span key={i} className="block text-xs px-2 py-1 bg-[#FFF0F5] text-[#E8387A] rounded-md">{w}</span>
+                 ))}
+               </div>
+             </div>
+             {/* 두 번째 사람 */}
+             <div className="rounded-xl border border-[#F0EDE5] bg-[#FFFAF5] p-3 space-y-2.5">
+               <div className="flex items-center gap-1.5">
+                 <span className="w-1.5 h-1.5 rounded-full bg-[#F59E0B]" />
+                 <span className="text-xs text-[#D97706] font-medium">{name2}님</span>
+               </div>
+               <p className="text-base font-bold text-[#1a1a18] leading-tight">
+                 {STEM_YIN_YANG[saju2.dayPillar.stem] ? '양(陽)' : '음(陰)'}의 {elementKoreanMap[elem2] || elem2}
+               </p>
+               <div className="space-y-1.5">
+                 {personality2.strength.slice(0, 3).map((s, i) => (
+                   <span key={i} className="block text-xs px-2 py-1 bg-[#EEF2FF] text-[#4F46E5] rounded-md">{s}</span>
+                 ))}
+                 {personality2.weakness.slice(0, 2).map((w, i) => (
+                   <span key={i} className="block text-xs px-2 py-1 bg-[#FFF0F5] text-[#E8387A] rounded-md">{w}</span>
+                 ))}
+               </div>
+             </div>
+           </div>
+           <p className="text-sm text-[#666] leading-relaxed">
+             {scores.total >= 75
+               ? `서로 다른 성격이지만, 차이를 이해하면 오히려 서로에게 배울 점이 많은 관계입니다.`
+               : `두 분의 성격은 서로를 잘 보완해주는 조합입니다.`}
+           </p>
+         </section>
+       )}
 
- {/* ===== 8. 재물 궁합 ===== */}
- <section>
- <h2 className="text-lg md:text-xl font-bold text-[#1a1a18] flex items-center gap-2 mb-4">
- <Zap className="w-5 h-5 text-yellow-600" />
- 재물 궁합
- <span className={`text-base md:text-sm font-bold ${getScoreColor(scores.wealthScore)}`}>({scores.wealthScore}점)</span>
- </h2>
- <Card className="rounded-xl overflow-hidden" data-result-card>
- <CardContent className="p-4 md:p-6 space-y-4">
- {wealthInterpretation.map((para, idx) => (
- <p key={idx} className="text-sm md:text-[15px] text-[#1a1a18]/90 leading-relaxed">{para}</p>
- ))}
- </CardContent>
- </Card>
- </section>
+       {/* ===== 5. 오행(五行) 조화 비교 ===== */}
+       <section className="result-card p-5">
+         <div className="result-section-header">
+           <Star className="w-4 h-4 text-[#7C5CFC]" />
+           오행(五行) 조화 비교
+         </div>
+         {/* 헤더 행 */}
+         <div className="flex items-center mb-3">
+           <span className="text-xs font-semibold text-[#7C5CFC] w-16 flex-shrink-0">{name1}</span>
+           <span className="flex-1 text-center text-xs text-[#999] font-medium">오행 분포</span>
+           <span className="text-xs font-semibold text-[#F59E0B] w-16 text-right flex-shrink-0">{name2}</span>
+         </div>
+         <div className="space-y-2.5">
+           {['木', '火', '土', '金', '水'].map((elem) => {
+             const v1 = balance1.find(b => b.name === elem)?.value || 0;
+             const v2 = balance2.find(b => b.name === elem)?.value || 0;
+             const elemSymbols: Record<string, string> = { '木': '木', '火': '火', '土': '土', '金': '金', '水': '水' };
+             return (
+               <div key={elem} className="flex items-center gap-2">
+                 {/* 왼쪽 바 (보라) */}
+                 <div className="flex-1 flex justify-end">
+                   <div className="flex items-center gap-1.5">
+                     <div className="w-20 h-2 bg-[#F0EEF8] rounded-full overflow-hidden flex justify-end">
+                       <motion.div
+                         initial={{ width: 0 }}
+                         animate={{ width: `${(v1 / 8) * 100}%` }}
+                         transition={{ duration: 0.8 }}
+                         className="h-full rounded-full bg-[#7C5CFC]"
+                         style={{ marginLeft: 'auto' }}
+                       />
+                     </div>
+                   </div>
+                 </div>
+                 {/* 중앙 레이블 */}
+                 <div className="flex flex-col items-center w-12 flex-shrink-0">
+                   <span className="text-sm font-bold text-[#1a1a18]">{elemSymbols[elem]}</span>
+                   <span className="text-[10px] text-[#999]">{v1}:{v2}</span>
+                 </div>
+                 {/* 오른쪽 바 (주황) */}
+                 <div className="flex-1">
+                   <div className="w-20 h-2 bg-[#FEF3C7] rounded-full overflow-hidden">
+                     <motion.div
+                       initial={{ width: 0 }}
+                       animate={{ width: `${(v2 / 8) * 100}%` }}
+                       transition={{ duration: 0.8 }}
+                       className="h-full rounded-full bg-[#F59E0B]"
+                     />
+                   </div>
+                 </div>
+               </div>
+             );
+           })}
+         </div>
+         {/* 오행 보완 분석 텍스트 */}
+         <div className="mt-4 pt-4 border-t border-[#F0EEF8] space-y-2">
+           {elementAnalysis1.weakest !== elementAnalysis2.weakest ? (
+             <p className="text-sm text-[#444] leading-relaxed">
+               {name1}님에게 부족한 <strong className="text-[#7C5CFC]">{withReading(elementAnalysis1.weakest)}</strong>의 기운을 {name2}님이 보완해줄 수 있고, {name2}님에게 부족한 <strong className="text-[#F59E0B]">{withReading(elementAnalysis2.weakest)}</strong>의 기운을 {name1}님이 채워줄 수 있는 <strong className="text-[#7C5CFC]">상호 보완적인 관계</strong>입니다.
+             </p>
+           ) : (
+             <p className="text-sm text-[#444] leading-relaxed">
+               두 분 모두 {withReading(elementAnalysis1.weakest)}의 기운이 부족합니다. {elementAnalysis1.supplement} 함께 이 부분을 보충하는 활동을 하면 좋겠습니다.
+             </p>
+           )}
+         </div>
+       </section>
 
- {/* ===== 9. 가정운 궁합 ===== */}
- <section>
- <h2 className="text-lg md:text-xl font-bold text-[#1a1a18] flex items-center gap-2 mb-4">
- <Home className="w-5 h-5 text-green-600" />
- 가정운 궁합
- <span className={`text-base md:text-sm font-bold ${getScoreColor(scores.familyScore)}`}>({scores.familyScore}점)</span>
- </h2>
- <Card className="rounded-xl overflow-hidden" data-result-card>
- <CardContent className="p-4 md:p-6 space-y-4">
- {familyInterpretation.map((para, idx) => (
- <p key={idx} className="text-sm md:text-[15px] text-[#1a1a18]/90 leading-relaxed">{para}</p>
- ))}
- </CardContent>
- </Card>
- </section>
+       {/* ===== 6. 애정운 궁합 ===== */}
+       <section className="result-card p-5">
+         <div className="result-section-header">
+           <Heart className="w-4 h-4 text-[#E8387A]" />
+           애정운 궁합
+         </div>
+         {/* 종합 점수 서브헤더 */}
+         <div className="flex items-center gap-2 mb-3">
+           <Heart className="w-3.5 h-3.5 text-[#E8387A]" />
+           <span className="text-sm text-[#555]">종합 점수</span>
+           <span className="ml-auto text-base font-bold text-[#E8387A]">{scores.loveScore}점</span>
+         </div>
+         <div className="w-full h-2 bg-[#FFF0F5] rounded-full overflow-hidden mb-4">
+           <motion.div
+             initial={{ width: 0 }}
+             animate={{ width: `${scores.loveScore}%` }}
+             transition={{ duration: 1, ease: "easeOut" }}
+             className="h-full rounded-full bg-[#E8387A]"
+           />
+         </div>
+         <div className="space-y-3">
+           {loveInterpretation.map((para, idx) => (
+             <p key={idx} className={`text-sm leading-relaxed ${idx === 0 || idx === 1 ? 'font-medium text-[#1a1a18]' : 'text-[#555]'}`}>
+               {para}
+             </p>
+           ))}
+         </div>
+         {/* 핑크 강조 박스 */}
+         {scores.loveScore < 80 && (
+           <div className="mt-4 p-3 rounded-xl bg-[#FFF0F5] border border-[#FFD6E7]">
+             <p className="text-sm text-[#E8387A] leading-relaxed">
+               서로의 다른 점을 인정하고 노력한다면 좋은 관계를 만들어 갈 수 있습니다.
+             </p>
+           </div>
+         )}
+       </section>
 
- {/* ===== 10. 갈등 포인트 및 해결 방법 ===== */}
- <section>
- <h2 className="text-lg md:text-xl font-bold text-[#1a1a18] flex items-center gap-2 mb-4">
- <AlertTriangle className="w-5 h-5 text-orange-600" />
- 갈등 포인트 및 해결 방법
- </h2>
- <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
- <Card className="bg-black/[0.05] border-orange-500/20 rounded-xl overflow-hidden">
- <CardHeader className="bg-orange-500/5 border-b border-black/10 py-3 px-4">
- <CardTitle className="text-base md:text-sm font-bold text-orange-600 flex items-center gap-2">
- <AlertTriangle className="w-4 h-4" /> 주의할 갈등 포인트
- </CardTitle>
- </CardHeader>
- <CardContent className="p-4">
- <ul className="space-y-3">
- {conflictAdvice.conflicts.map((c, i) => (
- <li key={i} className="text-base md:text-sm text-[#1a1a18] leading-relaxed flex items-start gap-2">
- <span className="w-1.5 h-1.5 bg-orange-400 rounded-full mt-1.5 flex-shrink-0" />
- {c}
- </li>
- ))}
- </ul>
- </CardContent>
- </Card>
- <Card className="bg-black/[0.05] border-green-500/20 rounded-xl overflow-hidden">
- <CardHeader className="bg-green-500/5 border-b border-black/10 py-3 px-4">
- <CardTitle className="text-base md:text-sm font-bold text-green-600 flex items-center gap-2">
- <CheckCircle2 className="w-4 h-4" /> 관계 개선 방법
- </CardTitle>
- </CardHeader>
- <CardContent className="p-4">
- <ul className="space-y-3">
- {conflictAdvice.solutions.map((s, i) => (
- <li key={i} className="text-base md:text-sm text-[#1a1a18] leading-relaxed flex items-start gap-2">
- <span className="w-1.5 h-1.5 bg-green-400 rounded-full mt-1.5 flex-shrink-0" />
- {s}
- </li>
- ))}
- </ul>
- </CardContent>
- </Card>
- </div>
- </section>
+       {/* ===== 7. 재물 궁합 ===== */}
+       <section className="result-card p-5">
+         <div className="result-section-header">
+           <Zap className="w-4 h-4 text-[#F59E0B]" />
+           재물 궁합
+         </div>
+         <div className="flex items-center gap-2 mb-3">
+           <Zap className="w-3.5 h-3.5 text-[#F59E0B]" />
+           <span className="text-sm text-[#555]">종합 점수</span>
+           <span className="ml-auto text-base font-bold text-[#F59E0B]">{scores.wealthScore}점</span>
+         </div>
+         <div className="w-full h-2 bg-[#FFFBEB] rounded-full overflow-hidden mb-4">
+           <motion.div
+             initial={{ width: 0 }}
+             animate={{ width: `${scores.wealthScore}%` }}
+             transition={{ duration: 1, ease: "easeOut" }}
+             className="h-full rounded-full bg-[#F59E0B]"
+           />
+         </div>
+         <div className="space-y-3">
+           {wealthInterpretation.map((para, idx) => (
+             <p key={idx} className="text-sm text-[#444] leading-relaxed">{para}</p>
+           ))}
+         </div>
+       </section>
 
- {/* ===== 11. 종합 조언 ===== */}
- <section>
- <h2 className="text-lg md:text-xl font-bold text-[#1a1a18] flex items-center gap-2 mb-4">
- <Sparkles className="w-5 h-5 text-[var(--compatibility-accent,#E8387A)]" />
- 전문가 종합 조언
- </h2>
- <Card className="bg-gradient-to-br from-pink-500/10 to-red-500/10 border-pink-500/20 rounded-xl overflow-hidden">
- <CardContent className="p-4 md:p-6 space-y-4">
- {finalAdvice.map((para, idx) => (
- <p key={idx} className="text-sm md:text-[15px] text-[#1a1a18]/90 leading-relaxed">{para}</p>
- ))}
- </CardContent>
- </Card>
- </section>
+       {/* ===== 8. 가정운 궁합 ===== */}
+       <section className="result-card p-5">
+         <div className="result-section-header">
+           <Home className="w-4 h-4 text-[#3B82F6]" />
+           가정운 궁합
+         </div>
+         <div className="flex items-center gap-2 mb-3">
+           <Home className="w-3.5 h-3.5 text-[#3B82F6]" />
+           <span className="text-sm text-[#555]">종합 점수</span>
+           <span className="ml-auto text-base font-bold text-[#3B82F6]">{scores.familyScore}점</span>
+         </div>
+         <div className="w-full h-2 bg-[#EFF6FF] rounded-full overflow-hidden mb-4">
+           <motion.div
+             initial={{ width: 0 }}
+             animate={{ width: `${scores.familyScore}%` }}
+             transition={{ duration: 1, ease: "easeOut" }}
+             className="h-full rounded-full bg-[#3B82F6]"
+           />
+         </div>
+         <div className="space-y-3">
+           {familyInterpretation.map((para, idx) => (
+             <p key={idx} className="text-sm text-[#444] leading-relaxed">{para}</p>
+           ))}
+         </div>
+       </section>
 
- {/* ===== 12. 십신(십성) 용어 설명 ===== */}
- <section>
- <SajuGlossary />
- </section>
+       {/* ===== 9. 갈등 포인트 및 해결 방법 ===== */}
+       <section className="result-card p-5">
+         <div className="result-section-header">
+           <AlertTriangle className="w-4 h-4 text-[#F59E0B]" />
+           갈등 포인트 및 해결 방법
+         </div>
+         <div className="grid grid-cols-2 gap-3">
+           {/* 주의할 갈등 */}
+           <div className="rounded-xl bg-[#FFFBEB] border border-[#FDE68A] p-3 space-y-2">
+             <div className="flex items-center gap-1.5 mb-2">
+               <AlertTriangle className="w-3.5 h-3.5 text-[#D97706]" />
+               <span className="text-xs font-bold text-[#D97706]">주의할 갈등</span>
+             </div>
+             <ul className="space-y-2">
+               {conflictAdvice.conflicts.map((c, i) => (
+                 <li key={i} className="text-xs text-[#555] leading-relaxed flex items-start gap-1.5">
+                   <span className="w-1 h-1 bg-[#F59E0B] rounded-full mt-1.5 flex-shrink-0" />
+                   {c}
+                 </li>
+               ))}
+             </ul>
+           </div>
+           {/* 관계 개선 방법 */}
+           <div className="rounded-xl bg-[#F0FDF4] border border-[#BBF7D0] p-3 space-y-2">
+             <div className="flex items-center gap-1.5 mb-2">
+               <CheckCircle2 className="w-3.5 h-3.5 text-[#16A34A]" />
+               <span className="text-xs font-bold text-[#16A34A]">관계 개선 방법</span>
+             </div>
+             <ul className="space-y-2">
+               {conflictAdvice.solutions.map((s, i) => (
+                 <li key={i} className="text-xs text-[#555] leading-relaxed flex items-start gap-1.5">
+                   <span className="w-1 h-1 bg-[#22C55E] rounded-full mt-1.5 flex-shrink-0" />
+                   {s}
+                 </li>
+               ))}
+             </ul>
+           </div>
+         </div>
+       </section>
 
- {/* ===== 하단 버튼 ===== */}
- <div className="space-y-2 pt-4">
- {saju1 && (
- <FortuneShareCard
- result={saju1}
- result2={saju2}
- userName={`${name1} ♥ ${name2}`}
- type="compatibility"
- name1={name1}
- name2={name2}
- score={scores.total}
- loveScore={scores.loveScore}
- familyScore={scores.familyScore}
- />
- )}
+       {/* ===== 10. 전문가 종합 조언 ===== */}
+       <section className="result-card p-5">
+         <div className="result-section-header">
+           <Shield className="w-4 h-4 text-[#7C5CFC]" />
+           전문가 종합 조언
+         </div>
+         <div className="space-y-4">
+           {finalAdvice.map((para, idx) => (
+             <p
+               key={idx}
+               className="text-sm text-[#444] leading-relaxed"
+               dangerouslySetInnerHTML={{
+                 __html: para.replace(
+                   /(노력에 따라 얼마든지 좋아질 수 있습니다|궁합이 나빠도 서로를 이해하는 마음이 있으면 누구보다 행복한 커플이 됩니다|가장 중요한 것은 두 분의 마음입니다)/g,
+                   '<strong class="text-[#7C5CFC]">$1</strong>'
+                 )
+               }}
+             />
+           ))}
+         </div>
+         {/* 초록 강조 박스 */}
+         <div className="mt-4 p-3 rounded-xl bg-[#F0FDF4] border border-[#BBF7D0]">
+           <p className="text-sm text-[#16A34A] leading-relaxed">
+             궁합은 참고 사항일 뿐, 두 사람의 관계를 결정짓는 절대적인 기준이 아닙니다. 가장 중요한 것은 두 분의 마음입니다.
+           </p>
+         </div>
+       </section>
 
- {/* 5단계: 공유 버튼 — Web Share API 스타일 (DictionaryDetail 동일 패턴) */}
- <button
-   onClick={handleShare}
-   className="w-full inline-flex items-center justify-center gap-2 h-11 rounded-xl border border-black/10 bg-white/80 text-sm font-medium text-[#4E5968] hover:border-[var(--compatibility-accent,#E8387A)]/40 hover:text-[var(--compatibility-accent,#E8387A)] hover:bg-[var(--compatibility-accent,#E8387A)]/05 transition-all shadow-sm"
- >
-   {shareCopied ? (
-     <>
-       <Check className="w-4 h-4 text-[var(--compatibility-accent,#E8387A)]" />
-       링크 복사됨
-     </>
-   ) : (
-     <>
-       <Share2 className="w-4 h-4" />
-       친구에게 공유하기
-     </>
-   )}
- </button>
+       {/* ===== 11. 두 사람의 사주팔자표 (아코디언) ===== */}
+       <section className="result-card overflow-hidden">
+         <Accordion type="single" collapsible>
+           <AccordionItem value="saju-chart" className="border-none">
+             <AccordionTrigger className="px-5 py-4 hover:no-underline">
+               <div className="flex items-center gap-2 text-sm font-bold text-[#1a1a18]">
+                 <Users className="w-4 h-4 text-[#7C5CFC]" />
+                 두 사람의 사주팔자(四柱八字)
+               </div>
+             </AccordionTrigger>
+             <AccordionContent className="px-5 pb-5 space-y-4">
+               <div>
+                 <div className="flex items-center gap-2 mb-2">
+                   <span className="w-5 h-5 rounded-full bg-[#7C5CFC] text-white text-[10px] font-bold flex items-center justify-center">1</span>
+                   <span className="text-sm font-bold text-[#7C5CFC]">{name1}님의 사주</span>
+                 </div>
+                 <div className="rounded-xl border border-[#E8E5F0] overflow-hidden">
+                   <SajuChart result={saju1} theme="purple" />
+                 </div>
+               </div>
+               <div>
+                 <div className="flex items-center gap-2 mb-2">
+                   <span className="w-5 h-5 rounded-full bg-[#F59E0B] text-white text-[10px] font-bold flex items-center justify-center">2</span>
+                   <span className="text-sm font-bold text-[#D97706]">{name2}님의 사주</span>
+                 </div>
+                 <div className="rounded-xl border border-[#F0EDE5] overflow-hidden">
+                   <SajuChart result={saju2} theme="purple" />
+                 </div>
+               </div>
+             </AccordionContent>
+           </AccordionItem>
+         </Accordion>
+       </section>
 
- <Button 
- variant="ghost"
- className="w-full text-[#5a5a56] hover:text-[#1a1a18] hover:bg-black/[0.05] h-11 rounded-xl font-medium text-base md:text-sm"
- onClick={() => setResult(null)}
- >
- 다른 정보로 다시 보기
- </Button>
- </div>
- {/* 콘텐츠 추천 섹션 */}
- <RecommendedContent />
- </motion.div>
- </main>
+       {/* ===== 12. 내 사주팔자 자세히 보기 배너 ===== */}
+       <Link href="/lifelong-saju">
+         <div className="result-card p-4 flex items-center gap-4 cursor-pointer hover:shadow-md transition-shadow">
+           <div className="w-12 h-12 rounded-xl bg-[#EEF2FF] flex items-center justify-center flex-shrink-0">
+             <Calendar className="w-6 h-6 text-[#7C5CFC]" />
+           </div>
+           <div className="flex-1 min-w-0">
+             <p className="text-sm font-bold text-[#1a1a18]">내 사주팔자 자세히 보기</p>
+             <p className="text-xs text-[#7C5CFC] mt-0.5">일간·십신·오행 상세 분석 →</p>
+           </div>
+           <ChevronDown className="w-5 h-5 text-[#7C5CFC] rotate-[-90deg] flex-shrink-0" />
+         </div>
+       </Link>
+
+       {/* ===== 13. 지금 읽어볼 만한 이야기 ===== */}
+       <RecommendedContent />
+
+       {/* ===== 14. 하단 다크 CTA 배너 ===== */}
+       <section
+         className="rounded-2xl overflow-hidden p-6 text-center space-y-4"
+         style={{ background: 'linear-gradient(160deg, #2D1B5E 0%, #1A0F3C 100%)' }}
+       >
+         <p className="text-xs text-white/50">다른 서비스도 확인해보세요</p>
+         <p className="text-xl font-bold text-white leading-snug">나의 오늘 운세는<br />어떨까요?</p>
+         <div className="flex gap-3 justify-center">
+           <Link href="/daily-fortune">
+             <button className="px-6 py-3 rounded-full bg-[#E8387A] text-white font-bold text-sm hover:bg-[#d42e6e] transition-colors">
+               오늘운세 보기
+             </button>
+           </Link>
+           <button
+             onClick={() => setResult(null)}
+             className="px-6 py-3 rounded-full bg-white/10 border border-white/20 text-white font-bold text-sm hover:bg-white/20 transition-colors"
+           >
+             다시 보기
+           </button>
+         </div>
+       </section>
+
+       {/* 공유 버튼 */}
+       <button
+         onClick={handleShare}
+         className="w-full inline-flex items-center justify-center gap-2 h-11 rounded-xl border border-[#E8E5F0] bg-white text-sm font-medium text-[#7C5CFC] hover:bg-[#EEF2FF] transition-all"
+       >
+         {shareCopied ? (
+           <>
+             <Check className="w-4 h-4" />
+             링크 복사됨
+           </>
+         ) : (
+           <>
+             <Share2 className="w-4 h-4" />
+             친구에게 공유하기
+           </>
+         )}
+       </button>
+
+     </motion.div>
+   </main>
  </div>
  </>
  );
