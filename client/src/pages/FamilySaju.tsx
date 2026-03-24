@@ -225,8 +225,8 @@ export default function FamilySaju() {
  animate={{ opacity: 1, y: 0 }}
  transition={{ delay: index * 0.1 }}
  >
- <Card className="bg-white/[0.03]" data-result-card>
- <CardHeader className="pb-3">
+ <Card className="bg-white border border-black/[0.06] shadow-sm" data-result-card>
+ <CardHeader className="pb-3 border-b border-black/[0.06]">
  <div className="flex items-center justify-between">
  <CardTitle className="text-base text-[#1a1a18] flex items-center gap-2">
  <span className="text-lg">{ROLE_OPTIONS.find(r => r.value === member.role)?.icon || "👤"}</span>
@@ -276,7 +276,7 @@ export default function FamilySaju() {
  placeholder="이름"
  value={member.name}
  onChange={(e) => updateMember(index, "name", e.target.value)}
- className="bg-black/[0.05] border-black/10 text-[#1a1a18] h-10"
+ className="h-10 bg-[#F7F5F3] border-[#E8E5E0] text-[#1a1a18] rounded-xl"
  />
  </div>
  <div className="space-y-1.5">
@@ -285,7 +285,7 @@ export default function FamilySaju() {
  type="single"
  value={member.gender}
  onValueChange={(v) => { if (v) updateMember(index, "gender", v); }}
- className="w-full h-9 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1"
+ className="w-full h-9 bg-[#F7F5F3] p-1 rounded-xl border border-[#E8E5E0] grid grid-cols-2 gap-1"
  >
  <ToggleGroupItem value="male" className="h-full rounded-lg text-sm md:text-xs data-[state=on]:bg-blue-500/30 data-[state=on]:text-blue-700">남성</ToggleGroupItem>
  <ToggleGroupItem value="female" className="h-full rounded-lg text-sm md:text-xs data-[state=on]:bg-pink-500/30 data-[state=on]:text-pink-700">여성</ToggleGroupItem>
@@ -331,7 +331,7 @@ export default function FamilySaju() {
  type="single"
  value={member.calendarType}
  onValueChange={(v) => { if (v) updateMember(index, "calendarType", v); }}
- className="w-full h-9 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1"
+ className="w-full h-9 bg-[#F7F5F3] p-1 rounded-xl border border-[#E8E5E0] grid grid-cols-2 gap-1"
  >
  <ToggleGroupItem value="solar" className="h-full rounded-lg text-sm md:text-xs data-[state=on]:bg-primary/30 data-[state=on]:text-primary">양력</ToggleGroupItem>
  <ToggleGroupItem value="lunar" className="h-full rounded-lg text-sm md:text-xs data-[state=on]:bg-primary/30 data-[state=on]:text-primary">음력</ToggleGroupItem>
@@ -346,7 +346,7 @@ export default function FamilySaju() {
  type="checkbox"
  checked={member.isLeapMonth}
  onChange={(e) => updateMember(index, "isLeapMonth", e.target.checked)}
- className="w-4 h-4 rounded border-black/10 bg-black/[0.05] accent-primary"
+ className="w-4 h-4 rounded border-[#E8E5E0] bg-[#F7F5F3] accent-primary"
  />
  <span className="text-base md:text-sm text-[#1a1a18] group-hover:text-primary transition-colors">윤달(Leap Month)인 경우 체크</span>
  </label>

@@ -144,7 +144,7 @@ export default function PastLife() {
   const elementEmoji = result ? (ELEMENT_EMOJI[result.element] ?? "✨") : "";
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased">
       <Helmet>
         <title>전생 체험 - 나의 전생은? | 무운 (MuUn)</title>
         <meta
@@ -157,25 +157,23 @@ export default function PastLife() {
         <meta property="og:description" content="생년월일로 알아보는 나의 전생 이야기. AI가 당신의 전생을 생생하게 묘사해드립니다." />
       </Helmet>
 
-      <div className="container max-w-2xl mx-auto px-4 py-8">
-        {/* 헤더 */}
-        <div className="mb-8">
+      {/* Background Effects */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-violet-900/10 rounded-full blur-[120px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-pink-900/10 rounded-full blur-[120px]" />
+      </div>
+      <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
+        <div className="max-w-2xl mx-auto px-4 h-14 flex items-center">
           <Link href="/">
-            <Button variant="ghost" size="sm" className="text-foreground/60 hover:text-foreground mb-4 -ml-2">
-              <ChevronLeft className="w-4 h-4 mr-1" />
-              홈으로
+            <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
+              <ChevronLeft className="h-6 w-6" />
             </Button>
           </Link>
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 rounded-xl bg-violet-500/20 flex items-center justify-center">
-              <Scroll className="w-5 h-5 text-violet-400" />
-            </div>
-            <h1 className="text-2xl font-black tracking-tight">전생 체험</h1>
-          </div>
-          <p className="text-sm text-foreground/50">
-            생년월일로 알아보는 나의 전생 이야기
-          </p>
+          <h1 className="text-lg md:text-xl font-bold text-[#1a1a18]">무료 전생 체험</h1>
         </div>
+      </header>
+      <main className="relative z-10 px-4 py-6 md:py-8">
+      <div className="max-w-2xl mx-auto">
 
         <AnimatePresence mode="wait">
           {/* 입력 폼 */}
@@ -186,78 +184,94 @@ export default function PastLife() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.3 }}
+              className="space-y-5"
             >
+              {/* 헤더 타이틀 */}
+              <div className="text-center space-y-2">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-500/10 border border-violet-500/20 backdrop-blur-xl">
+                  <Scroll className="w-3 h-3 text-violet-500" />
+                  <span className="text-[10px] md:text-xs font-bold tracking-wider text-violet-500 uppercase">Past Life Reading</span>
+                </div>
+                <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-[#1a1a18]">전생 체험</h2>
+                <p className="text-muted-foreground text-xs md:text-sm">생년월일로 알아보는 나의 전생 이야기</p>
+              </div>
+
               {/* 안내 카드 */}
-              <div className="rounded-2xl border border-violet-500/20 bg-violet-500/5 p-5 mb-6">
+              <div className="rounded-2xl border border-violet-500/20 bg-violet-500/5 p-4">
                 <p className="text-sm text-foreground/70 leading-relaxed">
-                  수천 년의 시간을 거슬러 올라가 당신의 전생을 탐색합니다.
+                  수체년의 시간을 거슬러 올라가 당신의 전생을 탐색합니다.
                   생년월일의 기운을 분석하여 당신이 어떤 시대, 어떤 모습으로
                   살았는지 AI 영매사가 생생하게 들려드립니다.
                 </p>
               </div>
 
               {/* 생년월일 입력 */}
-              <div className="rounded-2xl border border-black/10 bg-black/[0.05] p-6 mb-4" data-misc-card>
-                <h2 className="text-sm font-bold text-foreground/60 uppercase tracking-widest mb-4">
-                  생년월일 입력
-                </h2>
-                <div className="grid grid-cols-3 gap-3 mb-6">
-                  <div>
-                    <label className="text-xs text-foreground/50 mb-1 block">년도</label>
-                    <input
-                      type="number"
-                      placeholder="1990"
-                      value={birthYear}
-                      onChange={(e) => setBirthYear(e.target.value)}
-                      className="w-full bg-black/[0.05] border border-black/10 rounded-xl px-3 py-3 text-sm text-center focus:outline-none focus:border-violet-500/50 focus:bg-black/06 transition-all"
-                      min={1900}
-                      max={currentYear}
-                    />
+              <div className="bg-white border border-black/[0.06] shadow-sm rounded-2xl p-5 md:p-6" data-misc-card>
+                <div className="space-y-4">
+                  <div className="space-y-1.5">
+                    <label className="text-sm font-semibold text-[#1a1a18] flex items-center gap-1.5">
+                      <Scroll className="w-3.5 h-3.5 text-violet-500" />
+                      생년월일
+                    </label>
+                    <div className="grid grid-cols-3 gap-3">
+                      <div>
+                        <label className="text-xs text-[#b0ada6] mb-1 block">년도</label>
+                        <input
+                          type="number"
+                          placeholder="1990"
+                          value={birthYear}
+                          onChange={(e) => setBirthYear(e.target.value)}
+                          className="w-full h-11 bg-[#F7F5F3] border border-[#E8E5E0] rounded-xl px-3 text-sm text-center text-[#1a1a18] placeholder:text-[#b0ada6] focus:outline-none focus:border-violet-500/50 transition-all"
+                          min={1900}
+                          max={currentYear}
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs text-[#b0ada6] mb-1 block">월</label>
+                        <input
+                          type="number"
+                          placeholder="1"
+                          value={birthMonth}
+                          onChange={(e) => setBirthMonth(e.target.value)}
+                          className="w-full h-11 bg-[#F7F5F3] border border-[#E8E5E0] rounded-xl px-3 text-sm text-center text-[#1a1a18] placeholder:text-[#b0ada6] focus:outline-none focus:border-violet-500/50 transition-all"
+                          min={1}
+                          max={12}
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs text-[#b0ada6] mb-1 block">일</label>
+                        <input
+                          type="number"
+                          placeholder="1"
+                          value={birthDay}
+                          onChange={(e) => setBirthDay(e.target.value)}
+                          className="w-full h-11 bg-[#F7F5F3] border border-[#E8E5E0] rounded-xl px-3 text-sm text-center text-[#1a1a18] placeholder:text-[#b0ada6] focus:outline-none focus:border-violet-500/50 transition-all"
+                          min={1}
+                          max={31}
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <label className="text-xs text-foreground/50 mb-1 block">월</label>
-                    <input
-                      type="number"
-                      placeholder="1"
-                      value={birthMonth}
-                      onChange={(e) => setBirthMonth(e.target.value)}
-                      className="w-full bg-black/[0.05] border border-black/10 rounded-xl px-3 py-3 text-sm text-center focus:outline-none focus:border-violet-500/50 focus:bg-black/06 transition-all"
-                      min={1}
-                      max={12}
-                    />
-                  </div>
-                  <div>
-                    <label className="text-xs text-foreground/50 mb-1 block">일</label>
-                    <input
-                      type="number"
-                      placeholder="1"
-                      value={birthDay}
-                      onChange={(e) => setBirthDay(e.target.value)}
-                      className="w-full bg-black/[0.05] border border-black/10 rounded-xl px-3 py-3 text-sm text-center focus:outline-none focus:border-violet-500/50 focus:bg-black/06 transition-all"
-                      min={1}
-                      max={31}
-                    />
-                  </div>
-                </div>
 
-                {/* 성별 선택 */}
-                <h2 className="text-sm font-bold text-foreground/60 uppercase tracking-widest mb-3">
-                  성별 (선택)
-                </h2>
-                <div className="grid grid-cols-3 gap-2">
-                  {(["male", "female", "unknown"] as const).map((g) => (
-                    <button
-                      key={g}
-                      onClick={() => setGender(g)}
-                      className={`py-2.5 rounded-xl text-sm font-bold transition-all border ${
-                        gender === g
-                          ? "bg-violet-500/20 border-violet-500/50 text-violet-700"
-                          : "bg-black/[0.05] border-black/10 text-foreground/50 hover:bg-black/[0.06]"
-                      }`}
-                    >
-                      {g === "male" ? "남성" : g === "female" ? "여성" : "선택 안 함"}
-                    </button>
-                  ))}
+                  {/* 성별 선택 */}
+                  <div className="space-y-1.5">
+                    <label className="text-sm font-semibold text-[#1a1a18]">성별 (선택)</label>
+                    <div className="grid grid-cols-3 gap-2">
+                      {(["male", "female", "unknown"] as const).map((g) => (
+                        <button
+                          key={g}
+                          onClick={() => setGender(g)}
+                          className={`h-11 rounded-xl text-sm font-medium transition-all border ${
+                            gender === g
+                              ? "bg-violet-500/20 border-violet-500/50 text-violet-700"
+                              : "bg-[#F7F5F3] border-[#E8E5E0] text-[#5a5a56] hover:bg-black/[0.06]"
+                          }`}
+                        >
+                          {g === "male" ? "남성" : g === "female" ? "여성" : "선택 안 함"}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -273,7 +287,7 @@ export default function PastLife() {
               <Button
                 onClick={handleReveal}
                 disabled={isLoading}
-                className="w-full h-14 rounded-2xl bg-violet-600 hover:bg-violet-500 text-[#1a1a18] font-black text-base transition-all shadow-[0_0_30px_rgba(139,92,246,0.3)] hover:shadow-[0_0_40px_rgba(139,92,246,0.5)]"
+                className="w-full h-12 rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] hover:from-[#7C3AED] hover:to-[#6D28D9] text-white font-bold text-sm md:text-base transition-all shadow-lg shadow-[#8B5CF6]/20 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:hover:scale-100"
               >
                 {isLoading ? (
                   <>
@@ -376,7 +390,7 @@ export default function PastLife() {
               <Button
                 onClick={handleReset}
                 variant="outline"
-                className="w-full h-12 rounded-2xl border-black/10 hover:bg-black/[0.05] font-bold"
+                className="w-full h-11 rounded-xl border-black/10 text-[#1a1a18] hover:bg-black/[0.05] font-medium"
               >
                 <RefreshCw className="w-4 h-4 mr-2" />
                 다시 탐색하기
@@ -406,6 +420,7 @@ export default function PastLife() {
           )}
         </AnimatePresence>
       </div>
+      </main>
     </div>
   );
 }

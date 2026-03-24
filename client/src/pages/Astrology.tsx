@@ -317,52 +317,60 @@ const Astrology: React.FC = () => {
               </p>
             </div>
 
-            <Card className="bg-black/[0.05] border-black/10 shadow-2xl backdrop-blur-xl relative z-10 rounded-2xl">
-              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-primary/50 via-purple-500/50 to-blue-500/50" />
-              <CardHeader className="p-4 md:p-6">
-                <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-base md:text-lg">
-                  <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-primary/20 flex items-center justify-center">
-                    <Star className="w-4 h-4 md:w-5 md:h-5 text-primary" />
+            <Card className="bg-white border border-black/[0.06] shadow-sm relative z-10 rounded-2xl overflow-hidden">
+              <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6 md:py-4">
+                <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-base">
+                  <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
+                    <Star className="w-4 h-4 text-primary" />
                   </div>
                   탄생 정보 입력
                 </CardTitle>
               </CardHeader>
-              <CardContent className="p-4 md:p-6 pt-0">
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5 md:space-y-6">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="birthDate" className="text-[#5a5a56] text-xs md:text-sm font-medium">생년월일</Label>
+              <CardContent className="p-4 md:p-6">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="space-y-1.5">
+                      <Label htmlFor="birthDate" className="text-[#1a1a18] text-sm font-medium flex items-center gap-1.5">
+                        <Sun className="w-3.5 h-3.5 text-primary" />
+                        생년월일
+                      </Label>
                       <Input
                         id="birthDate"
                         type="date"
                         {...form.register("birthDate")}
-                        className="bg-black/[0.05] border-black/10 text-[#1a1a18] min-h-[48px] focus:ring-primary/50 rounded-xl"
+                        className="h-11 bg-[#F7F5F3] border-[#E8E5E0] text-[#1a1a18] focus:ring-primary/50 rounded-xl"
                       />
                     </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="birthTime" className="text-[#5a5a56] text-xs md:text-sm font-medium">태어난 시간</Label>
+                    <div className="space-y-1.5">
+                      <Label htmlFor="birthTime" className="text-[#1a1a18] text-sm font-medium flex items-center gap-1.5">
+                        <Moon className="w-3.5 h-3.5 text-primary" />
+                        태어난 시간
+                      </Label>
                       <div className="space-y-2">
                         <Input
                           id="birthTime"
                           type="time"
                           {...form.register("birthTime")}
                           disabled={form.watch("birthTimeUnknown")}
-                          className={`bg-black/[0.05] border-black/10 text-[#1a1a18] min-h-[48px] focus:ring-primary/50 rounded-xl ${form.watch("birthTimeUnknown") ? 'opacity-40' : ''}`}
+                          className={`h-11 bg-[#F7F5F3] border-[#E8E5E0] text-[#1a1a18] focus:ring-primary/50 rounded-xl ${form.watch("birthTimeUnknown") ? 'opacity-40' : ''}`}
                         />
-                        <label className="flex items-center gap-1.5 cursor-pointer">
+                        <label className="flex items-center gap-2 cursor-pointer group px-1">
                           <input
                             type="checkbox"
                             {...form.register("birthTimeUnknown")}
-                            className="w-3.5 h-3.5 rounded border-black/10 bg-black/[0.05] accent-primary"
+                            className="w-4 h-4 rounded border-[#E8E5E0] bg-[#F7F5F3] accent-primary"
                           />
-                          <span className="text-[11px] text-[#5a5a56]">모름</span>
+                          <span className="text-sm text-[#1a1a18] group-hover:text-primary transition-colors">시간 모름</span>
                         </label>
                       </div>
                     </div>
                   </div>
 
-                  <div className="space-y-2 relative z-20">
-                    <Label className="text-[#5a5a56] text-xs md:text-sm font-medium">태어난 도시</Label>
+                  <div className="space-y-1.5 relative z-20">
+                    <Label className="text-[#1a1a18] text-sm font-medium flex items-center gap-1.5">
+                      <MapPin className="w-3.5 h-3.5 text-primary" />
+                      태어난 도시
+                    </Label>
                     <CitySelector 
                       value={form.watch("birthCity")} 
                       onChange={(city) => form.setValue("birthCity", city)}
@@ -372,7 +380,7 @@ const Astrology: React.FC = () => {
                   <Button 
                     type="submit" 
                     disabled={loading}
-                    className="w-full min-h-[48px] md:min-h-[56px] bg-primary hover:bg-primary/90 text-background font-bold text-base md:text-lg rounded-xl transition-all hover:scale-[1.02] active:scale-[0.98]"
+                    className="w-full h-12 bg-gradient-to-r from-[#6366F1] to-[#4F46E5] hover:from-[#4F46E5] hover:to-[#4338CA] text-white font-bold text-sm md:text-base rounded-xl shadow-lg shadow-[#6366F1]/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
                   >
                     {loading ? (
                       <div className="flex items-center gap-2">

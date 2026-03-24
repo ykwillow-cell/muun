@@ -90,6 +90,7 @@ const formSchema = z.object({
   birthTime: z.string(),
   birthTimeUnknown: z.boolean(),
   calendarType: z.enum(["solar", "lunar"]),
+  isLeapMonth: z.boolean().default(false),
   customStrokes: z.string().optional(),
 });
 type FormValues = z.infer<typeof formSchema>;
@@ -490,6 +491,7 @@ export default function Naming() {
       birthTime: "12:00",
       birthTimeUnknown: false,
       calendarType: "solar",
+      isLeapMonth: false,
       customStrokes: "",
     },
   });
@@ -529,7 +531,8 @@ export default function Naming() {
       const birthDateObj = convertToSolarDate(
         data.birthDate,
         time,
-        data.calendarType
+        data.calendarType,
+        data.isLeapMonth
       );
       const saju = calculateSaju(birthDateObj, data.gender);
 
@@ -847,6 +850,19 @@ export default function Naming() {
                         음력
                       </ToggleGroupItem>
                     </ToggleGroup>
+                    {/* 윤달 여부 (음력일 때만 표시) */}
+                    {form.watch("calendarType") === "lunar" && (
+                      <div className="flex items-center gap-2 px-1">
+                        <label className="flex items-center gap-2 cursor-pointer group">
+                          <input
+                            type="checkbox"
+                            {...form.register("isLeapMonth")}
+                            className="w-4 h-4 rounded border-black/10 bg-black/[0.05] accent-[#6B5FFF]"
+                          />
+                          <span className="text-sm text-[#191F28] group-hover:text-[#6B5FFF] transition-colors">윤달(Leap Month)인 경우 체크</span>
+                        </label>
+                      </div>
+                    )}
                   </div>
 
                   {/* 안내 */}

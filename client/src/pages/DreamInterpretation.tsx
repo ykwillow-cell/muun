@@ -200,8 +200,8 @@ const DreamInterpretation: React.FC = () => {
                 if (selectedDream) setSelectedDream(null);
                 if (activeCategory) setActiveCategory(null);
               }}
-              placeholder="어떤 꿈을 꾸셨나요? (예: 돼지, 물, 불)"
-              className="w-full pl-12 pr-12 py-4 bg-card border border-black/10 rounded-2xl text-lg focus:outline-none focus:ring-2 focus:ring-primary/50 shadow-inner transition-all"
+              placeholder="어떤 껼을 꼼으셨나요? (예: 돼지, 물, 불)"
+              className="w-full pl-12 pr-12 h-14 bg-white border border-black/[0.06] shadow-sm rounded-2xl text-base text-[#1a1a18] placeholder:text-[#b0ada6] focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
             />
             {searchTerm && (
               <button 
@@ -308,7 +308,7 @@ const DreamInterpretation: React.FC = () => {
                             transition={{ duration: 0.3, delay: idx * 0.04 }}
                             whileTap={{ scale: 0.98 }}
                             onClick={() => handleSelectDream(dream)}
-                            className="group flex items-center justify-between p-5 rounded-2xl border hover:border-primary/50 hover:bg-black/[0.06] transition-all cursor-pointer" data-dream-card
+                            className="group flex items-center justify-between p-4 rounded-xl bg-white border border-black/[0.06] shadow-sm hover:border-primary/50 hover:shadow-md transition-all cursor-pointer" data-dream-card
                           >
                             <div className="flex items-center gap-4">
                               <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors ${gradeConfig[grade].bg.replace('from-', 'bg-').replace('/20 to-transparent', '/20')} border ${gradeConfig[grade].border}`}>
@@ -335,7 +335,7 @@ const DreamInterpretation: React.FC = () => {
                         );
                       })
                     ) : (
-                      <div className="text-center py-20 bg-black/[0.05] rounded-3xl border border-dashed border-black/10">
+                      <div className="text-center py-20 bg-white border border-dashed border-black/[0.06] shadow-sm rounded-2xl">
                         <Info className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                         <p className="text-lg text-[#999891]">검색 결과가 없습니다.</p>
                         <p className="text-sm text-[#5a5a56] mt-2">다른 키워드로 검색해 보세요.</p>
@@ -352,15 +352,15 @@ const DreamInterpretation: React.FC = () => {
                   </h2>
                   <div className="grid grid-cols-1 gap-2">
                     {[
-                      { label: "돼지꿈", key: "돼지" },
-                      { label: "돈 받는 꿈", key: "돈" },
-                      { label: "불나는 꿈", key: "불" },
-                      { label: "조상님 꿈", key: "조상" }
+                      { label: "돼지껼", key: "돼지" },
+                      { label: "돈 받는 껼", key: "돈" },
+                      { label: "불나는 껼", key: "불" },
+                      { label: "조상님 껼", key: "조상" }
                     ].map((item, idx) => (
                       <button
                         key={idx}
                         onClick={() => handleTagClick(item.key)}
-                        className="flex items-center justify-between p-4 rounded-xl bg-black/[0.05] border border-black/10 hover:border-primary/30 transition-all text-left group"
+                        className="flex items-center justify-between p-4 rounded-xl bg-white border border-black/[0.06] shadow-sm hover:border-primary/30 hover:shadow-md transition-all text-left group"
                       >
                         <span className="text-[#1a1a18] group-hover:text-primary transition-colors">{item.label}</span>
                         <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />

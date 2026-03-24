@@ -255,21 +255,24 @@ export default function Tarot() {
                 exit={{ opacity: 0, scale: 0.95 }}
                 className="space-y-6 md:space-y-8"
               >
-                <div className="bg-black/[0.05] border border-black/10 p-5 md:p-8 rounded-2xl space-y-6">
+                <div className="bg-white border border-black/[0.06] shadow-sm p-5 md:p-8 rounded-2xl space-y-6">
                   <div className="space-y-3">
-                    <label className="text-base md:text-lg font-bold text-[#1a1a18] block">어떤 고민이 있으신가요?</label>
+                    <label className="text-sm font-semibold text-[#1a1a18] flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-primary" />
+                      어떤 고민이 있으신가요?
+                    </label>
                     <textarea
                       value={question}
                       onChange={(e) => setQuestion(e.target.value)}
                       placeholder="예: 올해 연애운이 궁금해요. / 이직을 고민 중인데 잘 될까요?"
-                      className="w-full min-h-[120px] md:min-h-[150px] bg-black/[0.05] border border-black/10 rounded-xl p-4 md:p-5 text-sm md:text-base focus:outline-none focus:border-primary/50 transition-colors resize-none"
+                      className="w-full min-h-[120px] md:min-h-[150px] h-11 bg-[#F7F5F3] border border-[#E8E5E0] rounded-xl p-4 md:p-5 text-sm text-[#1a1a18] placeholder:text-[#b0ada6] focus:outline-none focus:border-primary/50 transition-colors resize-none min-h-[120px] md:min-h-[150px]"
                       disabled={isLoading}
                     />
                   </div>
                   <Button 
                     onClick={handleStart}
                     disabled={isLoading}
-                    className="w-full min-h-[48px] md:min-h-[56px] rounded-xl text-base md:text-lg font-bold gap-2 shadow-[0_0_20px_rgba(255,215,0,0.2)] disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full h-12 rounded-xl text-sm md:text-base font-bold gap-2 bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] hover:from-[#7C3AED] hover:to-[#6D28D9] text-white shadow-lg shadow-[#8B5CF6]/20 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                   >
                     상담 시작하기 <ChevronRight className="w-5 h-5" />
                   </Button>
@@ -429,7 +432,7 @@ export default function Tarot() {
                 </div>
 
                 {isLoading ? (
-                  <div className=" border rounded-2xl p-6 md:p-10 space-y-6" data-tarot-result-card>
+                  <div className="bg-white border border-black/[0.06] shadow-sm rounded-2xl p-6 md:p-10 space-y-6" data-tarot-result-card>
                     <div className="flex flex-col items-center justify-center py-8 space-y-4">
                       <div className="relative">
                         <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
@@ -474,7 +477,7 @@ export default function Tarot() {
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className=" border rounded-2xl p-5 md:p-8 space-y-6" data-tarot-result-card
+                    className="bg-white border border-black/[0.06] shadow-sm rounded-2xl p-5 md:p-8 space-y-6" data-tarot-result-card
                   >
                     <div>
                       <h3 className="text-lg md:text-xl font-bold text-primary mb-4">타로의 메시지</h3>
@@ -487,7 +490,7 @@ export default function Tarot() {
                       <Button 
                         onClick={handleSaveReading}
                         disabled={isSaved || isSaving}
-                        className="w-full gap-2"
+                        className="w-full h-11 gap-2 bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] hover:from-[#7C3AED] hover:to-[#6D28D9] text-white rounded-xl font-bold shadow-lg shadow-[#8B5CF6]/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
                       >
                         <Info className="w-4 h-4" />
                         {isSaved ? "저장됨" : isSaving ? "저장 중..." : "상담 기록 저장"}
@@ -495,7 +498,7 @@ export default function Tarot() {
                       <Button 
                         onClick={resetTarot}
                         variant="outline"
-                        className="w-full gap-2"
+                        className="w-full h-11 gap-2 border-black/10 text-[#1a1a18] hover:bg-black/[0.05] rounded-xl font-medium"
                       >
                         <RefreshCw className="w-4 h-4" />
                         새로운 상담 시작

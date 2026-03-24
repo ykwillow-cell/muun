@@ -196,21 +196,21 @@ export default function Psychology() {
                   </p>
                 </section>
 
-                <Card className="bg-black/[0.05] border-black/10 overflow-hidden rounded-2xl" data-misc-card>
-                  <div className="aspect-video bg-gradient-to-br from-purple-600/50 to-pink-600/50 flex items-center justify-center">
-                    <div className="w-20 h-20 md:w-24 md:h-24 rounded-3xl bg-black/06 backdrop-blur-xl flex items-center justify-center">
-                      <Sparkles className="w-10 h-10 md:w-12 md:h-12 text-[#1a1a18] animate-pulse" />
+                <Card className="bg-white border border-black/[0.06] shadow-sm overflow-hidden rounded-2xl" data-misc-card>
+                  <div className="aspect-video bg-gradient-to-br from-[#10B981]/20 to-[#059669]/20 flex items-center justify-center">
+                    <div className="w-20 h-20 md:w-24 md:h-24 rounded-3xl bg-white/40 backdrop-blur-xl flex items-center justify-center border border-white/30">
+                      <Sparkles className="w-10 h-10 md:w-12 md:h-12 text-[#10B981] animate-pulse" />
                     </div>
                   </div>
-                  <CardContent className="p-6 md:p-8 text-center space-y-4">
-                    <div className="w-12 h-12 rounded-xl bg-purple-500/20 flex items-center justify-center mx-auto">
+                  <CardContent className="p-5 md:p-6 text-center space-y-4">
+                    <div className="w-12 h-12 rounded-xl bg-[#10B981]/10 flex items-center justify-center mx-auto">
                       {test.icon}
                     </div>
                     <h3 className="text-lg md:text-xl font-bold text-[#1a1a18]">{test.title}</h3>
-                    <p className="text-sm md:text-base text-muted-foreground">{test.description}</p>
+                    <p className="text-sm text-muted-foreground">{test.description}</p>
                     <Button 
                       onClick={handleStart}
-                      className="w-full min-h-[48px] md:min-h-[56px] text-base md:text-lg font-bold bg-primary hover:bg-primary/90 rounded-xl mt-4"
+                      className="w-full h-12 text-sm md:text-base font-bold bg-gradient-to-r from-[#10B981] to-[#059669] hover:from-[#059669] hover:to-[#047857] text-white rounded-xl shadow-lg shadow-[#10B981]/20 transition-all hover:scale-[1.02] active:scale-[0.98] mt-2"
                     >
                       테스트 시작하기
                     </Button>
@@ -243,20 +243,20 @@ export default function Psychology() {
                   </div>
                 </div>
                 
-                <Card className="bg-black/[0.05] border-black/10 rounded-2xl p-6 md:p-8" data-misc-card>
-                  <h2 className="text-lg md:text-xl font-bold text-[#1a1a18] leading-relaxed mb-6 md:mb-8">
+                <Card className="bg-white border border-black/[0.06] shadow-sm rounded-2xl p-5 md:p-6" data-misc-card>
+                  <h2 className="text-base md:text-lg font-bold text-[#1a1a18] leading-relaxed mb-5">
                     {test.questions[currentQuestion].question}
                   </h2>
 
-                  <div className="grid gap-3 md:gap-4">
+                  <div className="grid gap-3">
                     {test.questions[currentQuestion].options.map((option, idx) => (
                       <Button
                         key={idx}
                         variant="outline"
-                        className="h-auto min-h-[56px] py-4 px-5 text-left justify-start bg-black/[0.05] border-black/10 hover:bg-black/[0.06] hover:border-primary/50 transition-all rounded-xl"
+                        className="h-auto min-h-[52px] py-3.5 px-4 text-left justify-start bg-[#F7F5F3] border-[#E8E5E0] hover:bg-[#10B981]/10 hover:border-[#10B981]/50 hover:text-[#10B981] transition-all rounded-xl"
                         onClick={() => handleAnswer(option.score)}
                       >
-                        <span className="text-sm md:text-base text-[#1a1a18]">{option.text}</span>
+                        <span className="text-sm text-[#1a1a18]">{option.text}</span>
                       </Button>
                     ))}
                   </div>
@@ -271,32 +271,32 @@ export default function Psychology() {
                 animate={{ opacity: 1, scale: 1 }}
                 className="space-y-6 md:space-y-8"
               >
-                <Card className="bg-black/[0.05] border-black/10 overflow-hidden rounded-2xl" data-misc-card>
-                  <div className="p-6 md:p-8 text-center space-y-6">
-                    <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-primary/20 flex items-center justify-center mx-auto">
-                      <Target className="w-8 h-8 md:w-10 md:h-10 text-primary" />
+                <Card className="bg-white border border-black/[0.06] shadow-sm overflow-hidden rounded-2xl" data-misc-card>
+                  <div className="p-5 md:p-6 text-center space-y-5">
+                    <div className="w-16 h-16 md:w-20 md:h-20 rounded-2xl bg-[#10B981]/10 flex items-center justify-center mx-auto">
+                      <Target className="w-8 h-8 md:w-10 md:h-10 text-[#10B981]" />
                     </div>
-                    <div className="space-y-2">
-                      <p className="text-sm md:text-base text-primary font-medium">당신의 심리 분석 결과</p>
+                    <div className="space-y-1.5">
+                      <p className="text-sm text-[#10B981] font-medium">당신의 심리 분석 결과</p>
                       <h2 className="text-2xl md:text-3xl font-bold text-[#1a1a18]">{finalResult.title}</h2>
                     </div>
                     
-                    <div className="p-5 md:p-6 rounded-2xl bg-black/[0.05] border border-black/10 text-left">
-                      <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+                    <div className="p-4 md:p-5 rounded-xl bg-[#F7F5F3] border border-[#E8E5E0] text-left">
+                      <p className="text-sm text-muted-foreground leading-relaxed">
                         {finalResult.desc}
                       </p>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-3 md:gap-4 pt-4">
+                    <div className="grid grid-cols-2 gap-3 pt-2">
                       <Button 
                         variant="outline" 
-                        className="gap-2 border-black/10 min-h-[48px] rounded-xl"
+                        className="gap-2 h-11 border-black/10 text-[#1a1a18] hover:bg-black/[0.05] rounded-xl font-medium"
                         onClick={handleStart}
                       >
                         <RefreshCw className="w-4 h-4" /> 다시하기
                       </Button>
                       <Button 
-                        className="gap-2 min-h-[48px] rounded-xl"
+                        className="gap-2 h-11 bg-gradient-to-r from-[#10B981] to-[#059669] hover:from-[#059669] hover:to-[#047857] text-white rounded-xl font-bold shadow-lg shadow-[#10B981]/20"
                         onClick={handleShare}
                       >
                         <Share2 className="w-4 h-4" /> 공유하기

@@ -56,6 +56,7 @@ const formSchema = z.object({
  birthTime: z.string().default("12:30"),
  birthTimeUnknown: z.boolean().default(false),
  calendarType: z.enum(["solar", "lunar"]),
+ isLeapMonth: z.boolean().default(false),
  isMarried: z.enum(["yes", "no"]),
 });
 
@@ -152,6 +153,7 @@ export default function LifelongSaju() {
  birthTime: "12:30",
  birthTimeUnknown: false,
  calendarType: "solar",
+ isLeapMonth: false,
  isMarried: "no",
  },
  });
@@ -208,7 +210,7 @@ export default function LifelongSaju() {
  const time = data.birthTimeUnknown ? "12:00" : data.birthTime;
  // convertToSolarDate는 문자열 형식의 날짜를 받아야 함 (YYYY-MM-DD)
  const birthDateStrForConverter = `${birthDateObj.getFullYear()}-${String(birthDateObj.getMonth() + 1).padStart(2, '0')}-${String(birthDateObj.getDate()).padStart(2, '0')}`;
- const date = convertToSolarDate(birthDateStrForConverter, time, data.calendarType);
+ const date = convertToSolarDate(birthDateStrForConverter, time, data.calendarType, data.isLeapMonth);
  const sajuResult = calculateSaju(date, data.gender);
  setResult(sajuResult);
  window.scrollTo(0, 0);
@@ -379,6 +381,19 @@ export default function LifelongSaju() {
  음력
  </ToggleGroupItem>
  </ToggleGroup>
+ {/* 윤달 여부 (음력일 때만 표시) */}
+ {form.watch("calendarType") === "lunar" && (
+ <div className="flex items-center gap-2 px-1">
+ <label className="flex items-center gap-2 cursor-pointer group">
+ <input
+ type="checkbox"
+ {...form.register("isLeapMonth")}
+ className="w-4 h-4 rounded border-black/10 bg-black/[0.05] accent-purple-500"
+ />
+ <span className="text-base md:text-sm text-[#1a1a18] group-hover:text-purple-500 transition-colors">윤달(Leap Month)인 경우 체크</span>
+ </label>
+ </div>
+ )}
  </div>
  <div className="space-y-1.5">
  <Label className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
