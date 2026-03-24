@@ -582,18 +582,16 @@ export default function Compatibility() {
  <script type="application/ld+json">{JSON.stringify({"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"궁합은 무료로 볼 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"네, 무운의 궁합 서비스는 100% 무료입니다. 회원가입이나 개인정보 저장 없이 두 사람의 생년월일만 입력하면 즉시 궁합을 확인할 수 있습니다."}},{"@type":"Question","name":"사주 궁합에서 무엇을 알 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"오행 조화, 음양 균형, 연애운, 재물운, 가정운 등 두 사람의 사주팔자를 기반으로 종합적인 궁합 점수와 상세 분석을 제공합니다."}},{"@type":"Question","name":"궁합은 연인과 부부 사이에만 해당되나요?","acceptedAnswer":{"@type":"Answer","text":"연인, 부부 사이는 물론 친구, 직장 동료, 사업 파트너 등 다양한 관계에서의 궁합도 확인할 수 있습니다."}},{"@type":"Question","name":"궁합 점수가 낙으면 나쁜 것인가요?","acceptedAnswer":{"@type":"Answer","text":"궁합 점수는 참고 지표일 뿐 절대적인 기준이 아닙니다. 점수가 낙더라도 서로의 노력과 이해로 충분히 좋은 관계를 만들어갈 수 있습니다."}}]})}</script>
  <script type="application/ld+json">{JSON.stringify({"@context":"https://schema.org","@type":"Service","name":"무료 사주 궁합","description":"사주팔자 기반의 무료 궁합 분석 서비스","provider":{"@type":"Organization","name":"무운 (MuUn)","url":"https://muunsaju.com"},"url":"https://muunsaju.com/compatibility","serviceType":"궁합","areaServed":"KR","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}})}</script>
  </Helmet>
- {/* 7단계: tintColor CSS 변수 정의 */}
+ {/* 시안 기반 전면 개선: 연한 핑크 베이지 배경, 클린 카드 UI */}
  <style>{`
    .compatibility-page { --compatibility-accent: #E8387A; }
+   .compat-toggle-item[data-state=on] { background-color: #E8387A; color: white; border-color: #E8387A; }
+   .compat-toggle-item[data-state=off] { background-color: white; color: #5a5a56; border: 1.5px solid #e0ddd8; }
  `}</style>
- <div className="compatibility-page min-h-screen bg-background text-foreground pb-16 relative antialiased">
- <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
- <div className="absolute top-[-10%] left-[-10%] w-[400px] h-[400px] bg-pink-500/10 rounded-full blur-[100px]" />
- <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-red-500/10 rounded-full blur-[100px]" />
- </div>
+ <div className="compatibility-page min-h-screen bg-[#FBF3F3] text-foreground pb-16 antialiased">
 
- {/* 8단계: 헤더 뒤로가기 레이블 */}
- <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
+ {/* 헤더 — 흰색 불투명, 시안과 동일 */}
+ <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06]">
  <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
  <Link href="/">
  <Button variant="ghost" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px] flex items-center gap-1 px-2">
@@ -601,103 +599,101 @@ export default function Compatibility() {
    <span className="text-sm font-medium">{backLabel}</span>
  </Button>
  </Link>
- <h2 className="text-base md:text-lg font-bold text-[#1a1a18]">궁합 풀이</h2>
+ <h2 className="text-base font-bold text-[#1a1a18]">궁합 풀이</h2>
  </div>
  </header>
 
- <main className="relative z-10 container mx-auto max-w-[1280px] px-4 py-5 md:py-8">
+ <main className="container mx-auto max-w-[1280px] px-4 py-6 md:py-8">
  <motion.div
- initial={{ opacity: 0, y: 20 }}
+ initial={{ opacity: 0, y: 16 }}
  animate={{ opacity: 1, y: 0 }}
- transition={{ duration: 0.6 }}
- className={`${commonMaxWidth} space-y-5`}
+ transition={{ duration: 0.5 }}
+ className={`${commonMaxWidth} space-y-4`}
  >
- <div className="text-center space-y-2">
- <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-pink-500/10 border border-pink-500/20 backdrop-blur-xl">
- <Heart className="w-3 h-3 text-pink-600" />
- <span className="text-[10px] md:text-sm md:text-xs font-bold tracking-wider text-pink-600 uppercase">서로의 기운을 맞추다</span>
+ {/* 히어로 영역 — 시안과 동일한 핑크 베이지 배경 위 */}
+ <div className="text-center space-y-2 pt-2">
+ <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-[#E8387A]/30">
+ <Heart className="w-3 h-3 text-[#E8387A]" />
+ <span className="text-xs font-medium text-[#E8387A]">서로의 기운을 맞추다</span>
  </div>
- <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-[#1a1a18]">궁합</h2>
- <p className="text-muted-foreground text-xs md:text-base md:text-sm">
- 두 사람의 사주를 분석하여 서로의 조화를 확인해보세요
+ <h1 className="text-3xl font-bold tracking-tight text-[#1a1a18]">궁합</h1>
+ <p className="text-[#5a5a56] text-sm">
+ 두 사람의 사주로 인연의 깊이를 확인해보세요
  </p>
+ {/* 피처 배지 — 시안: ● 불릿 도트 스타일 */}
+ <div className="flex items-center justify-center gap-4 pt-1" style={{ pointerEvents: 'none' }}>
+   <span className="flex items-center gap-1.5 text-xs text-[#5a5a56]">
+     <span className="w-1.5 h-1.5 rounded-full bg-[#E8387A] inline-block" />
+     궁합 점수
+   </span>
+   <span className="flex items-center gap-1.5 text-xs text-[#5a5a56]">
+     <span className="w-1.5 h-1.5 rounded-full bg-[#E8387A] inline-block" />
+     오행 분석
+   </span>
+   <span className="flex items-center gap-1.5 text-xs text-[#5a5a56]">
+     <span className="w-1.5 h-1.5 rounded-full bg-[#E8387A] inline-block" />
+     상세 해석
+   </span>
+ </div>
  </div>
 
- {/* 1단계: 에디토리얼 요약(접힘) — 입력 폼 위로 이동 */}
- <CompatibilityContent />
-
- <Card className="glass-panel border-black/10 shadow-xl rounded-2xl overflow-hidden">
- <CardHeader className="border-b border-black/10 px-4 py-3 md:px-6 md:py-4">
- <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-base md:text-lg">
- <div className="w-8 h-8 rounded-lg bg-pink-500/20 flex items-center justify-center">
- <Users className="w-4 h-4 text-pink-600" />
+ {/* 에디토리얼 — 시안에서 숨겨져 있으나 SEO 유지를 위해 hidden 처리 */}
+ <div className="sr-only" aria-hidden="true">
+   <CompatibilityContent />
  </div>
- 궁합 정보 입력
- </CardTitle>
- </CardHeader>
- <CardContent className="p-4 md:p-6">
+
+ {/* 입력 카드 — 헤더 없는 흰색 카드, 시안과 동일 */}
+ <div className="bg-white rounded-2xl shadow-sm border border-black/[0.06] p-5 md:p-6">
  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
  {/* 첫 번째 사람 */}
- <div className="space-y-3">
+ <div className="space-y-4">
  <div className="flex items-center gap-2">
- <div className="w-6 h-6 rounded-full bg-[var(--compatibility-accent,#E8387A)] text-white text-sm md:text-xs font-bold flex items-center justify-center">1</div>
- <h3 className="text-[#1a1a18] font-bold text-base md:text-sm">첫 번째 사람</h3>
+ <div className="w-6 h-6 rounded-full bg-[#E8387A] text-white text-xs font-bold flex items-center justify-center">1</div>
+ <h3 className="text-[#1a1a18] font-bold text-sm">첫 번째 사람</h3>
  </div>
  <div className="grid grid-cols-2 gap-3">
  <div className="space-y-1.5">
- <Label htmlFor="name1" className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
- <User className="w-3.5 h-3.5 text-[var(--compatibility-accent,#E8387A)]" /> 이름
- </Label>
- <Input id="name1" placeholder="이름" {...form.register("name1")} className="h-11 bg-black/[0.05] border-black/10 text-[#1a1a18] placeholder:text-[#999891] rounded-xl focus:ring-pink-500/50 focus:border-pink-500 transition-all text-base md:text-sm" />
- {/* 4단계: 이름 마이크로카피 */}
- <p className="text-[11px] text-[#999891] leading-tight">이름은 결과 화면에만 표시되며 저장되지 않습니다</p>
+ <Label htmlFor="name1" className="text-[#1a1a18] text-sm font-medium">이름</Label>
+ <Input id="name1" placeholder="이름" {...form.register("name1")} className="h-11 bg-[#F7F5F3] border-[#E8E5E0] text-[#1a1a18] placeholder:text-[#b0ada6] rounded-xl focus:ring-[#E8387A]/30 focus:border-[#E8387A] transition-all text-sm" />
+ <p className="text-[11px] text-[#b0ada6] leading-tight">저장되지 않음</p>
  </div>
  <div className="space-y-1.5">
- <Label className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
- <Sparkles className="w-3.5 h-3.5 text-[var(--compatibility-accent,#E8387A)]" /> 성별
- </Label>
- {/* 4단계: 성별 토글 터치 타깃 44px, 미선택 border 추가, 7단계: accent 통일 */}
+ <Label className="text-[#1a1a18] text-sm font-medium">성별</Label>
+ {/* 시안: 흰색 래퍼, 활성 버튼 핑크 아웃라인 */}
  <ToggleGroup
    type="single"
    value={form.watch("gender1")}
    onValueChange={(v) => { if (v) form.setValue("gender1", v as "male" | "female"); }}
-   className="w-full h-11 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1"
+   className="w-full h-11 bg-[#F2EDED] p-1 rounded-xl grid grid-cols-2 gap-1"
  >
  <ToggleGroupItem
    value="male"
-   className="h-full rounded-lg data-[state=on]:bg-[var(--compatibility-accent,#E8387A)] data-[state=on]:text-white data-[state=off]:text-[#5a5a56] data-[state=off]:border data-[state=off]:border-[#c0bdb4] transition-all font-medium text-base md:text-sm min-h-[44px]"
+   className="compat-toggle-item h-full rounded-lg transition-all font-medium text-sm min-h-[44px]"
  >남성</ToggleGroupItem>
  <ToggleGroupItem
    value="female"
-   className="h-full rounded-lg data-[state=on]:bg-[var(--compatibility-accent,#E8387A)] data-[state=on]:text-white data-[state=off]:text-[#5a5a56] data-[state=off]:border data-[state=off]:border-[#c0bdb4] transition-all font-medium text-base md:text-sm min-h-[44px]"
+   className="compat-toggle-item h-full rounded-lg transition-all font-medium text-sm min-h-[44px]"
  >여성</ToggleGroupItem>
  </ToggleGroup>
  </div>
  </div>
  <div className="space-y-1.5">
- <Label htmlFor="birthDate1" className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
- <Calendar className="w-3.5 h-3.5 text-[var(--compatibility-accent,#E8387A)]" /> 생년월일
- </Label>
+ <Label htmlFor="birthDate1" className="text-[#1a1a18] text-sm font-medium">생년월일</Label>
  <DatePickerInput id="birthDate1" {...form.register("birthDate1")} value={form.watch("birthDate1")} accentColor="pink" />
  </div>
  <div className="grid grid-cols-2 gap-3">
  <div className="space-y-1.5">
- <Label htmlFor="birthTime1" className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
- <Clock className="w-3.5 h-3.5 text-[var(--compatibility-accent,#E8387A)]" /> 태어난 시간
- </Label>
+ <Label htmlFor="birthTime1" className="text-[#1a1a18] text-sm font-medium">태어난 시간</Label>
  <BirthTimeSelect
  value={form.watch("birthTime1")}
  onChange={(val) => form.setValue("birthTime1", val)}
  onUnknownChange={(isUnknown) => form.setValue("birthTimeUnknown1", isUnknown)}
  isUnknown={form.watch("birthTimeUnknown1")}
- accentClass="focus:ring-pink-500/50 focus:border-pink-500"
+ accentClass="focus:ring-[#E8387A]/30 focus:border-[#E8387A]"
  />
  </div>
  <div className="space-y-1.5">
- <Label className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
- <Star className="w-3.5 h-3.5 text-[var(--compatibility-accent,#E8387A)]" /> 양력/음력
- </Label>
- {/* 4단계: 양력/음력 토글 터치 타깃 44px, 미선택 border 추가 */}
+ <Label className="text-[#1a1a18] text-sm font-medium">양력/음력</Label>
  <ToggleGroup
  type="single"
  value={form.watch("calendarType1")}
@@ -706,17 +702,17 @@ export default function Compatibility() {
  form.setValue("calendarType1", value as "solar" | "lunar");
  }
  }}
- className="w-full h-11 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1"
+ className="w-full h-11 bg-[#F2EDED] p-1 rounded-xl grid grid-cols-2 gap-1"
  >
  <ToggleGroupItem
    value="solar"
-   className="h-full rounded-lg data-[state=on]:bg-[var(--compatibility-accent,#E8387A)] data-[state=on]:text-white data-[state=off]:text-[#5a5a56] data-[state=off]:border data-[state=off]:border-[#c0bdb4] transition-all font-medium text-base md:text-sm min-h-[44px]"
+   className="compat-toggle-item h-full rounded-lg transition-all font-medium text-sm min-h-[44px]"
  >
  양력
  </ToggleGroupItem>
  <ToggleGroupItem
    value="lunar"
-   className="h-full rounded-lg data-[state=on]:bg-[var(--compatibility-accent,#E8387A)] data-[state=on]:text-white data-[state=off]:text-[#5a5a56] data-[state=off]:border data-[state=off]:border-[#c0bdb4] transition-all font-medium text-base md:text-sm min-h-[44px]"
+   className="compat-toggle-item h-full rounded-lg transition-all font-medium text-sm min-h-[44px]"
  >
  음력
  </ToggleGroupItem>
@@ -728,7 +724,7 @@ export default function Compatibility() {
  id="isLeapMonth1"
  checked={form.watch("isLeapMonth1") || false}
  onChange={(e) => form.setValue("isLeapMonth1", e.target.checked)}
- className="w-3.5 h-3.5 rounded border-black/10 bg-black/[0.05] text-pink-500 focus:ring-pink-500/50"
+ className="w-3.5 h-3.5 rounded border-[#E8E5E0] bg-[#F7F5F3] text-[#E8387A] focus:ring-[#E8387A]/30"
  />
  <Label htmlFor="isLeapMonth1" className="text-[#5a5a56] text-[11px] cursor-pointer">
  윤달입니다
@@ -739,32 +735,25 @@ export default function Compatibility() {
  </div>
  </div>
 
- <div className="flex items-center gap-3">
- <div className="flex-1 h-px bg-black/06"></div>
- <Heart className="w-4 h-4 text-[var(--compatibility-accent,#E8387A)]" />
- <div className="flex-1 h-px bg-black/06"></div>
+ {/* 구분선 — 시안: Heart 아이콘만 */}
+ <div className="flex items-center justify-center py-1">
+ <Heart className="w-4 h-4 text-[#E8387A]/60" />
  </div>
 
  {/* 두 번째 사람 */}
- <div className="space-y-3">
+ <div className="space-y-4">
  <div className="flex items-center gap-2">
- <div className="w-6 h-6 rounded-full bg-[#E8387A] text-white text-sm md:text-xs font-bold flex items-center justify-center">2</div>
- <h3 className="text-[#1a1a18] font-bold text-base md:text-sm">두 번째 사람</h3>
+ <div className="w-6 h-6 rounded-full bg-[#E8387A] text-white text-xs font-bold flex items-center justify-center">2</div>
+ <h3 className="text-[#1a1a18] font-bold text-sm">두 번째 사람</h3>
  </div>
  <div className="grid grid-cols-2 gap-3">
  <div className="space-y-1.5">
- <Label htmlFor="name2" className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
- <User className="w-3.5 h-3.5 text-[#E8387A]" /> 이름
- </Label>
- <Input id="name2" placeholder="이름" {...form.register("name2")} className="h-11 bg-black/[0.05] border-black/10 text-[#1a1a18] placeholder:text-[#999891] rounded-xl focus:ring-pink-500/50 focus:border-pink-500 transition-all text-base md:text-sm" />
- {/* 4단계: 이름 마이크로카피 */}
- <p className="text-[11px] text-[#999891] leading-tight">이름은 결과 화면에만 표시되며 저장되지 않습니다</p>
+ <Label htmlFor="name2" className="text-[#1a1a18] text-sm font-medium">이름</Label>
+ <Input id="name2" placeholder="이름" {...form.register("name2")} className="h-11 bg-[#F7F5F3] border-[#E8E5E0] text-[#1a1a18] placeholder:text-[#b0ada6] rounded-xl focus:ring-[#E8387A]/30 focus:border-[#E8387A] transition-all text-sm" />
+ <p className="text-[11px] text-[#b0ada6] leading-tight">저장되지 않음</p>
  </div>
  <div className="space-y-1.5">
- <Label className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
- <Sparkles className="w-3.5 h-3.5 text-[#E8387A]" /> 성별
- </Label>
- {/* 4단계: 두 번째 성별 — 미선택 상태 가능, 연동 로직 override */}
+ <Label className="text-[#1a1a18] text-sm font-medium">성별</Label>
  <ToggleGroup
    type="single"
    value={form.watch("gender2") || ""}
@@ -774,15 +763,15 @@ export default function Compatibility() {
        form.setValue("gender2", v as "male" | "female");
      }
    }}
-   className="w-full h-11 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1"
+   className="w-full h-11 bg-[#F2EDED] p-1 rounded-xl grid grid-cols-2 gap-1"
  >
  <ToggleGroupItem
    value="male"
-   className="h-full rounded-lg data-[state=on]:bg-[#E8387A] data-[state=on]:text-white data-[state=off]:text-[#5a5a56] data-[state=off]:border data-[state=off]:border-[#c0bdb4] transition-all font-medium text-base md:text-sm min-h-[44px]"
+   className="compat-toggle-item h-full rounded-lg transition-all font-medium text-sm min-h-[44px]"
  >남성</ToggleGroupItem>
  <ToggleGroupItem
    value="female"
-   className="h-full rounded-lg data-[state=on]:bg-[#E8387A] data-[state=on]:text-white data-[state=off]:text-[#5a5a56] data-[state=off]:border data-[state=off]:border-[#c0bdb4] transition-all font-medium text-base md:text-sm min-h-[44px]"
+   className="compat-toggle-item h-full rounded-lg transition-all font-medium text-sm min-h-[44px]"
  >여성</ToggleGroupItem>
  </ToggleGroup>
  {(form.formState.errors as any)?.gender2 && (
@@ -791,28 +780,22 @@ export default function Compatibility() {
  </div>
  </div>
  <div className="space-y-1.5">
- <Label htmlFor="birthDate2" className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
- <Calendar className="w-3.5 h-3.5 text-[#E8387A]" /> 생년월일
- </Label>
+ <Label htmlFor="birthDate2" className="text-[#1a1a18] text-sm font-medium">생년월일</Label>
  <DatePickerInput id="birthDate2" {...form.register("birthDate2")} value={form.watch("birthDate2")} accentColor="pink" />
  </div>
  <div className="grid grid-cols-2 gap-3">
  <div className="space-y-1.5">
- <Label htmlFor="birthTime2" className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
- <Clock className="w-3.5 h-3.5 text-[#E8387A]" /> 태어난 시간
- </Label>
+ <Label htmlFor="birthTime2" className="text-[#1a1a18] text-sm font-medium">태어난 시간</Label>
  <BirthTimeSelect
  value={form.watch("birthTime2")}
  onChange={(val) => form.setValue("birthTime2", val)}
  onUnknownChange={(isUnknown) => form.setValue("birthTimeUnknown2", isUnknown)}
  isUnknown={form.watch("birthTimeUnknown2")}
- accentClass="focus:ring-pink-500/50 focus:border-pink-500"
+ accentClass="focus:ring-[#E8387A]/30 focus:border-[#E8387A]"
  />
  </div>
  <div className="space-y-1.5">
- <Label className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
- <Star className="w-3.5 h-3.5 text-[#E8387A]" /> 양력/음력
- </Label>
+ <Label className="text-[#1a1a18] text-sm font-medium">양력/음력</Label>
  <ToggleGroup
  type="single"
  value={form.watch("calendarType2")}
@@ -821,17 +804,17 @@ export default function Compatibility() {
  form.setValue("calendarType2", value as "solar" | "lunar");
  }
  }}
- className="w-full h-11 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1"
+ className="w-full h-11 bg-[#F2EDED] p-1 rounded-xl grid grid-cols-2 gap-1"
  >
  <ToggleGroupItem
    value="solar"
-   className="h-full rounded-lg data-[state=on]:bg-[#E8387A] data-[state=on]:text-white data-[state=off]:text-[#5a5a56] data-[state=off]:border data-[state=off]:border-[#c0bdb4] transition-all font-medium text-base md:text-sm min-h-[44px]"
+   className="compat-toggle-item h-full rounded-lg transition-all font-medium text-sm min-h-[44px]"
  >
 양력
  </ToggleGroupItem>
  <ToggleGroupItem
    value="lunar"
-   className="h-full rounded-lg data-[state=on]:bg-[#E8387A] data-[state=on]:text-white data-[state=off]:text-[#5a5a56] data-[state=off]:border data-[state=off]:border-[#c0bdb4] transition-all font-medium text-base md:text-sm min-h-[44px]"
+   className="compat-toggle-item h-full rounded-lg transition-all font-medium text-sm min-h-[44px]"
  >
 음력
  </ToggleGroupItem>
@@ -843,7 +826,7 @@ export default function Compatibility() {
  id="isLeapMonth2"
  checked={form.watch("isLeapMonth2") || false}
  onChange={(e) => form.setValue("isLeapMonth2", e.target.checked)}
- className="w-3.5 h-3.5 rounded border-black/10 bg-black/[0.05] text-red-500 focus:ring-red-500/50"
+ className="w-3.5 h-3.5 rounded border-[#E8E5E0] bg-[#F7F5F3] text-[#E8387A] focus:ring-[#E8387A]/30"
  />
  <Label htmlFor="isLeapMonth2" className="text-[#5a5a56] text-[11px] cursor-pointer">
  윤달입니다
@@ -854,16 +837,16 @@ export default function Compatibility() {
  </div>
  </div>
 
- {/* 3단계: 로딩 에러 메시지 */}
+ {/* 로딩 에러 메시지 */}
  {loadError && (
    <p className="text-sm text-red-500 text-center">{loadError}</p>
  )}
 
- {/* 3단계: CTA 버튼 — 로딩 중 disabled + 스피너 */}
+ {/* CTA 버튼 — 시안: 단색 핑크 #E8387A, 더 큰 radius */}
  <Button
    type="submit"
    disabled={isLoading}
-   className="w-full h-12 bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white font-bold text-sm md:text-base rounded-xl shadow-lg shadow-pink-500/20 transition-all hover:scale-[1.02] active:scale-[0.98] mt-2 disabled:opacity-70 disabled:cursor-not-allowed disabled:scale-100"
+   className="w-full h-14 bg-[#E8387A] hover:bg-[#d42e6e] text-white font-bold text-base rounded-2xl shadow-md shadow-[#E8387A]/20 transition-all hover:scale-[1.01] active:scale-[0.99] mt-2 disabled:opacity-60 disabled:cursor-not-allowed disabled:scale-100"
  >
    {isLoading ? (
      <>
@@ -878,7 +861,7 @@ export default function Compatibility() {
    )}
  </Button>
 
- {/* 3단계: 스켈레톤 UI */}
+ {/* 스켈레톤 UI */}
  <AnimatePresence>
    {isLoading && (
      <motion.div
@@ -895,28 +878,9 @@ export default function Compatibility() {
    )}
  </AnimatePresence>
  </form>
- </CardContent>
- </Card>
-
- {/* 2단계: 피처 아이콘 3개 — Case B: 배경/테두리 없는 인라인 텍스트+아이콘 */}
- <div className="flex items-center justify-center gap-0" style={{ pointerEvents: 'none' }}>
-   <div className="flex-1 flex items-center justify-center gap-1.5 py-2 px-2">
-     <Heart className="w-3.5 h-3.5 text-[#E8387A] flex-shrink-0" />
-     <span className="text-xs text-[#5a5a56]">궁합 점수</span>
-   </div>
-   <div className="w-px h-4 bg-black/[0.12]" />
-   <div className="flex-1 flex items-center justify-center gap-1.5 py-2 px-2">
-     <Activity className="w-3.5 h-3.5 text-[#E8387A] flex-shrink-0" />
-     <span className="text-xs text-[#5a5a56]">오행 분석</span>
-   </div>
-   <div className="w-px h-4 bg-black/[0.12]" />
-   <div className="flex-1 flex items-center justify-center gap-1.5 py-2 px-2">
-     <Users className="w-3.5 h-3.5 text-[#E8387A] flex-shrink-0" />
-     <span className="text-xs text-[#5a5a56]">상세 해석</span>
-   </div>
  </div>
 
- {/* ① 관련 서비스 — 입력 폼 아래(CTA 이후) */}
+ {/* 관련 서비스 — 입력 폼 아래(CTA 이후) */}
  <CompatibilityRelatedServices />
 
  </motion.div>
