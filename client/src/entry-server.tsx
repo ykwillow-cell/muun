@@ -1228,7 +1228,7 @@ const metaData: Record<string, { title: string, description: string, h1?: string
       description: "회원가입 없이 두 사람의 생년월일만으로 바로 확인하는 무료 사주 궁합. 오행 궁합, 성격 궁합, 연애 궁합을 개인정보 저장 없이 100% 무료로 분석합니다.",
       h1: "무료 궁합 보기",
       bodyContent: `
-        <section>
+        <section style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">
           <h2>사주 궁합(四柱 宮合)이란?</h2>
           <p>사주 궁합(四柱 宮合)은 두 사람의 사주팔자(四柱八字)를 비교하여 오행(五行)의 조화와 상생(相生)·상극(相剋) 관계를 분석하는 명리학의 응용 분야입니다. 단순한 띠 궁합을 넘어, 두 사람의 기질, 성격, 가치관의 조화를 종합적으로 파악할 수 있습니다.</p>
           <h2>궁합 분석으로 알 수 있는 것</h2>
@@ -1241,6 +1241,67 @@ const metaData: Record<string, { title: string, description: string, h1?: string
           </ul>
           <p>두 사람의 생년월일만 입력하면 회원가입 없이 즉시 궁합 결과를 확인할 수 있습니다.</p>
         </section>
+        <form aria-label="궁합 입력 폼">
+          <fieldset>
+            <legend>첫 번째 사람</legend>
+            <label for="compat-name1">이름</label>
+            <input id="compat-name1" type="text" name="name1" placeholder="이름" autocomplete="off" />
+            <label>성별</label>
+            <label><input type="radio" name="gender1" value="male" /> 남성</label>
+            <label><input type="radio" name="gender1" value="female" checked /> 여성</label>
+            <label for="compat-birth1">생년월일</label>
+            <input id="compat-birth1" type="text" name="birthDate1" placeholder="YYYY. MM. DD" />
+            <label for="compat-time1">태어난 시간</label>
+            <select id="compat-time1" name="birthTime1">
+              <option value="">모름 / 미입력</option>
+              <option value="23:31">자시 (23:31~01:30)</option>
+              <option value="01:31">축시 (01:31~03:30)</option>
+              <option value="03:31">인시 (03:31~05:30)</option>
+              <option value="05:31">묘시 (05:31~07:30)</option>
+              <option value="07:31">진시 (07:31~09:30)</option>
+              <option value="09:31">사시 (09:31~11:30)</option>
+              <option value="11:31" selected>오시 (11:31~13:30)</option>
+              <option value="13:31">미시 (13:31~15:30)</option>
+              <option value="15:31">신시 (15:31~17:30)</option>
+              <option value="17:31">유시 (17:31~19:30)</option>
+              <option value="19:31">술시 (19:31~21:30)</option>
+              <option value="21:31">해시 (21:31~23:30)</option>
+            </select>
+            <label>양력/음력</label>
+            <label><input type="radio" name="calendarType1" value="solar" checked /> 양력</label>
+            <label><input type="radio" name="calendarType1" value="lunar" /> 음력</label>
+          </fieldset>
+          <fieldset>
+            <legend>두 번째 사람</legend>
+            <label for="compat-name2">이름</label>
+            <input id="compat-name2" type="text" name="name2" placeholder="이름" autocomplete="off" />
+            <label>성별</label>
+            <label><input type="radio" name="gender2" value="male" checked /> 남성</label>
+            <label><input type="radio" name="gender2" value="female" /> 여성</label>
+            <label for="compat-birth2">생년월일</label>
+            <input id="compat-birth2" type="text" name="birthDate2" placeholder="YYYY. MM. DD" />
+            <label for="compat-time2">태어난 시간</label>
+            <select id="compat-time2" name="birthTime2">
+              <option value="">모름 / 미입력</option>
+              <option value="23:31">자시 (23:31~01:30)</option>
+              <option value="01:31">축시 (01:31~03:30)</option>
+              <option value="03:31">인시 (03:31~05:30)</option>
+              <option value="05:31">묘시 (05:31~07:30)</option>
+              <option value="07:31">진시 (07:31~09:30)</option>
+              <option value="09:31">사시 (09:31~11:30)</option>
+              <option value="11:31" selected>오시 (11:31~13:30)</option>
+              <option value="13:31">미시 (13:31~15:30)</option>
+              <option value="15:31">신시 (15:31~17:30)</option>
+              <option value="17:31">유시 (17:31~19:30)</option>
+              <option value="19:31">술시 (19:31~21:30)</option>
+              <option value="21:31">해시 (21:31~23:30)</option>
+            </select>
+            <label>양력/음력</label>
+            <label><input type="radio" name="calendarType2" value="solar" checked /> 양력</label>
+            <label><input type="radio" name="calendarType2" value="lunar" /> 음력</label>
+          </fieldset>
+          <button type="submit">궁합 결과 보기</button>
+        </form>
       `,
       services: [
         { href: '/hybrid-compatibility', label: '사주×MBTI 하이브리드 궁합' },
