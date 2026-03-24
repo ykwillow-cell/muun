@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
 import { ServiceSchema } from "@/components/SchemaMarkup";
-import { ChevronLeft, Star, Sparkles, User, Zap, Briefcase, Share2, Activity, Heart, Quote, ScrollText, Calendar, Clock, TrendingUp, Shield, ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronLeft, Star, Sparkles, User, Zap, Briefcase, Share2, Activity, Heart, Quote, ScrollText, Calendar, Clock, TrendingUp, Shield, ChevronDown, ChevronUp, RefreshCw } from "lucide-react";
 import DatePickerInput from "@/components/DatePickerInput";
 import { Link } from "wouter";
 import { shareContent } from "@/lib/share";
@@ -388,20 +388,17 @@ export default function YearlyFortune() {
  <script type="application/ld+json">{JSON.stringify({"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"2026년 신년운세는 무료인가요?","acceptedAnswer":{"@type":"Answer","text":"네, 무운의 2026년 신년운세는 100% 무료입니다. 회원가입이나 개인정보 저장 없이 생년월일만 입력하면 즉시 확인할 수 있습니다."}},{"@type":"Question","name":"2026년 병오년 신년운세에서 무엇을 알 수 있나요?","acceptedAnswer":{"@type":"Answer","text":"월별 운세, 재물운, 직업운, 애정운, 건강운 등 2026년 한 해의 주요 운의 흐름을 사주팔자 기반으로 분석해드립니다."}},{"@type":"Question","name":"신년운세는 언제부터 보나요?","acceptedAnswer":{"@type":"Answer","text":"신년운세는 일반적으로 음력 새해 또는 입춘 이후부터 해당 년도의 운이 적용됩니다. 2026년 병오년은 2026년 입춘(2월 3일)부터 시작됩니다."}},{"@type":"Question","name":"신년운세와 평생사주의 차이는 무엇인가요?","acceptedAnswer":{"@type":"Answer","text":"신년운세는 한 해의 운의 흐름을 월별로 살펴보는 것이고, 평생사주는 태어난 날의 사주팔자를 바탕으로 평생의 운을 종합적으로 분석하는 것입니다."}}]})}</script>
  <script type="application/ld+json">{JSON.stringify({"@context":"https://schema.org","@type":"Service","name":"2026년 무료 신년운세","description":"사주팔자 기반의 2026년 병오년 무료 신년운세 서비스","provider":{"@type":"Organization","name":"무운 (MuUn)","url":"https://muunsaju.com"},"url":"https://muunsaju.com/yearly-fortune","serviceType":"신년운세","areaServed":"KR","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}})}</script>
  </Helmet>
- <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased">
- <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
- <div className="absolute top-[-10%] left-[-10%] w-[400px] h-[400px] bg-primary/10 rounded-full blur-[100px]" />
- <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-orange-500/10 rounded-full blur-[100px]" />
- </div>
+ <div className="min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
 
- <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
+ <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06]">
  <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
  <Link href="/">
- <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
+ <Button variant="ghost" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] -ml-2 flex items-center gap-1 text-sm font-medium">
  <ChevronLeft className="h-5 w-5" />
+ <span>홈</span>
  </Button>
  </Link>
- <h2 className="text-base md:text-lg font-bold text-[#1a1a18]">2026년 신년운세</h2>
+ <h2 className="text-base font-bold text-[#1a1a18]">2026년 신년운세</h2>
  </div>
  </header>
 
@@ -413,9 +410,9 @@ export default function YearlyFortune() {
  className={`${commonMaxWidth} space-y-5`}
  >
  <div className="text-center space-y-2">
- <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 border border-primary/20 backdrop-blur-xl">
- <ScrollText className="w-3 h-3 text-primary" />
- <span className="text-[10px] md:text-sm md:text-xs font-bold tracking-wider text-primary uppercase">2026년 병오년 운세</span>
+ <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-[#3B82F6]/20 text-[#3B82F6] text-xs font-medium">
+ <ScrollText className="w-3 h-3" />
+ <span>2026년 병오년 운세</span>
  </div>
  <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-[#1a1a18]">신년운세</h2>
  <p className="text-muted-foreground text-xs md:text-base md:text-sm">
@@ -423,8 +420,8 @@ export default function YearlyFortune() {
  </p>
  </div>
 
- <Card className="glass-panel border-black/10 shadow-xl rounded-2xl overflow-hidden">
- <CardHeader className="border-b border-black/10 px-4 py-3 md:px-6 md:py-4">
+ <Card className="bg-white rounded-2xl shadow-sm border border-black/[0.06] overflow-hidden">
+ <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6 md:py-4">
  <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-base md:text-lg">
  <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
  <User className="w-4 h-4 text-primary" />
@@ -444,7 +441,7 @@ export default function YearlyFortune() {
  id="name"
  placeholder="이름을 입력해주세요"
  {...form.register("name")}
- className="h-11 bg-black/[0.05] border-black/10 text-[#1a1a18] placeholder:text-[#999891] rounded-xl focus:ring-primary/50 focus:border-primary transition-all text-base md:text-sm"
+ className="h-11 bg-[#F7F5F3] border-[#E8E5E0] text-[#1a1a18] placeholder:text-[#b0ada6] rounded-xl focus:ring-[#3B82F6]/30 focus:border-[#3B82F6] transition-all text-base md:text-sm"
  />
  </div>
  <div className="space-y-1.5">
@@ -461,12 +458,12 @@ export default function YearlyFortune() {
  trackEvent("User Input", "Change Gender", value);
  }
  }}
- className="w-full h-11 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1"
+ className="w-full h-11 grid grid-cols-2 gap-[3px] bg-[#EDE8E8] rounded-xl p-[3px]"
  >
- <ToggleGroupItem value="male" className="h-full rounded-lg data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-[#5a5a56] transition-all font-medium text-base md:text-sm">
+ <ToggleGroupItem value="male" className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-[#3B82F6] data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-base md:text-sm">
  남성
  </ToggleGroupItem>
- <ToggleGroupItem value="female" className="h-full rounded-lg data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-[#5a5a56] transition-all font-medium text-base md:text-sm">
+ <ToggleGroupItem value="female" className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-[#3B82F6] data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-base md:text-sm">
  여성
  </ToggleGroupItem>
  </ToggleGroup>
@@ -515,12 +512,12 @@ export default function YearlyFortune() {
  trackEvent("User Input", "Change Calendar Type", value);
  }
  }}
- className="w-full md:w-48 h-11 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1"
+ className="w-full md:w-48 h-11 grid grid-cols-2 gap-[3px] bg-[#EDE8E8] rounded-xl p-[3px]"
  >
- <ToggleGroupItem value="solar" className="h-full rounded-lg data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-[#5a5a56] transition-all font-medium text-base md:text-sm">
+ <ToggleGroupItem value="solar" className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-[#3B82F6] data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-base md:text-sm">
  양력
  </ToggleGroupItem>
- <ToggleGroupItem value="lunar" className="h-full rounded-lg data-[state=on]:bg-primary data-[state=on]:text-primary-foreground text-[#5a5a56] transition-all font-medium text-base md:text-sm">
+ <ToggleGroupItem value="lunar" className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-[#3B82F6] data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-base md:text-sm">
  음력
  </ToggleGroupItem>
  </ToggleGroup>
@@ -543,7 +540,8 @@ export default function YearlyFortune() {
 
  <Button 
  type="submit" 
- className="w-full h-12 bg-gradient-to-r from-primary to-orange-500 hover:from-primary/90 hover:to-orange-500/90 text-primary-foreground font-bold text-sm md:text-base rounded-xl shadow-lg shadow-primary/20 transition-all hover:scale-[1.02] active:scale-[0.98] mt-2"
+ style={{ background: 'linear-gradient(135deg, #3B82F6, #1D4ED8)' }}
+ className="w-full h-12 text-white font-bold text-sm md:text-base rounded-xl shadow-sm transition-all hover:opacity-90 active:scale-[0.98] mt-2"
  >
  <Sparkles className="w-4 h-4 mr-2" />
  2026년 신년운세 보기 </Button>
@@ -552,28 +550,28 @@ export default function YearlyFortune() {
  </Card>
 
  <div className="grid grid-cols-3 gap-2 md:gap-3">
- <Card className="bg-black/[0.05] border-black/10 rounded-xl">
+ <Card className="bg-white border border-black/[0.06] rounded-xl shadow-sm">
  <CardContent className="p-3 md:p-4 text-center space-y-1.5">
- <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-primary/10 flex items-center justify-center mx-auto">
- <Star className="w-4 h-4 md:w-5 md:h-5 text-primary" />
+ <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-[#3B82F6]/10 flex items-center justify-center mx-auto">
+ <Star className="w-4 h-4 md:w-5 md:h-5 text-[#3B82F6]" />
  </div>
- <p className="text-[10px] md:text-sm md:text-xs font-medium text-[#1a1a18]">2026년 총운</p>
+ <p className="text-[10px] md:text-xs font-medium text-[#1a1a18]">2026년 총운</p>
  </CardContent>
  </Card>
- <Card className="bg-black/[0.05] border-black/10 rounded-xl">
+ <Card className="bg-white border border-black/[0.06] rounded-xl shadow-sm">
  <CardContent className="p-3 md:p-4 text-center space-y-1.5">
  <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-yellow-500/10 flex items-center justify-center mx-auto">
  <Zap className="w-4 h-4 md:w-5 md:h-5 text-yellow-600" />
  </div>
- <p className="text-[10px] md:text-sm md:text-xs font-medium text-[#1a1a18]">재물운</p>
+ <p className="text-[10px] md:text-xs font-medium text-[#1a1a18]">재물운</p>
  </CardContent>
  </Card>
- <Card className="bg-black/[0.05] border-black/10 rounded-xl">
+ <Card className="bg-white border border-black/[0.06] rounded-xl shadow-sm">
  <CardContent className="p-3 md:p-4 text-center space-y-1.5">
- <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-blue-500/10 flex items-center justify-center mx-auto">
- <Briefcase className="w-4 h-4 md:w-5 md:h-5 text-blue-600" />
+ <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-[#3B82F6]/10 flex items-center justify-center mx-auto">
+ <Briefcase className="w-4 h-4 md:w-5 md:h-5 text-[#3B82F6]" />
  </div>
- <p className="text-[10px] md:text-sm md:text-xs font-medium text-[#1a1a18]">직업운</p>
+ <p className="text-[10px] md:text-xs font-medium text-[#1a1a18]">직업운</p>
  </CardContent>
  </Card>
  </div>
@@ -633,7 +631,7 @@ export default function YearlyFortune() {
  {/* 사용자 입력 기반 결과 페이지 - 개인정보 보호 및 SEO 품질 관리 */}
  <meta name="robots" content="noindex, nofollow" />
  </Helmet>
- <div className="min-h-screen bg-background text-foreground pb-20">
+ <div className="min-h-screen bg-[#F5F4F8] text-foreground pb-20">
  {/* '시간 모름' 시 안내 라벨 */}
  {form.watch("birthTimeUnknown") && (
  <div className="bg-primary/10 border-b border-primary/20 py-2 px-4 relative z-50">
@@ -642,13 +640,14 @@ export default function YearlyFortune() {
  </p>
  </div>
  )}
- <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
+ <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06]">
  <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
  <div className="flex items-center">
- <Button variant="ghost" size="icon" onClick={() => setResult(null)} className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
+ <Button variant="ghost" onClick={() => setResult(null)} className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] -ml-2 flex items-center gap-1 text-sm font-medium">
  <ChevronLeft className="h-5 w-5" />
+ <span>다시입력</span>
  </Button>
- <h1 className="text-base md:text-lg font-bold text-[#1a1a18]">2026년 신년운세 결과</h1>
+ <h1 className="text-base font-bold text-[#1a1a18]">2026년 신년운세 결과</h1>
  </div>
  <Button
  variant="ghost"
@@ -668,7 +667,7 @@ export default function YearlyFortune() {
  </div>
  </header>
 
- <main className="relative z-10 px-4 py-5 md:py-6">
+ <main className="container mx-auto max-w-[1280px] px-4 py-5 md:py-6">
  <motion.div
  initial={{ opacity: 0, y: 20 }}
  animate={{ opacity: 1, y: 0 }}
@@ -1002,10 +1001,24 @@ export default function YearlyFortune() {
  <FortuneShareCard result={result} userName={userName} type="yearly" />
  </div>
 
- {/* 하단 버튼 */}
- <div className="space-y-2 pt-2">
+ {/* 하단 CTA */}
+ <div className="space-y-3 pt-2">
+ {/* 평생사주 배너 */}
+ <a href="/lifelong-saju" className="rounded-2xl p-4 flex items-center gap-4 block" style={{ background: 'linear-gradient(135deg, #2D1B5E, #1A0F3c)' }}>
+ <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0">
+ <Star className="w-5 h-5 text-yellow-300" />
+ </div>
+ <div className="flex-1">
+ <p className="text-xs text-white/60 mb-0.5">더 깊은 분석을 원한다면</p>
+ <p className="text-sm font-bold text-white">평생사주 분석 바로가기</p>
+ </div>
+ <ChevronLeft className="w-4 h-4 text-white/40 rotate-180" />
+ </a>
+ {/* 공유 + 다시보기 */}
+ <div className="flex gap-2">
  <Button
- className="w-full h-12 bg-black/[0.05] border border-black/10 text-[#1a1a18] hover:bg-black/[0.06] font-medium rounded-xl text-base md:text-sm"
+ className="flex-1 h-11 font-bold text-sm rounded-xl text-white"
+ style={{ background: 'linear-gradient(135deg, #3B82F6, #1D4ED8)' }}
  onClick={() => {
  shareContent({
  title: '무운 2026년 신년운세',
@@ -1016,15 +1029,17 @@ export default function YearlyFortune() {
  }}
  >
  <Share2 className="w-4 h-4 mr-2" />
- 친구에게 공유하기
+ 결과 공유
  </Button>
  <Button
- variant="ghost"
+ variant="outline"
  onClick={() => setResult(null)}
- className="w-full h-12 text-[#5a5a56] hover:text-[#1a1a18] hover:bg-black/[0.05] font-medium rounded-xl text-base md:text-sm"
+ className="flex-1 h-11 font-medium text-sm rounded-xl border-[#E8E5E0] text-[#1a1a18]"
  >
- 다른 정보로 다시 보기
+ <RefreshCw className="w-4 h-4 mr-2" />
+ 다시보기
  </Button>
+ </div>
  </div>
  {/* 콘텐츠 추천 섹션 */}
  <RecommendedContent />

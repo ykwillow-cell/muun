@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Helmet } from "react-helmet-async";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, Star, Sparkles, User, Zap, Briefcase, Activity, Heart, Quote, TrendingUp, Share2, ScrollText, Calendar, Clock, Shield, Baby, Landmark, Sunset } from "lucide-react";
+import { ChevronLeft, Star, Sparkles, User, Zap, Briefcase, Activity, Heart, Quote, TrendingUp, Share2, ScrollText, Calendar, Clock, Shield, Baby, Landmark, Sunset, RefreshCw } from "lucide-react";
 import DatePickerInput from "@/components/DatePickerInput";
 import { Link } from "wouter";
 import { shareContent } from "@/lib/share";
@@ -244,20 +244,17 @@ export default function LifelongSaju() {
 
  if (!result) {
  return (
- <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased">
- <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
- <div className="absolute top-[-10%] left-[-10%] w-[400px] h-[400px] bg-purple-500/10 rounded-full blur-[100px]" />
- <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-primary/10 rounded-full blur-[100px]" />
- </div>
+ <div className="min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
 
- <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
+ <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06]">
  <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
  <Link href="/">
- <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
+ <Button variant="ghost" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] -ml-2 flex items-center gap-1 text-sm font-medium">
  <ChevronLeft className="h-5 w-5" />
+ <span>홈</span>
  </Button>
  </Link>
- <h2 className="text-base md:text-lg font-bold text-[#1a1a18]">평생사주 풀이</h2>
+ <h2 className="text-base font-bold text-[#1a1a18]">평생사주 풀이</h2>
  </div>
  </header>
 
@@ -269,9 +266,9 @@ export default function LifelongSaju() {
  className={`${commonMaxWidth} space-y-5`}
  >
  <div className="text-center space-y-2">
- <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 backdrop-blur-xl">
- <Sparkles className="w-3 h-3 text-purple-600" />
- <span className="text-[10px] md:text-sm md:text-xs font-bold tracking-wider text-purple-600 uppercase">인생의 흐름을 읽는 지혜</span>
+ <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-purple-500/20 text-purple-600 text-xs font-medium">
+ <Sparkles className="w-3 h-3" />
+ <span>인생의 흐름을 읽는 지혜</span>
  </div>
  <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-[#1a1a18]">평생사주</h2>
  <p className="text-muted-foreground text-xs md:text-base md:text-sm">
@@ -279,8 +276,8 @@ export default function LifelongSaju() {
  </p>
  </div>
 
- <Card className="glass-panel border-black/10 shadow-xl rounded-2xl overflow-hidden">
- <CardHeader className="border-b border-black/10 px-4 py-3 md:px-6 md:py-4">
+ <Card className="bg-white rounded-2xl shadow-sm border border-black/[0.06] overflow-hidden">
+ <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6 md:py-4">
  <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-base md:text-lg">
  <div className="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center">
  <User className="w-4 h-4 text-purple-600" />
@@ -300,7 +297,7 @@ export default function LifelongSaju() {
  id="name"
  placeholder="이름을 입력해주세요"
  {...form.register("name")}
- className="h-11 bg-black/[0.05] border-black/10 text-[#1a1a18] placeholder:text-[#999891] rounded-xl focus:ring-purple-500/50 focus:border-purple-500 transition-all text-base md:text-sm"
+ className="h-11 bg-[#F7F5F3] border-[#E8E5E0] text-[#1a1a18] placeholder:text-[#b0ada6] rounded-xl focus:ring-purple-500/30 focus:border-purple-500 transition-all text-base md:text-sm"
  />
  </div>
  <div className="space-y-1.5">
@@ -317,12 +314,12 @@ export default function LifelongSaju() {
  trackEvent("User Input", "Change Gender", value);
  }
  }}
- className="w-full h-11 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1"
+ className="w-full h-11 grid grid-cols-2 gap-[3px] bg-[#EDE8E8] rounded-xl p-[3px]"
  >
- <ToggleGroupItem value="male" className="h-full rounded-lg data-[state=on]:bg-purple-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-base md:text-sm">
+ <ToggleGroupItem value="male" className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-purple-600 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-base md:text-sm">
  남성
  </ToggleGroupItem>
- <ToggleGroupItem value="female" className="h-full rounded-lg data-[state=on]:bg-purple-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-base md:text-sm">
+ <ToggleGroupItem value="female" className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-purple-600 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-base md:text-sm">
  여성
  </ToggleGroupItem>
  </ToggleGroup>
@@ -372,12 +369,12 @@ export default function LifelongSaju() {
  trackEvent("User Input", "Change Calendar Type", value);
  }
  }}
- className="w-full h-11 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1"
+ className="w-full h-11 grid grid-cols-2 gap-[3px] bg-[#EDE8E8] rounded-xl p-[3px]"
  >
- <ToggleGroupItem value="solar" className="h-full rounded-lg data-[state=on]:bg-purple-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-base md:text-sm">
+ <ToggleGroupItem value="solar" className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-purple-600 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-base md:text-sm">
  양력
  </ToggleGroupItem>
- <ToggleGroupItem value="lunar" className="h-full rounded-lg data-[state=on]:bg-purple-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-base md:text-sm">
+ <ToggleGroupItem value="lunar" className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-purple-600 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-base md:text-sm">
  음력
  </ToggleGroupItem>
  </ToggleGroup>
@@ -409,12 +406,12 @@ export default function LifelongSaju() {
  form.setValue("isMarried", value as "yes" | "no");
  }
  }}
- className="w-full h-11 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1"
+ className="w-full h-11 grid grid-cols-2 gap-[3px] bg-[#EDE8E8] rounded-xl p-[3px]"
  >
- <ToggleGroupItem value="no" className="h-full rounded-lg data-[state=on]:bg-purple-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-base md:text-sm">
+ <ToggleGroupItem value="no" className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-purple-600 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-base md:text-sm">
  미혼
  </ToggleGroupItem>
- <ToggleGroupItem value="yes" className="h-full rounded-lg data-[state=on]:bg-purple-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-base md:text-sm">
+ <ToggleGroupItem value="yes" className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-purple-600 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-base md:text-sm">
  기혼
  </ToggleGroupItem>
  </ToggleGroup>
@@ -423,7 +420,8 @@ export default function LifelongSaju() {
 
  <Button 
  type="submit" 
- className="w-full h-12 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-[#1a1a18] font-bold text-sm md:text-base rounded-xl shadow-lg shadow-purple-500/20 transition-all hover:scale-[1.02] active:scale-[0.98] mt-2"
+ style={{ background: 'linear-gradient(135deg, #7C5CFC, #6D28D9)' }}
+ className="w-full h-12 text-white font-bold text-sm md:text-base rounded-xl shadow-sm transition-all hover:opacity-90 active:scale-[0.98] mt-2"
  >
  <Sparkles className="w-4 h-4 mr-2" />
  평생사주 보기
@@ -433,36 +431,36 @@ export default function LifelongSaju() {
  </Card>
 
  <div className="grid grid-cols-4 gap-2 md:gap-3">
- <Card className="bg-black/[0.05] border-black/10 rounded-xl">
+ <Card className="bg-white border border-black/[0.06] rounded-xl shadow-sm">
  <CardContent className="p-2.5 md:p-3 text-center space-y-1">
  <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-purple-500/10 flex items-center justify-center mx-auto">
  <User className="w-4 h-4 text-purple-600" />
  </div>
- <p className="text-[10px] md:text-sm md:text-xs font-medium text-[#1a1a18]">타고난 성격</p>
+ <p className="text-[10px] md:text-xs font-medium text-[#1a1a18]">타고난 성격</p>
  </CardContent>
  </Card>
- <Card className="bg-black/[0.05] border-black/10 rounded-xl">
+ <Card className="bg-white border border-black/[0.06] rounded-xl shadow-sm">
  <CardContent className="p-2.5 md:p-3 text-center space-y-1">
  <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-yellow-500/10 flex items-center justify-center mx-auto">
  <Zap className="w-4 h-4 text-yellow-600" />
  </div>
- <p className="text-[10px] md:text-sm md:text-xs font-medium text-[#1a1a18]">재물운</p>
+ <p className="text-[10px] md:text-xs font-medium text-[#1a1a18]">재물운</p>
  </CardContent>
  </Card>
- <Card className="bg-black/[0.05] border-black/10 rounded-xl">
+ <Card className="bg-white border border-black/[0.06] rounded-xl shadow-sm">
  <CardContent className="p-2.5 md:p-3 text-center space-y-1">
  <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-blue-500/10 flex items-center justify-center mx-auto">
  <Briefcase className="w-4 h-4 text-blue-600" />
  </div>
- <p className="text-[10px] md:text-sm md:text-xs font-medium text-[#1a1a18]">직업운</p>
+ <p className="text-[10px] md:text-xs font-medium text-[#1a1a18]">직업운</p>
  </CardContent>
  </Card>
- <Card className="bg-black/[0.05] border-black/10 rounded-xl">
+ <Card className="bg-white border border-black/[0.06] rounded-xl shadow-sm">
  <CardContent className="p-2.5 md:p-3 text-center space-y-1">
  <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-pink-500/10 flex items-center justify-center mx-auto">
  <Heart className="w-4 h-4 text-pink-600" />
  </div>
- <p className="text-[10px] md:text-sm md:text-xs font-medium text-[#1a1a18]">연애운</p>
+ <p className="text-[10px] md:text-xs font-medium text-[#1a1a18]">연애운</p>
  </CardContent>
  </Card>
  </div>
@@ -535,14 +533,15 @@ export default function LifelongSaju() {
  })}
  </script>
  </Helmet>
- <div className="min-h-screen bg-background text-foreground pb-20">
- <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
+ <div className="min-h-screen bg-[#F5F4F8] text-foreground pb-20">
+ <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06]">
  <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
  <div className="flex items-center">
- <Button variant="ghost" size="icon" onClick={() => setResult(null)} className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
+ <Button variant="ghost" onClick={() => setResult(null)} className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] -ml-2 flex items-center gap-1 text-sm font-medium">
  <ChevronLeft className="h-5 w-5" />
+ <span>다시입력</span>
  </Button>
- <h1 className="text-base md:text-lg font-bold text-[#1a1a18]">평생사주 풀이 결과</h1>
+ <h1 className="text-base font-bold text-[#1a1a18]">평생사주 풀이 결과</h1>
  </div>
  <Button
  variant="ghost"
@@ -912,8 +911,21 @@ export default function LifelongSaju() {
  {result && (
  <FortuneShareCard result={result} userName={userName} type="lifelong" />
  )}
- <Button 
- className="w-full h-12 bg-black/[0.05] border border-black/10 text-[#1a1a18] hover:bg-black/[0.06] font-medium rounded-xl text-base md:text-sm"
+ {/* 신년운세 배너 */}
+ <a href="/yearly-fortune" className="rounded-2xl p-4 flex items-center gap-4 block" style={{ background: 'linear-gradient(135deg, #2D1B5E, #1A0F3C)' }}>
+ <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0">
+ <Star className="w-5 h-5 text-yellow-300" />
+ </div>
+ <div className="flex-1">
+ <p className="text-xs text-white/60 mb-0.5">올해의 운을 미리 확인하려면</p>
+ <p className="text-sm font-bold text-white">2026년 신년운세 바로가기</p>
+ </div>
+ <ChevronLeft className="w-4 h-4 text-white/40 rotate-180" />
+ </a>
+ <div className="flex gap-2">
+ <Button
+ className="flex-1 h-11 font-bold text-sm rounded-xl text-white"
+ style={{ background: 'linear-gradient(135deg, #7C5CFC, #6D28D9)' }}
  onClick={() => {
  shareContent({
  title: '무운 평생사주',
@@ -924,15 +936,17 @@ export default function LifelongSaju() {
  }}
  >
  <Share2 className="w-4 h-4 mr-2" />
- 친구에게 공유하기
+ 결과 공유
  </Button>
- <Button 
- variant="ghost"
- className="w-full h-12 text-[#5a5a56] hover:text-[#1a1a18] hover:bg-black/[0.05] font-medium rounded-xl text-base md:text-sm"
+ <Button
+ variant="outline"
+ className="flex-1 h-11 font-medium text-sm rounded-xl border-[#E8E5E0] text-[#1a1a18]"
  onClick={() => setResult(null)}
  >
- 다른 정보로 다시 보기
+ <RefreshCw className="w-4 h-4 mr-2" />
+ 다시보기
  </Button>
+ </div>
  </div>
  {/* 콘텐츠 추천 섹션 */}
  <RecommendedContent />

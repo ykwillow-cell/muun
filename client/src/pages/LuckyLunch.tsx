@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion } from "framer-motion";
-import { ChevronLeft, Share2, Sparkles, Coffee, User, Calendar, Zap } from "lucide-react";
+import { ChevronLeft, Share2, Sparkles, Coffee, User, Calendar, Zap, RefreshCw } from "lucide-react";
 import DatePickerInput from "@/components/DatePickerInput";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
@@ -89,21 +89,17 @@ export default function LuckyLunch() {
   // 입력 화면
   if (!showResult) {
     return (
-      <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased">
-        {/* Background Effects */}
-        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-[-10%] left-[-10%] w-[400px] h-[400px] bg-amber-500/10 rounded-full blur-[100px]" />
-          <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-primary/10 rounded-full blur-[100px]" />
-        </div>
+      <div className="min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
 
-        <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
+        <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06]">
           <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
             <Link href="/">
-              <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
+              <Button variant="ghost" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] -ml-2 flex items-center gap-1 text-sm font-medium">
                 <ChevronLeft className="h-5 w-5" />
+                <span>홈</span>
               </Button>
             </Link>
-            <h1 className="text-base md:text-lg font-bold text-[#1a1a18]">행운의 점심 메뉴</h1>
+            <h1 className="text-base font-bold text-[#1a1a18]">행운의 점심 메뉴</h1>
           </div>
         </header>
 
@@ -116,9 +112,9 @@ export default function LuckyLunch() {
           >
             {/* Hero Section */}
             <div className="text-center space-y-2">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/20 backdrop-blur-xl">
-                <Coffee className="w-3 h-3 text-amber-400" />
-                <span className="text-[10px] md:text-sm md:text-xs font-bold tracking-wider text-amber-400 uppercase">오늘의 추천 메뉴</span>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-amber-500/20 text-amber-500 text-xs font-medium">
+                <Coffee className="w-3 h-3" />
+                <span>오늘의 추천 메뉴</span>
               </div>
               <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-[#1a1a18]">행운의 점심 메뉴</h2>
               <p className="text-muted-foreground text-xs md:text-base md:text-sm">
@@ -127,8 +123,8 @@ export default function LuckyLunch() {
             </div>
 
             {/* Input Form Card */}
-            <Card className="glass-panel border-black/10 shadow-xl rounded-2xl overflow-hidden">
-              <CardHeader className="border-b border-black/10 px-4 py-3 md:px-6 md:py-4">
+            <Card className="bg-white rounded-2xl shadow-sm border border-black/[0.06] overflow-hidden">
+              <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6 md:py-4">
                 <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-base md:text-lg">
                   <div className="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center">
                     <User className="w-4 h-4 text-amber-400" />
@@ -149,7 +145,7 @@ export default function LuckyLunch() {
                         id="name"
                         placeholder="이름을 입력해주세요"
                         {...form.register("name")}
-                        className="h-11 bg-black/[0.05] border-black/10 text-[#1a1a18] placeholder:text-[#999891] rounded-xl focus:ring-amber-500/50 focus:border-amber-500 transition-all text-base md:text-sm"
+                        className="h-11 bg-[#F7F5F3] border-[#E8E5E0] text-[#1a1a18] placeholder:text-[#b0ada6] rounded-xl focus:ring-amber-500/30 focus:border-amber-500 transition-all text-base md:text-sm"
                       />
                     </div>
 
@@ -164,17 +160,17 @@ export default function LuckyLunch() {
                         onValueChange={(value) => {
                           if (value) form.setValue("gender", value as "male" | "female");
                         }}
-                        className="w-full h-11 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1"
+                        className="w-full h-11 grid grid-cols-2 gap-[3px] bg-[#EDE8E8] rounded-xl p-[3px]"
                       >
                         <ToggleGroupItem
                           value="male"
-                          className="h-full rounded-lg data-[state=on]:bg-amber-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-base md:text-sm"
+                          className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-amber-500 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-base md:text-sm"
                         >
                           남성
                         </ToggleGroupItem>
                         <ToggleGroupItem
                           value="female"
-                          className="h-full rounded-lg data-[state=on]:bg-amber-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-base md:text-sm"
+                          className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-amber-500 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-base md:text-sm"
                         >
                           여성
                         </ToggleGroupItem>
@@ -223,12 +219,12 @@ export default function LuckyLunch() {
                       onValueChange={(value) => {
                         if (value) form.setValue("calendarType", value as "solar" | "lunar");
                       }}
-                      className="w-full h-11 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1"
+                      className="w-full h-11 grid grid-cols-2 gap-[3px] bg-[#EDE8E8] rounded-xl p-[3px]"
                     >
-                      <ToggleGroupItem value="solar" className="h-full rounded-lg data-[state=on]:bg-amber-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-base md:text-sm">
+                      <ToggleGroupItem value="solar" className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-amber-500 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-base md:text-sm">
                         양력
                       </ToggleGroupItem>
-                      <ToggleGroupItem value="lunar" className="h-full rounded-lg data-[state=on]:bg-amber-500 data-[state=on]:text-[#1a1a18] text-[#5a5a56] transition-all font-medium text-base md:text-sm">
+                      <ToggleGroupItem value="lunar" className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-amber-500 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-base md:text-sm">
                         음력
                       </ToggleGroupItem>
                     </ToggleGroup>
@@ -252,7 +248,8 @@ export default function LuckyLunch() {
                   {/* Submit Button */}
                   <Button
                     type="submit"
-                    className="w-full h-12 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-[#1a1a18] font-bold text-sm md:text-base rounded-xl shadow-lg shadow-amber-500/20 transition-all hover:scale-[1.02] active:scale-[0.98] mt-2"
+                    style={{ background: 'linear-gradient(135deg, #F59E0B, #D97706)' }}
+                    className="w-full h-12 text-white font-bold text-sm md:text-base rounded-xl shadow-sm transition-all hover:opacity-90 active:scale-[0.98] mt-2"
                   >
                     <Zap className="w-4 h-4 mr-2" />
                     행운의 메뉴 추천받기
@@ -283,25 +280,20 @@ export default function LuckyLunch() {
 <meta name="keywords" content="행운의점심, 점심메뉴추천, 오행음식, 사주음식, 행운음식, 오늘점심, 무료추천" />
         <link rel="canonical" href="https://muunsaju.com/lucky-lunch" />
       </Helmet>
-    <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased">
-      {/* Background Effects */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[-10%] left-[-10%] w-[400px] h-[400px] bg-amber-500/10 rounded-full blur-[100px]" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-primary/10 rounded-full blur-[100px]" />
-      </div>
+    <div className="min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
 
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
+      <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06]">
         <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
             <Button
               onClick={() => setShowResult(false)}
               variant="ghost"
-              size="icon"
-              className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]"
+              className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] -ml-2 flex items-center gap-1 text-sm font-medium"
             >
               <ChevronLeft className="h-5 w-5" />
+              <span>다시입력</span>
             </Button>
-            <h1 className="text-base md:text-lg font-bold text-[#1a1a18]">행운의 점심 메뉴</h1>
+            <h1 className="text-base font-bold text-[#1a1a18]">행운의 점심 메뉴</h1>
           </div>
           <Button
             onClick={() => shareContent(`행운의 점심 메뉴 추천: ${result.recommendedMenus[0]?.name || '메뉴'}`)}
@@ -345,8 +337,8 @@ export default function LuckyLunch() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
-                  <Card className="glass-panel border-black/10 overflow-hidden hover:border-amber-500/50 transition-all h-full group" data-lunch-card>
-                    <CardHeader className="border-b border-black/10 pb-3 group-hover:border-amber-500/30 transition-colors">
+                  <Card className="bg-white border border-black/[0.06] rounded-2xl overflow-hidden hover:shadow-md transition-all h-full group" data-lunch-card>
+                    <CardHeader className="border-b border-black/[0.06] pb-3 group-hover:border-amber-500/30 transition-colors">
                       <div className="flex items-start justify-between">
                         <div className="flex-1">
                           <div className="text-sm md:text-xs font-semibold text-amber-400 mb-1">추천 #{index + 1}</div>
@@ -396,8 +388,8 @@ export default function LuckyLunch() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
           >
-            <Card className="glass-panel border-black/10 overflow-hidden" data-misc-card>
-              <CardHeader className="border-b border-black/10 bg-gradient-to-r from-amber-500/10 to-transparent">
+            <Card className="bg-white border border-black/[0.06] rounded-2xl overflow-hidden" data-misc-card>
+              <CardHeader className="border-b border-black/[0.06] bg-gradient-to-r from-amber-500/10 to-transparent">
                 <CardTitle className="text-[#1a1a18] text-lg flex items-center gap-2">
                   <Zap className="w-5 h-5 text-amber-400" />
                   에너지 조언
@@ -426,16 +418,18 @@ export default function LuckyLunch() {
             <Button
               onClick={() => setShowResult(false)}
               variant="outline"
-              className="flex-1 h-12 border-black/10 text-[#1a1a18] hover:bg-black/[0.05] rounded-xl font-semibold transition-all hover:scale-105"
+              className="flex-1 h-11 border-[#E8E5E0] text-[#1a1a18] rounded-xl font-medium text-sm"
             >
-              다시 입력하기
+              <RefreshCw className="w-4 h-4 mr-2" />
+              다시보기
             </Button>
             <Button
               onClick={() => shareContent(`${userName}님의 행운의 점심 메뉴: ${result.recommendedMenus.map((m: any) => m.name).join(", ")}`)}
-              className="flex-1 h-12 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-[#1a1a18] font-bold rounded-xl shadow-lg shadow-amber-500/20 transition-all hover:scale-105"
+              className="flex-1 h-11 font-bold text-sm rounded-xl text-white"
+              style={{ background: 'linear-gradient(135deg, #F59E0B, #D97706)' }}
             >
               <Share2 className="w-4 h-4 mr-2" />
-              공유하기
+              결과 공유
             </Button>
           </motion.div>
         </motion.div>

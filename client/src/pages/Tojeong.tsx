@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion } from "framer-motion";
-import { ChevronLeft, Share2, Sparkles, User, BookOpen, Info, Calendar, ScrollText } from "lucide-react";
+import { ChevronLeft, Share2, Sparkles, User, BookOpen, Info, Calendar, ScrollText, RefreshCw, Star } from "lucide-react";
 import DatePickerInput from "@/components/DatePickerInput";
 import { Link } from "wouter";
 import { shareContent } from "@/lib/share";
@@ -144,21 +144,17 @@ export default function Tojeong() {
           })}
         </script>
 </Helmet>
-      <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased">
-        {/* Background Effects */}
-        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-[-10%] left-[-10%] w-[400px] h-[400px] bg-[#6B5FFF]/10 rounded-full blur-[100px]" />
-          <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-[#6B5FFF]/08 rounded-full blur-[100px]" />
-        </div>
+      <div className="min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
 
-        <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
+        <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06]">
           <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
             <Link href="/">
-              <Button variant="ghost" size="icon" className="mr-2 text-[#191F28] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
+              <Button variant="ghost" className="mr-2 text-[#191F28] hover:bg-black/[0.06] -ml-2 flex items-center gap-1 text-sm font-medium">
                 <ChevronLeft className="h-5 w-5" />
+                <span>홈</span>
               </Button>
             </Link>
-            <h2 className="text-base md:text-lg font-bold text-[#191F28]">무료 토정비결</h2>
+            <h2 className="text-base font-bold text-[#191F28]">무료 토정비결</h2>
           </div>
         </header>
 
@@ -171,9 +167,9 @@ export default function Tojeong() {
           >
             {/* Hero Section - 컴팩트하게 */}
             <div className="text-center space-y-2">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#6B5FFF]/10 border border-[#6B5FFF]/20 backdrop-blur-xl">
-                <ScrollText className="w-3 h-3 text-[#6B5FFF]" />
-                <span className="text-[10px] md:text-xs font-bold tracking-wider text-[#6B5FFF] uppercase">2026년 병오년 운세</span>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-[#6B5FFF]/20 text-[#6B5FFF] text-xs font-medium">
+                <ScrollText className="w-3 h-3" />
+                <span>2026년 병오년 운세</span>
               </div>
               <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-[#191F28]">전통 토정비결</h2>
               <p className="text-muted-foreground text-xs md:text-sm">
@@ -182,8 +178,8 @@ export default function Tojeong() {
             </div>
 
             {/* Input Form Card - 컴팩트하게 */}
-            <Card className="glass-panel border-black/10 shadow-xl rounded-2xl overflow-hidden">
-              <CardHeader className="border-b border-black/10 px-4 py-3 md:px-6 md:py-4">
+            <Card className="bg-white rounded-2xl shadow-sm border border-black/[0.06] overflow-hidden">
+              <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6 md:py-4">
                 <CardTitle className="text-[#191F28] flex items-center gap-2 text-base md:text-lg">
                   <div className="w-8 h-8 rounded-lg bg-[#6B5FFF]/20 flex items-center justify-center">
                     <User className="w-4 h-4 text-[#6B5FFF]" />
@@ -204,7 +200,7 @@ export default function Tojeong() {
                         id="name"
                         placeholder="이름"
                         {...form.register("name")}
-                        className="h-11 bg-black/[0.05] border-black/10 text-[#191F28] placeholder:text-[#8B95A1] rounded-xl focus:ring-[#6B5FFF]/10 focus:border-[#6B5FFF] transition-all text-sm"
+                        className="h-11 bg-[#F7F5F3] border-[#E8E5E0] text-[#191F28] placeholder:text-[#b0ada6] rounded-xl focus:ring-[#6B5FFF]/30 focus:border-[#6B5FFF] transition-all text-sm"
                       />
                     </div>
 
@@ -219,17 +215,17 @@ export default function Tojeong() {
                         onValueChange={(value) => {
                           if (value) form.setValue("gender", value as "male" | "female");
                         }}
-                        className="w-full h-11 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1"
+                        className="w-full h-11 grid grid-cols-2 gap-[3px] bg-[#EDE8E8] rounded-xl p-[3px]"
                       >
                         <ToggleGroupItem
                           value="male"
-                          className="h-full rounded-lg data-[state=on]:bg-[#6B5FFF] data-[state=on]:text-[#191F28] text-[#4E5968] transition-all font-medium text-sm"
+                          className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-[#6B5FFF] data-[state=on]:shadow-sm text-[#4E5968] transition-all font-medium text-sm"
                         >
                           남성
                         </ToggleGroupItem>
                         <ToggleGroupItem
                           value="female"
-                          className="h-full rounded-lg data-[state=on]:bg-[#6B5FFF] data-[state=on]:text-[#191F28] text-[#4E5968] transition-all font-medium text-sm"
+                          className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-[#6B5FFF] data-[state=on]:shadow-sm text-[#4E5968] transition-all font-medium text-sm"
                         >
                           여성
                         </ToggleGroupItem>
@@ -263,17 +259,17 @@ export default function Tojeong() {
                         onValueChange={(value) => {
                           if (value) form.setValue("calendarType", value as "solar" | "lunar");
                         }}
-                        className="w-full h-11 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1"
+                        className="w-full h-11 grid grid-cols-2 gap-[3px] bg-[#EDE8E8] rounded-xl p-[3px]"
                       >
                         <ToggleGroupItem
                           value="solar"
-                          className="h-full rounded-lg data-[state=on]:bg-[#6B5FFF] data-[state=on]:text-[#191F28] text-[#4E5968] transition-all font-medium text-sm"
+                          className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-[#6B5FFF] data-[state=on]:shadow-sm text-[#4E5968] transition-all font-medium text-sm"
                         >
                           양력
                         </ToggleGroupItem>
                         <ToggleGroupItem
                           value="lunar"
-                          className="h-full rounded-lg data-[state=on]:bg-[#6B5FFF] data-[state=on]:text-[#191F28] text-[#4E5968] transition-all font-medium text-sm"
+                          className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-[#6B5FFF] data-[state=on]:shadow-sm text-[#4E5968] transition-all font-medium text-sm"
                         >
                           음력
                         </ToggleGroupItem>
@@ -307,7 +303,8 @@ export default function Tojeong() {
                   {/* Submit Button */}
                   <Button 
                     type="submit" 
-                    className="w-full h-12 bg-gradient-to-r from-amber-500 to-yellow-600 hover:from-amber-600 hover:to-yellow-700 text-[#191F28] font-bold text-sm md:text-base rounded-xl shadow-lg shadow-amber-500/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                    style={{ background: 'linear-gradient(135deg, #6B5FFF, #4F46E5)' }}
+                    className="w-full h-12 text-white font-bold text-sm md:text-base rounded-xl shadow-sm transition-all hover:opacity-90 active:scale-[0.98]"
                   >
                     <ScrollText className="w-4 h-4 mr-2" />
                     2026년 토정비결 보기
@@ -318,26 +315,26 @@ export default function Tojeong() {
 
             {/* Feature Cards - 더 컴팩트하게 */}
             <div className="grid grid-cols-3 gap-2 md:gap-3">
-              <Card className="bg-black/[0.05] border-black/10 rounded-xl">
+              <Card className="bg-white border border-black/[0.06] rounded-xl shadow-sm">
                 <CardContent className="p-2.5 md:p-3 text-center space-y-1">
                   <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-[#6B5FFF]/10 flex items-center justify-center mx-auto">
-                    <ScrollText className="w-4 h-4 md:w-4.5 md:h-4.5 text-[#6B5FFF]" />
+                    <ScrollText className="w-4 h-4 text-[#6B5FFF]" />
                   </div>
-                  <p className="text-[10px] md:text-xs font-medium text-[#191F28]">144괘 해석</p>
+                  <p className="text-[10px] md:text-xs font-medium text-[#191F28]">144괴 해석</p>
                 </CardContent>
               </Card>
-              <Card className="bg-black/[0.05] border-black/10 rounded-xl">
+              <Card className="bg-white border border-black/[0.06] rounded-xl shadow-sm">
                 <CardContent className="p-2.5 md:p-3 text-center space-y-1">
                   <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-yellow-500/10 flex items-center justify-center mx-auto">
-                    <Calendar className="w-4 h-4 md:w-4.5 md:h-4.5 text-yellow-400" />
+                    <Calendar className="w-4 h-4 text-yellow-500" />
                   </div>
                   <p className="text-[10px] md:text-xs font-medium text-[#191F28]">월별 운세</p>
                 </CardContent>
               </Card>
-              <Card className="bg-black/[0.05] border-black/10 rounded-xl">
+              <Card className="bg-white border border-black/[0.06] rounded-xl shadow-sm">
                 <CardContent className="p-2.5 md:p-3 text-center space-y-1">
                   <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-orange-500/10 flex items-center justify-center mx-auto">
-                    <BookOpen className="w-4 h-4 md:w-4.5 md:h-4.5 text-orange-400" />
+                    <BookOpen className="w-4 h-4 text-orange-500" />
                   </div>
                   <p className="text-[10px] md:text-xs font-medium text-[#191F28]">전통 해석</p>
                 </CardContent>
@@ -363,26 +360,22 @@ export default function Tojeong() {
         {/* 사용자 입력 기반 결과 페이지 - 개인정보 보호 및 SEO 품질 관리 */}
         <meta name="robots" content="noindex, nofollow" />
       </Helmet>
-    <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased">
+    <div className="min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
       {/* 토정비결은 원래 삼주(연,월,일)만 사용하므로 안내 라벨 표시 */}
       <div className="bg-[#6B5FFF]/10 border-b border-[#6B5FFF]/20 py-2 px-4 relative z-50">
         <p className="text-[10px] md:text-xs text-[#6B5FFF] text-center font-medium">
           전통 방식에 따른 연, 월, 일(삼주) 분석 결과입니다
         </p>
       </div>
-      {/* Background Effects */}
-      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-[-10%] left-[-10%] w-[400px] h-[400px] bg-[#6B5FFF]/10 rounded-full blur-[100px]" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[400px] h-[400px] bg-[#6B5FFF]/08 rounded-full blur-[100px]" />
-      </div>
 
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
+      <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06]">
         <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
-            <Button variant="ghost" size="icon" className="mr-2 text-[#191F28] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]" onClick={() => setResult(null)}>
+            <Button variant="ghost" className="mr-2 text-[#191F28] hover:bg-black/[0.06] -ml-2 flex items-center gap-1 text-sm font-medium" onClick={() => setResult(null)}>
               <ChevronLeft className="h-5 w-5" />
+              <span>다시입력</span>
             </Button>
-            <h1 className="text-base md:text-lg font-bold text-[#191F28]">토정비결 결과</h1>
+            <h1 className="text-base font-bold text-[#191F28]">토정비결 결과</h1>
           </div>
           <Button 
             variant="ghost" 
@@ -403,8 +396,8 @@ export default function Tojeong() {
         >
           {/* Hero Section */}
           <div className="text-center space-y-2">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#6B5FFF]/10 border border-[#6B5FFF]/20 backdrop-blur-xl">
-              <span className="text-[10px] md:text-xs font-bold tracking-wider text-[#6B5FFF] uppercase">제 {result.hexagram}괘</span>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-[#6B5FFF]/20 text-[#6B5FFF] text-xs font-medium">
+              <span>제 {result.hexagram}괴</span>
             </div>
             <h2 className="text-xl md:text-2xl font-bold tracking-tight text-[#191F28]">2026년 토정비결 결과</h2>
             <p className="text-muted-foreground text-xs md:text-sm italic">"하늘의 기운이 땅으로 내려와 만물이 소생하는 형국입니다."</p>
@@ -429,7 +422,7 @@ export default function Tojeong() {
                   className="relative"
                 >
                   <div className="absolute -left-[27px] top-0 w-3 h-3 rounded-full bg-[#6B5FFF] border-3 border-background shadow-[0_0_10px_rgba(245,158,11,0.5)]" />
-                  <Card className="bg-black/[0.05] border-black/10 rounded-xl overflow-hidden hover:bg-black/[0.06] transition-all duration-300 group">
+                  <Card className="bg-white border border-black/[0.06] rounded-xl overflow-hidden hover:shadow-md transition-all duration-300 group">
                     <CardContent className="p-3 md:p-4">
                       <div className="flex justify-between items-center mb-2">
                         <span className="text-base md:text-lg font-black text-[#6B5FFF] group-hover:scale-110 transition-transform origin-left">{item.month}월</span>
@@ -455,19 +448,35 @@ export default function Tojeong() {
 
           {/* Action Buttons */}
           <div className="space-y-2 pt-2">
-            <Button 
-              className="w-full bg-black/[0.05] border border-black/10 text-[#191F28] hover:bg-black/[0.06] h-11 rounded-xl font-medium text-sm"
-              onClick={() => shareContent({ title: '무운 토정비결', text: '나의 2026년 운세는?', page: 'tojeong', buttonType: 'text_button' })}
-            >
-              친구에게 공유하기
-            </Button>
-            <Button 
-              variant="ghost"
-              className="w-full text-[#4E5968] hover:text-[#191F28] hover:bg-black/[0.05] h-11 rounded-xl font-medium text-sm"
-              onClick={() => setResult(null)}
-            >
-              다시 보기
-            </Button>
+            {/* 신년운세 배너 */}
+            <a href="/yearly-fortune" className="rounded-2xl p-4 flex items-center gap-4 block" style={{ background: 'linear-gradient(135deg, #2D1B5E, #1A0F3C)' }}>
+              <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0">
+                <Star className="w-5 h-5 text-yellow-300" />
+              </div>
+              <div className="flex-1">
+                <p className="text-xs text-white/60 mb-0.5">올해의 운을 미리 확인하려면</p>
+                <p className="text-sm font-bold text-white">2026년 신년운세 바로가기</p>
+              </div>
+              <ChevronLeft className="w-4 h-4 text-white/40 rotate-180" />
+            </a>
+            <div className="flex gap-2">
+              <Button
+                className="flex-1 h-11 font-bold text-sm rounded-xl text-white"
+                style={{ background: 'linear-gradient(135deg, #6B5FFF, #4F46E5)' }}
+                onClick={() => shareContent({ title: '무운 토정비결', text: '나의 2026년 운세는?', page: 'tojeong', buttonType: 'text_button' })}
+              >
+                <Share2 className="w-4 h-4 mr-2" />
+                결과 공유
+              </Button>
+              <Button
+                variant="outline"
+                className="flex-1 h-11 font-medium text-sm rounded-xl border-[#E8E5E0] text-[#191F28]"
+                onClick={() => setResult(null)}
+              >
+                <RefreshCw className="w-4 h-4 mr-2" />
+                다시보기
+              </Button>
+            </div>
           </div>
           {/* 콘텐츠 추천 섹션 */}
           <RecommendedContent />
