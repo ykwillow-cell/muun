@@ -743,8 +743,8 @@ export default function Compatibility() {
        id="isLeapMonth1"
        checked={form.watch("isLeapMonth1") || false}
        onChange={(e) => form.setValue("isLeapMonth1", e.target.checked)}
-       className="w-3.5 h-3.5 rounded"
-       style={{ accentColor: '#D4537E' }}
+       style={{ width: '16px', height: '16px', minWidth: '16px', flexShrink: 0, accentColor: '#D4537E' }}
+       className="rounded cursor-pointer"
      />
      <Label htmlFor="isLeapMonth1" className="cursor-pointer" style={{ fontSize: '11px', color: 'var(--color-text-secondary, #999891)' }}>
        윤달
@@ -835,8 +835,8 @@ export default function Compatibility() {
        id="isLeapMonth2"
        checked={form.watch("isLeapMonth2") || false}
        onChange={(e) => form.setValue("isLeapMonth2", e.target.checked)}
-       className="w-3.5 h-3.5 rounded"
-       style={{ accentColor: '#D4537E' }}
+       style={{ width: '16px', height: '16px', minWidth: '16px', flexShrink: 0, accentColor: '#D4537E' }}
+       className="rounded cursor-pointer"
      />
      <Label htmlFor="isLeapMonth2" className="cursor-pointer" style={{ fontSize: '11px', color: 'var(--color-text-secondary, #999891)' }}>
        윤달

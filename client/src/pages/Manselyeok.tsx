@@ -326,7 +326,8 @@ export default function Manselyeok() {
                           <input
                             type="checkbox"
                             {...form.register("isLeapMonth")}
-                            className="w-4 h-4 rounded border-black/10 bg-black/[0.05] accent-emerald-500"
+                            style={{ width: '16px', height: '16px', minWidth: '16px', flexShrink: 0, accentColor: '#10b981' }}
+                            className="rounded border-black/10 cursor-pointer"
                           />
                           <span className="text-sm text-[#1a1a18] group-hover:text-emerald-400 transition-colors">윤달(Leap Month)인 경우 체크</span>
                         </label>

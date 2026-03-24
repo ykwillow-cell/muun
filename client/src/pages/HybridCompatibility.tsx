@@ -928,7 +928,7 @@ export default function HybridCompatibilityPage() {
                         </ToggleGroup>
                         {form.watch("calendarType1") === "lunar" && (
                           <div className="flex items-center justify-end gap-2 pr-1 pt-0.5">
-                            <input type="checkbox" id="isLeapMonth1" checked={form.watch("isLeapMonth1") || false} onChange={(e) => form.setValue("isLeapMonth1", e.target.checked)} className="w-3.5 h-3.5 rounded border-black/10 bg-black/[0.05] text-purple-500" />
+                            <input type="checkbox" id="isLeapMonth1" checked={form.watch("isLeapMonth1") || false} onChange={(e) => form.setValue("isLeapMonth1", e.target.checked)} style={{ width: '16px', height: '16px', minWidth: '16px', flexShrink: 0, accentColor: '#a855f7' }} className="rounded border-black/10 cursor-pointer" />
                             <Label htmlFor="isLeapMonth1" className="text-[#5a5a56] text-[11px] cursor-pointer">윤달입니다</Label>
                           </div>
                         )}
@@ -1024,7 +1024,7 @@ export default function HybridCompatibilityPage() {
                         </ToggleGroup>
                         {form.watch("calendarType2") === "lunar" && (
                           <div className="flex items-center justify-end gap-2 pr-1 pt-0.5">
-                            <input type="checkbox" id="isLeapMonth2" checked={form.watch("isLeapMonth2") || false} onChange={(e) => form.setValue("isLeapMonth2", e.target.checked)} className="w-3.5 h-3.5 rounded border-black/10 bg-black/[0.05] text-pink-500" />
+                            <input type="checkbox" id="isLeapMonth2" checked={form.watch("isLeapMonth2") || false} onChange={(e) => form.setValue("isLeapMonth2", e.target.checked)} style={{ width: '16px', height: '16px', minWidth: '16px', flexShrink: 0, accentColor: '#ec4899' }} className="rounded border-black/10 cursor-pointer" />
                             <Label htmlFor="isLeapMonth2" className="text-[#5a5a56] text-[11px] cursor-pointer">윤달입니다</Label>
                           </div>
                         )}

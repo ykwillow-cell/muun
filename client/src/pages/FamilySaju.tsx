@@ -346,7 +346,8 @@ export default function FamilySaju() {
  type="checkbox"
  checked={member.isLeapMonth}
  onChange={(e) => updateMember(index, "isLeapMonth", e.target.checked)}
- className="w-4 h-4 rounded border-[#E8E5E0] bg-[#F7F5F3] accent-primary"
+ style={{ width: '16px', height: '16px', minWidth: '16px', flexShrink: 0, accentColor: 'var(--color-primary, #6B5FFF)' }}
+ className="rounded border-[#E8E5E0] cursor-pointer"
  />
  <span className="text-base md:text-sm text-[#1a1a18] group-hover:text-primary transition-colors">윤달(Leap Month)인 경우 체크</span>
  </label>

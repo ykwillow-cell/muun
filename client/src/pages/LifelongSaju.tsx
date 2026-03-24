@@ -388,7 +388,8 @@ export default function LifelongSaju() {
  <input
  type="checkbox"
  {...form.register("isLeapMonth")}
- className="w-4 h-4 rounded border-black/10 bg-black/[0.05] accent-purple-500"
+ style={{ width: '16px', height: '16px', minWidth: '16px', flexShrink: 0, accentColor: '#a855f7' }}
+ className="rounded border-black/10 cursor-pointer"
  />
  <span className="text-base md:text-sm text-[#1a1a18] group-hover:text-purple-500 transition-colors">윤달(Leap Month)인 경우 체크</span>
  </label>
