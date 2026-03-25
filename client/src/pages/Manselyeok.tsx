@@ -879,34 +879,29 @@ export default function Manselyeok() {
                     </div>
                   </CardHeader>
                   <CardContent className="p-4">
-                    <div className="overflow-x-auto pb-1 -mx-1 px-1">
+                    <style>{`.daewun-scroll::-webkit-scrollbar{display:none}`}</style>
+                    <div className="daewun-scroll overflow-x-auto pb-1 -mx-1 px-1" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' } as React.CSSProperties}>
                       <div className="flex gap-3" style={{ width: 'max-content' }}>
                         {daewunData.pillars.map((p, i) => {
                           const isCurrent = i === daewunData.currentIdx;
                           const tenGodLabel = TEN_GOD_MEANINGS[p.tenGod]?.name || p.tenGod;
-                          const tileBoxShadow = isCurrent ? '0 0 0 2px #34d399' : undefined;
                           return (
-                            <div key={i} className="flex-shrink-0 text-center relative" style={{ width: 46 }}>
-                              {isCurrent && (
-                                <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                                  <span className="text-[9px] bg-emerald-500 text-white px-1.5 py-0.5 rounded-full font-bold whitespace-nowrap">현재</span>
-                                </div>
-                              )}
+                            <div key={i} className="flex-shrink-0 text-center" style={{ width: 40 }}>
                               {/* 십성 */}
                               <p style={{ fontSize: 10, color: '#aaa', marginBottom: 4 }} className="truncate font-medium">{tenGodLabel?.replace(/[()（）]/g, '').split(/\s/)[0]}</p>
                               {/* 천간 박스 */}
                               <div
                                 className={`flex items-center justify-center ${getElementColor(p.stemElement)}`}
-                                style={{ width: 46, height: 44, borderRadius: 10, marginBottom: 4, boxShadow: isCurrent ? 'inset 0 0 0 2px #34d399' : undefined }}
+                                style={{ width: 40, height: 40, borderRadius: 10, marginBottom: 4, boxShadow: isCurrent ? 'inset 0 0 0 2px #34d399' : undefined }}
                               >
-                                <p style={{ fontSize: 19, fontWeight: 700, lineHeight: 1 }}>{p.stem}</p>
+                                <p style={{ fontSize: 16, fontWeight: 700, lineHeight: 1 }}>{p.stem}</p>
                               </div>
                               {/* 지지 박스 */}
                               <div
                                 className={`flex items-center justify-center ${getElementColor(p.branchElement)}`}
-                                style={{ width: 46, height: 44, borderRadius: 10, boxShadow: isCurrent ? 'inset 0 0 0 2px #34d399' : undefined }}
+                                style={{ width: 40, height: 40, borderRadius: 10, boxShadow: isCurrent ? 'inset 0 0 0 2px #34d399' : undefined }}
                               >
-                                <p style={{ fontSize: 19, fontWeight: 700, lineHeight: 1 }}>{p.branch}</p>
+                                <p style={{ fontSize: 16, fontWeight: 700, lineHeight: 1 }}>{p.branch}</p>
                               </div>
                               {/* 나이 */}
                               <p style={{ fontSize: 10, color: '#aaa', marginTop: 4 }}>{p.startAge}~{p.startAge + 9}세</p>
