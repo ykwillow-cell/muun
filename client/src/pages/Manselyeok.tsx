@@ -292,18 +292,12 @@ export default function Manselyeok() {
   const analysis = useMemo(() => result ? analyzeGangYak(result) : null, [result]);
   const daewunData = useMemo(() => result ? calculateDaewun(result) : null, [result]);
 
-  // 오행 바 애니메이션: result 변경 시 리셋 후 IntersectionObserver 재등록
+  // 오행 바 애니메이션: result 변경 시 리셋 후 200ms 뒤 true
   useEffect(() => {
     setBarsAnimated(false);
     if (!result) return;
-    const el = fiveElementRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) { setBarsAnimated(true); observer.disconnect(); } },
-      { threshold: 0.1 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
+    const timer = setTimeout(() => setBarsAnimated(true), 200);
+    return () => clearTimeout(timer);
   }, [result]);
 
   useEffect(() => {
@@ -886,31 +880,34 @@ export default function Manselyeok() {
                   </CardHeader>
                   <CardContent className="p-4">
                     <div className="overflow-x-auto pb-1 -mx-1 px-1">
-                      <div className="flex gap-2.5" style={{ width: 'max-content' }}>
+                      <div className="flex gap-3" style={{ width: 'max-content' }}>
                         {daewunData.pillars.map((p, i) => {
                           const isCurrent = i === daewunData.currentIdx;
                           const tenGodLabel = TEN_GOD_MEANINGS[p.tenGod]?.name || p.tenGod;
+                          const tileBoxShadow = isCurrent ? '0 0 0 2px #34d399' : undefined;
                           return (
-                            <div
-                              key={i}
-                              className="flex-shrink-0 w-[72px] rounded-xl border text-center p-2.5 space-y-1.5 relative"
-                              style={isCurrent
-                                ? { boxShadow: 'inset 0 0 0 2px #34d399', background: '#f0fdf9', borderColor: 'transparent' }
-                                : { background: '#fafaf9', borderColor: '#e8e5e0' }}
-                            >
+                            <div key={i} className="flex-shrink-0 text-center relative" style={{ width: 44 }}>
                               {isCurrent && (
-                                <div className="absolute -top-2 left-1/2 -translate-x-1/2">
+                                <div className="absolute -top-4 left-1/2 -translate-x-1/2">
                                   <span className="text-[9px] bg-emerald-500 text-white px-1.5 py-0.5 rounded-full font-bold whitespace-nowrap">현재</span>
                                 </div>
                               )}
-                              <p className="text-[9px] text-emerald-600 font-medium truncate">{tenGodLabel?.replace(/[()（）]/g, '').split(/\s/)[0]}</p>
-                              <div className={`rounded-lg border p-1.5 ${getElementColor(p.stemElement)}`}>
-                                <p className="text-lg font-bold">{p.stem}</p>
+                              <p className="text-[9px] text-emerald-600 font-medium truncate mb-1">{tenGodLabel?.replace(/[()（）]/g, '').split(/\s/)[0]}</p>
+                              {/* 천간 박스 */}
+                              <div
+                                className={`flex items-center justify-center rounded-t-lg border-x border-t ${getElementColor(p.stemElement)}`}
+                                style={{ width: 44, height: 44, boxShadow: tileBoxShadow }}
+                              >
+                                <p className="text-lg font-bold leading-none">{p.stem}</p>
                               </div>
-                              <div className={`rounded-lg border p-1.5 ${getElementColor(p.branchElement)}`}>
-                                <p className="text-lg font-bold">{p.branch}</p>
+                              {/* 지지 박스 */}
+                              <div
+                                className={`flex items-center justify-center rounded-b-lg border-x border-b ${getElementColor(p.branchElement)}`}
+                                style={{ width: 44, height: 44, marginTop: 4, boxShadow: tileBoxShadow }}
+                              >
+                                <p className="text-lg font-bold leading-none">{p.branch}</p>
                               </div>
-                              <p className="text-[9px] text-[#999891]">{p.startAge}~{p.startAge + 9}세</p>
+                              <p className="text-[9px] text-[#999891] mt-1">{p.startAge}~{p.startAge + 9}세</p>
                             </div>
                           );
                         })}
@@ -991,7 +988,7 @@ export default function Manselyeok() {
                   9. CTA 배너
               ═══════════════════════════════════ */}
               <div
-                className="rounded-2xl p-5 md:p-6 space-y-4"
+                className="rounded-2xl p-5 md:p-6 space-y-4 mt-3"
                 style={{ background: 'linear-gradient(135deg, #0a1f1a 0%, #0d2d22 100%)' }}
               >
                 <div className="text-center space-y-1">
