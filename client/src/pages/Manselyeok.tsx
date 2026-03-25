@@ -886,28 +886,30 @@ export default function Manselyeok() {
                           const tenGodLabel = TEN_GOD_MEANINGS[p.tenGod]?.name || p.tenGod;
                           const tileBoxShadow = isCurrent ? '0 0 0 2px #34d399' : undefined;
                           return (
-                            <div key={i} className="flex-shrink-0 text-center relative" style={{ width: 44 }}>
+                            <div key={i} className="flex-shrink-0 text-center relative" style={{ width: 46 }}>
                               {isCurrent && (
                                 <div className="absolute -top-4 left-1/2 -translate-x-1/2">
                                   <span className="text-[9px] bg-emerald-500 text-white px-1.5 py-0.5 rounded-full font-bold whitespace-nowrap">현재</span>
                                 </div>
                               )}
-                              <p className="text-[9px] text-emerald-600 font-medium truncate mb-1">{tenGodLabel?.replace(/[()（）]/g, '').split(/\s/)[0]}</p>
+                              {/* 십성 */}
+                              <p style={{ fontSize: 10, color: '#aaa', marginBottom: 4 }} className="truncate font-medium">{tenGodLabel?.replace(/[()（）]/g, '').split(/\s/)[0]}</p>
                               {/* 천간 박스 */}
                               <div
-                                className={`flex items-center justify-center rounded-t-lg border-x border-t ${getElementColor(p.stemElement)}`}
-                                style={{ width: 44, height: 44, boxShadow: tileBoxShadow }}
+                                className={`flex items-center justify-center ${getElementColor(p.stemElement)}`}
+                                style={{ width: 46, height: 44, borderRadius: 10, marginBottom: 4, boxShadow: isCurrent ? 'inset 0 0 0 2px #34d399' : undefined }}
                               >
-                                <p className="text-lg font-bold leading-none">{p.stem}</p>
+                                <p style={{ fontSize: 19, fontWeight: 700, lineHeight: 1 }}>{p.stem}</p>
                               </div>
                               {/* 지지 박스 */}
                               <div
-                                className={`flex items-center justify-center rounded-b-lg border-x border-b ${getElementColor(p.branchElement)}`}
-                                style={{ width: 44, height: 44, marginTop: 4, boxShadow: tileBoxShadow }}
+                                className={`flex items-center justify-center ${getElementColor(p.branchElement)}`}
+                                style={{ width: 46, height: 44, borderRadius: 10, boxShadow: isCurrent ? 'inset 0 0 0 2px #34d399' : undefined }}
                               >
-                                <p className="text-lg font-bold leading-none">{p.branch}</p>
+                                <p style={{ fontSize: 19, fontWeight: 700, lineHeight: 1 }}>{p.branch}</p>
                               </div>
-                              <p className="text-[9px] text-[#999891] mt-1">{p.startAge}~{p.startAge + 9}세</p>
+                              {/* 나이 */}
+                              <p style={{ fontSize: 10, color: '#aaa', marginTop: 4 }}>{p.startAge}~{p.startAge + 9}세</p>
                             </div>
                           );
                         })}
