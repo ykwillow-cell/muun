@@ -186,22 +186,37 @@ export default function LifelongSaju() {
  // eslint-disable-next-line react-hooks/exhaustive-deps
  }, []);
 
- const onSubmit = async (data: FormValues) => {
- // 생년월일 데이터를 GA4에 전송 (SEO 분석용)
- let birthDateStr = data.birthDate;
- if (typeof birthDateStr !== 'string') {
- if (birthDateStr instanceof Date) {
- birthDateStr = birthDateStr.toISOString().split('T')[0];
- } else {
- birthDateStr = String(birthDateStr);
- }
- }
- // birthDate 유효성 검사 - YYYY-MM-DD 형식이 아니면 기본값 사용
- if (!/^\d{4}-\d{2}-\d{2}$/.test(birthDateStr)) {
- birthDateStr = "2000-01-01";
- }
- const [year, month, day] = birthDateStr.split('-').map(Number);
- const birthDateObj = new Date(year, month - 1, day);
+   const onSubmit = async (data: FormValues) => {
+    // 생년월일 데이터를 GA4에 전송 (SEO 분석용)
+    let birthDateStr = data.birthDate;
+    
+    // 다양한 날짜 형식(YYYY.MM.DD, YYYY/MM/DD 등)을 YYYY-MM-DD로 표준화
+    if (typeof birthDateStr === 'string') {
+      birthDateStr = birthDateStr.replace(/[\.\/]/g, '-').replace(/\s/g, '');
+      // 숫자로만 된 경우 (YYYYMMDD) 처리
+      if (/^\d{8}$/.test(birthDateStr)) {
+        birthDateStr = `${birthDateStr.substring(0, 4)}-${birthDateStr.substring(4, 6)}-${birthDateStr.substring(6, 8)}`;
+      }
+    } else if (birthDateStr instanceof Date) {
+      birthDateStr = birthDateStr.toISOString().split('T')[0];
+    } else {
+      birthDateStr = String(birthDateStr);
+    }
+
+    // 최종 파싱 시도 (숫자만 추출)
+    const dateParts = birthDateStr.match(/\d+/g);
+    let year, month, day;
+    
+    if (dateParts && dateParts.length >= 3) {
+      year = parseInt(dateParts[0]);
+      month = parseInt(dateParts[1]);
+      day = parseInt(dateParts[2]);
+    } else {
+      // 파싱 실패 시에만 최후의 수단으로 기본값 사용
+      year = 2000; month = 1; day = 1;
+    }
+    
+    const birthDateObj = new Date(year, month - 1, day);
  
  trackCustomEvent("check_fortune_result", {
  fortune_type: "평생사주",

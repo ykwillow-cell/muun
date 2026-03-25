@@ -47,7 +47,7 @@ export type TenGod = '비견' | '겁재' | '식신' | '상관' | '편재' | '정
 const ELEMENT_RELATIONS: Record<FiveElement, { generates: FiveElement, overcomes: FiveElement }> = {
   '木': { generates: '火', overcomes: '土' },
   '火': { generates: '土', overcomes: '金' },
-  '土': { generates: '金', overcomes: '수' },
+  '土': { generates: '金', overcomes: '水' },
   '金': { generates: '水', overcomes: '木' },
   '水': { generates: '木', overcomes: '火' },
 };
@@ -130,6 +130,10 @@ function getYearPillar(date: Date): { stem: HeavenlyStem, branch: EarthlyBranch 
   const isBeforeIpchun = (month < 2) || (month === 2 && day < ipchunDay);
   const targetYear = isBeforeIpchun ? year - 1 : year;
 
+  const stemIndex = (targetYear - 3 - 1 + 10) % 10; // 1984년 갑자년 기준 (4) -> 1984-3=1981, 1%10=1 (갑)??
+  // 공식: (연도 - 3) % 10 -> 천간 인덱스 (0:계, 1:갑...) - 수정 필요
+  // 갑(0), 을(1)...
+  // 1984년 갑자년. (1984-4)%10 = 0 (갑)
   const stemIdx = (targetYear - 4) % 10;
   const finalStemIdx = stemIdx < 0 ? stemIdx + 10 : stemIdx;
   
@@ -213,23 +217,18 @@ function getMonthPillar(date: Date, yearStem: HeavenlyStem): { stem: HeavenlySte
 }
 
 // 일주 계산
-export function getDayPillar(date: Date): { stem: HeavenlyStem, branch: EarthlyBranch } {
-  // 타임존 문제를 방지하기 위해 로컬 날짜의 00:00:00 기준 정수 날짜 차이만 계산
-  // JavaScript의 Date 객체는 타임존에 따라 date.getTime() 값이 달라질 수 있음.
-  // 특히 Vercel 같은 서버 환경(UTC)과 사용자 환경(KST) 간의 차이로 인해 1일 오차가 발생 가능.
+function getDayPillar(date: Date): { stem: HeavenlyStem, branch: EarthlyBranch } {
+  // 1900년 1월 1일은 갑술일(10)이 아니라... 실제 데이터 확인 필요
+  // 여기서는 간단하게 1900-01-01을 기준으로 계산 (실제로는 윤년 등 고려 필요)
+  // 정확성을 위해 기준일을 2000-01-01 (무오일)로 설정
   
-  // 기준일: 2000년 1월 1일 戊午(무오)일
-  const baseYear = 2000;
-  const baseMonth = 0; // 1월
-  const baseDay = 1;
-  const baseStemIdx = 4; // 戊
-  const baseBranchIdx = 6; // 午
+  const base = new Date(2000, 0, 1); // 2000-01-01
+  // 2000년 1월 1일은 무오일 (천간: 무(4), 지지: 오(6))
+  const baseStemIdx = 4;
+  const baseBranchIdx = 6;
   
-  // UTC 기준 정시(00:00:00)로 날짜 차이 계산하여 타임존 오차 제거
-  const targetUTC = Date.UTC(date.getFullYear(), date.getMonth(), date.getDate());
-  const baseUTC = Date.UTC(baseYear, baseMonth, baseDay);
-  
-  const diffDays = Math.floor((targetUTC - baseUTC) / (1000 * 60 * 60 * 24));
+  const diffTime = date.getTime() - base.getTime();
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
   
   let stemIdx = (baseStemIdx + diffDays) % 10;
   let branchIdx = (baseBranchIdx + diffDays) % 12;
@@ -249,9 +248,20 @@ function getHourPillar(date: Date, dayStem: HeavenlyStem): { stem: HeavenlyStem,
   const minute = date.getMinutes();
   
   // 한국 표준시 보정 (동경 135도 기준 -> 127.5도 실제 경도)
-  // 자시 (23:30 ~ 01:29) -> 0
+  // 약 30분 차이. 
+  // 자시: 23:30 ~ 01:30
+  // 축시: 01:30 ~ 03:30
+  // ...
   
+  // 시간을 분으로 환산
   let totalMinutes = hour * 60 + minute;
+  
+  // 30분을 뺌 (보정) -> 이렇게 하면 23:30이 23:00이 되어 자시 시작점이 됨
+  // 아니면 그냥 범위로 계산
+  
+  // 자시 (23:30 ~ 01:29) -> 0
+  // 축시 (01:30 ~ 03:29) -> 1
+  
   let branchIdx = 0;
   
   if (totalMinutes >= 23 * 60 + 30 || totalMinutes < 1 * 60 + 30) branchIdx = 0; // 자
@@ -270,6 +280,12 @@ function getHourPillar(date: Date, dayStem: HeavenlyStem): { stem: HeavenlyStem,
   const branch = EARTHLY_BRANCHES[branchIdx];
   
   // 시간 결정 (일간에 의존 - 둔간법)
+  // 갑기일 -> 갑자시
+  // 을경일 -> 병자시
+  // 병신일 -> 무자시
+  // 정임일 -> 경자시
+  // 무계일 -> 임자시
+  
   const dayStemIdx = HEAVENLY_STEMS.indexOf(dayStem);
   const startStemIndices = [0, 2, 4, 6, 8]; // 갑, 병, 무, 경, 임
   const startStemIdx = startStemIndices[dayStemIdx % 5];
@@ -318,6 +334,7 @@ function calculateTenGod(targetStem: HeavenlyStem, dayStem: HeavenlyStem): TenGo
 }
 
 // 메인 계산 함수
+// 오행별 행운 데이터 매핑
 export const ELEMENT_LUCKY_DATA: Record<FiveElement, {
   colors: string[];
   numbers: number[];
@@ -369,8 +386,8 @@ export const ELEMENT_LUCKY_DATA: Record<FiveElement, {
 };
 
 export function calculateSaju(birthDate: Date, gender: 'male' | 'female'): SajuResult {
+  // Invalid Date 방어 로직 - 잘못된 날짜가 전달되면 기본값 사용
   if (!birthDate || isNaN(birthDate.getTime())) {
-    console.error("Invalid birthDate passed to calculateSaju:", birthDate);
     birthDate = new Date(2000, 0, 1, 12, 0, 0);
   }
   const yearPillarRaw = getYearPillar(birthDate);
@@ -398,7 +415,7 @@ export function calculateSaju(birthDate: Date, gender: 'male' | 'female'): SajuR
     ...dayPillarRaw,
     stemElement: STEM_ELEMENTS[dayPillarRaw.stem],
     branchElement: BRANCH_ELEMENTS[dayPillarRaw.branch],
-    tenGod: '비견'
+    tenGod: '비견' // 일간은 자기 자신이므로 비견
   };
   
   const hourPillar: SajuPillar = {
@@ -418,6 +435,7 @@ export function calculateSaju(birthDate: Date, gender: 'male' | 'female'): SajuR
   };
 }
 
+// 오행 분포 계산 함수
 export function calculateElementBalance(saju: SajuResult) {
   const elements: Record<FiveElement, number> = { '木': 0, '火': 0, '土': 0, '金': 0, '水': 0 };
   const pillars = [saju.yearPillar, saju.monthPillar, saju.dayPillar, saju.hourPillar];
@@ -434,6 +452,8 @@ export function calculateElementBalance(saju: SajuResult) {
   }));
 }
 
+// 운세 점수 및 조합형 문장 생성 엔진
+// 단순한 해시 함수로 사주 결과에 따른 고정된 난수 생성
 function getDeterministicSeed(saju: SajuResult): number {
   const sajuStr = JSON.stringify([
     saju.yearPillar,
@@ -445,7 +465,7 @@ function getDeterministicSeed(saju: SajuResult): number {
   for (let i = 0; i < sajuStr.length; i++) {
     const char = sajuStr.charCodeAt(i);
     hash = ((hash << 5) - hash) + char;
-    hash = hash & hash;
+    hash = hash & hash; // Convert to 32bit integer
   }
   return Math.abs(hash);
 }
@@ -458,6 +478,7 @@ export function generateFortuneDetails(saju: SajuResult) {
   
   const elementNames: Record<FiveElement, string> = { '木': '나무', '火': '불', '土': '흙', '金': '쇠', '水': '물' };
   
+  // 조합형 문장 생성
   const summaries = {
     '木': ["성장과 발전의 기운이 강합니다.", "창의적인 아이디어가 샘솟는 시기입니다.", "새로운 시작을 하기에 최적의 조건입니다."],
     '火': ["열정과 에너지가 넘치는 구성입니다.", "자신의 능력을 널리 알릴 기회가 많습니다.", "화려하고 역동적인 삶의 태도를 가집니다."],

@@ -70,6 +70,24 @@ export default function LuckyLunch() {
   }, [form]);
 
   const onSubmit = (data: FormValues) => {
+    // 생년월일 데이터 표준화 (YYYY.MM.DD, YYYY/MM/DD 등 -> YYYY-MM-DD)
+    let birthDateStr = data.birthDate;
+    if (typeof birthDateStr === 'string') {
+      birthDateStr = birthDateStr.replace(/[\.\/]/g, '-').replace(/\s/g, '');
+      if (/^\d{8}$/.test(birthDateStr)) {
+        birthDateStr = `${birthDateStr.substring(0, 4)}-${birthDateStr.substring(4, 6)}-${birthDateStr.substring(6, 8)}`;
+      }
+    } else if (birthDateStr instanceof Date) {
+      birthDateStr = birthDateStr.toISOString().split('T')[0];
+    }
+    
+    // 숫자 추출 및 유효성 체크
+    const dateParts = String(birthDateStr).match(/\d+/g);
+    let finalDateStr = "2000-01-01";
+    if (dateParts && dateParts.length >= 3) {
+      finalDateStr = `${dateParts[0]}-${dateParts[1].padStart(2, '0')}-${dateParts[2].padStart(2, '0')}`;
+    }
+
     const existingData = localStorage.getItem("muun_user_data");
     const existing = existingData ? JSON.parse(existingData) : {};
     const mergedData = { ...existing, ...data };
@@ -78,7 +96,7 @@ export default function LuckyLunch() {
     setUserName(data.name);
     const rawTime = data.birthTimeUnknown ? "12:00" : data.birthTime;
     const time = /^\d{2}:\d{2}$/.test(rawTime) ? rawTime : "12:00";
-    const date = convertToSolarDate(data.birthDate, time, data.calendarType, data.isLeapMonth);
+    const date = convertToSolarDate(finalDateStr, time, data.calendarType, data.isLeapMonth);
     const saju = calculateSaju(date, data.gender);
     const lunchResult = getLuckyLunchResult(saju);
     setResult(lunchResult);

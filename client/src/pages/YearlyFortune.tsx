@@ -288,7 +288,7 @@ export default function YearlyFortune() {
  const birthDateStrForConverter = `${birthDateObj.getFullYear()}-${String(birthDateObj.getMonth() + 1).padStart(2, '0')}-${String(birthDateObj.getDate()).padStart(2, '0')}`;
  const rawTime = data.birthTimeUnknown ? "12:00" : data.birthTime;
  const time = /^\d{2}:\d{2}$/.test(rawTime) ? rawTime : "12:00";
- const date = convertToSolarDate(birthDateStrForConverter, time, data.calendarType, data.isLeapMonth);
+ const date = convertToSolarDate(finalDateStr, time, data.calendarType, data.isLeapMonth);
  const sajuResult = calculateSaju(date, data.gender);
  if (!sajuResult) return;
  setResult(sajuResult);
@@ -333,6 +333,24 @@ export default function YearlyFortune() {
  }, []);
 
  const onSubmit = (data: FormValues) => {
+    // 생년월일 데이터 표준화 (YYYY.MM.DD, YYYY/MM/DD 등 -> YYYY-MM-DD)
+    let birthDateStr = data.birthDate;
+    if (typeof birthDateStr === 'string') {
+      birthDateStr = birthDateStr.replace(/[\.\/]/g, '-').replace(/\s/g, '');
+      if (/^\d{8}$/.test(birthDateStr)) {
+        birthDateStr = `${birthDateStr.substring(0, 4)}-${birthDateStr.substring(4, 6)}-${birthDateStr.substring(6, 8)}`;
+      }
+    } else if (birthDateStr instanceof Date) {
+      birthDateStr = birthDateStr.toISOString().split('T')[0];
+    }
+    
+    // 숫자 추출 및 유효성 체크
+    const dateParts = String(birthDateStr).match(/\d+/g);
+    let finalDateStr = "2000-01-01";
+    if (dateParts && dateParts.length >= 3) {
+      finalDateStr = `${dateParts[0]}-${dateParts[1].padStart(2, '0')}-${dateParts[2].padStart(2, '0')}`;
+    }
+
  // 생년월일 데이터를 GA4에 전송 (SEO 분석용)
  let birthDateStr = data.birthDate;
  if (typeof birthDateStr !== 'string') {
@@ -359,7 +377,7 @@ export default function YearlyFortune() {
  const time = /^\d{2}:\d{2}$/.test(rawTime) ? rawTime : "12:00";
  // convertToSolarDate는 문자열 형식의 날짜를 받아야 함 (YYYY-MM-DD)
  const birthDateStrForConverter = `${birthDateObj.getFullYear()}-${String(birthDateObj.getMonth() + 1).padStart(2, '0')}-${String(birthDateObj.getDate()).padStart(2, '0')}`;
- const date = convertToSolarDate(birthDateStrForConverter, time, data.calendarType, data.isLeapMonth);
+ const date = convertToSolarDate(finalDateStr, time, data.calendarType, data.isLeapMonth);
  console.log('[YearlyFortune] convertToSolarDate result:', date);
  const sajuResult = calculateSaju(date, data.gender);
  console.log('[YearlyFortune] calculateSaju result:', sajuResult);
