@@ -157,12 +157,6 @@ function generateMonthlyFortune(saju: SajuResult): { month: number; title: strin
  };
 
  const data = monthlyThemes[dayElement] || monthlyThemes['木'];
- const scoreColors = (score: number) => {
- if (score >= 85) return 'text-green-600';
- if (score >= 75) return 'text-yellow-600';
- if (score >= 70) return 'text-orange-600';
- return 'text-red-600';
- };
  const barColors = (score: number) => {
  if (score >= 85) return 'bg-green-500';
  if (score >= 75) return 'bg-yellow-500';
@@ -273,22 +267,18 @@ export default function YearlyFortune() {
  const autoCalculate = (data: FormValues) => {
  let birthDateStr = data.birthDate;
  if (typeof birthDateStr !== 'string') {
- if (birthDateStr instanceof Date) {
- birthDateStr = (birthDateStr as Date).toISOString().split('T')[0];
- } else {
- birthDateStr = String(birthDateStr);
- }
+   birthDateStr = String(birthDateStr);
  }
  // birthDate 유효성 검사 - YYYY-MM-DD 형식이 아니면 기본값 사용
  if (!/^\d{4}-\d{2}-\d{2}$/.test(birthDateStr)) {
- birthDateStr = "2000-01-01";
+   birthDateStr = "2000-01-01";
  }
  const [year, month, day] = birthDateStr.split('-').map(Number);
  const birthDateObj = new Date(year, month - 1, day);
  const birthDateStrForConverter = `${birthDateObj.getFullYear()}-${String(birthDateObj.getMonth() + 1).padStart(2, '0')}-${String(birthDateObj.getDate()).padStart(2, '0')}`;
  const rawTime = data.birthTimeUnknown ? "12:00" : data.birthTime;
  const time = /^\d{2}:\d{2}$/.test(rawTime) ? rawTime : "12:00";
- const date = convertToSolarDate(finalDateStr, time, data.calendarType, data.isLeapMonth);
+ const date = convertToSolarDate(birthDateStrForConverter, time, data.calendarType, data.isLeapMonth);
  const sajuResult = calculateSaju(date, data.gender);
  if (!sajuResult) return;
  setResult(sajuResult);
@@ -333,40 +323,32 @@ export default function YearlyFortune() {
  }, []);
 
  const onSubmit = (data: FormValues) => {
-    // 생년월일 데이터 표준화 (YYYY.MM.DD, YYYY/MM/DD 등 -> YYYY-MM-DD)
-    let birthDateStr = data.birthDate;
-    if (typeof birthDateStr === 'string') {
-      birthDateStr = birthDateStr.replace(/[\.\/]/g, '-').replace(/\s/g, '');
-      if (/^\d{8}$/.test(birthDateStr)) {
-        birthDateStr = `${birthDateStr.substring(0, 4)}-${birthDateStr.substring(4, 6)}-${birthDateStr.substring(6, 8)}`;
-      }
-    } else if (birthDateStr instanceof Date) {
-      birthDateStr = birthDateStr.toISOString().split('T')[0];
-    }
-    
-    // 숫자 추출 및 유효성 체크
-    const dateParts = String(birthDateStr).match(/\d+/g);
-    let finalDateStr = "2000-01-01";
-    if (dateParts && dateParts.length >= 3) {
-      finalDateStr = `${dateParts[0]}-${dateParts[1].padStart(2, '0')}-${dateParts[2].padStart(2, '0')}`;
-    }
+   // 생년월일 데이터 표준화 (YYYY.MM.DD, YYYY/MM/DD 등 -> YYYY-MM-DD)
+   let birthDateStr = data.birthDate;
+   if (typeof birthDateStr === 'string') {
+     birthDateStr = birthDateStr.replace(/[\.\/]/g, '-').replace(/\s/g, '');
+     if (/^\d{8}$/.test(birthDateStr)) {
+       birthDateStr = `${birthDateStr.substring(0, 4)}-${birthDateStr.substring(4, 6)}-${birthDateStr.substring(6, 8)}`;
+     }
+   } else {
+     birthDateStr = String(birthDateStr);
+   }
 
- // 생년월일 데이터를 GA4에 전송 (SEO 분석용)
- let birthDateStr = data.birthDate;
- if (typeof birthDateStr !== 'string') {
- if (birthDateStr instanceof Date) {
- birthDateStr = birthDateStr.toISOString().split('T')[0];
- } else {
- birthDateStr = String(birthDateStr);
- }
- }
- const [year, month, day] = birthDateStr.split('-').map(Number);
- const birthDateObj = new Date(year, month - 1, day);
- 
+   // 숫자 추출 및 유효성 체크
+   const dateParts = String(birthDateStr).match(/\d+/g);
+   let finalDateStr = "2000-01-01";
+   if (dateParts && dateParts.length >= 3) {
+     finalDateStr = `${dateParts[0]}-${dateParts[1].padStart(2, '0')}-${dateParts[2].padStart(2, '0')}`;
+   }
+
+   // finalDateStr 기준으로 Date 객체 생성 (GA4 전송용)
+   const [year, month, day] = finalDateStr.split('-').map(Number);
+   const birthDateObj = new Date(year, month - 1, day);
+
  trackCustomEvent("check_fortune_result", {
  fortune_type: "신년운세",
  gender: data.gender,
- birth_date: birthDateStr,
+ birth_date: finalDateStr,
  birth_year: birthDateObj.getFullYear(),
  birth_month: String(birthDateObj.getMonth() + 1).padStart(2, '0'),
  birth_day: String(birthDateObj.getDate()).padStart(2, '0'),
@@ -375,8 +357,6 @@ export default function YearlyFortune() {
  localStorage.setItem("muun_user_data", JSON.stringify(data));
  const rawTime = data.birthTimeUnknown ? "12:00" : data.birthTime;
  const time = /^\d{2}:\d{2}$/.test(rawTime) ? rawTime : "12:00";
- // convertToSolarDate는 문자열 형식의 날짜를 받아야 함 (YYYY-MM-DD)
- const birthDateStrForConverter = `${birthDateObj.getFullYear()}-${String(birthDateObj.getMonth() + 1).padStart(2, '0')}-${String(birthDateObj.getDate()).padStart(2, '0')}`;
  const date = convertToSolarDate(finalDateStr, time, data.calendarType, data.isLeapMonth);
  console.log('[YearlyFortune] convertToSolarDate result:', date);
  const sajuResult = calculateSaju(date, data.gender);
@@ -981,8 +961,6 @@ export default function YearlyFortune() {
  </Card>
  </section>
  )}
-
- {/* Schema Markup - Temporarily disabled */}
 
  {/* 11. 일주 해석 */}
  {result && (
