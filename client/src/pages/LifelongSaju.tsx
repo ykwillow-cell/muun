@@ -197,8 +197,6 @@ export default function LifelongSaju() {
       if (/^\d{8}$/.test(birthDateStr)) {
         birthDateStr = `${birthDateStr.substring(0, 4)}-${birthDateStr.substring(4, 6)}-${birthDateStr.substring(6, 8)}`;
       }
-    } else if (birthDateStr instanceof Date) {
-      birthDateStr = birthDateStr.toISOString().split('T')[0];
     } else {
       birthDateStr = String(birthDateStr);
     }
