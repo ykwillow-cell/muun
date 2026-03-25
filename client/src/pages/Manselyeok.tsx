@@ -296,7 +296,10 @@ export default function Manselyeok() {
                         type="single"
                         value={form.watch("calendarType")}
                         onValueChange={(value) => {
-                          if (value) form.setValue("calendarType", value as "solar" | "lunar");
+                          if (value) {
+                            form.setValue("calendarType", value as "solar" | "lunar");
+                            if (value === "solar") form.setValue("isLeapMonth", false);
+                          }
                         }}
                         className="w-full md:w-48 h-11 grid grid-cols-2 gap-[3px] bg-[#EDE8E8] rounded-xl p-[3px]"
                       >

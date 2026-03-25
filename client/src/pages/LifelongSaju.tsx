@@ -366,6 +366,7 @@ export default function LifelongSaju() {
  onValueChange={(value) => {
  if (value) {
  form.setValue("calendarType", value as "solar" | "lunar");
+ if (value === "solar") form.setValue("isLeapMonth", false);
  trackEvent("User Input", "Change Calendar Type", value);
  }
  }}

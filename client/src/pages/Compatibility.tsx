@@ -728,6 +728,7 @@ export default function Compatibility() {
  onValueChange={(value) => {
  if (value) {
  form.setValue("calendarType1", value as "solar" | "lunar");
+ if (value === "solar") form.setValue("isLeapMonth1", false);
  }
  }}
  className="compat-segment-track w-full"
@@ -820,6 +821,7 @@ export default function Compatibility() {
  onValueChange={(value) => {
  if (value) {
  form.setValue("calendarType2", value as "solar" | "lunar");
+ if (value === "solar") form.setValue("isLeapMonth2", false);
  }
  }}
  className="compat-segment-track w-full"

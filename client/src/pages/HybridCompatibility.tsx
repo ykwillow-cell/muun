@@ -910,7 +910,7 @@ export default function HybridCompatibilityPage() {
                         <ToggleGroup
                           type="single"
                           value={form.watch("calendarType1")}
-                          onValueChange={(value) => { if (value) form.setValue("calendarType1", value as "solar" | "lunar"); }}
+                          onValueChange={(value) => { if (value) { form.setValue("calendarType1", value as "solar" | "lunar"); if (value === "solar") form.setValue("isLeapMonth1", false); } }}
                           className="w-full h-11 grid grid-cols-2 gap-[3px] bg-[#EDE8E8] rounded-xl p-[3px]"
                         >
                           <ToggleGroupItem value="solar" className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-purple-600 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-sm">양력</ToggleGroupItem>
@@ -1006,7 +1006,7 @@ export default function HybridCompatibilityPage() {
                         <ToggleGroup
                           type="single"
                           value={form.watch("calendarType2")}
-                          onValueChange={(value) => { if (value) form.setValue("calendarType2", value as "solar" | "lunar"); }}
+                          onValueChange={(value) => { if (value) { form.setValue("calendarType2", value as "solar" | "lunar"); if (value === "solar") form.setValue("isLeapMonth2", false); } }}
                           className="w-full h-11 grid grid-cols-2 gap-[3px] bg-[#EDE8E8] rounded-xl p-[3px]"
                         >
                           <ToggleGroupItem value="solar" className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-pink-600 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-sm">양력</ToggleGroupItem>

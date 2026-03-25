@@ -127,7 +127,7 @@ export default function FamilySaju() {
  setErrors(newErrors);
  };
 
- const updateMember = (index: number, field: keyof FamilyMember, value: string) => {
+ const updateMember = (index: number, field: keyof FamilyMember, value: string | boolean) => {
  const updated = [...members];
  (updated[index] as any)[field] = value;
  // 역할에 따라 성별 자동 설정
@@ -137,6 +137,10 @@ export default function FamilySaju() {
  } else if (value === "어머니" || value === "할머니" || value === "딸") {
  updated[index].gender = "female";
  }
+ }
+ // 양력 전환 시 윤달 초기화
+ if (field === "calendarType" && value === "solar") {
+ updated[index].isLeapMonth = false;
  }
  setMembers(updated);
  };

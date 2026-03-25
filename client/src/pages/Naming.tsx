@@ -823,11 +823,13 @@ export default function Naming() {
                       type="single"
                       value={form.watch("calendarType")}
                       onValueChange={(value) => {
-                        if (value)
+                        if (value) {
                           form.setValue(
                             "calendarType",
                             value as "solar" | "lunar"
                           );
+                          if (value === "solar") form.setValue("isLeapMonth", false);
+                        }
                       }}
                       className="w-full h-11 bg-black/[0.05] p-1 rounded-xl border border-black/10 grid grid-cols-2 gap-1"
                     >
