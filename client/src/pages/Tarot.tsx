@@ -316,49 +316,58 @@ export default function Tarot() {
                   </div>
                 </div>
 
-                {/* 카드 덱 영역 - 모바일 최적화: 가로 스크롤 없이 더 촘촘하게 */}
-                <div className="relative space-y-2 md:space-y-8 py-2 overflow-hidden px-1">
-                  {rows.map((row, rowIndex) => (
-                    <div 
-                      key={rowIndex}
-                      className="flex justify-center"
-                    >
-                      <div className="flex flex-wrap justify-center gap-1 md:gap-3 w-full max-w-full">
+                {/* 카드 덱 영역 - 팬(부채꼴) 스프레드 */}
+                <div className="relative space-y-4 py-2 overflow-hidden px-1">
+                  {rows.map((row, rowIndex) => {
+                    const maxAngle = row.length <= 7 ? 24 : 28;
+                    return (
+                      <div
+                        key={rowIndex}
+                        className="relative flex justify-center items-end"
+                        style={{ height: '100px' }}
+                      >
                         {row.map((card, cardIndex) => {
                           const isSelected = selectedCards.find(c => c.id === card.id);
                           const selectIndex = selectedCards.findIndex(c => c.id === card.id);
-                          
+                          const rotation = row.length > 1
+                            ? (cardIndex / (row.length - 1)) * maxAngle * 2 - maxAngle
+                            : 0;
+
                           return (
                             <motion.div
                               key={card.id}
-                              whileTap={{ scale: 0.95 }}
                               onClick={() => handleSelectCard(card)}
-                              className={`
-                                relative flex-shrink-0 w-[10%] min-w-[34px] aspect-[2/3] md:w-[120px] md:h-[180px] 
-                                transition-all duration-300
-                                ${isSelected ? "z-20" : "z-0"}
-                              `}
-                              style={{ 
-                                // 데스크톱에서는 기존대로
-                                rotate: rowIndex % 2 === 0 ? (cardIndex % 2 === 0 ? 1 : -1) : (cardIndex % 2 === 0 ? -1 : 1)
+                              animate={isSelected
+                                ? { y: -18, scale: 1.12 }
+                                : { y: 0, scale: 1 }
+                              }
+                              whileTap={{ scale: 0.95 }}
+                              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+                              style={{
+                                width: '42px',
+                                aspectRatio: '2/3',
+                                flexShrink: 0,
+                                marginLeft: cardIndex === 0 ? 0 : '-6px',
+                                transformOrigin: 'bottom center',
+                                rotate: rotation,
+                                zIndex: isSelected ? 30 : cardIndex,
+                                cursor: 'pointer',
                               }}
                             >
                               <div className={`
-                                w-full h-full rounded-md md:rounded-xl overflow-hidden shadow-lg border border-black/10
-                                ${isSelected 
-                                  ? "ring-2 md:ring-4 ring-primary ring-offset-1 md:ring-offset-2 ring-offset-background scale-110" 
-                                  : "hover:translate-y-[-5px] md:hover:translate-y-[-10px]"}
+                                w-full h-full rounded-md overflow-hidden shadow-lg border border-black/10
+                                ${isSelected ? "ring-2 ring-primary ring-offset-1 ring-offset-background" : ""}
                               `}>
                                 {/* 카드 뒷면 */}
                                 <div className="w-full h-full bg-gradient-to-br from-indigo-950 via-purple-900 to-primary/40 flex items-center justify-center">
-                                  <div className="w-[85%] h-[85%] border border-primary/20 rounded-sm md:rounded-lg flex items-center justify-center">
-                                    <Sparkles className="w-3 h-3 md:w-10 md:h-10 text-primary/30" />
+                                  <div className="w-[85%] h-[85%] border border-primary/20 rounded-sm flex items-center justify-center">
+                                    <Sparkles className="w-3 h-3 text-primary/30" />
                                   </div>
                                 </div>
-                                
+
                                 {isSelected && (
                                   <div className="absolute inset-0 flex items-center justify-center bg-primary/20 backdrop-blur-[1px]">
-                                    <div className="w-5 h-5 md:w-12 md:h-12 rounded-full bg-primary text-background flex items-center justify-center font-bold text-xs md:text-2xl shadow-xl">
+                                    <div className="w-5 h-5 rounded-full bg-primary text-background flex items-center justify-center font-bold text-xs shadow-xl">
                                       {selectIndex + 1}
                                     </div>
                                   </div>
@@ -368,8 +377,8 @@ export default function Tarot() {
                           );
                         })}
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
 
                 {selectedCards.length === 3 && (
