@@ -636,7 +636,9 @@ export default function Naming() {
           <title>작명소 - 81수리 성명학 이름 분석 | MUUN 무운</title>
           <meta
             name="description"
-            content="8        <div className="min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
+            content="81수리 성명학 기반으로 원격·형격·이격·정격 4격을 분석하고 길수 이름 후보를 추천합니다. 사주 오행을 반영한 맞춤 작명 서비스."
+          />
+        </Helmet>
 
         {/* 헤더 */}
         <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
@@ -959,7 +961,9 @@ export default function Naming() {
                 { icon: "📄", title: "PDF 저장", desc: "결과 다운로드" },
               ].map((f) => (
                 <Card
-                  key={f.ti                  <Card className="bg-white border border-black/[0.06] rounded-xl shadow-sm">               >
+                  key={f.title}
+                  className="bg-white border border-black/[0.06] rounded-xl shadow-sm"
+                >
                   <CardContent className="p-3 text-center space-y-1">
                     <div className="text-2xl">{f.icon}</div>
                     <p className="text-xs font-bold text-[#191F28]">{f.title}</p>
