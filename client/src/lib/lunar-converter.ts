@@ -52,8 +52,11 @@ export function convertToSolarDate(
   calendarType: "solar" | "lunar",
   isLeapMonth: boolean = false
 ): Date {
+  // timeStr 유효성 검사 - HH:MM 형식이 아닌 경우 12:00으로 대체
+  const safeTime = /^\d{2}:\d{2}$/.test(timeStr) ? timeStr : "12:00";
+
   if (calendarType === "solar") {
-    return new Date(`${dateStr}T${timeStr}`);
+    return new Date(`${dateStr}T${safeTime}`);
   }
 
   // 음력 → 양력 변환
@@ -62,12 +65,12 @@ export function convertToSolarDate(
 
   if (solar) {
     const solarDateStr = `${solar.year}-${String(solar.month).padStart(2, '0')}-${String(solar.day).padStart(2, '0')}`;
-    return new Date(`${solarDateStr}T${timeStr}`);
+    return new Date(`${solarDateStr}T${safeTime}`);
   }
 
   // 변환 실패 시 원래 날짜를 그대로 사용 (fallback)
   console.warn(`음력→양력 변환 실패: ${dateStr}, 양력으로 간주합니다.`);
-  return new Date(`${dateStr}T${timeStr}`);
+  return new Date(`${dateStr}T${safeTime}`);
 }
 
 /**

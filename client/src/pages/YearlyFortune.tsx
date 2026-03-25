@@ -282,7 +282,8 @@ export default function YearlyFortune() {
  const [year, month, day] = birthDateStr.split('-').map(Number);
  const birthDateObj = new Date(year, month - 1, day);
  const birthDateStrForConverter = `${birthDateObj.getFullYear()}-${String(birthDateObj.getMonth() + 1).padStart(2, '0')}-${String(birthDateObj.getDate()).padStart(2, '0')}`;
- const time = data.birthTimeUnknown ? "12:00" : data.birthTime;
+ const rawTime = data.birthTimeUnknown ? "12:00" : data.birthTime;
+ const time = /^\d{2}:\d{2}$/.test(rawTime) ? rawTime : "12:00";
  const date = convertToSolarDate(birthDateStrForConverter, time, data.calendarType, data.isLeapMonth);
  const sajuResult = calculateSaju(date, data.gender);
  if (!sajuResult) return;
@@ -345,7 +346,8 @@ export default function YearlyFortune() {
  calendar_type: data.calendarType,
  });
  localStorage.setItem("muun_user_data", JSON.stringify(data));
- const time = data.birthTimeUnknown ? "12:00" : data.birthTime;
+ const rawTime = data.birthTimeUnknown ? "12:00" : data.birthTime;
+ const time = /^\d{2}:\d{2}$/.test(rawTime) ? rawTime : "12:00";
  // convertToSolarDate는 문자열 형식의 날짜를 받아야 함 (YYYY-MM-DD)
  const birthDateStrForConverter = `${birthDateObj.getFullYear()}-${String(birthDateObj.getMonth() + 1).padStart(2, '0')}-${String(birthDateObj.getDate()).padStart(2, '0')}`;
  const date = convertToSolarDate(birthDateStrForConverter, time, data.calendarType, data.isLeapMonth);
@@ -492,7 +494,7 @@ export default function YearlyFortune() {
  <BirthTimeSelect
  value={form.watch("birthTime")}
  onChange={(val) => form.setValue("birthTime", val)}
- onUnknownChange={(isUnknown) => form.setValue("birthTimeUnknown", isUnknown)}
+ onUnknownChange={(isUnknown) => { form.setValue("birthTimeUnknown", isUnknown); if (isUnknown) form.setValue("birthTime", "12:00"); }}
  isUnknown={form.watch("birthTimeUnknown")}
  accentClass="focus:ring-primary/50 focus:border-primary"
  />

@@ -94,7 +94,8 @@ export default function Manselyeok() {
       return;
     }
 
-    const time = data.birthTimeUnknown ? "12:00" : data.birthTime;
+    const rawTime = data.birthTimeUnknown ? "12:00" : data.birthTime;
+    const time = /^\d{2}:\d{2}$/.test(rawTime) ? rawTime : "12:00";
     const date = convertToSolarDate(data.birthDate, time, data.calendarType, data.isLeapMonth);
     const sajuResult = calculateSaju(date, data.gender);
     setResult(sajuResult);
@@ -280,7 +281,7 @@ export default function Manselyeok() {
                         <BirthTimeSelect
                           value={form.watch("birthTime")}
                           onChange={(val) => form.setValue("birthTime", val)}
-                          onUnknownChange={(isUnknown) => form.setValue("birthTimeUnknown", isUnknown)}
+                          onUnknownChange={(isUnknown) => { form.setValue("birthTimeUnknown", isUnknown); if (isUnknown) form.setValue("birthTime", "12:00"); }}
                           isUnknown={form.watch("birthTimeUnknown")}
                           accentClass="focus:ring-emerald-500/50 focus:border-emerald-500"
                         />

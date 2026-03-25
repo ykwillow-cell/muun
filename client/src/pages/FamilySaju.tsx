@@ -162,7 +162,8 @@ export default function FamilySaju() {
  trackEvent("family_saju_submit", "family_saju", `가족 ${members.length}명 분석`);
 
  const resultData = members.map(member => {
- const time = member.birthTimeUnknown ? "12:00" : member.birthTime;
+ const rawTime = member.birthTimeUnknown ? "12:00" : member.birthTime;
+ const time = /^\d{2}:\d{2}$/.test(rawTime) ? rawTime : "12:00";
  const date = convertToSolarDate(member.birthDate, time, member.calendarType, member.isLeapMonth);
  const saju = calculateSaju(date, member.gender);
  return { ...member, saju };
@@ -322,7 +323,7 @@ export default function FamilySaju() {
  <BirthTimeSelect
  value={member.birthTime}
  onChange={(val) => updateMember(index, "birthTime", val)}
- onUnknownChange={(isUnknown) => updateMember(index, "birthTimeUnknown", isUnknown)}
+ onUnknownChange={(isUnknown) => { updateMember(index, "birthTimeUnknown", isUnknown); if (isUnknown) updateMember(index, "birthTime", "12:00"); }}
  isUnknown={member.birthTimeUnknown}
  accentClass="focus:ring-primary/50 focus:border-primary"
  />
