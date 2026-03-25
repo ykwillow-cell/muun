@@ -1172,7 +1172,12 @@ const metaData: Record<string, { title: string, description: string, h1?: string
         </section>
         <form aria-label="만세력 조회 폼">
           <fieldset>
-            <legend>생년월일 입력</legend>
+            <legend>사용자 정보 입력</legend>
+            <label for="ms-name">이름</label>
+            <input id="ms-name" type="text" name="name" placeholder="이름" autocomplete="off" />
+            <label>성별</label>
+            <label><input type="radio" name="gender" value="male" checked /> 남성</label>
+            <label><input type="radio" name="gender" value="female" /> 여성</label>
             <label for="ms-birth">생년월일</label>
             <input id="ms-birth" type="text" name="birthDate" placeholder="YYYY. MM. DD" />
             <label for="ms-time">태어난 시간</label>
@@ -1195,7 +1200,7 @@ const metaData: Record<string, { title: string, description: string, h1?: string
             <label><input type="radio" name="calendarType" value="solar" checked /> 양력</label>
             <label><input type="radio" name="calendarType" value="lunar" /> 음력</label>
           </fieldset>
-          <button type="submit">만세력 조회</button>
+          <button type="submit">만세력 분석하기</button>
         </form>
       `,
       services: [

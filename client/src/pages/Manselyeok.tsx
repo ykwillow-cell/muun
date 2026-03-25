@@ -24,7 +24,6 @@ import {
   type HeavenlyStem, type EarthlyBranch,
 } from "@/lib/saju";
 import { convertToSolarDate } from "@/lib/lunar-converter";
-import SajuGlossary from "@/components/SajuGlossary";
 import ManselyeokContent from "@/components/ManselyeokContent";
 import { getHeroBirthForForm } from "@/lib/user-birth";
 import {
@@ -293,20 +292,19 @@ export default function Manselyeok() {
   const analysis = useMemo(() => result ? analyzeGangYak(result) : null, [result]);
   const daewunData = useMemo(() => result ? calculateDaewun(result) : null, [result]);
 
-  // 오행 바 애니메이션 리셋
-  useEffect(() => { setBarsAnimated(false); }, [result]);
-
-  // IntersectionObserver
+  // 오행 바 애니메이션: result 변경 시 리셋 후 IntersectionObserver 재등록
   useEffect(() => {
-    if (!fiveElementRef.current || barsAnimated) return;
+    setBarsAnimated(false);
+    if (!result) return;
     const el = fiveElementRef.current;
+    if (!el) return;
     const observer = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) { setBarsAnimated(true); observer.disconnect(); } },
-      { threshold: 0.3 }
+      { threshold: 0.1 }
     );
     observer.observe(el);
     return () => observer.disconnect();
-  }, [result, barsAnimated]);
+  }, [result]);
 
   useEffect(() => {
     const savedData = localStorage.getItem("muun_user_data");
@@ -362,20 +360,38 @@ export default function Manselyeok() {
   return (
     <div className="min-h-screen bg-[#F5F4F8] text-foreground pb-20 antialiased">
       <Helmet>
-        <title>무료 만세력 조회 - 회원가입 없이 사주팔자 확인 | 무운 (MuUn)</title>
-        <meta name="description" content="회원가입 없이 생년월일시만 입력하면 바로 확인하는 무료 만세력 분석. 사주팔자, 오행 구성, 천간지지를 개인정보 저장 없이 100% 무료로 제공합니다." />
+        {result && analysis ? (() => {
+          const name = form.getValues('name');
+          const ilgan = `${STEM_READINGS[result.dayPillar.stem]}(${result.dayPillar.stem})`;
+          const yongsin = analysis.yongshinElements.map(e => ELEMENT_READINGS[e]).join('·');
+          const dynamicTitle = `${name}님의 사주팔자 만세력 분석 | 무운`;
+          const dynamicDesc = `${name}님의 사주팔자 - 일간 ${ilgan}, ${analysis.gangYak}, 용신 ${yongsin}. 무운에서 무료로 확인하세요.`;
+          return (
+            <>
+              <title>{dynamicTitle}</title>
+              <meta name="description" content={dynamicDesc} />
+              <meta property="og:title" content={dynamicTitle} />
+              <meta property="og:description" content={dynamicDesc} />
+              <script type="application/ld+json">{JSON.stringify({"@context":"https://schema.org","@type":"WebPage","name":dynamicTitle,"description":dynamicDesc,"url":"https://muunsaju.com/manselyeok"})}</script>
+            </>
+          );
+        })() : (
+          <>
+            <title>무료 만세력 - 사주팔자 분석 | 무운</title>
+            <meta name="description" content="회원가입 없이 생년월일시만 입력하면 바로 확인하는 무료 만세력 분석. 사주팔자, 오행 구성, 천간지지를 개인정보 저장 없이 100% 무료로 제공합니다." />
+            <meta property="og:title" content="무료 만세력 - 사주팔자 분석 | 무운" />
+            <meta property="og:description" content="회원가입 없이 생년월일시만 입력하면 바로 확인하는 무료 만세력 분석. 사주팔자, 오행 구성, 천간지지를 개인정보 저장 없이 100% 무료로 제공합니다." />
+            <script type="application/ld+json">{JSON.stringify({"@context":"https://schema.org","@type":"WebPage","name":"무료 만세력 - 사주팔자 분석 | 무운","description":"회원가입 없이 생년월일시만 입력하면 바로 확인하는 무료 만세력 분석. 사주팔자, 오행 구성, 천간지지를 개인정보 저장 없이 100% 무료로 제공합니다.","url":"https://muunsaju.com/manselyeok"})}</script>
+          </>
+        )}
         <meta name="keywords" content="만세력, 무료만세력, 사주팔자, 오행분석, 천간지지, 무료사주, 만세력조회, 사주보기" />
         <link rel="canonical" href="https://muunsaju.com/manselyeok" />
-        <meta property="og:title" content="무료 만세력 조회 - 회원가입 없이 사주팔자 확인 | 무운 (MuUn)" />
-        <meta property="og:description" content="회원가입 없이 생년월일시만 입력하면 바로 확인하는 무료 만세력 분석. 사주팔자, 오행 구성, 천간지지를 개인정보 저장 없이 100% 무료로 제공합니다." />
         <meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png" />
         <meta property="og:url" content="https://muunsaju.com/manselyeok" />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="무운 (MuUn)" />
         <meta property="og:locale" content="ko_KR" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="무료 만세력 조회 - 회원가입 없이 사주팔자 확인 | 무운 (MuUn)" />
-        <meta name="twitter:description" content="회원가입 없이 생년월일시만 입력하면 바로 확인하는 무료 만세력 분석. 사주팔자, 오행 구성, 천간지지를 개인정보 저장 없이 100% 무료로 제공합니다." />
         <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
         <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
         <script type="application/ld+json">{JSON.stringify({"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://muunsaju.com"},{"@type":"ListItem","position":2,"name":"만세력","item":"https://muunsaju.com/manselyeok"}]})}</script>
@@ -1011,8 +1027,6 @@ export default function Manselyeok() {
                 </div>
               </div>
 
-              {/* 용어 설명 */}
-              <SajuGlossary />
             </motion.div>
           )}
         </AnimatePresence>
