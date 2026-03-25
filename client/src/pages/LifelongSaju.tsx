@@ -167,6 +167,8 @@ export default function LifelongSaju() {
  form.reset({
  ...form.getValues(),
  ...parsed,
+ birthDate: /^\d{4}-\d{2}-\d{2}$/.test(parsed.birthDate) ? parsed.birthDate : form.getValues().birthDate || "2000-01-01",
+ birthTime: /^\d{2}:\d{2}$/.test(parsed.birthTime) ? parsed.birthTime : form.getValues().birthTime || "12:00",
  });
  return;
  } catch (e) {
@@ -193,6 +195,10 @@ export default function LifelongSaju() {
  } else {
  birthDateStr = String(birthDateStr);
  }
+ }
+ // birthDate 유효성 검사 - YYYY-MM-DD 형식이 아니면 기본값 사용
+ if (!/^\d{4}-\d{2}-\d{2}$/.test(birthDateStr)) {
+ birthDateStr = "2000-01-01";
  }
  const [year, month, day] = birthDateStr.split('-').map(Number);
  const birthDateObj = new Date(year, month - 1, day);

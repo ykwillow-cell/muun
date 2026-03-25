@@ -64,7 +64,11 @@ export default function Tojeong() {
       try {
         const parsed = JSON.parse(savedData);
         const { birthTime, ...rest } = parsed;
-        form.reset({ ...form.getValues(), ...rest });
+        form.reset({
+          ...form.getValues(),
+          ...rest,
+          birthDate: /^\d{4}-\d{2}-\d{2}$/.test(rest.birthDate) ? rest.birthDate : form.getValues().birthDate || "2000-01-01",
+        });
         return;
       } catch {}
     }
@@ -77,7 +81,8 @@ export default function Tojeong() {
 
   const onSubmit = (data: FormValues) => {
     localStorage.setItem("muun_user_data", JSON.stringify(data));
-    const date = convertToSolarDate(data.birthDate, "12:00", data.calendarType, data.isLeapMonth);
+    const safeBirthDate = /^\d{4}-\d{2}-\d{2}$/.test(data.birthDate) ? data.birthDate : "2000-01-01";
+    const date = convertToSolarDate(safeBirthDate, "12:00", data.calendarType, data.isLeapMonth);
     const tojeongResult = calculateTojeong(date, 2026);
     const monthlyFortunes = getMonthlyFortunes(tojeongResult.hexagram);
     

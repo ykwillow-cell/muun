@@ -71,7 +71,12 @@ export default function Manselyeok() {
     if (savedData) {
       try {
         const parsed = JSON.parse(savedData);
-        form.reset(parsed);
+        const safeData = {
+          ...parsed,
+          birthDate: /^\d{4}-\d{2}-\d{2}$/.test(parsed.birthDate) ? parsed.birthDate : "2000-01-01",
+          birthTime: /^\d{2}:\d{2}$/.test(parsed.birthTime) ? parsed.birthTime : "12:00",
+        };
+        form.reset(safeData);
         return;
       } catch {}
     }
