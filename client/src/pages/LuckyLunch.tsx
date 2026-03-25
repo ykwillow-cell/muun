@@ -13,6 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { BirthTimeSelect } from "@/components/ui/birth-time-select";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { getLuckyLunchResult } from "@/lib/luckyLunch";
 import { calculateSaju } from "@/lib/saju";
@@ -237,11 +238,10 @@ export default function LuckyLunch() {
                   {form.watch("calendarType") === "lunar" && (
                     <div className="flex items-center gap-2 px-1">
                       <label className="flex items-center gap-2 cursor-pointer group">
-                        <input
-                          type="checkbox"
-                          {...form.register("isLeapMonth")}
-                          style={{ width: '16px', height: '16px', minWidth: '16px', flexShrink: 0, accentColor: '#f59e0b' }}
-                          className="rounded border-black/10 cursor-pointer"
+                        <Checkbox
+                          checked={form.watch("isLeapMonth") || false}
+                          onCheckedChange={(checked) => form.setValue("isLeapMonth", checked === true)}
+                          className="data-[state=checked]:bg-amber-500 data-[state=checked]:border-amber-500"
                         />
                         <span className="text-base md:text-sm text-[#1a1a18] group-hover:text-amber-400 transition-colors">윤달(Leap Month)인 경우 체크</span>
                       </label>

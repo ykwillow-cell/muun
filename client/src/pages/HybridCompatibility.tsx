@@ -12,6 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { BirthTimeSelect } from "@/components/ui/birth-time-select";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -918,7 +919,7 @@ export default function HybridCompatibilityPage() {
                         </ToggleGroup>
                         {form.watch("calendarType1") === "lunar" && (
                           <div className="flex items-center justify-end gap-2 pr-1 pt-0.5">
-                            <input type="checkbox" id="isLeapMonth1" checked={form.watch("isLeapMonth1") || false} onChange={(e) => form.setValue("isLeapMonth1", e.target.checked)} style={{ width: '16px', height: '16px', minWidth: '16px', flexShrink: 0, accentColor: '#a855f7' }} className="rounded border-black/10 cursor-pointer" />
+                            <Checkbox id="isLeapMonth1" checked={form.watch("isLeapMonth1") || false} onCheckedChange={(checked) => form.setValue("isLeapMonth1", checked === true)} className="data-[state=checked]:bg-purple-500 data-[state=checked]:border-purple-500" />
                             <Label htmlFor="isLeapMonth1" className="text-[#5a5a56] text-[11px] cursor-pointer">윤달입니다</Label>
                           </div>
                         )}
@@ -1014,7 +1015,7 @@ export default function HybridCompatibilityPage() {
                         </ToggleGroup>
                         {form.watch("calendarType2") === "lunar" && (
                           <div className="flex items-center justify-end gap-2 pr-1 pt-0.5">
-                            <input type="checkbox" id="isLeapMonth2" checked={form.watch("isLeapMonth2") || false} onChange={(e) => form.setValue("isLeapMonth2", e.target.checked)} style={{ width: '16px', height: '16px', minWidth: '16px', flexShrink: 0, accentColor: '#ec4899' }} className="rounded border-black/10 cursor-pointer" />
+                            <Checkbox id="isLeapMonth2" checked={form.watch("isLeapMonth2") || false} onCheckedChange={(checked) => form.setValue("isLeapMonth2", checked === true)} className="data-[state=checked]:bg-pink-500 data-[state=checked]:border-pink-500" />
                             <Label htmlFor="isLeapMonth2" className="text-[#5a5a56] text-[11px] cursor-pointer">윤달입니다</Label>
                           </div>
                         )}

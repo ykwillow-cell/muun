@@ -31,6 +31,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { BirthTimeSelect } from "@/components/ui/birth-time-select";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { calculateSaju, SajuResult, calculateElementBalance, STEM_ELEMENTS, BRANCH_ELEMENTS, STEM_YIN_YANG } from "@/lib/saju";
@@ -739,13 +740,11 @@ export default function Compatibility() {
  {/* 윤달 체크박스 — 음력 선택 시에만 표시, 공간 없이 완전 숨김 */}
  {calendarType1 === "lunar" && (
    <div className="flex items-center gap-1.5 pt-1.5">
-     <input
-       type="checkbox"
+     <Checkbox
        id="isLeapMonth1"
        checked={form.watch("isLeapMonth1") || false}
-       onChange={(e) => form.setValue("isLeapMonth1", e.target.checked)}
-       style={{ width: '16px', height: '16px', minWidth: '16px', flexShrink: 0, accentColor: '#D4537E' }}
-       className="rounded cursor-pointer"
+       onCheckedChange={(checked) => form.setValue("isLeapMonth1", checked === true)}
+       className="data-[state=checked]:bg-[#D4537E] data-[state=checked]:border-[#D4537E]"
      />
      <Label htmlFor="isLeapMonth1" className="cursor-pointer" style={{ fontSize: '11px', color: 'var(--color-text-secondary, #999891)' }}>
        윤달
@@ -832,13 +831,11 @@ export default function Compatibility() {
  {/* 윤달 체크박스 — 음력 선택 시에만 표시, 공간 없이 완전 숨김 */}
  {calendarType2 === "lunar" && (
    <div className="flex items-center gap-1.5 pt-1.5">
-     <input
-       type="checkbox"
+     <Checkbox
        id="isLeapMonth2"
        checked={form.watch("isLeapMonth2") || false}
-       onChange={(e) => form.setValue("isLeapMonth2", e.target.checked)}
-       style={{ width: '16px', height: '16px', minWidth: '16px', flexShrink: 0, accentColor: '#D4537E' }}
-       className="rounded cursor-pointer"
+       onCheckedChange={(checked) => form.setValue("isLeapMonth2", checked === true)}
+       className="data-[state=checked]:bg-[#D4537E] data-[state=checked]:border-[#D4537E]"
      />
      <Label htmlFor="isLeapMonth2" className="cursor-pointer" style={{ fontSize: '11px', color: 'var(--color-text-secondary, #999891)' }}>
        윤달
