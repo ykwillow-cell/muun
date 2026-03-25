@@ -316,12 +316,19 @@ function getRandomElement<T>(arr: T[]): T {
 }
 
 function getDayMasterElement(saju: SajuResult): FiveElement {
-  return STEM_ELEMENTS[saju.dayPillar.stem];
+  return STEM_ELEMENTS[saju.dayPillar?.stem] || '水';
 }
 
 export function generatePersonalityFortune(saju: SajuResult): FortuneResult {
-  const dayMaster = saju.dayPillar.stem;
-  const template = DAY_MASTER_TEMPLATES[dayMaster];
+  const dayMaster = saju.dayPillar?.stem;
+  const template = dayMaster ? DAY_MASTER_TEMPLATES[dayMaster] : null;
+  
+  if (!template) {
+    return {
+      title: '일간 분석',
+      content: '생년월일 정보를 정확히 입력하시면 상세한 일간 분석을 확인하실 수 있습니다.'
+    };
+  }
   
   const content = `${template.personality}\n\n` +
     `**강점**: ${template.strength}\n\n` +

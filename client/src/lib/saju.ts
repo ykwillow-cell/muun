@@ -386,6 +386,10 @@ export const ELEMENT_LUCKY_DATA: Record<FiveElement, {
 };
 
 export function calculateSaju(birthDate: Date, gender: 'male' | 'female'): SajuResult {
+  // Invalid Date 방어 로직 - 잘못된 날짜가 전달되면 기본값 사용
+  if (!birthDate || isNaN(birthDate.getTime())) {
+    birthDate = new Date(2000, 0, 1, 12, 0, 0);
+  }
   const yearPillarRaw = getYearPillar(birthDate);
   const monthPillarRaw = getMonthPillar(birthDate, yearPillarRaw.stem);
   const dayPillarRaw = getDayPillar(birthDate);

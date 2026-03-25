@@ -279,6 +279,10 @@ export default function YearlyFortune() {
  birthDateStr = String(birthDateStr);
  }
  }
+ // birthDate 유효성 검사 - YYYY-MM-DD 형식이 아니면 기본값 사용
+ if (!/^\d{4}-\d{2}-\d{2}$/.test(birthDateStr)) {
+ birthDateStr = "2000-01-01";
+ }
  const [year, month, day] = birthDateStr.split('-').map(Number);
  const birthDateObj = new Date(year, month - 1, day);
  const birthDateStrForConverter = `${birthDateObj.getFullYear()}-${String(birthDateObj.getMonth() + 1).padStart(2, '0')}-${String(birthDateObj.getDate()).padStart(2, '0')}`;
@@ -300,8 +304,13 @@ export default function YearlyFortune() {
  if (savedData) {
  try {
  const parsed = JSON.parse(savedData);
- form.reset(parsed);
- autoCalculate(parsed);
+ const safeData = {
+ ...parsed,
+ birthDate: /^\d{4}-\d{2}-\d{2}$/.test(parsed.birthDate) ? parsed.birthDate : "2000-01-01",
+ birthTime: /^\d{2}:\d{2}$/.test(parsed.birthTime) ? parsed.birthTime : "12:00",
+ };
+ form.reset(safeData);
+ autoCalculate(safeData);
  return;
  } catch {}
  }
