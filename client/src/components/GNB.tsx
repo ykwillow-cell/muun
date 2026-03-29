@@ -95,27 +95,44 @@ export function GNB() {
     }
   };
 
+  const isHome = location === "/";
+
   return (
     <div className="w-full flex flex-col">
-      {/* 상단 신뢰 배너 - 보라색 그라데이션 적용 */}
-      <div className="w-full bg-primary/8 py-2 md:py-3 border-b border-primary/15 overflow-hidden">
-        <div className="container max-w-[1280px] px-5 flex items-center justify-center gap-2 animate-in fade-in slide-in-from-top duration-1000">
-          <Sparkles className="w-3.5 h-3.5 md:w-4 md:h-4 text-primary animate-pulse" />
-          <p className="text-[11px] md:text-sm font-medium text-foreground/70 tracking-tight text-center">
-            회원가입 없이 1초 만에 확인하는 <span className="text-primary font-semibold">100% 무료</span> 운세 서비스
-          </p>
-          <Sparkles className="w-3.5 h-3.5 md:w-4 md:h-4 text-primary animate-pulse" />
+      {/* 상단 신뢰 배너 — 홈에서는 숨김 (히어로 신뢰 배지와 중복) */}
+      {!isHome && (
+        <div className="w-full bg-primary/8 py-2 md:py-3 border-b border-primary/15 overflow-hidden">
+          <div className="container max-w-[1280px] px-5 flex items-center justify-center gap-2 animate-in fade-in slide-in-from-top duration-1000">
+            <Sparkles className="w-3.5 h-3.5 md:w-4 md:h-4 text-primary animate-pulse" />
+            <p className="text-[11px] md:text-sm font-medium text-foreground/70 tracking-tight text-center">
+              회원가입 없이 1초 만에 확인하는 <span className="text-primary font-semibold">100% 무료</span> 운세 서비스
+            </p>
+            <Sparkles className="w-3.5 h-3.5 md:w-4 md:h-4 text-primary animate-pulse" />
+          </div>
         </div>
-      </div>
+      )}
 
-      <header className="sticky top-0 z-50 w-full border-b border-black/10 bg-white/80 backdrop-blur-3xl">
+      <header className={cn(
+        "sticky top-0 z-50 w-full transition-all duration-300",
+        isHome
+          ? "border-b border-white/10 bg-transparent backdrop-blur-none"
+          : "border-b border-black/10 bg-white/80 backdrop-blur-3xl"
+      )}>
         <div className="container max-w-[1280px] flex h-16 md:h-20 items-center justify-between px-5 md:px-8">
           <div className="flex items-center">
             <Link href="/" className="flex items-center space-x-3 group">
-              <div className="w-10 h-10 md:w-12 md:h-12 bg-primary rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-all duration-500 shadow-[0_4px_16px_rgba(107,95,255,0.25)]">
+              <div className={cn(
+                "w-10 h-10 md:w-12 md:h-12 rounded-2xl flex items-center justify-center group-hover:rotate-12 transition-all duration-500",
+                isHome
+                  ? "bg-white/20"
+                  : "bg-primary shadow-[0_4px_16px_rgba(107,95,255,0.25)]"
+              )}>
                 <Sparkles className="w-6 h-6 md:w-7 md:h-7 text-white" />
               </div>
-              <span className="text-2xl md:text-3xl font-black tracking-tighter text-primary">
+              <span className={cn(
+                "text-2xl md:text-3xl font-black tracking-tighter",
+                isHome ? "text-white" : "text-primary"
+              )}>
                 MUUN
               </span>
             </Link>
@@ -126,7 +143,10 @@ export function GNB() {
               variant="ghost" 
               size="icon" 
               onClick={handleShare}
-              className="text-primary hover:bg-primary/10 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center"
+              className={cn(
+                "w-12 h-12 md:w-14 md:h-14 flex items-center justify-center",
+                isHome ? "text-white hover:bg-white/10" : "text-primary hover:bg-primary/10"
+              )}
               aria-label="Share"
             >
               <Share2 className="h-7 w-7 md:h-8 md:w-8" strokeWidth={2.5} />
@@ -134,7 +154,10 @@ export function GNB() {
 
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="text-primary hover:bg-primary/10 w-12 h-12 md:w-14 md:h-14 flex items-center justify-center">
+                <Button variant="ghost" size="icon" className={cn(
+                  "w-12 h-12 md:w-14 md:h-14 flex items-center justify-center",
+                  isHome ? "text-white hover:bg-white/10" : "text-primary hover:bg-primary/10"
+                )}>
                   <Menu className="h-7 w-7 md:h-8 md:w-8" strokeWidth={2.5} />
                   <span className="sr-only">Toggle menu</span>
                 </Button>

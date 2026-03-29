@@ -20,7 +20,7 @@ export function TrustBar() {
           border-radius: 0;
           box-shadow: none;
           border: none;
-          border-bottom: 1px solid rgba(255,255,255,0.08);
+          border-bottom: 1px solid rgba(255,255,255,0.07);
           margin: 0;
           padding: 12px 18px;
           display: flex;
