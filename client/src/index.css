@@ -260,7 +260,7 @@
 
   /* ── Galaxy AI Aurora 그라디언트 ── */
   /* 기본값: 어드민 활성 테마와 동일하게 설정 (FOUC 방지 — 첫 방문자도 올바른 색상 표시) */
-  --aurora: linear-gradient(135deg, #0c3483 0%, #a2b6df 100%);
+  --aurora: linear-gradient(158deg, #1a1260 0%, #3929a0 35%, #5040b8 58%, #4355b4 80%, #3358a8 100%);
   --aurora-indigo: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
   --aurora-teal: linear-gradient(135deg, #0891B2 0%, #06B6D4 100%);
   --aurora-slate: linear-gradient(135deg, #334155 0%, #475569 100%);

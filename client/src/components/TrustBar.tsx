@@ -16,7 +16,7 @@ export function TrustBar() {
       <style>{`
         /* Trust Bar — 히어로 딥 퍼플 배경과 연결 */
         .mu-trust-bar {
-          background: linear-gradient(155deg, #12082e 0%, #1e0f4a 100%);
+          background: linear-gradient(158deg, #1a1260 0%, #251870 100%);
           border-radius: 0;
           box-shadow: none;
           border: none;
