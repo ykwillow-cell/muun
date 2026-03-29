@@ -431,6 +431,81 @@
       "source": "/dream/춤추는꿈",
       "destination": "/dream",
       "statusCode": 301
+    },
+    {
+      "source": "/dream/눈(날씨)",
+      "destination": "/dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/돼지-꿈,-돼지-꿈해몽,-복권-당첨-꿈",
+      "destination": "/dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/똥,-화장실,-재물운",
+      "destination": "/dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/내가-죽는-꿈,-가족이-죽는-꿈,-시체-꿈",
+      "destination": "/dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/guide/column-001",
+      "destination": "/guide",
+      "statusCode": 301
+    },
+    {
+      "source": "/guide/column-002",
+      "destination": "/guide",
+      "statusCode": 301
+    },
+    {
+      "source": "/guide/column-003",
+      "destination": "/guide",
+      "statusCode": 301
+    },
+    {
+      "source": "/guide/saju-basics",
+      "destination": "/guide",
+      "statusCode": 301
+    },
+    {
+      "source": "/dictionary/gab-mok",
+      "destination": "/dictionary/gapmok-characteristics-leadership-success",
+      "statusCode": 301
+    },
+    {
+      "source": "/dictionary/jeong-hwa",
+      "destination": "/dictionary/jeonghwa-characteristics-inner-power",
+      "statusCode": 301
+    },
+    {
+      "source": "/dictionary/heavenly-stems",
+      "destination": "/fortune-dictionary",
+      "statusCode": 301
+    },
+    {
+      "source": "/dictionary/mu-to",
+      "destination": "/dictionary/muto-characteristics-wealth-guide",
+      "statusCode": 301
+    },
+    {
+      "source": "/dictionary/gye-su",
+      "destination": "/dictionary/gyesu-characteristics-etiquette-guide",
+      "statusCode": 301
+    },
+    {
+      "source": "/dictionary/yong-sin",
+      "destination": "/dictionary/yongsin-characteristics-key-success",
+      "statusCode": 301
+    },
+    {
+      "source": "/dictionary/earthly-branches",
+      "destination": "/fortune-dictionary",
+      "statusCode": 301
     }
   ],
   "trailingSlash": false
