@@ -506,6 +506,26 @@
       "source": "/dictionary/earthly-branches",
       "destination": "/fortune-dictionary",
       "statusCode": 301
+    },
+    {
+      "source": "/dream/%EB%AC%BC%EC%97%90%20%EB%B9%A0%EC%A7%80%EB%8A%94%20%EA%BF%88",
+      "destination": "/dream/falling-into-water-dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/%EC%9D%B4%EB%B9%A8%20%EB%B9%A0%EC%A7%80%EB%8A%94%20%EA%BF%88",
+      "destination": "/dream/teeth-falling-out-dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/%EC%95%84%EA%B8%B0",
+      "destination": "/dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/%EC%9A%B0%EC%82%B0",
+      "destination": "/dream/sharing-umbrella-with-crush-dream",
+      "statusCode": 301
     }
   ],
   "trailingSlash": false
