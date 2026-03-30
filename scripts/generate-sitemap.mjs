@@ -173,6 +173,7 @@ function generateIndex() {
     'sitemap-dictionary.xml',
     'sitemap-guide.xml',
     'sitemap-dream.xml',
+    'sitemap-yearly-fortune.xml',
   ]);
 }
 
