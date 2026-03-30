@@ -22,6 +22,7 @@ import { useEffect, useState } from 'react';
 import { fetchDictionaryEntryBySlug, type DictionaryEntry } from '@/lib/fortune-dictionary';
 import CallToAction from '@/components/CallToAction';
 import { RelatedTermsSection } from '@/components/RelatedTermsSection';
+import { LinkedText } from '@/hooks/useLinkedText';
 import { Button } from '@/components/ui/button';
 import { Link } from 'wouter';
 import { trackCustomEvent } from '@/lib/ga4';
@@ -217,13 +218,13 @@ export default function DictionaryDetail() {
           {/* 원래 의미 */}
           <section className="bg-white border border-black/10 rounded-2xl p-6 md:p-8 shadow-sm">
             <h2 className="text-lg font-bold text-[#6B5FFF] mb-4">원래 의미</h2>
-            <p className="text-[#191F28] leading-relaxed text-base md:text-lg">{entry.originalMeaning}</p>
+            <p className="text-[#191F28] leading-relaxed text-base md:text-lg"><LinkedText text={entry.originalMeaning || ''} excludeSlug={entry.slug} /></p>
           </section>
 
           {/* 현대적 해석 */}
           <section className="bg-white border border-black/10 rounded-2xl p-6 md:p-8 shadow-sm">
             <h2 className="text-lg font-bold text-[#6B5FFF] mb-4">현대적 해석</h2>
-            <p className="text-[#191F28] leading-relaxed text-base md:text-lg">{entry.modernInterpretation}</p>
+            <p className="text-[#191F28] leading-relaxed text-base md:text-lg"><LinkedText text={entry.modernInterpretation || ''} excludeSlug={entry.slug} /></p>
           </section>
 
           {/* 무운의 조언 */}
@@ -231,7 +232,7 @@ export default function DictionaryDetail() {
             <h2 className="text-lg font-bold text-[#6B5FFF] mb-4 flex items-center gap-2">
               <span>💡</span> 무운의 조언
             </h2>
-            <p className="text-[#191F28] leading-relaxed text-base md:text-lg font-medium">{entry.muunAdvice}</p>
+            <p className="text-[#191F28] leading-relaxed text-base md:text-lg font-medium"><LinkedText text={entry.muunAdvice || ''} excludeSlug={entry.slug} /></p>
           </section>
 
           {/* 관련 키워드 */}

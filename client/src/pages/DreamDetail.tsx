@@ -14,6 +14,7 @@ import { Link } from 'wouter';
 import { getDreamBySlug, getLatestDreams, DREAM_CATEGORIES, type DreamData } from '@/lib/dream-data-api';
 import CallToAction from '@/components/CallToAction';
 import RelatedServices from '@/components/RelatedServices';
+import { LinkedText } from '@/hooks/useLinkedText';
 
 const gradeConfig: Record<string, { label: string; icon: any; color: string; bg: string; border: string; desc: string }> = {
   great: {
@@ -288,7 +289,7 @@ export default function DreamDetail() {
               <div className="relative inline-block px-8 py-8 bg-black/[0.05] rounded-3xl border border-black/10 w-full shadow-inner">
                 <Quote className={`absolute top-6 left-6 w-8 h-8 ${grade.color} opacity-20`} />
                 <p className="text-lg md:text-xl text-[#1a1a18] leading-relaxed font-medium">
-                  {dream.interpretation}
+                  <LinkedText text={dream.interpretation} />
                 </p>
                 <Quote className={`absolute bottom-6 right-6 w-8 h-8 ${grade.color} opacity-20 rotate-180`} />
               </div>
@@ -315,7 +316,7 @@ export default function DreamDetail() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-[#999891] leading-relaxed">
-                    {dream.traditional_meaning}
+                    <LinkedText text={dream.traditional_meaning} />
                   </p>
                 </CardContent>
               </Card>
@@ -331,7 +332,7 @@ export default function DreamDetail() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-[#999891] leading-relaxed">
-                    {dream.psychological_meaning}
+                    <LinkedText text={dream.psychological_meaning} />
                   </p>
                 </CardContent>
               </Card>
