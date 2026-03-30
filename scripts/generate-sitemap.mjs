@@ -1,12 +1,18 @@
 #!/usr/bin/env node
 
 /**
- * Sitemap 자동 생성 스크립트
- * - Supabase fortune_dictionary 테이블에서 슬러그 읽기
- * - Supabase에서 칼럼 데이터 조회
- * - Supabase에서 꿈해몽 데이터 조회
- * - sitemap.xml 자동 생성
- * - Google Search Console에 Ping 전송
+ * Sitemap 자동 생성 스크립트 (분리 구조 버전)
+ *
+ * 생성 파일:
+ *   sitemap.xml          — sitemap index (4개 하위 파일 참조)
+ *   sitemap-core.xml     — 주요 서비스/루트 페이지 (정적)
+ *   sitemap-dictionary.xml — fortune_dictionary 동적 페이지
+ *   sitemap-guide.xml    — columns 동적 페이지
+ *   sitemap-dream.xml    — dreams 동적 페이지
+ *
+ * README 지침 적용:
+ *   - lastmod / changefreq / priority 제거 (잘못된 freshness 신호 방지)
+ *   - 중복 URL 제거
  */
 
 import fs from 'fs';
@@ -15,6 +21,7 @@ import { fileURLToPath } from 'url';
 import { createClient } from '@supabase/supabase-js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const PUBLIC_DIR = path.join(__dirname, '../client/public');
 
 // Supabase 설정
 const SUPABASE_URL = 'https://vuifbmsdggnwygvgcrkj.supabase.co';
@@ -22,10 +29,10 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ============================================
-// 1. Supabase에서 fortune_dictionary 슬러그 조회
+// 1. Supabase 데이터 조회
 // ============================================
 
-async function fetchDictionarySlugsFromSupabase() {
+async function fetchDictionarySlugs() {
   try {
     console.log('📡 Supabase에서 운세 사전 슬러그 조회 중...');
     const { data, error } = await supabase
@@ -35,187 +42,138 @@ async function fetchDictionarySlugsFromSupabase() {
       .order('created_at', { ascending: true });
 
     if (error) {
-      console.warn('⚠️ Supabase fortune_dictionary 조회 실패:', error.message);
+      console.warn('⚠️ fortune_dictionary 조회 실패:', error.message);
       return [];
     }
-
     const slugs = (data || []).map(row => row.slug).filter(Boolean);
-    console.log(`✅ Found ${slugs.length} dictionary items from Supabase`);
+    console.log(`✅ Dictionary: ${slugs.length}개`);
     return slugs;
   } catch (err) {
-    console.warn('⚠️ 운세 사전 슬러그 조회 중 오류:', err.message);
+    console.warn('⚠️ 운세 사전 슬러그 조회 오류:', err.message);
     return [];
   }
 }
 
-// ============================================
-// 1-2. Supabase에서 칼럼 데이터 조회
-// ============================================
-
-async function fetchColumnsFromSupabase() {
+async function fetchColumns() {
   try {
     console.log('📡 Supabase에서 칼럼 데이터 조회 중...');
     const { data, error } = await supabase
       .from('columns')
-      .select('id, slug, published_at')
+      .select('id, slug')
       .eq('published', true)
       .order('published_at', { ascending: false });
 
     if (error) {
-      console.warn('⚠️ Supabase 조회 실패:', error.message);
+      console.warn('⚠️ columns 조회 실패:', error.message);
       return [];
     }
-
-    console.log(`✅ Found ${data?.length || 0} columns from Supabase`);
+    console.log(`✅ Guide(columns): ${data?.length || 0}개`);
     return data || [];
   } catch (err) {
-    console.warn('⚠️ 칼럼 조회 중 오류:', err.message);
+    console.warn('⚠️ 칼럼 조회 오류:', err.message);
     return [];
   }
 }
 
-// ============================================
-// 1-3. Supabase에서 꿈해몽 데이터 조회
-// ============================================
-
-async function fetchDreamsFromSupabase() {
+async function fetchDreams() {
   try {
     console.log('📡 Supabase에서 꿈해몽 데이터 조회 중...');
     const { data, error } = await supabase
       .from('dreams')
-      .select('slug, published_at')
+      .select('slug')
       .eq('published', true)
       .order('published_at', { ascending: false });
 
     if (error) {
-      console.warn('⚠️ Supabase 꿈해몽 조회 실패:', error.message);
+      console.warn('⚠️ dreams 조회 실패:', error.message);
       return [];
     }
-
-    console.log(`✅ Found ${data?.length || 0} dreams from Supabase`);
+    console.log(`✅ Dream: ${data?.length || 0}개`);
     return data || [];
   } catch (err) {
-    console.warn('⚠️ 꿈해몽 조회 중 오류:', err.message);
+    console.warn('⚠️ 꿈해몽 조회 오류:', err.message);
     return [];
   }
 }
 
 // ============================================
-// 2. Sitemap XML 생성
+// 2. XML 생성 헬퍼
 // ============================================
 
-function generateSitemap(slugs, columns, dreams) {
-  const baseUrl = 'https://muunsaju.com';
-  const currentDate = new Date().toISOString().split('T')[0];
+function urlsetXml(urls) {
+  const items = urls.map(u => `  <url>\n    <loc>${u}</loc>\n  </url>`).join('\n');
+  return `<?xml version="1.0" encoding="utf-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${items}\n</urlset>\n`;
+}
 
-  // XML 헤더
-  let xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-`;
+function sitemapIndexXml(files) {
+  const items = files.map(f => `  <sitemap>\n    <loc>https://muunsaju.com/${f}</loc>\n  </sitemap>`).join('\n');
+  return `<?xml version="1.0" encoding="utf-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${items}\n</sitemapindex>\n`;
+}
 
-  // 정적 페이지
-  const staticPages = [
-    { url: '/', priority: 1.0, changefreq: 'weekly' },
-    { url: '/naming', priority: 0.9, changefreq: 'monthly' },
-    { url: '/fortune-dictionary', priority: 0.9, changefreq: 'weekly' },
-    { url: '/yearly-fortune', priority: 0.8, changefreq: 'monthly' },
-    { url: '/lifelong-saju', priority: 0.8, changefreq: 'monthly' },
-    { url: '/compatibility', priority: 0.8, changefreq: 'monthly' },
-    { url: '/family-saju', priority: 0.7, changefreq: 'monthly' },
-    { url: '/tarot', priority: 0.7, changefreq: 'monthly' },
-    { url: '/tojeong', priority: 0.7, changefreq: 'monthly' },
-    { url: '/astrology', priority: 0.7, changefreq: 'monthly' },
-    { url: '/daily-fortune', priority: 0.7, changefreq: 'daily' },
-    { url: '/manselyeok', priority: 0.7, changefreq: 'monthly' },
-    { url: '/hybrid-compatibility', priority: 0.7, changefreq: 'monthly' },
-    { url: '/psychology', priority: 0.7, changefreq: 'monthly' },
-    { url: '/lucky-lunch', priority: 0.6, changefreq: 'daily' },
-    { url: '/dream', priority: 0.7, changefreq: 'weekly' },
-    { url: '/guide', priority: 0.8, changefreq: 'weekly' },
-    { url: '/about', priority: 0.5, changefreq: 'monthly' },
-  ];
-
-  staticPages.forEach(page => {
-    xml += `  <url>
-    <loc>${baseUrl}${page.url}</loc>
-    <lastmod>${currentDate}</lastmod>
-    <changefreq>${page.changefreq}</changefreq>
-    <priority>${page.priority}</priority>
-  </url>
-`;
-  });
-
-  // Dictionary 동적 페이지
-  slugs.forEach(slug => {
-    xml += `  <url>
-    <loc>${baseUrl}/dictionary/${slug}</loc>
-    <lastmod>${currentDate}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-`;
-  });
-
-  // Supabase 칼럼 동적 페이지
-  columns.forEach(col => {
-    const lastmod = col.published_at ? col.published_at.split('T')[0] : currentDate;
-    xml += `  <url>
-    <loc>${baseUrl}/guide/${col.slug || col.id}</loc>
-    <lastmod>${lastmod}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-`;
-  });
-
-  // Supabase 꿈해몽 동적 페이지
-  dreams.forEach(dream => {
-    if (!dream.slug) return;
-    const lastmod = dream.published_at ? dream.published_at.split('T')[0] : currentDate;
-    xml += `  <url>
-    <loc>${baseUrl}/dream/${dream.slug}</loc>
-    <lastmod>${lastmod}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-  </url>
-`;
-  });
-
-  xml += `</urlset>`;
-
-  return xml;
+function saveFile(filename, content) {
+  const filePath = path.join(PUBLIC_DIR, filename);
+  if (!fs.existsSync(PUBLIC_DIR)) fs.mkdirSync(PUBLIC_DIR, { recursive: true });
+  fs.writeFileSync(filePath, content, 'utf-8');
+  const kb = (fs.statSync(filePath).size / 1024).toFixed(1);
+  console.log(`💾 ${filename} 저장 완료 (${kb} KB)`);
 }
 
 // ============================================
-// 3. Sitemap 파일 저장
+// 3. 각 사이트맵 생성
 // ============================================
 
-function saveSitemap(xml) {
-  const sitemapPath = path.join(
-    __dirname,
-    '../client/public/sitemap.xml'
-  );
+function generateCore() {
+  const BASE = 'https://muunsaju.com';
+  const pages = [
+    '/', '/naming', '/fortune-dictionary', '/yearly-fortune',
+    '/lifelong-saju', '/compatibility', '/family-saju', '/tarot',
+    '/tojeong', '/astrology', '/daily-fortune', '/manselyeok',
+    '/hybrid-compatibility', '/psychology', '/lucky-lunch', '/about',
+  ];
+  return urlsetXml(pages.map(p => `${BASE}${p}`));
+}
 
-  try {
-    // 디렉토리 생성 (필요한 경우)
-    const dir = path.dirname(sitemapPath);
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
+function generateDictionary(slugs) {
+  const BASE = 'https://muunsaju.com';
+  // 중복 제거
+  const unique = [...new Set(slugs)];
+  return urlsetXml(unique.map(s => `${BASE}/dictionary/${s}`));
+}
+
+function generateGuide(columns) {
+  const BASE = 'https://muunsaju.com';
+  const urls = [`${BASE}/guide`];
+  const seen = new Set();
+  for (const col of columns) {
+    const slug = col.slug || col.id;
+    if (slug && !seen.has(slug)) {
+      seen.add(slug);
+      urls.push(`${BASE}/guide/${slug}`);
     }
-
-    fs.writeFileSync(sitemapPath, xml, 'utf-8');
-    console.log(`✅ Sitemap saved: ${sitemapPath}`);
-
-    // 파일 크기 확인
-    const stats = fs.statSync(sitemapPath);
-    console.log(`   File size: ${(stats.size / 1024).toFixed(2)} KB`);
-
-    return true;
-  } catch (error) {
-    console.error('❌ Error saving sitemap:', error.message);
-    return false;
   }
+  return urlsetXml(urls);
+}
+
+function generateDream(dreams) {
+  const BASE = 'https://muunsaju.com';
+  const urls = [`${BASE}/dream`];
+  const seen = new Set();
+  for (const d of dreams) {
+    if (d.slug && !seen.has(d.slug)) {
+      seen.add(d.slug);
+      urls.push(`${BASE}/dream/${d.slug}`);
+    }
+  }
+  return urlsetXml(urls);
+}
+
+function generateIndex() {
+  return sitemapIndexXml([
+    'sitemap-core.xml',
+    'sitemap-dictionary.xml',
+    'sitemap-guide.xml',
+    'sitemap-dream.xml',
+  ]);
 }
 
 // ============================================
@@ -225,78 +183,54 @@ function saveSitemap(xml) {
 async function pingGoogle() {
   const sitemapUrl = 'https://muunsaju.com/sitemap.xml';
   const pingUrl = `https://www.google.com/ping?sitemap=${encodeURIComponent(sitemapUrl)}`;
-
   try {
-    console.log('\n🔔 Sending ping to Google Search Console...');
-    const response = await fetch(pingUrl, {
-      method: 'GET',
-      timeout: 5000,
-    });
-
+    console.log('\n🔔 Google Search Console에 Ping 전송 중...');
+    const response = await fetch(pingUrl, { method: 'GET' });
     if (response.ok) {
-      console.log('✅ Google Ping sent successfully');
-      console.log(`   Status: ${response.status} ${response.statusText}`);
-      return true;
+      console.log(`✅ Google Ping 성공 (${response.status})`);
     } else {
-      console.warn(`⚠️ Google Ping returned status: ${response.status}`);
-      return false;
+      console.warn(`⚠️ Google Ping 응답: ${response.status}`);
     }
-  } catch (error) {
-    console.warn('⚠️ Google Ping failed (this is normal in offline mode):', error.message);
-    return false;
+  } catch (err) {
+    console.warn('⚠️ Google Ping 실패 (오프라인 환경에서는 정상):', err.message);
   }
 }
 
 // ============================================
-// 5. 메인 함수
+// 5. 메인
 // ============================================
 
 async function main() {
-  console.log('🚀 Sitemap Generation Started\n');
-  console.log('='.repeat(50));
+  console.log('🚀 Sitemap 생성 시작 (분리 구조)\n' + '='.repeat(50));
 
-  // 1. Supabase에서 Dictionary 슬러그 조회
-  console.log('\n📖 Fetching dictionary slugs from Supabase...');
-  const slugs = await fetchDictionarySlugsFromSupabase();
+  const [slugs, columns, dreams] = await Promise.all([
+    fetchDictionarySlugs(),
+    fetchColumns(),
+    fetchDreams(),
+  ]);
 
-  // 2. Supabase에서 칼럼 데이터 조회
-  console.log('\n📚 Fetching columns from Supabase...');
-  const columns = await fetchColumnsFromSupabase();
+  console.log('\n📝 XML 파일 생성 중...');
+  saveFile('sitemap-core.xml',       generateCore());
+  saveFile('sitemap-dictionary.xml', generateDictionary(slugs));
+  saveFile('sitemap-guide.xml',      generateGuide(columns));
+  saveFile('sitemap-dream.xml',      generateDream(dreams));
+  saveFile('sitemap.xml',            generateIndex());
 
-  // 2-2. Supabase에서 꿈해몽 데이터 조회
-  console.log('\n🌙 Fetching dreams from Supabase...');
-  const dreams = await fetchDreamsFromSupabase();
+  const total = 16 + slugs.length + columns.length + 1 + dreams.length + 1;
+  console.log(`\n✅ 총 ${total}개 URL 생성 완료`);
+  console.log(`   core: 16 | dictionary: ${slugs.length} | guide: ${columns.length + 1} | dream: ${dreams.length + 1}`);
 
-  // 3. Sitemap 생성
-  console.log('\n📝 Generating sitemap...');
-  const xml = generateSitemap(slugs, columns, dreams);
-  console.log(`✅ Sitemap generated with ${slugs.length} dictionary items + ${columns.length} columns + ${dreams.length} dreams`);
-
-  // 4. 파일 저장
-  console.log('\n💾 Saving sitemap...');
-  const saved = saveSitemap(xml);
-
-  if (!saved) {
-    console.error('❌ Failed to save sitemap. Aborting.');
-    process.exit(1);
-  }
-
-  // 5. Google Ping (선택사항)
   if (process.env.PING_GOOGLE === 'true') {
     await pingGoogle();
   } else {
-    console.log('\n💡 Tip: Set PING_GOOGLE=true to send ping to Google');
+    console.log('\n💡 Tip: PING_GOOGLE=true 환경변수로 Google Ping 전송 가능');
   }
 
   console.log('\n' + '='.repeat(50));
-  console.log('✅ Sitemap generation completed successfully!\n');
+  console.log('✅ 사이트맵 생성 완료!\n');
 }
 
-// ============================================
-// 실행
-// ============================================
-
-main().catch(error => {
-  console.error('❌ Fatal error:', error.message);
+main().catch(err => {
+  console.error('❌ Fatal error:', err.message);
   process.exit(1);
 });
