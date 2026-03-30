@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { LinkedText } from '@/hooks/useLinkedText';
 import { 
   Search, BrainCircuit, CloudMoon, ArrowRight, 
   Info, ChevronRight, Zap, X, 
@@ -326,7 +327,7 @@ const DreamInterpretation: React.FC = () => {
                                   </span>
                                 </div>
                                 <p className="text-sm text-muted-foreground line-clamp-1">
-                                  {dream.interpretation}
+                                  <LinkedText text={dream.interpretation} />
                                 </p>
                               </div>
                             </div>

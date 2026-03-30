@@ -6,6 +6,7 @@ import { ChevronLeft, Star, Sparkles, Zap, Briefcase, Activity, Heart, Quote, Sc
 import { Link } from "wouter";
 import { shareContent } from "@/lib/share";
 import { autoLinkKeywordsToJSX } from "@/lib/auto-link-keywords";
+import { LinkedText } from '@/hooks/useLinkedText';
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -252,7 +253,7 @@ export default function YearlyFortuneDetail() {
                       </div>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-sm text-muted-foreground">{month.content}</p>
+                      <p className="text-sm text-muted-foreground"><LinkedText text={month.content} /></p>
                     </CardContent>
                   </Card>
                 </motion.div>

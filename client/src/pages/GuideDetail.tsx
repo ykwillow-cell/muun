@@ -10,6 +10,7 @@ import { getColumnBySlug, getLatestColumns, COLUMN_CATEGORIES, type ColumnData }
 import CallToAction from '@/components/CallToAction';
 import RelatedServices from '@/components/RelatedServices';
 import { Link } from 'wouter';
+import { injectLinksIntoHtml } from '@/hooks/useLinkedText';
 
 export default function GuideDetail() {
   const { id } = useParams<{ id: string }>();
@@ -243,7 +244,7 @@ export default function GuideDetail() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
           className="prose max-w-none mb-12 [&_p]:mb-5 [&_p]:leading-relaxed [&_h2]:mt-8 [&_h2]:mb-4 [&_h3]:mt-6 [&_h3]:mb-3 [&_ul]:mb-5 [&_ol]:mb-5 [&_li]:mb-2 [&_blockquote]:my-6 [&_hr]:my-8 [&_strong]:font-bold [&_em]:italic [&_p]:text-[#191f28] [&_h2]:text-[#191f28] [&_h3]:text-[#191f28] [&_li]:text-[#191f28] [&_blockquote]:text-[#4e5968] [&_blockquote]:border-l-primary/30"
-          dangerouslySetInnerHTML={{ __html: column.content }}
+          dangerouslySetInnerHTML={{ __html: injectLinksIntoHtml(column.content) }}
         />
 
         {/* CTA - 카테고리별 맞춤 전환 유도 */}

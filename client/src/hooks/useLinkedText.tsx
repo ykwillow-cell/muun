@@ -16,6 +16,42 @@ import React, { useMemo } from 'react';
 import { Link } from 'wouter';
 import { fortuneDictionary } from '@/lib/fortune-dictionary';
 
+/**
+ * HTML 문자열 내 텍스트 노드에서 사주 사전 용어를 찾아 <a> 태그로 감싸 반환합니다.
+ * GuideDetail처럼 dangerouslySetInnerHTML을 사용하는 경우에 활용합니다.
+ */
+export function injectLinksIntoHtml(html: string): string {
+  if (!html || !fortuneDictionary.length) return html;
+
+  const terms = fortuneDictionary
+    .map((entry) => ({
+      koreanName: entry.title.replace(/\(.*?\)/g, '').trim(),
+      slug: entry.slug,
+      title: entry.title,
+    }))
+    .filter((t) => t.koreanName.length >= 2)
+    .sort((a, b) => b.koreanName.length - a.koreanName.length);
+
+  const linkedSlugs = new Set<string>();
+  let result = html;
+
+  for (const term of terms) {
+    if (linkedSlugs.has(term.slug)) continue;
+    const escaped = term.koreanName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    // 태그 사이 텍스트에서만 매칭 (태그 속성 내부 제외)
+    const regex = new RegExp(`(>|^)([^<]*?)(${escaped})([^<]*?)(?=<|$)`, 'g');
+    let replaced = false;
+    result = result.replace(regex, (_match, open, before, keyword, after) => {
+      if (replaced) return _match;
+      replaced = true;
+      return `${open}${before}<a href="/dictionary/${term.slug}" class="text-[#6B5FFF] underline underline-offset-2 decoration-[#6B5FFF]/40 hover:decoration-[#6B5FFF] transition-colors font-medium" title="${term.title}">${keyword}</a>${after}`;
+    });
+    if (replaced) linkedSlugs.add(term.slug);
+  }
+
+  return result;
+}
+
 interface LinkedTextProps {
   text: string;
   /** 현재 페이지의 사전 slug (자기 참조 방지용) */

@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { LinkedText } from '@/hooks/useLinkedText';
 import { Helmet } from 'react-helmet-async';
 import { useCanonical } from '@/lib/use-canonical';
 import { setDictionaryOGTags } from '@/lib/og-tags';
@@ -154,7 +155,7 @@ export default function FortuneDictionary() {
                     <p className="text-sm text-[#8B95A1] mb-3 font-medium">{entry.subtitle}</p>
                   )}
                   <p className="text-sm text-[#4E5968] line-clamp-2 leading-relaxed mt-auto">
-                    {entry.summary}
+                    <LinkedText text={entry.summary || ''} />
                   </p>
                 </button>
               </motion.div>
