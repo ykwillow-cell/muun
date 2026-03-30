@@ -526,6 +526,51 @@
       "source": "/dream/%EC%9A%B0%EC%82%B0",
       "destination": "/dream/sharing-umbrella-with-crush-dream",
       "statusCode": 301
+    },
+    {
+      "source": "/lifetime-saju",
+      "destination": "/lifelong-saju",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/%EB%B9%84%ED%96%89%EA%B8%B0",
+      "destination": "/dream/flying-in-airplane-dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/%EB%B3%84",
+      "destination": "/dream/starry-night-sky-dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/%EC%9D%B4%EB%B3%84",
+      "destination": "/dream/celebrity-breakup-dream-meaning",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/%EC%A1%B0%EC%83%81",
+      "destination": "/dream/deceased-ancestor-smiling-dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/%EC%8B%B8%EC%9A%B0%EB%8A%94%20%EA%BF%88",
+      "destination": "/dream/fighting-with-celebrity-dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/%EC%B6%A4%EC%B6%94%EB%8A%94%20%EA%BF%88",
+      "destination": "/dream/royal-dance-performance-dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/%EB%88%88(%EB%82%A0%EC%94%A8)",
+      "destination": "/dream/white-snow-falling-dream-meaning",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/%EB%A8%B8%EB%A6%AC%EC%B9%B4%EB%9D%BD",
+      "destination": "/dream/hair-loss-bald-dream-meaning",
+      "statusCode": 301
     }
   ],
   "trailingSlash": false
