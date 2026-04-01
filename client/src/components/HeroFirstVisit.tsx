@@ -325,7 +325,7 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           background: rgba(255,255,255,0.22);
           backdrop-filter: blur(20px);
           -webkit-backdrop-filter: blur(20px);
-          border: 1px solid rgba(255,255,255,0.45);
+          border: none;
           border-radius: var(--md-shape-xl); /* 28px — MD3 Extra Large */
           padding: var(--md-sp-4); /* 16px */
           overflow: hidden;
