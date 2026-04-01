@@ -66,28 +66,30 @@ export function MuSelect({
   const selected = options.find((o) => o.value === value);
 
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
+    if (!open) return;
+    const handleClickOutside = (e: MouseEvent | TouchEvent) => {
       // 드롭다운 내부 클릭이면 무시
-      if (dropdownRef.current && dropdownRef.current.contains(e.target as Node)) return;
-      if (
-        containerRef.current &&
-        !containerRef.current.contains(e.target as Node)
-      ) {
+      const target = (e as MouseEvent).target as Node;
+      if (dropdownRef.current && dropdownRef.current.contains(target)) return;
+      if (containerRef.current && !containerRef.current.contains(target)) {
         setOpen(false);
       }
     };
     const handleScroll = (e: Event) => {
       // 드롭다운 내부 스크롤이면 닫지 않음
-      if (dropdownRef.current && dropdownRef.current.contains(e.target as Node)) return;
+      const target = e.target as Node;
+      if (dropdownRef.current && (dropdownRef.current === target || dropdownRef.current.contains(target))) return;
       setOpen(false);
     };
     document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside as EventListener, { passive: true });
     window.addEventListener("scroll", handleScroll, true);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside as EventListener);
       window.removeEventListener("scroll", handleScroll, true);
     };
-  }, []);
+  }, [open]);
 
   const dropdownEl = open ? (
     <ul
@@ -97,6 +99,8 @@ export function MuSelect({
       aria-label={label}
       style={dropdownStyle}
       onMouseDown={(e) => e.stopPropagation()}
+      onTouchStart={(e) => e.stopPropagation()}
+      onTouchMove={(e) => e.stopPropagation()}
     >
       {options.map((opt) => (
         <li
@@ -106,6 +110,13 @@ export function MuSelect({
           className={`mu-select__option${opt.value === value ? " mu-select__option--selected" : ""}${dark ? " mu-select__option--dark" : ""}`}
           onMouseDown={(e) => {
             e.preventDefault();
+            e.stopPropagation();
+            onChange(opt.value);
+            setOpen(false);
+          }}
+          onTouchEnd={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
             onChange(opt.value);
             setOpen(false);
           }}
