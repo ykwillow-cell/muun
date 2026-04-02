@@ -591,8 +591,7 @@ export default function HybridCompatibilityPage() {
         <meta property="og:locale" content="ko_KR" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
-{/* 개인정보 인덱싱 방지 */}
-          <meta name="robots" content="noindex, nofollow" />
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
         </Helmet>
         <div className="min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
 

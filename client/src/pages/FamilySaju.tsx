@@ -422,8 +422,7 @@ export default function FamilySaju() {
  <meta name="description" content="가족 구성원들의 사주를 기반으로 한 정밀 조화 분석 결과입니다. 오행의 균형과 구성원 간의 특별한 관계 역학을 확인하세요." />
  <meta property="og:title" content="무료 가족사주 분석 - 회원가입 없이 가족 오행 조화 확인 | 무운" />
  <meta property="og:description" content="회원가입 없이 가족 구성원의 사주를 분석하는 무료 가족사주. 가족 간 오행 조화와 관계를 개인정보 저장 없이 100% 무료로 확인하세요." />
- {/* 사용자 입력 기반 결과 페이지 - 개인정보 보호 및 SEO 품질 관리 */}
- <meta name="robots" content="noindex, nofollow" />
+ <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
  </Helmet>
  <div className="min-h-screen bg-background" ref={resultRef}>
  {/* '시간 모름' 시 안내 라벨 */}

@@ -1006,7 +1006,7 @@ export default function Compatibility() {
    <meta property="og:locale" content="ko_KR" />
    <meta name="twitter:card" content="summary_large_image" />
    <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
-   <meta name="robots" content="noindex, nofollow" />
+   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
    <meta name="keywords" content="궁합, 무료궁합, 사주궁합, 연애궁합, 결혼궁합, 오행궁합, 무료궁합보기, 커플궁합" />
    <link rel="canonical" href="https://muunsaju.com/compatibility" />
  </Helmet>

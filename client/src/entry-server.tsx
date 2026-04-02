@@ -2343,6 +2343,136 @@ const metaData: Record<string, { title: string, description: string, h1?: string
       description: "운이 좋아지기 직전 우리 주변에서 일어나는 신비로운 변화 세 가지를 소개합니다. 청소, 인간관계, 안색의 변화를 통해 내 인생의 황금기를 미리 알아차리는 법을 쉽게 설명해 드립니다.",
       h1: "인생이 잘 풀릴 때 나타나는 징조와 대운 맞이하는 법"
     },
+    '/guide/2026-byongo-year-zodiac-fortune-all': {
+      title: "2026년 병오년 띠별 운세 완전정복 | 무운 (MuUn)",
+      description: "2026년 병오년 12띠별 신년운세를 사주명리학 기반으로 분석합니다. 자신의 띠에 맞는 2026년 운세 흐름과 재물운, 애정운, 직업운을 확인하세요.",
+      h1: "2026년 병오년 띠별 운세 완전정복"
+    },
+    '/guide/adult-child-independence-saju': {
+      title: "성인 자녀 독립과 부모 사주 관계 분석 | 무운 (MuUn)",
+      description: "성인이 된 자녀의 독립과 부모와의 관계를 사주팔자로 분석합니다. 오행 관계를 통해 부모자녀 간 연대와 독립 시기를 파악하는 방법을 안내합니다.",
+      h1: "성인 자녀 독립과 부모 사주 관계 분석"
+    },
+    '/guide/bad-compatibility-result-solution': {
+      title: "궁합이 나쁜 결과가 나왔을 때 해결책 | 무운 (MuUn)",
+      description: "사주 궁합에서 나쁜 결과가 나왔을 때 당황하지 마세요. 상극 궁합도 노력과 이해로 극복할 수 있는 실질적인 해결책을 안내합니다.",
+      h1: "궁합이 나쁜 결과가 나왔을 때 해결책"
+    },
+    '/guide/bad-luck-after-moving-job-change': {
+      title: "이사 후 또는 이직 후 운이 나빠진 이유 | 무운 (MuUn)",
+      description: "이사나 이직 후 갑자기 운이 나빠진다면 사주팔자에서 원인을 찾아보세요. 환경 변화와 사주 운세의 상호작용을 분석하고 대처법을 안내합니다.",
+      h1: "이사 후 또는 이직 후 운이 나빠질 때 사주 분석"
+    },
+    '/guide/blocked-wealth-luck-saju-solutions': {
+      title: "재물운이 막힌 사주 패턴과 해결책 | 무운 (MuUn)",
+      description: "아무리 노력해도 돈이 맨돈다면 사주에서 재물운이 막힌 원인을 찾아보세요. 재물운 상승을 위한 실질적인 사주 활용법을 안내합니다.",
+      h1: "재물운이 막힌 사주 패턴과 해결책"
+    },
+    '/guide/business-luck-stagnation-saju-timing': {
+      title: "사업운이 정체될 때 사주로 시기 파악하기 | 무운 (MuUn)",
+      description: "사업이 잘 안 풀릴 때 사주팔자로 운세 시기를 파악하는 방법을 안내합니다. 사업운이 정체되는 원인과 돌파구를 사주 분석으로 알아보세요.",
+      h1: "사업운이 정체될 때 사주로 시기 파악하기"
+    },
+    '/guide/chronic-fatigue-saju-health-care': {
+      title: "만성 피로와 건강 운세 사주 분석 | 무운 (MuUn)",
+      description: "만성 피로를 사주팔자로 분석합니다. 나의 오행 에너지 패턴을 알면 어떤 건강 문제를 주의해야 하는지 미리 알 수 있습니다.",
+      h1: "만성 피로와 건강 운세 사주 분석"
+    },
+    '/guide/conditions-of-good-name-saju': {
+      title: "좋은 이름의 조건과 사주 연계 분석 | 무운 (MuUn)",
+      description: "좋은 이름이 갖추어야 할 조건을 사주팔자와 연계하여 분석합니다. 이름이 운명에 미치는 영향과 사주와의 조화를 알아보세요.",
+      h1: "좋은 이름의 조건과 사주 연계 분석"
+    },
+    '/guide/does-changing-name-change-luck': {
+      title: "개명하면 운이 정말 바뀌나요? 사주와 이름의 관계 | 무운 (MuUn)",
+      description: "개명이 운세에 미치는 영향을 사주명리학적으로 분석합니다. 이름을 바꾸면 운이 바뀌는지, 바뀌지 않는지에 대한 사주 관점의 답변을 제시합니다.",
+      h1: "개명하면 운이 정말 바뀌나요?"
+    },
+    '/guide/exam-failure-career-luck-saju': {
+      title: "시험 실패와 취업운 사주 분석 | 무운 (MuUn)",
+      description: "시험에 계속 실패한다면 사주팔자에서 원인을 찾아보세요. 취업운과 학업운의 흐름을 사주로 분석하고 합격을 위한 시기를 파악합니다.",
+      h1: "시험 실패와 취업운 사주 분석"
+    },
+    '/guide/exam-pass-saju-insung-improvement': {
+      title: "합격을 위한 사주 인성 강화 방법 | 무운 (MuUn)",
+      description: "시험 합격을 위한 사주팔자 인성(印星) 강화 방법을 안내합니다. 나의 사주에서 인성이 약한 경우 보완하는 실질적인 방법을 알려드립니다.",
+      h1: "합격을 위한 사주 인성 강화 방법"
+    },
+    '/guide/family-health-luck-saju-direction': {
+      title: "가족 건강운과 사주 방향 분석 | 무운 (MuUn)",
+      description: "가족의 건강운을 사주팔자로 분석합니다. 가족 구성원의 오행 에너지와 건강 방향을 파악하여 가족 모두의 건강을 지키는 방법을 안내합니다.",
+      h1: "가족 건강운과 사주 방향 분석"
+    },
+    '/guide/free-saju-compatibility-core-check': {
+      title: "무료 사주 궁합 핵심 체크 방법 | 무운 (MuUn)",
+      description: "무료로 사주 궁합의 핵심 요소를 체크하는 방법을 안내합니다. 일간 오행과 음양 조화를 중심으로 사주 궁합의 기본을 쉽게 파악하세요.",
+      h1: "무료 사주 궁합 핵심 체크 방법"
+    },
+    '/guide/free-saju-compatibility-ohaeng-guide': {
+      title: "사주 궁합 오행 분석 가이드 | 무운 (MuUn)",
+      description: "사주 궁합에서 오행(五行) 분석이 얼마나 중요한지 설명합니다. 나무, 불, 흙, 쇠, 물의 상생과 상극 관계로 궁합의 진짜 의미를 파악하세요.",
+      h1: "사주 궁합 오행 분석 가이드"
+    },
+    '/guide/hanja-name-vs-pure-korean-name': {
+      title: "한자 이름 vs 순우리말 이름 사주 비교 | 무운 (MuUn)",
+      description: "한자 이름과 순우리말 이름의 사주명리학적 차이를 분석합니다. 이름이 운명에 미치는 영향과 사주와의 조화를 고려한 작명법을 알아보세요.",
+      h1: "한자 이름 vs 순우리말 이름 사주 비교"
+    },
+    '/guide/importance-of-saju-compatibility-factors': {
+      title: "사주 궁합에서 중요한 요소들 | 무운 (MuUn)",
+      description: "사주 궁합을 분석할 때 가장 중요한 요소들을 설명합니다. 일간, 월지, 시지의 오행 관계와 음양 조화를 중심으로 궁합의 진짜 의미를 파악하세요.",
+      h1: "사주 궁합에서 중요한 요소들"
+    },
+    '/guide/investment-loss-saju-wealth-luck': {
+      title: "투자 실패와 재물운 사주 분석 | 무운 (MuUn)",
+      description: "투자나 사업에서 실패를 반복한다면 사주팔자로 재물운을 점검하세요. 재물운이 약한 시기와 강한 시기를 구분하여 올바른 투자 시기를 알아보세요.",
+      h1: "투자 실패와 재물운 사주 분석"
+    },
+    '/guide/late-marriage-conflict-saju-analysis': {
+      title: "만혼과 결혼 갈등 사주 분석 | 무운 (MuUn)",
+      description: "결혼이 늦어지거나 결혼 갈등이 있다면 사주팔자로 원인을 찾아보세요. 만혼의 사주적 원인과 결혼운 개선을 위한 실질적인 방법을 안내합니다.",
+      h1: "만혼과 결혼 갈등 사주 분석"
+    },
+    '/guide/lethargy-depression-saju-elements': {
+      title: "무기력과 우울의 사주 오행 분석 | 무운 (MuUn)",
+      description: "이유 없는 무기력과 우울을 사주팔자로 분석합니다. 오행 에너지 불균형이 심리적 상태에 미치는 영향과 대처법을 알아보세요.",
+      h1: "무기력과 우울의 사주 오행 분석"
+    },
+    '/guide/naming-baby-saju-key-factors': {
+      title: "아기 작명 시 사주에서 고려할 핵심 요소 | 무운 (MuUn)",
+      description: "아기 이름을 지을 때 사주팔자에서 반드시 고려해야 할 핵심 요소들을 안내합니다. 오행 보완과 음양 조화를 고려한 작명법을 쉽게 설명합니다.",
+      h1: "아기 작명 시 사주에서 고려할 핵심 요소"
+    },
+    '/guide/parent-child-conflict-saju-counseling': {
+      title: "부모자녀 갈등과 사주 상담 | 무운 (MuUn)",
+      description: "부모와 자녀 간의 갈등을 사주팔자로 분석합니다. 오행 상극 관계에서 비롯된 갈등의 원인과 해결책을 사주 상담으로 알아보세요.",
+      h1: "부모자녀 갈등과 사주 상담"
+    },
+    '/guide/repeat-breakup-love-luck-saju': {
+      title: "반복되는 이별과 연애운 사주 분석 | 무운 (MuUn)",
+      description: "이별이 반복된다면 사주팔자로 연애운을 점검하세요. 연애운이 약한 시기와 강한 시기를 구분하여 새로운 인연을 만나는 방법을 안내합니다.",
+      h1: "반복되는 이별과 연애운 사주 분석"
+    },
+    '/guide/sibling-money-conflict-saju': {
+      title: "형제자매 돈 갈등과 사주 분석 | 무운 (MuUn)",
+      description: "형제자매 간 돈 문제를 사주팔자로 분석합니다. 재성(財星)과 비겁(比劫) 관계를 통해 형제자매 간 재산 갈등의 원인과 해결책을 알아보세요.",
+      h1: "형제자매 돈 갈등과 사주 분석"
+    },
+    '/guide/start-up-business-saju-capability': {
+      title: "창업 사주 역량 분석 | 무운 (MuUn)",
+      description: "창업을 고려 중이라면 사주팔자로 사업운과 역량을 점검하세요. 식신(食神)과 재성(財星)의 관계로 사업 성공 가능성을 분석하는 방법을 안내합니다.",
+      h1: "창업 사주 역량 분석"
+    },
+    '/guide/what-is-81-suri-naming-law': {
+      title: "81수리 작명법이란? 사주와의 차이점 | 무운 (MuUn)",
+      description: "81수리 작명법의 원리와 사주 작명법의 차이점을 설명합니다. 어떤 작명법이 나에게 더 맞는지 사주팔자를 기반으로 판단하는 방법을 알려드립니다.",
+      h1: "81수리 작명법이란? 사주와의 차이점"
+    },
+    '/guide/workplace-conflict-gossip-saju-solutions': {
+      title: "직장 갈등과 뒷담 사주 해결책 | 무운 (MuUn)",
+      description: "직장에서 갈등이나 뒷담이 많다면 사주팔자로 원인을 찾아보세요. 관성(官星)과 비겁(比劫) 관계로 직장 갈등의 원인과 해결책을 사주로 알아보세요.",
+      h1: "직장 갈등과 뒷담 사주 해결책"
+    },
   };
 
   // 동적 라우트 처리: /yearly-fortune/:birthDate
@@ -2355,15 +2485,23 @@ const metaData: Record<string, { title: string, description: string, h1?: string
     
     if (yearlyFortuneMatch) {
       const birthDate = yearlyFortuneMatch[1];
-      const year = birthDate.split('-')[0];
+      const [year, month, day] = birthDate.split('-');
+      const monthNum = parseInt(month, 10);
+      const dayNum = parseInt(day, 10);
+      const seasonMap: Record<number, string> = {
+        1: '겨울', 2: '겨울', 3: '봄', 4: '봄', 5: '봄', 6: '여름',
+        7: '여름', 8: '여름', 9: '가을', 10: '가을', 11: '가을', 12: '겨울'
+      };
+      const season = seasonMap[monthNum] || '봄';
+      const halfYear = monthNum <= 6 ? '상반기' : '하반기';
       currentMeta = {
-        title: `${year}년생 2026년 신년운세 - 무운 (MuUn)`,
-        description: `${year}년생의 2026년 병오년 신년운세를 무료로 확인하세요. 사주팔자를 기반으로 한 정밀 운세 풀이입니다.`,
-        h1: `${year}년생 2026년 신년운세`,
+        title: `${year}년 ${monthNum}월생 2026년 신년운세 - 무운 (MuUn)`,
+        description: `${year}년 ${monthNum}월 ${dayNum}일생의 2026년 병오년 신년운세. ${season}에 태어난 ${year}년생의 월별 운세, 재물운, 직업운, 애정운을 사주팔자 기반으로 무료 분석합니다.`,
+        h1: `${year}년 ${monthNum}월생 2026년 신년운세`,
         bodyContent: `
           <section>
-            <h2>${year}년생 2026년 신년운세</h2>
-            <p>${year}년생의 2026년 병오년(丙午年) 신년운세를 사주팔자(四柱八字) 기반으로 분석합니다. 생년월일을 입력하면 월별 운세, 재물운, 직업운, 애정운을 상세히 확인할 수 있습니다.</p>
+            <h2>${year}년 ${monthNum}월생 2026년 신년운세</h2>
+            <p>${year}년 ${monthNum}월 ${dayNum}일생의 2026년 병오년(丙午年) 신년운세를 사주팔자(四柱八字) 기반으로 분석합니다. ${season}에 태어난 ${year}년생의 ${halfYear} 운세 흐름과 월별 운세, 재물운, 직업운, 애정운을 상세히 확인할 수 있습니다.</p>
           </section>
         `,
         services: [

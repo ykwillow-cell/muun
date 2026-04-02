@@ -370,8 +370,7 @@ export default function Tojeong() {
         <meta name="description" content="전통 방식에 따른 2026년 토정비결 분석 결과입니다. 한 해의 흐름과 월별 상세 운세를 확인하세요." />
         <meta property="og:title" content="2026년 무료 토정비결 - 회원가입 없이 한 해 운세 확인 | 무운" />
         <meta property="og:description" content="이지함 선생의 원문 괘 계산법으로 보는 2026년 병오년 무료 토정비결. 회원가입·개인정보 저장 없이 한 해의 흐름을 100% 무료로 확인하세요." />
-        {/* 사용자 입력 기반 결과 페이지 - 개인정보 보호 및 SEO 품질 관리 */}
-        <meta name="robots" content="noindex, nofollow" />
+        <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
       </Helmet>
     <div className="min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
       {/* 토정비결은 원래 삼주(연,월,일)만 사용하므로 안내 라벨 표시 */}

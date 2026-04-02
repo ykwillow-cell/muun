@@ -637,8 +637,7 @@ export default function YearlyFortune() {
  <meta property="og:site_name" content="무운 (MuUn)" />
  <meta name="twitter:card" content="summary_large_image" />
  <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
- {/* 사용자 입력 기반 결과 페이지 - 개인정보 보호 및 SEO 품질 관리 */}
- <meta name="robots" content="noindex, nofollow" />
+ <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
  </Helmet>
  <div className="min-h-screen bg-[#F5F4F8] text-foreground pb-20">
  {/* '시간 모름' 시 안내 라벨 */}
