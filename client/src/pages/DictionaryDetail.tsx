@@ -139,7 +139,7 @@ export default function DictionaryDetail() {
               '@type': 'Organization',
               name: '무운 (MuUn)',
               url: 'https://muunsaju.com',
-              logo: { '@type': 'ImageObject', url: 'https://muunsaju.com/logo.png' }
+              logo: { '@type': 'ImageObject', url: 'https://muunsaju.com/images/muun_logo.png' }
             },
             keywords: `${entry.title}, ${entry.categoryLabel}, 사주, 운세, ${(entry.tags || []).join(', ')}`,
             articleSection: '운세 사전'

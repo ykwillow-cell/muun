@@ -48,6 +48,10 @@ export default function GuideDetail() {
   }
 
   const categoryColor = COLUMN_CATEGORIES[column.category]?.color || 'bg-black/06 text-[#5a5a56]';
+  const metaTitle = column.metaTitle || `${column.title} | 무운 (MuUn)`;
+  const metaDescription = column.metaDescription || column.description;
+  const canonicalUrl = column.canonicalUrl || `https://muunsaju.com/guide/${column.slug || column.id}`;
+  const socialImage = column.thumbnail || 'https://muunsaju.com/images/horse_mascot.png';
 
   // 카테고리별 CTA 배너 설정
   const ctaConfig: Record<string, { message: string; targetPath: string; buttonLabel: string }> = {
@@ -108,12 +112,12 @@ export default function GuideDetail() {
     ],
     basic: [
       { href: '/lifelong-saju', label: '무료 평생사주 풍이', description: '타고난 기질과 인생 전체의 운세 흐름을 분석합니다.', emoji: '🔮' },
-      { href: '/dictionary', label: '사주 사전', description: '사주팔자의 핵심 용어를 쉽고 재미있게 풀어드립니다.', emoji: '📖' },
+      { href: '/fortune-dictionary', label: '사주 사전', description: '사주팔자의 핵심 용어를 쉽고 재미있게 풀어드립니다.', emoji: '📖' },
       { href: '/yearly-fortune', label: '2026년 신년운세', description: '병오년 한 해의 운세 흐름을 미리 확인하세요.', emoji: '📅' },
     ],
     flow: [
       { href: '/lifelong-saju', label: '무료 평생사주 풍이', description: '타고난 기질과 인생 전체의 운세 흐름을 분석합니다.', emoji: '🔮' },
-      { href: '/dictionary', label: '사주 사전', description: '사주팔자의 핵심 용어를 쉽고 재미있게 풀어드립니다.', emoji: '📖' },
+      { href: '/fortune-dictionary', label: '사주 사전', description: '사주팔자의 핵심 용어를 쉽고 재미있게 풀어드립니다.', emoji: '📖' },
       { href: '/yearly-fortune', label: '2026년 신년운세', description: '병오년 한 해의 운세 흐름을 미리 확인하세요.', emoji: '📅' },
     ],
     family: [
@@ -131,33 +135,41 @@ export default function GuideDetail() {
   return (
     <div className="min-h-screen bg-background text-[#1a1a18]">
       <Helmet>
-        <title>{column.title} | 무운 (MuUn)</title>
-        <meta name="description" content={column.description} />
+        <title>{metaTitle}</title>
+        <meta name="description" content={metaDescription} />
         <meta name="keywords" content={column.keywords.join(', ')} />
-        <meta property="og:title" content={column.title} />
-        <meta property="og:description" content={column.description} />
-        <meta property="og:image" content={column.thumbnail} />
+        <meta property="og:title" content={metaTitle} />
+        <meta property="og:description" content={metaDescription} />
+        <meta property="og:image" content={socialImage} />
         <meta property="og:type" content="article" />
+        <meta property="og:url" content={canonicalUrl} />
+        <meta property="og:site_name" content="무운 (MuUn)" />
+        <meta property="og:locale" content="ko_KR" />
         <meta property="article:published_time" content={column.publishedDate} />
         <meta property="article:author" content={column.author} />
-        <link rel="canonical" href={`https://muunsaju.com/guide/${column.slug || column.id}`} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={metaTitle} />
+        <meta name="twitter:description" content={metaDescription} />
+        <meta name="twitter:image" content={socialImage} />
+        <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+        <link rel="canonical" href={canonicalUrl} />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Article",
             "headline": column.title,
-            "description": column.description,
-            "url": `https://muunsaju.com/guide/${column.slug || column.id}`,
-            "mainEntityOfPage": { "@type": "WebPage", "@id": `https://muunsaju.com/guide/${column.slug || column.id}` },
+            "description": metaDescription,
+            "url": canonicalUrl,
+            "mainEntityOfPage": { "@type": "WebPage", "@id": canonicalUrl },
             "author": { "@type": "Person", "name": column.author },
             "datePublished": column.publishedDate,
             "dateModified": column.publishedDate,
-            "image": { "@type": "ImageObject", "url": column.thumbnail, "width": 1200, "height": 630 },
+            "image": { "@type": "ImageObject", "url": socialImage, "width": 1200, "height": 630 },
             "publisher": {
               "@type": "Organization",
               "name": "무운 (MuUn)",
               "url": "https://muunsaju.com",
-              "logo": { "@type": "ImageObject", "url": "https://muunsaju.com/logo.png", "width": 200, "height": 60 }
+              "logo": { "@type": "ImageObject", "url": "https://muunsaju.com/images/muun_logo.png" }
             },
             "keywords": column.keywords?.join(', '),
             "articleSection": "사주 칼럼"
@@ -170,7 +182,7 @@ export default function GuideDetail() {
             "itemListElement": [
               { "@type": "ListItem", "position": 1, "name": "홈", "item": "https://muunsaju.com" },
               { "@type": "ListItem", "position": 2, "name": "칼럼", "item": "https://muunsaju.com/guide" },
-              { "@type": "ListItem", "position": 3, "name": column.title, "item": `https://muunsaju.com/guide/${column.slug || column.id}` }
+              { "@type": "ListItem", "position": 3, "name": column.title, "item": canonicalUrl }
             ]
           })}
         </script>

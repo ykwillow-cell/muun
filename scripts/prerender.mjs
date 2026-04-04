@@ -1,884 +1,173 @@
+#!/usr/bin/env node
+
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-// Vercel 빌드 한도: 45분(2700초) - Hobby/Pro/Enterprise 모두 동일
-// 빌드 오버헤드(install + vite build + ssr build + server build) ~44초 예상
-// 안전 마진 25% 적용 → prerender 가용 시간: ~2000초
+import { createClient } from '@supabase/supabase-js';
+
 const BUILD_START_TIME = Date.now();
-const MAX_PRERENDER_SECONDS = 2000; // 안전 마진 포함 최대 허용 시간(초)
+const MAX_PRERENDER_SECONDS = 2000;
+const BASE_URL = 'https://muunsaju.com';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const toAbsolute = (p) => path.resolve(__dirname, p);
+
+const SUPABASE_URL = 'https://vuifbmsdggnwygvgcrkj.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1aWZibXNkZ2dud3lndmdjcmtqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE4NzY0ODYsImV4cCI6MjA4NzQ1MjQ4Nn0.PhMK66O73HH98WIPAu66qk8FuXwJLU4Z2bhDcmDCpKI';
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const STATIC_ROUTES = [
+  '/', '/yearly-fortune', '/manselyeok', '/daily-fortune', '/dream', '/lifelong-saju',
+  '/compatibility', '/tojeong', '/psychology', '/astrology', '/tarot', '/about',
+  '/privacy', '/terms', '/family-saju', '/hybrid-compatibility', '/fortune-dictionary',
+  '/naming', '/lucky-lunch', '/contact', '/guide',
+];
+
+const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+const GUIDE_CATEGORY_LABELS = { luck: '개운법', basic: '사주 기초', relationship: '관계 · 궁합', health: '건강 · 운', money: '재물운', flow: '운의 흐름', career: '취업 · 커리어', love: '연애 · 결혼', family: '가족 · 자녀' };
+const DREAM_CATEGORY_LABELS = { animal: '동물', nature: '자연', person: '사람', object: '사물', action: '행동', emotion: '감정', place: '장소', other: '기타' };
+const DICTIONARY_CATEGORY_LABELS = { basic: '사주 기초', stem: '천간', branch: '지지', 'ten-stem': '십신', sipsin: '십신', 'evil-spirit': '신살', 'luck-flow': '운의 흐름', relation: '관계 · 궁합', concept: '운세 개념', wealth: '재물 · 직업', health: '건강 · 신체', other: '기타' };
+
+function ensureTemplateMarkers(template) {
+  let next = template;
+  if (!next.includes('<!--app-html-->')) next = next.replace('<div id="root"></div>', '<div id="root"><!--app-html--></div>');
+  if (!next.includes('<!--app-head-->')) next = next.replace('</title>', '</title><!--app-head-->');
+  if (!next.includes('<!--__REACT_QUERY_STATE__-->')) next = next.replace('</body>', '<!--__REACT_QUERY_STATE__--></body>');
+  return next;
+}
+
+function escapeHtml(value = '') { return String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
+function stripHtml(value = '') { return String(value).replace(/<style[\s\S]*?<\/style>/gi, ' ').replace(/<script[\s\S]*?<\/script>/gi, ' ').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/gi, ' ').replace(/\s+/g, ' ').trim(); }
+function truncate(value = '', maxLength = 160) { const text = String(value).trim(); return text.length <= maxLength ? text : `${text.slice(0, Math.max(0, maxLength - 1)).trim()}…`; }
+function formatKoreanDate(value) { if (!value) return ''; const date = new Date(value); return Number.isNaN(date.getTime()) ? '' : date.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' }); }
+function normalizeSlug(value) { return String(value || '').trim().toLowerCase(); }
+function isValidSlug(value) { return SLUG_PATTERN.test(normalizeSlug(value)); }
+
+function buildPageShell({ sectionLabel, h1, description, metaLines = [], sections = [], breadcrumbs = [], relatedLinks = [] }) {
+  const breadcrumbHtml = breadcrumbs.length ? `<nav aria-label="breadcrumb"><ol>${breadcrumbs.map((item, index) => { const content = item.href ? `<a href="${item.href}">${escapeHtml(item.label)}</a>` : `<span aria-current="page">${escapeHtml(item.label)}</span>`; return `<li>${content}${index < breadcrumbs.length - 1 ? ' › ' : ''}</li>`; }).join('')}</ol></nav>` : '';
+  const metaHtml = metaLines.length ? `<ul>${metaLines.map((line) => `<li>${escapeHtml(line)}</li>`).join('')}</ul>` : '';
+  const sectionsHtml = sections.filter(Boolean).map((section) => `<section>${section.heading ? `<h2>${escapeHtml(section.heading)}</h2>` : ''}${(section.paragraphs || []).filter(Boolean).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('')}</section>`).join('');
+  const relatedHtml = relatedLinks.length ? `<section aria-label="관련 서비스"><h2>함께 보면 좋은 서비스</h2><ul>${relatedLinks.map((link) => `<li><a href="${link.href}">${escapeHtml(link.label)}</a></li>`).join('')}</ul></section>` : '';
+  return `<header><nav aria-label="주요 메뉴"><a href="/">홈</a><a href="/yearly-fortune">신년운세</a><a href="/lifelong-saju">평생사주</a><a href="/compatibility">궁합</a><a href="/dream">꿈해몽</a><a href="/guide">운세 칼럼</a></nav></header><main>${breadcrumbHtml}<article>${sectionLabel ? `<p>${escapeHtml(sectionLabel)}</p>` : ''}<h1>${escapeHtml(h1)}</h1><p>${escapeHtml(description)}</p>${metaHtml}${sectionsHtml}</article>${relatedHtml}</main><footer><nav aria-label="푸터 메뉴"><a href="/about">무운 소개</a><a href="/contact">문의하기</a><a href="/privacy">개인정보처리방침</a><a href="/terms">이용약관</a></nav><p>© 2026 MUUN. All rights reserved.</p></footer>`;
+}
+
+function makeHead({ title, description, canonicalUrl, keywords = '', ogType = 'article', ogImage = `${BASE_URL}/images/horse_mascot.png`, schema = [], extraMeta = [] }) {
+  const schemaScripts = schema.filter(Boolean).map((item) => `<script type="application/ld+json">${JSON.stringify(item)}</script>`).join('\n    ');
+  return {
+    title: `<title>${escapeHtml(title)}</title>`,
+    meta: [
+      `<meta name="description" content="${escapeHtml(description)}">`,
+      keywords ? `<meta name="keywords" content="${escapeHtml(keywords)}">` : '',
+      '<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">',
+      `<meta property="og:title" content="${escapeHtml(title)}">`,
+      `<meta property="og:description" content="${escapeHtml(description)}">`,
+      `<meta property="og:url" content="${escapeHtml(canonicalUrl)}">`,
+      `<meta property="og:type" content="${escapeHtml(ogType)}">`,
+      '<meta property="og:site_name" content="무운 (MuUn)">',
+      '<meta property="og:locale" content="ko_KR">',
+      `<meta property="og:image" content="${escapeHtml(ogImage)}">`,
+      '<meta name="twitter:card" content="summary_large_image">',
+      `<meta name="twitter:title" content="${escapeHtml(title)}">`,
+      `<meta name="twitter:description" content="${escapeHtml(description)}">`,
+      `<meta name="twitter:image" content="${escapeHtml(ogImage)}">`,
+      `<link rel="alternate" type="application/rss+xml" title="무운 (MuUn) RSS" href="${BASE_URL}/rss.xml">`,
+      ...extraMeta,
+      schemaScripts,
+    ].filter(Boolean).join('\n    '),
+    link: `<link rel="canonical" href="${escapeHtml(canonicalUrl)}">`,
+  };
+}
+
+function buildGuidePage(column) {
+  const slug = normalizeSlug(column.slug || column.id);
+  const canonicalUrl = `${BASE_URL}/guide/${slug}`;
+  const title = column.meta_title || `${column.title} | 무운 (MuUn)`;
+  const plainContent = stripHtml(column.content || '');
+  const description = column.meta_description || column.description || truncate(plainContent, 155);
+  const articlePreview = truncate(plainContent, 1200);
+  const categoryLabel = GUIDE_CATEGORY_LABELS[column.category] || '운세 칼럼';
+  const publishedDate = column.published_at || column.created_at || undefined;
+  const schema = [
+    { '@context': 'https://schema.org', '@type': 'BlogPosting', headline: column.title, description, url: canonicalUrl, datePublished: publishedDate, dateModified: publishedDate, author: { '@type': 'Organization', name: column.author || '무운 역술팀' }, publisher: { '@type': 'Organization', name: '무운 (MuUn)', url: BASE_URL, logo: { '@type': 'ImageObject', url: `${BASE_URL}/images/muun_logo.png` } }, mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl }, image: column.thumbnail_url || `${BASE_URL}/images/horse_mascot.png`, keywords: Array.isArray(column.keywords) ? column.keywords.join(', ') : '', articleBody: articlePreview, articleSection: categoryLabel, inLanguage: 'ko-KR' },
+    { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: '홈', item: BASE_URL }, { '@type': 'ListItem', position: 2, name: '운세 칼럼', item: `${BASE_URL}/guide` }, { '@type': 'ListItem', position: 3, name: column.title, item: canonicalUrl }] },
+  ];
+  return {
+    appHtml: buildPageShell({ sectionLabel: categoryLabel, h1: column.title, description, metaLines: [column.author ? `작성: ${column.author}` : '', formatKoreanDate(publishedDate), column.read_time ? `${column.read_time}분 읽기` : ''].filter(Boolean), sections: [{ heading: '핵심 요약', paragraphs: [description] }, articlePreview ? { heading: '본문 미리보기', paragraphs: [articlePreview] } : null].filter(Boolean), breadcrumbs: [{ href: '/', label: '홈' }, { href: '/guide', label: '운세 칼럼' }, { label: column.title }], relatedLinks: [{ href: '/guide', label: '운세 칼럼 더 보기' }, { href: '/lifelong-saju', label: '무료 평생사주 보기' }, { href: '/compatibility', label: '무료 궁합 보기' }] }),
+    head: makeHead({ title, description, canonicalUrl, keywords: Array.isArray(column.keywords) ? column.keywords.join(', ') : '사주칼럼, 운세칼럼, 개운법, 무운', ogType: 'article', ogImage: column.thumbnail_url || `${BASE_URL}/images/horse_mascot.png`, schema, extraMeta: [publishedDate ? `<meta property="article:published_time" content="${escapeHtml(publishedDate)}">` : '', publishedDate ? `<meta property="article:modified_time" content="${escapeHtml(publishedDate)}">` : '', `<meta property="article:section" content="${escapeHtml(categoryLabel)}">`] }),
+  };
+}
+
+function buildDreamPage(dream) {
+  const canonicalUrl = `${BASE_URL}/dream/${dream.slug}`;
+  const title = dream.meta_title || `${dream.keyword} 꿈해몽 | 무운`;
+  const description = dream.meta_description || truncate(stripHtml(dream.interpretation || ''), 155) || `${dream.keyword} 꿈의 의미와 해석을 알아보세요.`;
+  const gradeLabel = dream.grade === 'great' ? '황금빛 길몽' : dream.grade === 'bad' ? '보랏빛 흉몽' : '푸른 평몽';
+  const categoryLabel = DREAM_CATEGORY_LABELS[dream.category] || '기타';
+  const publishedDate = dream.published_at || dream.created_at || undefined;
+  const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [{ '@type': 'Question', name: `${dream.keyword} 꿈은 무슨 의미인가요?`, acceptedAnswer: { '@type': 'Answer', text: truncate(stripHtml(dream.interpretation || ''), 400) } }, dream.traditional_meaning ? { '@type': 'Question', name: `${dream.keyword} 꿈의 전통적 해석은 무엇인가요?`, acceptedAnswer: { '@type': 'Answer', text: truncate(stripHtml(dream.traditional_meaning), 400) } } : null, dream.psychological_meaning ? { '@type': 'Question', name: `${dream.keyword} 꿈의 심리적 의미는 무엇인가요?`, acceptedAnswer: { '@type': 'Answer', text: truncate(stripHtml(dream.psychological_meaning), 400) } } : null].filter(Boolean) };
+  const schema = [
+    { '@context': 'https://schema.org', '@type': 'Article', headline: title, description, url: canonicalUrl, datePublished: publishedDate, dateModified: publishedDate, publisher: { '@type': 'Organization', name: '무운 (MuUn)', url: BASE_URL, logo: { '@type': 'ImageObject', url: `${BASE_URL}/images/muun_logo.png` } }, mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl }, articleSection: categoryLabel, articleBody: truncate(stripHtml(dream.interpretation || ''), 1200), inLanguage: 'ko-KR' },
+    { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: '홈', item: BASE_URL }, { '@type': 'ListItem', position: 2, name: '꿈해몽', item: `${BASE_URL}/dream` }, { '@type': 'ListItem', position: 3, name: dream.keyword, item: canonicalUrl }] },
+    faqSchema,
+  ];
+  return {
+    appHtml: buildPageShell({ sectionLabel: `꿈해몽 · ${categoryLabel}`, h1: `${dream.keyword} 꿈해몽`, description, metaLines: [gradeLabel, typeof dream.score === 'number' ? `해석 점수 ${dream.score}점` : '', formatKoreanDate(publishedDate)].filter(Boolean), sections: [{ heading: '꿈의 해석', paragraphs: [truncate(stripHtml(dream.interpretation || ''), 1200)] }, dream.traditional_meaning ? { heading: '전통적 의미', paragraphs: [truncate(stripHtml(dream.traditional_meaning), 800)] } : null, dream.psychological_meaning ? { heading: '심리학적 해석', paragraphs: [truncate(stripHtml(dream.psychological_meaning), 800)] } : null].filter(Boolean), breadcrumbs: [{ href: '/', label: '홈' }, { href: '/dream', label: '꿈해몽' }, { label: dream.keyword }], relatedLinks: [{ href: '/dream', label: '다른 꿈해몽 검색하기' }, { href: '/daily-fortune', label: '오늘의 운세 보기' }, { href: '/lifelong-saju', label: '무료 평생사주 보기' }] }),
+    head: makeHead({ title, description, canonicalUrl, keywords: `${dream.keyword}, 꿈해몽, 꿈풀이, 무운`, ogType: 'article', schema, extraMeta: [publishedDate ? `<meta property="article:published_time" content="${escapeHtml(publishedDate)}">` : '', publishedDate ? `<meta property="article:modified_time" content="${escapeHtml(publishedDate)}">` : '', `<meta property="article:section" content="${escapeHtml(categoryLabel)}">`] }),
+  };
+}
+
+function buildDictionaryPage(entry) {
+  const canonicalUrl = `${BASE_URL}/dictionary/${entry.slug}`;
+  const title = entry.meta_title || `${entry.title} - ${entry.summary} | 무운 운세 사전`;
+  const description = entry.meta_description || entry.summary || truncate(stripHtml(entry.original_meaning || ''), 155);
+  const tagText = Array.isArray(entry.tags) ? entry.tags.join(', ') : '';
+  const categoryLabel = DICTIONARY_CATEGORY_LABELS[entry.category] || '운세 사전';
+  const schema = [
+    { '@context': 'https://schema.org', '@type': 'DefinedTerm', name: entry.title, description, url: canonicalUrl, inDefinedTermSet: { '@type': 'DefinedTermSet', name: '무운 운세 사전', url: `${BASE_URL}/fortune-dictionary` }, inLanguage: 'ko-KR' },
+    { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: '홈', item: BASE_URL }, { '@type': 'ListItem', position: 2, name: '운세 사전', item: `${BASE_URL}/fortune-dictionary` }, { '@type': 'ListItem', position: 3, name: entry.title, item: canonicalUrl }] },
+  ];
+  return {
+    appHtml: buildPageShell({ sectionLabel: categoryLabel, h1: entry.title, description, metaLines: [entry.subtitle || '', tagText ? `관련 키워드: ${tagText}` : ''].filter(Boolean), sections: [entry.summary ? { heading: '요약', paragraphs: [entry.summary] } : null, entry.original_meaning ? { heading: '원래 의미', paragraphs: [truncate(stripHtml(entry.original_meaning), 900)] } : null, entry.modern_interpretation ? { heading: '현대적 해석', paragraphs: [truncate(stripHtml(entry.modern_interpretation), 900)] } : null, entry.muun_advice ? { heading: '무운의 조언', paragraphs: [truncate(stripHtml(entry.muun_advice), 900)] } : null].filter(Boolean), breadcrumbs: [{ href: '/', label: '홈' }, { href: '/fortune-dictionary', label: '운세 사전' }, { label: entry.title }], relatedLinks: [{ href: '/fortune-dictionary', label: '운세 사전 더 보기' }, { href: '/lifelong-saju', label: '무료 평생사주 보기' }, { href: '/family-saju', label: '가족사주 보기' }] }),
+    head: makeHead({ title, description, canonicalUrl, keywords: [entry.title, ...(Array.isArray(entry.tags) ? entry.tags : []), '운세사전', '사주용어'].filter(Boolean).join(', '), ogType: 'article', schema, extraMeta: [`<meta property="article:section" content="${escapeHtml(categoryLabel)}">`] }),
+  };
+}
+
+async function fetchColumns() { try { const { data, error } = await supabase.from('columns').select('id, slug, title, description, content, category, author, published_at, created_at, read_time, thumbnail_url, keywords, meta_title, meta_description').eq('published', true).order('published_at', { ascending: false, nullsFirst: false }); if (error) { console.warn(`⚠️ columns 조회 실패: ${error.message}`); return []; } return (data || []).filter((row) => { const routeSlug = normalizeSlug(row.slug || row.id); const ok = isValidSlug(routeSlug) && row.title; if (!ok) console.warn(`⏭️  Skipping invalid guide row: ${row.slug || row.id}`); return ok; }); } catch (error) { console.warn(`⚠️ columns 조회 오류: ${error instanceof Error ? error.message : error}`); return []; } }
+async function fetchDreams() { try { const { data, error } = await supabase.from('dreams').select('slug, keyword, interpretation, traditional_meaning, psychological_meaning, category, grade, score, meta_title, meta_description, published_at, created_at').eq('published', true).order('published_at', { ascending: false, nullsFirst: false }); if (error) { console.warn(`⚠️ dreams 조회 실패: ${error.message}`); return []; } return (data || []).filter((row) => { const ok = isValidSlug(row.slug) && row.keyword; if (!ok) console.warn(`⏭️  Skipping invalid dream row: ${row.slug}`); return ok; }); } catch (error) { console.warn(`⚠️ dreams 조회 오류: ${error instanceof Error ? error.message : error}`); return []; } }
+async function fetchDictionaryEntries() { try { const { data, error } = await supabase.from('fortune_dictionary').select('slug, title, subtitle, summary, original_meaning, modern_interpretation, muun_advice, tags, category, meta_title, meta_description').eq('published', true).order('created_at', { ascending: false }); if (error) { console.warn(`⚠️ fortune_dictionary 조회 실패: ${error.message}`); return []; } return (data || []).filter((row) => { const ok = isValidSlug(row.slug) && row.title; if (!ok) console.warn(`⏭️  Skipping invalid dictionary row: ${row.slug}`); return ok; }); } catch (error) { console.warn(`⚠️ fortune_dictionary 조회 오류: ${error instanceof Error ? error.message : error}`); return []; } }
+
+function buildHtmlFromTemplate(template, page) { return template.replace('<!--app-head-->', `${page.head.title}${page.head.meta}${page.head.link}`).replace('<!--app-html-->', page.appHtml).replace('<!--__REACT_QUERY_STATE__-->', `<script>window.__REACT_QUERY_STATE__ = ${JSON.stringify(page.dehydratedState || {})}</script>`); }
+function writeOutput(url, html) { const filePath = url === '/' ? toAbsolute('../client/dist/public/index.html') : toAbsolute(`../client/dist/public${url}/index.html`); fs.mkdirSync(path.dirname(filePath), { recursive: true }); fs.writeFileSync(filePath, html); }
+function dedupeByUrl(pages) { const seen = new Set(); return pages.filter((item) => { if (seen.has(item.url)) return false; seen.add(item.url); return true; }); }
+
 async function run() {
-  console.log('🚀 Starting SEO-optimized pre-render (꿈해몽 513개 + 칼럼 62개 + 사전 211개)...');
-  
+  console.log('🚀 Starting SEO-optimized pre-render (DB-driven detail pages)...');
   const templatePath = toAbsolute('../client/dist/public/index.html');
-  let template = fs.readFileSync(templatePath, 'utf-8');
-  
-  // 템플릿 마커 주입 (빌드 시 제거된 경우 대비)
-  if (!template.includes('<!--app-html-->')) {
-    template = template.replace('<div id="root"></div>', '<div id="root"><!--app-html--></div>');
-    template = template.replace('</title>', '</title><!--app-head-->');
-    template = template.replace('</body>', '<!--__REACT_QUERY_STATE__--></body>');
-  }
+  const rawTemplate = fs.readFileSync(templatePath, 'utf-8');
+  const template = ensureTemplateMarkers(rawTemplate);
   const serverEntryPath = toAbsolute('../client/dist/server/entry-server.js');
   const { render } = await import(pathToFileURL(serverEntryPath).href);
-  
-  // 프리렌더링할 주요 정적 라우트
-  const staticRoutes = [
-    '/', 
-    '/yearly-fortune', 
-    '/manselyeok', 
-    '/daily-fortune', 
-    '/dream',
-    '/lifelong-saju',
-    '/compatibility',
-    '/tojeong',
-    '/psychology',
-    '/astrology',
-    '/tarot',
-    '/about',
-    '/privacy',
-    '/terms',
-    '/family-saju',
-    '/hybrid-compatibility',
-    '/fortune-dictionary',
-    '/naming',
-    '/lucky-lunch',
-    '/contact',
-    '/guide'
-  ];
-  
-  // 칼럼 상세 페이지 라우트 (slug 기반 - 62개)
-  const columnRoutes = [
-  '/guide/6b2dc2de-4e9f-46df-ba67-149273cb3d59',
-  '/guide/fortune-flow-2026-second-half-caution-e347d445',
-  '/guide/luck-room-cleaning-83c59830',
-  '/guide/luck-fortune-secret-307e549f',
-  '/guide/luck-fortune-breakthrough-cef1d14a',
-  '/guide/luck-fortune-signs-d70daba9',
-  '/guide/saju-basic-saju-study-d9f2e703',
-  '/guide/fortune-flow-fate-magnifier-5ee9d8b5',
-  '/guide/relation-golden-age-timing-86759dff',
-  '/guide/money-wealth-golden-9cb42942',
-  '/guide/health-body-energy-fortune-30d117b4',
-  '/guide/fortune-flow-winter-to-spring-90b79a03',
-  '/guide/fortune-flow-fate-spring-db760b73',
-  '/guide/health-body-revival-0659b745',
-  '/guide/relation-children-fortune-parent-331e43a6',
-  '/guide/relation-children-education-60781ebe',
-  '/guide/family-f16e40e9',
-  '/guide/career-career-change-b57094ba',
-  '/guide/career-job-success-efcff2d4',
-  '/guide/love-late-love-276233a2',
-  '/guide/love-restart-love-e5d27e20',
-  '/guide/fortune-flow-treasure-map-1024440d',
-  '/guide/fortune-flow-late-bloom-fortune-9f61d4e0',
-  '/guide/love-late-love-40s-5a0ac9d7',
-  '/guide/money-empty-wallet-13d60396',
-  '/guide/family-children-late-blessing-d737dc22',
-  '/guide/family-inheritance-conflict-0440c2eb',
-  '/guide/health-pyeongwan-pressure-4cef87ed',
-  '/guide/career-reemployment-blocked-51b24cc7',
-  '/guide/luck-2026-daeun-change-b0d87c9e',
-  '/guide/career-promotion-blocked-727184d9',
-  '/guide/health-baekhosal-yangsal-b9d9fef4',
-  '/guide/relation-jaengjae-e7afb912',
-  '/guide/love-short-relationship-097407a0',
-  '/guide/career-workplace-relationship-d5779d29',
-  '/guide/health-children-fortune-words-c388f667',
-  '/guide/fortune-flow-late-bloom-golden-ef7596ef',
-  '/guide/relation-couple-personality-93c37cd5',
-  '/guide/fortune-flow-project-failure-56c631ee',
-  '/guide/health-retirement-preparation-d266d217',
-  '/guide/money-partnership-money-c818fa3e',
-  '/guide/love-marriage-boredom-f6ab0c92',
-  '/guide/relation-business-partner-conflict-ca1d4df6',
-  '/guide/luck-new-home-moving-2ae23407',
-  '/guide/family-children-study-c0e4bb92',
-  '/guide/fortune-flow-children-blessing-late-231b77df',
-  '/guide/career-exam-failure-e55e0eda',
-  '/guide/relation-bad-relationship-da1a0ab3',
-  '/guide/family-family-communication-90b3867b',
-  '/guide/money-contract-deal-7ce3dbac',
-  '/guide/money-wealth-control-63d84616',
-  '/guide/health-menopause-depression-ba837dd6',
-  '/guide/money-inheritance-complex-caf5b63a',
-  '/guide/family-children-career-10175e9d',
-  '/guide/fortune-flow-gossip-slander-bc420b12',
-  '/guide/money-pyeonjae-f34b5d66',
-  '/guide/luck-life-habits-7945bc54',
-  '/guide/money-self-employed-sales-c67535fb',
-  '/guide/family-children-conflict-045f10df',
-  '/guide/career-startup-item-d1cb52ab',
-  '/guide/money-wealth-leak-2ab03b7e',
-  '/guide/money-new-business-d972ab00',
-  ];
-
-  // 꿈해몽 개별 페이지 라우트 (483개, UUID slug 30개 제거됨)
-  const dreamRoutes = [
-  '/dream/actor-kiss-dream-meaning',
-  '/dream/airplane-dating-dream-interpretation',
-  '/dream/airplane-seat-with-ex-dream',
-  '/dream/amethyst-cave-discovery-dream',
-  '/dream/amethyst-cave-discovery-dream-2',
-  '/dream/amusement-park-dating-with-crush',
-  '/dream/ancestor-smiling-hugging-dream',
-  '/dream/ancestor-smiling-hugging-dream-2',
-  '/dream/ancestors-smiling-dream',
-  '/dream/bamboo-forest-walking-dream',
-  '/dream/bathing-in-mountain-stream-dream',
-  '/dream/big-belly-dream-meaning',
-  '/dream/big-belly-dream-meaning-2',
-  '/dream/big-ears-dream-meaning',
-  '/dream/big-ears-dream-meaning 메타 제목: 귀가 커지는 꿈 해몽 | 귀인의 소식과 행운의 정보 | 무운 메타 설명: 귀가 커지고 잘 들리는 꿈은 재물 소식과 귀인의 도움을 상징합니다. 당신에게 올 특별한 정보를 지금 바로 확인하세요.',
-  '/dream/big-ears-dream-meaning-2',
-  '/dream/big-hands-dream-meaning',
-  '/dream/big-mouth-dream-meaning',
-  '/dream/big-mouth-dream-meaning-2',
-  '/dream/big-python-wrapping-body-dream',
-  '/dream/big-snake-entering-house-dream',
-  '/dream/big-snake-wrapping-body-dream',
-  '/dream/big-tree-growing-in-yard-dream',
-  '/dream/black-blood-coming-out-dream',
-  '/dream/black-dog-bite-dream-meaning',
-  '/dream/black-dog-bite-dream-meaning-2',
-  '/dream/black-smoke-suffocating-dream',
-  '/dream/body-hair-growing-dream',
-  '/dream/body-shining-light-dream',
-  '/dream/bowing-to-king-in-silk-clothes-dream',
-  '/dream/broad-back-dream-meaning',
-  '/dream/broad-chest-dream-meaning',
-  '/dream/broad-chest-dream-meaning-2',
-  '/dream/broad-shoulders-dream-meaning',
-  '/dream/broad-shoulders-dream-meaning 메타 제목: 넓은 어깨 꿈 해몽 | 권력과 명예의 상승 | 무운 메타 설명: 어깨가 넓어지는 꿈은 승진과 성공의 강력한 징조입니다. 당신의 사회적 영향력이 커질 오늘, 상세한 해석을 확인하세요.',
-  '/dream/broken-bridge-dream-meaning',
-  '/dream/broken-mirror-dream-meaning',
-  '/dream/broken-mirror-dream-meaning-2',
-  '/dream/buying-new-clothes-dream',
-  '/dream/buying-new-clothes-dream-2',
-  '/dream/candlelight-brightening-room-dream',
-  '/dream/car-sinking-in-water-dream',
-  '/dream/carp-swimming-upstream-dream',
-  '/dream/carp-swimming-upstream-dream-2',
-  '/dream/carp-transforming-into-dragon-dream',
-  '/dream/carp-transforming-into-dragon-dream-2',
-  '/dream/catching-big-fish-dream-meaning',
-  '/dream/catching-grasshopper-golden-field',
-  '/dream/catching-grasshopper-golden-field-2',
-  '/dream/catching-small-fish-stream-dream',
-  '/dream/catching-small-fish-stream-dream-2',
-  '/dream/celebrity-baby-dream-conception',
-  '/dream/celebrity-breakup-dream-meaning',
-  '/dream/celebrity-breakup-dream-meaning-2',
-  '/dream/celebrity-car-accident-dream',
-  '/dream/celebrity-car-accident-dream-2',
-  '/dream/celebrity-chased-by-crowd-dream',
-  '/dream/celebrity-chased-by-crowd-dream-2',
-  '/dream/celebrity-cleaning-dream-meaning',
-  '/dream/celebrity-clothes-itchy-dream',
-  '/dream/celebrity-clothes-itchy-dream-2',
-  '/dream/celebrity-crying-dream-meaning',
-  '/dream/celebrity-crying-in-empty-theater',
-  '/dream/celebrity-crying-in-empty-theater-2',
-  '/dream/celebrity-crying-no-makeup-dream',
-  '/dream/celebrity-crying-no-makeup-dream-2',
-  '/dream/celebrity-cutting-hair-dream',
-  '/dream/celebrity-cutting-hair-dream-2',
-  '/dream/celebrity-dating-dream-meaning',
-  '/dream/celebrity-disappearing-dream-meaning',
-  '/dream/celebrity-disappearing-dream-meaning-2',
-  '/dream/celebrity-distorted-face-dream',
-  '/dream/celebrity-distorted-face-dream-2',
-  '/dream/celebrity-dressing-me-up-dream',
-  '/dream/celebrity-falling-from-stage-dream',
-  '/dream/celebrity-falling-from-stage-dream-2',
-  '/dream/celebrity-filming-ng-dream',
-  '/dream/celebrity-filming-ng-dream-2',
-  '/dream/celebrity-gift-trash-dream',
-  '/dream/celebrity-gift-trash-dream-2',
-  '/dream/celebrity-giving-money-dream',
-  '/dream/celebrity-ignoring-mocking-dream',
-  '/dream/celebrity-ignoring-mocking-dream-2',
-  '/dream/celebrity-insult-spitting-dream',
-  '/dream/celebrity-insult-spitting-dream-2',
-  '/dream/celebrity-marriage-divorce-dream',
-  '/dream/celebrity-marriage-divorce-dream-2',
-  '/dream/celebrity-rampage-at-home-dream',
-  '/dream/celebrity-rampage-at-home-dream-2',
-  '/dream/celebrity-rotten-food-dream',
-  '/dream/celebrity-rotten-food-dream-2',
-  '/dream/celebrity-saving-me-dream',
-  '/dream/celebrity-shipwreck-dream-meaning',
-  '/dream/celebrity-shipwreck-dream-meaning-2',
-  '/dream/celebrity-shooting-in-war-dream',
-  '/dream/celebrity-shooting-in-war-dream-2',
-  '/dream/celebrity-singing-in-cemetery-dream',
-  '/dream/celebrity-singing-in-cemetery-dream-2',
-  '/dream/celebrity-stage-mistake-dream',
-  '/dream/celebrity-stage-mistake-dream-2',
-  '/dream/celebrity-taking-to-jail-dream',
-  '/dream/celebrity-taking-to-jail-dream-2',
-  '/dream/celebrity-torn-clothes-dream',
-  '/dream/celebrity-torn-clothes-dream-2',
-  '/dream/changing-into-new-clothes-dream',
-  '/dream/changing-into-new-clothes-dream-2',
-  '/dream/chased-by-armed-stranger-dream',
-  '/dream/child-wearing-gold-clothes-dream',
-  '/dream/clean-toilet-dream-meaning',
-  '/dream/clear-powerful-voice-dream',
-  '/dream/clear-vision-dream-meaning 메타 제목: 눈이 맑아지는 꿈 해몽 | 통찰력과 기회 포착의 달인 | 무운 메타 설명: 눈이 밝아져 멀리까지 보는 꿈은 성공의 기회를 포착할 예지몽입니다. 당신의 앞길을 밝혀줄 통찰력을 확인하세요.',
-  '/dream/clear-water-filling-house-dream',
-  '/dream/clear-water-flooding-house-dream',
-  '/dream/clear-water-flooding-house-dream-2',
-  '/dream/clear-water-flooding-house-dream-3',
-  '/dream/clear-well-water-dream-meaning',
-  '/dream/climbing-golden-mountain-dream',
-  '/dream/climbing-golden-mountain-dream-2',
-  '/dream/climbing-mountain-dream',
-  '/dream/climbing-mountain-dream-2',
-  '/dream/confession-from-stranger-dream',
-  '/dream/cooking-with-ex-dream-interpretation',
-  '/dream/crossing-river-on-boat-with-crush',
-  '/dream/crow-swarm-nightmare-meaning',
-  '/dream/crush-brushing-my-hair-dream',
-  '/dream/crush-cleaning-my-shoes-dream',
-  '/dream/crush-clipping-my-nails-dream',
-  '/dream/crush-dressing-me-up-dream',
-  '/dream/crush-hugging-me-dream-interpretation',
-  '/dream/crush-putting-shoes-on-me',
-  '/dream/crush-singing-for-me-dream',
-  '/dream/crush-writing-on-my-hand-dream',
-  '/dream/crying-tears-of-blood-dream',
-  '/dream/crying-with-ex-in-rain-dream',
-  '/dream/cutting-fingernails-dream-meaning 메타 제목: 손톱 깎는 꿈 해몽 | 걱정 해소와 새로운 시작의 길몽 | 무운 메타 설명: 손톱을 정성껏 깎는 꿈은 근심이 사라지고 재물운이 상승할 징조입니다. 상황별 상세 해석과 행운의 숫자까지 지금 바로 확인하고 운을 잡으세요.',
-  '/dream/dancing-in-the-rain-with-stranger',
-  '/dream/dark-tunnel-lost-dream',
-  '/dream/dating-boss-dream-meaning',
-  '/dream/dating-same-sex-friend-dream',
-  '/dream/dating-teacher-dream-meaning',
-  '/dream/dead-person-coming-alive-dream',
-  '/dream/dead-person-coming-alive-dream-2',
-  '/dream/deceased-ancestor-smiling-dream',
-  '/dream/deceased-ancestor-smiling-dream-2',
-  '/dream/deceased-celebrity-dream-meaning',
-  '/dream/deceased-grandparents-dream',
-  '/dream/deceased-grandparents-dream-2',
-  '/dream/deity-descending-on-clouds-dream',
-  '/dream/deity-descending-on-clouds-dream-2',
-  '/dream/digging-gold-bars-dream-meaning',
-  '/dream/digging-gold-bars-dream-meaning-2',
-  '/dream/digging-wild-ginseng-dream',
-  '/dream/dining-with-celebrity-dream',
-  '/dream/discovering-treasure-ship-dream',
-  '/dream/distorted-mirror-face-dream',
-  '/dream/diving-from-cliff-dream-meaning',
-  '/dream/dragon-ascending-dream-meaning',
-  '/dream/dragon-ascending-heaven-dream',
-  '/dream/dragon-descending-from-sky-dream',
-  '/dream/drowning-in-deep-water-dream',
-  '/dream/drowning-in-deep-water-dream-2',
-  '/dream/eating-with-lover-dream-meaning',
-  '/dream/entering-city-gate-with-flag-dream',
-  '/dream/entering-palace-castle-dream',
-  '/dream/entering-palace-mansion-dream',
-  '/dream/entering-palace-mansion-dream-2',
-  '/dream/escaping-cave-to-light-dream',
-  '/dream/escaping-cave-to-light-dream-2',
-  '/dream/escaping-deep-pit-dream',
-  '/dream/escaping-deep-pit-dream-2',
-  '/dream/ex-back-together-dream-meaning',
-  '/dream/ex-lover-accidental-meeting-dream',
-  '/dream/ex-lover-crying-dream-meaning',
-  '/dream/ex-lover-dying-dream-meaning',
-  '/dream/exam-test-dream-meaning',
-  '/dream/exam-test-dream-meaning-2',
-  '/dream/eye-contact-with-opposite-sex-dream',
-  '/dream/face-spots-rotting-skin-dream',
-  '/dream/falling-cliff-nightmare-meaning',
-  '/dream/falling-flower-petals-from-sky-dream',
-  '/dream/falling-from-cliff-dream',
-  '/dream/falling-from-cliff-dream-2',
-  '/dream/falling-into-water-dream',
-  '/dream/falling-into-water-dream-2',
-  '/dream/field-of-blooming-flowers-dream',
-  '/dream/fighting-with-celebrity-dream',
-  '/dream/filthy-toilet-overflowing-dream',
-  '/dream/finding-cabin-in-woods-dream',
-  '/dream/finding-cabin-in-woods-dream-2',
-  '/dream/finding-jewels-under-waterfall-dream',
-  '/dream/finding-lamp-in-dark-road-dream',
-  '/dream/finding-lost-shoes-dream',
-  '/dream/finding-lost-shoes-dream-2',
-  '/dream/finding-pearl-in-ocean-dream',
-  '/dream/finding-treasure-chest-dream',
-  '/dream/finding-treasure-ship-dream',
-  '/dream/finding-treasure-ship-dream-2',
-  '/dream/finding-wild-ginseng-dream',
-  '/dream/finding-wild-ginseng-dream-2',
-  '/dream/finding-wild-ginseng-dream-3',
-  '/dream/finding-wild-ginseng-dream-4',
-  '/dream/finger-cut-scissors-dream',
-  '/dream/finger-cut-scissors-dream-2',
-  '/dream/fire-trapped-dream-meaning',
-  '/dream/fireworks-display-dream-meaning',
-  '/dream/fishing-golden-carp-dream',
-  '/dream/flying-airplane-above-clouds-dream',
-  '/dream/flying-in-airplane-above-clouds-dream',
-  '/dream/flying-in-airplane-dream',
-  '/dream/flying-in-airplane-dream-2',
-  '/dream/flying-on-airplane-cloud-dream',
-  '/dream/flying-on-airplane-cloud-dream-2',
-  '/dream/flying-on-airplane-dream',
-  '/dream/front-teeth-falling-out-dream',
-  '/dream/front-teeth-falling-out-dream-2',
-  '/dream/full-moon-in-night-sky-dream',
-  '/dream/full-rice-pot-dream-meaning',
-  '/dream/full-rice-pot-dream-meaning-2',
-  '/dream/funeral-clothes-dream-meaning',
-  '/dream/gems-from-mouth-dream 메타 제목: 입에서 구슬 나오는 꿈 해몽 | 언어의 재능과 재물운 | 무운 메타 설명: 입에서 옥구슬이 나오는 꿈은 말로써 성공하고 큰 부를 얻을 징조입니다. 당신의 지혜가 빛날 순간을 확인하세요.',
-  '/dream/getting-milk-from-crush-dream',
-  '/dream/getting-money-from-ex-dream',
-  '/dream/getting-taller-dream-meaning',
-  '/dream/giant-carp-hug-dream',
-  '/dream/giant-tree-reaching-sky-dream',
-  '/dream/giant-tree-reaching-sky-dream-2',
-  '/dream/giant-wave-flood-dream-meaning',
-  '/dream/glowing-eyes-dream-meaning',
-  '/dream/glowing-palms-dream-meaning 메타 제목: 빛나는 손바닥 꿈 해몽 | 재물과 성공의 신의 손 | 무운 메타 설명: 손바닥에서 빛이 나는 꿈은 추진하는 일마다 큰 성공을 거둘 징조입니다. 놀라운 재물운의 비밀을 지금 확인하세요.',
-  '/dream/gold-coins-falling-from-sky-dream',
-  '/dream/gold-coins-falling-from-sky-dream-2',
-  '/dream/gold-dust-falling-from-sky-dream',
-  '/dream/golden-apple-orchard-dream',
-  '/dream/golden-apple-orchard-dream-2',
-  '/dream/golden-bird-sitting-on-shoulder-dream',
-  '/dream/golden-calf-from-well-dream',
-  '/dream/golden-clothes-throne-dream',
-  '/dream/golden-constellation-in-hand-dream',
-  '/dream/golden-constellation-in-hand-dream-2',
-  '/dream/golden-face-dream-meaning',
-  '/dream/golden-field-dream-meaning',
-  '/dream/golden-heart-dream-meaning',
-  '/dream/golden-key-dream-meaning',
-  '/dream/golden-key-dream-meaning-2',
-  '/dream/golden-key-dream-meaning-3',
-  '/dream/golden-ocean-waves-dream',
-  '/dream/golden-ocean-waves-dream-2',
-  '/dream/golden-pig-hugging-dream-meaning',
-  '/dream/golden-snake-dream-meaning',
-  '/dream/golden-snake-dream-meaning-2',
-  '/dream/golden-toad-entering-house-dream',
-  '/dream/golden-toad-entering-house-dream-2',
-  '/dream/golden-toad-entering-house-dream-3',
-  '/dream/golden-turtle-entering-house-dream',
-  '/dream/golden-turtle-entering-house-dream-2',
-  '/dream/golden-turtle-entering-house-dream-3',
-  '/dream/golden-turtle-laying-eggs-dream',
-  '/dream/golden-turtle-laying-eggs-dream-2',
-  '/dream/goldfish-in-silk-net-dream',
-  '/dream/goldfish-in-silk-net-dream-2',
-  '/dream/growing-tall-dream-meaning',
-  '/dream/hair-cutting-nightmare-meaning',
-  '/dream/hair-loss-bald-dream-meaning',
-  '/dream/harvesting-barley-field-dream',
-  '/dream/harvesting-barley-field-dream-2',
-  '/dream/harvesting-golden-field-dream',
-  '/dream/harvesting-golden-rice-dream',
-  '/dream/heart-beating-outside-body-dream',
-  '/dream/heavy-snowfall-dream-meaning',
-  '/dream/home-intruder-nightmare-meaning',
-  '/dream/hot-air-balloon-with-crush-dream',
-  '/dream/house-collapsing-nightmare-meaning',
-  '/dream/house-on-fire-dream',
-  '/dream/house-on-fire-dream-2',
-  '/dream/house-on-fire-dream-meaning',
-  '/dream/invited-to-palace-dream',
-  '/dream/jujube-tree-full-of-fruits-dream',
-  '/dream/jujube-tree-full-of-fruits-dream-2',
-  '/dream/king-of-palace-dream-meaning',
-  '/dream/king-of-palace-dream-meaning-2',
-  '/dream/koi-fish-jumping-dream-meaning',
-  '/dream/koi-fish-swimming-upstream-dream',
-  '/dream/lantern-festival-dream-meaning',
-  '/dream/lantern-festival-dream-meaning-2',
-  '/dream/library-full-books-dream',
-  '/dream/library-full-books-dream-2',
-  '/dream/lion-tiger-protecting-me-dream',
-  '/dream/living-corpse-nightmare-meaning',
-  '/dream/long-beautiful-fingernails-dream',
-  '/dream/long-fingers-rings-dream 메타 제목: 손가락 반지 꿈 해몽 | 재능의 발견과 부귀영화 | 무운 메타 설명: 손가락이 길어지고 반지를 끼는 꿈은 신분 상승과 재물의 상징입니다. 당신의 재능이 빛날 순간을 지금 확인하세요.',
-  '/dream/long-nails-dream-meaning',
-  '/dream/looking-at-mirror-pretty-dream',
-  '/dream/looking-at-mirror-pretty-dream-2',
-  '/dream/looking-at-stars-with-opposite-sex',
-  '/dream/looking-at-the-sea-with-lover',
-  '/dream/looking-down-from-rooftop-dream',
-  '/dream/looking-down-from-rooftop-dream-2',
-  '/dream/looking-in-mirror-with-lover',
-  '/dream/looking-into-clear-well-dream',
-  '/dream/looking-into-clear-well-dream-2',
-  '/dream/looking-into-well-with-stranger',
-  '/dream/losing-shoes-dream-meaning',
-  '/dream/losing-shoes-dream-meaning-2',
-  '/dream/losing-shoes-walking-barefoot',
-  '/dream/losing-shoes-walking-barefoot-2',
-  '/dream/lost-burned-belongings-dream',
-  '/dream/lost-in-foggy-mountain-dream',
-  '/dream/lotus-blooming-in-mud-dream',
-  '/dream/lotus-blooming-in-mud-dream-2',
-  '/dream/loud-voice-dream-meaning',
-  '/dream/marching-with-flag-dream',
-  '/dream/marrying-a-stranger-dream-meaning',
-  '/dream/meeting-president-celebrity-dream',
-  '/dream/meeting-president-celebrity-dream-2',
-  '/dream/meeting-president-king-dream',
-  '/dream/meeting-white-deer-in-forest-dream',
-  '/dream/money-falling-from-sky-dream',
-  '/dream/money-in-desk-drawer-dream',
-  '/dream/money-in-desk-drawer-dream-2',
-  '/dream/mountain-climbing-with-lover-dream',
-  '/dream/mountain-top-shouting-dream',
-  '/dream/moving-to-new-large-house-dream',
-  '/dream/multiple-heads-dream-meaning',
-  '/dream/name-on-golden-scroll-dream',
-  '/dream/name-on-golden-scroll-dream-2',
-  '/dream/new-teeth-dream-meaning',
-  '/dream/new-teeth-growing-dream-meaning',
-  '/dream/old-face-skeleton-mirror-dream',
-  '/dream/on-the-roof-with-stranger-dream',
-  '/dream/opening-door-golden-key-dream',
-  '/dream/opening-door-golden-key-dream-2',
-  '/dream/opening-eyes-dream-meaning',
-  '/dream/palace-gate-opening-dream-meaning',
-  '/dream/palace-silk-bedding-dream-meaning',
-  '/dream/peacock-feather-fan-dream',
-  '/dream/peacock-feather-fan-dream-2',
-  '/dream/peacock-spreading-wings-dream',
-  '/dream/peacock-spreading-wings-dream-2',
-  '/dream/peacock-spreading-wings-dream-3',
-  '/dream/peacock-spreading-wings-dream-4',
-  '/dream/peacock-spreading-wings-dream-5',
-  '/dream/performing-with-celebrity-dream',
-  '/dream/phoenix-landing-dream-meaning',
-  '/dream/picking-flower-in-forest-dream',
-  '/dream/picking-flower-in-forest-dream-2',
-  '/dream/picking-jewels-with-lover-dream',
-  '/dream/picking-pebbles-in-clear-water-dream',
-  '/dream/picking-silk-with-lover-dream',
-  '/dream/picking-up-gold-jewels-dream',
-  '/dream/picking-up-money-dream',
-  '/dream/picking-up-money-dream-2',
-  '/dream/plane-crash-ship-sinking-dream',
-  '/dream/planting-trees-with-lover-dream',
-  '/dream/playing-with-child-dream',
-  '/dream/playing-with-child-dream-2',
-  '/dream/pouch-full-of-dragon-pearls-dream',
-  '/dream/pouch-full-of-dragon-pearls-dream-2',
-  '/dream/racing-heart-dream-meaning 메타 제목: 심장 뛰는 꿈 해몽 | 설레는 인연과 새로운 열정 | 무운 메타 설명: 가슴 벅찬 심장 소리를 들은 꿈은 인생의 큰 전환점과 연애운을 상징합니다. 당신의 가슴 설레는 미래를 지금 확인하세요.',
-  '/dream/rain-dating-dream-meaning',
-  '/dream/rainbow-after-rain-dream',
-  '/dream/rainbow-after-rain-dream-2',
-  '/dream/rainbow-after-rain-dream-meaning',
-  '/dream/rainbow-after-rain-dream-meaning-2',
-  '/dream/rainbow-connecting-to-home-dream',
-  '/dream/rainbow-in-clear-sky-dream',
-  '/dream/receiving-book-from-old-man-dream',
-  '/dream/receiving-dragon-seal-dream',
-  '/dream/receiving-golden-key-dream',
-  '/dream/receiving-love-letter-dream-meaning',
-  '/dream/receiving-meal-stranger-house',
-  '/dream/receiving-meal-stranger-house-2',
-  '/dream/riding-a-giant-turtle-dream',
-  '/dream/riding-a-tiger-dream-meaning',
-  '/dream/riding-a-whale-in-ocean-dream',
-  '/dream/riding-bicycle-with-lover-dream',
-  '/dream/riding-turtle-across-ocean-dream',
-  '/dream/riding-white-horse-in-village-dream',
-  '/dream/riding-winged-horse-dream',
-  '/dream/ripened-grain-field-dream',
-  '/dream/ripened-grain-field-dream-2',
-  '/dream/rock-turning-into-jewel-dream',
-  '/dream/rotten-feast-food-dream',
-  '/dream/rowing-boat-under-milkyway',
-  '/dream/rowing-boat-under-milkyway-2',
-  '/dream/royal-dance-performance-dream',
-  '/dream/running-fast-dream-meaning 메타 제목: 달리는 꿈 해몽 | 거침없는 추진력과 목표 달성 | 무운 메타 설명: 다리에 힘이 실려 달리는 꿈은 막힌 운세가 뚫리는 예지몽입니다. 당신의 빠른 성공을 위한 행동 지침을 확인하세요.',
-  '/dream/sailing-large-ship-ocean-dream',
-  '/dream/shaking-hands-with-president-dream',
-  '/dream/sharing-umbrella-with-crush-dream',
-  '/dream/shining-face-dream-meaning',
-  '/dream/shiny-scented-hair-dream 메타 제목: 빛나는 머리카락 꿈 해몽 | 인기와 명예 회복의 길몽 | 무운 메타 설명: 윤기 나고 향기로운 머리카락 꿈은 매력 상승과 문제 해결을 뜻합니다. 당신의 명예가 빛날 오늘, 상세 해석을 확인하세요.',
-  '/dream/shouting-at-mountain-top-dream',
-  '/dream/shouting-on-mountain-top-dream',
-  '/dream/shouting-on-mountain-top-dream-2',
-  '/dream/sick-celebrity-dream-meaning',
-  '/dream/sick-celebrity-dream-meaning-2',
-  '/dream/silk-clothes-gold-carriage-dream',
-  '/dream/silk-clothes-gold-carriage-dream-2',
-  '/dream/silk-falling-from-sky-dream',
-  '/dream/silk-falling-from-sky-dream-2',
-  '/dream/silver-fish-clear-water-dream',
-  '/dream/silver-fish-clear-water-dream-2',
-  '/dream/singer-singing-dream-meaning',
-  '/dream/sinking-swamp-dream-meaning',
-  '/dream/smelly-celebrity-dream-meaning',
-  '/dream/smelly-celebrity-dream-meaning-2',
-  '/dream/snake-bite-dream-meaning',
-  '/dream/snake-bite-dream-meaning-2',
-  '/dream/snowy-day-dating-dream-meaning',
-  '/dream/snowy-landscape-dream-meaning',
-  '/dream/snowy-landscape-dream-meaning-2',
-  '/dream/spitting-out-jewels-dream',
-  '/dream/sprouts-growing-from-palm-dream',
-  '/dream/stabbed-no-blood-dream-meaning',
-  '/dream/star-falling-into-mouth-dream',
-  '/dream/starry-night-sky-dream',
-  '/dream/stars-falling-onto-body-dream',
-  '/dream/straight-back-dream-meaning',
-  '/dream/stranger-holding-hands-dream',
-  '/dream/stranger-party-at-home-dream',
-  '/dream/stranger-party-at-home-dream-2',
-  '/dream/strong-legs-dream-meaning',
-  '/dream/strong-thighs-dream-meaning',
-  '/dream/studying-with-crush-dream-meaning',
-  '/dream/sunrise-on-cliff-dream-meaning',
-  '/dream/sunrise-on-cliff-dream-meaning-2',
-  '/dream/sunrise-over-ocean-dream',
-  '/dream/surfing-giant-waves-dream',
-  '/dream/swallowing-stars-dream-meaning',
-  '/dream/swallowing-stars-dream-meaning-2',
-  '/dream/swept-away-by-flood-dream',
-  '/dream/swimming-in-clear-water-dream',
-  '/dream/taking-photos-with-lover-dream',
-  '/dream/teeth-falling-out-dream',
-  '/dream/teeth-falling-out-dream-2',
-  '/dream/teeth-falling-out-dream-meaning',
-  '/dream/tiger-dream-meaning-power',
-  '/dream/tiger-dream-meaning-power-2',
-  '/dream/tiger-entering-house-dream',
-  '/dream/toe-injury-healing-dream',
-  '/dream/train-travel-with-lover-dream',
-  '/dream/trapped-in-well-dream-meaning',
-  '/dream/traveling-with-celebrity-dream',
-  '/dream/treasure-ship-sea-dream',
-  '/dream/turtle-entering-house-dream',
-  '/dream/turtle-entering-house-dream-2',
-  '/dream/two-suns-dream-meaning',
-  '/dream/two-suns-dream-meaning-2',
-  '/dream/using-perfume-with-lover-dream',
-  '/dream/vineyard-grapes-dream-meaning',
-  '/dream/walking-flower-garden-dream',
-  '/dream/walking-flower-garden-dream-2',
-  '/dream/walking-in-flower-garden-dream',
-  '/dream/walking-on-flower-path-with-lover',
-  '/dream/walking-on-knife-edge-dream',
-  '/dream/walking-on-rainbow-dream-meaning',
-  '/dream/wandering-forest-with-stranger',
-  '/dream/washing-hands-dream-meaning',
-  '/dream/washing-under-waterfall-dream',
-  '/dream/watching-fireworks-with-lover-dream',
-  '/dream/watching-milky-way-dream',
-  '/dream/watching-milky-way-dream-2',
-  '/dream/watching-sunrise-with-lover-dream',
-  '/dream/wearing-gold-clothes-mirror-dream',
-  '/dream/wearing-golden-crown-dream',
-  '/dream/wearing-silk-clothes-dream',
-  '/dream/wedding-turned-funeral-dream',
-  '/dream/white-deer-elephant-dream',
-  '/dream/white-deer-forest-dream',
-  '/dream/white-deer-forest-dream-2',
-  '/dream/white-hair-dream-meaning',
-  '/dream/white-hair-dream-meaning-2',
-  '/dream/white-horse-with-golden-wings-dream',
-  '/dream/white-horse-with-golden-wings-dream-2',
-  '/dream/white-snow-falling-dream-meaning',
-  '/dream/white-teeth-smiling-dream 메타 제목: 하얀 치아로 웃는 꿈 해몽 | 경사와 성공의 예지몽 | 무운 메타 설명: 하얀 치아를 드러내며 웃는 꿈은 소원 성취와 재물운 상승을 뜻합니다. 지금 바로 상세한 상황별 풀이와 행운의 요소를 확인하세요.',
-  '/dream/white-tiger-guarding-house-dream',
-  '/dream/white-tiger-guarding-house-dream-2',
-  '/dream/white-whale-swimming-dream',
-  '/dream/wild-ginseng-discovery-dream',
-  '/dream/wild-ginseng-discovery-dream-2',
-  '/dream/wings-growing-and-flying-dream',
-  '/dream/wolf-chasing-nightmare-meaning',
-  ];
-
-
-  // 운세 사전 개별 페이지 라우트 (211개)
-  const dictionaryRoutes = [
-  '/dictionary/gap-ja',
-  '/dictionary/yeok-ma-sal',
-  '/dictionary/do-hwa-sal',
-  '/dictionary/baek-ho-sal',
-  '/dictionary/bi-gyeon',
-  '/dictionary/sang-gwan',
-  '/dictionary/jeong-jae',
-  '/dictionary/pyeon-in',
-  '/dictionary/goe-gang-sal',
-  '/dictionary/pyeon-gwan',
-  '/dictionary/yang-in-sal',
-  '/dictionary/won-jin-sal',
-  '/dictionary/sang-gwan-pae-in',
-  '/dictionary/gwan-in-sang-saeng',
-  '/dictionary/cheon-mun-seong',
-  '/dictionary/gan-yeo-ji-dong',
-  '/dictionary/hong-yeom-sal',
-  '/dictionary/sik-sin',
-  '/dictionary/jeong-in',
-  '/dictionary/mun-chang-gwi-in',
-  '/dictionary/jae-saeng-gwan',
-  '/dictionary/hyeon-chim-sal',
-  '/dictionary/chak-sal',
-  '/dictionary/geum-su-ssang-cheong',
-  '/dictionary/cheon-eul-gwi-in',
-  '/dictionary/hwa-gae-sal',
-  '/dictionary/geop-jae',
-  '/dictionary/sam-jae',
-  '/dictionary/gong-mang',
-  '/dictionary/sik-sin-je-sal',
-  '/dictionary/gwi-mun-gwan-sal',
-  '/dictionary/do-se-ju-ok',
-  '/dictionary/sang-gwan-saeng-jae',
-  '/dictionary/cheon-ui-seong',
-  '/dictionary/je-wang',
-  '/dictionary/su-hwa-gi-je',
-  '/dictionary/jeong-gwan',
-  '/dictionary/cheon-deok-gwi-in',
-  '/dictionary/sal-in-sang-saeng',
-  '/dictionary/go-ran-sal',
-  '/dictionary/jae-da-sin-yak',
-  '/dictionary/sik-sin-saeng-jae',
-  '/dictionary/am-rok',
-  '/dictionary/geon-rok',
-  '/dictionary/baek-ho-dae-sal',
-  '/dictionary/cheon-mun-gwi-in',
-  '/dictionary/mok-hwa-tong-myeong',
-  '/dictionary/hyeong-sal',
-  '/dictionary/do-sik',
-  '/dictionary/hap',
-  '/dictionary/myeong-gyeong-ji-su-mindset',
-  '/dictionary/mu-so-bul-wi-power',
-  '/dictionary/dae-gi-man-seong-success',
-  '/dictionary/jeon-hwa-wi-bok-transformation',
-  '/dictionary/gwa-yu-bul-geup-balance',
-  '/dictionary/sa-pil-gwi-jeong-karma',
-  '/dictionary/gyeol-ja-hae-ji-resolution',
-  '/dictionary/nan-hyeong-nan-je-rival',
-  '/dictionary/gun-gye-il-hak-talent',
-  '/dictionary/go-jin-gam-rae-reward',
-  '/dictionary/no-ik-jang-vitality',
-  '/dictionary/gwon-bul-sip-nyeon-modesty',
-  '/dictionary/yu-gu-mu-eon-silence',
-  '/dictionary/geum-gwa-ok-jo-values',
-  '/dictionary/da-da-ik-seon-growth',
-  '/dictionary/ja-gang-bul-sik-discipline',
-  '/dictionary/cheon-jin-nan-man-charisma',
-  '/dictionary/su-jeok-seok-cheon-persistence',
-  '/dictionary/il-chwi-wol-jang-growth',
-  '/dictionary/go-seong-nak-il-resilience',
-  '/dictionary/go-jin-gam-rae-victory',
-  '/dictionary/go-jin-gam-rae-success',
-  '/dictionary/myeong-bul-heo-jeon-reputation',
-  '/dictionary/geum-ji-ok-yeop-value',
-  '/dictionary/nak-hwa-yu-su-flow',
-  '/dictionary/baek-jeon-bul-tae-strategy',
-  '/dictionary/gwal-mok-sang-dae-growth',
-  '/dictionary/gwon-to-jung-rae-comeback',
-  '/dictionary/ma-i-dong-pung-focus',
-  '/dictionary/on-go-ji-sin-insight',
-  '/dictionary/gyeong-guk-ji-saek-meaning',
-  '/dictionary/geum-sang-cheom-hwa-synergy',
-  '/dictionary/deung-ra-gye-gap-meaning',
-  '/dictionary/gae-gwa-cheon-seon-reform',
-  '/dictionary/sal-sin-seong-in-spirit',
-  '/dictionary/yu-bi-mu-hwan-strategy',
-  '/dictionary/oe-yu-nae-gang-resilience',
-  '/dictionary/hwa-ryong-jeom-jeong-peak',
-  '/dictionary/go-rip-mu-won-solitude',
-  '/dictionary/gyeon-ri-sa-ui-wealth',
-  '/dictionary/ma-bu-jak-chim-grit',
-  '/dictionary/geum-gwa-ok-jo-principle',
-  '/dictionary/dong-byeong-sang-ryeon-empathy',
-  '/dictionary/su-su-bang-gwan-patience',
-  '/dictionary/dan-sa-pyo-eum-happiness',
-  '/dictionary/sa-myeon-cho-ga-crisis',
-  '/dictionary/gyeok-hwa-so-yang-solution',
-  '/dictionary/nang-jung-ji-chu-talent',
-  '/dictionary/gi-go-man-jang-control',
-  '/dictionary/go-jang-nan-myeong-partnership',
-  '/dictionary/no-sim-cho-sa-anxiety',
-  '/dictionary/dong-go-dong-rak-teamwork',
-  '/dictionary/da-sa-da-nan-resilience',
-  '/dictionary/ma-cheon-ru-ambition',
-  '/dictionary/dae-dong-so-i-harmony',
-  '/dictionary/man-sa-hyeong-tong-flow',
-  '/dictionary/sa-myeon-cho-ga-strategy',
-  '/dictionary/yeok-ji-sa-ji-empathy',
-  '/dictionary/yu-jong-ui-mi-completion',
-  '/dictionary/ham-gu-mu-eon-silence',
-  '/dictionary/hwa-mu-sip-il-hong-modesty',
-  '/dictionary/cheon-jae-il-u-opportunity',
-  '/dictionary/hyeong-hyeong-saek-saek-uniqueness',
-  '/dictionary/heung-jin-bi-rae-balance',
-  '/dictionary/pung-jeon-deung-hwa-resilience',
-  '/dictionary/ho-yeon-ji-gi-spirit',
-  '/dictionary/byeonghwa-characteristics-success-guide',
-  '/dictionary/jeonghwa-characteristics-inner-power',
-  '/dictionary/muto-characteristics-wealth-guide',
-  '/dictionary/gito-characteristics-productivity-guide',
-  '/dictionary/gyeonggeum-characteristics-decision-guide',
-  '/dictionary/singeum-characteristics-gemstone-guide',
-  '/dictionary/imsu-characteristics-wisdom-wealth',
-  '/dictionary/gyesu-characteristics-etiquette-guide',
-  '/dictionary/gapmok-characteristics-leadership-success',
-  '/dictionary/ilji-characteristics-destiny-guide',
-  '/dictionary/wolji-characteristics-social-success',
-  '/dictionary/gyeongin-characteristics-daily-pillar',
-  '/dictionary/sinmyo-characteristics-daily-pillar',
-  '/dictionary/imjin-characteristics-daily-pillar',
-  '/dictionary/gyesa-characteristics-daily-pillar',
-  '/dictionary/muo-characteristics-daily-pillar',
-  '/dictionary/gimi-characteristics-daily-pillar',
-  '/dictionary/jeongyu-characteristics-daily-pillar',
-  '/dictionary/byeongin-characteristics-daily-pillar',
-  '/dictionary/byeongsul-characteristics-daily-pillar',
-  '/dictionary/eulhae-characteristics-daily-pillar',
-  '/dictionary/gapin-characteristics-daily-pillar',
-  '/dictionary/eulsa-characteristics-daily-pillar',
-  '/dictionary/jeongmyo-characteristics-daily-pillar',
-  '/dictionary/musin-characteristics-daily-pillar',
-  '/dictionary/giyu-characteristics-daily-pillar',
-  '/dictionary/gyeongja-characteristics-daily-pillar',
-  '/dictionary/sinchuk-characteristics-daily-pillar',
-  '/dictionary/imo-characteristics-daily-pillar',
-  '/dictionary/gyehae-characteristics-daily-pillar',
-  '/dictionary/gapsul-characteristics-daily-pillar',
-  '/dictionary/jeongchuk-characteristics-daily-pillar',
-  '/dictionary/byeongja-characteristics-daily-pillar',
-  '/dictionary/jeonghae-characteristics-daily-pillar',
-  '/dictionary/muin-characteristics-daily-pillar',
-  '/dictionary/gimyo-characteristics-daily-pillar',
-  '/dictionary/gyeongsul-characteristics-daily-pillar',
-  '/dictionary/sinhae-characteristics-daily-pillar',
-  '/dictionary/imin-characteristics-daily-pillar',
-  '/dictionary/gyemyo-characteristics-daily-pillar',
-  '/dictionary/eulmi-characteristics-daily-pillar',
-  '/dictionary/eulmok-characteristics-fortune-guide',
-  '/dictionary/dohwa-sal-characteristics-charm',
-  '/dictionary/yeokma-sal-characteristics-travel',
-  '/dictionary/hwagae-sal-characteristics-art',
-  '/dictionary/goegang-sal-characteristics-leader',
-  '/dictionary/hongyeom-sal-characteristics-attraction',
-  '/dictionary/geobjae-characteristics-competition',
-  '/dictionary/pyeonjae-characteristics-wealth',
-  '/dictionary/cheoneul-gwiin-characteristics-luck',
-  '/dictionary/hyeonchim-sal-characteristics-expert',
-  '/dictionary/yangin-sal-characteristics-action',
-  '/dictionary/siksin-characteristics-talent',
-  '/dictionary/jeongjae-characteristics-stability',
-  '/dictionary/baekho-sal-characteristics-power',
-  '/dictionary/munchang-gwiin-characteristics-wisdom',
-  '/dictionary/bigyeon-characteristics-identity',
-  '/dictionary/sanggwan-characteristics-innovation',
-  '/dictionary/pyeongwan-characteristics-authority',
-  '/dictionary/jeonggwan-characteristics-honor',
-  '/dictionary/hap-characteristics-harmony',
-  '/dictionary/siksin-saengjae-characteristics',
-  '/dictionary/sanggwan-paein-characteristics',
-  '/dictionary/pyeon-in-characteristics-insight',
-  '/dictionary/chung-characteristics-dynamic',
-  '/dictionary/sarin-sangsaeng-characteristics',
-  '/dictionary/siksin-jesal-characteristics',
-  '/dictionary/jeong-in-characteristics-blessing',
-  '/dictionary/gwanin-sangsaeng-characteristics',
-  '/dictionary/jaesaeng-gwan-characteristics',
-  '/dictionary/ilji-characteristics-foundation',
-  '/dictionary/banghap-characteristics-power',
-  '/dictionary/siji-characteristics-future-luck',
-  '/dictionary/hyeongsal-characteristics-expert',
-  '/dictionary/gongmang-characteristics-void',
-  '/dictionary/gwanseong-characteristics-honor',
-  '/dictionary/samhap-characteristics-success',
-  '/dictionary/wonjin-sal-characteristics-love',
-  '/dictionary/yeokjisaji-empathy-relationships',
-  '/dictionary/jaeseong-characteristics-wealth',
-  '/dictionary/gwimun-characteristics-genius',
-  '/dictionary/inseong-characteristics-wisdom',
-  '/dictionary/bigeop-characteristics-ego',
-  '/dictionary/singang-saju-characteristics-power',
-  '/dictionary/siksang-characteristics-creativity',
-  '/dictionary/sinyak-saju-characteristics-wisdom',
-  '/dictionary/yukhae-sal-characteristics-relief',
-  '/dictionary/dosejuyok-characteristics-beauty',
-  '/dictionary/ganyeojidong-characteristics-ego',
-  '/dictionary/yongsin-characteristics-key-success',
-  '/dictionary/cheondeok-gwiin-characteristics',
-  '/dictionary/geumsussangcheong-characteristics',
-  '/dictionary/johu-characteristics-balance',
-  '/dictionary/amrok-characteristics-wealth',
-  '/dictionary/mokhwatongmyeong-characteristics',
-  ];
-
-  // 동적 라우트 (신년운세 - 연도별)
-  const dynamicRoutes = [];
-  for (let year = 1970; year <= 2020; year++) {
-    dynamicRoutes.push(`/yearly-fortune/${year}-01-01`);
-  }
-
-  const allRoutes = [...staticRoutes, ...columnRoutes, ...dreamRoutes, ...dictionaryRoutes, ...dynamicRoutes];
-  console.log(`📦 Total routes to pre-render: ${allRoutes.length}`);
-  console.log(`   - 정적 라우트: ${staticRoutes.length}개`);
-  console.log(`   - 칼럼: ${columnRoutes.length}개`);
-  console.log(`   - 꿈해몽: ${dreamRoutes.length}개`);
-  console.log(`   - 운세 사전: ${dictionaryRoutes.length}개`);
-  console.log(`   - 신년운세 동적: ${dynamicRoutes.length}개`);
-
-  let successCount = 0;
-  let skippedCount = 0;
-  for (const url of allRoutes) {
-    // Vercel 빌드 시간 초과 방지: 가용 시간 소진 시 조기 종료
+  console.log('📡 Fetching published SEO datasets from Supabase...');
+  const [columns, dreams, dictionaryEntries] = await Promise.all([fetchColumns(), fetchDreams(), fetchDictionaryEntries()]);
+  const guidePages = dedupeByUrl(columns.map((column) => ({ url: `/guide/${normalizeSlug(column.slug || column.id)}`, page: buildGuidePage({ ...column, slug: normalizeSlug(column.slug || column.id) }) })));
+  const dreamPages = dedupeByUrl(dreams.map((dream) => ({ url: `/dream/${normalizeSlug(dream.slug)}`, page: buildDreamPage({ ...dream, slug: normalizeSlug(dream.slug) }) })));
+  const dictionaryPages = dedupeByUrl(dictionaryEntries.map((entry) => ({ url: `/dictionary/${normalizeSlug(entry.slug)}`, page: buildDictionaryPage({ ...entry, slug: normalizeSlug(entry.slug) }) })));
+  const yearlyRoutes = []; for (let year = 1970; year <= 2020; year += 1) yearlyRoutes.push(`/yearly-fortune/${year}-01-01`);
+  console.log(`📦 Static routes: ${STATIC_ROUTES.length}`); console.log(`📦 Guide pages: ${guidePages.length}`); console.log(`📦 Dream pages: ${dreamPages.length}`); console.log(`📦 Dictionary pages: ${dictionaryPages.length}`); console.log(`📦 Yearly-fortune dynamic pages: ${yearlyRoutes.length}`);
+  let successCount = 0; let skippedCount = 0;
+  const staticAndYearly = [...STATIC_ROUTES, ...yearlyRoutes];
+  for (const url of staticAndYearly) {
     const elapsedSeconds = (Date.now() - BUILD_START_TIME) / 1000;
-    if (elapsedSeconds > MAX_PRERENDER_SECONDS) {
-      console.warn(`⏱️  Build time limit approaching (${elapsedSeconds.toFixed(1)}s elapsed). Stopping prerender to avoid Vercel timeout.`);
-      skippedCount = allRoutes.length - successCount;
-      break;
-    }
-    try {
-      const result = await render({ path: url });
-      const { appHtml, head, dehydratedState, statusCode } = result;
-
-      // statusCode 404 인 경우 HTML 파일 생성 건너뜀 (Soft 404 방지)
-      if (statusCode === 404) {
-        console.log(`⏭️  Skipping 404 page: ${url}`);
-        skippedCount++;
-        continue;
-      }
-
-      const html = template
-        .replace('<!--app-head-->', `${head.title}${head.meta}${head.link}`)
-        .replace('<!--app-html-->', appHtml)
-        .replace(
-          '<!--__REACT_QUERY_STATE__-->',
-          `<script>window.__REACT_QUERY_STATE__ = ${JSON.stringify(dehydratedState)}</script>`
-        );
-      // 디렉토리 기반 경로로 저장: /dream/pig-dream → dream/pig-dream/index.html
-      const filePath = url === '/'
-        ? toAbsolute('../client/dist/public/index.html')
-        : toAbsolute(`../client/dist/public${url}/index.html`);
-      
-      fs.mkdirSync(path.dirname(filePath), { recursive: true });
-      fs.writeFileSync(filePath, html);
-      successCount++;
-      
-      if (successCount % 50 === 0) {
-        console.log(`✅ Processed ${successCount}/${allRoutes.length} pages... (${elapsedSeconds.toFixed(1)}s)`);
-      }
-    } catch (e) {
-      console.error(`❌ Failed to render ${url}:`, e.message);
-    }
+    if (elapsedSeconds > MAX_PRERENDER_SECONDS) { console.warn(`⏱️  Build time limit approaching (${elapsedSeconds.toFixed(1)}s elapsed). Stopping prerender to avoid timeout.`); skippedCount += staticAndYearly.length - successCount; break; }
+    try { const page = await render({ path: url }); if (page.statusCode === 404) { skippedCount += 1; console.log(`⏭️  Skipping 404 page: ${url}`); continue; } writeOutput(url, buildHtmlFromTemplate(template, page)); successCount += 1; } catch (error) { console.error(`❌ Failed to render ${url}:`, error instanceof Error ? error.message : error); }
   }
-  const totalElapsed = ((Date.now() - BUILD_START_TIME) / 1000).toFixed(1);
-  console.log(`✨ Successfully pre-rendered ${successCount} pages in ${totalElapsed}s!`);
-  if (skippedCount > 0) {
-    console.warn(`⚠️  Skipped ${skippedCount} pages due to build time limit.`);
+  const detailPages = [...guidePages, ...dreamPages, ...dictionaryPages];
+  for (const { url, page } of detailPages) {
+    const elapsedSeconds = (Date.now() - BUILD_START_TIME) / 1000;
+    if (elapsedSeconds > MAX_PRERENDER_SECONDS) { console.warn(`⏱️  Build time limit approaching (${elapsedSeconds.toFixed(1)}s elapsed). Stopping detail prerender to avoid timeout.`); skippedCount += 1; break; }
+    try { writeOutput(url, buildHtmlFromTemplate(template, { ...page, dehydratedState: {} })); successCount += 1; if (successCount % 50 === 0) console.log(`✅ Processed ${successCount} pages... (${elapsedSeconds.toFixed(1)}s)`); } catch (error) { console.error(`❌ Failed to build detail page ${url}:`, error instanceof Error ? error.message : error); }
   }
+  const elapsed = ((Date.now() - BUILD_START_TIME) / 1000).toFixed(1);
+  console.log(`✨ Successfully pre-rendered ${successCount} pages in ${elapsed}s`); if (skippedCount > 0) console.warn(`⚠️  Skipped ${skippedCount} pages.`);
 }
-run().catch(console.error);
+
+run().catch((error) => { console.error('❌ Fatal prerender error:', error instanceof Error ? error.message : error); process.exit(1); });
