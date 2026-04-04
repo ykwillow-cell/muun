@@ -84,6 +84,7 @@ export default function DreamDetail() {
   const metaDescription = dream.meta_description || dream.interpretation?.slice(0, 155) || `${dream.keyword} 꿈의 의미와 해석을 알아보세요.`;
   const canonicalUrl = `https://muunsaju.com/dream/${dream.slug}`;
   const categoryLabel = DREAM_CATEGORIES[dream.category]?.label || dream.category;
+  const socialImage = 'https://muunsaju.com/images/horse_mascot.png';
 
   const handleShare = async () => {
     if (navigator.share) {
@@ -109,13 +110,15 @@ export default function DreamDetail() {
         <link rel="canonical" href={canonicalUrl} />
         <meta property="og:title" content={metaTitle} />
         <meta property="og:description" content={metaDescription} />
-        <meta property="og:image" content="https://muunsaju.com/og-image.png" />
+        <meta property="og:image" content={socialImage} />
         <meta property="og:url" content={canonicalUrl} />
         <meta property="og:type" content="article" />
+        <meta property="og:site_name" content="무운 (MuUn)" />
+        <meta property="og:locale" content="ko_KR" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={metaTitle} />
         <meta name="twitter:description" content={metaDescription} />
-        <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
+        <meta name="twitter:image" content={socialImage} />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
@@ -142,7 +145,7 @@ export default function DreamDetail() {
               "@type": "WebPage",
               "@id": canonicalUrl
             },
-            "image": "https://muunsaju.com/og-image.png",
+            "image": socialImage,
             "articleSection": categoryLabel,
             "keywords": `${dream.keyword}, ${dream.keyword} 꿈해몽, 꿈풀이, 꿈해몽 사전`
           })}
