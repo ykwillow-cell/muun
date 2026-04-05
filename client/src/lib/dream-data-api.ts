@@ -9,7 +9,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-export export interface DreamSEOData {
+export interface DreamSEOData {
   meta_title?: string | null;
   meta_description?: string | null;
   title?: string | null;
