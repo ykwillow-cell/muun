@@ -1,388 +1,202 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { LinkedText } from '@/hooks/useLinkedText';
-import { 
-  Search, BrainCircuit, CloudMoon, ArrowRight, 
-  Info, ChevronRight, Zap, X, 
-  PawPrint, Users, Mountain, Box, Activity, Layers,
-  Trophy, CheckCircle2, AlertCircle, Loader2
-} from 'lucide-react';
-import { getAllDreams, searchDreams, DreamData } from '../lib/dream-data-api';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { motion, AnimatePresence } from 'framer-motion';
+import { Link, useLocation } from 'wouter';
+import {
+  Search,
+  MoonStar,
+  PawPrint,
+  Users,
+  Mountain,
+  Box,
+  Activity,
+  Layers,
+  Trophy,
+  CheckCircle2,
+  AlertCircle,
+  ArrowUpRight,
+} from 'lucide-react';
 import { useCanonical } from '@/lib/use-canonical';
-import { useLocation } from 'wouter';
+import { DREAM_INDEX } from '@/generated/content-snapshots';
 
 type DreamGrade = 'great' | 'good' | 'bad';
 
 const categories = [
-  { id: 'animal', name: '동물', icon: PawPrint, color: 'text-orange-400', bg: 'bg-orange-400/10' },
-  { id: 'person', name: '인물/신체', icon: Users, color: 'text-blue-400', bg: 'bg-blue-400/10' },
-  { id: 'nature', name: '자연/현상', icon: Mountain, color: 'text-green-400', bg: 'bg-green-400/10' },
-  { id: 'object', name: '생활/사물', icon: Box, color: 'text-yellow-400', bg: 'bg-yellow-400/10' },
-  { id: 'action', name: '상태/행동', icon: Activity, color: 'text-purple-400', bg: 'bg-purple-400/10' },
-  { id: 'other', name: '기타', icon: Layers, color: 'text-[#999891]', bg: 'bg-[#999891]/10' },
+  { id: null, name: '전체', Icon: Layers },
+  { id: 'animal', name: '동물', Icon: PawPrint },
+  { id: 'person', name: '인물 · 신체', Icon: Users },
+  { id: 'nature', name: '자연 · 현상', Icon: Mountain },
+  { id: 'object', name: '생활 · 사물', Icon: Box },
+  { id: 'action', name: '상태 · 행동', Icon: Activity },
+  { id: 'other', name: '기타', Icon: Layers },
 ] as const;
 
-const gradeConfig: Record<DreamGrade, { label: string; icon: any; color: string; bg: string; border: string; desc: string }> = {
-  great: { 
-    label: '황금빛 길몽', 
-    icon: Trophy, 
-    color: 'text-yellow-400', 
-    bg: 'from-yellow-500/20 to-transparent', 
-    border: 'border-yellow-500/30',
-    desc: '재물, 성공, 경사를 상징하는 아주 좋은 꿈입니다!'
+const quickTags = ['돼지', '물', '불', '뱀', '돈', '조상', '이빨', '대통령'] as const;
+
+const gradeConfig: Record<DreamGrade, { label: string; Icon: typeof Trophy; tone: string; chip: string }> = {
+  great: {
+    label: '길몽',
+    Icon: Trophy,
+    tone: 'text-amber-600',
+    chip: 'bg-amber-50 text-amber-700 border-amber-200',
   },
-  good: { 
-    label: '푸른 평몽', 
-    icon: CheckCircle2, 
-    color: 'text-blue-400', 
-    bg: 'from-blue-500/20 to-transparent', 
-    border: 'border-blue-500/30',
-    desc: '일상의 변화나 심리적 안정을 나타내는 긍정적인 꿈입니다.'
+  good: {
+    label: '평몽',
+    Icon: CheckCircle2,
+    tone: 'text-sky-600',
+    chip: 'bg-sky-50 text-sky-700 border-sky-200',
   },
-  bad: { 
-    label: '보랏빛 흉몽', 
-    icon: AlertCircle, 
-    color: 'text-purple-400', 
-    bg: 'from-purple-500/20 to-transparent', 
-    border: 'border-purple-500/30',
-    desc: '주의와 액땜이 필요한 시기임을 알려주는 꿈입니다.'
-  }
+  bad: {
+    label: '흉몽',
+    Icon: AlertCircle,
+    tone: 'text-fuchsia-600',
+    chip: 'bg-fuchsia-50 text-fuchsia-700 border-fuchsia-200',
+  },
 };
 
-const getGrade = (grade: string): DreamGrade => {
-  if (grade === 'great' || grade === 'good' || grade === 'bad') return grade;
-  return 'good';
-};
-
-const DreamInterpretation: React.FC = () => {
+export default function DreamInterpretation() {
   useCanonical('/dream');
-  const [, navigate] = useLocation();
+  const [location] = useLocation();
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedDream, setSelectedDream] = useState<DreamData | null>(null);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
-  const [categoryDreams, setCategoryDreams] = useState<DreamData[]>([]);
-  const [searchResults, setSearchResults] = useState<DreamData[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSearching, setIsSearching] = useState(false);
 
-  // 카테고리 클릭 시 DB에서 해당 카테고리 꿈 조회
-  const loadCategoryDreams = useCallback(async (catId: string) => {
-    setIsLoading(true);
-    try {
-      const data = await getAllDreams(catId);
-      setCategoryDreams(data);
-    } catch (e) {
-      setCategoryDreams([]);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  // 검색어 변경 시 DB 검색
   useEffect(() => {
-    const term = searchTerm.trim();
-    if (!term) {
-      setSearchResults([]);
-      return;
+    const query = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('q') || '' : '';
+    setSearchTerm(query);
+  }, [location]);
+
+  const filteredDreams = useMemo(() => {
+    const q = searchTerm.trim().toLowerCase();
+    let list = activeCategory ? DREAM_INDEX.filter((item) => item.category === activeCategory) : [...DREAM_INDEX];
+
+    if (q) {
+      list = list.filter((item) =>
+        [item.keyword, item.excerpt, item.categoryLabel, item.metaDescription]
+          .join(' ')
+          .toLowerCase()
+          .includes(q),
+      );
     }
-    const timer = setTimeout(async () => {
-      setIsSearching(true);
-      try {
-        const data = await searchDreams(term);
-        setSearchResults(data);
-      } catch (e) {
-        setSearchResults([]);
-      } finally {
-        setIsSearching(false);
-      }
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [searchTerm]);
 
-  // URL 쿼리 파라미터에서 검색어 읽기
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const query = params.get('q');
-    if (query) {
-      setSearchTerm(query);
-    }
-  }, []);
-
-  const handleSelectDream = (dream: DreamData) => {
-    // 상세 페이지로 이동
-    navigate(`/dream/${dream.slug}`);
-  };
-
-  const handleTagClick = (tag: string) => {
-    setSearchTerm(tag);
-    setActiveCategory(null);
-    setSelectedDream(null);
-  };
-
-  const handleCategoryClick = (catId: string) => {
-    if (activeCategory === catId) {
-      setActiveCategory(null);
-      setCategoryDreams([]);
-    } else {
-      setActiveCategory(catId);
-      setSearchTerm('');
-      setSelectedDream(null);
-      loadCategoryDreams(catId);
-    }
-  };
-
-  const clearSearch = () => {
-    setSearchTerm('');
-    setSelectedDream(null);
-    setActiveCategory(null);
-    setCategoryDreams([]);
-    setSearchResults([]);
-  };
-
-  const displayDreams = searchTerm.trim() ? searchResults : categoryDreams;
-  const isShowingResults = !!(searchTerm.trim() || activeCategory);
+    return list.sort((a, b) => (b.score || 0) - (a.score || 0));
+  }, [searchTerm, activeCategory]);
 
   return (
-    <div className="min-h-screen bg-[#F5F4F8] text-foreground pb-20 antialiased">
+    <div className="min-h-screen mu-page-bg pb-16">
       <Helmet>
-        <title>무료 꿈해몽 사전 - 회원가입 없이 꿈 풀이 확인 | 무운 (MuUn)</title>
-        <meta name="description" content="어젯밤 꿈의 의미가 궁금하신가요? 회원가입 없이 바로 검색하는 무료 꿈해몽 사전. 방대한 데이터를 바탕으로 정확한 꿈 풀이를 개인정보 저장 없이 100% 무료로 제공합니다." />
-        <meta name="keywords" content="꿈해몽, 무료꿈해몽, 꿈풀이, 꿈해석, 꿈사전, 길몽, 흉몽, 태몽, 돼지꿈, 뱀꿈" />
+        <title>꿈해몽 - 자주 찾는 길몽·흉몽 무료 풀이 | 무운 (MuUn)</title>
+        <meta name="description" content="돼지꿈, 물꿈, 불꿈, 조상꿈, 대통령꿈까지. 무운의 꿈해몽 아카이브에서 길몽·평몽·흉몽 풀이를 무료로 찾아보세요." />
+        <meta name="keywords" content="꿈해몽, 꿈풀이, 길몽, 흉몽, 돼지꿈, 물꿈, 불꿈, 조상꿈, 대통령꿈" />
         <link rel="canonical" href="https://muunsaju.com/dream" />
-        <meta property="og:title" content="무료 꿈해몽 사전 - 회원가입 없이 꿈 풀이 확인 | 무운 (MuUn)" />
-        <meta property="og:description" content="어젯밤 꿈의 의미가 궁금하신가요? 회원가입 없이 바로 검색하는 무료 꿈해몽 사전. 방대한 데이터를 바탕으로 정확한 꿈 풀이를 개인정보 저장 없이 100% 무료로 제공합니다." />
+        <meta property="og:title" content="꿈해몽 - 자주 찾는 길몽·흉몽 무료 풀이 | 무운 (MuUn)" />
+        <meta property="og:description" content="돼지꿈, 물꿈, 불꿈, 조상꿈, 대통령꿈까지. 무운의 꿈해몽 아카이브에서 길몽·평몽·흉몽 풀이를 무료로 찾아보세요." />
         <meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png" />
-        <meta property="og:url" content="https://muunsaju.com/dream" />
         <meta property="og:type" content="website" />
-        <meta property="og:site_name" content="무운 (MuUn)" />
-        <meta property="og:locale" content="ko_KR" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="무료 꿈해몽 사전 - 회원가입 없이 꿈 풀이 확인 | 무운 (MuUn)" />
-        <meta name="twitter:description" content="어젯밤 꿈의 의미가 궁금하신가요? 회원가입 없이 바로 검색하는 무료 꿈해몽 사전. 방대한 데이터를 바탕으로 정확한 꿈 풀이를 개인정보 저장 없이 100% 무료로 제공합니다." />
-        <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
       </Helmet>
 
-      {/* Hero Section */}
-      <section className="px-4 pt-12 pb-8 text-center">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="max-w-4xl mx-auto space-y-6"
-        >
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-primary/20 text-primary text-xs font-medium">
-            <CloudMoon className="w-3 h-3" />
-            <span>신비로운 꼭의 해석</span>
+      <section className="mu-container-narrow pt-6">
+        <div className="mu-glass-panel overflow-hidden p-6 sm:p-8">
+          <span className="mu-section-eyebrow">
+            <MoonStar size={14} aria-hidden="true" />
+            Dream archive
+          </span>
+          <div className="mt-4 grid gap-6 md:grid-cols-[1.25fr_0.95fr] md:items-end">
+            <div>
+              <h1 className="mu-section-title">꿈해몽 아카이브</h1>
+              <p className="mu-section-description mt-3">
+                자주 찾는 길몽·흉몽 키워드를 한곳에 모았습니다. 꿈의 상징을 빠르게 찾고, 상세 페이지에서 전통적 의미와 심리적 해석을 함께 읽을 수 있습니다.
+              </p>
+            </div>
+            <div className="grid gap-3 rounded-[24px] border border-slate-200/80 bg-white/70 p-4">
+              <div className="text-sm font-bold text-slate-900">공개된 꿈 키워드</div>
+              <div className="text-[32px] font-extrabold tracking-[-0.06em] text-[#5648db]">{DREAM_INDEX.length}</div>
+              <div className="text-sm leading-6 text-slate-500">검색과 카테고리 필터로 필요한 꿈해몽을 바로 찾을 수 있습니다.</div>
+            </div>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight text-[#1a1a18]">무운 꿈해몽 사전</h1>
-          <p className="text-muted-foreground text-sm md:text-base max-w-lg mx-auto">
-            어젯밤 당신의 무의식이 보내온 신호를 확인해 보세요.<br />
-            방대한 데이터를 통해 가장 정확한 해몽을 제공합니다.
-          </p>
-        </motion.div>
+        </div>
       </section>
 
-      <div className="container mx-auto px-4 max-w-4xl">
-        {/* Search Bar Section */}
-        <div className="mb-8 py-4">
-          <div className="relative group">
-            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-              {isSearching ? (
-                <Loader2 className="h-5 w-5 text-primary animate-spin" />
-              ) : (
-                <Search className="h-5 w-5 text-muted-foreground group-focus-within:text-primary transition-colors" />
-              )}
-            </div>
+      <section className="mu-container-narrow py-6">
+        <div className="mu-glass-panel p-5 sm:p-6">
+          <label className="relative block">
+            <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" aria-hidden="true" />
             <input
               type="text"
+              placeholder="꿈 키워드를 검색해보세요 (예: 돼지, 이빨, 조상, 대통령)"
               value={searchTerm}
-              onChange={(e) => {
-                setSearchTerm(e.target.value);
-                if (selectedDream) setSelectedDream(null);
-                if (activeCategory) setActiveCategory(null);
-              }}
-              placeholder="어떤 껼을 꼼으셨나요? (예: 돼지, 물, 불)"
-              className="w-full pl-12 pr-12 h-14 bg-white border border-black/[0.06] shadow-sm rounded-2xl text-base text-[#1a1a18] placeholder:text-[#b0ada6] focus:outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="h-13 w-full rounded-2xl border border-slate-200 bg-white pl-12 pr-4 text-sm text-slate-900 shadow-sm outline-none transition focus:border-[#6B5FFF] focus:ring-4 focus:ring-[#6B5FFF]/10"
             />
-            {searchTerm && (
-              <button 
-                onClick={clearSearch}
-                className="absolute inset-y-0 right-0 pr-4 flex items-center text-muted-foreground hover:text-[#1a1a18]"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            )}
-          </div>
-          
-          {/* Quick Tags */}
-          <div className="mt-4 flex flex-wrap gap-2 overflow-x-auto pb-1 no-scrollbar">
-            {["돼지", "물", "불", "뱀", "돈", "조상", "이빨", "대통령"].map(tag => (
+          </label>
+
+          <div className="mt-4 flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+            {quickTags.map((tag) => (
               <button
                 key={tag}
-                onClick={() => handleTagClick(tag)}
-                className={`px-3 py-1.5 rounded-full border text-xs transition-all whitespace-nowrap ${
-                  searchTerm === tag 
-                  ? "bg-primary border-primary text-[#1a1a18] font-bold" 
-                  : "bg-white border-black/[0.06] text-muted-foreground hover:bg-primary/10 hover:text-primary hover:border-primary/20"
-                }`}
+                onClick={() => setSearchTerm(tag)}
+                className={`mu-chip whitespace-nowrap ${searchTerm === tag ? 'mu-chip--active' : ''}`}
               >
                 #{tag}
               </button>
             ))}
           </div>
-        </div>
 
-        {/* Category Navigation - 칩(Chip) 스타일 */}
-        {!selectedDream && (
-          <div className="mb-8">
-            <h2 className="text-sm font-bold text-muted-foreground uppercase tracking-widest mb-4 px-1 flex items-center gap-2">
-              <Layers className="w-4 h-4" /> 카테고리로 찾기
-            </h2>
-            {/* 칩 형태 카테고리 필터 */}
-            <div className="flex flex-wrap gap-2">
-              <button
-                onClick={() => { setActiveCategory(null); setCategoryDreams([]); }}
-                className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold border transition-all min-h-[40px] ${
-                  activeCategory === null
-                  ? 'bg-primary border-primary text-[#1a1a18] shadow-md shadow-primary/20'
-                  : 'bg-white border-black/[0.06] text-[#999891] hover:bg-black/[0.04] hover:text-[#1a1a18]'
-                }`}
-              >
-                <Layers className="w-3.5 h-3.5" />
-                전체
-              </button>
-              {categories.map((cat) => (
+          <div className="mt-5 flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+            {categories.map(({ id, name, Icon }) => {
+              const active = activeCategory === id;
+              return (
                 <button
-                  key={cat.id}
-                  onClick={() => handleCategoryClick(cat.id)}
-                  className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold border transition-all min-h-[40px] active:scale-[0.97] ${
-                    activeCategory === cat.id
-                    ? 'bg-primary border-primary text-[#1a1a18] shadow-md shadow-primary/20'
-                    : 'bg-white border-black/[0.06] text-[#999891] hover:bg-black/[0.04] hover:text-[#1a1a18]'
-                  }`}
+                  key={name}
+                  onClick={() => setActiveCategory(id)}
+                  className={`mu-chip whitespace-nowrap ${active ? 'mu-chip--active' : ''}`}
                 >
-                  <cat.icon className={`w-3.5 h-3.5 ${activeCategory === cat.id ? 'text-[#1a1a18]' : cat.color}`} />
-                  {cat.name}
+                  <Icon size={14} aria-hidden="true" />
+                  {name}
                 </button>
-              ))}
-            </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section className="mu-container-narrow pb-10">
+        {filteredDreams.length > 0 ? (
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {filteredDreams.map((dream) => {
+              const grade = gradeConfig[dream.grade as DreamGrade] || gradeConfig.good;
+              const GradeIcon = grade.Icon;
+
+              return (
+                <Link key={dream.slug} href={`/dream/${dream.slug}`} className="mu-link-card overflow-hidden p-5">
+                  <div className="flex items-start justify-between gap-3">
+                    <span className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-bold ${grade.chip}`}>
+                      <GradeIcon size={12} aria-hidden="true" />
+                      {grade.label}
+                    </span>
+                    <ArrowUpRight size={16} className="text-slate-400" aria-hidden="true" />
+                  </div>
+
+                  <div className="mt-4 flex items-center gap-2 text-xs font-bold text-slate-400">
+                    <span>{dream.categoryLabel}</span>
+                    <span>·</span>
+                    <span>점수 {dream.score}</span>
+                  </div>
+
+                  <h2 className="mt-2 text-[20px] font-extrabold tracking-[-0.05em] text-slate-900 line-clamp-2">
+                    {dream.keyword} 꿈해몽
+                  </h2>
+                  <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-600">{dream.excerpt}</p>
+                  <div className={`mt-4 text-sm font-bold ${grade.tone}`}>상세 풀이 보러가기</div>
+                </Link>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="mu-glass-panel px-6 py-12 text-center">
+            <h2 className="text-[22px] font-extrabold tracking-[-0.04em] text-slate-900">검색 결과가 없습니다</h2>
+            <p className="mt-2 text-sm leading-7 text-slate-500">다른 꿈 키워드나 카테고리로 다시 찾아보세요.</p>
           </div>
         )}
-
-        <AnimatePresence mode="wait">
-          <motion.div
-            key="search"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="space-y-6"
-          >
-            {isShowingResults ? (
-              <div className="space-y-4">
-                <div className="flex items-center justify-between px-1">
-                  <h3 className="text-sm font-bold text-[#999891]">
-                    {activeCategory && !searchTerm.trim()
-                      ? `${categories.find(c => c.id === activeCategory)?.name} 카테고리 결과` 
-                      : `'${searchTerm}' 검색 결과`}
-                    {!isLoading && !isSearching && (
-                      <span className="ml-2 text-primary">{displayDreams.length}건</span>
-                    )}
-                  </h3>
-                  <button onClick={clearSearch} className="text-xs text-[#5a5a56] hover:text-[#1a1a18] flex items-center gap-1">
-                    초기화 <X className="w-3 h-3" />
-                  </button>
-                </div>
-                
-                {(isLoading || isSearching) ? (
-                  <div className="flex items-center justify-center py-20">
-                    <Loader2 className="w-8 h-8 text-primary animate-spin" />
-                  </div>
-                ) : (
-                  <div className="grid grid-cols-1 gap-3">
-                    {displayDreams.length > 0 ? (
-                      displayDreams.map((dream, idx) => {
-                        const grade = getGrade(dream.grade);
-                        return (
-                          <motion.div
-                            key={dream.id}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.3, delay: idx * 0.04 }}
-                            whileTap={{ scale: 0.98 }}
-                            onClick={() => handleSelectDream(dream)}
-                            className="group flex items-center justify-between p-4 rounded-xl bg-white border border-black/[0.06] shadow-sm hover:border-primary/50 hover:shadow-md transition-all cursor-pointer" data-dream-card
-                          >
-                            <div className="flex items-center gap-4">
-                              <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors ${gradeConfig[grade].bg.replace('from-', 'bg-').replace('/20 to-transparent', '/20')} border ${gradeConfig[grade].border}`}>
-                                {React.createElement(gradeConfig[grade].icon, {
-                                  className: `w-6 h-6 ${gradeConfig[grade].color}`
-                                })}
-                              </div>
-                              <div>
-                                <div className="flex items-center gap-2">
-                                  <h3 className="text-lg font-bold text-[#1a1a18] group-hover:text-primary transition-colors">
-                                    {dream.keyword}
-                                  </h3>
-                                  <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded bg-black/[0.05] border border-black/10 ${gradeConfig[grade].color}`}>
-                                    {gradeConfig[grade].label}
-                                  </span>
-                                </div>
-                                <p className="text-sm text-muted-foreground line-clamp-1">
-                                  <LinkedText text={dream.interpretation} />
-                                </p>
-                              </div>
-                            </div>
-                            <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-all" />
-                          </motion.div>
-                        );
-                      })
-                    ) : (
-                      <div className="text-center py-20 bg-white border border-dashed border-black/[0.06] shadow-sm rounded-2xl">
-                        <Info className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                        <p className="text-lg text-[#999891]">검색 결과가 없습니다.</p>
-                        <p className="text-sm text-[#5a5a56] mt-2">다른 키워드로 검색해 보세요.</p>
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
-                <div className="space-y-4">
-                  <h2 className="text-xl font-bold flex items-center gap-2 text-[#1a1a18]">
-                    <Zap className="w-5 h-5 text-yellow-500" /> 많이 찾는 꿈
-                  </h2>
-                  <div className="grid grid-cols-1 gap-2">
-                    {[
-                      { label: "돼지껼", key: "돼지" },
-                      { label: "돈 받는 껼", key: "돈" },
-                      { label: "불나는 껼", key: "불" },
-                      { label: "조상님 껼", key: "조상" }
-                    ].map((item, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => handleTagClick(item.key)}
-                        className="flex items-center justify-between p-4 rounded-xl bg-white border border-black/[0.06] shadow-sm hover:border-primary/30 hover:shadow-md transition-all text-left group"
-                      >
-                        <span className="text-[#1a1a18] group-hover:text-primary transition-colors">{item.label}</span>
-                        <ArrowRight className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
-                      </button>
-                    ))}
-                  </div>
-                </div>
-                <div className="p-8 rounded-3xl bg-gradient-to-br from-primary/20 to-transparent border border-primary/20 flex flex-col items-center justify-center text-center">
-                  <BrainCircuit className="w-12 h-12 text-primary mb-4" />
-                  <h3 className="text-lg font-bold mb-2 text-[#1a1a18]">꿈은 무의식의 거울입니다</h3>
-                  <p className="text-sm text-[#999891] leading-relaxed">
-                    우리가 자는 동안 뇌는 하루의 정보를 정리하고 감정을 처리합니다. 무운의 꿈해몽으로 당신의 내면이 보내는 메시지를 읽어보세요.
-                  </p>
-                </div>
-              </div>
-            )}
-          </motion.div>
-        </AnimatePresence>
-      </div>
+      </section>
     </div>
   );
-};
-
-export default DreamInterpretation;
+}

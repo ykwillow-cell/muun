@@ -73,9 +73,16 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
   const [menuIdx, setMenuIdx] = useState(0);
   const [menuFade, setMenuFade] = useState(false);
 
-  const rawData = localStorage.getItem("muun_user_birth");
-  const userData = rawData ? JSON.parse(rawData) : null;
-  const birth = userData?.birth ?? "";
+  const [birth] = useState(() => {
+    if (typeof window === 'undefined') return '';
+    try {
+      const rawData = window.localStorage.getItem('muun_user_birth');
+      const userData = rawData ? JSON.parse(rawData) : null;
+      return userData?.birth ?? '';
+    } catch {
+      return '';
+    }
+  });
   const fortune = getDailyFortune(birth);
   const birthYear = birth.slice(0, 4);
   const birthMonth = birth.slice(4, 6);
@@ -96,7 +103,9 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
   }, [menus.length, fortune.ohaeng]);
 
   const handleDeleteConfirm = () => {
-    localStorage.removeItem("muun_user_birth");
+    if (typeof window !== "undefined") {
+      window.localStorage.removeItem("muun_user_birth");
+    }
     setShowDeleteSheet(false);
     trackCustomEvent("birth_delete", {});
     onDeleteBirth();

@@ -1,195 +1,49 @@
 import { Link } from 'wouter';
-import { ChevronRight, BookMarked } from 'lucide-react';
+import { ArrowUpRight, BookMarked, Hash } from 'lucide-react';
 
-/* 대표 용어 — 자주 검색되는 명리학 키워드 */
 const FEATURED_TERMS = [
   { label: '일주', desc: '나를 나타내는 핵심 기둥', slug: 'il-ju' },
-  { label: '용신', desc: '나에게 유리한 오행', slug: 'yong-sin' },
-  { label: '대운', desc: '10년 단위 운의 흐름', slug: 'dae-un' },
+  { label: '용신', desc: '내 사주에 필요한 오행', slug: 'yong-sin' },
+  { label: '대운', desc: '10년 흐름으로 보는 운세', slug: 'dae-un' },
+  { label: '십신', desc: '관계와 역할을 읽는 기준', slug: 'sip-sin' },
   { label: '천간', desc: '하늘의 기운 10가지', slug: 'cheon-gan' },
   { label: '지지', desc: '땅의 기운 12가지', slug: 'ji-ji' },
-  { label: '오행', desc: '목·화·토·금·수', slug: 'o-haeng' },
-];
+] as const;
 
 export function HomeDictionarySection() {
   return (
-    <section className="mu-dict-section" aria-label="운세 사전">
-
-      {/* 섹션 헤더 */}
-      <div className="mu-dict-section__header">
-        <span className="mu-dict-section__title">
-          <BookMarked size={16} aria-hidden="true" />
-          운세 사전
-        </span>
-        <Link href="/fortune-dictionary" className="mu-dict-section__more">
-          전체보기 <ChevronRight size={13} aria-hidden="true" />
+    <section className="mu-glass-panel p-5 sm:p-6" aria-label="운세 사전">
+      <div className="flex items-end justify-between gap-4">
+        <div>
+          <span className="mu-section-eyebrow">
+            <BookMarked size={14} aria-hidden="true" />
+            운세 사전
+          </span>
+          <h2 className="mt-4 text-[26px] font-extrabold tracking-[-0.05em] text-slate-900">사주 용어를 처음 보는 사람도 이해하기 쉽게</h2>
+          <p className="mt-2 text-sm leading-7 text-slate-600">
+            오행, 십신, 용신, 대운처럼 헷갈리기 쉬운 용어를 짧고 선명한 설명으로 정리했습니다.
+          </p>
+        </div>
+        <Link href="/fortune-dictionary" className="hidden items-center gap-1 text-sm font-bold text-[#5748db] sm:inline-flex">
+          전체보기 <ArrowUpRight size={14} />
         </Link>
       </div>
 
-      {/* 용어 그리드 — 2열 */}
-      <div className="mu-dict-grid" role="list">
+      <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
         {FEATURED_TERMS.map((term) => (
-          <Link key={term.slug} href="/fortune-dictionary" className="mu-dict-card" role="listitem" aria-label={`${term.label}: ${term.desc}`}>
-            <span className="mu-dict-card__term">{term.label}</span>
-            <span className="mu-dict-card__desc">{term.desc}</span>
+          <Link key={term.slug} href={`/dictionary/${term.slug}`} className="mu-link-card p-4">
+            <div className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-[#6B5FFF]/10 text-[#5648db]">
+              <Hash size={18} aria-hidden="true" />
+            </div>
+            <h3 className="mt-4 text-[18px] font-extrabold tracking-[-0.04em] text-slate-900">{term.label}</h3>
+            <p className="mt-2 text-sm leading-6 text-slate-600">{term.desc}</p>
           </Link>
         ))}
       </div>
 
-      {/* 전체 사전 CTA */}
-      <Link href="/fortune-dictionary" className="mu-dict-all" aria-label="명리학 용어 전체 보기">
-        <div className="mu-dict-all__body">
-          <p className="mu-dict-all__title">명리학 용어 전체 보기</p>
-          <p className="mu-dict-all__sub">일주·용신·대운·천간·지지 등 100+ 용어</p>
-        </div>
-        <div className="mu-dict-all__btn" aria-hidden="true">
-          <ChevronRight size={16} />
-        </div>
+      <Link href="/fortune-dictionary" className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-[#5748db] sm:hidden">
+        운세 사전 전체보기 <ArrowUpRight size={14} />
       </Link>
-
-      <style>{`
-        /* ── 운세 사전 섹션 ── */
-        .mu-dict-section {
-          padding: var(--md-sp-5) var(--md-sp-4); /* 20px 16px — MD3 4dp 배수 */
-          margin-bottom: 0;
-          background: var(--md-surface-container); /* #F2F4F6 — MD3 Surface Container */
-        }
-        .mu-dict-section__header {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: var(--md-sp-3); /* 12px — MD3 4dp 배수 */
-        }
-        /* MD3 Title Large */
-        .mu-dict-section__title {
-          display: flex;
-          align-items: center;
-          gap: var(--md-sp-1); /* 4px */
-          font-size: var(--md-title-large);      /* 22px — MD3 Title Large */
-          line-height: var(--md-title-large-lh); /* 28px */
-          letter-spacing: var(--md-title-large-ls);
-          font-weight: 800;
-          color: var(--md-on-surface); /* #1C1B1F — MD3 On Surface */
-          font-family: 'Pretendard Variable', Pretendard, sans-serif;
-        }
-        .mu-dict-section__title svg { color: var(--md-primary); } /* #6B5FFF — MD3 Primary */
-        /* MD3 Label Medium */
-        .mu-dict-section__more {
-          display: flex;
-          align-items: center;
-          gap: var(--md-sp-1); /* 4px */
-          font-size: var(--md-label-medium);      /* 12px — MD3 Label Medium */
-          line-height: var(--md-label-medium-lh);
-          letter-spacing: var(--md-label-medium-ls);
-          font-weight: 600;
-          color: var(--md-on-surface-variant); /* #49454F — MD3 On Surface Variant */
-          text-decoration: none;
-          font-family: 'Pretendard Variable', Pretendard, sans-serif;
-        }
-        .mu-dict-section__more:hover { color: var(--md-on-surface); }
-
-        /* ── 용어 그리드 ── */
-        .mu-dict-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: var(--md-sp-2); /* 8px — MD3 4dp 배수 */
-          margin-bottom: var(--md-sp-2); /* 8px */
-        }
-
-        /* ── 용어 카드 (MD3 Outlined Card) ── */
-        .mu-dict-card {
-          display: flex;
-          flex-direction: column;
-          gap: var(--md-sp-1); /* 4px — MD3 4dp */
-          padding: var(--md-sp-3) var(--md-sp-4); /* 12px 16px */
-          min-height: 48px; /* MD3 터치타겟 최소 48dp */
-          background: var(--md-surface-container-lowest); /* #ffffff */
-          border-style: solid;
-          border-color: var(--card-border-color, var(--md-outline-variant));
-          border-width: var(--card-border-width, 1px); /* 어드민 테두리 두께 토큰 */
-          border-radius: var(--md-shape-md); /* 12px — MD3 Medium shape */
-          text-decoration: none;
-          box-shadow: none;
-          transition: box-shadow 0.15s, transform 0.15s;
-          -webkit-tap-highlight-color: transparent;
-        }
-        .mu-dict-card:hover {
-          box-shadow: var(--card-shadow-hover, var(--md-elev-1)); /* 어드민 card-shadow-hover 우선, fallback: MD3 Elevation 1 */
-          transform: translateY(-1px);
-        }
-        .mu-dict-card:active { opacity: 0.85; }
-        /* MD3 Title Medium */
-        .mu-dict-card__term {
-          font-size: var(--md-title-medium);      /* 16px — MD3 Title Medium */
-          line-height: var(--md-title-medium-lh); /* 24px */
-          letter-spacing: var(--md-title-medium-ls);
-          font-weight: 700;
-          color: var(--md-on-surface); /* #1C1B1F */
-          font-family: 'Pretendard Variable', Pretendard, sans-serif;
-        }
-        /* MD3 Body Small */
-        .mu-dict-card__desc {
-          font-size: var(--md-body-small);      /* 12px — MD3 Body Small */
-          line-height: var(--md-body-small-lh); /* 16px */
-          letter-spacing: var(--md-body-small-ls);
-          color: var(--md-on-surface-variant); /* #49454F */
-          font-family: 'Pretendard Variable', Pretendard, sans-serif;
-        }
-
-        /* ── 전체 사전 CTA (MD3 List Item 스타일) ── */
-        .mu-dict-all {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: var(--md-sp-3) var(--md-sp-4); /* 12px 16px */
-          min-height: 48px; /* MD3 터치타겟 최소 48dp */
-          background: var(--md-surface-container-lowest); /* #ffffff */
-          border-style: solid;
-          border-color: var(--card-border-color, var(--md-outline-variant));
-          border-width: var(--card-border-width, 1px); /* 어드민 테두리 두께 토큰 */
-          border-radius: var(--md-shape-md); /* 12px — MD3 Medium shape */
-          text-decoration: none;
-          box-shadow: none;
-          transition: background 0.15s;
-          -webkit-tap-highlight-color: transparent;
-        }
-        .mu-dict-all:hover { background: var(--md-surface-container-low); } /* MD3 hover: Surface Container Low */
-        .mu-dict-all__body {
-          display: flex;
-          flex-direction: column;
-          gap: var(--md-sp-1); /* 4px */
-        }
-        /* MD3 Title Small */
-        .mu-dict-all__title {
-          font-size: var(--md-title-small);      /* 14px — MD3 Title Small */
-          line-height: var(--md-title-small-lh); /* 20px */
-          letter-spacing: var(--md-title-small-ls);
-          font-weight: 600;
-          color: var(--md-on-surface); /* #1C1B1F */
-          margin: 0;
-          font-family: 'Pretendard Variable', Pretendard, sans-serif;
-        }
-        /* MD3 Body Small */
-        .mu-dict-all__sub {
-          font-size: var(--md-body-small);      /* 12px — MD3 Body Small */
-          line-height: var(--md-body-small-lh); /* 16px */
-          letter-spacing: var(--md-body-small-ls);
-          color: var(--md-on-surface-variant); /* #49454F */
-          margin: 0;
-          font-family: 'Pretendard Variable', Pretendard, sans-serif;
-        }
-        .mu-dict-all__btn {
-          width: 32px;
-          height: 32px;
-          border-radius: 50%;
-          background: var(--md-primary-container); /* #E8E4FF — MD3 Primary Container */
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: var(--md-primary); /* #6B5FFF — MD3 Primary */
-          flex-shrink: 0;
-        }
-      `}</style>
     </section>
   );
 }

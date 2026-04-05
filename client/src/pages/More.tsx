@@ -1,267 +1,126 @@
 import { useState } from 'react';
-import { Helmet } from "react-helmet-async";
-import { Link } from "wouter";
-import { motion, AnimatePresence } from "framer-motion";
+import { Helmet } from 'react-helmet-async';
+import { Link } from 'wouter';
 import {
-  Sparkles, Star, Calendar, Heart, BookOpen, Moon,
-  Brain, Globe, Layers, Users, PenLine, Clock,
-  Compass, ChevronRight
-} from "lucide-react";
+  Sparkles,
+  Star,
+  Calendar,
+  Heart,
+  BookOpen,
+  Moon,
+  Brain,
+  Globe,
+  Layers,
+  Users,
+  PenLine,
+  Clock,
+  ArrowUpRight,
+} from 'lucide-react';
 
-/* ── 서비스 카테고리 데이터 ── */
 const CATEGORIES = [
   {
-    id: "saju",
-    label: "사주·운세",
-    icon: <Sparkles size={15} />,
-    color: "text-yellow-500",
-    activeBg: "bg-yellow-500",
+    id: 'saju',
+    label: '사주 · 운세',
     services: [
-      {
-        href: "/yearly-fortune",
-        icon: <Star size={20} />,
-        iconBg: "bg-yellow-500/15 text-yellow-500",
-        label: "신년운세",
-        desc: "2026 병오년",
-        badge: "인기",
-        badgeColor: "bg-yellow-500/20 text-yellow-700",
-      },
-      {
-        href: "/lifelong-saju",
-        icon: <Sparkles size={20} />,
-        iconBg: "bg-blue-500/15 text-blue-500",
-        label: "평생사주",
-        desc: "평생 운명 풀이",
-        badge: "인기",
-        badgeColor: "bg-yellow-500/20 text-yellow-700",
-      },
-      {
-        href: "/daily-fortune",
-        icon: <Clock size={20} />,
-        iconBg: "bg-orange-500/15 text-orange-500",
-        label: "오늘의 운세",
-        desc: "오늘 하루 운세",
-      },
-      {
-        href: "/tojeong",
-        icon: <BookOpen size={20} />,
-        iconBg: "bg-emerald-500/15 text-emerald-500",
-        label: "토정비결",
-        desc: "전통 한 해 운세",
-      },
-      {
-        href: "/manselyeok",
-        icon: <Calendar size={20} />,
-        iconBg: "bg-teal-500/15 text-teal-500",
-        label: "만세력",
-        desc: "사주팔자 조견표",
-      },
+      { href: '/yearly-fortune', icon: Star, label: '신년운세', desc: '2026 병오년 한 해 흐름', badge: '인기' },
+      { href: '/lifelong-saju', icon: Sparkles, label: '평생사주', desc: '타고난 기질과 전체 흐름', badge: '인기' },
+      { href: '/daily-fortune', icon: Clock, label: '오늘의 운세', desc: '하루 운세 체크' },
+      { href: '/tojeong', icon: BookOpen, label: '토정비결', desc: '전통 월별 운세' },
+      { href: '/manselyeok', icon: Calendar, label: '만세력', desc: '사주팔자 조견표' },
     ],
   },
   {
-    id: "relation",
-    label: "관계·궁합",
-    icon: <Heart size={15} />,
-    color: "text-pink-500",
-    activeBg: "bg-pink-500",
+    id: 'relation',
+    label: '관계 · 궁합',
     services: [
-      {
-        href: "/compatibility",
-        icon: <Heart size={20} />,
-        iconBg: "bg-pink-500/15 text-pink-500",
-        label: "궁합",
-        desc: "두 사람의 인연",
-        badge: "인기",
-        badgeColor: "bg-yellow-500/20 text-yellow-700",
-      },
-      {
-        href: "/hybrid-compatibility",
-        icon: <Brain size={20} />,
-        iconBg: "bg-purple-500/15 text-purple-500",
-        label: "사주×MBTI",
-        desc: "MBTI 결합 궁합",
-        badge: "NEW",
-        badgeColor: "bg-purple-500/20 text-purple-700",
-      },
-      {
-        href: "/family-saju",
-        icon: <Users size={20} />,
-        iconBg: "bg-green-500/15 text-green-500",
-        label: "가족사주",
-        desc: "가족 사주 분석",
-      },
+      { href: '/compatibility', icon: Heart, label: '궁합', desc: '두 사람의 흐름 분석', badge: '인기' },
+      { href: '/hybrid-compatibility', icon: Brain, label: '사주×MBTI', desc: '성향 결합 궁합', badge: 'NEW' },
+      { href: '/family-saju', icon: Users, label: '가족사주', desc: '가족 오행 조화' },
     ],
   },
   {
-    id: "mystic",
-    label: "신비·점술",
-    icon: <Moon size={15} />,
-    color: "text-indigo-500",
-    activeBg: "bg-indigo-500",
+    id: 'mystic',
+    label: '신비 · 점술',
     services: [
-      {
-        href: "/tarot",
-        icon: <Layers size={20} />,
-        iconBg: "bg-purple-500/15 text-purple-500",
-        label: "타로",
-        desc: "78장 타로 상담",
-      },
-      {
-        href: "/astrology",
-        icon: <Globe size={20} />,
-        iconBg: "bg-teal-500/15 text-teal-500",
-        label: "점성술",
-        desc: "서양 별자리 운명",
-      },
-      {
-        href: "/dream",
-        icon: <Moon size={20} />,
-        iconBg: "bg-indigo-500/15 text-indigo-500",
-        label: "꿈해몽",
-        desc: "꿈의 의미 풀이",
-      },
+      { href: '/tarot', icon: Layers, label: '타로', desc: '카드가 전하는 힌트' },
+      { href: '/astrology', icon: Globe, label: '점성술', desc: '네이탈 차트 분석' },
+      { href: '/dream', icon: Moon, label: '꿈해몽', desc: '자주 찾는 상징 해석' },
     ],
   },
   {
-    id: "life",
-    label: "생활·기타",
-    icon: <Star size={15} />,
-    color: "text-amber-500",
-    activeBg: "bg-amber-500",
+    id: 'life',
+    label: '생활 · 기타',
     services: [
-      {
-        href: "/naming",
-        icon: <PenLine size={20} />,
-        iconBg: "bg-emerald-500/15 text-emerald-500",
-        label: "작명소",
-        desc: "무료 이름 풀이",
-        badge: "NEW",
-        badgeColor: "bg-emerald-500/20 text-emerald-700",
-      },
-      {
-        href: "/psychology",
-        icon: <Brain size={20} />,
-        iconBg: "bg-violet-500/15 text-violet-500",
-        label: "심리테스트",
-        desc: "나를 알아가기",
-      },
-      {
-        href: "/fortune-dictionary",
-        icon: <BookOpen size={20} />,
-        iconBg: "bg-stone-500/15 text-stone-500",
-        label: "사주 사전",
-        desc: "명리학 용어 해설",
-      },
-      {
-        href: "/lucky-lunch",
-        icon: <Star size={20} />,
-        iconBg: "bg-yellow-500/15 text-yellow-500",
-        label: "행운 점심",
-        desc: "오늘의 추천 메뉴",
-      },
-      {
-        href: "/guide",
-        icon: <BookOpen size={20} />,
-        iconBg: "bg-blue-500/15 text-blue-500",
-        label: "운세 칼럼",
-        desc: "명리학 읽을거리",
-      },
+      { href: '/naming', icon: PenLine, label: '작명소', desc: '사주 기반 이름 풀이', badge: 'NEW' },
+      { href: '/psychology', icon: Brain, label: '심리테스트', desc: '성향과 심리 탐색' },
+      { href: '/fortune-dictionary', icon: BookOpen, label: '운세 사전', desc: '용어와 개념 정리' },
+      { href: '/guide', icon: BookOpen, label: '운세 칼럼', desc: '사주 읽을거리 아카이브' },
+      { href: '/lucky-lunch', icon: Star, label: '행운 점심', desc: '오늘의 추천 메뉴' },
     ],
   },
-];
+] as const;
 
 export default function More() {
-  const [activeTab, setActiveTab] = useState(CATEGORIES[0].id);
-  const activeCategory = CATEGORIES.find(c => c.id === activeTab) || CATEGORIES[0];
+  const [activeTab, setActiveTab] = useState<(typeof CATEGORIES)[number]['id']>('saju');
+  const activeCategory = CATEGORIES.find((category) => category.id === activeTab) || CATEGORIES[0];
 
   return (
-    <>
+    <div className="min-h-screen mu-page-bg pb-16">
       <Helmet>
         <title>전체 서비스 | 무운(MuUn) — 무료 사주·운세</title>
-        <meta name="description" content="무운의 모든 무료 서비스를 한눈에 확인하세요. 신년운세, 평생사주, 궁합, 타로, 꿈해몽, 작명소 등 다양한 서비스 제공." />
+        <meta name="description" content="무운의 무료 사주·운세 서비스를 한눈에 확인하세요. 신년운세, 평생사주, 궁합, 타로, 꿈해몽, 작명소 등 다양한 서비스를 제공합니다." />
       </Helmet>
 
-      <div className="min-h-screen bg-background flex flex-col">
-        {/* 페이지 헤더 */}
-        <div className="px-4 pt-5 pb-3">
-          <h1 className="text-[20px] font-bold text-[#1a1a18] leading-tight">
-            전체 서비스
-          </h1>
-          <p className="text-[12px] text-[#999891] mt-0.5">
-            회원가입 없이 모두 무료로 이용하세요
+      <section className="mu-container-narrow pt-6">
+        <div className="mu-glass-panel overflow-hidden p-6 sm:p-8">
+          <span className="mu-section-eyebrow">All services</span>
+          <h1 className="mt-4 text-[34px] font-extrabold tracking-[-0.06em] text-slate-900">무운 전체 서비스</h1>
+          <p className="mt-3 text-base leading-8 text-slate-600">
+            무료 사주 결과 페이지와 콘텐츠 허브를 한눈에 둘러볼 수 있도록 카테고리별로 정리했습니다.
           </p>
         </div>
+      </section>
 
-        {/* 카테고리 탭 */}
-        <div className="px-4 pb-3">
-          <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-1">
-            {CATEGORIES.map((cat) => {
-              const isActive = activeTab === cat.id;
+      <section className="mu-container-narrow py-6">
+        <div className="mu-glass-panel p-5 sm:p-6">
+          <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+            {CATEGORIES.map((category) => (
+              <button
+                key={category.id}
+                onClick={() => setActiveTab(category.id)}
+                className={`mu-chip whitespace-nowrap ${activeTab === category.id ? 'mu-chip--active' : ''}`}
+              >
+                {category.label}
+              </button>
+            ))}
+          </div>
+
+          <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+            {activeCategory.services.map((service) => {
+              const Icon = service.icon;
               return (
-                <button
-                  key={cat.id}
-                  onClick={() => setActiveTab(cat.id)}
-                  className={`flex items-center gap-1.5 px-3.5 py-2 rounded-full text-[12px] font-semibold whitespace-nowrap transition-all flex-shrink-0 ${
-                    isActive
-                      ? `${cat.activeBg} text-white shadow-sm`
-                      : 'bg-black/[0.06] text-[#5a5a56] hover:bg-black/[0.09]'
-                  }`}
-                >
-                  <span className={isActive ? 'text-white' : cat.color}>{cat.icon}</span>
-                  {cat.label}
-                </button>
+                <Link key={service.href} href={service.href} className="mu-link-card p-5">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#6B5FFF]/10 text-[#5648db]">
+                      <Icon size={21} aria-hidden="true" />
+                    </div>
+                    {service.badge ? (
+                      <span className="inline-flex rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-500">
+                        {service.badge}
+                      </span>
+                    ) : null}
+                  </div>
+                  <h2 className="mt-4 text-[20px] font-extrabold tracking-[-0.05em] text-slate-900">{service.label}</h2>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">{service.desc}</p>
+                  <div className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-[#5648db]">
+                    이동하기 <ArrowUpRight size={14} />
+                  </div>
+                </Link>
               );
             })}
           </div>
         </div>
-
-        {/* 서비스 그리드 */}
-        <div className="px-4 pb-24 flex-1">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeTab}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.18 }}
-              className="grid grid-cols-2 gap-3"
-            >
-              {activeCategory.services.map((svc, idx) => (
-                <motion.div
-                  key={svc.href}
-                  initial={{ opacity: 0, scale: 0.96 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: idx * 0.04 }}
-                >
-                  <Link href={svc.href}>
-                    <div className="group relative flex flex-col items-center text-center p-4 rounded-2xl bg-white border border-black/[0.08] hover:border-primary/25 hover:bg-black/[0.03] active:scale-[0.97] transition-all cursor-pointer h-full min-h-[110px] justify-center gap-2.5">
-                      {/* 배지 */}
-                      {svc.badge && (
-                        <span className={`absolute top-2.5 right-2.5 px-1.5 py-0.5 rounded text-[9px] font-bold uppercase tracking-wider ${svc.badgeColor}`}>
-                          {svc.badge}
-                        </span>
-                      )}
-                      {/* 아이콘 */}
-                      <div className={`w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0 ${svc.iconBg}`}>
-                        {svc.icon}
-                      </div>
-                      {/* 텍스트 */}
-                      <div>
-                        <p className="text-[13px] font-bold text-[#1a1a18] group-hover:text-primary transition-colors leading-tight">
-                          {svc.label}
-                        </p>
-                        <p className="text-[11px] text-[#1a1a18]/40 mt-0.5 leading-snug">
-                          {svc.desc}
-                        </p>
-                      </div>
-                    </div>
-                  </Link>
-                </motion.div>
-              ))}
-            </motion.div>
-          </AnimatePresence>
-        </div>
-      </div>
-    </>
+      </section>
+    </div>
   );
 }

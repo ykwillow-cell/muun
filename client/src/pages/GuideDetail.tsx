@@ -1,44 +1,76 @@
-import { useState, useEffect } from 'react';
-import { useParams } from 'wouter';
+import { useEffect, useMemo, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { Link, useParams } from 'wouter';
+import { CalendarDays, Clock3, Share2, Loader2, ArrowUpRight, BookOpenText } from 'lucide-react';
 import NotFound from '@/pages/NotFound';
 import { useCanonical } from '@/lib/use-canonical';
-import { Helmet } from 'react-helmet-async';
-import { motion } from 'framer-motion';
-import { ChevronLeft, Calendar, Clock, Share2, Loader2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { getColumnBySlug, getLatestColumns, COLUMN_CATEGORIES, type ColumnData } from '@/lib/column-data-api';
+import { getColumnBySlug, type ColumnData } from '@/lib/column-data-api';
 import CallToAction from '@/components/CallToAction';
 import RelatedServices from '@/components/RelatedServices';
-import { Link } from 'wouter';
 import { injectLinksIntoHtml } from '@/hooks/useLinkedText';
+import { GUIDE_INDEX } from '@/generated/content-snapshots';
+
+function formatDate(value?: string) {
+  if (!value) return '';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '';
+  return date.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' });
+}
 
 export default function GuideDetail() {
   const { id } = useParams<{ id: string }>();
-  const [column, setColumn] = useState<ColumnData | null>(null);
-  const [relatedColumns, setRelatedColumns] = useState<ColumnData[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const preview = GUIDE_INDEX.find((item) => item.slug === id || item.id === id);
+  const [column, setColumn] = useState<ColumnData | null | undefined>(undefined);
   useCanonical(`/guide/${id}`);
 
   useEffect(() => {
+    let active = true;
     const load = async () => {
-      setIsLoading(true);
-      if (id) {
-        const [col, latest] = await Promise.all([
-          getColumnBySlug(id),
-          getLatestColumns(4),
-        ]);
-        setColumn(col);
-        setRelatedColumns(latest.filter(c => c.slug !== id && c.id !== id).slice(0, 3));
+      if (!id) {
+        setColumn(null);
+        return;
       }
-      setIsLoading(false);
+      const result = await getColumnBySlug(id);
+      if (active) setColumn(result);
     };
     load();
+    return () => {
+      active = false;
+    };
   }, [id]);
 
-  if (isLoading) {
+  const metaTitle = column?.metaTitle || preview?.title || '운세 칼럼 | 무운';
+  const metaDescription = column?.metaDescription || preview?.description || '무운 운세 칼럼을 읽어보세요.';
+  const canonicalUrl = `https://muunsaju.com/guide/${id}`;
+  const publishedDate = column?.publishedDate || preview?.publishedDate || '';
+  const categoryLabel = column?.categoryLabel || preview?.categoryLabel || '운세 칼럼';
+
+  const relatedColumns = useMemo(() => {
+    const category = column?.category || preview?.category;
+    return GUIDE_INDEX.filter((item) => item.slug !== id && (!category || item.category === category)).slice(0, 3);
+  }, [column?.category, preview?.category, id]);
+
+  const handleShare = async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: metaTitle,
+          text: metaDescription,
+          url: canonicalUrl,
+        });
+      } else {
+        await navigator.clipboard.writeText(canonicalUrl);
+        alert('링크가 복사되었습니다.');
+      }
+    } catch {
+      // user cancelled
+    }
+  };
+
+  if (column === undefined) {
     return (
-      <div className="min-h-screen bg-background text-[#1a1a18] flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      <div className="min-h-screen mu-page-bg flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-[#5648db]" />
       </div>
     );
   }
@@ -47,255 +79,124 @@ export default function GuideDetail() {
     return <NotFound />;
   }
 
-  const categoryColor = COLUMN_CATEGORIES[column.category]?.color || 'bg-black/06 text-[#5a5a56]';
-
-  // 카테고리별 CTA 배너 설정
-  const ctaConfig: Record<string, { message: string; targetPath: string; buttonLabel: string }> = {
-    relationship: {
-      message: '나와 어울리는 사람, 무료로 확인해보세요',
-      targetPath: '/compatibility',
-      buttonLabel: '무료 궁합 보러가기',
-    },
-    love: {
-      message: '나와 어울리는 사람, 무료로 확인해보세요',
-      targetPath: '/compatibility',
-      buttonLabel: '무료 궁합 보러가기',
-    },
-    family: {
-      message: '우리 가족의 운세를 함께 확인해보세요',
-      targetPath: '/family-saju',
-      buttonLabel: '가족사주 보러가기',
-    },
-  };
-  const cta = ctaConfig[column.category] || {
-    message: '타고난 기질과 운명, 지금 확인해 보세요',
-    targetPath: '/lifelong-saju',
-    buttonLabel: '평생사주 무료로 보기',
-  };
-
-  // 카테고리별 하단 추천 서비스 매핑
-  type ServiceItem = { href: string; label: string; description: string; emoji: string };
-  const relatedServicesMap: Record<string, ServiceItem[]> = {
-    relationship: [
-      { href: '/compatibility', label: '무료 궁합 풍이', description: '사주로 보는 두 사람의 콘테츠와 궁합을 분석합니다.', emoji: '💕' },
-      { href: '/hybrid-compatibility', label: '사주×MBTI 궁합', description: '사주와 MBTI를 결합한 새로운 궁합 분석입니다.', emoji: '🧠' },
-      { href: '/lifelong-saju', label: '무료 평생사주 풍이', description: '타고난 기질과 인생 전체의 운세 흐름을 분석합니다.', emoji: '🔮' },
-    ],
-    love: [
-      { href: '/compatibility', label: '무료 궁합 풍이', description: '사주로 보는 두 사람의 콘테츠와 궁합을 분석합니다.', emoji: '💕' },
-      { href: '/hybrid-compatibility', label: '사주×MBTI 궁합', description: '사주와 MBTI를 결합한 새로운 궁합 분석입니다.', emoji: '🧠' },
-      { href: '/lifelong-saju', label: '무료 평생사주 풍이', description: '타고난 기질과 인생 전체의 운세 흐름을 분석합니다.', emoji: '🔮' },
-    ],
-    money: [
-      { href: '/lifelong-saju', label: '무료 평생사주 풍이', description: '타고난 기질과 인생 전체의 운세 흐름을 분석합니다.', emoji: '🔮' },
-      { href: '/yearly-fortune', label: '2026년 신년운세', description: '병오년 한 해의 재물운을 미리 확인하세요.', emoji: '📅' },
-      { href: '/tojeong', label: '토정비결', description: '전통 토정비결으로 한 해의 운세를 확인합니다.', emoji: '📜' },
-    ],
-    career: [
-      { href: '/lifelong-saju', label: '무료 평생사주 풍이', description: '타고난 기질과 인생 전체의 운세 흐름을 분석합니다.', emoji: '🔮' },
-      { href: '/yearly-fortune', label: '2026년 신년운세', description: '병오년 한 해의 직장운을 미리 확인하세요.', emoji: '📅' },
-      { href: '/tojeong', label: '토정비결', description: '전통 토정비결으로 한 해의 운세를 확인합니다.', emoji: '📜' },
-    ],
-    health: [
-      { href: '/daily-fortune', label: '오늘의 운세', description: '오늘 하루의 기운과 건강운을 미리 확인하세요.', emoji: '☀️' },
-      { href: '/lifelong-saju', label: '무료 평생사주 풍이', description: '타고난 기질과 인생 전체의 운세 흐름을 분석합니다.', emoji: '🔮' },
-      { href: '/tarot', label: 'AI 타로 상담', description: '오늘 마음속 고민을 타로 카드로 풀어보세요.', emoji: '🎠' },
-    ],
-    luck: [
-      { href: '/daily-fortune', label: '오늘의 운세', description: '오늘 하루의 기운과 행운을 미리 확인하세요.', emoji: '☀️' },
-      { href: '/lifelong-saju', label: '무료 평생사주 풍이', description: '타고난 기질과 인생 전체의 운세 흐름을 분석합니다.', emoji: '🔮' },
-      { href: '/tarot', label: 'AI 타로 상담', description: '오늘 마음속 고민을 타로 카드로 풀어보세요.', emoji: '🎠' },
-    ],
-    basic: [
-      { href: '/lifelong-saju', label: '무료 평생사주 풍이', description: '타고난 기질과 인생 전체의 운세 흐름을 분석합니다.', emoji: '🔮' },
-      { href: '/dictionary', label: '사주 사전', description: '사주팔자의 핵심 용어를 쉽고 재미있게 풀어드립니다.', emoji: '📖' },
-      { href: '/yearly-fortune', label: '2026년 신년운세', description: '병오년 한 해의 운세 흐름을 미리 확인하세요.', emoji: '📅' },
-    ],
-    flow: [
-      { href: '/lifelong-saju', label: '무료 평생사주 풍이', description: '타고난 기질과 인생 전체의 운세 흐름을 분석합니다.', emoji: '🔮' },
-      { href: '/dictionary', label: '사주 사전', description: '사주팔자의 핵심 용어를 쉽고 재미있게 풀어드립니다.', emoji: '📖' },
-      { href: '/yearly-fortune', label: '2026년 신년운세', description: '병오년 한 해의 운세 흐름을 미리 확인하세요.', emoji: '📅' },
-    ],
-    family: [
-      { href: '/family-saju', label: '가족사주', description: '가족 구성원의 사주를 함께 분석합니다.', emoji: '👨‍👩‍👧‍👦' },
-      { href: '/compatibility', label: '무료 궁합 풍이', description: '사주로 보는 두 사람의 콘테츠와 궁합을 분석합니다.', emoji: '💕' },
-      { href: '/lifelong-saju', label: '무료 평생사주 풍이', description: '타고난 기질과 인생 전체의 운세 흐름을 분석합니다.', emoji: '🔮' },
-    ],
-  };
-  const relatedServicesList = relatedServicesMap[column.category] || [
-    { href: '/family-saju', label: '가족사주', description: '가족 구성원의 사주를 함께 분석하여 오행의 조화를 확인합니다.', emoji: '👨‍👩‍👧' },
-    { href: '/yearly-fortune', label: '2026년 신년운세', description: '병오년 한 해의 운세 흐름을 미리 확인하세요.', emoji: '📅' },
-    { href: '/daily-fortune', label: '오늘의 운세', description: '오늘 하루의 기운을 미리 확인하세요.', emoji: '☀️' },
-  ];
+  const articleHtml = injectLinksIntoHtml(column.content || '');
 
   return (
-    <div className="min-h-screen bg-background text-[#1a1a18]">
+    <div className="min-h-screen mu-page-bg pb-16">
       <Helmet>
-        <title>{column.title} | 무운 (MuUn)</title>
-        <meta name="description" content={column.description} />
-        <meta name="keywords" content={column.keywords.join(', ')} />
-        <meta property="og:title" content={column.title} />
-        <meta property="og:description" content={column.description} />
-        <meta property="og:image" content={column.thumbnail} />
+        <title>{metaTitle}</title>
+        <meta name="description" content={metaDescription} />
+        <meta name="keywords" content={`${column.title}, ${column.categoryLabel}, 사주칼럼, 운세칼럼, 무운`} />
+        <link rel="canonical" href={canonicalUrl} />
+        <meta property="og:title" content={metaTitle} />
+        <meta property="og:description" content={metaDescription} />
+        <meta property="og:image" content={column.thumbnail || 'https://muunsaju.com/images/horse_mascot.png'} />
+        <meta property="og:url" content={canonicalUrl} />
         <meta property="og:type" content="article" />
-        <meta property="article:published_time" content={column.publishedDate} />
-        <meta property="article:author" content={column.author} />
-        <link rel="canonical" href={`https://muunsaju.com/guide/${column.slug || column.id}`} />
+        <meta property="article:published_time" content={publishedDate} />
+        <meta property="article:section" content={categoryLabel} />
         <script type="application/ld+json">
           {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Article",
-            "headline": column.title,
-            "description": column.description,
-            "url": `https://muunsaju.com/guide/${column.slug || column.id}`,
-            "mainEntityOfPage": { "@type": "WebPage", "@id": `https://muunsaju.com/guide/${column.slug || column.id}` },
-            "author": { "@type": "Person", "name": column.author },
-            "datePublished": column.publishedDate,
-            "dateModified": column.publishedDate,
-            "image": { "@type": "ImageObject", "url": column.thumbnail, "width": 1200, "height": 630 },
-            "publisher": {
-              "@type": "Organization",
-              "name": "무운 (MuUn)",
-              "url": "https://muunsaju.com",
-              "logo": { "@type": "ImageObject", "url": "https://muunsaju.com/logo.png", "width": 200, "height": 60 }
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
+            headline: column.title,
+            description: metaDescription,
+            image: [column.thumbnail || 'https://muunsaju.com/images/horse_mascot.png'],
+            datePublished: publishedDate,
+            dateModified: publishedDate,
+            author: {
+              '@type': 'Organization',
+              name: column.author || '무운 역술팀',
             },
-            "keywords": column.keywords?.join(', '),
-            "articleSection": "사주 칼럼"
-          })}
-        </script>
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BreadcrumbList",
-            "itemListElement": [
-              { "@type": "ListItem", "position": 1, "name": "홈", "item": "https://muunsaju.com" },
-              { "@type": "ListItem", "position": 2, "name": "칼럼", "item": "https://muunsaju.com/guide" },
-              { "@type": "ListItem", "position": 3, "name": column.title, "item": `https://muunsaju.com/guide/${column.slug || column.id}` }
-            ]
+            publisher: {
+              '@type': 'Organization',
+              name: '무운 (MuUn)',
+              logo: {
+                '@type': 'ImageObject',
+                url: 'https://muunsaju.com/images/horse_mascot.png',
+              },
+            },
+            mainEntityOfPage: canonicalUrl,
           })}
         </script>
       </Helmet>
 
-      {/* 헤더 */}
-      <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-black/10">
-        <div className="max-w-3xl mx-auto px-4 h-14 flex items-center justify-between">
-          <Link href="/guide">
-            <Button variant="ghost" size="icon" className="text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
-              <ChevronLeft className="w-5 h-5" />
-            </Button>
-          </Link>
-          <span className="text-sm font-semibold text-[#5a5a56]">칼럼</span>
-          <Button variant="ghost" size="icon" className="text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
-            <Share2 className="w-5 h-5" />
-          </Button>
+      <section className="mu-container-reading pt-6">
+        <div className="mu-glass-panel overflow-hidden p-6 sm:p-8">
+          <div className="flex flex-wrap items-center gap-2">
+            <Link href="/guide" className="mu-chip">운세 칼럼</Link>
+            <span className="mu-chip">{categoryLabel}</span>
+          </div>
+
+          <div className="mt-5 grid gap-6 md:grid-cols-[1.2fr_0.8fr] md:items-end">
+            <div>
+              <span className="mu-section-eyebrow">
+                <BookOpenText size={14} aria-hidden="true" />
+                Editorial story
+              </span>
+              <h1 className="mt-4 text-[34px] font-extrabold tracking-[-0.06em] text-slate-900 sm:text-[42px]">{column.title}</h1>
+              <p className="mt-4 text-base leading-8 text-slate-600">{column.description || metaDescription}</p>
+            </div>
+
+            <div className="rounded-[24px] border border-slate-200/80 bg-white/75 p-5">
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-sm font-semibold text-slate-500">
+                <span>{column.author}</span>
+                <span className="inline-flex items-center gap-1"><CalendarDays size={15} /> {formatDate(publishedDate)}</span>
+                <span className="inline-flex items-center gap-1"><Clock3 size={15} /> {column.readTime}분</span>
+              </div>
+              <button
+                onClick={handleShare}
+                className="mt-5 inline-flex min-h-[46px] items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 text-sm font-bold text-slate-700 shadow-sm"
+              >
+                <Share2 size={16} aria-hidden="true" />
+                글 공유하기
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
 
-      <main className="max-w-3xl mx-auto px-4 py-8 md:py-12">
-        {/* 썸네일 */}
-        {column.thumbnail && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="w-full h-64 md:h-96 rounded-2xl overflow-hidden mb-8 bg-black/[0.05]"
-          >
-            <img
-              src={column.thumbnail}
-              alt={column.title}
-              className="w-full h-full object-cover"
-              onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-            />
-          </motion.div>
-        )}
+      <section className="mu-container-reading py-6">
+        <article className="mu-reading-surface p-6 sm:p-8 lg:p-10">
+          <div className="mu-reading-prose" dangerouslySetInnerHTML={{ __html: articleHtml }} />
+        </article>
+      </section>
 
-        {/* 메타 정보 */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="mb-6"
-        >
-          <div className="flex items-center gap-3 mb-4 flex-wrap">
-            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${categoryColor}`}>
-              {column.categoryLabel}
-            </span>
-            <span className="text-xs text-[#999891]">{column.author}</span>
-          </div>
-          <h1 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
-            {column.title}
-          </h1>
-          <div className="flex items-center gap-6 text-sm text-[#999891] flex-wrap">
-            <div className="flex items-center gap-2">
-              <Calendar className="w-4 h-4" />
-              {new Date(column.publishedDate).toLocaleDateString('ko-KR', {
-                year: 'numeric', month: 'long', day: 'numeric',
-              })}
-            </div>
-            <div className="flex items-center gap-2">
-              <Clock className="w-4 h-4" />
-              {column.readTime}분 읽기
-            </div>
-          </div>
-        </motion.div>
-
-        {/* 본문 */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="prose max-w-none mb-12 [&_p]:mb-5 [&_p]:leading-relaxed [&_h2]:mt-8 [&_h2]:mb-4 [&_h3]:mt-6 [&_h3]:mb-3 [&_ul]:mb-5 [&_ol]:mb-5 [&_li]:mb-2 [&_blockquote]:my-6 [&_hr]:my-8 [&_strong]:font-bold [&_em]:italic [&_p]:text-[#191f28] [&_h2]:text-[#191f28] [&_h3]:text-[#191f28] [&_li]:text-[#191f28] [&_blockquote]:text-[#4e5968] [&_blockquote]:border-l-primary/30"
-          dangerouslySetInnerHTML={{ __html: injectLinksIntoHtml(column.content) }}
-        />
-
-        {/* CTA - 카테고리별 맞춤 전환 유도 */}
-        <CallToAction
-          message={cta.message}
-          targetPath={cta.targetPath}
-          buttonLabel={cta.buttonLabel}
-        />
-        {/* 관련 서비스 내부 링크 - 카테고리별 맞춤 */}
-        <RelatedServices
-          title="칼럼과 함께 보면 좋은 서비스"
-          services={relatedServicesList}
-        />
-
-        {/* 관련 칼럼 */}
-        {relatedColumns.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-          >
-            <h2 className="text-2xl font-bold mb-6">관련 칼럼</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {relatedColumns.map((relatedColumn) => (
-                <Link key={relatedColumn.id} href={`/guide/${relatedColumn.slug || relatedColumn.id}`}>
-                  <div className="group cursor-pointer bg-black/[0.05] border border-black/10 rounded-xl overflow-hidden hover:border-primary/30 hover:bg-black/[0.06] transition-all h-full">
-                    {relatedColumn.thumbnail && (
-                      <div className="aspect-video overflow-hidden bg-black/[0.05]">
-                        <img
-                          src={relatedColumn.thumbnail}
-                          alt={relatedColumn.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                          onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                        />
-                      </div>
-                    )}
-                    <div className="p-4">
-                      <span className={`inline-block px-2 py-1 rounded-full text-xs font-semibold mb-2 ${COLUMN_CATEGORIES[relatedColumn.category]?.color || 'bg-black/06 text-[#5a5a56]'}`}>
-                        {relatedColumn.categoryLabel}
-                      </span>
-                      <h3 className="font-bold text-sm line-clamp-2 group-hover:text-primary transition-colors">
-                        {relatedColumn.title}
-                      </h3>
-                    </div>
+      {relatedColumns.length > 0 && (
+        <section className="mu-container-reading pb-2">
+          <div className="mu-glass-panel p-5 sm:p-6">
+            <span className="mu-divider-text">Related editorial</span>
+            <h2 className="mt-3 text-[24px] font-extrabold tracking-[-0.05em] text-slate-900">같이 읽으면 좋은 칼럼</h2>
+            <div className="mt-5 grid gap-3 md:grid-cols-3">
+              {relatedColumns.map((item) => (
+                <Link key={item.slug} href={`/guide/${item.slug}`} className="mu-link-card p-4">
+                  <div className="inline-flex rounded-full bg-[#6B5FFF]/10 px-2.5 py-1 text-[11px] font-bold text-[#5648db]">
+                    {item.categoryLabel}
+                  </div>
+                  <h3 className="mt-3 text-[18px] font-extrabold tracking-[-0.04em] text-slate-900 line-clamp-2">{item.title}</h3>
+                  <p className="mt-2 line-clamp-3 text-sm leading-6 text-slate-600">{item.description}</p>
+                  <div className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-[#5648db]">
+                    이어서 읽기 <ArrowUpRight size={14} />
                   </div>
                 </Link>
               ))}
             </div>
-          </motion.div>
-        )}
-      </main>
+          </div>
+        </section>
+      )}
+
+      <section className="mu-container-reading">
+        <CallToAction variant="lifelong" />
+        <RelatedServices
+          title="이 칼럼과 함께 보면 좋은 서비스"
+          services={[
+            { href: '/lifelong-saju', label: '평생사주', description: '타고난 기질과 전체 운의 흐름을 이어서 확인해 보세요.', emoji: '🔮' },
+            { href: '/fortune-dictionary', label: '운세 사전', description: '칼럼에서 본 용어를 바로 찾아 의미를 정리할 수 있습니다.', emoji: '📚' },
+            { href: '/compatibility', label: '궁합', description: '관계·궁합 주제를 실제 결과 페이지에서 확인해 보세요.', emoji: '💞' },
+            { href: '/dream', label: '꿈해몽', description: '상징 해석이 궁금할 때 꿈 키워드 아카이브로 이동하세요.', emoji: '🌙' },
+          ]}
+        />
+      </section>
     </div>
   );
 }

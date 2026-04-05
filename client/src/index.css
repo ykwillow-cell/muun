@@ -331,6 +331,195 @@
   }
 }
 
+
+@layer components {
+  .mu-page-bg {
+    background:
+      radial-gradient(circle at top right, rgba(107,95,255,0.12), transparent 34%),
+      linear-gradient(180deg, #fbfbff 0%, #f2f4f6 18%, #f6f7fb 100%);
+  }
+
+  .mu-container-narrow {
+    width: 100%;
+    max-width: 72rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .mu-container-reading {
+    width: 100%;
+    max-width: 56rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .mu-glass-panel {
+    background: rgba(255,255,255,0.92);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.06);
+    border-radius: 1.5rem;
+    backdrop-filter: blur(14px);
+  }
+
+  .mu-section-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 0.8rem;
+    border-radius: 999px;
+    background: rgba(107,95,255,0.1);
+    color: #5748db;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+
+  .mu-section-title {
+    font-size: clamp(1.75rem, 2vw + 1rem, 2.75rem);
+    line-height: 1.1;
+    letter-spacing: -0.04em;
+    font-weight: 800;
+    color: #111827;
+  }
+
+  .mu-section-description {
+    color: #4b5563;
+    line-height: 1.7;
+    font-size: 0.98rem;
+  }
+
+  .mu-chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .mu-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    min-height: 2.5rem;
+    padding: 0.55rem 0.95rem;
+    border-radius: 999px;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    background: rgba(255,255,255,0.9);
+    color: #475569;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: all .18s ease;
+  }
+
+  .mu-chip:hover {
+    border-color: rgba(107,95,255,0.28);
+    color: #4338ca;
+    background: rgba(107,95,255,0.06);
+  }
+
+  .mu-chip--active {
+    background: #6B5FFF;
+    color: #fff;
+    border-color: #6B5FFF;
+    box-shadow: 0 10px 22px rgba(107,95,255,0.22);
+  }
+
+  .mu-link-card {
+    display: block;
+    border-radius: 1.25rem;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    background: rgba(255,255,255,0.94);
+    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.05);
+    transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  }
+
+  .mu-link-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(107,95,255,0.22);
+    box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
+  }
+
+  .mu-divider-text {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #6b7280;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .mu-divider-text::before,
+  .mu-divider-text::after {
+    content: '';
+    width: 1.5rem;
+    height: 1px;
+    background: rgba(15, 23, 42, 0.12);
+  }
+
+  .mu-reading-surface {
+    background: rgba(255,255,255,0.96);
+    border-radius: 1.75rem;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    box-shadow: 0 18px 48px rgba(15, 23, 42, 0.06);
+  }
+
+  .mu-reading-prose {
+    color: #1f2937;
+    font-size: 1rem;
+    line-height: 1.85;
+  }
+
+  .mu-reading-prose h2,
+  .mu-reading-prose h3 {
+    color: #111827;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-top: 2.25rem;
+    margin-bottom: 0.9rem;
+  }
+
+  .mu-reading-prose h2 { font-size: 1.55rem; }
+  .mu-reading-prose h3 { font-size: 1.25rem; }
+
+  .mu-reading-prose p,
+  .mu-reading-prose ul,
+  .mu-reading-prose ol,
+  .mu-reading-prose blockquote {
+    margin-top: 0.95rem;
+    margin-bottom: 0.95rem;
+  }
+
+  .mu-reading-prose ul,
+  .mu-reading-prose ol {
+    padding-left: 1.2rem;
+  }
+
+  .mu-reading-prose li {
+    margin-top: 0.4rem;
+  }
+
+  .mu-reading-prose blockquote {
+    padding: 0.95rem 1rem;
+    border-left: 3px solid rgba(107,95,255,0.55);
+    background: rgba(107,95,255,0.05);
+    border-radius: 0.85rem;
+    color: #4338ca;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 /* iOS Date/Time Input Reset */
 @layer base {
   input[type="date"],

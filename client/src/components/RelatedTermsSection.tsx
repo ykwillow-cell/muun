@@ -1,7 +1,7 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo } from 'react';
 import { Link } from 'wouter';
-import { ArrowRight } from 'lucide-react';
-import { fetchFortuneDictionary, type DictionaryEntry } from '@/lib/fortune-dictionary';
+import { ArrowUpRight } from 'lucide-react';
+import { DICTIONARY_INDEX, type DictionaryIndexItem } from '@/generated/content-snapshots';
 
 interface RelatedTermsSectionProps {
   currentTermId: string;
@@ -9,116 +9,77 @@ interface RelatedTermsSectionProps {
   maxItems?: number;
 }
 
-/**
- * 관련 용어를 추천하는 컴포넌트
- * 현재 용어와 같은 태그를 가진 다른 용어들을 추천
- */
+function getFallbackCategoryEntries(currentEntry: DictionaryIndexItem | undefined, maxItems: number) {
+  if (!currentEntry) return [];
+  return DICTIONARY_INDEX
+    .filter((entry) => entry.id !== currentEntry.id && entry.category === currentEntry.category)
+    .slice(0, maxItems);
+}
+
 export function RelatedTermsSection({
   currentTermId,
   currentTags = [],
   maxItems = 5,
 }: RelatedTermsSectionProps) {
-  const [allEntries, setAllEntries] = useState<DictionaryEntry[]>([]);
-
-  useEffect(() => {
-    fetchFortuneDictionary().then(setAllEntries);
-  }, []);
-
   const relatedTerms = useMemo(() => {
-    if (!allEntries.length) return [];
-    if (!currentTags || currentTags.length === 0) {
-      return [];
+    if (!DICTIONARY_INDEX.length) return [];
+
+    const currentEntry = DICTIONARY_INDEX.find((entry) => entry.id === currentTermId);
+    if (!currentEntry) return [];
+
+    if (!currentTags.length) {
+      return getFallbackCategoryEntries(currentEntry, maxItems);
     }
 
-    // 현재 용어를 제외한 다른 용어들 중에서 공통 태그를 가진 것들 찾기
-    const related = allEntries
+    const related = DICTIONARY_INDEX
       .filter((entry) => entry.id !== currentTermId)
-      .map((entry) => {
-        // 공통 태그 개수 계산
-        const commonTags = (entry.tags || []).filter((tag) => currentTags.includes(tag));
-        return {
-          entry,
-          matchScore: commonTags.length,
-        };
-      })
+      .map((entry) => ({
+        entry,
+        matchScore: (entry.tags || []).filter((tag) => currentTags.includes(tag)).length,
+      }))
       .filter((item) => item.matchScore > 0)
       .sort((a, b) => b.matchScore - a.matchScore)
       .slice(0, maxItems)
       .map((item) => item.entry);
 
-    // 공통 태그가 없으면 같은 카테고리의 용어들 추천
-    if (related.length === 0) {
-      const currentEntry = allEntries.find((e) => e.id === currentTermId);
-      if (currentEntry) {
-        return allEntries
-          .filter((entry) => entry.id !== currentTermId && entry.category === currentEntry.category)
-          .slice(0, maxItems);
-      }
-    }
-
-    return related;
-  }, [currentTermId, currentTags, maxItems, allEntries]);
+    return related.length > 0 ? related : getFallbackCategoryEntries(currentEntry, maxItems);
+  }, [currentTermId, currentTags, maxItems]);
 
   if (relatedTerms.length === 0) {
     return null;
   }
 
   return (
-    <div className="mt-12 pt-8 border-t border-black/10">
-      <h3 className="text-lg font-semibold text-[#191F28] mb-4">함께 보면 좋은 사전어</h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-        {relatedTerms.map((term) => (
-          <Link
-            key={term.id}
-            href={`/dictionary/${term.slug}`}
-            className="group p-4 bg-white border border-black/10 rounded-2xl hover:border-[#6B5FFF]/30 hover:bg-[#6B5FFF]/05 transition-all duration-200 shadow-sm block"
-          >
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex-1 min-w-0">
-                <h4 className="font-bold text-[#191F28] group-hover:text-[#6B5FFF] transition-colors mb-1 text-sm">
-                  {term.title}
-                </h4>
-                <p className="text-xs text-[#4E5968] line-clamp-2 leading-relaxed">{term.summary}</p>
+    <section className="my-10">
+      <div className="mu-glass-panel p-5 sm:p-6">
+        <span className="mu-divider-text">Related terms</span>
+        <h3 className="mt-3 text-[22px] font-extrabold tracking-[-0.05em] text-slate-900">함께 보면 좋은 사전어</h3>
+        <div className="mt-5 grid grid-cols-1 gap-3 md:grid-cols-2">
+          {relatedTerms.map((term) => (
+            <Link key={term.id} href={`/dictionary/${term.slug}`} className="mu-link-card p-4">
+              <div className="flex items-start justify-between gap-3">
+                <div className="min-w-0 flex-1">
+                  <div className="inline-flex rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-500">
+                    {term.categoryLabel}
+                  </div>
+                  <h4 className="mt-3 text-[17px] font-extrabold tracking-[-0.04em] text-slate-900 line-clamp-1">{term.title}</h4>
+                  <p className="mt-2 text-sm leading-6 text-slate-600 line-clamp-2">{term.summary}</p>
+                </div>
+                <ArrowUpRight size={16} className="text-slate-400" aria-hidden="true" />
               </div>
-              <ArrowRight className="w-4 h-4 text-[#8B95A1] group-hover:text-[#6B5FFF] group-hover:translate-x-0.5 transition-all flex-shrink-0 mt-0.5" />
-            </div>
-            {term.tags && term.tags.length > 0 && (
-              <div className="mt-2 flex flex-wrap gap-1">
-                {term.tags.slice(0, 2).map((tag) => (
-                  <span
-                    key={tag}
-                    className="text-[10px] px-2 py-0.5 bg-[#F2F4F6] text-[#4E5968] rounded-full font-medium"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            )}
-          </Link>
-        ))}
+              {term.tags && term.tags.length > 0 && (
+                <div className="mt-3 flex flex-wrap gap-1.5">
+                  {term.tags.slice(0, 3).map((tag) => (
+                    <span key={tag} className="rounded-full bg-[#6B5FFF]/8 px-2.5 py-1 text-[11px] font-semibold text-[#5648db]">
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+            </Link>
+          ))}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
-
-/*
- * 사용 예시:
- *
- * import { RelatedTermsSection } from '@/components/RelatedTermsSection';
- *
- * export default function DictionaryDetail() {
- *   const entry = fortuneDictionary50Complete.find(e => e.slug === slug);
- *
- *   return (
- *     <div>
- *       {* ... 기존 콘텐츠 ... *}
- *
- *       <RelatedTermsSection
- *         currentTermId={entry.id}
- *         currentTags={entry.tags}
- *         maxItems={5}
- *       />
- *     </div>
- *   );
- * }
- */

@@ -9,7 +9,14 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-export interface DreamData {
+export export interface DreamSEOData {
+  meta_title?: string | null;
+  meta_description?: string | null;
+  title?: string | null;
+  description?: string | null;
+}
+
+interface DreamData {
   id: string;
   keyword: string;
   slug: string;
@@ -24,6 +31,7 @@ export interface DreamData {
   published: boolean;
   published_at: string | null;
   created_at: string;
+  seo_data?: DreamSEOData | null;
 }
 
 export const DREAM_CATEGORIES: Record<string, { label: string; color: string }> = {
@@ -38,6 +46,8 @@ export const DREAM_CATEGORIES: Record<string, { label: string; color: string }> 
 };
 
 function mapRow(row: any): DreamData {
+  const seoData: DreamSEOData | null = row?.seo_data && typeof row.seo_data === 'object' ? row.seo_data : null;
+
   return {
     id: String(row.id),
     keyword: row.keyword || '',
@@ -48,11 +58,12 @@ function mapRow(row: any): DreamData {
     category: row.category || 'other',
     grade: row.grade || 'good',
     score: row.score ?? 70,
-    meta_title: row.meta_title || null,
-    meta_description: row.meta_description || null,
+    meta_title: row.meta_title || seoData?.meta_title || seoData?.title || null,
+    meta_description: row.meta_description || seoData?.meta_description || seoData?.description || null,
     published: row.published || false,
     published_at: row.published_at || null,
     created_at: row.created_at || new Date().toISOString(),
+    seo_data: seoData,
   };
 }
 
