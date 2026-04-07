@@ -43,7 +43,7 @@ export function YearlyFortuneSchema({ birthDate, saju, fortune }: YearlyFortuneS
       "name": "무운(MUUN)",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://muunsaju.com/images/muun_logo.png"
+        "url": "https://muunsaju.com/images/muun-mark.svg"
       }
     },
     "mainEntity": {
@@ -200,7 +200,7 @@ export function LifelongSajuSchema({ birthDate, saju }: LifelongSajuSchemaProps)
       "name": "무운(MUUN)",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://muunsaju.com/images/muun_logo.png"
+        "url": "https://muunsaju.com/images/muun-mark.svg"
       }
     }
   };

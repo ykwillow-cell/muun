@@ -19,14 +19,12 @@ export default function RelatedServices({ title = '함께 보면 좋은 서비�
   return (
     <section className="my-10">
       <div className="mu-glass-panel overflow-hidden p-5 sm:p-6">
-        <div className="flex items-end justify-between gap-4">
-          <div>
-            <span className="mu-divider-text">Related services</span>
-            <h2 className="mt-3 text-[24px] font-extrabold tracking-[-0.05em] text-slate-900">{title}</h2>
-          </div>
+        <div>
+          <span className="mu-divider-text">Related services</span>
+          <h2 className="mt-3 text-[24px] font-extrabold tracking-[-0.05em] text-slate-900">{title}</h2>
         </div>
 
-        <div className="mt-5 grid gap-3 md:grid-cols-2">
+        <div className="mt-5 mu-auto-grid-220">
           {services.map((service) => (
             <Link key={service.href} href={service.href} className="mu-link-card p-4">
               <div className="flex items-start gap-4">

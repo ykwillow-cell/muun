@@ -28,70 +28,46 @@ const VARIANTS = {
 
 const trustBadges = ['무료', '회원가입 없음', '모바일 최적화'] as const;
 
-export default function CallToAction({
-  message,
-  targetPath,
-  buttonLabel,
-  variant = 'lifelong',
-}: CallToActionProps) {
+export default function CallToAction({ message, targetPath, buttonLabel, variant = 'lifelong' }: CallToActionProps) {
   const [location] = useLocation();
   const config = VARIANTS[variant];
-
   const finalMessage = message ?? config.message;
   const finalTargetPath = targetPath ?? config.targetPath;
   const finalButtonLabel = buttonLabel ?? config.buttonLabel;
 
   const handleClick = () => {
-    trackCustomEvent('click_cta_to_fortune', {
-      source_page: location,
-      cta_location: 'content_bottom',
-      target_path: finalTargetPath,
-      variant,
-    });
+    trackCustomEvent('click_cta_to_fortune', { source_page: location, cta_location: 'content_bottom', target_path: finalTargetPath, variant });
   };
 
   return (
     <section className="my-10">
-      <div className="mu-glass-panel overflow-hidden p-6 sm:p-7">
-        <div className="grid gap-6 md:grid-cols-[1.3fr_0.9fr] md:items-end">
+      <div className="overflow-hidden rounded-[30px] bg-[linear-gradient(150deg,#17114c_0%,#30208d_55%,#5d49cb_100%)] p-6 shadow-[0_24px_46px_rgba(15,23,42,0.14)]">
+        <div className="grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))] items-end">
           <div>
-            <span className="mu-section-eyebrow">{config.eyebrow}</span>
-            <h3 className="mt-4 text-[28px] font-extrabold tracking-[-0.05em] text-slate-900">{finalMessage}</h3>
-            <p className="mt-3 text-sm leading-7 text-slate-600">{config.description}</p>
-
+            <span className="mu-kicker">{config.eyebrow}</span>
+            <h3 className="mt-4 text-[28px] font-extrabold tracking-[-0.05em] text-white">{finalMessage}</h3>
+            <p className="mt-3 text-sm leading-7 text-white/78">{config.description}</p>
             <div className="mt-5 flex flex-wrap gap-2">
               {trustBadges.map((label) => (
-                <span
-                  key={label}
-                  className="inline-flex items-center gap-1 rounded-full border border-slate-200 bg-white/85 px-3 py-1.5 text-xs font-bold text-slate-500"
-                >
-                  <CheckCircle2 size={13} className="text-[#5648db]" aria-hidden="true" />
-                  {label}
-                </span>
+                <span key={label} className="mu-stat-pill"><CheckCircle2 size={13} /> {label}</span>
               ))}
             </div>
           </div>
 
-          <div className="rounded-[24px] border border-[#6B5FFF]/15 bg-gradient-to-br from-[#6B5FFF]/10 via-white to-[#a48cff]/10 p-5">
-            <div className="flex items-center gap-3 text-[#5648db]">
-              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white shadow-sm">
-                <Sparkles size={20} aria-hidden="true" />
-              </div>
+          <div className="rounded-[24px] border border-white/14 bg-white/10 p-5 backdrop-blur">
+            <div className="flex items-center gap-3 text-white">
+              <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/14 shadow-sm"><Sparkles size={20} aria-hidden="true" /></div>
               <div>
-                <div className="text-xs font-bold uppercase tracking-[0.18em] text-slate-400">추천 이동</div>
-                <div className="mt-1 text-sm font-extrabold text-slate-900">핵심 결과 페이지로 바로 이동</div>
+                <div className="text-xs font-bold uppercase tracking-[0.18em] text-white/60">추천 이동</div>
+                <div className="mt-1 text-sm font-extrabold text-white">핵심 결과 페이지로 바로 이동</div>
               </div>
             </div>
 
-            <Link
-              href={finalTargetPath}
-              onClick={handleClick}
-              className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-[#6B5FFF] px-5 py-4 text-sm font-bold text-white shadow-[0_16px_30px_rgba(107,95,255,0.26)] transition-transform hover:-translate-y-0.5"
-            >
+            <Link href={finalTargetPath} onClick={handleClick} className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-white px-5 py-4 text-sm font-bold text-[#17114c] shadow-[0_16px_30px_rgba(15,23,42,0.16)]">
               <span>{finalButtonLabel}</span>
               <ArrowRight size={16} aria-hidden="true" />
             </Link>
-            <p className="mt-3 text-center text-[11px] leading-5 text-slate-400">개인정보를 저장하지 않는 흐름으로 설계했습니다.</p>
+            <p className="mt-3 text-center text-[11px] leading-5 text-white/60">개인정보를 저장하지 않는 흐름으로 설계했습니다.</p>
           </div>
         </div>
       </div>

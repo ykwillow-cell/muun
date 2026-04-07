@@ -1,0 +1,20 @@
+<svg width="128" height="128" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="muunBrandBg" x1="8" y1="6" x2="58" y2="58" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1A1260" />
+      <stop offset="0.54" stop-color="#5040B8" />
+      <stop offset="1" stop-color="#60C8D4" />
+    </linearGradient>
+    <filter id="muunBrandShadow" x="0" y="0" width="64" height="64" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#17114C" flood-opacity="0.22" />
+    </filter>
+  </defs>
+  <g filter="url(#muunBrandShadow)">
+    <rect x="4" y="4" width="56" height="56" rx="18" fill="url(#muunBrandBg)" />
+    <path d="M28.9982 14.5C20.0913 17.2627 13.625 25.5751 13.625 35.3778C13.625 47.4378 23.4305 57.25 35.5 57.25C40.4216 57.25 44.9645 55.6212 48.6141 52.872C46.058 53.7167 43.3265 54.1725 40.4885 54.1725C26.6573 54.1725 15.4431 42.9664 15.4431 29.1452C15.4431 23.5897 17.2579 18.4579 20.3272 14.3096C23.0405 13.6658 25.9462 13.6014 28.9982 14.5Z" fill="#FFFCF4" />
+    <rect x="34.375" y="25.5" width="4.875" height="13.75" rx="2.4375" fill="#FFFCF4" />
+    <rect x="42.125" y="25.5" width="4.875" height="13.75" rx="2.4375" fill="#FFFCF4" />
+    <rect x="49.875" y="25.5" width="4.875" height="13.75" rx="2.4375" fill="#FFFCF4" />
+    <circle cx="46.25" cy="17.75" r="2" fill="#FFF1B8" />
+  </g>
+</svg>

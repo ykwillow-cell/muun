@@ -13,23 +13,13 @@ const FEATURED_TERMS = [
 export function HomeDictionarySection() {
   return (
     <section className="mu-glass-panel p-5 sm:p-6" aria-label="운세 사전">
-      <div className="flex items-end justify-between gap-4">
-        <div>
-          <span className="mu-section-eyebrow">
-            <BookMarked size={14} aria-hidden="true" />
-            운세 사전
-          </span>
-          <h2 className="mt-4 text-[26px] font-extrabold tracking-[-0.05em] text-slate-900">사주 용어를 처음 보는 사람도 이해하기 쉽게</h2>
-          <p className="mt-2 text-sm leading-7 text-slate-600">
-            오행, 십신, 용신, 대운처럼 헷갈리기 쉬운 용어를 짧고 선명한 설명으로 정리했습니다.
-          </p>
-        </div>
-        <Link href="/fortune-dictionary" className="hidden items-center gap-1 text-sm font-bold text-[#5748db] sm:inline-flex">
-          전체보기 <ArrowUpRight size={14} />
-        </Link>
+      <div>
+        <span className="mu-section-eyebrow"><BookMarked size={14} aria-hidden="true" /> 운세 사전</span>
+        <h2 className="mt-4 text-[26px] font-extrabold tracking-[-0.05em] text-slate-900">사주 용어를 처음 보는 사람도 이해하기 쉽게</h2>
+        <p className="mt-2 text-sm leading-7 text-slate-600">오행, 십신, 용신, 대운처럼 헷갈리기 쉬운 용어를 짧고 선명한 설명으로 정리했습니다.</p>
       </div>
 
-      <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="mt-5 mu-auto-grid-180">
         {FEATURED_TERMS.map((term) => (
           <Link key={term.slug} href={`/dictionary/${term.slug}`} className="mu-link-card p-4">
             <div className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-[#6B5FFF]/10 text-[#5648db]">
@@ -41,7 +31,7 @@ export function HomeDictionarySection() {
         ))}
       </div>
 
-      <Link href="/fortune-dictionary" className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-[#5748db] sm:hidden">
+      <Link href="/fortune-dictionary" className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-[#5748db]">
         운세 사전 전체보기 <ArrowUpRight size={14} />
       </Link>
     </section>

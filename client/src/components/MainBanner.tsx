@@ -1,12 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import useEmblaCarousel from "embla-carousel-react";
-import { Link } from "wouter";
-import { createClient } from "@supabase/supabase-js";
+import { useCallback, useEffect, useRef, useState } from 'react';
+import useEmblaCarousel from 'embla-carousel-react';
+import { Link } from 'wouter';
+import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = "https://vuifbmsdggnwygvgcrkj.supabase.co";
-const supabaseAnonKey =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1aWZibXNkZ2dud3lndmdjcmtqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE4NzY0ODYsImV4cCI6MjA4NzQ1MjQ4Nn0.PhMK66O73HH98WIPAu66qk8FuXwJLU4Z2bhDcmDCpKI";
-
+const supabaseUrl = 'https://vuifbmsdggnwygvgcrkj.supabase.co';
+const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1aWZibXNkZ2dud3lndmdjcmtqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE4NzY0ODYsImV4cCI6MjA4NzQ1MjQ4Nn0.PhMK66O73HH98WIPAu66qk8FuXwJLU4Z2bhDcmDCpKI';
 const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 interface BannerItem {
@@ -22,92 +20,30 @@ interface BannerItem {
   is_active: boolean;
 }
 
-// 기본 배너 (Supabase 테이블이 없거나 오류 시 폴백)
 const FALLBACK_BANNERS: BannerItem[] = [
-  {
-    id: "yearly",
-    tag: "2026 병오년",
-    title: "올해의 운세\n지금 확인하기",
-    sub: "월별 상세 · 12가지 운세 항목",
-    cta: "무료로 보기",
-    href: "/yearly-fortune",
-    gradient: "linear-gradient(135deg, #7B61FF 0%, #6A4FE8 100%)",
-    watermark: "丙\n午",
-    sort_order: 1,
-    is_active: true,
-  },
-  {
-    id: "family",
-    tag: "무운에서만",
-    title: "가족 오행\n함께 분석",
-    sub: "가족 구성원 사주 한눈에 비교",
-    cta: "가족 사주 보기",
-    href: "/family-saju",
-    gradient: "linear-gradient(135deg, #6A4FE8 0%, #5940CC 100%)",
-    watermark: "家\n運",
-    sort_order: 2,
-    is_active: true,
-  },
-  {
-    id: "mbti",
-    tag: "무운에서만",
-    title: "MBTI × 사주\n궁합 분석",
-    sub: "성격 유형과 오행의 만남",
-    cta: "궁합 보기",
-    href: "/hybrid-compatibility",
-    gradient: "linear-gradient(135deg, #5940CC 0%, #4A31B0 100%)",
-    watermark: "合\n命",
-    sort_order: 3,
-    is_active: true,
-  },
-  {
-    id: "naming",
-    tag: "작명소",
-    title: "아이 이름\n사주로 짓다",
-    sub: "402자 검증 한자 · 81수리 성명학",
-    cta: "이름 짓기",
-    href: "/naming",
-    gradient: "linear-gradient(135deg, #4A31B0 0%, #3A2490 100%)",
-    watermark: "名\n字",
-    sort_order: 4,
-    is_active: true,
-  },
+  { id: 'yearly', tag: '2026 병오년', title: '올해의 운세\n지금 확인하기', sub: '월별 상세 · 12가지 운세 항목', cta: '무료로 보기', href: '/yearly-fortune', gradient: 'linear-gradient(135deg, #17114c 0%, #30208d 55%, #60c8d4 100%)', watermark: '丙\n午', sort_order: 1, is_active: true },
+  { id: 'family', tag: '무운에서만', title: '가족 오행\n함께 분석', sub: '가족 구성원 사주 한눈에 비교', cta: '가족 사주 보기', href: '/family-saju', gradient: 'linear-gradient(135deg, #6A4FE8 0%, #5940CC 100%)', watermark: '家\n運', sort_order: 2, is_active: true },
+  { id: 'mbti', tag: '무운에서만', title: 'MBTI × 사주\n궁합 분석', sub: '성격 유형과 오행의 만남', cta: '궁합 보기', href: '/hybrid-compatibility', gradient: 'linear-gradient(135deg, #334155 0%, #475569 100%)', watermark: '合\n命', sort_order: 3, is_active: true },
+  { id: 'naming', tag: '작명소', title: '아이 이름\n사주로 짓다', sub: '402자 검증 한자 · 81수리 성명학', cta: '이름 짓기', href: '/naming', gradient: 'linear-gradient(135deg, #4A31B0 0%, #3A2490 100%)', watermark: '名\n字', sort_order: 4, is_active: true },
 ];
 
-const AUTO_PLAY_INTERVAL = 3500;
+const AUTO_PLAY_INTERVAL = 4200;
 
 export function MainBanner() {
   const [banners, setBanners] = useState<BannerItem[]>(FALLBACK_BANNERS);
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, dragFree: false });
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, dragFree: false, align: 'start' });
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [progressKey, setProgressKey] = useState(0);
   const autoPlayRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const isHoveredRef = useRef(false);
 
-  // Supabase에서 배너 데이터 fetch
   useEffect(() => {
     const fetchBanners = async () => {
       try {
-        const { data, error } = await supabase
-          .from("banners")
-          .select("*")
-          .eq("is_active", true)
-          .order("sort_order", { ascending: true });
-
-        if (error) {
-          // 테이블이 없거나 오류 시 폴백 사용
-          console.warn("배너 데이터 로드 실패, 기본 배너 사용:", error.message);
-          return;
-        }
-
-        if (data && data.length > 0) {
-          setBanners(data as BannerItem[]);
-        }
-      } catch (err) {
-        console.warn("배너 fetch 오류, 기본 배너 사용:", err);
+        const { data, error } = await supabase.from('banners').select('*').eq('is_active', true).order('sort_order', { ascending: true });
+        if (!error && data && data.length > 0) setBanners(data as BannerItem[]);
+      } catch {
+        // fallback 유지
       }
     };
-
     fetchBanners();
   }, []);
 
@@ -117,261 +53,61 @@ export function MainBanner() {
 
   const startAutoPlay = useCallback(() => {
     stopAutoPlay();
-    autoPlayRef.current = setInterval(() => {
-      if (!isHoveredRef.current && emblaApi) {
-        emblaApi.scrollNext();
-      }
-    }, AUTO_PLAY_INTERVAL);
+    autoPlayRef.current = setInterval(() => emblaApi?.scrollNext(), AUTO_PLAY_INTERVAL);
   }, [emblaApi, stopAutoPlay]);
-
-  const onSelect = useCallback(() => {
-    if (!emblaApi) return;
-    setSelectedIndex(emblaApi.selectedScrollSnap());
-    setProgressKey((k) => k + 1);
-  }, [emblaApi]);
 
   useEffect(() => {
     if (!emblaApi) return;
-    emblaApi.on("select", onSelect);
-    emblaApi.on("pointerDown", stopAutoPlay);
-    emblaApi.on("pointerUp", startAutoPlay);
+    const onSelect = () => setSelectedIndex(emblaApi.selectedScrollSnap());
+    emblaApi.on('select', onSelect);
+    onSelect();
     startAutoPlay();
     return () => {
       stopAutoPlay();
-      emblaApi.off("select", onSelect);
+      emblaApi.off('select', onSelect);
     };
-  }, [emblaApi, onSelect, startAutoPlay, stopAutoPlay]);
-
-  // 배너 데이터가 변경되면 캐러셀 재초기화
-  useEffect(() => {
-    if (emblaApi) {
-      emblaApi.reInit();
-      setSelectedIndex(0);
-    }
-  }, [banners, emblaApi]);
-
-  const goTo = useCallback(
-    (idx: number) => {
-      emblaApi?.scrollTo(idx);
-      setProgressKey((k) => k + 1);
-    },
-    [emblaApi]
-  );
+  }, [emblaApi, startAutoPlay, stopAutoPlay]);
 
   return (
-    <section
-      className="mu-banner"
-      onMouseEnter={() => {
-        isHoveredRef.current = true;
-      }}
-      onMouseLeave={() => {
-        isHoveredRef.current = false;
-      }}
-      aria-label="서비스 배너"
-      aria-roledescription="carousel"
-    >
-      <div className="mu-banner__viewport" ref={emblaRef}>
-        <div className="mu-banner__container">
-          {banners.map((b, i) => (
-            <div
-              key={b.id}
-              className="mu-banner__slide"
-              role="group"
-              aria-roledescription="slide"
-              aria-label={`${i + 1} / ${banners.length}: ${b.title.replace("\n", " ")}`}
-            >
-              <Link
-                href={b.href}
-                className="mu-banner__card"
-                style={{ background: b.gradient }}
-                aria-label={b.title.replace("\n", " ")}
-              >
-                {/* 한자 워터마크 */}
-                {b.watermark && (
-                  <span
-                    className="mu-banner__watermark"
-                    aria-hidden="true"
-                    style={{ whiteSpace: "pre-line" }}
-                  >
-                    {b.watermark}
-                  </span>
-                )}
-
-                {/* 콘텐츠 */}
-                <div className="mu-banner__card-body">
-                  {b.tag && <span className="mu-banner__tag">{b.tag}</span>}
-                  <p
-                    className="mu-banner__title"
-                    style={{ whiteSpace: "pre-line" }}
-                  >
-                    {b.title}
-                  </p>
-                  {b.sub && <p className="mu-banner__sub">{b.sub}</p>}
-                  <span className="mu-banner__cta">{b.cta} →</span>
+    <section className="mu-container-narrow py-4">
+      <div className="flex items-end justify-between gap-3 px-1 pb-3">
+        <div>
+          <span className="mu-divider-text">추천 배너</span>
+          <h2 className="mt-3 text-[24px] font-extrabold tracking-[-0.05em] text-slate-900">시즌 서비스와 신규 기능</h2>
+        </div>
+      </div>
+      <div className="overflow-hidden" ref={emblaRef}>
+        <div className="flex touch-pan-y gap-3">
+          {banners.map((b) => (
+            <div key={b.id} className="min-w-0 flex-[0_0_86%] sm:flex-[0_0_47%]">
+              <Link href={b.href} className="block overflow-hidden rounded-[28px] px-5 py-5 shadow-[0_24px_42px_rgba(15,23,42,0.12)]" style={{ background: b.gradient }}>
+                <div className="relative min-h-[168px]">
+                  {b.watermark && (
+                    <span className="pointer-events-none absolute right-0 top-0 whitespace-pre-line text-right font-serif text-[64px] font-black leading-[0.86] text-white/12">
+                      {b.watermark}
+                    </span>
+                  )}
+                  {b.tag && <span className="inline-flex rounded-full bg-white/14 px-3 py-1 text-[11px] font-bold text-white/92 backdrop-blur">{b.tag}</span>}
+                  <h3 className="relative mt-4 whitespace-pre-line text-[26px] font-extrabold leading-[1.12] tracking-[-0.05em] text-white">{b.title}</h3>
+                  {b.sub && <p className="relative mt-3 max-w-[260px] text-sm leading-7 text-white/80">{b.sub}</p>}
+                  <span className="relative mt-5 inline-flex rounded-full bg-white/14 px-4 py-2 text-xs font-bold text-white backdrop-blur">{b.cta}</span>
                 </div>
               </Link>
             </div>
           ))}
         </div>
       </div>
-
-      {/* 도트 프로그레스 */}
-      <div className="mu-banner__dots" role="tablist" aria-label="배너 탐색">
-        {banners.map((b, i) => (
+      <div className="mt-4 flex justify-center gap-2">
+        {banners.map((b, index) => (
           <button
             key={b.id}
-            className={`mu-banner__dot${i === selectedIndex ? " mu-banner__dot--active" : ""}`}
-            onClick={() => goTo(i)}
-            role="tab"
-            aria-selected={i === selectedIndex}
-            aria-label={`${i + 1}번 배너`}
-          >
-            {i === selectedIndex && (
-              <span
-                key={progressKey}
-                className="mu-banner__dot-progress"
-                style={{ animationDuration: `${AUTO_PLAY_INTERVAL}ms` }}
-              />
-            )}
-          </button>
+            type="button"
+            onClick={() => emblaApi?.scrollTo(index)}
+            className={`h-2.5 rounded-full transition-all ${index === selectedIndex ? 'w-6 bg-[#6B5FFF]' : 'w-2.5 bg-slate-300'}`}
+            aria-label={`${index + 1}번 배너`}
+          />
         ))}
       </div>
-
-      <style>{`
-        /* ── 배너 섹션 ── */
-        .mu-banner {
-          padding: 12px 18px;
-          background: #ffffff;
-        }
-
-        .mu-banner__viewport {
-          overflow: hidden;
-          border-radius: 20px;
-        }
-        .mu-banner__container {
-          display: flex;
-          touch-action: pan-y;
-        }
-        .mu-banner__slide {
-          flex: 0 0 100%;
-          min-width: 0;
-        }
-
-        /* ── 그라디언트 카드 ── */
-        .mu-banner__card {
-          display: block;
-          padding: 18px;
-          border-radius: 20px;
-          text-decoration: none;
-          min-height: 114px;
-          max-height: 140px;
-          position: relative;
-          overflow: hidden;
-          transition: opacity 0.15s;
-          -webkit-tap-highlight-color: transparent;
-        }
-        .mu-banner__card:active { opacity: 0.90; }
-
-        /* ── 한자 워터마크 ── */
-        .mu-banner__watermark {
-          position: absolute;
-          right: 10px;
-          bottom: -8px;
-          font-size: 50px;
-          font-weight: 900;
-          color: rgba(255,255,255,0.13);
-          line-height: 1;
-          pointer-events: none;
-          user-select: none;
-          font-family: 'Noto Serif KR', serif;
-          text-align: center;
-        }
-
-        /* ── 카드 콘텐츠 ── */
-        .mu-banner__card-body {
-          position: relative;
-          z-index: 1;
-          display: flex;
-          flex-direction: column;
-          gap: 5px;
-        }
-        .mu-banner__tag {
-          font-size: 10px;
-          font-weight: 600;
-          color: rgba(255,255,255,0.70);
-          text-transform: uppercase;
-          letter-spacing: 0.05em;
-          font-family: 'Pretendard Variable', Pretendard, sans-serif;
-        }
-        .mu-banner__title {
-          font-size: 15px;
-          font-weight: 800;
-          color: #ffffff;
-          letter-spacing: -0.5px;
-          margin-top: 0;
-          line-height: 1.25;
-          margin: 0;
-          font-family: 'Pretendard Variable', Pretendard, sans-serif;
-        }
-        .mu-banner__sub {
-          font-size: 11px;
-          color: rgba(255,255,255,0.75);
-          line-height: 1.5;
-          margin: 0;
-          font-family: 'Pretendard Variable', Pretendard, sans-serif;
-        }
-        .mu-banner__cta {
-          display: inline-flex;
-          align-items: center;
-          margin-top: 4px;
-          padding: 7px 16px;
-          border-radius: 20px;
-          background: rgba(255,255,255,0.22);
-          backdrop-filter: blur(4px);
-          font-size: 12px;
-          font-weight: 600;
-          color: #ffffff;
-          width: fit-content;
-          letter-spacing: 0.01em;
-          font-family: 'Pretendard Variable', Pretendard, sans-serif;
-        }
-
-        /* ── 도트 인디케이터 ── */
-        .mu-banner__dots {
-          display: flex;
-          justify-content: center;
-          gap: 5px;
-          padding: 10px 0 4px;
-        }
-        .mu-banner__dot {
-          position: relative;
-          width: 5px;
-          height: 5px;
-          border-radius: 3px;
-          background: #d1d5db;
-          border: none;
-          cursor: pointer;
-          padding: 0;
-          overflow: hidden;
-          transition: width 0.2s, background 0.2s;
-        }
-        .mu-banner__dot--active {
-          width: 18px;
-          background: #e8ebed;
-        }
-        .mu-banner__dot-progress {
-          position: absolute;
-          inset: 0;
-          background: #6B5FFF;
-          border-radius: inherit;
-          transform-origin: left;
-          animation: dot-fill linear forwards;
-        }
-        @keyframes dot-fill {
-          from { transform: scaleX(0); }
-          to { transform: scaleX(1); }
-        }
-      `}</style>
     </section>
   );
 }

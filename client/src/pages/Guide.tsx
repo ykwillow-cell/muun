@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useLocation } from 'wouter';
 import { useCanonical } from '@/lib/use-canonical';
 import { Helmet } from 'react-helmet-async';
-import { ArrowUpRight, BookOpenText, Clock3, Search, SlidersHorizontal } from 'lucide-react';
+import { ArrowUpRight, BookOpenText, Clock3, Search, SlidersHorizontal, Sparkles } from 'lucide-react';
 import { GUIDE_INDEX } from '@/generated/content-snapshots';
 
 const CHIP_CATEGORIES = [
@@ -47,12 +47,7 @@ export default function Guide() {
     let list = selectedCategory ? GUIDE_INDEX.filter((item) => item.category === selectedCategory) : [...GUIDE_INDEX];
 
     if (q) {
-      list = list.filter((item) =>
-        [item.title, item.description, item.categoryLabel, item.author]
-          .join(' ')
-          .toLowerCase()
-          .includes(q),
-      );
+      list = list.filter((item) => [item.title, item.description, item.categoryLabel, item.author].join(' ').toLowerCase().includes(q));
     }
 
     list.sort((a, b) => {
@@ -66,6 +61,7 @@ export default function Guide() {
 
   const displayed = filtered.slice(0, visibleCount);
   const hasMore = visibleCount < filtered.length;
+  const categoryCount = new Set(GUIDE_INDEX.map((item) => item.category)).size;
 
   return (
     <div className="min-h-screen mu-page-bg pb-16">
@@ -84,32 +80,40 @@ export default function Guide() {
         <link rel="canonical" href="https://muunsaju.com/guide" />
       </Helmet>
 
-      <section className="mu-container-narrow pt-6">
-        <div className="mu-glass-panel overflow-hidden p-6 sm:p-8">
-          <span className="mu-section-eyebrow">
-            <BookOpenText size={14} aria-hidden="true" />
-            Fortune editorial
-          </span>
-          <div className="mt-4 grid gap-6 md:grid-cols-[1.25fr_0.95fr] md:items-end">
+      <section className="mu-hero-shell">
+        <div className="mu-container-narrow px-4 pb-8 pt-5 text-white">
+          <div className="grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))] items-end">
             <div>
-              <h1 className="mu-section-title">운세 칼럼 아카이브</h1>
-              <p className="mu-section-description mt-3">
-                결과 페이지만 보고 끝나지 않도록, 사주 기초 개념과 실제 생활 고민을 연결하는 읽을거리를 카테고리별로 정리했습니다.
-                검색으로 들어온 방문자도 다음 글과 관련 서비스로 자연스럽게 이어질 수 있게 설계했습니다.
+              <span className="mu-kicker">Fortune editorial</span>
+              <h1 className="mt-4 text-[34px] font-extrabold leading-[1.1] tracking-[-0.06em] text-white">운세 칼럼 아카이브</h1>
+              <p className="mt-4 text-sm leading-7 text-white/80">
+                검색으로 들어온 방문자도 다음 글과 관련 서비스로 이어질 수 있도록, 사주 기초 개념과 실제 고민을 연결하는 읽을거리를 카테고리별로 정리했습니다.
               </p>
+              <div className="mt-5 flex flex-wrap gap-2">
+                <span className="mu-stat-pill"><BookOpenText size={14} /> 무료 아카이브</span>
+                <span className="mu-stat-pill"><Sparkles size={14} /> 사주 기초부터 관계 운까지</span>
+              </div>
             </div>
-            <div className="grid gap-3 rounded-[24px] border border-slate-200/80 bg-white/70 p-4">
-              <div className="text-sm font-bold text-slate-900">현재 공개 칼럼</div>
-              <div className="text-[32px] font-extrabold tracking-[-0.06em] text-[#5648db]">{GUIDE_INDEX.length}</div>
-              <div className="text-sm leading-6 text-slate-500">개운법, 관계 운, 건강운, 재물운까지 카테고리별 탐색 가능</div>
+
+            <div className="mu-auto-grid-180">
+              <div className="mu-soft-card p-4 text-slate-900">
+                <div className="text-xs font-bold uppercase tracking-[0.12em] text-slate-400">현재 공개 칼럼</div>
+                <div className="mt-3 text-[30px] font-extrabold tracking-[-0.06em] text-[#5648db]">{GUIDE_INDEX.length}</div>
+                <div className="mt-1 text-sm text-slate-500">정적 스냅샷 기반으로 빠르게 노출</div>
+              </div>
+              <div className="mu-soft-card p-4 text-slate-900">
+                <div className="text-xs font-bold uppercase tracking-[0.12em] text-slate-400">탐색 가능한 분류</div>
+                <div className="mt-3 text-[30px] font-extrabold tracking-[-0.06em] text-[#5648db]">{categoryCount}</div>
+                <div className="mt-1 text-sm text-slate-500">개운법, 관계 운, 건강운, 재물운 등</div>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="mu-container-narrow py-6">
+      <section className="mu-container-narrow -mt-6 pb-6 relative z-10">
         <div className="mu-glass-panel p-5 sm:p-6">
-          <div className="grid gap-4 lg:grid-cols-[1.35fr_0.65fr] lg:items-center">
+          <div className="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))] items-center">
             <label className="relative block">
               <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" aria-hidden="true" />
               <input
@@ -129,18 +133,8 @@ export default function Guide() {
                 <SlidersHorizontal size={13} aria-hidden="true" />
                 정렬
               </span>
-              <button
-                onClick={() => setSortOrder('newest')}
-                className={`mu-chip ${sortOrder === 'newest' ? 'mu-chip--active' : ''}`}
-              >
-                최신순
-              </button>
-              <button
-                onClick={() => setSortOrder('oldest')}
-                className={`mu-chip ${sortOrder === 'oldest' ? 'mu-chip--active' : ''}`}
-              >
-                오래된순
-              </button>
+              <button onClick={() => setSortOrder('newest')} className={`mu-chip ${sortOrder === 'newest' ? 'mu-chip--active' : ''}`}>최신순</button>
+              <button onClick={() => setSortOrder('oldest')} className={`mu-chip ${sortOrder === 'oldest' ? 'mu-chip--active' : ''}`}>오래된순</button>
             </div>
           </div>
 
@@ -166,26 +160,30 @@ export default function Guide() {
 
       <section className="mu-container-narrow pb-10">
         {displayed.length > 0 ? (
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          <div className="mu-auto-grid-220">
             {displayed.map((column) => (
-              <Link key={column.slug} href={`/guide/${column.slug}`} className="mu-link-card overflow-hidden p-5">
-                <div className="flex items-start justify-between gap-3">
-                  <span className="inline-flex rounded-full bg-[#6B5FFF]/10 px-2.5 py-1 text-[11px] font-bold text-[#5648db]">
-                    {column.categoryLabel}
-                  </span>
-                  <ArrowUpRight size={16} className="text-slate-400" aria-hidden="true" />
-                </div>
-                <h2 className="mt-4 text-[20px] font-extrabold tracking-[-0.05em] text-slate-900 line-clamp-2">
-                  {column.title}
-                </h2>
-                <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-600">{column.description}</p>
-                <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold text-slate-400">
-                  <span>{column.author}</span>
-                  <span>{formatDate(column.publishedDate)}</span>
-                  <span className="inline-flex items-center gap-1">
-                    <Clock3 size={12} aria-hidden="true" />
-                    {column.readTime}분
-                  </span>
+              <Link key={column.slug} href={`/guide/${column.slug}`} className="mu-link-card overflow-hidden p-0">
+                {column.thumbnail ? (
+                  <div className="aspect-[16/10] overflow-hidden bg-slate-100">
+                    <img src={column.thumbnail} alt={column.title} className="h-full w-full object-cover" loading="lazy" />
+                  </div>
+                ) : (
+                  <div className="aspect-[16/10] bg-[linear-gradient(135deg,#17114c_0%,#352597_55%,#5f4bcb_100%)]" />
+                )}
+
+                <div className="p-5">
+                  <div className="flex items-start justify-between gap-3">
+                    <span className="inline-flex rounded-full bg-[#6B5FFF]/10 px-2.5 py-1 text-[11px] font-bold text-[#5648db]">{column.categoryLabel}</span>
+                    <ArrowUpRight size={16} className="text-slate-400" aria-hidden="true" />
+                  </div>
+
+                  <h2 className="mt-4 text-[20px] font-extrabold tracking-[-0.05em] text-slate-900 line-clamp-2">{column.title}</h2>
+                  <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-600">{column.description}</p>
+                  <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold text-slate-400">
+                    <span>{column.author}</span>
+                    <span>{formatDate(column.publishedDate)}</span>
+                    <span className="inline-flex items-center gap-1"><Clock3 size={12} aria-hidden="true" /> {column.readTime}분</span>
+                  </div>
                 </div>
               </Link>
             ))}

@@ -14,9 +14,13 @@
   --safe-area-left: env(safe-area-inset-left, 0px);
   --safe-area-right: env(safe-area-inset-right, 0px);
   /* Bottom Nav 높이 */
-  --bottom-nav-height: calc(56px + var(--safe-area-bottom));
-  /* PC 콘텐츠 최대 너비 */
-  --mu-content-max-width: 480px;
+  --bottom-nav-height: calc(68px + var(--safe-area-bottom));
+  /* Desktop shell */
+  --mu-content-max-width: 100vw;
+  --mu-brand-navy: #17114c;
+  --mu-brand-purple: #6b5fff;
+  --mu-brand-teal: #60c8d4;
+  --mu-brand-gold: #fff1b8;
 }
 @plugin "@tailwindcss/typography";
 
@@ -27,27 +31,42 @@
   background: var(--background);
 }
 
-/* 480px 이상에서 콘텐츠 중앙 정렬 */
-@media (min-width: 480px) {
-  .mu-page-shell {
-    display: flex;
-    justify-content: center;
-    background: #e4e6e9;
-  }
-  .mu-page-shell__inner {
-    width: 100%;
-    max-width: var(--mu-content-max-width);
-    min-height: 100dvh;
-    background: var(--background);
-    position: relative;
-    box-shadow: 0 0 60px rgba(0,0,0,0.12);
-  }
-}
-
+/* 모바일 우선 셸, 데스크톱에서는 충분한 폭을 확보해 반응형 그리드가 깨지지 않게 함 */
 .mu-page-shell__inner {
   width: 100%;
   display: flex;
   flex-direction: column;
+  min-height: 100dvh;
+  background: var(--background);
+  position: relative;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --mu-content-max-width: 720px;
+  }
+  .mu-page-shell {
+    display: flex;
+    justify-content: center;
+    padding: 20px 18px 120px;
+    background:
+      radial-gradient(circle at top left, rgba(107,95,255,0.14), transparent 24%),
+      radial-gradient(circle at bottom right, rgba(96,200,212,0.12), transparent 20%),
+      linear-gradient(180deg, #e7ebf4 0%, #eef1f7 100%);
+  }
+  .mu-page-shell__inner {
+    width: min(100%, var(--mu-content-max-width));
+    border-radius: 34px;
+    overflow: clip;
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    box-shadow: 0 24px 80px rgba(17, 24, 39, 0.12);
+  }
+}
+
+@media (min-width: 1180px) {
+  :root {
+    --mu-content-max-width: 1060px;
+  }
 }
 
 /* @custom-variant dark 제거 — 라이트 모드 고정 (2단계 리팩토링) */
@@ -336,12 +355,115 @@
   .mu-page-bg {
     background:
       radial-gradient(circle at top right, rgba(107,95,255,0.12), transparent 34%),
+      radial-gradient(circle at 0% 24%, rgba(96,200,212,0.08), transparent 26%),
       linear-gradient(180deg, #fbfbff 0%, #f2f4f6 18%, #f6f7fb 100%);
+  }
+
+  .mu-auto-grid-180 {
+    display: grid;
+    gap: 0.9rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+  }
+
+  .mu-auto-grid-220 {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  }
+
+  .mu-auto-grid-260 {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  }
+
+  .mu-hero-shell {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(150deg, #17114c 0%, #30208d 46%, #5d49cb 74%, #60c8d4 100%);
+    color: #ffffff;
+  }
+
+  .mu-hero-shell::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 85% 20%, rgba(255,255,255,0.2), transparent 20%),
+      radial-gradient(circle at 15% 85%, rgba(255,255,255,0.14), transparent 18%);
+    pointer-events: none;
+  }
+
+  .mu-hero-shell::after {
+    content: '';
+    position: absolute;
+    right: -54px;
+    top: -26px;
+    width: 180px;
+    height: 180px;
+    border-radius: 999px;
+    background: radial-gradient(circle, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0) 68%);
+    filter: blur(6px);
+    pointer-events: none;
+  }
+
+  .mu-soft-card {
+    background: rgba(255,255,255,0.86);
+    border: 1px solid rgba(255,255,255,0.16);
+    border-radius: 1.5rem;
+    box-shadow: 0 22px 40px rgba(15, 23, 42, 0.12);
+    backdrop-filter: blur(16px);
+  }
+
+  .mu-stat-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 2rem;
+    padding: 0.38rem 0.8rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.92);
+    font-size: 0.76rem;
+    font-weight: 700;
+  }
+
+  .mu-surface-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 2rem;
+    padding: 0.4rem 0.85rem;
+    border-radius: 999px;
+    background: rgba(107,95,255,0.08);
+    color: #5648db;
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+
+  .mu-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: rgba(255,255,255,0.76);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .mu-kicker::before {
+    content: '';
+    width: 0.38rem;
+    height: 0.38rem;
+    border-radius: 999px;
+    background: var(--mu-brand-gold);
+    box-shadow: 0 0 12px rgba(255,241,184,0.5);
   }
 
   .mu-container-narrow {
     width: 100%;
-    max-width: 72rem;
+    max-width: 68rem;
     margin-left: auto;
     margin-right: auto;
     padding-left: 1rem;
@@ -350,7 +472,7 @@
 
   .mu-container-reading {
     width: 100%;
-    max-width: 56rem;
+    max-width: 54rem;
     margin-left: auto;
     margin-right: auto;
     padding-left: 1rem;

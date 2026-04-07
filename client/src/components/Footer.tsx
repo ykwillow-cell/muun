@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'wouter';
 import { Sparkles, MoonStar, BookOpenText, ShieldCheck } from 'lucide-react';
+import BrandLogo from '@/components/BrandLogo';
 
 const footerGroups = [
   {
@@ -43,13 +44,11 @@ const Footer: React.FC = () => {
   return (
     <footer className="mu-footer">
       <div className="mu-footer__inner">
-        <div className="mu-footer__top">
+        <div className="mu-footer__hero">
           <div className="mu-footer__brand">
-            <div className="mu-footer__brand-badge">MUUN</div>
-            <h2 className="mu-footer__brand-title">무운</h2>
+            <BrandLogo size="lg" />
             <p className="mu-footer__brand-copy">
-              생년월일만으로 확인하는 무료 사주·운세 플랫폼.
-              회원가입 없이 빠르게 보고, 꿈해몽·운세 칼럼·사전까지 한곳에서 이어서 탐색할 수 있도록 정리했습니다.
+              생년월일만으로 확인하는 무료 사주·운세 플랫폼. 결과 페이지에서 끝나지 않고 칼럼, 꿈해몽, 사전으로 자연스럽게 이어지는 모바일 경험을 목표로 만들었습니다.
             </p>
           </div>
 
@@ -83,7 +82,7 @@ const Footer: React.FC = () => {
         <div className="mu-footer__meta">
           <p>
             무운(MuUn)은 무료 사주풀이, 2026년 신년운세, 토정비결, 궁합, 타로, 꿈해몽, 운세 사전 등 다양한 명리·운세 콘텐츠를 제공합니다.
-            검색과 내부 링크를 통해 필요한 페이지에 빠르게 도달할 수 있도록 정보 구조를 계속 개선하고 있습니다.
+            검색 최적화와 내부 링크 구조를 계속 정리하며, 모바일에서 빠르게 탐색할 수 있도록 개선하고 있습니다.
           </p>
           <p>© {new Date().getFullYear()} MUUN Celestial Services. All rights reserved.</p>
         </div>
@@ -92,87 +91,61 @@ const Footer: React.FC = () => {
       <style>{`
         .mu-footer {
           margin-top: 0;
-          padding: 28px 16px calc(24px + var(--safe-area-bottom));
+          padding: 28px 16px calc(28px + var(--safe-area-bottom));
           background:
-            radial-gradient(circle at top left, rgba(107,95,255,0.12), transparent 30%),
-            linear-gradient(180deg, #f8f9fc 0%, #eff1f6 100%);
-          border-top: 1px solid rgba(15, 23, 42, 0.08);
+            radial-gradient(circle at top left, rgba(107,95,255,0.12), transparent 28%),
+            linear-gradient(180deg, #f7f8fc 0%, #edf1f7 100%);
+          border-top: 1px solid rgba(15,23,42,0.08);
         }
         .mu-footer__inner {
-          max-width: 1120px;
+          max-width: 960px;
           margin: 0 auto;
         }
-        .mu-footer__top {
+        .mu-footer__hero {
           display: grid;
-          gap: 18px;
+          gap: 16px;
+          grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
         }
-        .mu-footer__brand {
-          padding: 22px;
+        .mu-footer__brand,
+        .mu-footer__group,
+        .mu-footer__meta {
+          padding: 20px;
           border-radius: 24px;
-          background: rgba(255,255,255,0.94);
-          border: 1px solid rgba(15, 23, 42, 0.08);
-          box-shadow: 0 14px 34px rgba(15, 23, 42, 0.05);
-        }
-        .mu-footer__brand-badge {
-          display: inline-flex;
-          align-items: center;
-          justify-content: center;
-          min-height: 30px;
-          padding: 0 10px;
-          border-radius: 999px;
-          background: rgba(107,95,255,0.1);
-          color: #5648db;
-          font-size: 11px;
-          font-weight: 800;
-          letter-spacing: 0.12em;
-        }
-        .mu-footer__brand-title {
-          margin: 14px 0 8px;
-          font-size: 28px;
-          line-height: 1.05;
-          letter-spacing: -0.05em;
-          font-weight: 800;
-          color: #111827;
+          background: rgba(255,255,255,0.88);
+          border: 1px solid rgba(15,23,42,0.08);
+          box-shadow: 0 14px 34px rgba(15,23,42,0.05);
         }
         .mu-footer__brand-copy {
-          margin: 0;
+          margin: 14px 0 0;
           font-size: 14px;
           line-height: 1.75;
           color: #4b5563;
         }
         .mu-footer__highlight-grid {
           display: grid;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
           gap: 10px;
+          grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr));
         }
         .mu-footer__highlight-item {
           display: flex;
           align-items: center;
           gap: 8px;
-          min-height: 44px;
+          min-height: 48px;
           padding: 0 14px;
-          border-radius: 16px;
-          background: rgba(255,255,255,0.92);
-          border: 1px solid rgba(15, 23, 42, 0.08);
+          border-radius: 18px;
+          background: rgba(255,255,255,0.94);
+          border: 1px solid rgba(15,23,42,0.08);
           color: #4b5563;
           font-size: 12px;
           font-weight: 700;
+          box-shadow: 0 10px 22px rgba(15,23,42,0.04);
         }
-        .mu-footer__highlight-item svg {
-          color: #5648db;
-          flex-shrink: 0;
-        }
+        .mu-footer__highlight-item svg { color: #5648db; flex-shrink: 0; }
         .mu-footer__grid {
           display: grid;
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-          gap: 18px;
-          margin-top: 22px;
-        }
-        .mu-footer__group {
-          padding: 18px 16px;
-          border-radius: 20px;
-          background: rgba(255,255,255,0.86);
-          border: 1px solid rgba(15, 23, 42, 0.08);
+          gap: 16px;
+          margin-top: 16px;
+          grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
         }
         .mu-footer__group-title {
           margin: 0 0 12px;
@@ -196,30 +169,14 @@ const Footer: React.FC = () => {
           font-weight: 600;
           line-height: 1.4;
         }
-        .mu-footer__link:hover {
-          color: #5648db;
-        }
         .mu-footer__meta {
-          margin-top: 18px;
-          padding: 18px;
-          border-radius: 18px;
-          background: rgba(255,255,255,0.82);
-          border: 1px solid rgba(15, 23, 42, 0.08);
+          margin-top: 16px;
           color: #6b7280;
           font-size: 12px;
           line-height: 1.8;
         }
-        .mu-footer__meta p {
-          margin: 0;
-        }
-        .mu-footer__meta p + p {
-          margin-top: 10px;
-        }
-        @media (max-width: 640px) {
-          .mu-footer__grid {
-            grid-template-columns: 1fr;
-          }
-        }
+        .mu-footer__meta p { margin: 0; }
+        .mu-footer__meta p + p { margin-top: 10px; }
       `}</style>
     </footer>
   );

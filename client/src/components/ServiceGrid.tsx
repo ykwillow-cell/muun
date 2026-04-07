@@ -1,5 +1,5 @@
 import { Link } from 'wouter';
-import { ArrowRight, ArrowUpRight, Sparkles, Star, Heart, Globe, Layers, Calendar, BookOpen, Moon, Brain, Users, PenLine, Clock3 } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, Sparkles, Heart, Globe, Layers, BookOpen, Moon, Users, PenLine, Clock3 } from 'lucide-react';
 
 interface FeaturedService {
   href: string;
@@ -18,32 +18,10 @@ interface UtilityService {
 }
 
 const FEATURED_SERVICES: FeaturedService[] = [
-  {
-    href: '/lifelong-saju',
-    label: '평생사주',
-    description: '타고난 기질과 운의 흐름을 길게 읽습니다.',
-    badge: '인기',
-    Icon: Sparkles,
-  },
-  {
-    href: '/compatibility',
-    label: '궁합',
-    description: '두 사람의 오행과 관계 리듬을 살펴봅니다.',
-    badge: '인기',
-    Icon: Heart,
-  },
-  {
-    href: '/astrology',
-    label: '점성술',
-    description: '네이탈 차트로 성향과 흐름을 확인합니다.',
-    Icon: Globe,
-  },
-  {
-    href: '/tarot',
-    label: '타로',
-    description: '오늘의 질문에 대한 카드 힌트를 받아보세요.',
-    Icon: Layers,
-  },
+  { href: '/lifelong-saju', label: '평생사주', description: '타고난 기질과 운의 흐름을 길게 읽습니다.', badge: '인기', Icon: Sparkles },
+  { href: '/compatibility', label: '궁합', description: '두 사람의 오행과 관계 리듬을 살펴봅니다.', badge: '인기', Icon: Heart },
+  { href: '/astrology', label: '점성술', description: '네이탈 차트로 성향과 흐름을 확인합니다.', Icon: Globe },
+  { href: '/tarot', label: '타로', description: '오늘의 질문에 대한 카드 힌트를 받아보세요.', Icon: Layers },
 ];
 
 const UTILITY_SERVICES: UtilityService[] = [
@@ -73,60 +51,49 @@ export function ServiceGrid() {
     <section className="mu-container-narrow pb-2">
       <div className="grid gap-6">
         <div className="mu-glass-panel p-5 sm:p-6">
-          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <div>
-              <span className="mu-divider-text">핵심 서비스</span>
-              <h2 className="mt-3 text-[28px] font-extrabold tracking-[-0.05em] text-slate-900">가장 많이 찾는 무료 운세</h2>
-              <p className="mt-2 text-sm leading-7 text-slate-600">
-                무료 플랜 환경에서도 빠르게 열리도록, 자주 찾는 핵심 결과 페이지를 먼저 배치했습니다.
-              </p>
-            </div>
-            <Link href="/more" className="inline-flex items-center gap-1 text-sm font-bold text-[#5748db]">
-              전체 서비스 보기 <ArrowRight size={14} />
-            </Link>
-          </div>
-
-          <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            {FEATURED_SERVICES.map(({ href, label, description, badge, Icon }) => (
-              <Link key={href} href={href} className="mu-link-card p-5">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#6B5FFF]/10 text-[#5648db]">
-                    <Icon size={21} aria-hidden="true" />
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {badge ? (
-                      <span className="inline-flex rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-500">
-                        {badge}
-                      </span>
-                    ) : null}
-                    <ArrowUpRight size={16} className="text-slate-400" aria-hidden="true" />
-                  </div>
-                </div>
-                <h3 className="mt-4 text-[20px] font-extrabold tracking-[-0.05em] text-slate-900">{label}</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-600">{description}</p>
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <span className="mu-divider-text">핵심 서비스</span>
+                <h2 className="mt-3 text-[28px] font-extrabold tracking-[-0.05em] text-slate-900">가장 많이 찾는 무료 운세</h2>
+                <p className="mt-2 text-sm leading-7 text-slate-600">무료 플랜 환경에서도 빠르게 열리도록 자주 찾는 결과 페이지를 먼저 배치했습니다.</p>
+              </div>
+              <Link href="/more" className="inline-flex items-center gap-1 text-sm font-bold text-[#5748db]">
+                전체 서비스 보기 <ArrowRight size={14} />
               </Link>
-            ))}
+            </div>
+
+            <div className="mu-auto-grid-220">
+              {FEATURED_SERVICES.map(({ href, label, description, badge, Icon }) => (
+                <Link key={href} href={href} className="mu-link-card p-5">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#6B5FFF]/10 text-[#5648db]">
+                      <Icon size={21} aria-hidden="true" />
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {badge ? <span className="inline-flex rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-500">{badge}</span> : null}
+                      <ArrowUpRight size={16} className="text-slate-400" aria-hidden="true" />
+                    </div>
+                  </div>
+                  <h3 className="mt-4 text-[20px] font-extrabold tracking-[-0.05em] text-slate-900">{label}</h3>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">{description}</p>
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
 
-        <Link
-          href="/naming"
-          className="overflow-hidden rounded-[28px] border border-[#6B5FFF]/14 bg-[linear-gradient(135deg,#f4f1ff_0%,#ffffff_100%)] px-6 py-6 shadow-[0_20px_40px_rgba(107,95,255,0.10)]"
-        >
-          <div className="grid gap-5 md:grid-cols-[1.2fr_0.8fr] md:items-center">
+        <Link href="/naming" className="overflow-hidden rounded-[30px] border border-[#6B5FFF]/14 bg-[linear-gradient(135deg,#17114c_0%,#352597_52%,#eff0ff_52%,#ffffff_100%)] px-6 py-6 shadow-[0_22px_44px_rgba(15,23,42,0.12)]">
+          <div className="grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr))] items-center">
             <div>
-              <div className="inline-flex rounded-full bg-[#6B5FFF] px-3 py-1 text-[11px] font-bold text-white">NEW</div>
-              <h2 className="mt-4 text-[28px] font-extrabold tracking-[-0.05em] text-slate-900">사주 기반 작명소</h2>
-              <p className="mt-2 text-sm leading-7 text-slate-600">
-                81수리 성명학과 사주 균형을 함께 참고해 이름의 흐름을 읽는 신규 서비스입니다.
-              </p>
-              <div className="mt-5 inline-flex items-center gap-1 text-sm font-bold text-[#5648db]">
-                이름 추천받기 <ArrowRight size={14} />
-              </div>
+              <div className="inline-flex rounded-full bg-white/14 px-3 py-1 text-[11px] font-bold text-white">NEW</div>
+              <h2 className="mt-4 text-[28px] font-extrabold tracking-[-0.05em] text-white">사주 기반 작명소</h2>
+              <p className="mt-2 text-sm leading-7 text-white/80">81수리 성명학과 사주 균형을 함께 참고해 이름의 흐름을 읽는 신규 서비스입니다.</p>
+              <div className="mt-5 inline-flex items-center gap-1 text-sm font-bold text-[#FFF1B8]">이름 추천받기 <ArrowRight size={14} /></div>
             </div>
-            <div className="grid gap-3 sm:grid-cols-2">
+            <div className="mu-auto-grid-180">
               {highlights.map(({ label, Icon }) => (
-                <div key={label} className="rounded-2xl border border-white/70 bg-white/80 px-4 py-4 text-sm font-semibold text-slate-700 shadow-sm">
+                <div key={label} className="rounded-2xl border border-white/70 bg-white/90 px-4 py-4 text-sm font-semibold text-slate-700 shadow-sm">
                   <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#6B5FFF]/10 text-[#5648db]">
                     <Icon size={18} aria-hidden="true" />
                   </div>
@@ -145,19 +112,12 @@ export function ServiceGrid() {
             </div>
             <p className="text-sm leading-7 text-slate-500">폼 서비스와 콘텐츠 허브를 함께 배치해 다음 이동을 쉽게 만들었습니다.</p>
           </div>
-
-          <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+          <div className="mt-5 mu-auto-grid-180">
             {UTILITY_SERVICES.map((service) => (
               <Link key={service.href} href={service.href} className="mu-link-card p-4">
                 <div className="flex items-start justify-between gap-3">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-100 text-lg">
-                    <span aria-hidden="true">{service.emoji}</span>
-                  </div>
-                  {service.badge ? (
-                    <span className="inline-flex rounded-full bg-[#6B5FFF]/10 px-2.5 py-1 text-[11px] font-bold text-[#5648db]">
-                      {service.badge}
-                    </span>
-                  ) : null}
+                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-100 text-lg"><span aria-hidden="true">{service.emoji}</span></div>
+                  {service.badge ? <span className="inline-flex rounded-full bg-[#6B5FFF]/10 px-2.5 py-1 text-[11px] font-bold text-[#5648db]">{service.badge}</span> : null}
                 </div>
                 <h3 className="mt-4 text-[18px] font-extrabold tracking-[-0.04em] text-slate-900">{service.label}</h3>
                 <p className="mt-2 text-sm leading-6 text-slate-600">{service.description}</p>
