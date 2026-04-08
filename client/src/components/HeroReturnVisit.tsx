@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'wouter';
-import { CalendarDays, RefreshCw, Trash2, Sparkles, Heart, MoonStar, BookOpenText } from 'lucide-react';
+import { BookOpenText, CalendarDays, Heart, MoonStar, RefreshCw, Sparkles, Trash2 } from 'lucide-react';
 import { trackCustomEvent } from '@/lib/ga4';
 import BrandLogo from '@/components/BrandLogo';
 
@@ -41,10 +41,10 @@ function getDailyFortune(birth: string) {
 }
 
 const SHORTCUTS = [
-  { href: '/lifelong-saju', label: '평생사주', Icon: Sparkles },
-  { href: '/compatibility', label: '궁합', Icon: Heart },
-  { href: '/dream', label: '꿈해몽', Icon: MoonStar },
-  { href: '/guide', label: '운세 칼럼', Icon: BookOpenText },
+  { href: '/lifelong-saju', label: '평생사주', desc: '기본 흐름 보기', Icon: Sparkles },
+  { href: '/compatibility', label: '궁합', desc: '관계 운 확인', Icon: Heart },
+  { href: '/dream', label: '꿈해몽', desc: '꿈 의미 찾기', Icon: MoonStar },
+  { href: '/guide', label: '운세 칼럼', desc: '더 깊게 읽기', Icon: BookOpenText },
 ] as const;
 
 interface HeroReturnVisitProps {
@@ -95,70 +95,83 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
 
   return (
     <section className="mu-hero-shell">
-      <div className="mu-container-narrow px-4 pb-8 pt-5">
-        <div className="grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))] items-start">
+      <div className="mu-container-narrow px-4 pb-10 pt-6 sm:pt-7">
+        <div className="grid gap-6 lg:grid-cols-[1.04fr_0.96fr] lg:items-start">
           <div className="relative z-[1]">
-            <div className="mt-1 inline-flex rounded-[20px] bg-white/10 px-3 py-2 backdrop-blur">
-              <BrandLogo size="md" />
-            </div>
-            <div className="mt-4 flex items-center justify-between gap-4">
+            <div className="flex items-start justify-between gap-4">
               <div>
-                <div className="mu-kicker">저장된 생년 정보로 계속 보기</div>
-                <h1 className="mt-3 text-[30px] font-extrabold leading-[1.1] tracking-[-0.06em] text-white">오늘의 흐름을 먼저 보고<br /><span className="text-[#FFF1B8]">핵심 서비스로 이어가세요</span></h1>
+                <div className="mu-kicker">저장된 생년 정보로 이어보기</div>
+                <div className="mt-4 inline-flex items-center gap-3 rounded-full border border-white/14 bg-white/10 px-3 py-2 backdrop-blur">
+                  <BrandLogo size="md" />
+                </div>
+                <h1 className="mt-5 text-[31px] font-extrabold leading-[1.08] tracking-[-0.06em] text-white sm:text-[38px]">
+                  오늘의 흐름을 보고
+                  <br />
+                  <span className="text-[#FFF1B8]">핵심 서비스로 바로 이동</span>
+                </h1>
+                <p className="mt-4 max-w-[34rem] text-[15px] leading-7 text-white/82 sm:text-base">
+                  결과를 먼저 확인하고, 더 궁금한 내용은 칼럼과 꿈해몽으로 이어서 살펴볼 수 있게 모바일 흐름을 간단하게 정리했습니다.
+                </p>
               </div>
-              <button className="inline-flex h-10 items-center gap-1 rounded-full bg-white/12 px-3 text-xs font-bold text-white" onClick={() => setShowDeleteSheet(true)}>
+
+              <button
+                className="inline-flex h-10 items-center gap-1 rounded-full border border-white/14 bg-white/10 px-3 text-xs font-bold text-white backdrop-blur"
+                onClick={() => setShowDeleteSheet(true)}
+              >
                 <Trash2 size={14} /> 삭제
               </button>
             </div>
-            <div className="mt-4 flex flex-wrap gap-2">
+
+            <div className="mt-5 flex flex-wrap gap-2">
               <span className="mu-stat-pill"><CalendarDays size={14} /> {birthStr || '저장된 정보'}</span>
               <span className="mu-stat-pill">서버 저장 안함</span>
             </div>
-            <div className="mt-5 grid gap-3 [grid-template-columns:repeat(auto-fit,minmax(min(100%,140px),1fr))]">
-              {SHORTCUTS.map(({ href, label, Icon }) => (
+
+            <div className="mt-6 grid grid-cols-2 gap-3">
+              {SHORTCUTS.map(({ href, label, desc, Icon }) => (
                 <Link key={href} href={`${href}?birth=${birth}`} className="mu-soft-card flex items-center gap-3 px-4 py-4 text-slate-900">
                   <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#6B5FFF]/10 text-[#5648db]">
                     <Icon size={19} aria-hidden="true" />
                   </div>
                   <div className="min-w-0 flex-1">
                     <div className="text-sm font-extrabold tracking-[-0.03em] text-slate-900">{label}</div>
-                    <div className="mt-1 text-xs text-slate-500">바로 이동</div>
+                    <div className="mt-1 text-xs text-slate-600">{desc}</div>
                   </div>
                 </Link>
               ))}
             </div>
           </div>
 
-          <div className="mu-soft-card relative z-[1] overflow-hidden p-5 text-slate-900">
-            <div className="rounded-[22px] bg-[linear-gradient(150deg,#17114c_0%,#30208d_55%,#5d49cb_100%)] p-4 text-white">
+          <div className="relative z-[1] overflow-hidden rounded-[30px] border border-white/14 bg-white/10 p-3 backdrop-blur-md">
+            <div className="rounded-[24px] bg-[linear-gradient(155deg,#151045_0%,#2d1f8c_54%,#4654ca_100%)] p-5 text-white shadow-[0_24px_48px_rgba(15,23,42,0.18)]">
               <div className="flex items-center justify-between gap-3">
-                <div className="text-xs font-bold uppercase tracking-[0.14em] text-white/70">오늘의 운세</div>
+                <div className="text-xs font-bold uppercase tracking-[0.14em] text-white/72">오늘의 운세</div>
                 <div className="rounded-full bg-white/14 px-3 py-1 text-xs font-bold text-white">{fortune.score}점</div>
               </div>
-              <div className="mt-3 text-[22px] font-extrabold tracking-[-0.05em] text-white">{fortune.title}</div>
-              <div className="mt-3 h-2 rounded-full bg-white/12">
+              <div className="mt-4 text-[26px] font-extrabold tracking-[-0.05em] text-white">{fortune.title}</div>
+              <div className="mt-4 h-2 rounded-full bg-white/12">
                 <div className="h-2 rounded-full bg-[#FFF1B8]" style={{ width: `${fortune.score}%` }} />
               </div>
-              <p className="mt-4 text-sm leading-7 text-white/80">{fortune.desc}</p>
-              <Link href="/daily-fortune" className="mt-4 inline-flex rounded-full bg-white/14 px-3 py-2 text-xs font-bold text-white">
-                자세히 보기
+              <p className="mt-4 text-sm leading-7 text-white/82">{fortune.desc}</p>
+              <Link href="/daily-fortune" className="mt-5 inline-flex rounded-full border border-white/12 bg-white/12 px-4 py-2 text-xs font-bold text-white backdrop-blur">
+                오늘의 운세 자세히 보기
               </Link>
             </div>
 
-            <div className="mt-4 rounded-[22px] border border-slate-200 bg-slate-50 p-4">
+            <div className="mt-3 rounded-[24px] bg-white/96 p-4 text-slate-900 shadow-[0_16px_32px_rgba(15,23,42,0.08)]">
               <div className="flex items-center justify-between gap-3">
                 <div>
                   <div className="text-xs font-bold uppercase tracking-[0.12em] text-slate-400">오늘의 행운 메뉴</div>
-                  <div className="mt-2 flex items-center gap-2 text-[20px] font-extrabold tracking-[-0.04em] text-slate-900">
+                  <div className="mt-2 flex items-center gap-2 text-[22px] font-extrabold tracking-[-0.04em] text-slate-900">
                     <span aria-hidden="true">{OHAENG_EMOJI[fortune.ohaeng]}</span>
                     {menus[menuIdx]}
                   </div>
                 </div>
-                <button className="flex h-10 w-10 items-center justify-center rounded-2xl bg-white text-slate-500 shadow-sm" onClick={handleRefreshMenu} aria-label="다른 메뉴 보기">
+                <button className="flex h-10 w-10 items-center justify-center rounded-2xl border border-slate-200 bg-white text-slate-500 shadow-sm" onClick={handleRefreshMenu} aria-label="다른 메뉴 보기">
                   <RefreshCw size={16} />
                 </button>
               </div>
-              <p className="mt-2 text-sm leading-6 text-slate-500">{fortune.ohaeng} 기운을 보완하는 메뉴를 가볍게 추천해 드려요.</p>
+              <p className="mt-3 text-sm leading-6 text-slate-600">{fortune.ohaeng} 기운을 보완하는 메뉴를 가볍게 추천해 드려요.</p>
             </div>
           </div>
         </div>
@@ -169,10 +182,10 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           <div className="absolute bottom-0 left-0 right-0 rounded-t-[28px] bg-white p-6 shadow-[0_-18px_60px_rgba(15,23,42,0.2)]" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-label="정보 삭제 확인">
             <div className="mx-auto h-1.5 w-12 rounded-full bg-slate-200" />
             <p className="mt-4 text-[22px] font-extrabold tracking-[-0.04em] text-slate-900">저장된 정보를 삭제할까요?</p>
-            <p className="mt-2 text-sm leading-7 text-slate-500">삭제하면 첫 방문 화면으로 돌아갑니다. 이 정보는 서버에 저장되지 않습니다.</p>
+            <p className="mt-2 text-sm leading-7 text-slate-600">삭제하면 첫 방문 화면으로 돌아갑니다. 이 정보는 서버에 저장되지 않습니다.</p>
             <div className="mt-5 grid grid-cols-2 gap-3">
-              <button className="h-12 rounded-2xl border border-slate-200 bg-white text-sm font-bold text-slate-700" onClick={() => setShowDeleteSheet(false)}>취소</button>
-              <button className="h-12 rounded-2xl bg-[#6B5FFF] text-sm font-bold text-white" onClick={handleDeleteConfirm}>삭제</button>
+              <button className="mu-secondary-btn justify-center" onClick={() => setShowDeleteSheet(false)}>취소</button>
+              <button className="mu-primary-btn justify-center" onClick={handleDeleteConfirm}>삭제</button>
             </div>
           </div>
         </div>

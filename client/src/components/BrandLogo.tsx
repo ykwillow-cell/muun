@@ -7,15 +7,15 @@ interface BrandLogoProps {
 }
 
 const symbolSizes = {
-  sm: 32,
-  md: 40,
-  lg: 48,
+  sm: 30,
+  md: 38,
+  lg: 46,
 } as const;
 
 const horizontalHeights = {
-  sm: 34,
-  md: 40,
-  lg: 46,
+  sm: 30,
+  md: 36,
+  lg: 42,
 } as const;
 
 export function BrandLogo({ variant = 'horizontal', size = 'md', className }: BrandLogoProps) {
@@ -34,7 +34,7 @@ export function BrandLogo({ variant = 'horizontal', size = 'md', className }: Br
   }
 
   const height = horizontalHeights[size];
-  const width = Math.round(height * 4.48);
+  const width = Math.round(height * 4.33);
 
   return (
     <img

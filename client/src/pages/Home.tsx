@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'wouter';
-import { ArrowRight, BookOpenText, MoonStar, Sparkles, HeartHandshake, ShieldCheck, Smartphone, Search, BookMarked } from 'lucide-react';
+import { ArrowRight, BookMarked, BookOpenText, MoonStar, Sparkles } from 'lucide-react';
 import { useCanonical } from '@/lib/use-canonical';
 import { setHomeOGTags } from '@/lib/og-tags';
 import { OrganizationSchema, BreadcrumbListSchema, WebApplicationSchema, SiteNavigationSchema } from '@/components/SchemaMarkup';
@@ -13,38 +13,33 @@ import { ServiceGrid } from '@/components/ServiceGrid';
 import { HomeColumnSection } from '@/components/HomeColumnSection';
 import { HomeDictionarySection } from '@/components/HomeDictionarySection';
 
-const quickActions = [
-  { href: '/lifelong-saju', label: '평생사주 시작', Icon: Sparkles },
-  { href: '/compatibility', label: '궁합 보기', Icon: HeartHandshake },
-  { href: '/guide', label: '운세 칼럼 읽기', Icon: BookOpenText },
-  { href: '/dream', label: '꿈해몽 찾기', Icon: MoonStar },
-] as const;
-
-const qualityNotes = [
-  { title: '회원가입 없이 시작', desc: '생년월일만 입력하면 바로 결과를 볼 수 있어요.', Icon: ShieldCheck },
-  { title: '모바일 흐름 최적화', desc: '좁은 화면에서도 한 손으로 빠르게 이동할 수 있게 정리했습니다.', Icon: Smartphone },
-  { title: '검색 이후 이동 강화', desc: '칼럼·사전·꿈해몽으로 자연스럽게 이어지는 구조입니다.', Icon: Search },
-] as const;
-
 const journeyCards = [
   {
-    title: '1. 먼저 결과 확인',
-    desc: '평생사주, 오늘의 운세, 궁합처럼 바로 쓰는 결과형 서비스를 먼저 제공합니다.',
+    title: '먼저 결과 확인',
+    desc: '평생사주, 오늘의 운세, 궁합처럼 바로 쓰는 결과형 서비스를 가장 먼저 보여줍니다.',
     href: '/lifelong-saju',
-    label: '결과형 서비스 보기',
+    label: '평생사주 시작',
+    Icon: Sparkles,
   },
   {
-    title: '2. 개념 이해하기',
-    desc: '오행, 십신, 대운 같은 용어가 헷갈릴 때 운세 사전으로 바로 연결합니다.',
+    title: '개념 이해하기',
+    desc: '오행, 십신, 대운 같은 용어가 낯설면 운세 사전으로 바로 연결합니다.',
     href: '/fortune-dictionary',
     label: '운세 사전 보기',
+    Icon: BookMarked,
   },
   {
-    title: '3. 더 깊게 읽기',
-    desc: '관계 운, 재물운, 건강운 같은 주제를 칼럼과 꿈해몽 허브에서 확장합니다.',
+    title: '더 깊게 읽기',
+    desc: '관계 운, 재물운, 건강운처럼 더 넓은 주제는 칼럼과 꿈해몽 허브에서 확장합니다.',
     href: '/guide',
-    label: '칼럼 아카이브 보기',
+    label: '운세 칼럼 보기',
+    Icon: BookOpenText,
   },
+] as const;
+
+const secondaryLinks = [
+  { href: '/guide', label: '운세 칼럼', Icon: BookOpenText },
+  { href: '/dream', label: '꿈해몽', Icon: MoonStar },
 ] as const;
 
 export default function Home() {
@@ -95,60 +90,32 @@ export default function Home() {
       <SiteNavigationSchema />
       <BreadcrumbListSchema items={[{ name: '홈', url: 'https://muunsaju.com' }]} />
 
-      <TrustBar />
       {heroComponent}
+      <TrustBar />
 
-      <section className="mu-container-narrow relative z-10 -mt-6 pb-6">
-        <div className="overflow-hidden rounded-[30px] border border-slate-200/80 bg-white/90 shadow-[0_24px_48px_rgba(15,23,42,0.08)] backdrop-blur-sm">
-          <div className="bg-[linear-gradient(135deg,#17114c_0%,#30208d_65%,#5f4bcb_100%)] px-5 py-6 text-white sm:px-7">
-            <div className="mu-kicker">무료 사주 · 모바일 중심 서비스</div>
-            <h2 className="mt-4 text-[28px] font-extrabold leading-[1.12] tracking-[-0.06em] text-white">
-              결과만 보여주지 않고,
-              <br />
-              이해까지 이어지는 사주 서비스
-            </h2>
-            <p className="mt-3 text-sm leading-7 text-white/80">
-              무운은 평생사주와 오늘의 운세 같은 결과형 페이지를 먼저 보여주고, 필요한 개념은 운세 사전과 칼럼으로 자연스럽게 이어지도록 구성한 모바일 서비스입니다.
-            </p>
+      <div className="pb-2">
+        <MainBanner />
+      </div>
 
-            <div className="mt-5 flex gap-2 overflow-x-auto pb-1 no-scrollbar">
-              {quickActions.map(({ href, label, Icon }) => (
-                <Link key={href} href={href} className="inline-flex min-h-[38px] items-center gap-2 whitespace-nowrap rounded-full border border-white/14 bg-white/10 px-4 text-xs font-bold text-white backdrop-blur">
-                  <Icon size={14} aria-hidden="true" />
-                  <span>{label}</span>
+      <section className="mu-container-narrow pb-6">
+        <div className="mu-glass-panel px-5 py-5 sm:px-6">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <span className="mu-divider-text">무운의 흐름</span>
+              <h2 className="mt-3 text-[28px] font-extrabold tracking-[-0.05em] text-slate-900">결과를 먼저 보고, 필요한 설명은 바로 이어서 읽게 만들었습니다</h2>
+              <p className="mt-3 max-w-[42rem] text-sm leading-7 text-slate-700">
+                무료 플랜 환경에서는 무거운 인터랙션보다 빠르게 뜨는 구조가 중요해서, 첫 화면에서 무엇을 할지 바로 알 수 있도록 서비스와 콘텐츠 흐름을 단순하게 정리했습니다.
+              </p>
+            </div>
+            <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+              {secondaryLinks.map(({ href, label, Icon }) => (
+                <Link key={href} href={href} className="mu-secondary-btn whitespace-nowrap">
+                  <Icon size={15} aria-hidden="true" />
+                  {label}
                 </Link>
               ))}
             </div>
           </div>
-
-          <div className="p-5 sm:p-6">
-            <div className="mu-auto-grid-220">
-              {qualityNotes.map(({ title, desc, Icon }) => (
-                <div key={title} className="mu-soft-card px-4 py-4">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#6B5FFF]/10 text-[#5648db]">
-                    <Icon size={20} aria-hidden="true" />
-                  </div>
-                  <div className="mt-4 text-[17px] font-extrabold tracking-[-0.04em] text-slate-900">{title}</div>
-                  <p className="mt-2 text-sm leading-6 text-slate-600">{desc}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="mu-container-narrow pb-6">
-        <div className="rounded-[30px] border border-slate-200/80 bg-white/84 p-4 shadow-[0_18px_42px_rgba(15,23,42,0.06)]">
-          <div className="mb-4 flex items-end justify-between gap-4">
-            <div>
-              <span className="mu-divider-text">추천 서비스</span>
-              <h2 className="mt-3 text-[28px] font-extrabold tracking-[-0.05em] text-slate-900">지금 많이 보는 운세와 리포트</h2>
-            </div>
-            <Link href="/more" className="inline-flex items-center gap-1 text-sm font-bold text-[#5748db]">
-              전체 서비스 <ArrowRight size={14} />
-            </Link>
-          </div>
-          <MainBanner />
         </div>
       </section>
 
@@ -157,43 +124,45 @@ export default function Home() {
       </section>
 
       <section className="mu-container-narrow py-6">
-        <div className="grid gap-6">
+        <div className="grid gap-6 xl:grid-cols-[1.12fr_0.88fr]">
           <HomeColumnSection />
           <HomeDictionarySection />
         </div>
       </section>
 
       <section className="mu-container-narrow pb-12">
-        <div className="mu-glass-panel overflow-hidden p-6 sm:p-7">
-          <div className="flex flex-col gap-5">
+        <div className="mu-glass-panel overflow-hidden p-5 sm:p-6">
+          <div className="grid gap-6 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
             <div>
               <span className="mu-divider-text">이용 흐름</span>
-              <h2 className="mt-3 text-[28px] font-extrabold tracking-[-0.05em] text-slate-900">처음 들어온 사용자도 다음 행동이 보이도록 정리했습니다</h2>
-              <p className="mt-3 text-sm leading-7 text-slate-600">
-                무료 플랜 환경에서는 무거운 인터랙션보다 빠른 로딩과 명확한 동선이 중요해서, 한 화면에서 너무 많은 선택지를 보여주기보다 다음 이동이 또렷하게 보이도록 설계했습니다.
+              <h2 className="mt-3 text-[28px] font-extrabold tracking-[-0.05em] text-slate-900">처음 들어와도 다음 행동이 보이도록 정리했습니다</h2>
+              <p className="mt-3 text-sm leading-7 text-slate-700">
+                홈에서는 결과형 서비스를 먼저 배치하고, 그다음에 운세 사전과 칼럼을 연결해 사용자가 한 번에 너무 많은 선택지를 보지 않도록 했습니다.
               </p>
+              <div className="mt-5 rounded-[24px] border border-slate-200/80 bg-slate-50 px-4 py-4 text-sm leading-7 text-slate-700">
+                <div className="mb-1 inline-flex items-center gap-2 text-sm font-bold text-slate-900">
+                  검색 최적화도 함께 고려
+                </div>
+                허브 페이지에서 전체 주제를 한눈에 보여주고, 상세 페이지에서는 본문·관련 사전어·관련 서비스로 자연스럽게 이어지도록 구조를 유지했습니다.
+              </div>
             </div>
 
             <div className="mu-auto-grid-220">
-              {journeyCards.map((card, index) => (
-                <Link key={card.title} href={card.href} className="mu-link-card p-5">
-                  <div className="inline-flex h-9 items-center rounded-full bg-[#6B5FFF]/10 px-3 text-xs font-bold text-[#5648db]">
-                    STEP {index + 1}
+              {journeyCards.map(({ title, desc, href, label, Icon }, index) => (
+                <Link key={title} href={href} className="mu-link-card p-5">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[#6B5FFF]/10 text-[#5648db]">
+                      <Icon size={20} aria-hidden="true" />
+                    </div>
+                    <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-[11px] font-bold text-slate-600">STEP {index + 1}</span>
                   </div>
-                  <h3 className="mt-4 text-[20px] font-extrabold tracking-[-0.05em] text-slate-900">{card.title}</h3>
-                  <p className="mt-3 text-sm leading-6 text-slate-600">{card.desc}</p>
+                  <h3 className="mt-4 text-[20px] font-extrabold tracking-[-0.05em] text-slate-900">{title}</h3>
+                  <p className="mt-3 text-sm leading-6 text-slate-700">{desc}</p>
                   <div className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-[#5748db]">
-                    {card.label} <ArrowRight size={14} />
+                    {label} <ArrowRight size={14} />
                   </div>
                 </Link>
               ))}
-            </div>
-
-            <div className="rounded-[24px] border border-slate-200/80 bg-slate-50 px-4 py-4 text-sm leading-7 text-slate-600">
-              <div className="mb-1 inline-flex items-center gap-2 text-sm font-bold text-slate-900">
-                <BookMarked size={16} aria-hidden="true" /> 검색 최적화도 함께 고려
-              </div>
-              허브 페이지에서 전체 주제를 한눈에 보여주고, 상세 페이지에서는 본문·관련 사전어·관련 서비스로 자연스럽게 이어지도록 구조를 정리했습니다. 무료 플랜 환경에서도 무겁지 않게 동작하도록 정적 생성 중심 흐름을 유지합니다.
             </div>
           </div>
         </div>
