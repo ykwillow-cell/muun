@@ -19,7 +19,7 @@ export function HomeDictionarySection() {
         <p className="mt-2 text-sm leading-7 text-slate-600">오행, 십신, 용신, 대운처럼 헷갈리기 쉬운 용어를 짧고 선명한 설명으로 정리했습니다.</p>
       </div>
 
-      <div className="mt-5 mu-auto-grid-180">
+      <div className="mt-5 grid gap-4 sm:grid-cols-2">
         {FEATURED_TERMS.map((term) => (
           <Link key={term.slug} href={`/dictionary/${term.slug}`} className="mu-link-card p-4">
             <div className="inline-flex h-10 w-10 items-center justify-center rounded-2xl bg-[#6B5FFF]/10 text-[#5648db]">

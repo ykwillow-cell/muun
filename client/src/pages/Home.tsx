@@ -124,13 +124,13 @@ export default function Home() {
       </section>
 
       <section className="mu-container-narrow py-6">
-        <div className="grid gap-6 xl:grid-cols-[1.12fr_0.88fr]">
+        <div className="grid items-start gap-6 xl:grid-cols-[1.12fr_0.88fr]">
           <HomeColumnSection />
           <HomeDictionarySection />
         </div>
       </section>
 
-      <section className="mu-container-narrow pb-12">
+      <section className="mu-container-narrow pb-20 md:pb-12">
         <div className="mu-glass-panel overflow-hidden p-5 sm:p-6">
           <div className="grid gap-6 lg:grid-cols-[0.92fr_1.08fr] lg:items-start">
             <div>

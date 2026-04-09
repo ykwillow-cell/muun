@@ -13,9 +13,9 @@ const symbolSizes = {
 } as const;
 
 const horizontalHeights = {
-  sm: 30,
-  md: 36,
-  lg: 42,
+  sm: 28,
+  md: 34,
+  lg: 40,
 } as const;
 
 export function BrandLogo({ variant = 'horizontal', size = 'md', className }: BrandLogoProps) {
@@ -34,7 +34,7 @@ export function BrandLogo({ variant = 'horizontal', size = 'md', className }: Br
   }
 
   const height = horizontalHeights[size];
-  const width = Math.round(height * 4.33);
+  const width = Math.round(height * 3.85);
 
   return (
     <img

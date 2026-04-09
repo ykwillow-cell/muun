@@ -91,7 +91,7 @@ const Footer: React.FC = () => {
       <style>{`
         .mu-footer {
           margin-top: 0;
-          padding: 28px 16px calc(28px + var(--safe-area-bottom));
+          padding: 28px 16px calc(28px + var(--bottom-nav-height) + 18px + var(--safe-area-bottom));
           background:
             radial-gradient(circle at top left, rgba(107,95,255,0.12), transparent 28%),
             linear-gradient(180deg, #f7f8fc 0%, #edf1f7 100%);
@@ -177,6 +177,11 @@ const Footer: React.FC = () => {
         }
         .mu-footer__meta p { margin: 0; }
         .mu-footer__meta p + p { margin-top: 10px; }
+        @media (min-width: 768px) {
+          .mu-footer {
+            padding-bottom: 28px;
+          }
+        }
       `}</style>
     </footer>
   );

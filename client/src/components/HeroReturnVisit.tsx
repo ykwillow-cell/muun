@@ -98,27 +98,32 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
       <div className="mu-container-narrow px-4 pb-10 pt-6 sm:pt-7">
         <div className="grid gap-6 lg:grid-cols-[1.04fr_0.96fr] lg:items-start">
           <div className="relative z-[1]">
-            <div className="flex items-start justify-between gap-4">
-              <div>
+            <div className="flex flex-wrap items-start justify-between gap-4">
+              <div className="min-w-0">
                 <div className="mu-kicker">저장된 생년 정보로 이어보기</div>
-                <div className="mt-4 inline-flex items-center gap-3 rounded-full border border-white/14 bg-white/10 px-3 py-2 backdrop-blur">
-                  <BrandLogo size="md" />
+                <div className="mt-4 inline-flex max-w-full items-center gap-3 rounded-full border border-white/14 bg-white/10 px-3.5 py-2.5 backdrop-blur">
+                  <BrandLogo variant="symbol" size="sm" />
+                  <div className="min-w-0">
+                    <div className="text-sm font-extrabold tracking-[-0.03em] text-white">무운</div>
+                    <div className="mt-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/65">Mobile Fortune</div>
+                  </div>
                 </div>
                 <h1 className="mt-5 text-[31px] font-extrabold leading-[1.08] tracking-[-0.06em] text-white sm:text-[38px]">
                   오늘의 흐름을 보고
                   <br />
                   <span className="text-[#FFF1B8]">핵심 서비스로 바로 이동</span>
                 </h1>
-                <p className="mt-4 max-w-[34rem] text-[15px] leading-7 text-white/82 sm:text-base">
+                <p className="mt-4 max-w-[34rem] text-[15px] leading-7 text-white/84 sm:text-base">
                   결과를 먼저 확인하고, 더 궁금한 내용은 칼럼과 꿈해몽으로 이어서 살펴볼 수 있게 모바일 흐름을 간단하게 정리했습니다.
                 </p>
               </div>
 
               <button
-                className="inline-flex h-10 items-center gap-1 rounded-full border border-white/14 bg-white/10 px-3 text-xs font-bold text-white backdrop-blur"
+                className="inline-flex h-11 shrink-0 items-center gap-2 whitespace-nowrap rounded-full border border-white/14 bg-white/10 px-4 text-sm font-bold text-white backdrop-blur"
                 onClick={() => setShowDeleteSheet(true)}
               >
-                <Trash2 size={14} /> 삭제
+                <Trash2 size={15} />
+                <span>정보 삭제</span>
               </button>
             </div>
 

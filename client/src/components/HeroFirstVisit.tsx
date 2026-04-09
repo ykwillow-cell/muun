@@ -43,8 +43,12 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
         <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
           <div className="relative z-[1]">
             <div className="mu-kicker">회원가입 없는 무료 사주</div>
-            <div className="mt-4 inline-flex items-center gap-3 rounded-full border border-white/14 bg-white/10 px-3 py-2 backdrop-blur">
-              <BrandLogo size="md" />
+            <div className="mt-4 inline-flex max-w-full items-center gap-3 rounded-full border border-white/14 bg-white/10 px-3.5 py-2.5 backdrop-blur">
+              <BrandLogo variant="symbol" size="sm" />
+              <div className="min-w-0">
+                <div className="text-sm font-extrabold tracking-[-0.03em] text-white">무운</div>
+                <div className="mt-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/65">Mobile Fortune</div>
+              </div>
             </div>
             <h1 className="mt-5 text-[32px] font-extrabold leading-[1.08] tracking-[-0.06em] text-white sm:text-[40px]">
               모바일에서 빠르게 시작하는

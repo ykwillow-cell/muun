@@ -27,7 +27,7 @@ export function BottomNav() {
 
   return (
     <>
-      <div style={{ height: 'var(--bottom-nav-height)' }} aria-hidden="true" />
+      <div className="mu-bottom-nav__spacer" aria-hidden="true" />
       <nav className="mu-bottom-nav" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }} aria-label="하단 내비게이션">
         {NAV_ITEMS.map(({ href, label, Icon }) => {
           const active = isActive(href);
@@ -49,17 +49,20 @@ export function BottomNav() {
       </nav>
 
       <style>{`
+        .mu-bottom-nav__spacer {
+          height: calc(var(--bottom-nav-height) + 26px + env(safe-area-inset-bottom, 0px));
+        }
         .mu-bottom-nav {
           position: fixed;
-          bottom: 10px;
+          bottom: 8px;
           left: 50%;
           transform: translateX(-50%);
-          width: min(520px, calc(100vw - 16px));
+          width: min(520px, calc(100vw - 20px));
           z-index: 55;
           display: flex;
           align-items: stretch;
           padding-top: 8px;
-          background: rgba(255,255,255,0.9);
+          background: rgba(255,255,255,0.94);
           backdrop-filter: blur(18px);
           border: 1px solid rgba(15,23,42,0.08);
           border-radius: 24px;
@@ -98,6 +101,12 @@ export function BottomNav() {
           letter-spacing: -0.02em;
           line-height: 1;
           white-space: nowrap;
+        }
+        @media (min-width: 768px) {
+          .mu-bottom-nav,
+          .mu-bottom-nav__spacer {
+            display: none;
+          }
         }
       `}</style>
     </>

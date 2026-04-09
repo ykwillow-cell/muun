@@ -10,6 +10,8 @@ function formatDate(value: string) {
 }
 
 export function HomeColumnSection() {
+  const previewColumns = HOME_COLUMNS_PREVIEW.slice(0, 2);
+
   return (
     <section className="mu-glass-panel p-5 sm:p-6" aria-label="운세 칼럼">
       <div className="flex items-end justify-between gap-4">
@@ -20,9 +22,9 @@ export function HomeColumnSection() {
         </div>
       </div>
 
-      <div className="mt-5 mu-auto-grid-220">
-        {HOME_COLUMNS_PREVIEW.length > 0 ? (
-          HOME_COLUMNS_PREVIEW.map((column) => (
+      <div className="mt-5 grid gap-4 sm:grid-cols-2">
+        {previewColumns.length > 0 ? (
+          previewColumns.map((column) => (
             <Link key={column.slug} href={`/guide/${column.slug}`} className="mu-link-card overflow-hidden p-0">
               {column.thumbnail ? (
                 <div className="aspect-[16/10] overflow-hidden bg-slate-100">

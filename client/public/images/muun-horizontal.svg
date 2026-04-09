@@ -1,28 +1,28 @@
-<svg width="468" height="108" viewBox="0 0 468 108" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="248" height="64" viewBox="0 0 248 64" fill="none" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="muunHorizontalBg" x1="8" y1="6" x2="56" y2="58" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#130E45" />
-      <stop offset="0.52" stop-color="#4536B9" />
-      <stop offset="1" stop-color="#71B8E6" />
+    <linearGradient id="muunHorizontalBg" x1="6" y1="4" x2="52" y2="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#140F47" />
+      <stop offset="0.5" stop-color="#4939C3" />
+      <stop offset="1" stop-color="#73BDE8" />
     </linearGradient>
-    <linearGradient id="muunHorizontalGlow" x1="24" y1="16" x2="44" y2="42" gradientUnits="userSpaceOnUse">
-      <stop offset="0" stop-color="#FFF7D6" />
+    <linearGradient id="muunHorizontalGlow" x1="18" y1="14" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFF8D8" />
       <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.92" />
     </linearGradient>
-    <filter id="muunHorizontalShadow" x="0" y="0" width="72" height="72" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+    <filter id="muunHorizontalShadow" x="0" y="0" width="64" height="64" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
       <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#17114C" flood-opacity="0.24" />
     </filter>
   </defs>
 
   <g filter="url(#muunHorizontalShadow)">
-    <rect x="4" y="4" width="56" height="56" rx="18" fill="url(#muunHorizontalBg)" />
-    <path d="M25.2 17.3C18.36 19.72 13.5 26.27 13.5 34.03C13.5 43.87 21.45 51.86 31.26 51.86C35.3 51.86 39.03 50.49 42.04 48.17C39.96 48.81 37.76 49.14 35.46 49.14C24.28 49.14 15.22 40.11 15.22 28.97C15.22 24.43 16.73 20.25 19.29 16.87C21.21 16.5 23.22 16.65 25.2 17.3Z" fill="url(#muunHorizontalGlow)" />
-    <rect x="33.8" y="22.7" width="4.2" height="17.6" rx="2.1" fill="#FFFCF4" />
-    <rect x="41.1" y="25.6" width="4.2" height="14.7" rx="2.1" fill="#FFFCF4" />
-    <rect x="48.4" y="28.6" width="4.2" height="11.7" rx="2.1" fill="#FFFCF4" />
-    <circle cx="46.5" cy="17.5" r="2.15" fill="#FFF0B0" />
+    <rect x="4" y="4" width="52" height="52" rx="17" fill="url(#muunHorizontalBg)" />
+    <path d="M24.4 16.9C18.03 19.18 13.5 25.29 13.5 32.53C13.5 41.7 20.91 49.14 30.06 49.14C33.83 49.14 37.32 47.87 40.12 45.72C38.18 46.31 36.14 46.61 34 46.61C23.58 46.61 15.14 38.2 15.14 27.81C15.14 23.58 16.55 19.68 18.94 16.52C20.74 16.18 22.62 16.32 24.4 16.9Z" fill="url(#muunHorizontalGlow)"/>
+    <rect x="32.2" y="22" width="3.9" height="16.2" rx="1.95" fill="#FFFCF4" />
+    <rect x="38.9" y="24.7" width="3.9" height="13.5" rx="1.95" fill="#FFFCF4" />
+    <rect x="45.6" y="27.5" width="3.9" height="10.7" rx="1.95" fill="#FFFCF4" />
+    <circle cx="44.2" cy="16.8" r="2.05" fill="#FFF0B0" />
   </g>
 
-  <text x="82" y="36" font-family="Pretendard, Apple SD Gothic Neo, Noto Sans KR, sans-serif" font-size="31" font-weight="800" letter-spacing="-1.5" fill="#101828">무운</text>
-  <text x="82" y="58" font-family="Pretendard, Apple SD Gothic Neo, Noto Sans KR, sans-serif" font-size="11" font-weight="700" letter-spacing="2.5" fill="#667085">MOBILE FORTUNE STUDIO</text>
+  <text x="70" y="28" font-family="Pretendard, Apple SD Gothic Neo, Noto Sans KR, sans-serif" font-size="24" font-weight="800" letter-spacing="-1.1" fill="#111827">무운</text>
+  <text x="70" y="44" font-family="Pretendard, Apple SD Gothic Neo, Noto Sans KR, sans-serif" font-size="8.5" font-weight="700" letter-spacing="1.9" fill="#667085">MOBILE FORTUNE STUDIO</text>
 </svg>
