@@ -155,9 +155,9 @@ export default function Tojeong() {
           })}
         </script>
 </Helmet>
-      <div className="min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
+      <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
 
-        <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06]">
+        <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
           <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
             <Link href="/">
               <Button variant="ghost" className="mr-2 text-[#191F28] hover:bg-black/[0.06] -ml-2 flex items-center gap-1 text-sm font-medium">
@@ -169,7 +169,7 @@ export default function Tojeong() {
           </div>
         </header>
 
-        <main className="relative z-10 container mx-auto max-w-[1280px] px-4 py-5 md:py-8">
+        <main className="mu-service-main relative z-10 container mx-auto max-w-[1280px] px-4 py-5 md:py-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -372,7 +372,7 @@ export default function Tojeong() {
         <meta property="og:description" content="이지함 선생의 원문 괘 계산법으로 보는 2026년 병오년 무료 토정비결. 회원가입·개인정보 저장 없이 한 해의 흐름을 100% 무료로 확인하세요." />
         <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
       </Helmet>
-    <div className="min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
+    <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
       {/* 토정비결은 원래 삼주(연,월,일)만 사용하므로 안내 라벨 표시 */}
       <div className="bg-[#6B5FFF]/10 border-b border-[#6B5FFF]/20 py-2 px-4 relative z-50">
         <p className="text-[10px] md:text-xs text-[#6B5FFF] text-center font-medium">
@@ -380,7 +380,7 @@ export default function Tojeong() {
         </p>
       </div>
 
-      <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06]">
+      <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
         <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
             <Button variant="ghost" className="mr-2 text-[#191F28] hover:bg-black/[0.06] -ml-2 flex items-center gap-1 text-sm font-medium" onClick={() => setResult(null)}>
@@ -400,7 +400,7 @@ export default function Tojeong() {
         </div>
       </header>
 
-      <main className="relative z-10 px-4 py-5 md:py-6">
+      <main className="mu-service-main relative z-10 px-4 py-5 md:py-6">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}

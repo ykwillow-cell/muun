@@ -973,3 +973,316 @@
 [data-psychology-accent] {
   color: var(--psychology-accent, var(--primary)) !important;
 }
+
+@layer components {
+  :root {
+    --mu-appbar-offset: calc(var(--safe-area-top) + 114px);
+  }
+
+  .mu-route-banner {
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 92% 18%, rgba(255,255,255,0.16), transparent 18%),
+      radial-gradient(circle at 8% 82%, rgba(113,184,230,0.18), transparent 22%),
+      linear-gradient(148deg, #16114d 0%, #261a79 40%, #4336b7 74%, #6b8fe7 100%);
+    color: #ffffff;
+    isolation: isolate;
+  }
+
+  .mu-route-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0)),
+      radial-gradient(circle at 70% 24%, rgba(255,255,255,0.18), transparent 18%);
+    pointer-events: none;
+  }
+
+  .mu-route-banner__inner {
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+
+  .mu-route-banner__shell {
+    display: grid;
+    gap: 1rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .mu-route-banner__copy,
+  .mu-route-banner__aside {
+    min-width: 0;
+  }
+
+  .mu-route-banner__icon-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin-top: 0.85rem;
+    min-height: 2.8rem;
+    padding: 0.48rem 0.82rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255,255,255,0.14);
+    background: rgba(255,255,255,0.1);
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.94);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+  }
+
+  .mu-route-banner__icon-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 0.9rem;
+    background: linear-gradient(135deg, rgba(255,255,255,0.22), rgba(255,255,255,0.08));
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.12);
+  }
+
+  .mu-route-banner__title {
+    margin-top: 0.95rem;
+    font-size: clamp(1.75rem, 4vw, 2.6rem);
+    line-height: 1.08;
+    letter-spacing: -0.06em;
+    font-weight: 850;
+    color: #ffffff;
+  }
+
+  .mu-route-banner__description {
+    margin-top: 0.85rem;
+    max-width: 42rem;
+    color: rgba(255,255,255,0.82);
+    font-size: 0.95rem;
+    line-height: 1.8;
+  }
+
+  .mu-route-banner__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-top: 1rem;
+  }
+
+  .mu-route-banner__stats {
+    display: grid;
+    gap: 0.7rem;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .mu-route-banner__stat-card {
+    border-radius: 1.3rem;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.12);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.08), 0 18px 32px rgba(15,23,42,0.08);
+    padding: 0.95rem 1rem;
+  }
+
+  .mu-route-banner__stat-label {
+    color: rgba(255,255,255,0.68);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .mu-route-banner__stat-value {
+    margin-top: 0.48rem;
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: #ffffff;
+    line-height: 1.3;
+  }
+
+  .mu-route-banner__links {
+    margin-top: 0.8rem;
+    background: rgba(255,255,255,0.92);
+    padding: 1rem;
+  }
+
+  .mu-route-banner__links-label {
+    color: #6b7280;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .mu-route-banner__link-list {
+    margin-top: 0.7rem;
+    display: grid;
+    gap: 0.55rem;
+  }
+
+  .mu-route-banner__link-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    min-height: 3rem;
+    border-radius: 1rem;
+    padding: 0.8rem 0.95rem;
+    background: linear-gradient(180deg, rgba(248,248,255,0.98) 0%, rgba(242,244,252,0.98) 100%);
+    border: 1px solid rgba(15,23,42,0.08);
+    color: #344054;
+    font-size: 0.92rem;
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: 0 10px 22px rgba(15,23,42,0.04);
+  }
+
+  .mu-route-banner__link-item:hover {
+    border-color: rgba(107,95,255,0.2);
+    color: #4f46e5;
+  }
+
+  .mu-subpage-screen {
+    background:
+      radial-gradient(circle at 100% 0%, rgba(107,95,255,0.08), transparent 24%),
+      radial-gradient(circle at 0% 16%, rgba(113,184,230,0.08), transparent 22%),
+      linear-gradient(180deg, #f9fbff 0%, #f3f6fa 26%, #f7f8fb 100%) !important;
+    color: #111827;
+    padding-bottom: calc(var(--bottom-nav-height) + 22px);
+  }
+
+  .mu-subpage-header {
+    top: var(--mu-appbar-offset) !important;
+    z-index: 45 !important;
+    background: rgba(255,255,255,0.92) !important;
+    border-bottom: 1px solid rgba(15,23,42,0.06) !important;
+    box-shadow: 0 10px 26px rgba(15,23,42,0.04);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+
+  .mu-service-main {
+    width: 100%;
+    max-width: 74rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 1.15rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .mu-subpage-screen [data-slot="card"],
+  .mu-subpage-screen [data-result-card],
+  .mu-subpage-screen [data-daily-card],
+  .mu-subpage-screen [data-naming-card],
+  .mu-subpage-screen [data-tarot-result-card],
+  .mu-subpage-screen [data-lunch-card],
+  .mu-subpage-screen [data-misc-card] {
+    border-radius: 1.55rem !important;
+    border: 1px solid rgba(15,23,42,0.08) !important;
+    background: rgba(255,255,255,0.97) !important;
+    box-shadow: 0 16px 34px rgba(15,23,42,0.06) !important;
+  }
+
+  .mu-subpage-screen [data-slot="card-header"] {
+    padding-bottom: 1rem;
+  }
+
+  .mu-subpage-screen [data-slot="input"] {
+    border-radius: 1rem !important;
+    border-color: rgba(107,95,255,0.12) !important;
+    background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(246,247,252,0.98) 100%) !important;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.8), 0 10px 22px rgba(15,23,42,0.03) !important;
+    color: #111827 !important;
+    font-size: 16px !important;
+  }
+
+  .mu-subpage-screen [data-slot="input"]::placeholder {
+    color: #98a2b3;
+  }
+
+  .mu-subpage-screen [data-slot="input"]:focus-visible {
+    border-color: rgba(107,95,255,0.32) !important;
+    box-shadow: 0 0 0 4px rgba(107,95,255,0.1) !important;
+  }
+
+  .mu-subpage-screen [data-slot="button"][data-variant="default"] {
+    background: linear-gradient(135deg, #4f46e5 0%, #6b5fff 55%, #738ef1 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    box-shadow: 0 18px 32px rgba(79,70,229,0.24) !important;
+  }
+
+  .mu-subpage-screen [data-slot="button"][data-variant="outline"] {
+    background: rgba(255,255,255,0.94) !important;
+    border: 1px solid rgba(15,23,42,0.08) !important;
+    color: #344054 !important;
+    box-shadow: 0 10px 22px rgba(15,23,42,0.04) !important;
+  }
+
+  .mu-subpage-screen [data-slot="button"][data-variant="ghost"] {
+    color: #344054 !important;
+    border-radius: 1rem !important;
+  }
+
+  .mu-subpage-screen [data-slot="button"][data-size="icon"],
+  .mu-subpage-screen [data-slot="button"][data-size="icon-sm"],
+  .mu-subpage-screen [data-slot="button"][data-size="icon-lg"] {
+    border-radius: 1rem !important;
+  }
+
+  .mu-subpage-screen [data-slot="toggle-group"] {
+    width: 100%;
+    border-radius: 1rem;
+    border: 1px solid rgba(107,95,255,0.1);
+    background: rgba(107,95,255,0.05);
+    padding: 4px;
+  }
+
+  .mu-subpage-screen [data-slot="toggle-group-item"] {
+    border-radius: 0.85rem !important;
+    color: #667085;
+  }
+
+  .mu-subpage-screen [data-slot="toggle-group-item"][data-state="on"] {
+    background: #ffffff !important;
+    color: #4f46e5 !important;
+    box-shadow: 0 12px 24px rgba(15,23,42,0.06);
+  }
+
+  .mu-subpage-screen .text-muted-foreground {
+    color: #667085 !important;
+  }
+
+  .mu-subpage-screen .shadow-sm {
+    box-shadow: 0 12px 28px rgba(15,23,42,0.05) !important;
+  }
+
+  .mu-subpage-screen .rounded-2xl {
+    border-radius: 1.55rem !important;
+  }
+
+  .mu-subpage-screen .rounded-xl {
+    border-radius: 1.15rem !important;
+  }
+
+  @media (min-width: 768px) {
+    .mu-route-banner__inner {
+      padding-top: 18px;
+      padding-bottom: 18px;
+    }
+
+    .mu-route-banner__shell {
+      grid-template-columns: minmax(0, 1.28fr) minmax(290px, 0.72fr);
+      align-items: end;
+      gap: 1.25rem;
+    }
+
+    .mu-service-main {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+      padding-top: 1.5rem;
+      padding-bottom: 2rem;
+    }
+  }
+}
