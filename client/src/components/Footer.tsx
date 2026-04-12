@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'wouter';
-import { Sparkles, MoonStar, BookOpenText, ShieldCheck } from 'lucide-react';
 import BrandLogo from '@/components/BrandLogo';
 
 const footerGroups = [
@@ -33,33 +32,13 @@ const footerGroups = [
   },
 ];
 
-const footerHighlights = [
-  { label: '회원가입 없이 이용', Icon: ShieldCheck },
-  { label: '무료 사주·운세', Icon: Sparkles },
-  { label: '꿈해몽·칼럼·사전 제공', Icon: BookOpenText },
-  { label: '모바일 중심 경험', Icon: MoonStar },
-] as const;
-
 const Footer: React.FC = () => {
   return (
     <footer className="mu-footer">
       <div className="mu-footer__inner">
-        <div className="mu-footer__hero">
-          <div className="mu-footer__brand">
-            <BrandLogo size="lg" />
-            <p className="mu-footer__brand-copy">
-              생년월일만으로 확인하는 무료 사주·운세 플랫폼. 결과 페이지에서 끝나지 않고 칼럼, 꿈해몽, 사전으로 자연스럽게 이어지는 모바일 경험을 목표로 만들었습니다.
-            </p>
-          </div>
-
-          <div className="mu-footer__highlight-grid">
-            {footerHighlights.map(({ label, Icon }) => (
-              <div key={label} className="mu-footer__highlight-item">
-                <Icon size={16} aria-hidden="true" />
-                <span>{label}</span>
-              </div>
-            ))}
-          </div>
+        <div className="mu-footer__brand-card">
+          <BrandLogo size="lg" />
+          <p className="mu-footer__brand-copy">무료 사주, 궁합, 꿈해몽, 운세 사전을 한곳에서 확인할 수 있습니다.</p>
         </div>
 
         <div className="mu-footer__grid">
@@ -80,10 +59,6 @@ const Footer: React.FC = () => {
         </div>
 
         <div className="mu-footer__meta">
-          <p>
-            무운(MuUn)은 무료 사주풀이, 2026년 신년운세, 토정비결, 궁합, 타로, 꿈해몽, 운세 사전 등 다양한 명리·운세 콘텐츠를 제공합니다.
-            검색 최적화와 내부 링크 구조를 계속 정리하며, 모바일에서 빠르게 탐색할 수 있도록 개선하고 있습니다.
-          </p>
           <p>© {new Date().getFullYear()} MUUN Celestial Services. All rights reserved.</p>
         </div>
       </div>
@@ -101,12 +76,7 @@ const Footer: React.FC = () => {
           max-width: 960px;
           margin: 0 auto;
         }
-        .mu-footer__hero {
-          display: grid;
-          gap: 16px;
-          grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
-        }
-        .mu-footer__brand,
+        .mu-footer__brand-card,
         .mu-footer__group,
         .mu-footer__meta {
           padding: 20px;
@@ -121,26 +91,6 @@ const Footer: React.FC = () => {
           line-height: 1.75;
           color: #4b5563;
         }
-        .mu-footer__highlight-grid {
-          display: grid;
-          gap: 10px;
-          grid-template-columns: repeat(auto-fit, minmax(min(100%, 160px), 1fr));
-        }
-        .mu-footer__highlight-item {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          min-height: 48px;
-          padding: 0 14px;
-          border-radius: 18px;
-          background: rgba(255,255,255,0.94);
-          border: 1px solid rgba(15,23,42,0.08);
-          color: #4b5563;
-          font-size: 12px;
-          font-weight: 700;
-          box-shadow: 0 10px 22px rgba(15,23,42,0.04);
-        }
-        .mu-footer__highlight-item svg { color: #5648db; flex-shrink: 0; }
         .mu-footer__grid {
           display: grid;
           gap: 16px;
@@ -176,7 +126,6 @@ const Footer: React.FC = () => {
           line-height: 1.8;
         }
         .mu-footer__meta p { margin: 0; }
-        .mu-footer__meta p + p { margin-top: 10px; }
         @media (min-width: 768px) {
           .mu-footer {
             padding-bottom: 28px;

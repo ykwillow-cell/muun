@@ -69,13 +69,7 @@ export function MainBanner() {
   }, [emblaApi, startAutoPlay, stopAutoPlay]);
 
   return (
-    <section className="mu-container-narrow py-4">
-      <div className="flex items-end justify-between gap-3 px-1 pb-3">
-        <div>
-          <span className="mu-divider-text">추천 배너</span>
-          <h2 className="mt-3 text-[24px] font-extrabold tracking-[-0.05em] text-slate-900">시즌 서비스와 신규 기능</h2>
-        </div>
-      </div>
+    <section className="mu-container-narrow py-4" aria-label="추천 서비스">
       <div className="overflow-hidden" ref={emblaRef}>
         <div className="flex touch-pan-y gap-3">
           {banners.map((b) => (

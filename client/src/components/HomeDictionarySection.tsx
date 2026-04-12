@@ -15,8 +15,8 @@ export function HomeDictionarySection() {
     <section className="mu-glass-panel p-5 sm:p-6" aria-label="운세 사전">
       <div>
         <span className="mu-section-eyebrow"><BookMarked size={14} aria-hidden="true" /> 운세 사전</span>
-        <h2 className="mt-4 text-[26px] font-extrabold tracking-[-0.05em] text-slate-900">사주 용어를 처음 보는 사람도 이해하기 쉽게</h2>
-        <p className="mt-2 text-sm leading-7 text-slate-600">오행, 십신, 용신, 대운처럼 헷갈리기 쉬운 용어를 짧고 선명한 설명으로 정리했습니다.</p>
+        <h2 className="mt-4 text-[26px] font-extrabold tracking-[-0.05em] text-slate-900">용어 바로 찾기</h2>
+        <p className="mt-2 text-sm leading-7 text-slate-600">오행, 십신, 대운 같은 용어를 빠르게 확인하세요.</p>
       </div>
 
       <div className="mt-5 grid gap-4 sm:grid-cols-2">
@@ -32,7 +32,7 @@ export function HomeDictionarySection() {
       </div>
 
       <Link href="/fortune-dictionary" className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-[#5748db]">
-        운세 사전 전체보기 <ArrowUpRight size={14} />
+        전체보기 <ArrowUpRight size={14} />
       </Link>
     </section>
   );

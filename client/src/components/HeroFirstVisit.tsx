@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { useLocation } from 'wouter';
-import { ArrowRight, CalendarDays, ShieldCheck, Sparkles } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Sparkles } from 'lucide-react';
 import { MuSelect, SIJU_OPTIONS } from './MuSelect';
 import { trackCustomEvent } from '@/lib/ga4';
-import BrandLogo from '@/components/BrandLogo';
 
 export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
   const [, navigate] = useLocation();
@@ -40,39 +39,29 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
   return (
     <section className="mu-hero-shell">
       <div className="mu-container-narrow px-4 pb-10 pt-6 sm:pt-7">
-        <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+        <div className="grid gap-6 lg:grid-cols-[1.02fr_0.98fr] lg:items-center">
           <div className="relative z-[1]">
-            <div className="flex flex-col items-start gap-3">
-              <div className="mu-kicker">회원가입 없는 무료 사주</div>
-              <div className="inline-flex w-fit max-w-full items-center gap-3 rounded-[24px] border border-white/14 bg-white/10 px-3.5 py-2.5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur">
-                <BrandLogo variant="symbol" size="sm" />
-                <div className="min-w-0">
-                  <div className="text-sm font-extrabold leading-none tracking-[-0.03em] text-white">무운</div>
-                  <div className="mt-1 text-[10px] font-semibold uppercase leading-none tracking-[0.22em] text-white/68">Mobile Fortune</div>
-                </div>
-              </div>
-            </div>
-            <h1 className="mt-5 text-[32px] font-extrabold leading-[1.08] tracking-[-0.06em] text-white sm:text-[40px]">
-              모바일에서 빠르게 시작하는
+            <div className="mu-kicker">회원가입 없이 바로 시작</div>
+            <h1 className="mt-4 text-[32px] font-extrabold leading-[1.08] tracking-[-0.06em] text-white sm:text-[40px]">
+              생년월일로 바로
               <br />
-              <span className="text-[#FFF1B8]">무료 사주 리포트</span>
+              <span className="text-[#FFF1B8]">평생사주 보기</span>
             </h1>
-            <p className="mt-4 max-w-[34rem] text-[15px] leading-7 text-white/82 sm:text-base">
-              생년월일만 입력하면 바로 결과를 보고, 필요한 설명은 운세 사전과 칼럼으로 이어지는 모바일 중심 흐름으로 정리했습니다.
+            <p className="mt-4 max-w-[30rem] text-[15px] leading-7 text-white/82 sm:text-base">
+              입력 후 바로 결과 화면으로 이동합니다.
             </p>
 
             <div className="mt-5 flex flex-wrap gap-2">
               <span className="mu-stat-pill"><ShieldCheck size={14} /> 회원가입 없음</span>
-              <span className="mu-stat-pill"><Sparkles size={14} /> 즉시 결과 확인</span>
-              <span className="mu-stat-pill"><CalendarDays size={14} /> 오늘 바로 시작</span>
+              <span className="mu-stat-pill"><Sparkles size={14} /> 바로 결과 확인</span>
             </div>
           </div>
 
           <div className="mu-soft-card relative z-[1] p-5 text-slate-900 sm:p-6">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <div className="text-xs font-extrabold uppercase tracking-[0.12em] text-[#5748db]">사주 시작</div>
-                <h2 className="mt-2 text-[24px] font-extrabold tracking-[-0.05em] text-slate-900">생년월일만 입력하면 바로 분석을 시작해요</h2>
+                <div className="text-xs font-extrabold uppercase tracking-[0.12em] text-[#5748db]">평생사주 시작</div>
+                <h2 className="mt-2 text-[24px] font-extrabold tracking-[-0.05em] text-slate-900">생년월일 입력</h2>
               </div>
               <div className="inline-flex min-w-[52px] justify-center rounded-full bg-[#6B5FFF]/10 px-3 py-1.5 text-xs font-bold text-[#5648db]">
                 {step}/2
@@ -90,13 +79,13 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
 
             {step === 1 ? (
               <div className="mt-5">
-                <label htmlFor="birth-input" className="text-sm font-bold text-slate-900">생년월일 입력</label>
+                <label htmlFor="birth-input" className="text-sm font-bold text-slate-900">생년월일</label>
                 <input
                   id="birth-input"
                   type="text"
                   inputMode="numeric"
                   className={`mt-3 h-[52px] w-full rounded-2xl border px-4 text-base outline-none ${inputError ? 'border-rose-300 bg-rose-50' : 'border-slate-200 bg-slate-50'}`}
-                  placeholder="예) 1993.05.21 또는 930521"
+                  placeholder="예) 19930521"
                   value={birthInput}
                   maxLength={12}
                   onChange={(e) => {
@@ -104,9 +93,8 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
                     if (inputError) setInputError('');
                   }}
                   onKeyDown={(e) => e.key === 'Enter' && step1Valid && handleStep1Next()}
-                  aria-describedby={inputError ? 'birth-error' : 'birth-help'}
+                  aria-describedby={inputError ? 'birth-error' : undefined}
                 />
-                <p id="birth-help" className="mt-2 text-[13px] leading-6 text-slate-500">점(.)이나 공백이 있어도 입력할 수 있어요.</p>
                 {inputError && (
                   <p id="birth-error" className="mt-2 text-sm font-medium text-rose-600" role="alert">
                     {inputError}
@@ -118,9 +106,8 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
                   onClick={handleStep1Next}
                   disabled={!step1Valid}
                 >
-                  다음 단계로 <ArrowRight size={16} />
+                  다음 <ArrowRight size={16} />
                 </button>
-                <p className="mt-3 text-xs leading-6 text-slate-500">양력·음력과 태어난 시간은 다음 단계에서 선택합니다.</p>
               </div>
             ) : (
               <div className="mt-5">
@@ -148,7 +135,7 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
                     options={SIJU_OPTIONS}
                     value={siju}
                     onChange={setSiju}
-                    placeholder="시간을 선택하세요"
+                    placeholder="시간 선택"
                   />
                 </div>
 
@@ -165,10 +152,10 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
                     className="mu-primary-btn justify-center"
                     onClick={handleSubmit}
                   >
-                    사주 확인하기
+                    결과 보기
                   </button>
                 </div>
-                <p className="mt-3 text-xs leading-6 text-slate-500">태어난 시간을 몰라도 결과를 볼 수 있어요.</p>
+                <p className="mt-3 text-xs leading-6 text-slate-500">태어난 시간을 몰라도 볼 수 있어요.</p>
               </div>
             )}
           </div>

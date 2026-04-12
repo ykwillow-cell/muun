@@ -17,8 +17,8 @@ export function HomeColumnSection() {
       <div className="flex items-end justify-between gap-4">
         <div>
           <span className="mu-section-eyebrow"><BookOpenText size={14} aria-hidden="true" /> 운세 칼럼</span>
-          <h2 className="mt-4 text-[26px] font-extrabold tracking-[-0.05em] text-slate-900">지금 읽기 좋은 사주·운세 읽을거리</h2>
-          <p className="mt-2 text-sm leading-7 text-slate-600">사주 기초 개념, 관계 운, 건강운, 재물운 같은 주제를 짧고 명확하게 정리한 칼럼 모음입니다.</p>
+          <h2 className="mt-4 text-[26px] font-extrabold tracking-[-0.05em] text-slate-900">칼럼</h2>
+          <p className="mt-2 text-sm leading-7 text-slate-600">개념과 해석을 짧게 읽어보세요.</p>
         </div>
       </div>
 
@@ -53,7 +53,7 @@ export function HomeColumnSection() {
       </div>
 
       <Link href="/guide" className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-[#5748db]">
-        운세 칼럼 전체보기 <ArrowUpRight size={14} />
+        전체보기 <ArrowUpRight size={14} />
       </Link>
     </section>
   );
