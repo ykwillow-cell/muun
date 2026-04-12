@@ -1,20 +1,14 @@
 # robots.txt for MUUN - 무운 사주 및 운세 서비스
-# Allow all search engines to crawl the site
 
 User-agent: *
 Allow: /
-# Disallow private/admin pages
 Disallow: /admin
 Disallow: /api
 
-# Sitemap location
 Sitemap: https://muunsaju.com/sitemap.xml
-Sitemap: https://muunsaju.com/sitemap-yearly-fortune.xml
 
-# 네이버봇 명시적 허용
 User-agent: Yeti
 Allow: /
 
-# 구글봇 명시적 허용
 User-agent: Googlebot
 Allow: /
