@@ -39,7 +39,7 @@ const routeBannerMeta: Array<{ match: (path: string) => boolean; meta: BannerMet
   {
     match: (path) => path.startsWith('/manselyeok'),
     meta: {
-      eyebrow: 'Core reading',
+      eyebrow: '핵심 사주 해석',
       title: '만세력과 사주 구조를 먼저 빠르게 확인하세요',
       description: '사주팔자의 천간·지지 조합과 오행 흐름을 모바일 화면에서 보기 쉽게 정리했습니다. 결과 카드도 같은 톤으로 이어집니다.',
       Icon: CalendarDays,
@@ -51,9 +51,9 @@ const routeBannerMeta: Array<{ match: (path: string) => boolean; meta: BannerMet
   {
     match: (path) => path.startsWith('/lifelong-saju'),
     meta: {
-      eyebrow: 'Signature result',
-      title: '평생사주 결과와 설명을 한 화면 흐름으로 정리했습니다',
-      description: '기질, 관계, 일, 재물처럼 많이 보는 항목을 더 정돈된 카드와 읽기 흐름으로 보여주도록 화면 톤을 맞췄습니다.',
+      eyebrow: '대표 서비스',
+      title: '평생사주를 한 번에 이해할 수 있도록 핵심만 담았습니다',
+      description: '성격, 관계, 일, 재물처럼 자주 보는 항목을 먼저 보여주고 필요한 설명은 자연스럽게 이어서 읽을 수 있게 구성했습니다.',
       Icon: Sparkles,
       chips: ['대표 서비스', '기질 해설', '결과 중심'],
       stats: [{ label: '분석 흐름', value: '성격 → 운세 → 조언' }, { label: '탐색 연결', value: '칼럼 · 사전' }],
@@ -63,7 +63,7 @@ const routeBannerMeta: Array<{ match: (path: string) => boolean; meta: BannerMet
   {
     match: (path) => path.startsWith('/yearly-fortune'),
     meta: {
-      eyebrow: '2026 yearly flow',
+      eyebrow: '신년 운세 가이드',
       title: '2026년 흐름을 월별·주제별로 보기 쉽게 정리했습니다',
       description: '올해운세와 상세 결과 화면 모두 메인 톤에 맞춰 더 밝고 선명한 모바일 카드 구조로 이어집니다.',
       Icon: ScrollText,
@@ -75,7 +75,7 @@ const routeBannerMeta: Array<{ match: (path: string) => boolean; meta: BannerMet
   {
     match: (path) => path.startsWith('/daily-fortune'),
     meta: {
-      eyebrow: 'Daily flow',
+      eyebrow: '오늘의 운세',
       title: '오늘의 운세를 더 빠르게 읽고 다음 행동으로 이어지게 했습니다',
       description: '점수, 총평, 오늘의 포인트처럼 자주 보는 결과를 선명한 대비와 간격으로 재정리한 모바일 결과 화면입니다.',
       Icon: Clock3,
@@ -87,7 +87,7 @@ const routeBannerMeta: Array<{ match: (path: string) => boolean; meta: BannerMet
   {
     match: (path) => path.startsWith('/compatibility'),
     meta: {
-      eyebrow: 'Relationship reading',
+      eyebrow: '궁합 분석',
       title: '궁합 결과를 더 또렷한 비교 구조로 읽을 수 있게 바꿨습니다',
       description: '두 사람의 조화와 차이를 모바일에서도 빠르게 훑을 수 있도록 대비와 카드 구조를 메인 톤에 맞춰 정리했습니다.',
       Icon: Heart,
@@ -99,7 +99,7 @@ const routeBannerMeta: Array<{ match: (path: string) => boolean; meta: BannerMet
   {
     match: (path) => path.startsWith('/tojeong'),
     meta: {
-      eyebrow: 'Traditional fortune',
+      eyebrow: '전통 운세',
       title: '토정비결도 메인과 같은 카드 톤으로 다시 정리했습니다',
       description: '전통 운세 화면이 너무 무겁지 않도록 밝은 배경과 선명한 정보 계층으로 읽기 흐름을 맞췄습니다.',
       Icon: BookOpenText,
@@ -111,7 +111,7 @@ const routeBannerMeta: Array<{ match: (path: string) => boolean; meta: BannerMet
   {
     match: (path) => path.startsWith('/astrology'),
     meta: {
-      eyebrow: 'Natal chart',
+      eyebrow: '점성술 리딩',
       title: '점성술 화면도 무운의 메인 톤에 맞춰 다시 정돈했습니다',
       description: '차트 해석과 설명 카드의 대비를 높여 작은 화면에서도 필요한 정보가 먼저 보이도록 리듬을 맞췄습니다.',
       Icon: Globe2,
@@ -123,7 +123,7 @@ const routeBannerMeta: Array<{ match: (path: string) => boolean; meta: BannerMet
   {
     match: (path) => path.startsWith('/tarot'),
     meta: {
-      eyebrow: 'Tarot cards',
+      eyebrow: '타로 리딩',
       title: '타로 결과 화면을 더 차분하고 또렷하게 정리했습니다',
       description: '카드 선택, 해석, 조언의 단계가 자연스럽게 이어지도록 정보 밀도를 조절하고 배경 톤을 맞췄습니다.',
       Icon: Layers3,
@@ -135,7 +135,7 @@ const routeBannerMeta: Array<{ match: (path: string) => boolean; meta: BannerMet
   {
     match: (path) => path.startsWith('/naming'),
     meta: {
-      eyebrow: 'Naming lab',
+      eyebrow: '작명 서비스',
       title: '작명소 화면도 메인 브랜드 톤에 맞춰 정돈했습니다',
       description: '이름 제안, 한자 조합, 의미 설명이 길어도 모바일에서 부담 없이 읽히도록 카드와 텍스트 구조를 손봤습니다.',
       Icon: PenLine,
@@ -147,7 +147,7 @@ const routeBannerMeta: Array<{ match: (path: string) => boolean; meta: BannerMet
   {
     match: (path) => path.startsWith('/psychology'),
     meta: {
-      eyebrow: 'Psychology',
+      eyebrow: '심리 테스트',
       title: '심리 테스트도 무운의 모바일 카드 경험으로 정리했습니다',
       description: '짧은 질문과 결과 해설을 더 명확하게 보여주고, 사주 서비스와 자연스럽게 이어질 수 있도록 화면 흐름을 맞췄습니다.',
       Icon: Brain,
@@ -159,7 +159,7 @@ const routeBannerMeta: Array<{ match: (path: string) => boolean; meta: BannerMet
   {
     match: (path) => path.startsWith('/family-saju'),
     meta: {
-      eyebrow: 'Family harmony',
+      eyebrow: '가족 사주',
       title: '가족사주도 한 화면에서 비교하기 쉽게 정리했습니다',
       description: '구성원 입력부터 조화 분석 결과까지 같은 톤의 카드 시스템으로 연결해 모바일에서도 복잡해 보이지 않도록 다듬었습니다.',
       Icon: Users,
@@ -171,7 +171,7 @@ const routeBannerMeta: Array<{ match: (path: string) => boolean; meta: BannerMet
   {
     match: (path) => path.startsWith('/hybrid-compatibility'),
     meta: {
-      eyebrow: 'Hybrid match',
+      eyebrow: '사주 × MBTI',
       title: '사주×MBTI 궁합도 메인 디자인과 같은 밀도로 정리했습니다',
       description: '차트와 요약 카드가 서로 경쟁하지 않도록 우선순위를 다시 잡아 모바일에서 읽기 쉬운 비교 화면으로 다듬었습니다.',
       Icon: WandSparkles,
@@ -183,7 +183,7 @@ const routeBannerMeta: Array<{ match: (path: string) => boolean; meta: BannerMet
   {
     match: (path) => path.startsWith('/lucky-lunch'),
     meta: {
-      eyebrow: 'Lucky lunch',
+      eyebrow: '행운 점심 추천',
       title: '행운 점심도 메인과 같은 밝은 카드 흐름으로 맞췄습니다',
       description: '추천 메뉴, 이유, 가벼운 해설이 모바일에서 한 번에 읽히도록 카드 간격과 텍스트 체계를 재정리했습니다.',
       Icon: UtensilsCrossed,
@@ -195,7 +195,7 @@ const routeBannerMeta: Array<{ match: (path: string) => boolean; meta: BannerMet
   {
     match: (path) => path.startsWith('/past-life'),
     meta: {
-      eyebrow: 'Story experience',
+      eyebrow: '전생 스토리',
       title: '전생 보기 화면도 브랜드 톤에 맞춰 더 선명하게 정리했습니다',
       description: '입력과 결과 스토리가 흐트러지지 않도록 카드 대비와 간격을 조절해 메인 경험과 어울리는 화면으로 다듬었습니다.',
       Icon: Stars,
@@ -207,7 +207,7 @@ const routeBannerMeta: Array<{ match: (path: string) => boolean; meta: BannerMet
   {
     match: (path) => path === '/about' || path === '/contact' || path === '/privacy' || path === '/terms',
     meta: {
-      eyebrow: 'MuUn policy & brand',
+      eyebrow: '브랜드 & 정책',
       title: '무운의 소개와 정책 페이지도 같은 톤으로 정리했습니다',
       description: '브랜드 소개, 문의, 개인정보처리방침, 이용약관도 서비스 화면과 같은 리듬으로 읽을 수 있도록 화면 톤을 맞췄습니다.',
       Icon: Shield,
@@ -238,7 +238,7 @@ export default function RouteBanner() {
             <span className="mu-kicker">{meta.eyebrow}</span>
             <div className="mu-route-banner__icon-chip">
               <span className="mu-route-banner__icon-wrap"><Icon size={18} aria-hidden="true" /></span>
-              <span>MuUn subpage refresh</span>
+              <span>무운 서비스 안내</span>
             </div>
             <h2 className="mu-route-banner__title">{meta.title}</h2>
             <p className="mu-route-banner__description">{meta.description}</p>
