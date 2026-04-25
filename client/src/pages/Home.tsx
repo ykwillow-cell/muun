@@ -60,11 +60,47 @@ export default function Home() {
 
       {heroComponent}
 
-      <section className="pb-2">
+      <section className="pb-1">
         <ServiceGrid />
       </section>
 
-      <div className="pb-2">
+      <section className="mu-container-narrow px-4 py-5 md:py-7">
+        <div className="rounded-[28px] border border-[#e9e8ff] bg-white/90 px-5 py-6 shadow-[0_20px_44px_rgba(15,23,42,0.08)] backdrop-blur sm:px-7">
+          <div className="grid gap-5 md:grid-cols-[1.12fr_0.88fr] md:items-center">
+            <div>
+              <div className="text-xs font-extrabold uppercase tracking-[0.14em] text-[#5b50d6]">Premium Experience</div>
+              <h2 className="mt-2 text-[24px] font-extrabold tracking-[-0.04em] text-slate-900 sm:text-[30px]">
+                필요한 운세를 빠르게 찾고, 결과는 깊이 있게 읽을 수 있게
+              </h2>
+              <p className="mt-3 text-sm leading-7 text-slate-600 sm:text-[15px]">
+                처음 방문자는 빠른 시작, 재방문자는 저장된 정보 기반 추천으로
+                <br className="hidden sm:block" />
+                끊김 없는 탐색 경험을 제공합니다.
+              </p>
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="rounded-2xl border border-slate-200/80 bg-slate-50 px-4 py-3">
+                <div className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">탐색</div>
+                <div className="mt-1 text-sm font-semibold text-slate-900">카테고리별 서비스</div>
+              </div>
+              <div className="rounded-2xl border border-slate-200/80 bg-slate-50 px-4 py-3">
+                <div className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">분석</div>
+                <div className="mt-1 text-sm font-semibold text-slate-900">핵심 결과 우선 제공</div>
+              </div>
+              <div className="rounded-2xl border border-slate-200/80 bg-slate-50 px-4 py-3">
+                <div className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">가독성</div>
+                <div className="mt-1 text-sm font-semibold text-slate-900">모바일 맞춤 레이아웃</div>
+              </div>
+              <div className="rounded-2xl border border-slate-200/80 bg-slate-50 px-4 py-3">
+                <div className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500">신뢰</div>
+                <div className="mt-1 text-sm font-semibold text-slate-900">개인정보 최소화</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="pb-1">
         <MainBanner />
       </div>
 

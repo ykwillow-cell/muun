@@ -76,19 +76,21 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
 
   return (
     <section className="mu-hero-shell">
-      <div className="mu-container-narrow px-4 pb-10 pt-6 sm:pt-7">
+      <div className="mu-container-narrow px-4 pb-12 pt-7 sm:pt-8">
         <div className="grid gap-6 lg:grid-cols-[1.02fr_0.98fr] lg:items-start">
           <div className="relative z-[1]">
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div className="min-w-0">
-                <div className="mu-kicker">저장된 정보로 이어보기</div>
-                <h1 className="mt-4 text-[31px] font-extrabold leading-[1.08] tracking-[-0.06em] text-white sm:text-[38px]">
+                <div className="mu-kicker">맞춤 분석 이어보기</div>
+                <h1 className="mt-4 text-[31px] font-extrabold leading-[1.08] tracking-[-0.06em] text-white sm:text-[39px]">
                   저장된 정보로
                   <br />
-                  <span className="text-[#FFF1B8]">바로 다시 보기</span>
+                  <span className="text-[#FFF1B8]">프리미엄 리딩 바로 시작</span>
                 </h1>
                 <p className="mt-4 max-w-[30rem] text-[15px] leading-7 text-white/84 sm:text-base">
-                  평생사주와 궁합, 꿈해몽으로 바로 이동할 수 있어요.
+                  입력을 다시 하지 않아도 오늘의 운세부터 평생사주까지
+                  <br className="hidden sm:block" />
+                  원하는 분석 화면으로 즉시 이동할 수 있어요.
                 </p>
               </div>
 
@@ -103,12 +105,31 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
 
             <div className="mt-5 flex flex-wrap gap-2">
               <span className="mu-stat-pill"><CalendarDays size={14} /> {birthStr || '저장된 정보'}</span>
-              <span className="mu-stat-pill">서버 저장 안함</span>
+              <span className="mu-stat-pill">개인정보 서버 저장 없음</span>
             </div>
 
-            <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
+            <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
+              <div className="rounded-2xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur">
+                <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-white/65">Quick</div>
+                <div className="mt-1 text-sm font-semibold text-white">즉시 재진입</div>
+              </div>
+              <div className="rounded-2xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur">
+                <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-white/65">Private</div>
+                <div className="mt-1 text-sm font-semibold text-white">로컬 저장 기반</div>
+              </div>
+              <div className="rounded-2xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur">
+                <div className="text-[11px] font-bold uppercase tracking-[0.14em] text-white/65">Flow</div>
+                <div className="mt-1 text-sm font-semibold text-white">추천 경로 제공</div>
+              </div>
+            </div>
+
+            <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-3">
               {SHORTCUTS.map(({ href, label, desc, Icon }) => (
-                <Link key={href} href={`${href}?birth=${birth}`} className="mu-soft-card flex items-center gap-3 px-4 py-4 text-slate-900">
+                <Link
+                  key={href}
+                  href={`${href}?birth=${birth}`}
+                  className="mu-soft-card flex items-center gap-3 border border-white/20 bg-white/95 px-4 py-4 text-slate-900 shadow-[0_16px_30px_rgba(15,23,42,0.12)]"
+                >
                   <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#6B5FFF]/10 text-[#5648db]">
                     <Icon size={19} aria-hidden="true" />
                   </div>
@@ -121,7 +142,7 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
             </div>
           </div>
 
-          <div className="relative z-[1] rounded-[30px] border border-white/14 bg-white/10 p-3 backdrop-blur-md">
+          <div className="relative z-[1] rounded-[30px] border border-white/20 bg-white/10 p-3 backdrop-blur-md">
             <div className="rounded-[24px] bg-[linear-gradient(155deg,#151045_0%,#2d1f8c_54%,#4654ca_100%)] p-5 text-white shadow-[0_24px_48px_rgba(15,23,42,0.18)]">
               <div className="flex items-center justify-between gap-3">
                 <div className="text-xs font-bold uppercase tracking-[0.14em] text-white/72">오늘의 운세</div>
