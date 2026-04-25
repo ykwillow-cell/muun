@@ -352,7 +352,7 @@ export default function Manselyeok() {
   const commonMaxWidth = "w-full max-w-2xl mx-auto";
 
   return (
-    <div className="min-h-screen bg-[#F5F4F8] text-foreground pb-20 antialiased">
+    <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-20 antialiased">
       <Helmet>
         {result && analysis ? (() => {
           const name = form.getValues('name');
@@ -400,7 +400,7 @@ export default function Manselyeok() {
         </div>
       )}
 
-      <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06]">
+      <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
         <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
             <Link href="/">
@@ -428,7 +428,7 @@ export default function Manselyeok() {
         </div>
       </header>
 
-      <main className="relative z-10 container mx-auto max-w-[1280px] px-4 py-5 md:py-8">
+      <main className="mu-service-main relative z-10 container mx-auto max-w-[1280px] px-4 py-5 md:py-8">
         <AnimatePresence mode="wait">
           {!result ? (
             <motion.div

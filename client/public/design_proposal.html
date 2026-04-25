@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>무운 메인 화면 디자인 개선 시안</title>
+<style>
+  @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Pretendard Variable', -apple-system, sans-serif;
+    background: #e8e7e2;
+    min-height: 100vh;
+    padding: 24px 16px 60px;
+  }
+
+  /* ── 전체 레이아웃 ── */
+  .page-title {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .page-title h1 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1a1a18;
+    margin-bottom: 6px;
+  }
+  .page-title p {
+    font-size: 13px;
+    color: #5a5a56;
+  }
+
+  .comparison {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .phone-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .phone-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #5a5a56;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 4px 12px;
+    background: rgba(0,0,0,0.08);
+    border-radius: 20px;
+  }
+  .phone-label.new { background: #1a1a18; color: #fff; }
+
+  /* ── 폰 프레임 ── */
+  .phone {
+    width: 320px;
+    min-height: 680px;
+    background: #f5f4ef;
+    border-radius: 36px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.18), 0 4px 16px rgba(0,0,0,0.10);
+    position: relative;
+    border: 6px solid #1a1a18;
+  }
+
+  /* ── AppBar ── */
+  .appbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px 10px;
+    background: #ffffff;
+    border-bottom: 0.5px solid rgba(0,0,0,0.08);
+  }
+  .appbar-logo {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a1a18;
+    letter-spacing: -0.02em;
+  }
+  .appbar-logo span { color: #5a5a56; font-weight: 400; font-size: 12px; margin-left: 4px; }
+  .appbar-icon {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.06);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+
+  /* ═══════════════════════════════
+     BEFORE — 현재 화면
+  ═══════════════════════════════ */
+
+  /* Hero — 현재 */
+  .hero-before {
+    background: #ffffff;
+    padding: 20px 16px 20px;
+    border-bottom: 0.5px solid rgba(0,0,0,0.08);
+  }
+  .hero-before h2 {
+    font-size: 22px;
+    font-weight: 500;
+    color: #1a1a18;
+    line-height: 1.3;
+    margin-bottom: 6px;
+  }
+  .hero-before p {
+    font-size: 13px;
+    color: #5a5a56;
+    margin-bottom: 12px;
+  }
+  .trust-badges {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .trust-badge {
+    font-size: 10px;
+    color: #5a5a56;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+  .form-card {
+    background: #f5f4ef;
+    border-radius: 12px;
+    padding: 16px;
+    border: 0.5px solid rgba(0,0,0,0.08);
+  }
+  .form-steps {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+    align-items: center;
+  }
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: #999891;
+  }
+  .step.active { color: #1a1a18; }
+  .step-dot {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.08);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+    color: #999891;
+  }
+  .step.active .step-dot { background: #1a1a18; color: #fff; }
+  .step-line { flex: 1; height: 1px; background: rgba(0,0,0,0.10); }
+  .form-label { font-size: 11px; color: #5a5a56; margin-bottom: 6px; }
+  .form-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 0.5px solid rgba(0,0,0,0.14);
+    border-radius: 8px;
+    font-size: 13px;
+    color: #999891;
+    background: #ffffff;
+    margin-bottom: 10px;
+  }
+  .form-btn {
+    width: 100%;
+    padding: 11px;
+    background: rgba(0,0,0,0.08);
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #999891;
+    font-weight: 500;
+  }
+
+  /* Banner — 현재 */
+  .banner-before {
+    padding: 12px 16px;
+    background: #f5f4ef;
+  }
+  .banner-card-before {
+    background: #ffffff;
+    border: 0.5px solid rgba(0,0,0,0.14);
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    min-height: 90px;
+  }
+  .banner-tag-before {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: #fef3c7;
+    color: #92400e;
+    margin-bottom: 6px;
+  }
+  .banner-title-before {
+    font-size: 15px;
+    font-weight: 500;
+    color: #1a1a18;
+    line-height: 1.4;
+    margin-bottom: 4px;
+  }
+  .banner-sub-before {
+    font-size: 11px;
+    color: #5a5a56;
+    margin-bottom: 10px;
+  }
+  .banner-cta-before {
+    display: inline-block;
+    font-size: 11px;
+    padding: 7px 14px;
+    background: #f5f4ef;
+    border: 0.5px solid rgba(0,0,0,0.14);
+    border-radius: 8px;
+    color: #1a1a18;
+  }
+  .banner-glyph-before {
+    font-size: 36px;
+    opacity: 0.15;
+    font-weight: 700;
+    color: #1a1a18;
+    line-height: 1;
+  }
+  .banner-dots {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    margin-top: 8px;
+  }
+  .dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(0,0,0,0.15); }
+  .dot.active { background: #1a1a18; width: 14px; border-radius: 3px; }
+
+  /* Service Grid — 현재 */
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 16px 8px;
+  }
+  .section-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: #1a1a18;
+  }
+  .service-grid-before {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 0 16px 12px;
+  }
+  .service-card-before {
+    background: #ffffff;
+    border: 0.5px solid rgba(0,0,0,0.10);
+    border-radius: 12px;
+    padding: 14px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-align: center;
+  }
+  .service-icon { font-size: 28px; }
+  .service-name { font-size: 13px; font-weight: 500; color: #1a1a18; }
+  .service-sub { font-size: 10px; color: #5a5a56; }
+
+  /* Spotlight — 현재 */
+  .spotlight-before {
+    margin: 0 16px 12px;
+    background: #ffffff;
+    border: 0.5px solid rgba(0,0,0,0.10);
+    border-radius: 12px;
+    padding: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .spotlight-badge { font-size: 9px; background: #1a1a18; color: #fff; padding: 2px 7px; border-radius: 20px; margin-bottom: 4px; display: inline-block; }
+  .spotlight-title { font-size: 14px; font-weight: 500; color: #1a1a18; margin-bottom: 2px; }
+  .spotlight-sub { font-size: 11px; color: #5a5a56; }
+  .spotlight-glyph { font-size: 32px; opacity: 0.12; color: #1a1a18; font-weight: 700; }
+
+  /* More Grid — 현재 */
+  .more-grid-before {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 0 16px 20px;
+  }
+  .more-card-before {
+    background: #ffffff;
+    border: 0.5px solid rgba(0,0,0,0.10);
+    border-radius: 12px;
+    padding: 14px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    text-align: center;
+  }
+
+
+  /* ═══════════════════════════════
+     AFTER — 개선 시안
+  ═══════════════════════════════ */
+
+  /* Hero — 개선 */
+  .hero-after {
+    background: #ffffff;
+    padding: 20px 16px 20px;
+    border-bottom: 0.5px solid rgba(0,0,0,0.07);
+    position: relative;
+    overflow: hidden;
+  }
+  /* 배경 텍스처: 연한 노이즈 그레인 느낌 */
+  .hero-after::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 40% at 90% 10%, rgba(212,196,168,0.22) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 50% at 10% 80%, rgba(180,170,150,0.12) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 500;
+    color: #8a7a5a;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 16px; height: 1px;
+    background: #8a7a5a;
+  }
+  .hero-after h2 {
+    font-size: 23px;
+    font-weight: 500;
+    color: #1a1a18;
+    line-height: 1.3;
+    margin-bottom: 4px;
+    letter-spacing: -0.02em;
+  }
+  .hero-after h2 em {
+    font-style: normal;
+    color: #6b5c3e;
+  }
+  .hero-after p {
+    font-size: 12px;
+    color: #7a7a72;
+    margin-bottom: 14px;
+  }
+  .trust-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .trust-chip {
+    font-size: 10px;
+    color: #7a7a72;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+  .trust-chip svg { opacity: 0.5; }
+
+  /* 입력 폼 — 개선 */
+  .form-card-after {
+    background: #faf9f5;
+    border-radius: 14px;
+    padding: 14px;
+    border: 0.5px solid rgba(0,0,0,0.09);
+    position: relative;
+  }
+  .form-steps-after {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 12px;
+  }
+  .step-after {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    color: #b0a898;
+  }
+  .step-after.active { color: #1a1a18; }
+  .step-dot-after {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.07);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9px;
+    color: #b0a898;
+    font-weight: 600;
+  }
+  .step-after.active .step-dot-after {
+    background: #1a1a18;
+    color: #fff;
+  }
+  .step-line-after {
+    flex: 1;
+    height: 1px;
+    background: rgba(0,0,0,0.08);
+    margin: 0 6px;
+  }
+  .form-label-after {
+    font-size: 10px;
+    color: #8a8a82;
+    margin-bottom: 5px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+  }
+  .form-input-after {
+    width: 100%;
+    padding: 10px 12px;
+    border: 0.5px solid rgba(0,0,0,0.12);
+    border-radius: 9px;
+    font-size: 13px;
+    color: #b0a898;
+    background: #ffffff;
+    margin-bottom: 10px;
+    font-family: inherit;
+  }
+  .form-btn-after {
+    width: 100%;
+    padding: 11px;
+    background: #1a1a18;
+    border: none;
+    border-radius: 9px;
+    font-size: 13px;
+    color: #ffffff;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    letter-spacing: -0.01em;
+  }
+
+  /* 바로가기 — 개선 */
+  .shortcuts-after {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    padding: 12px 16px 0;
+  }
+  .shortcut-btn {
+    background: #ffffff;
+    border: 0.5px solid rgba(0,0,0,0.10);
+    border-radius: 12px;
+    padding: 10px 4px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+  }
+  .shortcut-icon {
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    background: #f5f4ef;
+  }
+  .shortcut-label {
+    font-size: 10px;
+    color: #1a1a18;
+    font-weight: 500;
+    text-align: center;
+  }
+
+  /* ── 배너 — 개선 ── */
+  .banner-after {
+    padding: 14px 16px 4px;
+  }
+  .banner-card-after {
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 14px;
+    cursor: pointer;
+  }
+
+  /* 배너 1: 신년운세 — 따뜻한 황토 그라디언트 + 한자 레이어 */
+  .banner-1 {
+    background:
+      linear-gradient(145deg, #c8a96e 0%, #8b6914 60%, #5c4008 100%);
+  }
+  .banner-1::before {
+    content: '丙午';
+    position: absolute;
+    right: -8px; top: -10px;
+    font-size: 80px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.10);
+    line-height: 1;
+    letter-spacing: -4px;
+    pointer-events: none;
+    font-family: 'Noto Serif KR', serif;
+  }
+
+  /* 배너 2: 가족사주 — 차분한 세이지 */
+  .banner-2 {
+    background:
+      linear-gradient(145deg, #6b8f71 0%, #3d5c42 60%, #243629 100%);
+  }
+  .banner-2::before {
+    content: '家族';
+    position: absolute;
+    right: -4px; top: -8px;
+    font-size: 76px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.10);
+    line-height: 1;
+    pointer-events: none;
+    font-family: 'Noto Serif KR', serif;
+  }
+
+  /* 배너 3: MBTI 궁합 — 인디고 */
+  .banner-3 {
+    background:
+      linear-gradient(145deg, #7c6fcd 0%, #4a3f9e 60%, #2c2460 100%);
+  }
+  .banner-3::before {
+    content: '合心';
+    position: absolute;
+    right: -4px; top: -8px;
+    font-size: 76px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.10);
+    line-height: 1;
+    pointer-events: none;
+    font-family: 'Noto Serif KR', serif;
+  }
+
+  /* 배너 4: 작명소 — 딥 차콜 */
+  .banner-4 {
+    background:
+      linear-gradient(145deg, #4a4a44 0%, #2a2a24 60%, #111110 100%);
+  }
+  .banner-4::before {
+    content: '字名';
+    position: absolute;
+    right: -4px; top: -8px;
+    font-size: 76px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.10);
+    line-height: 1;
+    pointer-events: none;
+    font-family: 'Noto Serif KR', serif;
+  }
+
+  .banner-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 3px 8px;
+    border-radius: 20px;
+    margin-bottom: 6px;
+    width: fit-content;
+  }
+  .banner-pill.amber { background: rgba(255,255,255,0.18); color: #fde68a; border: 0.5px solid rgba(255,255,255,0.20); }
+  .banner-pill.green { background: rgba(255,255,255,0.18); color: #a7f3d0; border: 0.5px solid rgba(255,255,255,0.20); }
+  .banner-pill.purple { background: rgba(255,255,255,0.18); color: #c4b5fd; border: 0.5px solid rgba(255,255,255,0.20); }
+  .banner-pill.dark { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.80); border: 0.5px solid rgba(255,255,255,0.15); }
+
+  .banner-title-after {
+    font-size: 16px;
+    font-weight: 500;
+    color: #ffffff;
+    line-height: 1.35;
+    margin-bottom: 3px;
+    letter-spacing: -0.02em;
+  }
+  .banner-sub-after {
+    font-size: 11px;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 10px;
+  }
+  .banner-cta-after {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.90);
+    background: rgba(255,255,255,0.15);
+    border: 0.5px solid rgba(255,255,255,0.25);
+    border-radius: 7px;
+    padding: 6px 12px;
+    backdrop-filter: blur(4px);
+  }
+  .banner-cta-after::after { content: '→'; margin-left: 2px; }
+
+  .banner-dots-after {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    margin-top: 8px;
+    margin-bottom: 4px;
+  }
+  .dot-after { width: 4px; height: 4px; border-radius: 50%; background: rgba(0,0,0,0.18); }
+  .dot-after.active { background: #1a1a18; width: 12px; border-radius: 2px; }
+
+  /* ── 인기 서비스 — 개선 ── */
+  .section-header-after {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 16px 8px;
+  }
+  .section-title-after {
+    font-size: 13px;
+    font-weight: 500;
+    color: #1a1a18;
+    letter-spacing: -0.01em;
+  }
+  .section-more {
+    font-size: 11px;
+    color: #8a8a82;
+  }
+
+  .service-grid-after {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 0 16px 12px;
+  }
+  .service-card-after {
+    background: #ffffff;
+    border: 0.5px solid rgba(0,0,0,0.08);
+    border-radius: 14px;
+    padding: 14px 12px 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  /* 카드 배경 텍스처 */
+  .service-card-after::before {
+    content: attr(data-glyph);
+    position: absolute;
+    right: -4px; bottom: -8px;
+    font-size: 52px;
+    font-weight: 700;
+    color: rgba(0,0,0,0.04);
+    line-height: 1;
+    pointer-events: none;
+    font-family: 'Noto Serif KR', serif;
+  }
+  .service-icon-after {
+    font-size: 26px;
+    margin-bottom: 8px;
+  }
+  .service-name-after {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1a1a18;
+    margin-bottom: 2px;
+    letter-spacing: -0.01em;
+  }
+  .service-sub-after {
+    font-size: 10px;
+    color: #8a8a82;
+    line-height: 1.4;
+  }
+
+  /* ── Spotlight — 개선 ── */
+  .spotlight-after {
+    margin: 0 16px 12px;
+    background: #1a1a18;
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .spotlight-after::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 100% 50%, rgba(180,150,80,0.18) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .spotlight-badge-after {
+    font-size: 9px;
+    background: rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.80);
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-bottom: 5px;
+    display: inline-block;
+    border: 0.5px solid rgba(255,255,255,0.15);
+    letter-spacing: 0.04em;
+  }
+  .spotlight-title-after {
+    font-size: 15px;
+    font-weight: 500;
+    color: #ffffff;
+    margin-bottom: 2px;
+    letter-spacing: -0.01em;
+  }
+  .spotlight-sub-after {
+    font-size: 11px;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 10px;
+  }
+  .spotlight-cta-after {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.80);
+    background: rgba(255,255,255,0.10);
+    border: 0.5px solid rgba(255,255,255,0.15);
+    border-radius: 7px;
+    padding: 5px 10px;
+  }
+  .spotlight-cta-after::after { content: '→'; margin-left: 2px; }
+  .spotlight-glyph-after {
+    font-size: 48px;
+    color: rgba(255,255,255,0.10);
+    font-weight: 700;
+    font-family: 'Noto Serif KR', serif;
+    line-height: 1;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── 더보기 그리드 — 개선 ── */
+  .more-grid-after {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 0 16px 20px;
+  }
+  .more-card-after {
+    background: #ffffff;
+    border: 0.5px solid rgba(0,0,0,0.08);
+    border-radius: 14px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .more-icon-wrap {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    background: #f5f4ef;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .more-text {}
+  .more-name { font-size: 13px; font-weight: 500; color: #1a1a18; }
+  .more-sub { font-size: 10px; color: #8a8a82; }
+
+  /* ── Bottom Nav ── */
+  .bottom-nav {
+    display: flex;
+    background: #ffffff;
+    border-top: 0.5px solid rgba(0,0,0,0.08);
+    padding: 8px 0 12px;
+  }
+  .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    font-size: 9px;
+    color: #b0a898;
+    padding: 4px 0;
+  }
+  .nav-item.active { color: #1a1a18; }
+  .nav-icon { font-size: 18px; }
+
+  /* ── 개선 포인트 설명 ── */
+  .notes {
+    max-width: 680px;
+    margin: 32px auto 0;
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+  }
+  .notes h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a1a18;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 0.5px solid rgba(0,0,0,0.10);
+  }
+  .note-item {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 14px;
+    align-items: flex-start;
+  }
+  .note-num {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: #1a1a18;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 600;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .note-content h3 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #1a1a18;
+    margin-bottom: 3px;
+  }
+  .note-content p {
+    font-size: 12px;
+    color: #5a5a56;
+    line-height: 1.6;
+  }
+  .note-content .tag {
+    display: inline-block;
+    font-size: 10px;
+    padding: 1px 7px;
+    border-radius: 4px;
+    background: #f5f4ef;
+    color: #5a5a56;
+    margin-right: 4px;
+    margin-top: 4px;
+    border: 0.5px solid rgba(0,0,0,0.10);
+  }
+  .note-content .tag.new { background: #1a1a18; color: #fff; border-color: transparent; }
+
+  /* ── 탭 전환 ── */
+  .tab-bar {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  .tab-btn {
+    padding: 7px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    border: 0.5px solid rgba(0,0,0,0.14);
+    background: #ffffff;
+    color: #5a5a56;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.15s;
+  }
+  .tab-btn.active {
+    background: #1a1a18;
+    color: #ffffff;
+    border-color: transparent;
+  }
+
+  .phone-scroll {
+    overflow-y: auto;
+    max-height: 680px;
+    scrollbar-width: none;
+  }
+  .phone-scroll::-webkit-scrollbar { display: none; }
+
+  .section-divider {
+    height: 6px;
+    background: #f5f4ef;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-title">
+  <h1>무운 메인 화면 디자인 개선 시안</h1>
+  <p>라이트 테마 기반 · 이미지감 강화 · 단조로움 해소</p>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('compare')">Before / After 비교</button>
+  <button class="tab-btn" onclick="showTab('after')">개선 시안 단독</button>
+  <button class="tab-btn" onclick="showTab('notes')">개선 포인트 설명</button>
+</div>
+
+<!-- ── COMPARE VIEW ── -->
+<div id="view-compare" class="comparison">
+
+  <!-- BEFORE -->
+  <div class="phone-wrap">
+    <div class="phone-label">Before — 현재</div>
+    <div class="phone">
+      <div class="phone-scroll">
+        <!-- AppBar -->
+        <div class="appbar">
+          <div class="appbar-logo">무운 <span>MuUn</span></div>
+          <div class="appbar-icon">🔍</div>
+        </div>
+
+        <!-- Hero -->
+        <div class="hero-before">
+          <h2>지금 바로<br>내 사주를 확인하세요</h2>
+          <p>생년월일만 입력하면 바로 시작됩니다</p>
+          <div class="trust-badges">
+            <span class="trust-badge">✓ 100% 무료</span>
+            <span class="trust-badge">✓ 회원가입 없음</span>
+            <span class="trust-badge">✓ 서버 저장 없음</span>
+          </div>
+          <div class="form-card">
+            <div class="form-steps">
+              <div class="step active"><div class="step-dot">1</div>생년월일</div>
+              <div class="step-line"></div>
+              <div class="step"><div class="step-dot">2</div>상세 정보</div>
+            </div>
+            <div class="form-label">생년월일 입력</div>
+            <input class="form-input" placeholder="예: 19930316" readonly>
+            <button class="form-btn">다음 단계 →</button>
+          </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- Banner -->
+        <div class="banner-before">
+          <div class="banner-card-before">
+            <div>
+              <div class="banner-tag-before">2026 병오년</div>
+              <div class="banner-title-before">올해의 운세<br>지금 확인하세요</div>
+              <div class="banner-sub-before">병오년(丙午年) 나의 총운·월별 운세</div>
+              <div class="banner-cta-before">신년운세 보기 →</div>
+            </div>
+            <div class="banner-glyph-before">丙<br>午</div>
+          </div>
+          <div class="banner-dots">
+            <div class="dot active"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+          </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- 인기 서비스 -->
+        <div class="section-header">
+          <div class="section-title">인기 서비스</div>
+        </div>
+        <div class="service-grid-before">
+          <div class="service-card-before">
+            <div class="service-icon">💑</div>
+            <div class="service-name">궁합</div>
+            <div class="service-sub">사주 오행 조화 분석</div>
+          </div>
+          <div class="service-card-before">
+            <div class="service-icon">✨</div>
+            <div class="service-name">평생사주</div>
+            <div class="service-sub">타고난 기질과 운의 흐름</div>
+          </div>
+          <div class="service-card-before">
+            <div class="service-icon">🔮</div>
+            <div class="service-name">점성술</div>
+            <div class="service-sub">네이탈 차트 분석</div>
+          </div>
+          <div class="service-card-before">
+            <div class="service-icon">🃏</div>
+            <div class="service-name">타로</div>
+            <div class="service-sub">오늘의 카드 한 장</div>
+          </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- Spotlight -->
+        <div class="spotlight-before">
+          <div>
+            <div class="spotlight-badge">NEW</div>
+            <div class="spotlight-title">사주 기반 작명소</div>
+            <div class="spotlight-sub">81수리 성명학으로 이름의 운을 분석합니다</div>
+          </div>
+          <div class="spotlight-glyph">字</div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- 더보기 -->
+        <div class="section-header">
+          <div class="section-title">더보기</div>
+        </div>
+        <div class="more-grid-before">
+          <div class="more-card-before">
+            <div class="service-icon">📜</div>
+            <div class="service-name">토정비결</div>
+          </div>
+          <div class="more-card-before">
+            <div class="service-icon">🌟</div>
+            <div class="service-name">신년운세</div>
+          </div>
+          <div class="more-card-before">
+            <div class="service-icon">🌙</div>
+            <div class="service-name">오늘의 운세</div>
+          </div>
+          <div class="more-card-before">
+            <div class="service-icon">🧬</div>
+            <div class="service-name">심리테스트</div>
+          </div>
+          <div class="more-card-before">
+            <div class="service-icon">☕</div>
+            <div class="service-name">행운의 점심</div>
+          </div>
+          <div class="more-card-before">
+            <div class="service-icon">💭</div>
+            <div class="service-name">꿈해몽</div>
+          </div>
+          <div class="more-card-before">
+            <div class="service-icon">🌏</div>
+            <div class="service-name">만세력</div>
+          </div>
+        </div>
+
+        <!-- Bottom Nav -->
+        <div class="bottom-nav">
+          <div class="nav-item active"><div class="nav-icon">🏠</div>홈</div>
+          <div class="nav-item"><div class="nav-icon">✨</div>평생사주</div>
+          <div class="nav-item"><div class="nav-icon">💑</div>궁합</div>
+          <div class="nav-item"><div class="nav-icon">📰</div>운세칼럼</div>
+          <div class="nav-item"><div class="nav-icon">☰</div>전체메뉴</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AFTER -->
+  <div class="phone-wrap">
+    <div class="phone-label new">After — 개선 시안</div>
+    <div class="phone">
+      <div class="phone-scroll">
+        <!-- AppBar -->
+        <div class="appbar">
+          <div class="appbar-logo">무운 <span>MuUn</span></div>
+          <div class="appbar-icon">🔍</div>
+        </div>
+
+        <!-- Hero — 개선 -->
+        <div class="hero-after">
+          <div class="hero-eyebrow">명리학 기반 운세</div>
+          <h2>지금 바로<br><em>내 사주</em>를 확인하세요</h2>
+          <p>생년월일만 입력하면 바로 시작됩니다</p>
+          <div class="trust-row">
+            <span class="trust-chip">✓ 100% 무료</span>
+            <span class="trust-chip">✓ 회원가입 없음</span>
+            <span class="trust-chip">✓ 저장 없음</span>
+          </div>
+          <div class="form-card-after">
+            <div class="form-steps-after">
+              <div class="step-after active"><div class="step-dot-after">1</div>생년월일</div>
+              <div class="step-line-after"></div>
+              <div class="step-after"><div class="step-dot-after">2</div>상세 정보</div>
+            </div>
+            <div class="form-label-after">생년월일 입력</div>
+            <input class="form-input-after" placeholder="예: 19930316" readonly>
+            <button class="form-btn-after">다음 단계 →</button>
+          </div>
+        </div>
+
+        <!-- 바로가기 -->
+        <div style="background:#ffffff; padding-bottom:14px;">
+          <div class="shortcuts-after">
+            <a class="shortcut-btn">
+              <div class="shortcut-icon">💑</div>
+              <div class="shortcut-label">궁합</div>
+            </a>
+            <a class="shortcut-btn">
+              <div class="shortcut-icon">✨</div>
+              <div class="shortcut-label">평생사주</div>
+            </a>
+            <a class="shortcut-btn">
+              <div class="shortcut-icon">🃏</div>
+              <div class="shortcut-label">타로</div>
+            </a>
+            <a class="shortcut-btn">
+              <div class="shortcut-icon">🔮</div>
+              <div class="shortcut-label">점성술</div>
+            </a>
+          </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- Banner — 개선 -->
+        <div class="banner-after">
+          <div class="banner-card-after banner-1">
+            <div class="banner-pill amber">2026 병오년</div>
+            <div class="banner-title-after">올해의 운세<br>지금 확인하세요</div>
+            <div class="banner-sub-after">병오년(丙午年) 나의 총운·월별 운세</div>
+            <div class="banner-cta-after">신년운세 보기</div>
+          </div>
+          <div class="banner-dots-after">
+            <div class="dot-after active"></div>
+            <div class="dot-after"></div>
+            <div class="dot-after"></div>
+            <div class="dot-after"></div>
+          </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- 인기 서비스 — 개선 -->
+        <div class="section-header-after">
+          <div class="section-title-after">인기 서비스</div>
+        </div>
+        <div class="service-grid-after">
+          <div class="service-card-after" data-glyph="合">
+            <div class="service-icon-after">💑</div>
+            <div class="service-name-after">궁합</div>
+            <div class="service-sub-after">사주 오행 조화 분석</div>
+          </div>
+          <div class="service-card-after" data-glyph="命">
+            <div class="service-icon-after">✨</div>
+            <div class="service-name-after">평생사주</div>
+            <div class="service-sub-after">타고난 기질과 운의 흐름</div>
+          </div>
+          <div class="service-card-after" data-glyph="星">
+            <div class="service-icon-after">🔮</div>
+            <div class="service-name-after">점성술</div>
+            <div class="service-sub-after">네이탈 차트 분석</div>
+          </div>
+          <div class="service-card-after" data-glyph="占">
+            <div class="service-icon-after">🃏</div>
+            <div class="service-name-after">타로</div>
+            <div class="service-sub-after">오늘의 카드 한 장</div>
+          </div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- Spotlight — 개선 -->
+        <div class="spotlight-after">
+          <div style="position:relative;z-index:1;">
+            <div class="spotlight-badge-after">NEW</div>
+            <div class="spotlight-title-after">사주 기반 작명소</div>
+            <div class="spotlight-sub-after">81수리 성명학으로 이름의 운을 분석합니다</div>
+            <div class="spotlight-cta-after">작명소 바로가기</div>
+          </div>
+          <div class="spotlight-glyph-after">字</div>
+        </div>
+
+        <div class="section-divider"></div>
+
+        <!-- 더보기 — 개선 -->
+        <div class="section-header-after">
+          <div class="section-title-after">더보기</div>
+        </div>
+        <div class="more-grid-after">
+          <div class="more-card-after">
+            <div class="more-icon-wrap">📜</div>
+            <div class="more-text">
+              <div class="more-name">토정비결</div>
+              <div class="more-sub">한 해 운세 풀이</div>
+            </div>
+          </div>
+          <div class="more-card-after">
+            <div class="more-icon-wrap">🌟</div>
+            <div class="more-text">
+              <div class="more-name">신년운세</div>
+              <div class="more-sub">2026년 총운</div>
+            </div>
+          </div>
+          <div class="more-card-after">
+            <div class="more-icon-wrap">🌙</div>
+            <div class="more-text">
+              <div class="more-name">오늘의 운세</div>
+              <div class="more-sub">일별 운세 확인</div>
+            </div>
+          </div>
+          <div class="more-card-after">
+            <div class="more-icon-wrap">🧬</div>
+            <div class="more-text">
+              <div class="more-name">심리테스트</div>
+              <div class="more-sub">사주 기반 성격</div>
+            </div>
+          </div>
+          <div class="more-card-after">
+            <div class="more-icon-wrap">☕</div>
+            <div class="more-text">
+              <div class="more-name">행운의 점심</div>
+              <div class="more-sub">오늘의 메뉴 추천</div>
+            </div>
+          </div>
+          <div class="more-card-after">
+            <div class="more-icon-wrap">💭</div>
+            <div class="more-text">
+              <div class="more-name">꿈해몽</div>
+              <div class="more-sub">꿈의 의미 풀이</div>
+            </div>
+          </div>
+          <div class="more-card-after">
+            <div class="more-icon-wrap">🌏</div>
+            <div class="more-text">
+              <div class="more-name">만세력</div>
+              <div class="more-sub">음양력 변환</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Nav -->
+        <div class="bottom-nav">
+          <div class="nav-item active"><div class="nav-icon">🏠</div>홈</div>
+          <div class="nav-item"><div class="nav-icon">✨</div>평생사주</div>
+          <div class="nav-item"><div class="nav-icon">💑</div>궁합</div>
+          <div class="nav-item"><div class="nav-icon">📰</div>운세칼럼</div>
+          <div class="nav-item"><div class="nav-icon">☰</div>전체메뉴</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── AFTER ONLY VIEW ── -->
+<div id="view-after" style="display:none;" class="comparison">
+  <div class="phone-wrap">
+    <div class="phone-label new">개선 시안</div>
+    <div class="phone">
+      <div class="phone-scroll">
+        <div class="appbar">
+          <div class="appbar-logo">무운 <span>MuUn</span></div>
+          <div class="appbar-icon">🔍</div>
+        </div>
+        <div class="hero-after">
+          <div class="hero-eyebrow">명리학 기반 운세</div>
+          <h2>지금 바로<br><em>내 사주</em>를 확인하세요</h2>
+          <p>생년월일만 입력하면 바로 시작됩니다</p>
+          <div class="trust-row">
+            <span class="trust-chip">✓ 100% 무료</span>
+            <span class="trust-chip">✓ 회원가입 없음</span>
+            <span class="trust-chip">✓ 저장 없음</span>
+          </div>
+          <div class="form-card-after">
+            <div class="form-steps-after">
+              <div class="step-after active"><div class="step-dot-after">1</div>생년월일</div>
+              <div class="step-line-after"></div>
+              <div class="step-after"><div class="step-dot-after">2</div>상세 정보</div>
+            </div>
+            <div class="form-label-after">생년월일 입력</div>
+            <input class="form-input-after" placeholder="예: 19930316" readonly>
+            <button class="form-btn-after">다음 단계 →</button>
+          </div>
+        </div>
+        <div style="background:#ffffff; padding-bottom:14px;">
+          <div class="shortcuts-after">
+            <a class="shortcut-btn"><div class="shortcut-icon">💑</div><div class="shortcut-label">궁합</div></a>
+            <a class="shortcut-btn"><div class="shortcut-icon">✨</div><div class="shortcut-label">평생사주</div></a>
+            <a class="shortcut-btn"><div class="shortcut-icon">🃏</div><div class="shortcut-label">타로</div></a>
+            <a class="shortcut-btn"><div class="shortcut-icon">🔮</div><div class="shortcut-label">점성술</div></a>
+          </div>
+        </div>
+        <div class="section-divider"></div>
+        <div class="banner-after">
+          <div class="banner-card-after banner-1">
+            <div class="banner-pill amber">2026 병오년</div>
+            <div class="banner-title-after">올해의 운세<br>지금 확인하세요</div>
+            <div class="banner-sub-after">병오년(丙午年) 나의 총운·월별 운세</div>
+            <div class="banner-cta-after">신년운세 보기</div>
+          </div>
+          <div class="banner-dots-after">
+            <div class="dot-after active"></div>
+            <div class="dot-after"></div>
+            <div class="dot-after"></div>
+            <div class="dot-after"></div>
+          </div>
+        </div>
+        <div class="section-divider"></div>
+        <div class="section-header-after"><div class="section-title-after">인기 서비스</div></div>
+        <div class="service-grid-after">
+          <div class="service-card-after" data-glyph="合"><div class="service-icon-after">💑</div><div class="service-name-after">궁합</div><div class="service-sub-after">사주 오행 조화 분석</div></div>
+          <div class="service-card-after" data-glyph="命"><div class="service-icon-after">✨</div><div class="service-name-after">평생사주</div><div class="service-sub-after">타고난 기질과 운의 흐름</div></div>
+          <div class="service-card-after" data-glyph="星"><div class="service-icon-after">🔮</div><div class="service-name-after">점성술</div><div class="service-sub-after">네이탈 차트 분석</div></div>
+          <div class="service-card-after" data-glyph="占"><div class="service-icon-after">🃏</div><div class="service-name-after">타로</div><div class="service-sub-after">오늘의 카드 한 장</div></div>
+        </div>
+        <div class="section-divider"></div>
+        <div class="spotlight-after">
+          <div style="position:relative;z-index:1;">
+            <div class="spotlight-badge-after">NEW</div>
+            <div class="spotlight-title-after">사주 기반 작명소</div>
+            <div class="spotlight-sub-after">81수리 성명학으로 이름의 운을 분석합니다</div>
+            <div class="spotlight-cta-after">작명소 바로가기</div>
+          </div>
+          <div class="spotlight-glyph-after">字</div>
+        </div>
+        <div class="section-divider"></div>
+        <div class="section-header-after"><div class="section-title-after">더보기</div></div>
+        <div class="more-grid-after">
+          <div class="more-card-after"><div class="more-icon-wrap">📜</div><div class="more-text"><div class="more-name">토정비결</div><div class="more-sub">한 해 운세 풀이</div></div></div>
+          <div class="more-card-after"><div class="more-icon-wrap">🌟</div><div class="more-text"><div class="more-name">신년운세</div><div class="more-sub">2026년 총운</div></div></div>
+          <div class="more-card-after"><div class="more-icon-wrap">🌙</div><div class="more-text"><div class="more-name">오늘의 운세</div><div class="more-sub">일별 운세 확인</div></div></div>
+          <div class="more-card-after"><div class="more-icon-wrap">🧬</div><div class="more-text"><div class="more-name">심리테스트</div><div class="more-sub">사주 기반 성격</div></div></div>
+          <div class="more-card-after"><div class="more-icon-wrap">☕</div><div class="more-text"><div class="more-name">행운의 점심</div><div class="more-sub">오늘의 메뉴 추천</div></div></div>
+          <div class="more-card-after"><div class="more-icon-wrap">💭</div><div class="more-text"><div class="more-name">꿈해몽</div><div class="more-sub">꿈의 의미 풀이</div></div></div>
+          <div class="more-card-after"><div class="more-icon-wrap">🌏</div><div class="more-text"><div class="more-name">만세력</div><div class="more-sub">음양력 변환</div></div></div>
+        </div>
+        <div class="bottom-nav">
+          <div class="nav-item active"><div class="nav-icon">🏠</div>홈</div>
+          <div class="nav-item"><div class="nav-icon">✨</div>평생사주</div>
+          <div class="nav-item"><div class="nav-icon">💑</div>궁합</div>
+          <div class="nav-item"><div class="nav-icon">📰</div>운세칼럼</div>
+          <div class="nav-item"><div class="nav-icon">☰</div>전체메뉴</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 배너 4종 프리뷰 -->
+  <div style="display:flex;flex-direction:column;gap:12px;width:200px;justify-content:flex-start;padding-top:44px;">
+    <div style="font-size:11px;font-weight:600;color:#5a5a56;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px;">배너 4종 프리뷰</div>
+    <div class="banner-card-after banner-1" style="min-height:80px;border-radius:12px;">
+      <div class="banner-pill amber">2026 병오년</div>
+      <div class="banner-title-after" style="font-size:13px;">신년운세</div>
+      <div class="banner-cta-after" style="font-size:10px;padding:4px 10px;">보기 →</div>
+    </div>
+    <div class="banner-card-after banner-2" style="min-height:80px;border-radius:12px;">
+      <div class="banner-pill green">무운에서만</div>
+      <div class="banner-title-after" style="font-size:13px;">가족사주</div>
+      <div class="banner-cta-after" style="font-size:10px;padding:4px 10px;">보기 →</div>
+    </div>
+    <div class="banner-card-after banner-3" style="min-height:80px;border-radius:12px;">
+      <div class="banner-pill purple">MBTI × 사주</div>
+      <div class="banner-title-after" style="font-size:13px;">MBTI 궁합</div>
+      <div class="banner-cta-after" style="font-size:10px;padding:4px 10px;">보기 →</div>
+    </div>
+    <div class="banner-card-after banner-4" style="min-height:80px;border-radius:12px;">
+      <div class="banner-pill dark">작명소</div>
+      <div class="banner-title-after" style="font-size:13px;">이름의 운</div>
+      <div class="banner-cta-after" style="font-size:10px;padding:4px 10px;">보기 →</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── NOTES VIEW ── -->
+<div id="view-notes" style="display:none;">
+  <div class="notes">
+    <h2>개선 포인트 상세 설명</h2>
+
+    <div class="note-item">
+      <div class="note-num">1</div>
+      <div class="note-content">
+        <h3>배너: 흰 카드 → 컬러 그라디언트 이미지형 카드</h3>
+        <p>현재 배너는 흰 배경에 텍스트만 있어 와이어프레임처럼 보입니다. 개선안은 각 배너마다 고유한 컬러 그라디언트(황토·세이지·인디고·차콜)를 적용하고, 배경에 한자 레이어를 반투명하게 깔아 시각적 깊이감을 줍니다. CTA 버튼도 유리 질감(glassmorphism)으로 처리합니다.</p>
+        <span class="tag new">핵심 변경</span>
+        <span class="tag">gradient</span>
+        <span class="tag">한자 레이어</span>
+        <span class="tag">glassmorphism CTA</span>
+      </div>
+    </div>
+
+    <div class="note-item">
+      <div class="note-num">2</div>
+      <div class="note-content">
+        <h3>Hero: 배경 앰비언트 + 황토 강조색</h3>
+        <p>흰 배경에 미세한 방사형 그라디언트(황토/베이지 계열)를 추가하여 단순한 흰 박스에서 벗어납니다. 제목의 "내 사주" 부분에 황토 강조색(#6b5c3e)을 적용하고, 상단에 "명리학 기반 운세" eyebrow 텍스트를 추가하여 브랜드 정체성을 강화합니다.</p>
+        <span class="tag">ambient gradient</span>
+        <span class="tag">eyebrow label</span>
+        <span class="tag">accent color</span>
+      </div>
+    </div>
+
+    <div class="note-item">
+      <div class="note-num">3</div>
+      <div class="note-content">
+        <h3>서비스 카드: 배경 한자 워터마크</h3>
+        <p>각 서비스 카드 우하단에 해당 서비스를 상징하는 한자(合·命·星·占)를 매우 연한 투명도로 배치합니다. 텍스트 정렬도 가운데 → 왼쪽 정렬로 변경하여 더 정보 밀도 있는 느낌을 줍니다.</p>
+        <span class="tag">한자 워터마크</span>
+        <span class="tag">좌측 정렬</span>
+      </div>
+    </div>
+
+    <div class="note-item">
+      <div class="note-num">4</div>
+      <div class="note-content">
+        <h3>작명소 Spotlight: 다크 카드로 전환</h3>
+        <p>현재 흰 카드로 된 Spotlight를 다크(#1a1a18) 배경으로 전환하여 섹션 간 시각적 리듬을 만듭니다. 내부에 미세한 황토 앰비언트를 추가하고, 한자 "字"를 반투명 배경 요소로 사용합니다.</p>
+        <span class="tag new">핵심 변경</span>
+        <span class="tag">dark card</span>
+        <span class="tag">visual rhythm</span>
+      </div>
+    </div>
+
+    <div class="note-item">
+      <div class="note-num">5</div>
+      <div class="note-content">
+        <h3>더보기 그리드: 아이콘+텍스트 수평 레이아웃</h3>
+        <p>현재 더보기 카드는 아이콘이 위, 텍스트가 아래인 수직 구조로 빈 공간이 많습니다. 개선안은 아이콘 박스를 왼쪽에, 서비스명+서브텍스트를 오른쪽에 배치하는 수평 레이아웃으로 변경하여 정보 밀도를 높이고 서브텍스트도 추가합니다.</p>
+        <span class="tag">수평 레이아웃</span>
+        <span class="tag">서브텍스트 추가</span>
+        <span class="tag">정보 밀도 향상</span>
+      </div>
+    </div>
+
+    <div class="note-item">
+      <div class="note-num">6</div>
+      <div class="note-content">
+        <h3>바로가기: Hero 하단에 통합</h3>
+        <p>바로가기 4버튼을 Hero 영역 바로 아래(흰 배경 연속)에 배치하여 Hero와 자연스럽게 연결되도록 합니다. 아이콘 박스에 #f5f4ef 배경을 적용하여 시각적으로 구분합니다.</p>
+        <span class="tag">Hero 통합</span>
+        <span class="tag">아이콘 박스</span>
+      </div>
+    </div>
+
+    <div style="margin-top:20px;padding-top:16px;border-top:0.5px solid rgba(0,0,0,0.10);">
+      <div style="font-size:12px;color:#5a5a56;line-height:1.7;">
+        <strong style="color:#1a1a18;">구현 난이도:</strong> 모든 변경사항은 기존 CSS 변수 시스템을 유지하면서 적용 가능합니다. 배너 그라디언트는 <code>MainBanner.tsx</code>의 인라인 스타일 또는 CSS 클래스로, 서비스 카드 한자 워터마크는 <code>data-glyph</code> 속성 + CSS <code>::before</code>로 구현합니다.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function showTab(tab) {
+  document.getElementById('view-compare').style.display = 'none';
+  document.getElementById('view-after').style.display = 'none';
+  document.getElementById('view-notes').style.display = 'none';
+
+  if (tab === 'compare') document.getElementById('view-compare').style.display = 'flex';
+  else if (tab === 'after') document.getElementById('view-after').style.display = 'flex';
+  else if (tab === 'notes') document.getElementById('view-notes').style.display = 'block';
+
+  document.querySelectorAll('.tab-btn').forEach((btn, i) => {
+    btn.classList.remove('active');
+  });
+  const tabs = ['compare','after','notes'];
+  document.querySelectorAll('.tab-btn')[tabs.indexOf(tab)].classList.add('active');
+}
+</script>
+
+</body>
+</html>

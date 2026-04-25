@@ -1,11 +1,5 @@
-/**
- * RelatedServices.tsx
- * 각 서비스 페이지 하단에 표시되는 관련 서비스 내부 링크 섹션
- * - SEO 내부 링크 구조 강화 목적
- * - 페이지 체류 시간 및 탐색 경험 향상
- */
-import { Link } from "wouter";
-import { ArrowRight } from "lucide-react";
+import { Link } from 'wouter';
+import { ArrowUpRight } from 'lucide-react';
 
 export interface ServiceLink {
   href: string;
@@ -19,35 +13,35 @@ interface RelatedServicesProps {
   services: ServiceLink[];
 }
 
-export default function RelatedServices({ title = "함께 보면 좋은 서비스", services }: RelatedServicesProps) {
+export default function RelatedServices({ title = '함께 보면 좋은 서비스', services }: RelatedServicesProps) {
   if (!services || services.length === 0) return null;
 
   return (
-    <section className="w-full max-w-4xl mx-auto my-8 px-4">
-      <div className="border border-border/50 rounded-2xl overflow-hidden bg-white/80 backdrop-blur-sm">
-        <div className="px-6 py-4 border-b border-border/50">
-          <h2 className="text-lg font-semibold text-foreground">{title}</h2>
+    <section className="my-10">
+      <div className="mu-glass-panel overflow-hidden p-5 sm:p-6">
+        <div>
+          <span className="mu-divider-text">Related services</span>
+          <h2 className="mt-3 text-[24px] font-extrabold tracking-[-0.05em] text-slate-900">{title}</h2>
         </div>
-        <ul className="divide-y divide-border/30">
+
+        <div className="mt-5 mu-auto-grid-220">
           {services.map((service) => (
-            <li key={service.href}>
-              <Link href={service.href}>
-                <a className="flex items-center justify-between px-6 py-4 hover:bg-primary/5 transition-colors group">
-                  <div className="flex items-center gap-3">
-                    <span className="text-2xl" aria-hidden="true">{service.emoji}</span>
-                    <div>
-                      <p className="font-medium text-foreground group-hover:text-primary transition-colors">
-                        {service.label}
-                      </p>
-                      <p className="text-sm text-foreground/60 mt-0.5">{service.description}</p>
-                    </div>
+            <Link key={service.href} href={service.href} className="mu-link-card p-4">
+              <div className="flex items-start gap-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[#6B5FFF]/10 text-[22px]">
+                  <span aria-hidden="true">{service.emoji}</span>
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-start justify-between gap-3">
+                    <h3 className="text-[17px] font-extrabold tracking-[-0.04em] text-slate-900">{service.label}</h3>
+                    <ArrowUpRight size={16} className="text-slate-400" aria-hidden="true" />
                   </div>
-                  <ArrowRight className="w-4 h-4 text-foreground/30 group-hover:text-primary transition-colors flex-shrink-0" />
-                </a>
-              </Link>
-            </li>
+                  <p className="mt-2 text-sm leading-6 text-slate-600">{service.description}</p>
+                </div>
+              </div>
+            </Link>
           ))}
-        </ul>
+        </div>
       </div>
     </section>
   );

@@ -1,17 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useCanonical } from '@/lib/use-canonical';
 import { setHomeOGTags } from '@/lib/og-tags';
-import { OrganizationSchema, BreadcrumbListSchema, WebApplicationSchema, SiteNavigationSchema } from "@/components/SchemaMarkup";
-import { HeroFirstVisit } from "@/components/HeroFirstVisit";
-import { HeroReturnVisit } from "@/components/HeroReturnVisit";
-import { TrustBar } from "@/components/TrustBar";
-import { MainBanner } from "@/components/MainBanner";
-import { ServiceGrid } from "@/components/ServiceGrid";
-import { HomeColumnSection } from "@/components/HomeColumnSection";
-import { HomeDictionarySection } from "@/components/HomeDictionarySection";
-
-const GAP = <div aria-hidden="true" style={{ height: 8, background: '#F2F4F6', flexShrink: 0 }} />;
+import { OrganizationSchema, BreadcrumbListSchema, WebApplicationSchema, SiteNavigationSchema } from '@/components/SchemaMarkup';
+import { HeroFirstVisit } from '@/components/HeroFirstVisit';
+import { HeroReturnVisit } from '@/components/HeroReturnVisit';
+import { MainBanner } from '@/components/MainBanner';
+import { ServiceGrid } from '@/components/ServiceGrid';
+import { HomeColumnSection } from '@/components/HomeColumnSection';
+import { HomeDictionarySection } from '@/components/HomeDictionarySection';
 
 export default function Home() {
   useCanonical('/');
@@ -20,17 +17,26 @@ export default function Home() {
     setHomeOGTags();
   }, []);
 
-  const [hasBirth, setHasBirth] = useState<boolean>(
-    () => !!localStorage.getItem("muun_user_birth")
-  );
+  const [hasBirth, setHasBirth] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    setHasBirth(!!window.localStorage.getItem('muun_user_birth'));
+  }, []);
+
   const handleBirthSaved = () => setHasBirth(true);
   const handleBirthDeleted = () => setHasBirth(false);
 
+  const heroComponent = useMemo(
+    () => (hasBirth ? <HeroReturnVisit onDeleteBirth={handleBirthDeleted} /> : <HeroFirstVisit onBirthSaved={handleBirthSaved} />),
+    [hasBirth],
+  );
+
   return (
-    <div className="min-h-screen overflow-x-hidden antialiased" style={{ background: '#F2F4F6', color: '#191f28' }}>
+    <div className="min-h-screen overflow-x-hidden antialiased mu-page-bg">
       <Helmet>
         <title>무료 사주 무운 (MuUn) - 회원가입 없는 100% 무료 사주풀이 및 2026년 운세</title>
-        <meta name="description" content="회원가입 없이, 개인정보 저장 없이, 생년월일만으로 바로 확인하는 100% 무료 사주풀이. 2026년 병오년 신년운세, 토정비결, 궁합, 타로, 꿈해몽까지 모든 서비스가 완전 무료입니다." />
+        <meta name="description" content="회원가입 없이, 개인정보 저장 없이, 생년월일만으로 바로 확인하는 100% 무료 사주풀이. 2026년 병오년 신년운세, 토정비결, 궁합, 타로, 꿈해몽까지 모두 무료로 이용하세요." />
         <meta name="keywords" content="무료사주, 무료운세, 2026년운세, 사주풀이, 무료사주풀이, 신년운세, 병오년운세, 토정비결, 궁합, 만세력, 타로, 꿈해몽, 회원가입없는사주, 무료사주사이트" />
         <link rel="canonical" href="https://muunsaju.com/" />
         <meta property="og:title" content="무료 사주 무운 (MuUn) - 회원가입 없는 100% 무료 사주풀이" />
@@ -47,53 +53,27 @@ export default function Home() {
         <meta name="robots" content="index, follow" />
       </Helmet>
 
-      {/* Schema Markup */}
       <OrganizationSchema />
       <WebApplicationSchema />
       <SiteNavigationSchema />
-      <BreadcrumbListSchema items={[
-        { name: "홈", url: "https://muunsaju.com" },
-      ]} />
+      <BreadcrumbListSchema items={[{ name: '홈', url: 'https://muunsaju.com' }]} />
 
-      {/* ── Trust Bar + Hero (AppBar 바로 아래, 다크 그라디언트 블록) ── */}
-      <div>
-        <TrustBar />
-        {hasBirth ? (
-          <HeroReturnVisit onDeleteBirth={handleBirthDeleted} />
-        ) : (
-          <HeroFirstVisit onBirthSaved={handleBirthSaved} />
-        )}
-      </div>
+      {heroComponent}
 
-      {GAP}
+      <section className="pb-2">
+        <ServiceGrid />
+      </section>
 
-      {/* ── 메인 배너 (흰 블록) ── */}
-      <div style={{ background: '#ffffff' }}>
+      <div className="pb-2">
         <MainBanner />
       </div>
 
-      {GAP}
-
-      {/* ── 인기서비스 + 작명소 + 더보기 ── */}
-      <div>
-        <ServiceGrid />
-      </div>
-
-      {GAP}
-
-      {/* ── 운세 칼럼 ── */}
-      <div>
-        <HomeColumnSection />
-      </div>
-
-      {GAP}
-
-      {/* ── 운세 사전 ── */}
-      <div>
-        <HomeDictionarySection />
-      </div>
-
-      {GAP}
+      <section className="mu-container-narrow py-4 md:py-6">
+        <div className="grid items-start gap-6 xl:grid-cols-[1.12fr_0.88fr]">
+          <HomeColumnSection />
+          <HomeDictionarySection />
+        </div>
+      </section>
     </div>
   );
 }

@@ -1,0 +1,14 @@
+# robots.txt for MUUN - 무운 사주 및 운세 서비스
+
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api
+
+Sitemap: https://muunsaju.com/sitemap.xml
+
+User-agent: Yeti
+Allow: /
+
+User-agent: Googlebot
+Allow: /

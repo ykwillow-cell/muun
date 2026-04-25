@@ -12,6 +12,7 @@ import { initGA, trackPageView } from "@/lib/ga4";
 import { Analytics } from "@vercel/analytics/react";
 import { HelmetProvider } from "react-helmet-async";
 import Footer from "./components/Footer";
+import RouteBanner from "./components/RouteBanner";
 
 // 홈 페이지는 즉시 로드 (LCP 최적화)
 import Home from "./pages/Home";
@@ -118,6 +119,7 @@ function App() {
             <div className="mu-page-shell">
               <div className="mu-page-shell__inner">
                 <AppBar />
+                <RouteBanner />
                 <main style={{ paddingBottom: 0, flex: 1 }}>
                   <Router />
                 </main>

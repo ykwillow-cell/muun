@@ -1,106 +1,76 @@
-import { useState, useEffect, useMemo } from 'react';
-import { Link } from 'wouter';
+import { useEffect, useMemo, useState } from 'react';
+import { Link, useLocation } from 'wouter';
 import { useCanonical } from '@/lib/use-canonical';
 import { Helmet } from 'react-helmet-async';
-import { ChevronLeft, ChevronRight, Search, Check, ChevronDown } from 'lucide-react';
-import { getAllColumns, COLUMN_CATEGORIES, ColumnData } from '@/lib/column-data-api';
+import { ArrowUpRight, BookOpenText, Clock3, Search, SlidersHorizontal, Sparkles } from 'lucide-react';
+import { GUIDE_INDEX } from '@/generated/content-snapshots';
 
-// ── 카테고리 칩 목록 (와이어프레임 기준 순서) ──
 const CHIP_CATEGORIES = [
-  { id: null,           label: '전체' },
-  { id: 'luck',         label: '개운법' },
-  { id: 'basic',        label: '사주 기초' },
-  { id: 'relationship', label: '관계 & 궁합' },
-  { id: 'health',       label: '건강 & 운' },
-  { id: 'money',        label: '재물운' },
-  { id: 'flow',         label: '운명의 흐름' },
-  { id: 'career',       label: '취업 & 커리어' },
-  { id: 'love',         label: '연애 & 결혼' },
-  { id: 'family',       label: '가족 & 자녀' },
-];
+  { id: null, label: '전체' },
+  { id: 'luck', label: '개운법' },
+  { id: 'basic', label: '사주 기초' },
+  { id: 'relationship', label: '관계 · 궁합' },
+  { id: 'health', label: '건강 · 운' },
+  { id: 'money', label: '재물운' },
+  { id: 'flow', label: '운의 흐름' },
+  { id: 'career', label: '취업 · 커리어' },
+  { id: 'love', label: '연애 · 결혼' },
+  { id: 'family', label: '가족 · 자녀' },
+] as const;
 
-// ── 카테고리별 칩 색상 (라이트 파스텔) ──
-const CHIP_COLORS: Record<string, string> = {
-  luck:         'bg-[#FFF8E1] text-[#B8860B]',
-  basic:        'bg-[#E3F2FD] text-[#1565C0]',
-  relationship: 'bg-[#FCE4EC] text-[#C2185B]',
-  health:       'bg-[#E8F5E9] text-[#2E7D32]',
-  money:        'bg-[#F3E5F5] text-[#7B1FA2]',
-  flow:         'bg-[#E8EAF6] text-[#3949AB]',
-  career:       'bg-[#FFF3E0] text-[#E65100]',
-  love:         'bg-[#FCE4EC] text-[#AD1457]',
-  family:       'bg-[#E0F2F1] text-[#00695C]',
-};
+const PAGE_SIZE = 12;
 
-// ── 날짜 포맷 헬퍼 ──
-function formatDate(iso: string): string {
-  const d = new Date(iso);
-  const month = d.getMonth() + 1;
-  const day   = d.getDate();
-  return `${month}월 ${day}일`;
+function formatDate(value: string) {
+  if (!value) return '';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '';
+  return date.toLocaleDateString('ko-KR', { year: 'numeric', month: 'short', day: 'numeric' });
 }
-
-const PAGE_SIZE = 10;
 
 export default function Guide() {
   useCanonical('/guide');
+  const [location] = useLocation();
 
+  const getQuery = () => (typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('q') || '' : '');
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [allColumns, setAllColumns]             = useState<ColumnData[]>([]);
-  const [isLoading, setIsLoading]               = useState(true);
-  const [searchQuery, setSearchQuery]           = useState('');
-  const [sortOrder, setSortOrder]               = useState<'newest' | 'oldest'>('newest');
-  const [showSortMenu, setShowSortMenu]         = useState(false);
-  const [visibleCount, setVisibleCount]         = useState(PAGE_SIZE);
+  const [searchQuery, setSearchQuery] = useState(getQuery());
+  const [sortOrder, setSortOrder] = useState<'newest' | 'oldest'>('newest');
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   useEffect(() => {
-    (async () => {
-      setIsLoading(true);
-      const cols = await getAllColumns();
-      setAllColumns(cols);
-      setIsLoading(false);
-    })();
-  }, []);
+    setSearchQuery(getQuery());
+    setVisibleCount(PAGE_SIZE);
+  }, [location]);
 
-  // 필터 + 검색 + 정렬
   const filtered = useMemo(() => {
-    let list = selectedCategory
-      ? allColumns.filter(c => c.category === selectedCategory)
-      : allColumns;
+    const q = searchQuery.trim().toLowerCase();
+    let list = selectedCategory ? GUIDE_INDEX.filter((item) => item.category === selectedCategory) : [...GUIDE_INDEX];
 
-    if (searchQuery.trim()) {
-      const q = searchQuery.trim().toLowerCase();
-      list = list.filter(c =>
-        c.title.toLowerCase().includes(q) ||
-        c.description.toLowerCase().includes(q) ||
-        c.categoryLabel.toLowerCase().includes(q)
-      );
+    if (q) {
+      list = list.filter((item) => [item.title, item.description, item.categoryLabel, item.author].join(' ').toLowerCase().includes(q));
     }
 
-    if (sortOrder === 'oldest') {
-      list = [...list].reverse();
-    }
+    list.sort((a, b) => {
+      const aTime = new Date(a.publishedDate).getTime() || 0;
+      const bTime = new Date(b.publishedDate).getTime() || 0;
+      return sortOrder === 'newest' ? bTime - aTime : aTime - bTime;
+    });
 
     return list;
-  }, [allColumns, selectedCategory, searchQuery, sortOrder]);
+  }, [searchQuery, selectedCategory, sortOrder]);
 
   const displayed = filtered.slice(0, visibleCount);
-  const hasMore   = visibleCount < filtered.length;
-
-  // 카테고리 변경 시 페이지 리셋
-  const handleCategoryChange = (id: string | null) => {
-    setSelectedCategory(id);
-    setVisibleCount(PAGE_SIZE);
-  };
+  const hasMore = visibleCount < filtered.length;
+  const categoryCount = new Set(GUIDE_INDEX.map((item) => item.category)).size;
 
   return (
-    <div className="min-h-screen bg-[#F7F7FA]">
+    <div className="min-h-screen mu-page-bg pb-16">
       <Helmet>
         <title>운세 칼럼 - 사주 전문가의 깊이 있는 운세 이야기 | 무운 (MuUn)</title>
-        <meta name="description" content="사주 기초부터 개운법, 재물운, 자녀운, 인연까지. 40대 여성을 위한 깊이 있는 사주 칼럼을 회원가입 없이 100% 무료로 읽어보세요." />
-        <meta name="keywords" content="사주칼럼, 운세칼럼, 사주이야기, 개운법, 재물운, 자녀운, 인연, 사주기초, 사주공부" />
+        <meta name="description" content="사주 기초부터 개운법, 재물운, 건강운, 관계 운까지. 무운의 운세 칼럼 아카이브에서 깊이 있는 해설을 무료로 읽어보세요." />
+        <meta name="keywords" content="사주칼럼, 운세칼럼, 개운법, 재물운, 건강운, 관계운, 사주기초, 사주공부" />
         <meta property="og:title" content="운세 칼럼 - 사주 전문가의 깊이 있는 운세 이야기 | 무운 (MuUn)" />
-        <meta property="og:description" content="사주 기초부터 개운법, 재물운, 자녀운, 인연까지. 40대 여성을 위한 깊이 있는 사주 칼럼을 회원가입 없이 100% 무료로 읽어보세요." />
+        <meta property="og:description" content="사주 기초부터 개운법, 재물운, 건강운, 관계 운까지. 무운의 운세 칼럼 아카이브에서 깊이 있는 해설을 무료로 읽어보세요." />
         <meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png" />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="무운 (MuUn)" />
@@ -110,199 +80,132 @@ export default function Guide() {
         <link rel="canonical" href="https://muunsaju.com/guide" />
       </Helmet>
 
-      {/* ── 헤더 ── */}
-      <div className="sticky top-0 z-50 bg-white border-b border-[#EBEBEB]">
-        <div className="max-w-2xl mx-auto px-4 h-14 flex items-center justify-between">
-          <div className="flex items-center gap-1">
-            <Link href="/">
-              <button className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-black/[0.05] transition-colors -ml-2" aria-label="뒤로가기">
-                <ChevronLeft className="w-5 h-5 text-[#1a1a18]" />
-              </button>
-            </Link>
-            <h1 className="text-[17px] font-bold text-[#1a1a18] tracking-[-0.3px]">운세 칼럼</h1>
-          </div>
-          {/* 헤더 우측 검색 아이콘은 글로벌 검색 사용 */}
-        </div>
-      </div>
-
-      {/* ── 히어로 배너 ── */}
-      <div className="bg-[#1E0F4A] px-4 py-5">
-        <div className="max-w-2xl mx-auto flex items-center justify-between gap-4">
-          <div>
-            <p className="text-[11px] font-semibold text-[#A78BFA] uppercase tracking-widest mb-1">
-              무운의 운세 지혜
-            </p>
-            <p className="text-[16px] font-bold text-white leading-snug">
-              역술인이 전하는 사주 조언 · 개운법
-            </p>
-          </div>
-          <div className="flex-shrink-0 bg-white/15 border border-white/25 rounded-xl px-4 py-2 text-center min-w-[72px]">
-            <p className="text-[11px] text-white/60 mb-0.5">총</p>
-            <p className="text-[20px] font-extrabold text-white leading-none">{allColumns.length}</p>
-            <p className="text-[11px] text-white/60 mt-0.5">기편</p>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-2xl mx-auto px-4">
-
-        {/* ── 검색 바 ── */}
-        <div className="mt-4 mb-3">
-          <div className="flex items-center gap-3 bg-[#EEE9FF] rounded-2xl px-4 h-[52px]">
-            <Search className="w-5 h-5 text-[#7C3AED] flex-shrink-0" />
-            <input
-              type="search"
-              placeholder="칼럼 검색…"
-              value={searchQuery}
-              onChange={e => { setSearchQuery(e.target.value); setVisibleCount(PAGE_SIZE); }}
-              className="flex-1 bg-transparent text-[15px] text-[#1a1a18] placeholder-[#9B8FC4] outline-none"
-            />
-          </div>
-        </div>
-
-        {/* ── 카테고리 필터 칩 (flex-wrap 2줄 구조) ── */}
-        <div className="flex flex-wrap gap-x-2 gap-y-2 mb-4">
-          {CHIP_CATEGORIES.map(cat => {
-            const isActive = selectedCategory === cat.id;
-            return (
-              <button
-                key={String(cat.id)}
-                onClick={() => handleCategoryChange(cat.id)}
-                className={`inline-flex items-center gap-1.5 px-4 h-9 rounded-full text-[13px] font-semibold border transition-all whitespace-nowrap ${
-                  isActive
-                    ? 'bg-[#6D28D9] border-[#6D28D9] text-white shadow-sm'
-                    : 'bg-white border-[#E0D9F5] text-[#5a5a56] hover:border-[#6D28D9]/40'
-                }`}
-              >
-                {isActive && <Check className="w-3.5 h-3.5" />}
-                {cat.label}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* ── 결과 수 + 정렬 ── */}
-        <div className="flex items-center justify-between mb-3">
-          <p className="text-[13px] text-[#5a5a56]">
-            전체 <span className="font-bold text-[#1a1a18]">{filtered.length}</span>편
-          </p>
-          <div className="relative">
-            <button
-              onClick={() => setShowSortMenu(v => !v)}
-              className="flex items-center gap-1 text-[13px] font-semibold text-[#6D28D9] py-1"
-            >
-              {sortOrder === 'newest' ? '최신순' : '오래된순'}
-              <ChevronDown className={`w-4 h-4 transition-transform ${showSortMenu ? 'rotate-180' : ''}`} />
-            </button>
-            {showSortMenu && (
-              <div className="absolute right-0 top-full mt-1 bg-white border border-[#EBEBEB] rounded-xl shadow-lg overflow-hidden z-20 w-[120px]">
-                {(['newest', 'oldest'] as const).map(opt => (
-                  <button
-                    key={opt}
-                    onClick={() => { setSortOrder(opt); setShowSortMenu(false); setVisibleCount(PAGE_SIZE); }}
-                    className={`w-full text-left px-4 py-3 text-[13px] transition-colors ${
-                      sortOrder === opt ? 'font-bold text-[#6D28D9] bg-[#F3EEFF]' : 'text-[#1a1a18] hover:bg-[#F7F7FA]'
-                    }`}
-                  >
-                    {opt === 'newest' ? '최신순' : '오래된순'}
-                  </button>
-                ))}
+      <section className="mu-hero-shell">
+        <div className="mu-container-narrow px-4 pb-8 pt-5 text-white">
+          <div className="grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))] items-end">
+            <div>
+              <span className="mu-kicker">Fortune editorial</span>
+              <h1 className="mt-4 text-[34px] font-extrabold leading-[1.1] tracking-[-0.06em] text-white">운세 칼럼 아카이브</h1>
+              <p className="mt-4 text-sm leading-7 text-white/80">
+                검색으로 들어온 방문자도 다음 글과 관련 서비스로 이어질 수 있도록, 사주 기초 개념과 실제 고민을 연결하는 읽을거리를 카테고리별로 정리했습니다.
+              </p>
+              <div className="mt-5 flex flex-wrap gap-2">
+                <span className="mu-stat-pill"><BookOpenText size={14} /> 무료 아카이브</span>
+                <span className="mu-stat-pill"><Sparkles size={14} /> 사주 기초부터 관계 운까지</span>
               </div>
-            )}
-          </div>
-        </div>
-
-        {/* ── 칼럼 카드 리스트 ── */}
-        <div className="flex flex-col gap-[8px] pb-6">
-          {isLoading ? (
-            /* 스켈레톤 */
-            Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="bg-white rounded-2xl overflow-hidden flex h-[108px] animate-pulse">
-                <div className="w-[108px] flex-shrink-0 bg-[#EBEBEB]" />
-                <div className="flex-1 p-4 space-y-2">
-                  <div className="h-3 w-16 bg-[#EBEBEB] rounded-full" />
-                  <div className="h-4 w-full bg-[#EBEBEB] rounded-full" />
-                  <div className="h-4 w-3/4 bg-[#EBEBEB] rounded-full" />
-                  <div className="h-3 w-24 bg-[#EBEBEB] rounded-full mt-1" />
-                </div>
-              </div>
-            ))
-          ) : displayed.length > 0 ? (
-            displayed.map(column => {
-              const chipColor = CHIP_COLORS[column.category] || 'bg-[#F3EEFF] text-[#6D28D9]';
-              return (
-                <Link key={column.id} href={`/guide/${column.slug || column.id}`}>
-                  <div className="bg-white rounded-2xl overflow-hidden flex items-center border border-[#F0EDF8] hover:border-[#C4B5FD] hover:shadow-sm transition-all active:scale-[0.99] cursor-pointer">
-                    {/* 섬네일 - 정사각형 */}
-                    <div className="w-[96px] h-[96px] flex-shrink-0 bg-gradient-to-br from-[#EDE9FE] to-[#DDD6FE] relative overflow-hidden m-2 rounded-xl">
-                      {column.thumbnail ? (
-                        <img
-                          src={column.thumbnail}
-                          alt={column.title}
-                          className="w-full h-full object-cover"
-                          onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                        />
-                      ) : null}
-                    </div>
-
-                    {/* 콘텐츠 */}
-                    <div className="flex-1 px-4 py-3 flex flex-col justify-between min-w-0">
-                      <div>
-                        {/* 카테고리 칩 */}
-                        <span className={`inline-block px-2.5 py-0.5 rounded-full text-[11px] font-semibold mb-1.5 ${chipColor}`}>
-                          {column.categoryLabel}
-                        </span>
-                        {/* 제목 */}
-                        <p className="text-[14px] font-bold text-[#1a1a18] leading-snug line-clamp-2 tracking-[-0.2px]">
-                          {column.title}
-                        </p>
-                      </div>
-                      {/* 날짜 · 읽기 시간 */}
-                      <p className="text-[12px] text-[#999891] mt-1.5">
-                        {formatDate(column.publishedDate)} · {column.readTime}분 읽기
-                      </p>
-                    </div>
-
-                    {/* 화살표 */}
-                    <div className="flex items-center pr-3 flex-shrink-0">
-                      <ChevronRight className="w-4 h-4 text-[#C4B5FD]" />
-                    </div>
-                  </div>
-                </Link>
-              );
-            })
-          ) : (
-            <div className="py-16 text-center text-[#999891] text-[14px]">
-              {searchQuery ? `"${searchQuery}"에 해당하는 칼럼이 없습니다.` : '해당 카테고리의 칼럼이 없습니다.'}
             </div>
-          )}
-        </div>
 
-        {/* ── 더보기 버튼 ── */}
-        {!isLoading && hasMore && (
-          <div className="pb-8">
-            <button
-              onClick={() => setVisibleCount(v => v + PAGE_SIZE)}
-              className="w-full h-[52px] bg-white border border-[#E0D9F5] rounded-2xl text-[15px] font-semibold text-[#1a1a18] hover:bg-[#F3EEFF] hover:border-[#C4B5FD] transition-all active:scale-[0.99]"
-            >
-              칼럼 더보기
-            </button>
+            <div className="mu-auto-grid-180">
+              <div className="mu-soft-card p-4 text-slate-900">
+                <div className="text-xs font-bold uppercase tracking-[0.12em] text-slate-400">현재 공개 칼럼</div>
+                <div className="mt-3 text-[30px] font-extrabold tracking-[-0.06em] text-[#5648db]">{GUIDE_INDEX.length}</div>
+                <div className="mt-1 text-sm text-slate-500">정적 스냅샷 기반으로 빠르게 노출</div>
+              </div>
+              <div className="mu-soft-card p-4 text-slate-900">
+                <div className="text-xs font-bold uppercase tracking-[0.12em] text-slate-400">탐색 가능한 분류</div>
+                <div className="mt-3 text-[30px] font-extrabold tracking-[-0.06em] text-[#5648db]">{categoryCount}</div>
+                <div className="mt-1 text-sm text-slate-500">개운법, 관계 운, 건강운, 재물운 등</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="mu-container-narrow -mt-6 pb-6 relative z-10">
+        <div className="mu-glass-panel p-5 sm:p-6">
+          <div className="grid gap-4 [grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))] items-center">
+            <label className="relative block">
+              <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" aria-hidden="true" />
+              <input
+                type="text"
+                placeholder="칼럼 제목이나 주제를 검색해보세요"
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setVisibleCount(PAGE_SIZE);
+                }}
+                className="h-13 w-full rounded-2xl border border-slate-200 bg-white pl-12 pr-4 text-sm text-slate-900 shadow-sm outline-none transition focus:border-[#6B5FFF] focus:ring-4 focus:ring-[#6B5FFF]/10"
+              />
+            </label>
+
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="inline-flex items-center gap-1 text-xs font-bold uppercase tracking-[0.14em] text-slate-400">
+                <SlidersHorizontal size={13} aria-hidden="true" />
+                정렬
+              </span>
+              <button onClick={() => setSortOrder('newest')} className={`mu-chip ${sortOrder === 'newest' ? 'mu-chip--active' : ''}`}>최신순</button>
+              <button onClick={() => setSortOrder('oldest')} className={`mu-chip ${sortOrder === 'oldest' ? 'mu-chip--active' : ''}`}>오래된순</button>
+            </div>
+          </div>
+
+          <div className="mt-5 flex gap-2 overflow-x-auto pb-1 no-scrollbar">
+            {CHIP_CATEGORIES.map((chip) => {
+              const active = selectedCategory === chip.id;
+              return (
+                <button
+                  key={chip.label}
+                  onClick={() => {
+                    setSelectedCategory(chip.id);
+                    setVisibleCount(PAGE_SIZE);
+                  }}
+                  className={`mu-chip whitespace-nowrap ${active ? 'mu-chip--active' : ''}`}
+                >
+                  {chip.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section className="mu-container-narrow pb-10">
+        {displayed.length > 0 ? (
+          <div className="mu-auto-grid-220">
+            {displayed.map((column) => (
+              <Link key={column.slug} href={`/guide/${column.slug}`} className="mu-link-card overflow-hidden p-0">
+                {column.thumbnail ? (
+                  <div className="aspect-[16/10] overflow-hidden bg-slate-100">
+                    <img src={column.thumbnail} alt={column.title} className="h-full w-full object-cover" loading="lazy" />
+                  </div>
+                ) : (
+                  <div className="aspect-[16/10] bg-[linear-gradient(135deg,#17114c_0%,#352597_55%,#5f4bcb_100%)]" />
+                )}
+
+                <div className="p-5">
+                  <div className="flex items-start justify-between gap-3">
+                    <span className="inline-flex rounded-full bg-[#6B5FFF]/10 px-2.5 py-1 text-[11px] font-bold text-[#5648db]">{column.categoryLabel}</span>
+                    <ArrowUpRight size={16} className="text-slate-400" aria-hidden="true" />
+                  </div>
+
+                  <h2 className="mt-4 text-[20px] font-extrabold tracking-[-0.05em] text-slate-900 line-clamp-2">{column.title}</h2>
+                  <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-600">{column.description}</p>
+                  <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs font-semibold text-slate-400">
+                    <span>{column.author}</span>
+                    <span>{formatDate(column.publishedDate)}</span>
+                    <span className="inline-flex items-center gap-1"><Clock3 size={12} aria-hidden="true" /> {column.readTime}분</span>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <div className="mu-glass-panel px-6 py-12 text-center">
+            <h2 className="text-[22px] font-extrabold tracking-[-0.04em] text-slate-900">검색 결과가 없습니다</h2>
+            <p className="mt-2 text-sm leading-7 text-slate-500">다른 키워드나 카테고리로 다시 찾아보세요.</p>
           </div>
         )}
 
-        {/* ── 모두 표시됐을 때 끝 메시지 ── */}
-        {!isLoading && !hasMore && displayed.length > 0 && (
-          <p className="text-center text-[12px] text-[#C4B5FD] pb-8">
-            모든 칼럼을 확인했습니다
-          </p>
+        {hasMore && (
+          <div className="mt-6 flex justify-center">
+            <button
+              onClick={() => setVisibleCount((prev) => prev + PAGE_SIZE)}
+              className="inline-flex min-h-[48px] items-center justify-center rounded-2xl bg-[#6B5FFF] px-6 text-sm font-bold text-white shadow-[0_16px_30px_rgba(107,95,255,0.26)]"
+            >
+              칼럼 더 보기
+            </button>
+          </div>
         )}
-
-      </div>
-
-      {/* 정렬 메뉴 닫기용 오버레이 */}
-      {showSortMenu && (
-        <div className="fixed inset-0 z-10" onClick={() => setShowSortMenu(false)} />
-      )}
+      </section>
     </div>
   );
 }

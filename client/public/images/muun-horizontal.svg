@@ -1,0 +1,28 @@
+<svg width="248" height="64" viewBox="0 0 248 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="muunHorizontalBg" x1="6" y1="4" x2="52" y2="56" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#140F47" />
+      <stop offset="0.5" stop-color="#4939C3" />
+      <stop offset="1" stop-color="#73BDE8" />
+    </linearGradient>
+    <linearGradient id="muunHorizontalGlow" x1="18" y1="14" x2="40" y2="40" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFF8D8" />
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0.92" />
+    </linearGradient>
+    <filter id="muunHorizontalShadow" x="0" y="0" width="64" height="64" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#17114C" flood-opacity="0.24" />
+    </filter>
+  </defs>
+
+  <g filter="url(#muunHorizontalShadow)">
+    <rect x="4" y="4" width="52" height="52" rx="17" fill="url(#muunHorizontalBg)" />
+    <path d="M24.4 16.9C18.03 19.18 13.5 25.29 13.5 32.53C13.5 41.7 20.91 49.14 30.06 49.14C33.83 49.14 37.32 47.87 40.12 45.72C38.18 46.31 36.14 46.61 34 46.61C23.58 46.61 15.14 38.2 15.14 27.81C15.14 23.58 16.55 19.68 18.94 16.52C20.74 16.18 22.62 16.32 24.4 16.9Z" fill="url(#muunHorizontalGlow)"/>
+    <rect x="32.2" y="22" width="3.9" height="16.2" rx="1.95" fill="#FFFCF4" />
+    <rect x="38.9" y="24.7" width="3.9" height="13.5" rx="1.95" fill="#FFFCF4" />
+    <rect x="45.6" y="27.5" width="3.9" height="10.7" rx="1.95" fill="#FFFCF4" />
+    <circle cx="44.2" cy="16.8" r="2.05" fill="#FFF0B0" />
+  </g>
+
+  <text x="70" y="28" font-family="Pretendard, Apple SD Gothic Neo, Noto Sans KR, sans-serif" font-size="24" font-weight="800" letter-spacing="-1.1" fill="#111827">무운</text>
+  <text x="70" y="44" font-family="Pretendard, Apple SD Gothic Neo, Noto Sans KR, sans-serif" font-size="8.5" font-weight="700" letter-spacing="1.9" fill="#667085">MOBILE FORTUNE STUDIO</text>
+</svg>
