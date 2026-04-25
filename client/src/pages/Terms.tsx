@@ -11,7 +11,7 @@ export default function Terms() {
   useCanonical('/terms');
 
   return (
-    <div className="mu-subpage-screen min-h-screen bg-background text-foreground pb-20">
+    <div className="min-h-screen bg-background text-foreground pb-20">
       <Helmet>
         <title>이용약관 - 무운 (MuUn)</title>
         <meta name="description" content="무운(MuUn) 서비스의 이용약관입니다. 회원가입 없이 이용 가능한 무료 사주·운세 서비스의 이용 조건을 확인하세요." />
@@ -29,7 +29,7 @@ export default function Terms() {
         <meta name="twitter:description" content="무운(MuUn) 서비스의 이용약관입니다. 회원가입 없이 이용 가능한 무료 사주·운세 서비스의 이용 조건을 확인하세요." />
         <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
       </Helmet>
-      <header className="mu-subpage-header sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
+      <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
         <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
           <Link href="/">
             <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06]">
@@ -40,7 +40,7 @@ export default function Terms() {
         </div>
       </header>
 
-      <main className="mu-service-main container mx-auto max-w-[1280px] px-4 py-8">
+      <main className="container mx-auto max-w-[1280px] px-4 py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

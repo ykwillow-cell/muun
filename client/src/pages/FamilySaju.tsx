@@ -175,7 +175,7 @@ export default function FamilySaju() {
  // ===== 입력 화면 =====
  if (!result) {
  return (
- <div className="mu-subpage-screen min-h-screen bg-background text-[#1a1a18]">
+ <div className="min-h-screen bg-background text-[#1a1a18]">
  <Helmet>
  <title>무료 가족사주 분석 - 회원가입 없이 가족 오행 조화 확인 | 무운</title>
  <meta name="description" content="회원가입 없이 가족 구성원의 사주를 분석하는 무료 가족사주. 가족 간 오행 조화와 관계를 개인정보 저장 없이 100% 무료로 확인하세요." />
@@ -191,7 +191,7 @@ export default function FamilySaju() {
  <link rel="canonical" href="https://muunsaju.com/family-saju" />
  </Helmet>
  {/* 헤더 */}
- <div className="mu-subpage-header sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-black/10">
+ <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-black/10">
  <div className="max-w-2xl mx-auto px-4 h-14 flex items-center">
  <Link href="/">
  <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
@@ -205,7 +205,7 @@ export default function FamilySaju() {
  </div>
  </div>
  {/* 소개 */}
- <div className="mu-service-main max-w-2xl mx-auto px-4 py-6 space-y-6">
+ <div className="max-w-2xl mx-auto px-4 py-6 space-y-6">
  <motion.div
  initial={{ opacity: 0, y: 20 }}
  animate={{ opacity: 1, y: 0 }}
@@ -424,7 +424,7 @@ export default function FamilySaju() {
  <meta property="og:description" content="회원가입 없이 가족 구성원의 사주를 분석하는 무료 가족사주. 가족 간 오행 조화와 관계를 개인정보 저장 없이 100% 무료로 확인하세요." />
  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
  </Helmet>
- <div className="mu-subpage-screen min-h-screen bg-background" ref={resultRef}>
+ <div className="min-h-screen bg-background" ref={resultRef}>
  {/* '시간 모름' 시 안내 라벨 */}
  {anyUnknownTime && (
  <div className="bg-primary/10 border-b border-primary/20 py-2 px-4 relative z-[60]">
@@ -434,7 +434,7 @@ export default function FamilySaju() {
  </div>
  )}
  {/* 헤더 */}
- <div className="mu-subpage-header sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-black/10">
+ <div className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-black/10">
  <div className="max-w-2xl mx-auto px-4 h-14 flex items-center">
  <Button variant="ghost" size="icon" onClick={() => setResult(null)} className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
  <ChevronLeft className="w-5 h-5" />
@@ -446,7 +446,7 @@ export default function FamilySaju() {
  </div>
  </div>
  {/* 소개 */}
- <div className="mu-service-main max-w-2xl mx-auto px-4 py-6 space-y-6"> {/* 가족 종합 점수 */}
+ <div className="max-w-2xl mx-auto px-4 py-6 space-y-6"> {/* 가족 종합 점수 */}
  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
  <Card className="bg-gradient-to-br from-primary/10 to-yellow-500/5 border-primary/20 overflow-hidden">
  <CardContent className="pt-6 pb-6 text-center space-y-4">

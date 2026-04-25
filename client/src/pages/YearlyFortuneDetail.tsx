@@ -152,7 +152,7 @@ export default function YearlyFortuneDetail() {
 
   if (loading) {
     return (
-      <div className="mu-subpage-screen min-h-screen bg-background text-foreground pb-16 relative antialiased flex items-center justify-center">
+      <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased flex items-center justify-center">
         <div className="text-center">
           <Sparkles className="w-12 h-12 animate-spin mx-auto mb-4 text-primary" />
           <p>운세를 계산 중입니다...</p>
@@ -163,8 +163,8 @@ export default function YearlyFortuneDetail() {
 
   if (error || !result || !fortune) {
     return (
-      <div className="mu-subpage-screen min-h-screen bg-background text-foreground pb-16 relative antialiased">
-        <div className="mu-service-main container mx-auto px-4 py-8">
+      <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased">
+        <div className="container mx-auto px-4 py-8">
           <Link href="/yearly-fortune">
             <Button variant="ghost" size="sm" className="mb-4">
               <ChevronLeft className="w-4 h-4 mr-2" />
@@ -187,7 +187,7 @@ export default function YearlyFortuneDetail() {
   const elementKorean = ELEMENT_KOREAN[dayElement] || dayElement;
 
   return (
-    <div className="mu-subpage-screen min-h-screen bg-background text-foreground pb-16 relative antialiased">
+    <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased">
       <Helmet>
         <title>{birthDateStr ? `${birthDateStr.split('-')[0]}년생 2026년 신년운세 - 무운` : '2026년 신년운세 결과 - 무운'}</title>
         <meta name="description" content={birthDateStr ? `${birthDateStr.split('-')[0]}년생의 2026년 병오년 신년운세 분석 결과입니다. 월별 운세, 재물운, 직업운, 애정운을 확인하세요.` : '2026년 신년운세 분석 결과입니다.'} />
@@ -196,7 +196,7 @@ export default function YearlyFortuneDetail() {
       </Helmet>
       {result && fortune && <YearlyFortuneSchema birthDate={birthDateStr!} saju={result} fortune={fortune} />}
 
-      <div className="mu-service-main container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8">
         {/* 뒤로가기 버튼 */}
         <Link href="/yearly-fortune">
           <Button variant="ghost" size="sm" className="mb-4">

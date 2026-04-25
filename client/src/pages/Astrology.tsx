@@ -241,7 +241,7 @@ const Astrology: React.FC = () => {
 
   if (!result) {
     return (
-      <div className="mu-subpage-screen min-h-screen bg-background text-foreground pb-20 relative antialiased">
+      <div className="min-h-screen bg-background text-foreground pb-20 relative antialiased">
         <Helmet>
           <title>무료 점성술 네이탈 차트 분석 - 별자리·행성 배치로 보는 내 운명 | 무운 (MuUn)</title>
           <meta name="description" content="생년월일·출생지 입력만으로 무료로 확인하는 네이탈 차트(탄생 차트) 기반 점성술 풀이. 태양·달·수성·금성·화성 등 7개 행성의 별자리 위치를 분석해 성격·연애운·직업운을 알려드립니다." />
@@ -278,7 +278,7 @@ const Astrology: React.FC = () => {
             }
           }`}</script>
         </Helmet>
-        <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
+        <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06]">
           <div className={`${commonMaxWidth} px-4 h-14 flex items-center`}>
             <Link href="/">
               <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
@@ -289,7 +289,7 @@ const Astrology: React.FC = () => {
           </div>
         </header>
 
-        <main className="mu-service-main px-4 py-6 md:py-8">
+        <main className="px-4 py-6 md:py-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -401,7 +401,7 @@ const Astrology: React.FC = () => {
   }
 
   return (
-    <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-20 antialiased">
+    <div className="min-h-screen bg-[#F5F4F8] text-foreground pb-20 antialiased">
       <Helmet>
         <title>{result.sun.sign.name} 태양 별자리 - 나의 네이탈 차트 점성술 분석 결과 | 무운 (MuUn)</title>
         <meta name="description" content={`태양 ${result.sun.sign.name}, 달 ${result.moon?.sign?.name || ''} 별자리의 네이탈 차트 분석 결과입니다. 태양·달·수성·금성·화성 등 7개 행성의 별자리 위치를 분석해 성격과 운명을 확인해보세요.`} />
@@ -426,7 +426,7 @@ const Astrology: React.FC = () => {
           </p>
         </div>
       )}
-      <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
+      <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06]">
         <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
             <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]" onClick={() => setResult(null)}>
@@ -443,7 +443,7 @@ const Astrology: React.FC = () => {
         </div>
       </header>
 
-      <main className="mu-service-main relative z-10 px-3 py-4 max-w-2xl mx-auto">
+      <main className="relative z-10 px-3 py-4 max-w-2xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}

@@ -109,9 +109,9 @@ export default function LuckyLunch() {
   // 입력 화면
   if (!showResult) {
     return (
-      <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
+      <div className="min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
 
-        <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
+        <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06]">
           <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
             <Link href="/">
               <Button variant="ghost" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] -ml-2 flex items-center gap-1 text-sm font-medium">
@@ -123,7 +123,7 @@ export default function LuckyLunch() {
           </div>
         </header>
 
-        <main className="mu-service-main relative z-10 container mx-auto max-w-[1280px] px-4 py-5 md:py-8">
+        <main className="relative z-10 container mx-auto max-w-[1280px] px-4 py-5 md:py-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -302,9 +302,9 @@ export default function LuckyLunch() {
 <meta name="keywords" content="행운의점심, 점심메뉴추천, 오행음식, 사주음식, 행운음식, 오늘점심, 무료추천" />
         <link rel="canonical" href="https://muunsaju.com/lucky-lunch" />
       </Helmet>
-    <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
+    <div className="min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
 
-      <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
+      <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06]">
         <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
             <Button
@@ -328,7 +328,7 @@ export default function LuckyLunch() {
         </div>
       </header>
 
-      <main className="mu-service-main relative z-10 container mx-auto max-w-[1280px] px-4 py-5 md:py-8">
+      <main className="relative z-10 container mx-auto max-w-[1280px] px-4 py-5 md:py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

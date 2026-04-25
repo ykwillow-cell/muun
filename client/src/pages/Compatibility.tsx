@@ -620,10 +620,10 @@ export default function Compatibility() {
      color: #1a1a18;
    }
  `}</style>
- <div className="mu-subpage-screen compatibility-page min-h-screen bg-[#FBF3F3] text-foreground pb-16 antialiased">
+ <div className="compatibility-page min-h-screen bg-[#FBF3F3] text-foreground pb-16 antialiased">
 
  {/* 헤더 — 흰색 불투명, 시안과 동일 */}
- <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
+ <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06]">
  <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
  <Link href="/">
  <Button variant="ghost" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px] flex items-center gap-1 px-2">
@@ -635,7 +635,7 @@ export default function Compatibility() {
  </div>
  </header>
 
- <main className="mu-service-main container mx-auto max-w-[1280px] px-4 py-6 md:py-8">
+ <main className="container mx-auto max-w-[1280px] px-4 py-6 md:py-8">
  <motion.div
  initial={{ opacity: 0, y: 16 }}
  animate={{ opacity: 1, y: 0 }}
@@ -1056,10 +1056,10 @@ export default function Compatibility() {
      margin-bottom: 16px;
    }
  `}</style>
- <div className="mu-subpage-screen compatibility-page min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
+ <div className="compatibility-page min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
 
    {/* ===== 헤더 ===== */}
-   <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
+   <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06]">
      <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
        <div className="flex items-center">
          <Button variant="ghost" onClick={() => setResult(null)} className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px] flex items-center gap-1 px-2">
@@ -1074,7 +1074,7 @@ export default function Compatibility() {
      </div>
    </header>
 
-   <main className="mu-service-main px-4 pb-8">
+   <main className="px-4 pb-8">
      <motion.div
        initial={{ opacity: 0, y: 20 }}
        animate={{ opacity: 1, y: 0 }}

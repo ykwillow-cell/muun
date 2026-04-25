@@ -11,7 +11,7 @@ export default function Privacy() {
   useCanonical('/privacy');
 
   return (
-    <div className="mu-subpage-screen min-h-screen bg-background text-foreground pb-20">
+    <div className="min-h-screen bg-background text-foreground pb-20">
       <Helmet>
         <title>개인정보처리방침 - 무운 (MuUn)</title>
         <meta name="description" content="무운(MuUn)은 사용자의 개인정보를 저장하지 않습니다. 무운 서비스의 개인정보처리방침을 확인하세요." />
@@ -29,7 +29,7 @@ export default function Privacy() {
         <meta name="twitter:description" content="무운(MuUn)은 사용자의 개인정보를 저장하지 않습니다. 무운 서비스의 개인정보처리방침을 확인하세요." />
         <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
       </Helmet>
-      <header className="mu-subpage-header sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
+      <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
         <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
           <Link href="/">
             <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06]">
@@ -40,7 +40,7 @@ export default function Privacy() {
         </div>
       </header>
 
-      <main className="mu-service-main container mx-auto max-w-[1280px] px-4 py-8">
+      <main className="container mx-auto max-w-[1280px] px-4 py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

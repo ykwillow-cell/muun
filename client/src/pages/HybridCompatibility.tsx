@@ -593,10 +593,10 @@ export default function HybridCompatibilityPage() {
         <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
 <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
         </Helmet>
-        <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
+        <div className="min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
 
           {/* 헤더 */}
-          <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
+          <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06]">
             <div className={`${commonMaxWidth} container mx-auto px-4 py-3 flex items-center justify-between`}>
               <button onClick={() => setResult(null)} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
                 <ChevronLeft className="w-5 h-5" />
@@ -813,9 +813,9 @@ export default function HybridCompatibilityPage() {
         <meta property="og:description" content="전통 사주 오행과 MBTI 성격 유형을 결합한 하이브리드 궁합 분석. 회원가입·개인정보 저장 없이 100% 무료로 제공합니다." />
         <link rel="canonical" href="https://muunsaju.com/hybrid-compatibility" />
       </Helmet>
-      <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
+      <div className="min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
 
-        <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
+        <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06]">
           <div className={`${commonMaxWidth} container mx-auto px-4 py-3 md:py-4 flex items-center justify-between`}>
             <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
               <ChevronLeft className="w-5 h-5" />
@@ -826,7 +826,7 @@ export default function HybridCompatibilityPage() {
           </div>
         </header>
 
-        <main className="mu-service-main relative z-10 container mx-auto max-w-[1280px] px-4 py-5 md:py-8">
+        <main className="relative z-10 container mx-auto max-w-[1280px] px-4 py-5 md:py-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

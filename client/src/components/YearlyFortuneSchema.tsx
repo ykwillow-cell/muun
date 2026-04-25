@@ -30,7 +30,7 @@ export function YearlyFortuneSchema({ birthDate, saju, fortune }: YearlyFortuneS
     "@type": "Article",
     "headline": `2026년 신년운세 - ${zodiacAnimal}띠 ${elementKorean}의 기운`,
     "description": `${zodiacAnimal}띠의 2026년 신년운세. 총운, 재물운, 직업운, 애정운 상세 분석`,
-    "image": "https://muunsaju.com/images/horse_mascot.png",
+    "image": "https://muunsaju.com/og-image.png",
     "datePublished": today,
     "dateModified": today,
     "author": {
@@ -43,7 +43,7 @@ export function YearlyFortuneSchema({ birthDate, saju, fortune }: YearlyFortuneS
       "name": "무운(MUUN)",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://muunsaju.com/images/muun-mark.svg"
+        "url": "https://muunsaju.com/logo.png"
       }
     },
     "mainEntity": {
@@ -149,7 +149,7 @@ export function YearlyFortuneSchema({ birthDate, saju, fortune }: YearlyFortuneS
       <meta property="og:title" content="2026년 신년운세 결과 - 무운" />
       <meta property="og:description" content="2026년 신년운세 분석 결과입니다. 총운, 재물운, 직업운, 애정운 상세 분석을 확인하세요." />
       <meta property="og:url" content={`https://muunsaju.com/yearly-fortune/${birthDate}`} />
-      <meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png" />
+      <meta property="og:image" content="https://muunsaju.com/og-image.png" />
       <meta property="og:image:width" content="1200" />
       <meta property="og:image:height" content="630" />
 
@@ -157,7 +157,7 @@ export function YearlyFortuneSchema({ birthDate, saju, fortune }: YearlyFortuneS
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content="2026년 신년운세 결과 - 무운" />
       <meta name="twitter:description" content="2026년 신년운세 분석 결과를 확인해보세요." />
-      <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
+      <meta name="twitter:image" content="https://muunsaju.com/og-image.png" />
 
       {/* 추가 메타 태그 */}
       <meta name="keywords" content={`${zodiacAnimal}띠 운세, 2026년 신년운세, ${elementKorean} 운세`} />
@@ -187,7 +187,7 @@ export function LifelongSajuSchema({ birthDate, saju }: LifelongSajuSchemaProps)
     "@type": "Article",
     "headline": `평생사주 분석 - ${zodiacAnimal}띠 ${elementKorean}의 인생`,
     "description": `${zodiacAnimal}띠의 평생 사주 분석. 성격, 재능, 운명, 길한 방향 등 상세 분석`,
-    "image": "https://muunsaju.com/images/horse_mascot.png",
+    "image": "https://muunsaju.com/og-image.png",
     "datePublished": today,
     "dateModified": today,
     "author": {
@@ -200,7 +200,7 @@ export function LifelongSajuSchema({ birthDate, saju }: LifelongSajuSchemaProps)
       "name": "무운(MUUN)",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://muunsaju.com/images/muun-mark.svg"
+        "url": "https://muunsaju.com/logo.png"
       }
     }
   };
@@ -215,7 +215,7 @@ export function LifelongSajuSchema({ birthDate, saju }: LifelongSajuSchemaProps)
       <meta property="og:title" content="평생사주 분석 결과 - 무운" />
       <meta property="og:description" content="사주팔자를 기반으로 한 평생 사주 분석 결과입니다." />
       <meta property="og:url" content={`https://muunsaju.com/lifelong-saju/${birthDate}`} />
-      <meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png" />
+      <meta property="og:image" content="https://muunsaju.com/og-image.png" />
 
       <meta name="keywords" content={`${zodiacAnimal}띠 사주, 평생사주, 사주 분석`} />
       <meta name="article:published_time" content={today} />

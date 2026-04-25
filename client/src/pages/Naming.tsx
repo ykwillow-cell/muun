@@ -633,7 +633,7 @@ export default function Naming() {
   // ── 폼 단계 ──────────────────────────────────
   if (step === "form") {
     return (
-      <div className="mu-subpage-screen min-h-screen bg-background text-foreground pb-16 relative antialiased">
+      <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased">
         <Helmet>
           <title>작명소 - 81수리 성명학 이름 분석 | MUUN 무운</title>
           <meta
@@ -643,7 +643,7 @@ export default function Naming() {
         </Helmet>
 
         {/* 헤더 */}
-        <header className="mu-subpage-header sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
+        <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
           <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
             <Link href="/">
               <Button
@@ -660,7 +660,7 @@ export default function Naming() {
           </div>
         </header>
 
-        <main className="mu-service-main relative z-10 container mx-auto max-w-[1280px] px-4 py-5 md:py-8">
+        <main className="relative z-10 container mx-auto max-w-[1280px] px-4 py-5 md:py-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -985,7 +985,7 @@ export default function Naming() {
   // ── 결과 단계 ──────────────────────────────────
   return (
     <div
-      className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased"
+      className="min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased"
       ref={resultRef}
     >
       <Helmet>
@@ -1003,7 +1003,7 @@ export default function Naming() {
       </div>
 
       {/* 헤더 */}
-      <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06] print:hidden">
+      <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06] print:hidden">
         <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
             <Button
@@ -1041,7 +1041,7 @@ export default function Naming() {
         </div>
       </header>
 
-      <main className="mu-service-main relative z-10 container mx-auto max-w-[1280px] px-4 py-5 md:py-8">
+      <main className="relative z-10 container mx-auto max-w-[1280px] px-4 py-5 md:py-8">
         <div className={`${commonMaxWidth} space-y-5`}>
 
           {/* 성씨 정보 */}

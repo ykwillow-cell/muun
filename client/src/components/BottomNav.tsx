@@ -1,112 +1,131 @@
-import { Home, Sparkles, Heart, BookOpen, Grid3x3 } from 'lucide-react';
-import { Link, useLocation } from 'wouter';
+import { Link, useLocation } from "wouter";
+import { Home, Sparkles, Heart, BookOpen, Grid3x3 } from "lucide-react";
 
 const NAV_ITEMS = [
-  { href: '/', label: '홈', Icon: Home },
-  { href: '/lifelong-saju', label: '사주', Icon: Sparkles },
-  { href: '/compatibility', label: '궁합', Icon: Heart },
-  { href: '/guide', label: '콘텐츠', Icon: BookOpen },
-  { href: '/more', label: '전체', Icon: Grid3x3 },
+  { href: "/",               label: "홈",       Icon: Home },
+  { href: "/lifelong-saju",  label: "평생사주",  Icon: Sparkles },
+  { href: "/compatibility",  label: "궁합",      Icon: Heart },
+  { href: "/guide",          label: "운세칼럼",  Icon: BookOpen },
+  { href: "/more",           label: "전체메뉴",  Icon: Grid3x3 },
 ] as const;
 
 export function BottomNav() {
   const [location] = useLocation();
 
+  // /fortune-dictionary, /dictionary/* 경로는 '전체메뉴(/more)' 탭에 active 표시
   const isDictionaryPage =
     location === '/fortune-dictionary' ||
     location.startsWith('/fortune-dictionary/') ||
-    location.startsWith('/dictionary/') ||
-    location.startsWith('/dream/') ||
-    location === '/dream';
+    location.startsWith('/dictionary/');
 
   const isActive = (href: string) => {
-    if (href === '/') return location === '/';
-    if (href === '/more' && isDictionaryPage) return true;
-    return location === href || location.startsWith(`${href}/`);
+    if (href === "/") return location === "/";
+    if (href === "/more" && isDictionaryPage) return true;
+    return location.startsWith(href);
   };
 
   return (
     <>
-      <div className="mu-bottom-nav__spacer" aria-hidden="true" />
-      <nav className="mu-bottom-nav" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }} aria-label="하단 내비게이션">
+      {/* 하단 여백 확보 */}
+      <div style={{ height: "var(--bottom-nav-height)" }} aria-hidden="true" />
+
+      <nav
+        className="mu-bottom-nav"
+        style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
+        aria-label="하단 내비게이션"
+      >
         {NAV_ITEMS.map(({ href, label, Icon }) => {
           const active = isActive(href);
           return (
             <Link
               key={href}
               href={href}
-              className={`mu-bottom-nav__tab${active ? ' mu-bottom-nav__tab--active' : ''}`}
-              aria-current={active ? 'page' : undefined}
+              className={`mu-bottom-nav__tab${active ? " mu-bottom-nav__tab--active" : ""}`}
+              aria-current={active ? "page" : undefined}
               aria-label={label}
             >
-              <span className="mu-bottom-nav__icon-wrap">
-                <Icon size={20} strokeWidth={active ? 2.1 : 1.85} className="mu-bottom-nav__icon" />
-              </span>
+              <Icon
+                size={22}
+                strokeWidth={active ? 2.2 : 1.6}
+                className="mu-bottom-nav__icon"
+              />
               <span className="mu-bottom-nav__label">{label}</span>
+              {active && <span className="mu-bottom-nav__dot" aria-hidden="true" />}
             </Link>
           );
         })}
       </nav>
 
       <style>{`
-        .mu-bottom-nav__spacer {
-          height: calc(var(--bottom-nav-height) + 26px + env(safe-area-inset-bottom, 0px));
-        }
+        /* ── Bottom Nav ── */
         .mu-bottom-nav {
           position: fixed;
-          bottom: 8px;
+          bottom: 0;
           left: 50%;
           transform: translateX(-50%);
-          width: min(520px, calc(100vw - 20px));
-          z-index: 55;
+          width: 100%;
+          max-width: var(--mu-content-max-width);
+          z-index: 50;
           display: flex;
           align-items: stretch;
-          padding-top: 8px;
-          background: rgba(255,255,255,0.94);
-          backdrop-filter: blur(18px);
-          border: 1px solid rgba(15,23,42,0.08);
-          border-radius: 24px;
-          box-shadow: 0 20px 46px rgba(15,23,42,0.12);
+          background: var(--bottom-nav-bg, #ffffff);
+          border-top: var(--bottom-nav-border-top, 1px solid #e8ebed);
+          height: var(--bottom-nav-height, 56px);
+          box-shadow: var(--bottom-nav-shadow, none);
         }
+
+        /* ── 탭 ── */
         .mu-bottom-nav__tab {
           flex: 1;
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          gap: 6px;
-          padding: 0 4px 10px;
-          min-height: 60px;
+          gap: 4px;
+          padding: 8px 4px 6px;
+          min-height: 56px;
+          position: relative;
           text-decoration: none;
-          color: #94a3b8;
+          color: var(--bottom-nav-inactive-color, #c5ccd4);
+          transition: color 0.15s;
+          -webkit-tap-highlight-color: transparent;
+        }
+        .mu-bottom-nav__tab:hover {
+          color: var(--foreground-secondary, #8b95a1);
         }
         .mu-bottom-nav__tab--active {
-          color: #5648db;
+          color: var(--bottom-nav-active-color, var(--primary, #6B5FFF));
         }
-        .mu-bottom-nav__icon-wrap {
-          width: 36px;
-          height: 36px;
-          border-radius: 12px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+
+        /* ── 아이콘 ── */
+        .mu-bottom-nav__icon {
+          transition: transform 0.15s;
+          width: var(--bottom-nav-icon-size, 22px);
+          height: var(--bottom-nav-icon-size, 22px);
         }
-        .mu-bottom-nav__tab--active .mu-bottom-nav__icon-wrap {
-          background: linear-gradient(135deg, rgba(107,95,255,0.14) 0%, rgba(96,200,212,0.14) 100%);
-          box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+        .mu-bottom-nav__tab--active .mu-bottom-nav__icon {
+          transform: scale(1.05);
         }
+
+        /* ── 레이블 ── */
         .mu-bottom-nav__label {
-          font-size: 10px;
-          font-weight: 800;
-          letter-spacing: -0.02em;
-          line-height: 1;
+          font-size: var(--bottom-nav-label-size, 10px);
+          font-weight: 500;
+          letter-spacing: -0.01em;
           white-space: nowrap;
+          line-height: 1;
         }
-        @media (min-width: 768px) {
-          .mu-bottom-nav,
-          .mu-bottom-nav__spacer {
-            display: none;
-          }
+
+        /* ── 활성 탭 dot 인디케이터 ── */
+        .mu-bottom-nav__dot {
+          position: absolute;
+          bottom: 5px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: var(--bottom-nav-dot-size, 16px);
+          height: 3px;
+          border-radius: 2px;
+          background: var(--bottom-nav-dot-color, var(--primary, #6B5FFF));
         }
       `}</style>
     </>

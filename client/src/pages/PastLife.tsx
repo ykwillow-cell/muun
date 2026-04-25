@@ -144,7 +144,7 @@ export default function PastLife() {
   const elementEmoji = result ? (ELEMENT_EMOJI[result.element] ?? "✨") : "";
 
   return (
-    <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-20 antialiased">
+    <div className="min-h-screen bg-[#F5F4F8] text-foreground pb-20 antialiased">
       <Helmet>
         <title>전생 체험 - 나의 전생은? | 무운 (MuUn)</title>
         <meta
@@ -157,7 +157,7 @@ export default function PastLife() {
         <meta property="og:description" content="생년월일로 알아보는 나의 전생 이야기. AI가 당신의 전생을 생생하게 묘사해드립니다." />
       </Helmet>
 
-      <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
+      <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06]">
         <div className="max-w-2xl mx-auto px-4 h-14 flex items-center">
           <Link href="/">
             <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
@@ -167,7 +167,7 @@ export default function PastLife() {
           <h1 className="text-lg md:text-xl font-bold text-[#1a1a18]">무료 전생 체험</h1>
         </div>
       </header>
-      <main className="mu-service-main px-4 py-6 md:py-8">
+      <main className="px-4 py-6 md:py-8">
       <div className="max-w-2xl mx-auto">
 
         <AnimatePresence mode="wait">

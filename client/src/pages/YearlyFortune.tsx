@@ -397,9 +397,9 @@ export default function YearlyFortune() {
  <script type="application/ld+json">{JSON.stringify({"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://muunsaju.com"},{"@type":"ListItem","position":2,"name":"2026년 신년운세","item":"https://muunsaju.com/yearly-fortune"}]})}</script>
  <script type="application/ld+json">{JSON.stringify({"@context":"https://schema.org","@type":"Service","name":"2026년 무료 신년운세","description":"사주팔자 기반의 2026년 병오년 무료 신년운세 서비스","provider":{"@type":"Organization","name":"무운 (MuUn)","url":"https://muunsaju.com"},"url":"https://muunsaju.com/yearly-fortune","serviceType":"신년운세","areaServed":"KR","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}})}</script>
  </Helmet>
- <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
+ <div className="min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
 
- <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
+ <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06]">
  <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
  <Link href="/">
  <Button variant="ghost" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] -ml-2 flex items-center gap-1 text-sm font-medium">
@@ -411,7 +411,7 @@ export default function YearlyFortune() {
  </div>
  </header>
 
- <main className="mu-service-main relative z-10 container mx-auto max-w-[1280px] px-4 py-5 md:py-8">
+ <main className="relative z-10 container mx-auto max-w-[1280px] px-4 py-5 md:py-8">
  <motion.div
  initial={{ opacity: 0, y: 20 }}
  animate={{ opacity: 1, y: 0 }}
@@ -604,7 +604,7 @@ export default function YearlyFortune() {
  // 데이터 검증
  if (!result || !dayStem || !stemPersonality) {
  return (
- <div className="mu-subpage-screen min-h-screen bg-background text-foreground pb-16 relative antialiased">
+ <div className="min-h-screen bg-background text-foreground pb-16 relative antialiased">
  <div className="container mx-auto px-4 py-8">
  <Button variant="ghost" size="sm" onClick={() => setResult(null)} className="mb-4">
  <ChevronLeft className="w-4 h-4 mr-2" />
@@ -639,7 +639,7 @@ export default function YearlyFortune() {
  <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
  </Helmet>
- <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-20">
+ <div className="min-h-screen bg-[#F5F4F8] text-foreground pb-20">
  {/* '시간 모름' 시 안내 라벨 */}
  {form.watch("birthTimeUnknown") && (
  <div className="bg-primary/10 border-b border-primary/20 py-2 px-4 relative z-50">
@@ -648,7 +648,7 @@ export default function YearlyFortune() {
  </p>
  </div>
  )}
- <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
+ <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06]">
  <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
  <div className="flex items-center">
  <Button variant="ghost" onClick={() => setResult(null)} className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] -ml-2 flex items-center gap-1 text-sm font-medium">
@@ -675,7 +675,7 @@ export default function YearlyFortune() {
  </div>
  </header>
 
- <main className="mu-service-main container mx-auto max-w-[1280px] px-4 py-5 md:py-6">
+ <main className="container mx-auto max-w-[1280px] px-4 py-5 md:py-6">
  <motion.div
  initial={{ opacity: 0, y: 20 }}
  animate={{ opacity: 1, y: 0 }}

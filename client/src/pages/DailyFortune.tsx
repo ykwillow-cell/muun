@@ -437,8 +437,8 @@ export default function DailyFortune() {
         <script type="application/ld+json">{JSON.stringify({"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://muunsaju.com"},{"@type":"ListItem","position":2,"name":"오늘의 운세","item":"https://muunsaju.com/daily-fortune"}]})}</script>
         <script type="application/ld+json">{JSON.stringify({"@context":"https://schema.org","@type":"Service","name":"무료 일별 운세","description":"사주팔자 기반의 무료 일별 운세 서비스","provider":{"@type":"Organization","name":"무운 (MuUn)","url":"https://muunsaju.com"},"url":"https://muunsaju.com/daily-fortune","serviceType":"일별운세","areaServed":"KR","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}})}</script>
       </Helmet>
-      <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
-        <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
+      <div className="min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
+        <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06]">
           <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
             <Link href="/">
               <Button variant="ghost" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] -ml-2 flex items-center gap-1 text-sm font-medium">
@@ -450,7 +450,7 @@ export default function DailyFortune() {
           </div>
         </header>
 
-        <main className="mu-service-main relative z-10 container mx-auto max-w-[1280px] px-4 py-5 md:py-8">
+        <main className="relative z-10 container mx-auto max-w-[1280px] px-4 py-5 md:py-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -657,7 +657,7 @@ export default function DailyFortune() {
         <link rel="canonical" href="https://muunsaju.com/daily-fortune" />
       </Helmet>
 
-      <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-20 antialiased">
+      <div className="min-h-screen bg-[#F5F4F8] text-foreground pb-20 antialiased">
         {/* Background Effects */}
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
           <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-orange-500/8 rounded-full blur-[120px]" />
@@ -666,7 +666,7 @@ export default function DailyFortune() {
         </div>
 
         {/* 헤더 */}
-        <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
+        <header className="sticky top-0 z-50 bg-white border-b border-black/[0.06]">
           <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
             <div className="flex items-center">
               <Button
@@ -697,7 +697,7 @@ export default function DailyFortune() {
           </div>
         </header>
 
-        <main className="mu-service-main relative z-10 container mx-auto max-w-[1280px] px-4 py-6">
+        <main className="relative z-10 container mx-auto max-w-[1280px] px-4 py-6">
           <div className="w-full max-w-2xl mx-auto space-y-4">
 
             {/* ─────────────────────────────────────────────────────────────
