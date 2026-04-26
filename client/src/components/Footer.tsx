@@ -130,7 +130,7 @@ const Footer: React.FC = () => {
           font-size: 10px;
           color: #ccc;
         }
-        @media (min-width: 768px) {
+        @media (min-width: 480px) {
           .mu-footer {
             padding-bottom: 24px;
           }

@@ -283,7 +283,7 @@ export function AppBar({ onSearch }: AppBarProps) {
           font-weight: 900;
           letter-spacing: -0.01em;
         }
-        @media (min-width: 768px) {
+        @media (min-width: 480px) {
           .mu-appbar__inner { height: 52px; padding: 0 22px; }
           .mu-appbar__quick-row { justify-content: center; }
         }

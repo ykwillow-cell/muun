@@ -104,7 +104,7 @@ export function BottomNav() {
           line-height: 1;
           white-space: nowrap;
         }
-        @media (min-width: 768px) {
+        @media (min-width: 480px) {
           .mu-bottom-nav,
           .mu-bottom-nav__spacer {
             display: none;

@@ -24,14 +24,14 @@
 }
 @plugin "@tailwindcss/typography";
 
-/* ── PC 레이아웃 래퍼 ── */
+/* ── PC 레이아웃 래퍼 (최대 480px 모바일 중심) ── */
 .mu-page-shell {
   width: 100%;
   min-height: 100dvh;
   background: var(--background);
 }
 
-/* 모바일 우선 셸, 데스크톱에서는 충분한 폭을 확보해 반응형 그리드가 깨지지 않게 함 */
+/* 모바일 우선 셸 — 480px 초과 시 중앙 정렬 + 폰 목업 스타일 */
 .mu-page-shell__inner {
   width: 100%;
   display: flex;
@@ -41,9 +41,9 @@
   position: relative;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 480px) {
   :root {
-    --mu-content-max-width: 720px;
+    --mu-content-max-width: 480px;
   }
   .mu-page-shell {
     display: flex;
@@ -60,12 +60,6 @@
     overflow: clip;
     border: 1px solid rgba(15, 23, 42, 0.08);
     box-shadow: 0 24px 80px rgba(17, 24, 39, 0.12);
-  }
-}
-
-@media (min-width: 1180px) {
-  :root {
-    --mu-content-max-width: 980px;
   }
 }
 
@@ -1266,7 +1260,7 @@
     border-radius: 1.15rem !important;
   }
 
-  @media (min-width: 768px) {
+  @media (min-width: 480px) {
     .mu-route-banner__inner {
       padding-top: 18px;
       padding-bottom: 18px;
@@ -1308,7 +1302,7 @@
   }
   .muun-hero__inner {
     width: 100%;
-    max-width: 960px;
+    max-width: 100%;
     margin: 0 auto;
   }
   .muun-trust-row {
@@ -1559,7 +1553,7 @@
   .muun-column-section,
   .muun-dictionary-section {
     width: 100%;
-    max-width: 960px;
+    max-width: 100%;
     margin: 0 auto;
     padding: 20px 16px;
   }
@@ -1782,7 +1776,7 @@
     padding: 0 16px 20px;
   }
   .muun-promo-viewport {
-    max-width: 960px;
+    max-width: 100%;
     margin: 0 auto;
     overflow: hidden;
   }
@@ -2000,61 +1994,19 @@
     line-height: 1.25;
   }
 
-  /* ── Responsive ── */
-  @media (min-width: 768px) {
-    .muun-hero {
-      padding: 28px 24px 0;
-    }
+  /* ── Responsive (480px 기준) ── */
+  @media (max-width: 360px) {
     .muun-hero__title {
-      font-size: 34px;
-    }
-    .muun-hero__sub {
-      font-size: 14px;
-    }
-    .muun-input-card {
-      padding: 24px;
-      border-radius: 24px 24px 0 0;
-    }
-    .muun-section-block,
-    .muun-column-section,
-    .muun-dictionary-section {
-      padding-left: 24px;
-      padding-right: 24px;
+      font-size: 21px;
     }
     .muun-section-title {
-      font-size: 22px;
-    }
-    .muun-main-svc-grid,
-    .muun-mini-grid,
-    .muun-content-grid,
-    .muun-term-grid {
-      gap: 12px;
-    }
-    .muun-promo-strip {
-      padding-left: 24px;
-      padding-right: 24px;
-    }
-    .muun-promo-card {
-      min-height: 206px;
-      padding: 26px;
-    }
-    .muun-promo-title {
-      font-size: 22px;
-    }
-    .muun-content-img {
-      height: 120px;
-    }
-    .muun-content-title,
-    .muun-mini-name,
-    .muun-svc-name,
-    .muun-term-copy strong {
       font-size: 15px;
     }
-    .muun-content-meta,
-    .muun-mini-desc,
-    .muun-svc-desc,
-    .muun-term-copy small {
-      font-size: 12px;
+    .muun-main-svc-grid,
+    .muun-mini-grid {
+      gap: 8px;
     }
+    .muun-svc-name { font-size: 12px; }
+    .muun-svc-desc { font-size: 10px; }
   }
 }
