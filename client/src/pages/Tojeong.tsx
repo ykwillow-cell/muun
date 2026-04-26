@@ -46,6 +46,7 @@ export default function Tojeong() {
   useCanonical('/tojeong');
 
   const [result, setResult] = useState<any>(null);
+  const [initialLoadDone, setInitialLoadDone] = useState(false);
   
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -58,6 +59,16 @@ export default function Tojeong() {
     },
   });
 
+  // 생년월일·성별·음양력 변경 시 기존 결과 초기화
+  const watchedBirthDate = form.watch("birthDate");
+  const watchedGender = form.watch("gender");
+  const watchedCalendarType = form.watch("calendarType");
+  useEffect(() => {
+    if (!initialLoadDone) return;
+    setResult(null);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watchedBirthDate, watchedGender, watchedCalendarType]);
+
   useEffect(() => {
     const savedData = localStorage.getItem("muun_user_data");
     if (savedData) {
@@ -69,6 +80,7 @@ export default function Tojeong() {
           ...rest,
           birthDate: /^\d{4}-\d{2}-\d{2}$/.test(rest.birthDate) ? rest.birthDate : form.getValues().birthDate || "2000-01-01",
         });
+        setTimeout(() => setInitialLoadDone(true), 100);
         return;
       } catch {}
     }
@@ -77,7 +89,9 @@ export default function Tojeong() {
       form.setValue("birthDate", heroBirth.birthDate);
       form.setValue("calendarType", heroBirth.calendarType);
     }
-  }, [form]);
+    setTimeout(() => setInitialLoadDone(true), 100);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onSubmit = (data: FormValues) => {
     localStorage.setItem("muun_user_data", JSON.stringify(data));

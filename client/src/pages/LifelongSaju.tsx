@@ -144,6 +144,7 @@ export default function LifelongSaju() {
  const [extraInfo, setExtraInfo] = useState<any>(null);
  const [loveFortune, setLoveFortune] = useState<{ title: string; content: string } | null>(null);
  const [healthFortune, setHealthFortune] = useState<{ title: string; content: string } | null>(null);
+ const [initialLoadDone, setInitialLoadDone] = useState(false);
  
  const form = useForm<FormValues>({
  resolver: zodResolver(formSchema),
@@ -159,6 +160,20 @@ export default function LifelongSaju() {
  },
  });
 
+ // 생년월일·성별·음양력 변경 시 기존 결과 초기화
+ const watchedBirthDate = form.watch("birthDate");
+ const watchedGender = form.watch("gender");
+ const watchedCalendarType = form.watch("calendarType");
+ useEffect(() => {
+ if (!initialLoadDone) return;
+ setResult(null);
+ setFortunes({ personality: null, earlyLife: null, midLife: null, lateLife: null, wealth: null, career: null });
+ setExtraInfo(null);
+ setLoveFortune(null);
+ setHealthFortune(null);
+ // eslint-disable-next-line react-hooks/exhaustive-deps
+ }, [watchedBirthDate, watchedGender, watchedCalendarType]);
+
  useEffect(() => {
  const savedData = localStorage.getItem("muun_user_data");
  if (savedData) {
@@ -170,6 +185,7 @@ export default function LifelongSaju() {
  birthDate: /^\d{4}-\d{2}-\d{2}$/.test(parsed.birthDate) ? parsed.birthDate : form.getValues().birthDate || "2000-01-01",
  birthTime: /^\d{2}:\d{2}$/.test(parsed.birthTime) ? parsed.birthTime : form.getValues().birthTime || "12:00",
  });
+ setTimeout(() => setInitialLoadDone(true), 100);
  return;
  } catch (e) {
  console.error("Failed to parse saved data:", e);
@@ -183,6 +199,7 @@ export default function LifelongSaju() {
  form.setValue("birthTime", heroBirth.birthTime);
  form.setValue("birthTimeUnknown", heroBirth.birthTimeUnknown);
  }
+ setTimeout(() => setInitialLoadDone(true), 100);
  // eslint-disable-next-line react-hooks/exhaustive-deps
  }, []);
 

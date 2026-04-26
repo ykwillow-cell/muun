@@ -274,6 +274,7 @@ export default function Manselyeok() {
   const [, setLocation] = useLocation();
   const fiveElementRef = useRef<HTMLDivElement>(null);
   const [barsAnimated, setBarsAnimated] = useState(false);
+  const [initialLoadDone, setInitialLoadDone] = useState(false);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -300,6 +301,16 @@ export default function Manselyeok() {
     return () => clearTimeout(timer);
   }, [result]);
 
+  // 생년월일·성별·음양력 변경 시 기존 결과 초기화
+  const watchedBirthDate = form.watch("birthDate");
+  const watchedGender = form.watch("gender");
+  const watchedCalendarType = form.watch("calendarType");
+  useEffect(() => {
+    if (!initialLoadDone) return;
+    setResult(null);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watchedBirthDate, watchedGender, watchedCalendarType]);
+
   useEffect(() => {
     const savedData = localStorage.getItem("muun_user_data");
     if (savedData) {
@@ -311,6 +322,7 @@ export default function Manselyeok() {
           birthTime: /^\d{2}:\d{2}$/.test(parsed.birthTime) ? parsed.birthTime : "12:00",
         };
         form.reset(safeData);
+        setTimeout(() => setInitialLoadDone(true), 100);
         return;
       } catch {}
     }
@@ -321,7 +333,9 @@ export default function Manselyeok() {
       form.setValue("birthTime", heroBirth.birthTime);
       form.setValue("birthTimeUnknown", heroBirth.birthTimeUnknown);
     }
-  }, [form]);
+    setTimeout(() => setInitialLoadDone(true), 100);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onSubmit = (data: FormValues) => {
     let birthDateStr = data.birthDate;

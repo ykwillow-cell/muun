@@ -184,6 +184,7 @@ const Astrology: React.FC = () => {
   const [result, setResult] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [selectedCity, setSelectedCity] = useState<City | null>(null);
+  const [initialLoadDone, setInitialLoadDone] = useState(false);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -194,6 +195,15 @@ const Astrology: React.FC = () => {
       birthCity: "서울",
     },
   });
+
+  // 생년월일 변경 시 기존 결과 초기화
+  const watchedBirthDate = form.watch("birthDate");
+  const watchedBirthTime = form.watch("birthTime");
+  useEffect(() => {
+    if (!initialLoadDone) return;
+    setResult(null);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watchedBirthDate, watchedBirthTime]);
 
   useEffect(() => {
     const savedData = localStorage.getItem("muun_user_data");
@@ -207,6 +217,7 @@ const Astrology: React.FC = () => {
         });
         const city = MAJOR_CITIES.find(c => c.name === (parsed.birthCity || "서울"));
         setSelectedCity(city || MAJOR_CITIES[0]);
+        setTimeout(() => setInitialLoadDone(true), 100);
         return;
       } catch {}
     }
@@ -216,7 +227,9 @@ const Astrology: React.FC = () => {
       form.setValue("birthTime", heroBirth.birthTime);
     }
     setSelectedCity(MAJOR_CITIES[0]);
-  }, [form]);
+    setTimeout(() => setInitialLoadDone(true), 100);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onSubmit = async (data: FormValues) => {
     setLoading(true);

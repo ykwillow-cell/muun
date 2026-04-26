@@ -357,6 +357,7 @@ export default function DailyFortune() {
   const [fortune, setFortune] = useState<DailyFortuneResult | null>(null);
   const [showResult, setShowResult] = useState(false);
   const [userName, setUserName] = useState("");
+  const [initialLoadDone, setInitialLoadDone] = useState(false);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -368,6 +369,17 @@ export default function DailyFortune() {
       isLeapMonth: false,
     },
   });
+
+  // 생년월일·성별·음양력 변경 시 기존 결과 초기화
+  const watchedBirthDate = form.watch("birthDate");
+  const watchedGender = form.watch("gender");
+  const watchedCalendarType = form.watch("calendarType");
+  useEffect(() => {
+    if (!initialLoadDone) return;
+    setFortune(null);
+    setShowResult(false);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [watchedBirthDate, watchedGender, watchedCalendarType]);
 
   useEffect(() => {
     const savedData = localStorage.getItem("muun_user_data");
@@ -381,6 +393,7 @@ export default function DailyFortune() {
           calendarType: parsed.calendarType || "solar",
           isLeapMonth: parsed.isLeapMonth || false,
         });
+        setTimeout(() => setInitialLoadDone(true), 100);
         return;
       } catch {}
     }
@@ -389,7 +402,9 @@ export default function DailyFortune() {
       form.setValue("birthDate", heroBirth.birthDate);
       form.setValue("calendarType", heroBirth.calendarType);
     }
-  }, [form]);
+    setTimeout(() => setInitialLoadDone(true), 100);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onSubmit = (data: FormValues) => {
     // 생년월일 데이터 표준화 (YYYY.MM.DD, YYYY/MM/DD 등 -> YYYY-MM-DD)

@@ -263,6 +263,20 @@ export default function YearlyFortune() {
  },
  });
 
+ // 생년월일·성별·음양력 변경 시 기존 결과 초기화
+ const watchedBirthDate = form.watch("birthDate");
+ const watchedGender = form.watch("gender");
+ const watchedCalendarType = form.watch("calendarType");
+ const [initialLoadDone, setInitialLoadDone] = useState(false);
+ useEffect(() => {
+ if (!initialLoadDone) return;
+ setResult(null);
+ setDetailedFortune(null);
+ setMonthlyFortune(null);
+ setExtraInfo(null);
+ // eslint-disable-next-line react-hooks/exhaustive-deps
+ }, [watchedBirthDate, watchedGender, watchedCalendarType]);
+
  // 생년월일 데이터로 직접 사주 계산 (히어로 자동 진입 등)
  const autoCalculate = (data: FormValues) => {
  let birthDateStr = data.birthDate;
@@ -301,6 +315,7 @@ export default function YearlyFortune() {
  };
  form.reset(safeData);
  autoCalculate(safeData);
+ setTimeout(() => setInitialLoadDone(true), 100);
  return;
  } catch {}
  }
@@ -318,6 +333,9 @@ export default function YearlyFortune() {
  };
  form.reset(autoData);
  autoCalculate(autoData);
+ setTimeout(() => setInitialLoadDone(true), 100);
+ } else {
+ setInitialLoadDone(true);
  }
  // eslint-disable-next-line react-hooks/exhaustive-deps
  }, []);
