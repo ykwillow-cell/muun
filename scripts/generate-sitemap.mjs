@@ -34,12 +34,14 @@ function escapeXml(value = '') {
 }
 
 function urlsetXml(urls) {
-  const items = urls.map((u) => `  <url>\n    <loc>${escapeXml(u)}</loc>\n  </url>`).join('\n');
+  const today = new Date().toISOString().split('T')[0];
+  const items = urls.map((u) => `  <url>\n    <loc>${escapeXml(u)}</loc>\n    <lastmod>${today}</lastmod>\n  </url>`).join('\n');
   return `<?xml version="1.0" encoding="utf-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${items}\n</urlset>\n`;
 }
 
 function sitemapIndexXml(files) {
-  const items = files.map((f) => `  <sitemap>\n    <loc>${BASE_URL}/${escapeXml(f)}</loc>\n  </sitemap>`).join('\n');
+  const today = new Date().toISOString().split('T')[0];
+  const items = files.map((f) => `  <sitemap>\n    <loc>${BASE_URL}/${escapeXml(f)}</loc>\n    <lastmod>${today}</lastmod>\n  </sitemap>`).join('\n');
   return `<?xml version="1.0" encoding="utf-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${items}\n</sitemapindex>\n`;
 }
 
