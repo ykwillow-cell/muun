@@ -407,7 +407,6 @@ export default function DailyFortune() {
         return;
       } catch {}
     }
-    const heroBirth = getHeroBirthForForm();
     if (heroBirth) {
       form.setValue("birthDate", heroBirth.birthDate);
       form.setValue("calendarType", heroBirth.calendarType);
