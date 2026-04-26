@@ -1,5 +1,5 @@
 import { Link } from 'wouter';
-import { ArrowRight, CalendarDays, Clock3, Globe2, Home, Layers3, PenLine, ScrollText, Sparkles, type LucideIcon } from 'lucide-react';
+import { BookOpen, Brain, CalendarDays, Clock3, Globe2, Heart, Home, Layers3, Moon, PenLine, ScrollText, Sparkles, Star, Users, type LucideIcon } from 'lucide-react';
 
 type FeaturedTone = 'purple' | 'green' | 'coral';
 type FeaturedService = { href: string; label: string; description: string; badge: string; Icon: LucideIcon; tone: FeaturedTone; full?: boolean };
@@ -12,11 +12,19 @@ const FEATURED_SERVICES: FeaturedService[] = [
 ];
 
 const UTILITY_SERVICES: UtilityService[] = [
+  { href: '/daily-fortune', label: '오늘의 운세', description: '하루 운세 체크', Icon: Clock3 },
   { href: '/manselyeok', label: '만세력', description: '사주 네 기둥 확인', Icon: CalendarDays },
-  { href: '/tojeong', label: '토정비결', description: '월별 흐름 보기', Icon: Clock3 },
-  { href: '/astrology', label: '점성술', description: '네이탈 차트 분석', Icon: Sparkles, badge: '인기' },
+  { href: '/tojeong', label: '토정비결', description: '월별 흐름 보기', Icon: Sparkles },
+  { href: '/astrology', label: '점성술', description: '네이탈 차트 분석', Icon: Star, badge: '인기' },
   { href: '/tarot', label: '타로', description: '질문 중심 리딩', Icon: Layers3 },
+  { href: '/family-saju', label: '가족사주', description: '가족 오행 조화', Icon: Users },
+  { href: '/hybrid-compatibility', label: '사주×MBTI', description: '성향 결합 궁합', Icon: Brain, badge: 'NEW' },
+  { href: '/dream', label: '꿈해몽', description: '자주 찾는 상징 해석', Icon: Moon },
   { href: '/naming', label: '작명소', description: '이름 후보 비교', Icon: PenLine, badge: 'NEW' },
+  { href: '/psychology', label: '심리테스트', description: '성향과 심리 탐색', Icon: Brain },
+  { href: '/fortune-dictionary', label: '운세 사전', description: '용어와 개념 정리', Icon: BookOpen },
+  { href: '/guide', label: '운세 칼럼', description: '사주 읽을거리', Icon: BookOpen },
+  { href: '/lucky-lunch', label: '행운 점심', description: '오늘의 추천 메뉴', Icon: Heart },
 ];
 
 export function ServiceGrid() {
@@ -26,9 +34,7 @@ export function ServiceGrid() {
         <p className="muun-section-eyebrow">핵심 서비스</p>
         <div className="muun-section-row">
           <h2 id="core-services-title" className="muun-section-title">지금 바로 볼 수 있는 서비스</h2>
-          <Link href="/more" className="muun-see-all">전체 <ArrowRight size={12} aria-hidden="true" /></Link>
         </div>
-
         <div className="muun-main-svc-grid">
           {FEATURED_SERVICES.map(({ href, label, description, badge, Icon, tone, full }) => (
             <Link key={href} href={href} className={`muun-main-svc-card${full ? ' muun-main-svc-card--full' : ''}`}>
@@ -50,9 +56,7 @@ export function ServiceGrid() {
         <p className="muun-section-eyebrow">추가 서비스</p>
         <div className="muun-section-row">
           <h2 id="extra-services-title" className="muun-section-title">더 많은 무료 서비스</h2>
-          <Link href="/more" className="muun-see-all">전체 <ArrowRight size={12} aria-hidden="true" /></Link>
         </div>
-
         <div className="muun-mini-grid">
           {UTILITY_SERVICES.map(({ href, label, description, Icon, badge }) => (
             <Link key={href} href={href} className="muun-mini-card">
@@ -64,11 +68,6 @@ export function ServiceGrid() {
               <p className="muun-mini-desc">{description}</p>
             </Link>
           ))}
-          <Link href="/more" className="muun-more-card">
-            <span className="muun-more-card__plus">+</span>
-            <strong>전체 서비스</strong>
-            <span>모두 보기 →</span>
-          </Link>
         </div>
       </section>
     </div>
