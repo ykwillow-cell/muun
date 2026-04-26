@@ -970,7 +970,7 @@
 
 @layer components {
   :root {
-    --mu-appbar-offset: calc(var(--safe-area-top) + 114px);
+    --mu-appbar-offset: calc(var(--safe-area-top) + 82px);
   }
 
   .mu-route-banner {

@@ -423,7 +423,7 @@ export default function Manselyeok() {
         </div>
       )}
 
-      <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
+      <header className="mu-subpage-header sticky top-[82px] z-50 bg-white border-b border-black/[0.06]">
         <div className="w-full px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
             <Link href="/">

@@ -623,7 +623,7 @@ export default function Compatibility() {
  <div className="mu-subpage-screen compatibility-page min-h-screen bg-[#FBF3F3] text-foreground pb-16 antialiased">
 
  {/* 헤더 — 흰색 불투명, 시안과 동일 */}
- <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
+ <header className="mu-subpage-header sticky top-[82px] z-50 bg-white border-b border-black/[0.06]">
  <div className="w-full px-4 h-14 flex items-center">
  <Link href="/">
  <Button variant="ghost" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px] flex items-center gap-1 px-2">
@@ -1059,7 +1059,7 @@ export default function Compatibility() {
  <div className="mu-subpage-screen compatibility-page min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
 
    {/* ===== 헤더 ===== */}
-   <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
+   <header className="mu-subpage-header sticky top-[82px] z-50 bg-white border-b border-black/[0.06]">
      <div className="w-full px-4 h-14 flex items-center justify-between">
        <div className="flex items-center">
          <Button variant="ghost" onClick={() => setResult(null)} className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px] flex items-center gap-1 px-2">

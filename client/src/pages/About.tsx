@@ -29,7 +29,7 @@ export default function About() {
         <meta name="twitter:description" content="무운(MuUn)은 회원가입 없이, 개인정보를 저장하지 않는 100% 무료 사주 및 운세 서비스입니다. 누구나 부담 없이 사주, 운세, 타로, 꿈해몽을 이용할 수 있습니다." />
         <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
       </Helmet>
-      <header className="mu-subpage-header sticky top-0 z-50 backdrop-blur-2xl bg-white/80 border-b border-black/10">
+      <header className="mu-subpage-header sticky top-[82px] z-50 backdrop-blur-2xl bg-white/80 border-b border-black/10">
         <div className="w-full px-4 h-16 flex items-center">
           <Link href="/">
             <Button variant="ghost" size="icon" className="mr-4 rounded-full hover:bg-black/[0.05]">

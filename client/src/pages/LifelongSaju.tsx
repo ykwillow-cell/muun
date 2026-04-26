@@ -293,7 +293,7 @@ export default function LifelongSaju() {
  return (
  <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
 
- <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
+ <header className="mu-subpage-header sticky top-[82px] z-50 bg-white border-b border-black/[0.06]">
  <div className="w-full px-4 h-14 flex items-center">
  <Link href="/">
  <Button variant="ghost" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] -ml-2 flex items-center gap-1 text-sm font-medium">
@@ -569,7 +569,7 @@ export default function LifelongSaju() {
  </script>
  </Helmet>
  <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-20">
- <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
+ <header className="mu-subpage-header sticky top-[82px] z-50 bg-white border-b border-black/[0.06]">
  <div className="w-full px-4 h-14 flex items-center justify-between">
  <div className="flex items-center">
  <Button variant="ghost" onClick={() => setResult(null)} className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] -ml-2 flex items-center gap-1 text-sm font-medium">

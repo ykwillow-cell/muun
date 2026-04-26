@@ -462,7 +462,7 @@ export default function DailyFortune() {
         <script type="application/ld+json">{JSON.stringify({"@context":"https://schema.org","@type":"Service","name":"무료 일별 운세","description":"사주팔자 기반의 무료 일별 운세 서비스","provider":{"@type":"Organization","name":"무운 (MuUn)","url":"https://muunsaju.com"},"url":"https://muunsaju.com/daily-fortune","serviceType":"일별운세","areaServed":"KR","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}})}</script>
       </Helmet>
       <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
-        <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
+        <header className="mu-subpage-header sticky top-[82px] z-50 bg-white border-b border-black/[0.06]">
           <div className="w-full px-4 h-14 flex items-center">
             <Link href="/">
               <Button variant="ghost" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] -ml-2 flex items-center gap-1 text-sm font-medium">
@@ -690,7 +690,7 @@ export default function DailyFortune() {
         </div>
 
         {/* 헤더 */}
-        <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
+        <header className="mu-subpage-header sticky top-[82px] z-50 bg-white border-b border-black/[0.06]">
           <div className="w-full px-4 h-14 flex items-center justify-between">
             <div className="flex items-center">
               <Button

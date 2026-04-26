@@ -211,7 +211,7 @@ export default function Tarot() {
         <meta name="twitter:description" content="회원가입 없이 바로 시작하는 무료 타로 상담. 고민되는 문제에 대한 해답을 개인정보 저장 없이 100% 무료로 확인하세요." />
         <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
       </Helmet>
-      <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
+      <header className="mu-subpage-header sticky top-[82px] z-50 bg-white border-b border-black/[0.06]">
         <div className={`${commonMaxWidth} px-4 h-14 flex items-center`}>
           <Link href="/">
             <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">

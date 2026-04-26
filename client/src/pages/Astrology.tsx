@@ -299,7 +299,7 @@ const Astrology: React.FC = () => {
             }
           }`}</script>
         </Helmet>
-        <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
+        <header className="mu-subpage-header sticky top-[82px] z-50 bg-white border-b border-black/[0.06]">
           <div className={`${commonMaxWidth} px-4 h-14 flex items-center`}>
             <Link href="/">
               <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
@@ -447,7 +447,7 @@ const Astrology: React.FC = () => {
           </p>
         </div>
       )}
-      <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
+      <header className="mu-subpage-header sticky top-[82px] z-50 bg-white border-b border-black/[0.06]">
         <div className="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
             <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]" onClick={() => setResult(null)}>

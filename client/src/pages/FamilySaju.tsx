@@ -191,7 +191,7 @@ export default function FamilySaju() {
  <link rel="canonical" href="https://muunsaju.com/family-saju" />
  </Helmet>
  {/* 헤더 */}
- <div className="mu-subpage-header sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-black/10">
+ <div className="mu-subpage-header sticky top-[82px] z-50 bg-white/80 backdrop-blur-md border-b border-black/10">
  <div className="w-full px-4 h-14 flex items-center">
  <Link href="/">
  <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
@@ -434,7 +434,7 @@ export default function FamilySaju() {
  </div>
  )}
  {/* 헤더 */}
- <div className="mu-subpage-header sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-black/10">
+ <div className="mu-subpage-header sticky top-[82px] z-50 bg-white/80 backdrop-blur-md border-b border-black/10">
  <div className="w-full px-4 h-14 flex items-center">
  <Button variant="ghost" size="icon" onClick={() => setResult(null)} className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
  <ChevronLeft className="w-5 h-5" />

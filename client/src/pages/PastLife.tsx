@@ -157,7 +157,7 @@ export default function PastLife() {
         <meta property="og:description" content="생년월일로 알아보는 나의 전생 이야기. AI가 당신의 전생을 생생하게 묘사해드립니다." />
       </Helmet>
 
-      <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
+      <header className="mu-subpage-header sticky top-[82px] z-50 bg-white border-b border-black/[0.06]">
         <div className="w-full px-4 h-14 flex items-center">
           <Link href="/">
             <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">

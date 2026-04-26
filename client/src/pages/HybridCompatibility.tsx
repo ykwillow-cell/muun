@@ -596,7 +596,7 @@ export default function HybridCompatibilityPage() {
         <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
 
           {/* 헤더 */}
-          <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
+          <header className="mu-subpage-header sticky top-[82px] z-50 bg-white border-b border-black/[0.06]">
             <div className={`${commonMaxWidth} container mx-auto px-4 py-3 flex items-center justify-between`}>
               <button onClick={() => setResult(null)} className="flex items-center gap-2 hover:opacity-80 transition-opacity">
                 <ChevronLeft className="w-5 h-5" />
@@ -815,7 +815,7 @@ export default function HybridCompatibilityPage() {
       </Helmet>
       <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
 
-        <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
+        <header className="mu-subpage-header sticky top-[82px] z-50 bg-white border-b border-black/[0.06]">
           <div className={`${commonMaxWidth} container mx-auto px-4 py-3 flex items-center justify-between`}>
             <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
               <ChevronLeft className="w-5 h-5" />

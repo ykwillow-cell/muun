@@ -643,7 +643,7 @@ export default function Naming() {
         </Helmet>
 
         {/* 헤더 */}
-        <header className="mu-subpage-header sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
+        <header className="mu-subpage-header sticky top-[82px] z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
           <div className="w-full px-4 h-14 flex items-center">
             <Link href="/">
               <Button
@@ -1003,7 +1003,7 @@ export default function Naming() {
       </div>
 
       {/* 헤더 */}
-      <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06] print:hidden">
+      <header className="mu-subpage-header sticky top-[82px] z-50 bg-white border-b border-black/[0.06] print:hidden">
         <div className="w-full px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
             <Button
