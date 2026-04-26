@@ -257,7 +257,7 @@ export default function LifelongSaju() {
  }
  };
 
- const commonMaxWidth = "w-full max-w-2xl mx-auto";
+ const commonMaxWidth = "w-full";
 
  const ELEMENT_TEXT_COLOR: Record<string, string> = {
  '木': 'text-green-600', '火': 'text-red-600', '土': 'text-yellow-600', '金': 'text-[#6a6a66]', '水': 'text-blue-600',
@@ -268,7 +268,7 @@ export default function LifelongSaju() {
  <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
 
  <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
- <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
+ <div className="w-full px-4 h-14 flex items-center">
  <Link href="/">
  <Button variant="ghost" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] -ml-2 flex items-center gap-1 text-sm font-medium">
  <ChevronLeft className="h-5 w-5" />
@@ -279,7 +279,7 @@ export default function LifelongSaju() {
  </div>
  </header>
 
- <main className="mu-service-main relative z-10 container mx-auto max-w-[1280px] px-4 py-5 md:py-8">
+ <main className="mu-service-main relative z-10 w-full px-4 py-5">
  <motion.div
  initial={{ opacity: 0, y: 20 }}
  animate={{ opacity: 1, y: 0 }}
@@ -292,14 +292,14 @@ export default function LifelongSaju() {
  <span>인생의 흐름을 읽는 지혜</span>
  </div>
  <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-[#1a1a18]">평생사주</h2>
- <p className="text-muted-foreground text-xs md:text-base md:text-sm">
+ <p className="text-muted-foreground text-xs md:text-sm">
  태어난 기운을 바탕으로 당신의 성격, 재물, 직업, 그리고 평생의 운을 분석합니다
  </p>
  </div>
 
  <Card className="bg-white rounded-2xl shadow-sm border border-black/[0.06] overflow-hidden">
- <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6 md:py-4">
- <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-base md:text-lg">
+ <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6">
+ <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-base">
  <div className="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center">
  <User className="w-4 h-4 text-purple-600" />
  </div>
@@ -442,7 +442,7 @@ export default function LifelongSaju() {
  <Button 
  type="submit" 
  style={{ background: 'linear-gradient(135deg, #7C5CFC, #6D28D9)' }}
- className="w-full h-12 text-white font-bold text-sm md:text-base rounded-xl shadow-sm transition-all hover:opacity-90 active:scale-[0.98] mt-2"
+ className="w-full h-12 text-white font-bold text-sm rounded-xl shadow-sm transition-all hover:opacity-90 active:scale-[0.98] mt-2"
  >
  <Sparkles className="w-4 h-4 mr-2" />
  평생사주 보기
@@ -544,7 +544,7 @@ export default function LifelongSaju() {
  </Helmet>
  <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-20">
  <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
- <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
+ <div className="w-full px-4 h-14 flex items-center justify-between">
  <div className="flex items-center">
  <Button variant="ghost" onClick={() => setResult(null)} className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] -ml-2 flex items-center gap-1 text-sm font-medium">
  <ChevronLeft className="h-5 w-5" />
@@ -570,7 +570,7 @@ export default function LifelongSaju() {
  </div>
  </header>
 
- <main className="mu-service-main relative z-10 px-4 py-5 md:py-6">
+ <main className="mu-service-main relative z-10 px-4 py-5">
  <motion.div
  initial={{ opacity: 0, y: 20 }}
  animate={{ opacity: 1, y: 0 }}
@@ -605,7 +605,7 @@ export default function LifelongSaju() {
  </div>
  <Card className="rounded-2xl overflow-hidden" data-result-card>
  <CardHeader className="border-b border-black/10 px-4 py-3">
- <CardTitle className="text-sm md:text-base text-purple-600 flex items-center gap-2">
+ <CardTitle className="text-sm text-purple-600 flex items-center gap-2">
  <span className={`text-lg ${ELEMENT_TEXT_COLOR[dayElement]}`}>{dayStem}</span>
  {stemPersonality.name} — {stemPersonality.nature} ({stemPersonality.symbol})
  </CardTitle>

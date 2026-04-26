@@ -349,7 +349,7 @@ export default function Manselyeok() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const commonMaxWidth = "w-full max-w-2xl mx-auto";
+  const commonMaxWidth = "w-full";
 
   return (
     <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-20 antialiased">
@@ -401,7 +401,7 @@ export default function Manselyeok() {
       )}
 
       <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
-        <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
+        <div className="w-full px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
             <Link href="/">
               <Button variant="ghost" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] -ml-2 flex items-center gap-1 text-sm font-medium">
@@ -428,7 +428,7 @@ export default function Manselyeok() {
         </div>
       </header>
 
-      <main className="mu-service-main relative z-10 container mx-auto max-w-[1280px] px-4 py-5 md:py-8">
+      <main className="mu-service-main relative z-10 w-full px-4 py-5">
         <AnimatePresence mode="wait">
           {!result ? (
             <motion.div
@@ -453,8 +453,8 @@ export default function Manselyeok() {
 
               {/* Input Form Card */}
               <Card className="bg-white rounded-2xl shadow-sm border border-black/[0.06] overflow-hidden">
-                <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6 md:py-4">
-                  <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-base md:text-lg">
+                <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6">
+                  <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-base">
                     <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
                       <User className="w-4 h-4 text-emerald-400" />
                     </div>
@@ -538,7 +538,7 @@ export default function Manselyeok() {
 
                     <Button type="submit"
                       style={{ background: 'linear-gradient(135deg, #10B981, #059669)' }}
-                      className="w-full h-12 text-white font-bold text-sm md:text-base rounded-xl shadow-sm transition-all hover:opacity-90 active:scale-[0.98]">
+                      className="w-full h-12 text-white font-bold text-sm rounded-xl shadow-sm transition-all hover:opacity-90 active:scale-[0.98]">
                       <Activity className="w-4 h-4 mr-2" />만세력 분석하기
                     </Button>
                   </form>
@@ -593,7 +593,7 @@ export default function Manselyeok() {
                       <User className="w-5 h-5 text-emerald-400" />
                     </div>
                     <div>
-                      <h2 className="text-xl md:text-2xl font-bold text-white">{form.getValues('name')}님의 사주</h2>
+                      <h2 className="text-xl font-bold text-white">{form.getValues('name')}님의 사주</h2>
                       <p className="text-emerald-300 text-sm">
                         {result.birthDate.getFullYear()}년 {result.birthDate.getMonth() + 1}월 {result.birthDate.getDate()}일
                         {' · '}
@@ -630,7 +630,7 @@ export default function Manselyeok() {
               ═══════════════════════════════════ */}
               <Card className="bg-white border border-black/[0.06] rounded-2xl shadow-sm overflow-hidden">
                 <CardHeader className="border-b border-black/[0.06] px-4 py-3">
-                  <CardTitle className="text-sm md:text-base flex items-center gap-2 text-emerald-600">
+                  <CardTitle className="text-sm flex items-center gap-2 text-emerald-600">
                     <div className="w-7 h-7 md:w-8 md:h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
                       <ScrollText className="w-3.5 h-3.5 md:w-4 md:h-4" />
                     </div>
@@ -669,7 +669,7 @@ export default function Manselyeok() {
                                 className={`rounded-xl border p-2 md:p-3 ${getElementColor(item.pillar.stemElement)}`}
                                 style={isIlju ? { boxShadow: 'inset 0 0 0 2px #34d399' } : undefined}
                               >
-                                <p className="text-xl md:text-2xl font-bold">{item.pillar.stem}</p>
+                                <p className="text-xl font-bold">{item.pillar.stem}</p>
                                 <p className="text-[9px] md:text-[10px] opacity-70 mt-0.5">
                                   {STEM_READINGS[item.pillar.stem]} · {ELEMENT_READINGS[item.pillar.stemElement]}
                                 </p>
@@ -677,7 +677,7 @@ export default function Manselyeok() {
 
                               {/* 지지 */}
                               <div className={`rounded-xl border p-2 md:p-3 ${getElementColor(item.pillar.branchElement)}`}>
-                                <p className="text-xl md:text-2xl font-bold">{item.pillar.branch}</p>
+                                <p className="text-xl font-bold">{item.pillar.branch}</p>
                                 <p className="text-[9px] md:text-[10px] opacity-70 mt-0.5">
                                   {BRANCH_READINGS[item.pillar.branch]} · {ELEMENT_READINGS[item.pillar.branchElement]}
                                 </p>
@@ -701,7 +701,7 @@ export default function Manselyeok() {
               ═══════════════════════════════════ */}
               <Card className="bg-white border border-black/[0.06] rounded-2xl shadow-sm overflow-hidden">
                 <CardHeader className="border-b border-black/[0.06] px-4 py-3">
-                  <CardTitle className="text-sm md:text-base flex items-center gap-2 text-emerald-600">
+                  <CardTitle className="text-sm flex items-center gap-2 text-emerald-600">
                     <div className="w-7 h-7 md:w-8 md:h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
                       <Activity className="w-3.5 h-3.5 md:w-4 md:h-4" />
                     </div>
@@ -765,7 +765,7 @@ export default function Manselyeok() {
               {analysis && (
                 <Card className="bg-white border border-black/[0.06] rounded-2xl shadow-sm overflow-hidden">
                   <CardHeader className="border-b border-black/[0.06] px-4 py-3">
-                    <CardTitle className="text-sm md:text-base flex items-center gap-2 text-emerald-600">
+                    <CardTitle className="text-sm flex items-center gap-2 text-emerald-600">
                       <div className="w-7 h-7 md:w-8 md:h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
                         <TrendingUp className="w-3.5 h-3.5 md:w-4 md:h-4" />
                       </div>
@@ -828,7 +828,7 @@ export default function Manselyeok() {
               {analysis && (
                 <Card className="bg-white border border-black/[0.06] rounded-2xl shadow-sm overflow-hidden">
                   <CardHeader className="border-b border-black/[0.06] px-4 py-3">
-                    <CardTitle className="text-sm md:text-base flex items-center gap-2 text-emerald-600">
+                    <CardTitle className="text-sm flex items-center gap-2 text-emerald-600">
                       <div className="w-7 h-7 md:w-8 md:h-8 rounded-lg bg-amber-500/20 flex items-center justify-center">
                         <Zap className="w-3.5 h-3.5 md:w-4 md:h-4 text-amber-500" />
                       </div>
@@ -864,7 +864,7 @@ export default function Manselyeok() {
                 <Card className="bg-white border border-black/[0.06] rounded-2xl shadow-sm overflow-hidden">
                   <CardHeader className="border-b border-black/[0.06] px-4 py-3">
                     <div className="flex items-center justify-between">
-                      <CardTitle className="text-sm md:text-base flex items-center gap-2 text-emerald-600">
+                      <CardTitle className="text-sm flex items-center gap-2 text-emerald-600">
                         <div className="w-7 h-7 md:w-8 md:h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
                           <Calendar className="w-3.5 h-3.5 md:w-4 md:h-4" />
                         </div>
@@ -919,7 +919,7 @@ export default function Manselyeok() {
               ═══════════════════════════════════ */}
               <Card className="bg-white border border-black/[0.06] rounded-2xl shadow-sm overflow-hidden">
                 <CardHeader className="border-b border-black/[0.06] px-4 py-3">
-                  <CardTitle className="text-sm md:text-base flex items-center gap-2 text-emerald-600">
+                  <CardTitle className="text-sm flex items-center gap-2 text-emerald-600">
                     <div className="w-7 h-7 md:w-8 md:h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
                       <Sparkles className="w-3.5 h-3.5 md:w-4 md:h-4" />
                     </div>
@@ -971,7 +971,7 @@ export default function Manselyeok() {
                   style={{ background: 'linear-gradient(135deg, #0a1f1a 0%, #0d2d22 100%)' }}
                 >
                   <div className="space-y-1">
-                    <p className="text-white font-bold text-sm md:text-base">평생사주 풀이 보러가기</p>
+                    <p className="text-white font-bold text-sm">평생사주 풀이 보러가기</p>
                     <p className="text-emerald-300 text-xs">만세력 결과를 바탕으로 평생 운세를 분석합니다</p>
                   </div>
                   <div className="w-9 h-9 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0">

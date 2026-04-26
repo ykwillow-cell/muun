@@ -158,17 +158,17 @@ export default function PastLife() {
       </Helmet>
 
       <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
-        <div className="max-w-2xl mx-auto px-4 h-14 flex items-center">
+        <div className="w-full px-4 h-14 flex items-center">
           <Link href="/">
             <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
               <ChevronLeft className="h-6 w-6" />
             </Button>
           </Link>
-          <h1 className="text-lg md:text-xl font-bold text-[#1a1a18]">무료 전생 체험</h1>
+          <h1 className="text-lg font-bold text-[#1a1a18]">무료 전생 체험</h1>
         </div>
       </header>
-      <main className="mu-service-main px-4 py-6 md:py-8">
-      <div className="max-w-2xl mx-auto">
+      <main className="mu-service-main px-4 py-6">
+      <div className="w-full">
 
         <AnimatePresence mode="wait">
           {/* 입력 폼 */}
@@ -282,7 +282,7 @@ export default function PastLife() {
               <Button
                 onClick={handleReveal}
                 disabled={isLoading}
-                className="w-full h-12 rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] hover:from-[#7C3AED] hover:to-[#6D28D9] text-white font-bold text-sm md:text-base transition-all shadow-lg shadow-[#8B5CF6]/20 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:hover:scale-100"
+                className="w-full h-12 rounded-xl bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] hover:from-[#7C3AED] hover:to-[#6D28D9] text-white font-bold text-sm transition-all shadow-lg shadow-[#8B5CF6]/20 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-70 disabled:hover:scale-100"
               >
                 {isLoading ? (
                   <>

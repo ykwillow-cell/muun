@@ -6,7 +6,7 @@ import RelatedServices from "@/components/RelatedServices";
 const DailyFortuneContent = () => {
   return (
     <>
-    <div className="w-full max-w-4xl mx-auto my-12 px-4">
+    <div className="w-full w-full my-12 px-4">
       <Card className="bg-white/80 backdrop-blur-sm border-border/50 shadow-xl overflow-hidden">
         <CardHeader>
           <CardTitle className="text-3xl font-bold text-center text-primary">오늘의 운세, 하루를 시작하는 지혜</CardTitle>

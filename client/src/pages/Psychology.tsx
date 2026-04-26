@@ -106,7 +106,7 @@ export default function Psychology() {
   const [finalResult, setFinalResult] = useState<any>(null);
 
   const test = PSYCHOLOGY_TESTS[0];
-  const commonMaxWidth = "max-w-4xl mx-auto";
+  const commonMaxWidth = "w-full";
 
   const handleStart = () => {
     setStep("quiz");
@@ -163,11 +163,11 @@ export default function Psychology() {
               <ChevronLeft className="h-6 w-6" />
             </Button>
           </Link>
-          <h1 className="text-lg md:text-xl font-bold text-[#1a1a18]">무료 심리 테스트</h1>
+          <h1 className="text-lg font-bold text-[#1a1a18]">무료 심리 테스트</h1>
         </div>
       </header>
 
-      <main className="mu-service-main px-4 py-6 md:py-8">
+      <main className="mu-service-main px-4 py-6">
         <div className={commonMaxWidth}>
           <AnimatePresence mode="wait">
             {step === "intro" && (
@@ -179,13 +179,13 @@ export default function Psychology() {
                 className="space-y-6 md:space-y-8"
               >
                 {/* Hero Section */}
-                <section className="text-center space-y-4 py-4 md:py-6">
+                <section className="text-center space-y-4 py-4">
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-[#10B981]/20 text-[#10B981] text-xs font-medium">
                     <BrainCircuit className="w-3 h-3" />
                     <span>심리 분석</span>
                   </div>
                   <h2 className="text-2xl md:text-4xl font-bold tracking-tight text-[#1a1a18]">나의 숨겨진 성격 찾기</h2>
-                  <p className="text-sm md:text-base text-muted-foreground max-w-md mx-auto">
+                  <p className="text-sm text-muted-foreground max-w-md mx-auto">
                     평소 무심코 하는 행동 속에 숨겨진 당신의 진짜 성격은?
                   </p>
                 </section>
@@ -200,11 +200,11 @@ export default function Psychology() {
                     <div className="w-12 h-12 rounded-xl bg-[#10B981]/10 flex items-center justify-center mx-auto">
                       {test.icon}
                     </div>
-                    <h3 className="text-lg md:text-xl font-bold text-[#1a1a18]">{test.title}</h3>
+                    <h3 className="text-lg font-bold text-[#1a1a18]">{test.title}</h3>
                     <p className="text-sm text-muted-foreground">{test.description}</p>
                     <Button 
                       onClick={handleStart}
-                      className="w-full h-12 text-sm md:text-base font-bold bg-gradient-to-r from-[#10B981] to-[#059669] hover:from-[#059669] hover:to-[#047857] text-white rounded-xl shadow-lg shadow-[#10B981]/20 transition-all hover:scale-[1.02] active:scale-[0.98] mt-2"
+                      className="w-full h-12 text-sm font-bold bg-gradient-to-r from-[#10B981] to-[#059669] hover:from-[#059669] hover:to-[#047857] text-white rounded-xl shadow-lg shadow-[#10B981]/20 transition-all hover:scale-[1.02] active:scale-[0.98] mt-2"
                     >
                       테스트 시작하기
                     </Button>
@@ -238,7 +238,7 @@ export default function Psychology() {
                 </div>
                 
                 <Card className="bg-white border border-black/[0.06] shadow-sm rounded-2xl p-5 md:p-6" data-misc-card>
-                  <h2 className="text-base md:text-lg font-bold text-[#1a1a18] leading-relaxed mb-5">
+                  <h2 className="text-base font-bold text-[#1a1a18] leading-relaxed mb-5">
                     {test.questions[currentQuestion].question}
                   </h2>
 

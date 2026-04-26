@@ -423,7 +423,7 @@ export default function DailyFortune() {
     window.scrollTo(0, 0);
   };
 
-  const commonMaxWidth = "w-full max-w-2xl mx-auto";
+  const commonMaxWidth = "w-full";
 
   // ── 입력 화면 (절대 수정 금지) ────────────────────────────────────────────
   if (!showResult) {
@@ -439,7 +439,7 @@ export default function DailyFortune() {
       </Helmet>
       <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
         <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
-          <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
+          <div className="w-full px-4 h-14 flex items-center">
             <Link href="/">
               <Button variant="ghost" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] -ml-2 flex items-center gap-1 text-sm font-medium">
                 <ChevronLeft className="h-5 w-5" />
@@ -450,7 +450,7 @@ export default function DailyFortune() {
           </div>
         </header>
 
-        <main className="mu-service-main relative z-10 container mx-auto max-w-[1280px] px-4 py-5 md:py-8">
+        <main className="mu-service-main relative z-10 w-full px-4 py-5">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -464,15 +464,15 @@ export default function DailyFortune() {
                 <span>오늘 하루의 기운</span>
               </div>
               <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-[#1a1a18]">오늘의 운세</h2>
-              <p className="text-muted-foreground text-xs md:text-base md:text-sm">
+              <p className="text-muted-foreground text-xs md:text-sm">
                 오늘 하루의 기운을 미리 확인하고 행운을 잡아보세요
               </p>
             </div>
 
             {/* Input Form Card - 컴팩트하게 */}
             <Card className="bg-white rounded-2xl shadow-sm border border-black/[0.06] overflow-hidden">
-              <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6 md:py-4">
-                <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-base md:text-lg">
+              <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6">
+                <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-base">
                   <div className="w-8 h-8 rounded-lg bg-orange-500/20 flex items-center justify-center">
                     <User className="w-4 h-4 text-orange-600" />
                   </div>
@@ -583,7 +583,7 @@ export default function DailyFortune() {
                   <Button
                     type="submit"
                     style={{ background: 'linear-gradient(135deg, #F97316, #EA580C)' }}
-                    className="w-full h-12 text-white font-bold text-sm md:text-base rounded-xl shadow-sm transition-all hover:opacity-90 active:scale-[0.98] mt-2"
+                    className="w-full h-12 text-white font-bold text-sm rounded-xl shadow-sm transition-all hover:opacity-90 active:scale-[0.98] mt-2"
                   >
                     <Zap className="w-4 h-4 mr-2" />
                     오늘의 운세 확인하기
@@ -667,7 +667,7 @@ export default function DailyFortune() {
 
         {/* 헤더 */}
         <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
-          <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
+          <div className="w-full px-4 h-14 flex items-center justify-between">
             <div className="flex items-center">
               <Button
                 variant="ghost"
@@ -697,8 +697,8 @@ export default function DailyFortune() {
           </div>
         </header>
 
-        <main className="mu-service-main relative z-10 container mx-auto max-w-[1280px] px-4 py-6">
-          <div className="w-full max-w-2xl mx-auto space-y-4">
+        <main className="mu-service-main relative z-10 w-full px-4 py-6">
+          <div className="w-full space-y-4">
 
             {/* ─────────────────────────────────────────────────────────────
                 SECTION 1: HERO — 종합 운세 점수 + 에너지 총평
@@ -1202,7 +1202,7 @@ export default function DailyFortune() {
           <RecommendedContent />
 
           {/* SEO 콘텐츠 */}
-          <div className="w-full max-w-2xl mx-auto mt-8">
+          <div className="w-full mt-8">
             <DailyFortuneContent />
           </div>
         </main>

@@ -99,7 +99,7 @@ export default function TarotHistory() {
             <span className="text-xs font-medium tracking-wider text-primary uppercase">My Tarot Records</span>
           </motion.div>
           <h1 className="text-3xl md:text-5xl font-bold tracking-tight">내 타로 기록</h1>
-          <p className="text-muted-foreground max-w-xl mx-auto">
+          <p className="text-muted-foreground w-full">
             지난 상담 기록을 다시 살펴보세요. <br className="hidden md:block" />
             신비로운 카드의 메시지가 당신을 기다리고 있습니다.
           </p>
@@ -284,7 +284,7 @@ export default function TarotHistory() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
-              className="flex items-start gap-3 p-6 rounded-[2rem] bg-black/[0.05] border border-black/10 max-w-3xl mx-auto mt-12"
+              className="flex items-start gap-3 p-6 rounded-[2rem] bg-black/[0.05] border border-black/10 w-full mt-12"
             >
               <Info className="w-5 h-5 text-primary/50 mt-0.5 flex-shrink-0" />
               <div className="space-y-1">

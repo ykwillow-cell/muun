@@ -86,7 +86,7 @@ export default function RecommendedContent() {
 
   if (isLoading) {
     return (
-      <div className="w-full max-w-2xl mx-auto mt-10 px-4 pb-10">
+      <div className="w-full mt-10 px-4 pb-10">
         <div className="h-6 w-40 bg-black/[0.05] rounded-full animate-pulse mb-4" />
         <div className="grid grid-cols-2 gap-3">
           {[...Array(4)].map((_, i) => (
@@ -100,7 +100,7 @@ export default function RecommendedContent() {
   if (items.length === 0) return null;
 
   return (
-    <section className="w-full max-w-2xl mx-auto mt-10 px-4 pb-12">
+    <section className="w-full mt-10 px-4 pb-12">
       {/* 섹션 헤더 */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}

@@ -384,7 +384,7 @@ export default function YearlyFortune() {
  });
  };
 
- const commonMaxWidth = "w-full max-w-2xl mx-auto";
+ const commonMaxWidth = "w-full";
 
  if (!result) {
  return (
@@ -400,7 +400,7 @@ export default function YearlyFortune() {
  <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
 
  <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
- <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
+ <div className="w-full px-4 h-14 flex items-center">
  <Link href="/">
  <Button variant="ghost" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] -ml-2 flex items-center gap-1 text-sm font-medium">
  <ChevronLeft className="h-5 w-5" />
@@ -411,7 +411,7 @@ export default function YearlyFortune() {
  </div>
  </header>
 
- <main className="mu-service-main relative z-10 container mx-auto max-w-[1280px] px-4 py-5 md:py-8">
+ <main className="mu-service-main relative z-10 w-full px-4 py-5">
  <motion.div
  initial={{ opacity: 0, y: 20 }}
  animate={{ opacity: 1, y: 0 }}
@@ -424,14 +424,14 @@ export default function YearlyFortune() {
  <span>2026년 병오년 운세</span>
  </div>
  <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-[#1a1a18]">신년운세</h2>
- <p className="text-muted-foreground text-xs md:text-base md:text-sm">
+ <p className="text-muted-foreground text-xs md:text-sm">
  새로운 해의 기운을 미리 확인하고 당신의 한 해를 설계해보세요
  </p>
  </div>
 
  <Card className="bg-white rounded-2xl shadow-sm border border-black/[0.06] overflow-hidden">
- <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6 md:py-4">
- <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-base md:text-lg">
+ <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6">
+ <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-base">
  <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
  <User className="w-4 h-4 text-primary" />
  </div>
@@ -550,7 +550,7 @@ export default function YearlyFortune() {
  <Button 
  type="submit" 
  style={{ background: 'linear-gradient(135deg, #3B82F6, #1D4ED8)' }}
- className="w-full h-12 text-white font-bold text-sm md:text-base rounded-xl shadow-sm transition-all hover:opacity-90 active:scale-[0.98] mt-2"
+ className="w-full h-12 text-white font-bold text-sm rounded-xl shadow-sm transition-all hover:opacity-90 active:scale-[0.98] mt-2"
  >
  <Sparkles className="w-4 h-4 mr-2" />
  2026년 신년운세 보기 </Button>
@@ -649,7 +649,7 @@ export default function YearlyFortune() {
  </div>
  )}
  <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
- <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
+ <div className="w-full px-4 h-14 flex items-center justify-between">
  <div className="flex items-center">
  <Button variant="ghost" onClick={() => setResult(null)} className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] -ml-2 flex items-center gap-1 text-sm font-medium">
  <ChevronLeft className="h-5 w-5" />
@@ -675,7 +675,7 @@ export default function YearlyFortune() {
  </div>
  </header>
 
- <main className="mu-service-main container mx-auto max-w-[1280px] px-4 py-5 md:py-6">
+ <main className="mu-service-main w-full px-4 py-5">
  <motion.div
  initial={{ opacity: 0, y: 20 }}
  animate={{ opacity: 1, y: 0 }}
@@ -710,7 +710,7 @@ export default function YearlyFortune() {
  </div>
  <Card className="rounded-2xl overflow-hidden" data-result-card>
  <CardHeader className="border-b border-black/10 px-4 py-3">
- <CardTitle className="text-sm md:text-base text-purple-600 flex items-center gap-2">
+ <CardTitle className="text-sm text-purple-600 flex items-center gap-2">
  <span className={`text-lg ${ELEMENT_TEXT_COLOR[dayElement]}`}>{dayStem}</span>
  {stemPersonality.name} — {stemPersonality.nature} ({stemPersonality.symbol})
  </CardTitle>

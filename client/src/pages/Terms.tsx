@@ -30,7 +30,7 @@ export default function Terms() {
         <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
       </Helmet>
       <header className="mu-subpage-header sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
-        <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
+        <div className="w-full px-4 h-14 flex items-center">
           <Link href="/">
             <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06]">
               <ChevronLeft className="h-6 w-6" />
@@ -40,11 +40,11 @@ export default function Terms() {
         </div>
       </header>
 
-      <main className="mu-service-main container mx-auto max-w-[1280px] px-4 py-8">
+      <main className="mu-service-main w-full px-4 py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="max-w-3xl mx-auto space-y-8"
+          className="w-full space-y-8"
         >
           <div className="flex items-center gap-3 mb-6">
             <FileText className="w-8 h-8 text-primary" />

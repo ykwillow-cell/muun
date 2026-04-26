@@ -237,7 +237,7 @@ const Astrology: React.FC = () => {
     window.scrollTo(0, 0);
   };
 
-  const commonMaxWidth = "max-w-4xl mx-auto";
+  const commonMaxWidth = "w-full";
 
   if (!result) {
     return (
@@ -285,11 +285,11 @@ const Astrology: React.FC = () => {
                 <ChevronLeft className="h-6 w-6" />
               </Button>
             </Link>
-            <h1 className="text-lg md:text-xl font-bold text-[#1a1a18]">점성술 분석</h1>
+            <h1 className="text-lg font-bold text-[#1a1a18]">점성술 분석</h1>
           </div>
         </header>
 
-        <main className="mu-service-main px-4 py-6 md:py-8">
+        <main className="mu-service-main px-4 py-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -297,7 +297,7 @@ const Astrology: React.FC = () => {
             className={`${commonMaxWidth} space-y-6 md:space-y-8`}
           >
             {/* Hero Section */}
-            <div className="text-center space-y-4 py-4 md:py-6">
+            <div className="text-center space-y-4 py-4">
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-purple-500/20 text-purple-600 text-xs font-medium">
                 <Compass className="w-3 h-3" />
                 <span>Birth Chart</span>
@@ -305,14 +305,14 @@ const Astrology: React.FC = () => {
               <h2 className="text-2xl md:text-4xl font-bold tracking-tight text-[#1a1a18]">
                 당신의 탄생 차트 분석
               </h2>
-              <p className="text-sm md:text-base text-muted-foreground max-w-md mx-auto">
+              <p className="text-sm text-muted-foreground max-w-md mx-auto">
                 태어난 순간 하늘의 행성들이 배치된 지도를 통해<br className="hidden md:block" />
                 당신의 성격과 운명의 흐름을 분석합니다.
               </p>
             </div>
 
             <Card className="bg-white border border-black/[0.06] shadow-sm relative z-10 rounded-2xl overflow-hidden">
-              <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6 md:py-4">
+              <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6">
                 <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-base">
                   <div className="w-8 h-8 rounded-lg bg-primary/20 flex items-center justify-center">
                     <Star className="w-4 h-4 text-primary" />
@@ -374,7 +374,7 @@ const Astrology: React.FC = () => {
                   <Button 
                     type="submit" 
                     disabled={loading}
-                    className="w-full h-12 bg-gradient-to-r from-[#6366F1] to-[#4F46E5] hover:from-[#4F46E5] hover:to-[#4338CA] text-white font-bold text-sm md:text-base rounded-xl shadow-lg shadow-[#6366F1]/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                    className="w-full h-12 bg-gradient-to-r from-[#6366F1] to-[#4F46E5] hover:from-[#4F46E5] hover:to-[#4338CA] text-white font-bold text-sm rounded-xl shadow-lg shadow-[#6366F1]/20 transition-all hover:scale-[1.02] active:scale-[0.98]"
                   >
                     {loading ? (
                       <div className="flex items-center gap-2">
@@ -432,7 +432,7 @@ const Astrology: React.FC = () => {
             <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]" onClick={() => setResult(null)}>
               <ChevronLeft className="h-6 w-6" />
             </Button>
-            <h1 className="text-lg md:text-xl font-bold text-[#1a1a18]">분석 결과</h1>
+            <h1 className="text-lg font-bold text-[#1a1a18]">분석 결과</h1>
           </div>
           {result.city && (
             <div className="flex items-center gap-1 text-xs text-[#999891]">
@@ -443,7 +443,7 @@ const Astrology: React.FC = () => {
         </div>
       </header>
 
-      <main className="mu-service-main relative z-10 px-3 py-4 max-w-2xl mx-auto">
+      <main className="mu-service-main relative z-10 px-3 py-4 w-full">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}

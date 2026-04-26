@@ -192,7 +192,7 @@ export default function FamilySaju() {
  </Helmet>
  {/* 헤더 */}
  <div className="mu-subpage-header sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-black/10">
- <div className="max-w-2xl mx-auto px-4 h-14 flex items-center">
+ <div className="w-full px-4 h-14 flex items-center">
  <Link href="/">
  <Button variant="ghost" size="icon" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
  <ChevronLeft className="w-5 h-5" />
@@ -205,7 +205,7 @@ export default function FamilySaju() {
  </div>
  </div>
  {/* 소개 */}
- <div className="mu-service-main max-w-2xl mx-auto px-4 py-6 space-y-6">
+ <div className="mu-service-main w-full px-4 py-6 space-y-6">
  <motion.div
  initial={{ opacity: 0, y: 20 }}
  animate={{ opacity: 1, y: 0 }}
@@ -435,7 +435,7 @@ export default function FamilySaju() {
  )}
  {/* 헤더 */}
  <div className="mu-subpage-header sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-black/10">
- <div className="max-w-2xl mx-auto px-4 h-14 flex items-center">
+ <div className="w-full px-4 h-14 flex items-center">
  <Button variant="ghost" size="icon" onClick={() => setResult(null)} className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]">
  <ChevronLeft className="w-5 h-5" />
  </Button>
@@ -446,7 +446,7 @@ export default function FamilySaju() {
  </div>
  </div>
  {/* 소개 */}
- <div className="mu-service-main max-w-2xl mx-auto px-4 py-6 space-y-6"> {/* 가족 종합 점수 */}
+ <div className="mu-service-main w-full px-4 py-6 space-y-6"> {/* 가족 종합 점수 */}
  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
  <Card className="bg-gradient-to-br from-primary/10 to-yellow-500/5 border-primary/20 overflow-hidden">
  <CardContent className="pt-6 pb-6 text-center space-y-4">

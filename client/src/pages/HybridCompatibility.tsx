@@ -562,7 +562,7 @@ export default function HybridCompatibilityPage() {
     }, 50);
   };
 
-  const commonMaxWidth = "w-full max-w-2xl mx-auto";
+  const commonMaxWidth = "w-full";
 
   // ─── 결과 화면 ────────────────────────────────────────────────────────────
   if (result) {
@@ -602,7 +602,7 @@ export default function HybridCompatibilityPage() {
                 <ChevronLeft className="w-5 h-5" />
                 <span className="text-sm font-medium">다시 분석</span>
               </button>
-              <h1 className="text-base md:text-lg font-bold">하이브리드 궁합 리포트</h1>
+              <h1 className="text-base font-bold">하이브리드 궁합 리포트</h1>
               <button
                 onClick={handleShare}
                 className="flex items-center gap-1.5 text-xs text-[#5a5a56] hover:text-[#1a1a18] transition-colors"
@@ -613,14 +613,14 @@ export default function HybridCompatibilityPage() {
             </div>
           </header>
 
-          <main ref={resultRef} className="relative z-10 container mx-auto max-w-[1280px] px-4 py-5 md:py-8">
+          <main ref={resultRef} className="relative z-10 w-full px-4 py-5">
             <div className={`${commonMaxWidth} space-y-5`}>
 
               {/* ① 에너지 저울 */}
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
                 <Card className="bg-white rounded-2xl shadow-sm border border-black/[0.06] overflow-hidden">
-                  <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6 md:py-4">
-                    <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-sm md:text-base">
+                  <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6">
+                    <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-sm">
                       <div className="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center">
                         <Sparkles className="w-4 h-4 text-purple-600" />
                       </div>
@@ -708,8 +708,8 @@ export default function HybridCompatibilityPage() {
               {/* ③ 4대 영역 레이더 + 아코디언 */}
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }}>
                 <Card className="bg-white rounded-2xl shadow-sm border border-black/[0.06] overflow-hidden">
-                  <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6 md:py-4">
-                    <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-sm md:text-base">
+                  <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6">
+                    <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-sm">
                       <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center">
                         <Brain className="w-4 h-4 text-blue-600" />
                       </div>
@@ -740,8 +740,8 @@ export default function HybridCompatibilityPage() {
               {/* ④ 인연 타임라인 */}
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 }}>
                 <Card className="bg-white rounded-2xl shadow-sm border border-black/[0.06] overflow-hidden">
-                  <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6 md:py-4">
-                    <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-sm md:text-base">
+                  <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6">
+                    <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-sm">
                       <div className="w-8 h-8 rounded-lg bg-green-500/20 flex items-center justify-center">
                         <TrendingUp className="w-4 h-4 text-green-600" />
                       </div>
@@ -757,8 +757,8 @@ export default function HybridCompatibilityPage() {
               {/* ⑤ 처방전 */}
               <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.4 }}>
                 <Card className="bg-white rounded-2xl shadow-sm border border-black/[0.06] overflow-hidden">
-                  <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6 md:py-4">
-                    <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-sm md:text-base">
+                  <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6">
+                    <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-sm">
                       <div className="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center">
                         <Lightbulb className="w-4 h-4 text-amber-600" />
                       </div>
@@ -816,17 +816,17 @@ export default function HybridCompatibilityPage() {
       <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
 
         <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
-          <div className={`${commonMaxWidth} container mx-auto px-4 py-3 md:py-4 flex items-center justify-between`}>
+          <div className={`${commonMaxWidth} container mx-auto px-4 py-3 flex items-center justify-between`}>
             <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
               <ChevronLeft className="w-5 h-5" />
               <span className="text-sm font-medium">뒤로</span>
             </Link>
-            <h1 className="text-lg md:text-xl font-bold">사주×MBTI 궁합</h1>
+            <h1 className="text-lg font-bold">사주×MBTI 궁합</h1>
             <div className="w-[60px]" />
           </div>
         </header>
 
-        <main className="mu-service-main relative z-10 container mx-auto max-w-[1280px] px-4 py-5 md:py-8">
+        <main className="mu-service-main relative z-10 w-full px-4 py-5">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -842,8 +842,8 @@ export default function HybridCompatibilityPage() {
             </div>
 
             <Card className="bg-white rounded-2xl shadow-sm border border-black/[0.06] overflow-hidden">
-              <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6 md:py-4">
-                <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-base md:text-lg">
+              <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6">
+                <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-base">
                   <div className="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center">
                     <Users className="w-4 h-4 text-purple-600" />
                   </div>

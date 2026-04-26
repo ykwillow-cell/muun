@@ -30,7 +30,7 @@ export default function About() {
         <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
       </Helmet>
       <header className="mu-subpage-header sticky top-0 z-50 backdrop-blur-2xl bg-white/80 border-b border-black/10">
-        <div className="container mx-auto max-w-[1280px] px-4 h-16 flex items-center">
+        <div className="w-full px-4 h-16 flex items-center">
           <Link href="/">
             <Button variant="ghost" size="icon" className="mr-4 rounded-full hover:bg-black/[0.05]">
               <ChevronLeft className="h-5 w-5" />
@@ -40,12 +40,12 @@ export default function About() {
         </div>
       </header>
 
-      <main className="mu-service-main container mx-auto max-w-[1280px] px-4 py-16 md:py-24">
+      <main className="mu-service-main w-full px-4 py-16 md:py-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-4xl mx-auto space-y-24"
+          className="w-full space-y-24"
         >
           <section className="text-center space-y-6">
             <motion.div 
@@ -57,7 +57,7 @@ export default function About() {
               <Sparkles className="w-10 h-10 text-primary" />
             </motion.div>
             <h2 className="text-5xl md:text-6xl font-black tracking-tighter text-[#1a1a18]">무운 (MuUn)</h2>
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed font-medium">
+            <p className="text-xl text-muted-foreground w-full leading-relaxed font-medium">
               당신의 삶에 맑은 지혜와 따뜻한 위로를 더하는<br />프리미엄 무료 운세 서비스
             </p>
           </section>

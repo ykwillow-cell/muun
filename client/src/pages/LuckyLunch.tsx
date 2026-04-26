@@ -104,7 +104,7 @@ export default function LuckyLunch() {
     window.scrollTo(0, 0);
   };
 
-  const commonMaxWidth = "w-full max-w-2xl mx-auto";
+  const commonMaxWidth = "w-full";
 
   // 입력 화면
   if (!showResult) {
@@ -112,7 +112,7 @@ export default function LuckyLunch() {
       <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
 
         <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
-          <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
+          <div className="w-full px-4 h-14 flex items-center">
             <Link href="/">
               <Button variant="ghost" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] -ml-2 flex items-center gap-1 text-sm font-medium">
                 <ChevronLeft className="h-5 w-5" />
@@ -123,7 +123,7 @@ export default function LuckyLunch() {
           </div>
         </header>
 
-        <main className="mu-service-main relative z-10 container mx-auto max-w-[1280px] px-4 py-5 md:py-8">
+        <main className="mu-service-main relative z-10 w-full px-4 py-5">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -137,15 +137,15 @@ export default function LuckyLunch() {
                 <span>오늘의 추천 메뉴</span>
               </div>
               <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-[#1a1a18]">행운의 점심 메뉴</h2>
-              <p className="text-muted-foreground text-xs md:text-base md:text-sm">
+              <p className="text-muted-foreground text-xs md:text-sm">
                 당신의 사주에 맞는 행운의 점심 메뉴를 추천받아보세요
               </p>
             </div>
 
             {/* Input Form Card */}
             <Card className="bg-white rounded-2xl shadow-sm border border-black/[0.06] overflow-hidden">
-              <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6 md:py-4">
-                <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-base md:text-lg">
+              <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6">
+                <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-base">
                   <div className="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center">
                     <User className="w-4 h-4 text-amber-400" />
                   </div>
@@ -271,7 +271,7 @@ export default function LuckyLunch() {
                   <Button
                     type="submit"
                     style={{ background: 'linear-gradient(135deg, #F59E0B, #D97706)' }}
-                    className="w-full h-12 text-white font-bold text-sm md:text-base rounded-xl shadow-sm transition-all hover:opacity-90 active:scale-[0.98] mt-2"
+                    className="w-full h-12 text-white font-bold text-sm rounded-xl shadow-sm transition-all hover:opacity-90 active:scale-[0.98] mt-2"
                   >
                     <Zap className="w-4 h-4 mr-2" />
                     행운의 메뉴 추천받기
@@ -305,7 +305,7 @@ export default function LuckyLunch() {
     <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
 
       <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
-        <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
+        <div className="w-full px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
             <Button
               onClick={() => setShowResult(false)}
@@ -328,7 +328,7 @@ export default function LuckyLunch() {
         </div>
       </header>
 
-      <main className="mu-service-main relative z-10 container mx-auto max-w-[1280px] px-4 py-5 md:py-8">
+      <main className="mu-service-main relative z-10 w-full px-4 py-5">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -342,7 +342,7 @@ export default function LuckyLunch() {
               <h2 className="text-3xl md:text-4xl font-bold text-[#1a1a18] mb-2">오늘의 행운 메뉴</h2>
               <p className="text-amber-400 font-bold text-xl">{result.elementName} 기운</p>
             </div>
-            <p className="text-[#1a1a18] text-base md:text-sm leading-relaxed max-w-2xl mx-auto">{result.elementDescription}</p>
+            <p className="text-[#1a1a18] text-base md:text-sm leading-relaxed w-full">{result.elementDescription}</p>
           </div>
 
           {/* Recommended Menus */}

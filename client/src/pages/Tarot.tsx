@@ -53,7 +53,7 @@ export default function Tarot() {
   const [isSaved, setIsSaved] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-  const commonMaxWidth = "max-w-4xl mx-auto";
+  const commonMaxWidth = "w-full";
 
   const shuffleDeck = () => {
     const deck = [...tarotData];
@@ -218,11 +218,11 @@ export default function Tarot() {
               <ChevronLeft className="h-6 w-6" />
             </Button>
           </Link>
-          <h1 className="text-lg md:text-xl font-bold text-[#1a1a18]">무운 타로 상담소</h1>
+          <h1 className="text-lg font-bold text-[#1a1a18]">무운 타로 상담소</h1>
         </div>
       </header>
 
-      <main className="mu-service-main px-4 py-6 md:py-8">
+      <main className="mu-service-main px-4 py-6">
         <div className={commonMaxWidth}>
           {/* Hero Section */}
           <div className="text-center space-y-2 mb-4 md:mb-8">
@@ -235,7 +235,7 @@ export default function Tarot() {
               <span className="text-[10px] md:text-xs font-bold tracking-widest text-primary uppercase">Tarot Reading</span>
             </motion.div>
             <h2 className="text-xl md:text-4xl font-bold tracking-tight text-[#1a1a18]">신비로운 타로의 세계</h2>
-            <p className="text-xs md:text-base text-muted-foreground max-w-md mx-auto">
+            <p className="text-xs text-muted-foreground max-w-md mx-auto">
               마음을 가다듬고 고민을 떠올려 보세요.
             </p>
           </div>
@@ -266,7 +266,7 @@ export default function Tarot() {
                   <Button 
                     onClick={handleStart}
                     disabled={isLoading}
-                    className="w-full h-12 rounded-xl text-sm md:text-base font-bold gap-2 bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] hover:from-[#7C3AED] hover:to-[#6D28D9] text-white shadow-lg shadow-[#8B5CF6]/20 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+                    className="w-full h-12 rounded-xl text-sm font-bold gap-2 bg-gradient-to-r from-[#8B5CF6] to-[#7C3AED] hover:from-[#7C3AED] hover:to-[#6D28D9] text-white shadow-lg shadow-[#8B5CF6]/20 transition-all hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
                   >
                     상담 시작하기 <ChevronRight className="w-5 h-5" />
                   </Button>
@@ -286,10 +286,10 @@ export default function Tarot() {
                 className="space-y-0"
               >
                 {/* 선택 정보 섹션 - 더 컴팩트하게 */}
-                <div className="bg-white/95 backdrop-blur-sm py-3 md:py-6 border-b border-black/10 -mx-4 px-4 mb-4">
+                <div className="bg-white/95 backdrop-blur-sm py-3 border-b border-black/10 -mx-4 px-4 mb-4">
                   <div className="flex items-center justify-between gap-2">
                     <div className="space-y-0.5">
-                      <h3 className="text-sm md:text-xl font-bold text-primary leading-tight">카드를 3장 선택해 주세요</h3>
+                      <h3 className="text-sm font-bold text-primary leading-tight">카드를 3장 선택해 주세요</h3>
                       <p className="text-[9px] md:text-sm text-muted-foreground">마음이 끌리는 카드를 순서대로 클릭하세요</p>
                     </div>
                     {/* 선택된 카드 슬롯 - 더 작게 */}
@@ -390,7 +390,7 @@ export default function Tarot() {
                     <Button 
                       onClick={getInterpretation}
                       size="lg"
-                      className="w-full max-w-md h-12 md:h-16 text-base md:text-xl font-bold rounded-xl md:rounded-2xl shadow-2xl shadow-primary/40 animate-bounce"
+                      className="w-full max-w-md h-12 md:h-16 text-base font-bold rounded-xl md:rounded-2xl shadow-2xl shadow-primary/40 animate-bounce"
                     >
                       해석하기 <ArrowRight className="ml-2 w-5 h-5 md:w-6 md:h-6" />
                     </Button>
@@ -428,7 +428,7 @@ export default function Tarot() {
                         <span className="text-[10px] md:text-xs text-primary font-bold uppercase tracking-wider">
                           {["Past", "Present", "Future"][index]}
                         </span>
-                        <h4 className="text-sm md:text-lg font-bold text-[#1a1a18] truncate">{card.korName}</h4>
+                        <h4 className="text-sm font-bold text-[#1a1a18] truncate">{card.korName}</h4>
                       </div>
                     </motion.div>
                   ))}
@@ -483,8 +483,8 @@ export default function Tarot() {
                     className="bg-white border border-black/[0.06] shadow-sm rounded-2xl p-5 md:p-8 space-y-6" data-tarot-result-card
                   >
                     <div>
-                      <h3 className="text-lg md:text-xl font-bold text-primary mb-4">타로의 메시지</h3>
-                      <div className="prose prose-invert max-w-none text-sm md:text-base leading-relaxed text-foreground whitespace-pre-wrap">
+                      <h3 className="text-lg font-bold text-primary mb-4">타로의 메시지</h3>
+                      <div className="prose prose-invert max-w-none text-sm leading-relaxed text-foreground whitespace-pre-wrap">
                         {processAIContent(interpretation)}
                       </div>
                     </div>

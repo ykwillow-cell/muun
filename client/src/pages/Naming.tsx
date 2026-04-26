@@ -628,7 +628,7 @@ export default function Naming() {
     window.scrollTo(0, 0);
   };
 
-  const commonMaxWidth = "w-full max-w-2xl mx-auto";
+  const commonMaxWidth = "w-full";
 
   // ── 폼 단계 ──────────────────────────────────
   if (step === "form") {
@@ -644,7 +644,7 @@ export default function Naming() {
 
         {/* 헤더 */}
         <header className="mu-subpage-header sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-black/10">
-          <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
+          <div className="w-full px-4 h-14 flex items-center">
             <Link href="/">
               <Button
                 variant="ghost"
@@ -654,13 +654,13 @@ export default function Naming() {
                 <ChevronLeft className="h-5 w-5" />
               </Button>
             </Link>
-            <h2 className="text-base md:text-lg font-bold text-[#191F28]">
+            <h2 className="text-base font-bold text-[#191F28]">
               작명소
             </h2>
           </div>
         </header>
 
-        <main className="mu-service-main relative z-10 container mx-auto max-w-[1280px] px-4 py-5 md:py-8">
+        <main className="mu-service-main relative z-10 w-full px-4 py-5">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -688,8 +688,8 @@ export default function Naming() {
 
             {/* 입력 폼 */}
             <Card data-naming-card className="bg-white rounded-2xl shadow-sm border border-black/[0.06] overflow-hidden">
-              <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6 md:py-4">
-                <CardTitle className="text-[#191F28] flex items-center gap-2 text-base md:text-lg">
+              <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6">
+                <CardTitle className="text-[#191F28] flex items-center gap-2 text-base">
                   <div className="w-8 h-8 rounded-lg bg-[#6B5FFF]/20 flex items-center justify-center">
                     <PenLine className="w-4 h-4 text-[#6B5FFF]" />
                   </div>
@@ -882,7 +882,7 @@ export default function Naming() {
                   <Button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full h-12 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-black font-bold text-sm md:text-base rounded-xl shadow-lg shadow-amber-500/20 transition-all hover:scale-[1.02] active:scale-[0.98] mt-2"
+                    className="w-full h-12 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-600 hover:to-yellow-600 text-black font-bold text-sm rounded-xl shadow-lg shadow-amber-500/20 transition-all hover:scale-[1.02] active:scale-[0.98] mt-2"
                   >
                     {isLoading ? (
                       <>
@@ -903,7 +903,7 @@ export default function Naming() {
             {/* STEP 섹션 */}
             <div className="space-y-4">
               <div className="text-center">
-                <h3 className="text-lg md:text-xl font-bold text-[#191F28]">
+                <h3 className="text-lg font-bold text-[#191F28]">
                   어떻게 이름을 추천하나요?
                 </h3>
               </div>
@@ -1004,7 +1004,7 @@ export default function Naming() {
 
       {/* 헤더 */}
       <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06] print:hidden">
-        <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
+        <div className="w-full px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
             <Button
               variant="ghost"
@@ -1014,7 +1014,7 @@ export default function Naming() {
             >
               <ChevronLeft className="h-5 w-5" />
             </Button>
-            <h2 className="text-base md:text-lg font-bold text-[#191F28]">
+            <h2 className="text-base font-bold text-[#191F28]">
               작명 결과
             </h2>
           </div>
@@ -1041,7 +1041,7 @@ export default function Naming() {
         </div>
       </header>
 
-      <main className="mu-service-main relative z-10 container mx-auto max-w-[1280px] px-4 py-5 md:py-8">
+      <main className="mu-service-main relative z-10 w-full px-4 py-5">
         <div className={`${commonMaxWidth} space-y-5`}>
 
           {/* 성씨 정보 */}
@@ -1093,7 +1093,7 @@ export default function Naming() {
                 transition={{ duration: 0.4 }}
               >
                 <Card data-naming-card className="bg-white rounded-2xl shadow-sm border border-black/[0.06] overflow-hidden">
-                  <CardHeader className="border-b border-black/10 px-4 py-3 md:px-6 md:py-4">
+                  <CardHeader className="border-b border-black/10 px-4 py-3 md:px-6">
                     <CardTitle className="text-[#191F28] flex items-center gap-2 text-base">
                       <div className="w-7 h-7 rounded-lg bg-[#6B5FFF]/20 flex items-center justify-center">
                         <Star className="w-4 h-4 text-[#6B5FFF]" />
@@ -1359,7 +1359,7 @@ export default function Naming() {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <Card data-naming-card className="bg-white rounded-2xl shadow-sm border border-black/[0.06] overflow-hidden">
-              <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6 md:py-4">
+              <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6">
                 <CardTitle className="text-[#191F28] flex items-center gap-2 text-base">
                   <div className="w-7 h-7 rounded-lg bg-[#6B5FFF]/20 flex items-center justify-center">
                     <PenLine className="w-4 h-4 text-[#6B5FFF]" />

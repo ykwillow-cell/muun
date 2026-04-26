@@ -323,7 +323,7 @@ export default function FortuneShareCard(props: FortuneShareCardProps) {
   const accentColor = getAccentColor();
 
   return (
-    <div className="w-full max-w-4xl mx-auto space-y-6 py-8">
+    <div className="w-full w-full space-y-6 py-8">
       {/* 운세 카드 직접 노출 */}
       <div
         ref={cardRef}

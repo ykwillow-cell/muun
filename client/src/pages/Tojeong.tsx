@@ -112,7 +112,7 @@ export default function Tojeong() {
     window.scrollTo(0, 0);
   };
 
-  const commonMaxWidth = "w-full max-w-2xl mx-auto";
+  const commonMaxWidth = "w-full";
 
   if (!result) {
     return (
@@ -158,7 +158,7 @@ export default function Tojeong() {
       <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
 
         <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
-          <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center">
+          <div className="w-full px-4 h-14 flex items-center">
             <Link href="/">
               <Button variant="ghost" className="mr-2 text-[#191F28] hover:bg-black/[0.06] -ml-2 flex items-center gap-1 text-sm font-medium">
                 <ChevronLeft className="h-5 w-5" />
@@ -169,7 +169,7 @@ export default function Tojeong() {
           </div>
         </header>
 
-        <main className="mu-service-main relative z-10 container mx-auto max-w-[1280px] px-4 py-5 md:py-8">
+        <main className="mu-service-main relative z-10 w-full px-4 py-5">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -190,8 +190,8 @@ export default function Tojeong() {
 
             {/* Input Form Card - 컴팩트하게 */}
             <Card className="bg-white rounded-2xl shadow-sm border border-black/[0.06] overflow-hidden">
-              <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6 md:py-4">
-                <CardTitle className="text-[#191F28] flex items-center gap-2 text-base md:text-lg">
+              <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6">
+                <CardTitle className="text-[#191F28] flex items-center gap-2 text-base">
                   <div className="w-8 h-8 rounded-lg bg-[#6B5FFF]/20 flex items-center justify-center">
                     <User className="w-4 h-4 text-[#6B5FFF]" />
                   </div>
@@ -317,7 +317,7 @@ export default function Tojeong() {
                   <Button 
                     type="submit" 
                     style={{ background: 'linear-gradient(135deg, #6B5FFF, #4F46E5)' }}
-                    className="w-full h-12 text-white font-bold text-sm md:text-base rounded-xl shadow-sm transition-all hover:opacity-90 active:scale-[0.98]"
+                    className="w-full h-12 text-white font-bold text-sm rounded-xl shadow-sm transition-all hover:opacity-90 active:scale-[0.98]"
                   >
                     <ScrollText className="w-4 h-4 mr-2" />
                     2026년 토정비결 보기
@@ -381,7 +381,7 @@ export default function Tojeong() {
       </div>
 
       <header className="mu-subpage-header sticky top-0 z-50 bg-white border-b border-black/[0.06]">
-        <div className="container mx-auto max-w-[1280px] px-4 h-14 flex items-center justify-between">
+        <div className="w-full px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
             <Button variant="ghost" className="mr-2 text-[#191F28] hover:bg-black/[0.06] -ml-2 flex items-center gap-1 text-sm font-medium" onClick={() => setResult(null)}>
               <ChevronLeft className="h-5 w-5" />
@@ -400,7 +400,7 @@ export default function Tojeong() {
         </div>
       </header>
 
-      <main className="mu-service-main relative z-10 px-4 py-5 md:py-6">
+      <main className="mu-service-main relative z-10 px-4 py-5">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -411,7 +411,7 @@ export default function Tojeong() {
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-[#6B5FFF]/20 text-[#6B5FFF] text-xs font-medium">
               <span>제 {result.hexagram}괴</span>
             </div>
-            <h2 className="text-xl md:text-2xl font-bold tracking-tight text-[#191F28]">2026년 토정비결 결과</h2>
+            <h2 className="text-xl font-bold tracking-tight text-[#191F28]">2026년 토정비결 결과</h2>
             <p className="text-muted-foreground text-xs md:text-sm italic">"하늘의 기운이 땅으로 내려와 만물이 소생하는 형국입니다."</p>
           </div>
 
@@ -421,7 +421,7 @@ export default function Tojeong() {
               <div className="w-8 h-8 rounded-lg bg-[#6B5FFF]/20 flex items-center justify-center">
                 <Calendar className="w-4 h-4 text-[#6B5FFF]" />
               </div>
-              <h3 className="text-base md:text-lg font-bold text-[#191F28]">월별 상세 운세</h3>
+              <h3 className="text-base font-bold text-[#191F28]">월별 상세 운세</h3>
             </div>
             
             <div className="relative border-l-2 border-black/10 ml-3 pl-5 space-y-4">
@@ -437,7 +437,7 @@ export default function Tojeong() {
                   <Card className="bg-white border border-black/[0.06] rounded-xl overflow-hidden hover:shadow-md transition-all duration-300 group">
                     <CardContent className="p-3 md:p-4">
                       <div className="flex justify-between items-center mb-2">
-                        <span className="text-base md:text-lg font-black text-[#6B5FFF] group-hover:scale-110 transition-transform origin-left">{item.month}월</span>
+                        <span className="text-base font-black text-[#6B5FFF] group-hover:scale-110 transition-transform origin-left">{item.month}월</span>
                         <span className="px-2 py-0.5 rounded-full bg-[#6B5FFF]/10 text-[#6B5FFF] text-[10px] md:text-xs font-bold border border-[#6B5FFF]/20">{item.tag}</span>
                       </div>
                       <p className="text-[#4E5968] leading-relaxed text-xs md:text-sm">{item.content}</p>
