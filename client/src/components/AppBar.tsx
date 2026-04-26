@@ -1,19 +1,21 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react';
 import { Link, useLocation } from 'wouter';
-import { Search, Sparkles, BookOpen, MoonStar, Heart, X } from 'lucide-react';
+import { Search, BookOpen, MoonStar, Heart, X, Home, PenLine, type LucideIcon } from 'lucide-react';
 import { trackCustomEvent } from '@/lib/ga4';
-import BrandLogo from '@/components/BrandLogo';
 
 interface AppBarProps {
   onSearch?: (query: string) => void;
 }
 
-const QUICK_LINKS = [
-  { href: '/lifelong-saju', label: '평생사주', Icon: Sparkles },
+type QuickLink = { href: string; label: string; Icon: LucideIcon; badge?: string };
+
+const QUICK_LINKS: QuickLink[] = [
+  { href: '/lifelong-saju', label: '평생사주', Icon: Home },
   { href: '/compatibility', label: '궁합', Icon: Heart },
   { href: '/dream', label: '꿈해몽', Icon: MoonStar },
-  { href: '/fortune-dictionary', label: '운세 사전', Icon: BookOpen },
-] as const;
+  { href: '/fortune-dictionary', label: '운세사전', Icon: BookOpen },
+  { href: '/guide', label: '칼럼', Icon: PenLine, badge: 'NEW' },
+];
 
 function resolveSearchDestination(query: string) {
   const normalized = query.replace(/\s+/g, '').toLowerCase();
@@ -48,7 +50,7 @@ export function AppBar({ onSearch }: AppBarProps) {
   const [location, navigate] = useLocation();
 
   const activeQuickHref = useMemo(() => {
-    if (location === '/') return '';
+    if (location === '/') return '/lifelong-saju';
     return QUICK_LINKS.find((item) => location === item.href || location.startsWith(`${item.href}/`))?.href || '';
   }, [location]);
 
@@ -80,8 +82,11 @@ export function AppBar({ onSearch }: AppBarProps) {
     <header className="mu-appbar" style={{ paddingTop: 'var(--safe-area-top)' }}>
       <div className="mu-appbar__inner">
         <Link href="/" className="mu-appbar__brand" aria-label="무운 홈">
-          <BrandLogo size="sm" />
-          <span className="sr-only">무운 홈</span>
+          <img src="/images/muun-mark.svg" alt="" width="28" height="28" className="mu-appbar__brand-mark" aria-hidden="true" />
+          <span className="mu-appbar__brand-copy">
+            <span className="mu-appbar__brand-name">무운</span>
+            <span className="mu-appbar__brand-sub">MOBILE FORTUNE STUDIO</span>
+          </span>
         </Link>
 
         <button
@@ -90,7 +95,7 @@ export function AppBar({ onSearch }: AppBarProps) {
           aria-label={searchOpen ? '검색 닫기' : '검색 열기'}
           aria-expanded={searchOpen}
         >
-          {searchOpen ? <X size={18} strokeWidth={1.9} /> : <Search size={18} strokeWidth={1.9} />}
+          {searchOpen ? <X size={15} strokeWidth={2} /> : <Search size={15} strokeWidth={2} />}
         </button>
       </div>
 
@@ -114,50 +119,79 @@ export function AppBar({ onSearch }: AppBarProps) {
         </form>
       </div>
 
-      <div className="mu-appbar__quick-row no-scrollbar" aria-label="빠른 이동">
-        {QUICK_LINKS.map(({ href, label, Icon }) => {
+      <nav className="mu-appbar__quick-row no-scrollbar" aria-label="주요 서비스">
+        {QUICK_LINKS.map(({ href, label, Icon, badge }) => {
           const active = activeQuickHref === href;
           return (
-            <Link key={href} href={href} className={`mu-appbar__quick-link ${active ? 'mu-appbar__quick-link--active' : ''}`}>
-              <Icon size={14} aria-hidden="true" />
+            <Link key={href} href={href} className={`mu-appbar__quick-link ${active ? 'mu-appbar__quick-link--active' : ''}`} aria-current={active ? 'page' : undefined}>
+              <Icon size={13} aria-hidden="true" />
               <span>{label}</span>
+              {badge ? <span className="mu-appbar__badge">{badge}</span> : null}
             </Link>
           );
         })}
-      </div>
+      </nav>
 
       <style>{`
         .mu-appbar {
           position: sticky;
           top: 0;
           z-index: 60;
-          backdrop-filter: blur(20px);
-          background: rgba(255,255,255,0.9);
-          border-bottom: 1px solid rgba(15,23,42,0.06);
+          background: #fff;
+          border-bottom: 0.5px solid #ebebf0;
         }
         .mu-appbar__inner {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          min-height: 62px;
+          height: 44px;
           padding: 0 16px;
         }
         .mu-appbar__brand {
           display: inline-flex;
           align-items: center;
+          gap: 7px;
+          min-width: 0;
+          color: inherit;
           text-decoration: none;
         }
+        .mu-appbar__brand-mark {
+          width: 28px;
+          height: 28px;
+          border-radius: 8px;
+          flex: 0 0 auto;
+          display: block;
+        }
+        .mu-appbar__brand-copy {
+          display: flex;
+          flex-direction: column;
+          line-height: 1;
+        }
+        .mu-appbar__brand-name {
+          font-size: 15px;
+          font-weight: 900;
+          color: #1a1a2e;
+          letter-spacing: -0.04em;
+        }
+        .mu-appbar__brand-sub {
+          display: block;
+          margin-top: 3px;
+          font-size: 8px;
+          font-weight: 700;
+          letter-spacing: 0.08em;
+          color: #aaa;
+          white-space: nowrap;
+        }
         .mu-appbar__icon-btn {
-          width: 42px;
-          height: 42px;
-          border-radius: 16px;
-          border: 1px solid rgba(15,23,42,0.08);
-          background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(246,247,252,0.96) 100%);
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          border: 0.5px solid #e8e6f7;
+          background: #f5f4f8;
           display: flex;
           align-items: center;
           justify-content: center;
-          color: #475467;
-          box-shadow: 0 8px 20px rgba(15,23,42,0.05);
+          color: #888;
         }
         .mu-appbar__search-wrap {
           overflow: hidden;
@@ -166,72 +200,92 @@ export function AppBar({ onSearch }: AppBarProps) {
           transition: max-height 0.22s ease, opacity 0.18s ease;
         }
         .mu-appbar__search-wrap--open {
-          max-height: 90px;
+          max-height: 78px;
           opacity: 1;
         }
         .mu-appbar__search-form {
           position: relative;
-          padding: 0 16px 12px;
+          padding: 0 16px 10px;
           display: flex;
           align-items: center;
         }
         .mu-appbar__search-icon {
           position: absolute;
           left: 30px;
-          color: #98a2b3;
+          color: #a7a2bd;
         }
         .mu-appbar__search-input {
           width: 100%;
-          height: 48px;
-          padding: 0 44px 0 42px;
-          border-radius: 18px;
-          border: 1px solid rgba(15,23,42,0.08);
-          background: rgba(255,255,255,0.98);
-          color: #101828;
+          height: 44px;
+          padding: 0 42px;
+          border-radius: 14px;
+          border: 1.5px solid #e8e6f7;
+          background: #fafafe;
+          color: #1a1a2e;
           font-size: 14px;
-          box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), 0 12px 28px rgba(15,23,42,0.05);
+          outline: none;
         }
         .mu-appbar__search-input:focus {
-          outline: none;
-          border-color: rgba(107,95,255,0.38);
-          box-shadow: 0 0 0 4px rgba(107,95,255,0.1);
+          border-color: rgba(57,41,160,0.42);
+          box-shadow: 0 0 0 4px rgba(57,41,160,0.08);
         }
         .mu-appbar__search-clear {
           position: absolute;
           right: 28px;
           border: none;
           background: transparent;
-          color: #98a2b3;
+          color: #a7a2bd;
           display: flex;
           align-items: center;
           justify-content: center;
         }
         .mu-appbar__quick-row {
           display: flex;
-          gap: 8px;
+          gap: 0;
           overflow-x: auto;
-          padding: 0 16px 12px;
+          -webkit-overflow-scrolling: touch;
+          border-top: 0;
+          border-bottom: 0.5px solid #ebebf0;
+          padding: 0;
+          background: #fff;
         }
         .mu-appbar__quick-link {
           display: inline-flex;
           align-items: center;
-          gap: 6px;
-          white-space: nowrap;
-          min-height: 36px;
+          gap: 4px;
+          flex: 0 0 auto;
+          min-height: 38px;
           padding: 0 12px;
-          border-radius: 999px;
-          border: 1px solid rgba(15,23,42,0.08);
-          background: rgba(255,255,255,0.94);
-          color: #475467;
+          border-bottom: 2px solid transparent;
+          color: #bbb;
           text-decoration: none;
           font-size: 12px;
-          font-weight: 700;
-          box-shadow: 0 8px 18px rgba(15,23,42,0.04);
+          font-weight: 600;
+          white-space: nowrap;
+        }
+        .mu-appbar__quick-link svg {
+          stroke: currentColor;
         }
         .mu-appbar__quick-link--active {
-          background: linear-gradient(135deg, rgba(107,95,255,0.14) 0%, rgba(113,184,230,0.12) 100%);
-          color: #4839c4;
-          border-color: rgba(107,95,255,0.16);
+          color: #3929a0;
+          border-bottom-color: #3929a0;
+          font-weight: 800;
+        }
+        .mu-appbar__badge {
+          display: inline-flex;
+          align-items: center;
+          min-height: 14px;
+          padding: 1px 5px;
+          border-radius: 4px;
+          background: #3929a0;
+          color: #fff;
+          font-size: 8px;
+          font-weight: 900;
+          letter-spacing: -0.01em;
+        }
+        @media (min-width: 768px) {
+          .mu-appbar__inner { height: 52px; padding: 0 22px; }
+          .mu-appbar__quick-row { justify-content: center; }
         }
       `}</style>
     </header>

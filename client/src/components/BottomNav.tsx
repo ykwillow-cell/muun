@@ -12,6 +12,8 @@ const NAV_ITEMS = [
 export function BottomNav() {
   const [location] = useLocation();
 
+  if (location === '/') return null;
+
   const isDictionaryPage =
     location === '/fortune-dictionary' ||
     location.startsWith('/fortune-dictionary/') ||

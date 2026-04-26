@@ -1,6 +1,5 @@
 import React from 'react';
-import { Link } from 'wouter';
-import BrandLogo from '@/components/BrandLogo';
+import { Link, useLocation } from 'wouter';
 
 const footerGroups = [
   {
@@ -33,24 +32,26 @@ const footerGroups = [
 ];
 
 const Footer: React.FC = () => {
-  return (
-    <footer className="mu-footer">
-      <div className="mu-footer__inner">
-        <div className="mu-footer__brand-card">
-          <BrandLogo size="lg" />
-          <p className="mu-footer__brand-copy">무료 사주, 궁합, 꿈해몽, 운세 사전을 한곳에서 확인할 수 있습니다.</p>
-        </div>
+  const [location] = useLocation();
+  const isHome = location === '/';
 
-        <div className="mu-footer__grid">
+  return (
+    <footer className={`mu-footer${isHome ? ' mu-footer--home' : ''}`}>
+      <div className="mu-footer__inner">
+        <div className="mu-footer__brand">
+          <img src="/images/muun-mark.svg" alt="" width="22" height="22" className="mu-footer__brand-mark" aria-hidden="true" />
+          <span>무운</span>
+        </div>
+        <p className="mu-footer__tagline">무료 사주, 궁합, 꿈해몽, 운세 사전을<br className="sm:hidden" /> 한곳에서 확인할 수 있습니다.</p>
+
+        <div className="mu-footer__links">
           {footerGroups.map((group) => (
             <section key={group.title} className="mu-footer__group" aria-label={group.title}>
-              <h3 className="mu-footer__group-title">{group.title}</h3>
-              <ul className="mu-footer__group-list">
+              <h3>{group.title}</h3>
+              <ul>
                 {group.links.map((link) => (
                   <li key={link.href}>
-                    <Link href={link.href} className="mu-footer__link">
-                      {link.label}
-                    </Link>
+                    <Link href={link.href}>{link.label}</Link>
                   </li>
                 ))}
               </ul>
@@ -58,77 +59,85 @@ const Footer: React.FC = () => {
           ))}
         </div>
 
-        <div className="mu-footer__meta">
-          <p>© {new Date().getFullYear()} MUUN Celestial Services. All rights reserved.</p>
-        </div>
+        <p className="mu-footer__copy">© {new Date().getFullYear()} MUUN Celestial Services. All rights reserved.</p>
       </div>
 
       <style>{`
         .mu-footer {
-          margin-top: 0;
-          padding: 28px 16px calc(28px + var(--bottom-nav-height) + 18px + var(--safe-area-bottom));
-          background:
-            radial-gradient(circle at top left, rgba(107,95,255,0.12), transparent 28%),
-            linear-gradient(180deg, #f7f8fc 0%, #edf1f7 100%);
-          border-top: 1px solid rgba(15,23,42,0.08);
+          background: #fff;
+          border-top: 0.5px solid #ebebf0;
+          padding: 20px 16px calc(20px + var(--bottom-nav-height) + var(--safe-area-bottom));
+        }
+        .mu-footer--home {
+          padding-bottom: 20px;
         }
         .mu-footer__inner {
+          width: 100%;
           max-width: 960px;
           margin: 0 auto;
         }
-        .mu-footer__brand-card,
-        .mu-footer__group,
-        .mu-footer__meta {
-          padding: 20px;
-          border-radius: 24px;
-          background: rgba(255,255,255,0.88);
-          border: 1px solid rgba(15,23,42,0.08);
-          box-shadow: 0 14px 34px rgba(15,23,42,0.05);
-        }
-        .mu-footer__brand-copy {
-          margin: 14px 0 0;
-          font-size: 14px;
-          line-height: 1.75;
-          color: #4b5563;
-        }
-        .mu-footer__grid {
-          display: grid;
-          gap: 16px;
-          margin-top: 16px;
-          grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
-        }
-        .mu-footer__group-title {
-          margin: 0 0 12px;
+        .mu-footer__brand {
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          margin-bottom: 10px;
           font-size: 12px;
-          font-weight: 800;
-          text-transform: uppercase;
-          letter-spacing: 0.08em;
-          color: #6b7280;
+          font-weight: 900;
+          color: #1a1a2e;
         }
-        .mu-footer__group-list {
-          list-style: none;
-          padding: 0;
-          margin: 0;
+        .mu-footer__brand-mark {
+          width: 22px;
+          height: 22px;
+          border-radius: 6px;
+          display: block;
+        }
+        .mu-footer__tagline {
+          margin: 0 0 14px;
+          font-size: 11px;
+          line-height: 1.6;
+          color: #aaa;
+        }
+        .mu-footer__links {
           display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
           gap: 8px;
+          margin-bottom: 16px;
         }
-        .mu-footer__link {
+        .mu-footer__group h3 {
+          margin: 0 0 6px;
+          font-size: 11px;
+          font-weight: 800;
+          color: #888;
+        }
+        .mu-footer__group ul {
+          list-style: none;
+          margin: 0;
+          padding: 0;
+          display: grid;
+          gap: 4px;
+        }
+        .mu-footer__group a {
+          display: inline-flex;
           text-decoration: none;
-          color: #111827;
-          font-size: 14px;
-          font-weight: 600;
-          line-height: 1.4;
+          font-size: 11px;
+          line-height: 1.35;
+          color: #aaa;
         }
-        .mu-footer__meta {
-          margin-top: 16px;
-          color: #6b7280;
-          font-size: 12px;
-          line-height: 1.8;
+        .mu-footer__copy {
+          margin: 0;
+          padding-top: 12px;
+          border-top: 0.5px solid #f0eef8;
+          font-size: 10px;
+          color: #ccc;
         }
-        .mu-footer__meta p { margin: 0; }
         @media (min-width: 768px) {
           .mu-footer {
-            padding-bottom: 28px;
+            padding-bottom: 24px;
+          }
+          .mu-footer__tagline,
+          .mu-footer__group a,
+          .mu-footer__group h3 {
+            font-size: 12px;
           }
         }
       `}</style>

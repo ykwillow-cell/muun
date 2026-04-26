@@ -60,20 +60,12 @@ export default function Home() {
 
       {heroComponent}
 
-      <section className="pb-2">
-        <ServiceGrid />
-      </section>
+      <ServiceGrid />
 
-      <div className="pb-2">
-        <MainBanner />
-      </div>
+      <MainBanner />
 
-      <section className="mu-container-narrow py-4 md:py-6">
-        <div className="grid items-start gap-6 xl:grid-cols-[1.12fr_0.88fr]">
-          <HomeColumnSection />
-          <HomeDictionarySection />
-        </div>
-      </section>
+      <HomeColumnSection />
+      <HomeDictionarySection />
     </div>
   );
 }

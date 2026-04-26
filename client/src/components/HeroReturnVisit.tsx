@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'wouter';
-import { CalendarDays, Heart, MoonStar, Sparkles, Trash2 } from 'lucide-react';
+import { CalendarDays, Check, Lock, Sparkles, Star, Trash2 } from 'lucide-react';
 import { trackCustomEvent } from '@/lib/ga4';
 
 const FORTUNE_TITLES = ['재물운이 열리는 날', '귀인을 만나는 날', '집중력이 높아지는 날', '변화의 기운이 오는 날', '안정이 찾아오는 날', '창의력이 빛나는 날'];
@@ -29,12 +29,6 @@ function getDailyFortune(birth: string) {
   return { score, title: FORTUNE_TITLES[titleIdx], desc: FORTUNE_DESCS[titleIdx] };
 }
 
-const SHORTCUTS = [
-  { href: '/lifelong-saju', label: '평생사주', desc: '기본 흐름 보기', Icon: Sparkles },
-  { href: '/compatibility', label: '궁합', desc: '관계 운 확인', Icon: Heart },
-  { href: '/dream', label: '꿈해몽', desc: '꿈 의미 찾기', Icon: MoonStar },
-] as const;
-
 interface HeroReturnVisitProps {
   onDeleteBirth: () => void;
 }
@@ -56,12 +50,12 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
   const birthYear = birth.slice(0, 4);
   const birthMonth = birth.slice(4, 6);
   const birthDay = birth.slice(6, 8);
-  const birthStr = birthYear && birthMonth && birthDay ? `${parseInt(birthYear, 10)}년 ${parseInt(birthMonth, 10)}월 ${parseInt(birthDay, 10)}일생` : birthYear ? `${birthYear}년생` : '';
+  const birthStr = birthYear && birthMonth && birthDay ? `${parseInt(birthYear, 10)}년 ${parseInt(birthMonth, 10)}월 ${parseInt(birthDay, 10)}일생` : birthYear ? `${birthYear}년생` : '저장된 정보';
 
   const handleDeleteConfirm = () => {
     if (typeof window !== 'undefined') window.localStorage.removeItem('muun_user_birth');
     setShowDeleteSheet(false);
-    trackCustomEvent('birth_delete', {});
+    trackCustomEvent('birth_delete', { entry: 'home_mobile_redesign' });
     onDeleteBirth();
   };
 
@@ -75,85 +69,56 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
   }, [showDeleteSheet]);
 
   return (
-    <section className="mu-hero-shell">
-      <div className="mu-container-narrow px-4 pb-10 pt-6 sm:pt-7">
-        <div className="grid gap-6 lg:grid-cols-[1.02fr_0.98fr] lg:items-start">
-          <div className="relative z-[1]">
-            <div className="flex flex-wrap items-start justify-between gap-4">
-              <div className="min-w-0">
-                <div className="mu-kicker">저장된 정보로 이어보기</div>
-                <h1 className="mt-4 text-[31px] font-extrabold leading-[1.08] tracking-[-0.06em] text-white sm:text-[38px]">
-                  저장된 정보로
-                  <br />
-                  <span className="text-[#FFF1B8]">바로 다시 보기</span>
-                </h1>
-                <p className="mt-4 max-w-[30rem] text-[15px] leading-7 text-white/84 sm:text-base">
-                  평생사주와 궁합, 꿈해몽으로 바로 이동할 수 있어요.
-                </p>
-              </div>
+    <section className="muun-hero" aria-labelledby="home-hero-return-title">
+      <div className="muun-hero__inner">
+        <div className="muun-trust-row" aria-label="서비스 특징">
+          <span className="muun-trust-pill"><Check size={11} aria-hidden="true" />회원가입 없음</span>
+          <span className="muun-trust-pill"><Lock size={11} aria-hidden="true" />서버 저장 안 함</span>
+          <span className="muun-trust-pill"><Star size={11} aria-hidden="true" />100% 무료</span>
+        </div>
 
-              <button
-                className="inline-flex h-11 shrink-0 items-center gap-2 whitespace-nowrap rounded-full border border-white/14 bg-white/10 px-4 text-sm font-bold text-white backdrop-blur"
-                onClick={() => setShowDeleteSheet(true)}
-              >
-                <Trash2 size={15} />
-                <span>정보 삭제</span>
-              </button>
-            </div>
+        <h1 id="home-hero-return-title" className="muun-hero__title">
+          저장된 정보로 바로<br />오늘 운세 보기
+        </h1>
+        <p className="muun-hero__sub">평생사주와 오늘의 운세로 바로 이어집니다.</p>
 
-            <div className="mt-5 flex flex-wrap gap-2">
-              <span className="mu-stat-pill"><CalendarDays size={14} /> {birthStr || '저장된 정보'}</span>
-              <span className="mu-stat-pill">서버 저장 안함</span>
+        <div className="muun-input-card muun-return-card">
+          <div className="muun-return-card__head">
+            <div>
+              <p className="muun-card-label">저장된 생년월일</p>
+              <p className="muun-return-card__birth"><CalendarDays size={15} aria-hidden="true" />{birthStr}</p>
             </div>
-
-            <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
-              {SHORTCUTS.map(({ href, label, desc, Icon }) => (
-                <Link key={href} href={`${href}?birth=${birth}`} className="mu-soft-card flex items-center gap-3 px-4 py-4 text-slate-900">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-[#6B5FFF]/10 text-[#5648db]">
-                    <Icon size={19} aria-hidden="true" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="text-sm font-extrabold tracking-[-0.03em] text-slate-900">{label}</div>
-                    <div className="mt-1 text-xs text-slate-600">{desc}</div>
-                  </div>
-                </Link>
-              ))}
-            </div>
+            <button type="button" className="muun-delete-btn" onClick={() => setShowDeleteSheet(true)} aria-label="저장된 정보 삭제">
+              <Trash2 size={15} />
+            </button>
           </div>
 
-          <div className="relative z-[1] rounded-[30px] border border-white/14 bg-white/10 p-3 backdrop-blur-md">
-            <div className="rounded-[24px] bg-[linear-gradient(155deg,#151045_0%,#2d1f8c_54%,#4654ca_100%)] p-5 text-white shadow-[0_24px_48px_rgba(15,23,42,0.18)]">
-              <div className="flex items-center justify-between gap-3">
-                <div className="text-xs font-bold uppercase tracking-[0.14em] text-white/72">오늘의 운세</div>
-                <div className="rounded-full bg-white/14 px-3 py-1 text-xs font-bold text-white">{fortune.score}점</div>
-              </div>
-              <div className="mt-4 text-[26px] font-extrabold tracking-[-0.05em] text-white">{fortune.title}</div>
-              <div className="mt-4 h-2 rounded-full bg-white/12">
-                <div className="h-2 rounded-full bg-[#FFF1B8]" style={{ width: `${fortune.score}%` }} />
-              </div>
-              <p className="mt-4 text-sm leading-7 text-white/82">{fortune.desc}</p>
-              <div className="mt-5 flex flex-wrap gap-2">
-                <Link href="/daily-fortune" className="inline-flex rounded-full border border-white/12 bg-white/12 px-4 py-2 text-xs font-bold text-white backdrop-blur">
-                  오늘의 운세
-                </Link>
-                <Link href="/yearly-fortune" className="inline-flex rounded-full border border-white/12 bg-white/12 px-4 py-2 text-xs font-bold text-white backdrop-blur">
-                  신년운세
-                </Link>
-              </div>
+          <div className="muun-daily-mini">
+            <div className="muun-daily-mini__top">
+              <span>오늘의 운세</span>
+              <strong>{fortune.score}점</strong>
             </div>
+            <p className="muun-daily-mini__title">{fortune.title}</p>
+            <div className="muun-daily-mini__bar"><span style={{ width: `${fortune.score}%` }} /></div>
+            <p className="muun-daily-mini__desc">{fortune.desc}</p>
+          </div>
+
+          <div className="muun-return-actions">
+            <Link href={`/lifelong-saju?birth=${birth}`} className="muun-hero-cta muun-hero-cta--link"><Sparkles size={15} />평생사주 보기</Link>
+            <Link href="/daily-fortune" className="muun-secondary-cta">오늘운세</Link>
           </div>
         </div>
       </div>
 
       {showDeleteSheet && (
-        <div className="fixed inset-0 z-[70] bg-slate-950/45" onClick={() => setShowDeleteSheet(false)}>
-          <div className="absolute bottom-0 left-0 right-0 rounded-t-[28px] bg-white p-6 shadow-[0_-18px_60px_rgba(15,23,42,0.2)]" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-label="정보 삭제 확인">
-            <div className="mx-auto h-1.5 w-12 rounded-full bg-slate-200" />
-            <p className="mt-4 text-[22px] font-extrabold tracking-[-0.04em] text-slate-900">저장된 정보를 삭제할까요?</p>
-            <p className="mt-2 text-sm leading-7 text-slate-600">삭제하면 첫 화면으로 돌아갑니다.</p>
-            <div className="mt-5 grid grid-cols-2 gap-3">
-              <button className="mu-secondary-btn justify-center" onClick={() => setShowDeleteSheet(false)}>취소</button>
-              <button className="mu-primary-btn justify-center" onClick={handleDeleteConfirm}>삭제</button>
+        <div className="muun-sheet" onClick={() => setShowDeleteSheet(false)}>
+          <div className="muun-sheet__panel" onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true" aria-label="정보 삭제 확인">
+            <div className="muun-sheet__handle" />
+            <p className="muun-sheet__title">저장된 정보를 삭제할까요?</p>
+            <p className="muun-sheet__desc">삭제하면 첫 화면으로 돌아갑니다.</p>
+            <div className="muun-sheet__actions">
+              <button className="muun-secondary-cta" onClick={() => setShowDeleteSheet(false)}>취소</button>
+              <button className="muun-hero-cta" onClick={handleDeleteConfirm}>삭제</button>
             </div>
           </div>
         </div>
