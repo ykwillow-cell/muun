@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { useLocation } from 'wouter';
-import { Check, Lock, Star } from 'lucide-react';
+import { CalendarDays, CheckCircle2, Lock, Sparkles } from 'lucide-react';
 import { trackCustomEvent } from '@/lib/ga4';
 
 export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
@@ -13,45 +13,38 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-
     if (!isValid) {
       setInputError('생년월일 8자리를 입력해 주세요. 예) 19930521');
       return;
     }
 
     const data = { birth: digits, calType: 'solar', siju: 'unknown', savedAt: new Date().toISOString() };
-    if (typeof window !== 'undefined') {
-      window.localStorage.setItem('muun_user_birth', JSON.stringify(data));
-    }
-    trackCustomEvent('hero_form_submit', { calType: 'solar', siju: 'unknown', entry: 'home_mobile_redesign' });
+    if (typeof window !== 'undefined') window.localStorage.setItem('muun_user_birth', JSON.stringify(data));
+    trackCustomEvent('hero_form_submit', { entry: 'home_pastel_design' });
     onBirthSaved();
     navigate('/lifelong-saju');
   };
 
   return (
-    <section className="muun-hero" aria-labelledby="home-hero-title">
-      <div className="muun-hero__inner">
-        <div className="muun-trust-row" aria-label="서비스 특징">
-          <span className="muun-trust-pill"><Check size={11} aria-hidden="true" />회원가입 없음</span>
-          <span className="muun-trust-pill"><Lock size={11} aria-hidden="true" />정보 저장 안 함</span>
-          <span className="muun-trust-pill"><Star size={11} aria-hidden="true" />100% 무료</span>
-        </div>
+    <section className="mu-home-hero" aria-labelledby="home-hero-title">
+      <div className="mu-home-hero__sky" aria-hidden="true">
+        <div className="mu-home-hero__moon" />
+        <div className="mu-home-hero__cloud mu-home-hero__cloud--one" />
+        <div className="mu-home-hero__cloud mu-home-hero__cloud--two" />
+      </div>
+      <div className="mu-home-hero__content">
+        <p className="mu-home-hero__eyebrow">회원가입 없이 바로 시작</p>
+        <h1 id="home-hero-title" className="mu-home-hero__title">생년월일만 입력하면<br />바로 보는 무료 사주</h1>
+        <p className="mu-home-hero__desc">평생사주, 오늘의 운세, 궁합, 꿈해몽까지 빠르게 이어지는 모바일 사주 서비스를 준비했습니다.</p>
 
-        <h1 id="home-hero-title" className="muun-hero__title">
-          생년월일로 바로<br />평생사주 보기
-        </h1>
-        <p className="muun-hero__sub">입력 후 바로 결과 화면으로 이동합니다.</p>
-
-        <form className="muun-input-card" onSubmit={handleSubmit} noValidate>
-          <p className="muun-card-label">생년월일 입력</p>
-          <label className="muun-field-wrap" htmlFor="birth-input">
-            <span className="muun-field-title">생년월일 8자리</span>
+        <form className="mu-home-hero__form" onSubmit={handleSubmit} noValidate>
+          <label className="mu-home-hero__field" htmlFor="home-birth-input">
+            <span><CalendarDays size={16} /> 생년월일 8자리</span>
             <input
-              id="birth-input"
+              id="home-birth-input"
               type="text"
               inputMode="numeric"
               autoComplete="bday"
-              className={`muun-field-input${inputError ? ' muun-field-input--error' : ''}`}
               placeholder="예) 19930521"
               value={digits}
               maxLength={8}
@@ -59,15 +52,19 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
                 setBirthInput(event.target.value.replace(/\D/g, '').slice(0, 8));
                 if (inputError) setInputError('');
               }}
-              aria-describedby={inputError ? 'birth-input-error' : undefined}
             />
           </label>
-          {inputError ? <p id="birth-input-error" className="muun-input-error" role="alert">{inputError}</p> : null}
-          <button type="submit" className="muun-hero-cta" disabled={!isValid}>
-            {isValid ? '무료 평생사주 보기' : '생년월일을 입력해주세요'}
+          {inputError ? <p className="mu-home-hero__error">{inputError}</p> : null}
+          <button type="submit" className="mu-home-hero__cta" disabled={!isValid}>
+            <Sparkles size={16} /> 무료 평생사주 보기
           </button>
-          <div style={{ height: '16px' }} />
         </form>
+
+        <div className="mu-home-hero__trust">
+          <span><CheckCircle2 size={14} /> 회원가입 없음</span>
+          <span><Lock size={14} /> 개인정보 저장 안 함</span>
+          <span><Sparkles size={14} /> 무료 결과 확인</span>
+        </div>
       </div>
     </section>
   );

@@ -2,31 +2,30 @@ import { Link } from 'wouter';
 import { ArrowRight, BookMarked } from 'lucide-react';
 
 const FEATURED_TERMS = [
-  { label: '일주', desc: '나를 나타내는 기둥', slug: 'il-ju' },
-  { label: '용신', desc: '필요한 오행', slug: 'yong-sin' },
-  { label: '대운', desc: '10년 흐름 운세', slug: 'dae-un' },
-  { label: '십신', desc: '관계와 역할', slug: 'sip-sin' },
+  { label: '오행', desc: '다섯 가지 기본 기운', slug: '?q=%EC%98%A4%ED%96%89' },
+  { label: '십신', desc: '관계와 역할의 기준', slug: '?q=%EC%8B%AD%EC%8B%A0' },
+  { label: '대운', desc: '10년 단위 흐름', slug: '?q=%EB%8C%80%EC%9A%B4' },
+  { label: '용신', desc: '균형을 돕는 기운', slug: '?q=%EC%9A%A9%EC%8B%A0' },
 ] as const;
 
 export function HomeDictionarySection() {
   return (
-    <section className="muun-dictionary-section" aria-labelledby="home-dictionary-title">
-      <div className="muun-section-row muun-section-row--compact">
+    <section className="mu-home-content-section" aria-labelledby="home-dictionary-title">
+      <div className="mu-home-content-section__head">
         <div>
-          <p className="muun-section-eyebrow"><BookMarked size={12} aria-hidden="true" /> 운세 사전</p>
-          <h2 id="home-dictionary-title" className="muun-section-title">용어 바로 찾기</h2>
+          <p className="mu-section-eyebrow"><BookMarked size={12} /> 사주사전</p>
+          <h2 id="home-dictionary-title" className="muun-section-title">자주 찾는 용어</h2>
         </div>
-        <Link href="/fortune-dictionary" className="muun-see-all">전체 <ArrowRight size={12} aria-hidden="true" /></Link>
+        <Link href="/fortune-dictionary" className="muun-see-all">더보기 <ArrowRight size={12} /></Link>
       </div>
-
-      <div className="muun-term-grid">
-        {FEATURED_TERMS.map((term) => (
-          <Link key={term.slug} href={`/dictionary/${term.slug}`} className="muun-term-card">
-            <span className="muun-term-hash" aria-hidden="true">#</span>
-            <span className="muun-term-copy">
+      <div className="mu-home-term-grid">
+        {FEATURED_TERMS.map((term, index) => (
+          <Link key={term.slug} href={term.slug.startsWith('?') ? `/fortune-dictionary${term.slug}` : `/dictionary/${term.slug}`} className={`mu-home-term-card is-${index % 4}`}>
+            <div>
               <strong>{term.label}</strong>
               <small>{term.desc}</small>
-            </span>
+            </div>
+            <ArrowRight size={14} />
           </Link>
         ))}
       </div>
