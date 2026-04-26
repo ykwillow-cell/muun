@@ -75,12 +75,20 @@ export function MainBanner() {
         <div className="muun-promo-track">
           {banners.map((banner) => (
             <div key={banner.id} className="muun-promo-slide">
-              <Link href={banner.href} className="muun-promo-card" style={{ background: banner.gradient || '#3929a0' }}>
-                <span className="muun-promo-hanja" aria-hidden="true">{banner.watermark || '運'}</span>
-                <span className="muun-promo-label">{banner.tag || '무운 추천'}</span>
-                <h2 className="muun-promo-title">{banner.title}</h2>
-                {banner.sub ? <p className="muun-promo-sub">{banner.sub}</p> : null}
-                <span className="muun-promo-btn">{banner.cta}<ArrowRight size={12} aria-hidden="true" /></span>
+              <Link
+                href={banner.href}
+                className="muun-promo-card"
+                style={{ background: banner.gradient || '#3929a0' }}
+              >
+                <div style={{ position: 'relative', zIndex: 1 }}>
+                  <div className="muun-promo-label">{banner.tag || '무운 추천'}</div>
+                  <h2 className="muun-promo-title">{banner.title}</h2>
+                  <span className="muun-promo-btn">
+                    {banner.cta}
+                    <ArrowRight size={12} aria-hidden="true" />
+                  </span>
+                </div>
+                <div className="muun-promo-hanja" aria-hidden="true">{banner.watermark || '運'}</div>
               </Link>
             </div>
           ))}

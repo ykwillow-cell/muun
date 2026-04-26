@@ -58,7 +58,7 @@ export function ServiceGrid() {
             <Link key={href} href={href} className="muun-mini-card">
               <div className="muun-mini-card__head">
                 <span className="muun-mini-icon"><Icon size={15} aria-hidden="true" /></span>
-                {badge ? <span className={`muun-mini-badge ${badge === 'NEW' ? 'muun-mini-badge--new' : ''}`}>{badge}</span> : null}
+                {badge ? <span className={`muun-mini-badge${badge === 'NEW' ? ' muun-mini-badge--new' : ''}`}>{badge}</span> : null}
               </div>
               <h3 className="muun-mini-name">{label}</h3>
               <p className="muun-mini-desc">{description}</p>

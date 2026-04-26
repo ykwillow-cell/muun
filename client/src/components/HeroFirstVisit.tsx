@@ -66,6 +66,7 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           <button type="submit" className="muun-hero-cta" disabled={!isValid}>
             {isValid ? '무료 평생사주 보기' : '생년월일을 입력해주세요'}
           </button>
+          <div style={{ height: '16px' }} />
         </form>
       </div>
     </section>
