@@ -20,7 +20,7 @@ import { calculateTojeong } from "@/lib/tojeong";
 import { convertToSolarDate } from "@/lib/lunar-converter";
 import TojeongContent from "@/components/TojeongContent";
 import RecommendedContent from "@/components/RecommendedContent";
-import { getHeroBirthForForm } from "@/lib/user-birth";
+import { getHeroBirthForForm, isHeroBirthFresh } from "@/lib/user-birth";
 
 // 폼 스키마 정의 (태어난 시간 제외)
 const formSchema = z.object({
@@ -70,6 +70,16 @@ export default function Tojeong() {
   }, [watchedBirthDate, watchedGender, watchedCalendarType]);
 
   useEffect(() => {
+    // muun_user_birth가 최근(5분 이내) 저장된 경우 메인화면 입력값 우선 적용
+    const heroBirth = getHeroBirthForForm();
+    if (heroBirth && isHeroBirthFresh()) {
+      form.setValue("birthDate", heroBirth.birthDate);
+      form.setValue("calendarType", heroBirth.calendarType);
+      form.setValue("birthTime", heroBirth.birthTime);
+      form.setValue("birthTimeUnknown", heroBirth.birthTimeUnknown);
+      setTimeout(() => setInitialLoadDone(true), 100);
+      return;
+    }
     const savedData = localStorage.getItem("muun_user_data");
     if (savedData) {
       try {

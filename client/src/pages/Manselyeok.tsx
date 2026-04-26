@@ -25,7 +25,7 @@ import {
 } from "@/lib/saju";
 import { convertToSolarDate } from "@/lib/lunar-converter";
 import ManselyeokContent from "@/components/ManselyeokContent";
-import { getHeroBirthForForm } from "@/lib/user-birth";
+import { getHeroBirthForForm, isHeroBirthFresh } from "@/lib/user-birth";
 import {
   ELEMENT_READINGS, BRANCH_READINGS, STEM_READINGS,
   TEN_GOD_MEANINGS, withReading,
@@ -312,6 +312,16 @@ export default function Manselyeok() {
   }, [watchedBirthDate, watchedGender, watchedCalendarType]);
 
   useEffect(() => {
+    // muun_user_birth가 최근(5분 이내) 저장된 경우 메인화면 입력값 우선 적용
+    const heroBirth = getHeroBirthForForm();
+    if (heroBirth && isHeroBirthFresh()) {
+      form.setValue("birthDate", heroBirth.birthDate);
+      form.setValue("calendarType", heroBirth.calendarType);
+      form.setValue("birthTime", heroBirth.birthTime);
+      form.setValue("birthTimeUnknown", heroBirth.birthTimeUnknown);
+      setTimeout(() => setInitialLoadDone(true), 100);
+      return;
+    }
     const savedData = localStorage.getItem("muun_user_data");
     if (savedData) {
       try {

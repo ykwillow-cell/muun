@@ -2,7 +2,7 @@
  * muun_user_birth (히어로 입력) → 운세 폼 필드 변환 유틸
  *
  * 히어로 섹션에서 저장하는 구조:
- *   { birth: "19930521" | "930521", calType: "solar"|"lunar", siju: "12:30"|"unknown" }
+ *   { birth: "19930521" | "930521", calType: "solar"|"lunar", siju: "12:30"|"unknown", savedAt: ISO string }
  *
  * 운세 폼에서 사용하는 구조:
  *   { birthDate: "1993-05-21", calendarType: "solar"|"lunar", birthTime: "12:30", birthTimeUnknown: boolean }
@@ -51,5 +51,22 @@ export function getHeroBirthForForm(): HeroBirthData | null {
     return { birthDate, calendarType, birthTime, birthTimeUnknown };
   } catch {
     return null;
+  }
+}
+
+/**
+ * muun_user_birth가 최근(5분 이내)에 저장된 경우 true를 반환합니다.
+ * 메인화면에서 새로 입력한 생년월일을 muun_user_data보다 우선 적용할 때 사용합니다.
+ */
+export function isHeroBirthFresh(thresholdMs = 5 * 60 * 1000): boolean {
+  try {
+    const raw = localStorage.getItem("muun_user_birth");
+    if (!raw) return false;
+    const data = JSON.parse(raw);
+    if (!data.savedAt) return false;
+    const savedAt = new Date(data.savedAt).getTime();
+    return Date.now() - savedAt < thresholdMs;
+  } catch {
+    return false;
   }
 }

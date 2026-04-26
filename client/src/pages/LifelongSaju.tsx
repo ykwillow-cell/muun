@@ -48,7 +48,7 @@ import {
  getElementRelation,
 } from "@/lib/saju-reading";
 import { cleanAIContent, addWarmClosing } from "@/lib/content-cleaner";
-import { getHeroBirthForForm } from "@/lib/user-birth";
+import { getHeroBirthForForm, isHeroBirthFresh } from "@/lib/user-birth";
 
 const formSchema = z.object({
  name: z.string().min(1, "이름을 입력해주세요"),
@@ -175,6 +175,16 @@ export default function LifelongSaju() {
  }, [watchedBirthDate, watchedGender, watchedCalendarType]);
 
  useEffect(() => {
+ // muun_user_birth가 최근(5분 이내) 저장된 경우 메인화면 입력값 우선 적용
+ const heroBirth = getHeroBirthForForm();
+ if (heroBirth && isHeroBirthFresh()) {
+ form.setValue("birthDate", heroBirth.birthDate);
+ form.setValue("calendarType", heroBirth.calendarType);
+ form.setValue("birthTime", heroBirth.birthTime);
+ form.setValue("birthTimeUnknown", heroBirth.birthTimeUnknown);
+ setTimeout(() => setInitialLoadDone(true), 100);
+ return;
+ }
  const savedData = localStorage.getItem("muun_user_data");
  if (savedData) {
  try {
@@ -192,7 +202,6 @@ export default function LifelongSaju() {
  }
  }
  // muun_user_data 없으면 muun_user_birth에서 생년월일 pre-fill
- const heroBirth = getHeroBirthForForm();
  if (heroBirth) {
  form.setValue("birthDate", heroBirth.birthDate);
  form.setValue("calendarType", heroBirth.calendarType);

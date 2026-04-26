@@ -49,7 +49,7 @@ import {
  analyzeElementBalance,
  getElementRelation,
 } from "@/lib/saju-reading";
-import { getHeroBirthForForm } from "@/lib/user-birth";
+import { getHeroBirthForForm, isHeroBirthFresh } from "@/lib/user-birth";
 
 const formSchema = z.object({
  name: z.string().optional().default(""),
@@ -303,6 +303,22 @@ export default function YearlyFortune() {
  };
 
  useEffect(() => {
+ const heroBirth = getHeroBirthForForm();
+ // muun_user_birth가 최근(5분 이내) 저장된 경우 메인화면 입력값 우선 적용
+ if (heroBirth && isHeroBirthFresh()) {
+ const autoData = {
+ name: "",
+ gender: "male" as const,
+ birthDate: heroBirth.birthDate,
+ calendarType: heroBirth.calendarType,
+ birthTime: heroBirth.birthTime,
+ birthTimeUnknown: heroBirth.birthTimeUnknown,
+ isLeapMonth: false,
+ };
+ form.reset(autoData);
+ setTimeout(() => setInitialLoadDone(true), 100);
+ return;
+ }
  // 저장된 데이터가 있으면 바로 결과 계산 (히어로 자세히 버튼 등)
  const savedData = localStorage.getItem("muun_user_data");
  if (savedData) {
@@ -320,7 +336,6 @@ export default function YearlyFortune() {
  } catch {}
  }
  // muun_user_data 없으면 muun_user_birth에서 pre-fill 후 자동 계산
- const heroBirth = getHeroBirthForForm();
  if (heroBirth) {
  const autoData = {
  name: "",

@@ -17,7 +17,7 @@ import ReactMarkdown from 'react-markdown';
 import { Link } from "wouter";
 import AstrologyContent from "@/components/AstrologyContent";
 import RecommendedContent from "@/components/RecommendedContent";
-import { getHeroBirthForForm } from "@/lib/user-birth";
+import { getHeroBirthForForm, isHeroBirthFresh } from "@/lib/user-birth";
 
 const formSchema = z.object({
   birthDate: z.string().min(1, "생년월일을 입력해주세요"),
@@ -206,6 +206,15 @@ const Astrology: React.FC = () => {
   }, [watchedBirthDate, watchedBirthTime]);
 
   useEffect(() => {
+    const heroBirth = getHeroBirthForForm();
+    // muun_user_birth가 최근(5분 이내) 저장된 경우 메인화면 입력값 우선 적용
+    if (heroBirth && isHeroBirthFresh()) {
+      form.setValue("birthDate", heroBirth.birthDate);
+      form.setValue("birthTime", heroBirth.birthTime);
+      setSelectedCity(MAJOR_CITIES[0]);
+      setTimeout(() => setInitialLoadDone(true), 100);
+      return;
+    }
     const savedData = localStorage.getItem("muun_user_data");
     if (savedData) {
       try {
@@ -221,7 +230,6 @@ const Astrology: React.FC = () => {
         return;
       } catch {}
     }
-    const heroBirth = getHeroBirthForForm();
     if (heroBirth) {
       form.setValue("birthDate", heroBirth.birthDate);
       form.setValue("birthTime", heroBirth.birthTime);
