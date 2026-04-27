@@ -1,67 +1,72 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://muunsaju.com/</loc>
-    <lastmod>2026-04-26</lastmod>
-  </url>
-  <url>
-    <loc>https://muunsaju.com/naming</loc>
-    <lastmod>2026-04-26</lastmod>
-  </url>
-  <url>
-    <loc>https://muunsaju.com/fortune-dictionary</loc>
-    <lastmod>2026-04-26</lastmod>
   </url>
   <url>
     <loc>https://muunsaju.com/yearly-fortune</loc>
-    <lastmod>2026-04-26</lastmod>
-  </url>
-  <url>
-    <loc>https://muunsaju.com/lifelong-saju</loc>
-    <lastmod>2026-04-26</lastmod>
-  </url>
-  <url>
-    <loc>https://muunsaju.com/compatibility</loc>
-    <lastmod>2026-04-26</lastmod>
-  </url>
-  <url>
-    <loc>https://muunsaju.com/family-saju</loc>
-    <lastmod>2026-04-26</lastmod>
-  </url>
-  <url>
-    <loc>https://muunsaju.com/tarot</loc>
-    <lastmod>2026-04-26</lastmod>
-  </url>
-  <url>
-    <loc>https://muunsaju.com/tojeong</loc>
-    <lastmod>2026-04-26</lastmod>
-  </url>
-  <url>
-    <loc>https://muunsaju.com/astrology</loc>
-    <lastmod>2026-04-26</lastmod>
-  </url>
-  <url>
-    <loc>https://muunsaju.com/daily-fortune</loc>
-    <lastmod>2026-04-26</lastmod>
   </url>
   <url>
     <loc>https://muunsaju.com/manselyeok</loc>
-    <lastmod>2026-04-26</lastmod>
+  </url>
+  <url>
+    <loc>https://muunsaju.com/daily-fortune</loc>
+  </url>
+  <url>
+    <loc>https://muunsaju.com/lifelong-saju</loc>
+  </url>
+  <url>
+    <loc>https://muunsaju.com/compatibility</loc>
+  </url>
+  <url>
+    <loc>https://muunsaju.com/family-saju</loc>
   </url>
   <url>
     <loc>https://muunsaju.com/hybrid-compatibility</loc>
-    <lastmod>2026-04-26</lastmod>
+  </url>
+  <url>
+    <loc>https://muunsaju.com/tojeong</loc>
   </url>
   <url>
     <loc>https://muunsaju.com/psychology</loc>
-    <lastmod>2026-04-26</lastmod>
+  </url>
+  <url>
+    <loc>https://muunsaju.com/astrology</loc>
+  </url>
+  <url>
+    <loc>https://muunsaju.com/tarot</loc>
+  </url>
+  <url>
+    <loc>https://muunsaju.com/tarot-history</loc>
+  </url>
+  <url>
+    <loc>https://muunsaju.com/dream</loc>
+  </url>
+  <url>
+    <loc>https://muunsaju.com/fortune-dictionary</loc>
+  </url>
+  <url>
+    <loc>https://muunsaju.com/guide</loc>
+  </url>
+  <url>
+    <loc>https://muunsaju.com/naming</loc>
   </url>
   <url>
     <loc>https://muunsaju.com/lucky-lunch</loc>
-    <lastmod>2026-04-26</lastmod>
+  </url>
+  <url>
+    <loc>https://muunsaju.com/past-life</loc>
   </url>
   <url>
     <loc>https://muunsaju.com/about</loc>
-    <lastmod>2026-04-26</lastmod>
+  </url>
+  <url>
+    <loc>https://muunsaju.com/privacy</loc>
+  </url>
+  <url>
+    <loc>https://muunsaju.com/terms</loc>
+  </url>
+  <url>
+    <loc>https://muunsaju.com/contact</loc>
   </url>
 </urlset>

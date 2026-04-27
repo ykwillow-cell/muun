@@ -1,5 +1,16 @@
 #!/usr/bin/env node
 
+/**
+ * MUUN sitemap generator
+ *
+ * Goals:
+ * - Only list final, canonical, indexable URLs.
+ * - Keep /yearly-fortune/:birthDate result pages out of the sitemap.
+ * - Keep sitemap output aligned with prerendered dynamic detail pages.
+ * - Avoid putting legacy UUID redirects, deleted slugs, Korean/non-prerendered slugs,
+ *   duplicate variants, or known GSC exclusions into sitemap files.
+ */
+
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -12,16 +23,49 @@ import {
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR = path.resolve(__dirname, '..');
 const PUBLIC_DIR = path.join(ROOT_DIR, 'client/public');
-const POPULAR_BIRTH_DATES_FILE = path.join(ROOT_DIR, 'popular-birth-dates.json');
 const BASE_URL = 'https://muunsaju.com';
 
-const DEFAULT_SUPABASE_URL = 'https://vuifbmsdggnwygvgcrkj.supabase.co';
-const DEFAULT_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1aWZibXNkZ2dud3lndmdjcmtqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE4NzY0ODYsImV4cCI6MjA4NzQ1MjQ4Nn0.PhMK66O73HH98WIPAu66qk8FuXwJLU4Z2bhDcmDCpKI';
-const SUPABASE_URL = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || DEFAULT_SUPABASE_URL;
-const SUPABASE_ANON_KEY = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || DEFAULT_SUPABASE_ANON_KEY;
+// Must match the dynamic-page prerender rule. Korean/legacy slugs are not prerendered,
+// so they should not be submitted in XML sitemaps.
+const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+const SUPABASE_URL = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || '';
+const SUPABASE_ANON_KEY = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || '';
+
+const CORE_PATHS = [
+  '/',
+  '/yearly-fortune',
+  '/manselyeok',
+  '/daily-fortune',
+  '/lifelong-saju',
+  '/compatibility',
+  '/family-saju',
+  '/hybrid-compatibility',
+  '/tojeong',
+  '/psychology',
+  '/astrology',
+  '/tarot',
+  '/tarot-history',
+  '/dream',
+  '/fortune-dictionary',
+  '/guide',
+  '/naming',
+  '/lucky-lunch',
+  '/past-life',
+  '/about',
+  '/privacy',
+  '/terms',
+  '/contact',
+];
 
 function normalizeSlug(value) {
-  return String(value || '').trim();
+  return String(value || '').trim().toLowerCase();
+}
+
+function isValidPrerenderedSlug(value) {
+  const slug = normalizeSlug(value);
+  return SLUG_PATTERN.test(slug) && !UUID_PATTERN.test(slug);
 }
 
 function escapeXml(value = '') {
@@ -33,51 +77,70 @@ function escapeXml(value = '') {
     .replace(/'/g, '&apos;');
 }
 
-function urlsetXml(urls) {
-  const today = new Date().toISOString().split('T')[0];
-  const items = urls.map((u) => `  <url>\n    <loc>${escapeXml(u)}</loc>\n    <lastmod>${today}</lastmod>\n  </url>`).join('\n');
-  return `<?xml version="1.0" encoding="utf-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${items}\n</urlset>\n`;
-}
-
-function sitemapIndexXml(files) {
-  const today = new Date().toISOString().split('T')[0];
-  const items = files.map((f) => `  <sitemap>\n    <loc>${BASE_URL}/${escapeXml(f)}</loc>\n    <lastmod>${today}</lastmod>\n  </sitemap>`).join('\n');
-  return `<?xml version="1.0" encoding="utf-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${items}\n</sitemapindex>\n`;
-}
-
-function saveFile(filename, content) {
-  const filePath = path.join(PUBLIC_DIR, filename);
-  fs.mkdirSync(PUBLIC_DIR, { recursive: true });
-  fs.writeFileSync(filePath, content, 'utf-8');
-  const kb = (fs.statSync(filePath).size / 1024).toFixed(1);
-  console.log(`💾 ${filename} 저장 완료 (${kb} KB)`);
-}
-
 function uniqueOrdered(values) {
   const seen = new Set();
   const result = [];
   for (const value of values) {
-    if (!value || seen.has(value)) continue;
-    seen.add(value);
-    result.push(value);
+    const normalized = String(value || '').trim();
+    if (!normalized || seen.has(normalized)) continue;
+    seen.add(normalized);
+    result.push(normalized);
   }
   return result;
+}
+
+function urlsetXml(urls) {
+  const items = urls
+    .map((u) => `  <url>\n    <loc>${escapeXml(u)}</loc>\n  </url>`)
+    .join('\n');
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${items}\n</urlset>\n`;
+}
+
+function sitemapIndexXml(files) {
+  const items = files
+    .map((f) => `  <sitemap>\n    <loc>${BASE_URL}/${escapeXml(f)}</loc>\n  </sitemap>`)
+    .join('\n');
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${items}\n</sitemapindex>\n`;
+}
+
+function saveFile(filename, content) {
+  fs.mkdirSync(PUBLIC_DIR, { recursive: true });
+  const filePath = path.join(PUBLIC_DIR, filename);
+  fs.writeFileSync(filePath, content, 'utf-8');
+  const kb = (fs.statSync(filePath).size / 1024).toFixed(1);
+  console.log(`💾 ${filename} saved (${kb} KB)`);
+}
+
+function removeFileIfExists(filename) {
+  const filePath = path.join(PUBLIC_DIR, filename);
+  if (fs.existsSync(filePath)) {
+    fs.unlinkSync(filePath);
+    console.log(`🧹 ${filename} removed`);
+  }
 }
 
 function parseLocsFromSitemap(filename) {
   const filePath = path.join(PUBLIC_DIR, filename);
   if (!fs.existsSync(filePath)) return [];
   const xml = fs.readFileSync(filePath, 'utf-8');
-  return [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((match) => match[1]).filter(Boolean);
+  return [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)]
+    .map((match) => match[1].trim())
+    .filter(Boolean);
 }
 
 function extractSlugFromUrl(url, prefix) {
-  if (!url.startsWith(`${BASE_URL}${prefix}`)) return null;
-  const slug = url.slice(`${BASE_URL}${prefix}`.length);
-  return slug ? decodeURIComponent(slug) : null;
+  const basePrefix = `${BASE_URL}${prefix}`;
+  if (!url.startsWith(basePrefix)) return null;
+  const slug = url.slice(basePrefix.length);
+  if (!slug) return null;
+  try {
+    return decodeURIComponent(slug);
+  } catch {
+    return slug;
+  }
 }
 
-function loadFallbackSlugs(filename, prefix) {
+function loadFallbackRows(filename, prefix) {
   return parseLocsFromSitemap(filename)
     .map((url) => extractSlugFromUrl(url, prefix))
     .filter(Boolean)
@@ -85,6 +148,10 @@ function loadFallbackSlugs(filename, prefix) {
 }
 
 async function fetchRestTable(tableName, { select = '*', filters = [], order = [], limit } = {}) {
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+    throw new Error('Supabase env vars are missing; using existing sitemap fallback.');
+  }
+
   const url = new URL(`${SUPABASE_URL}/rest/v1/${tableName}`);
   url.searchParams.set('select', select);
 
@@ -93,14 +160,8 @@ async function fetchRestTable(tableName, { select = '*', filters = [], order = [
     const value = typeof filter.value === 'boolean' ? (filter.value ? 'true' : 'false') : String(filter.value);
     url.searchParams.set(filter.field, `${op}.${value}`);
   }
-
-  for (const sortExpr of order) {
-    url.searchParams.append('order', sortExpr);
-  }
-
-  if (typeof limit === 'number' && Number.isFinite(limit)) {
-    url.searchParams.set('limit', String(limit));
-  }
+  for (const sortExpr of order) url.searchParams.append('order', sortExpr);
+  if (typeof limit === 'number' && Number.isFinite(limit)) url.searchParams.set('limit', String(limit));
 
   const response = await fetch(url, {
     headers: {
@@ -116,10 +177,7 @@ async function fetchRestTable(tableName, { select = '*', filters = [], order = [
   }
 
   const data = await response.json();
-  if (!Array.isArray(data)) {
-    throw new Error(`${tableName} fetch returned non-array payload`);
-  }
-
+  if (!Array.isArray(data)) throw new Error(`${tableName} fetch returned non-array payload`);
   return data;
 }
 
@@ -133,8 +191,8 @@ async function loadDictionaryRows() {
     });
     return { rows, source: 'supabase-rest' };
   } catch (error) {
-    console.warn(`⚠️ dictionary fetch 실패, 기존 sitemap로 폴백: ${error instanceof Error ? error.message : error}`);
-    return { rows: loadFallbackSlugs('sitemap-dictionary.xml', '/dictionary/'), source: 'existing-sitemap' };
+    console.warn(`⚠️ dictionary fetch fallback: ${error instanceof Error ? error.message : error}`);
+    return { rows: loadFallbackRows('sitemap-dictionary.xml', '/dictionary/'), source: 'existing-sitemap' };
   }
 }
 
@@ -148,8 +206,8 @@ async function loadGuideRows() {
     });
     return { rows, source: 'supabase-rest' };
   } catch (error) {
-    console.warn(`⚠️ guide fetch 실패, 기존 sitemap로 폴백: ${error instanceof Error ? error.message : error}`);
-    return { rows: loadFallbackSlugs('sitemap-guide.xml', '/guide/'), source: 'existing-sitemap' };
+    console.warn(`⚠️ guide fetch fallback: ${error instanceof Error ? error.message : error}`);
+    return { rows: loadFallbackRows('sitemap-guide.xml', '/guide/'), source: 'existing-sitemap' };
   }
 }
 
@@ -163,20 +221,24 @@ async function loadDreamRows() {
     });
     return { rows, source: 'supabase-rest' };
   } catch (error) {
-    console.warn(`⚠️ dream fetch 실패, 기존 sitemap로 폴백: ${error instanceof Error ? error.message : error}`);
-    return { rows: loadFallbackSlugs('sitemap-dream.xml', '/dream/'), source: 'existing-sitemap' };
+    console.warn(`⚠️ dream fetch fallback: ${error instanceof Error ? error.message : error}`);
+    return { rows: loadFallbackRows('sitemap-dream.xml', '/dream/'), source: 'existing-sitemap' };
   }
 }
 
 function buildDictionaryUrls(rows) {
-  const counters = { manual: 0, empty: 0 };
+  const counters = { invalidSlug: 0, excluded: 0 };
   const urls = [];
 
   for (const row of rows) {
-    const slug = normalizeSlug(row.slug || row.id);
-    const { exclude, reason } = shouldExcludeDictionarySlug(slug);
+    const slug = normalizeSlug(row.slug);
+    if (!isValidPrerenderedSlug(slug)) {
+      counters.invalidSlug += 1;
+      continue;
+    }
+    const { exclude } = shouldExcludeDictionarySlug(slug);
     if (exclude) {
-      counters[reason] = (counters[reason] || 0) + 1;
+      counters.excluded += 1;
       continue;
     }
     urls.push(`${BASE_URL}/dictionary/${slug}`);
@@ -186,14 +248,18 @@ function buildDictionaryUrls(rows) {
 }
 
 function buildGuideUrls(rows) {
-  const counters = { manual: 0, 'legacy-uuid': 0, empty: 0 };
+  const counters = { invalidSlug: 0, excluded: 0 };
   const urls = [];
 
   for (const row of rows) {
     const slug = normalizeSlug(row.slug || row.id);
-    const { exclude, reason } = shouldExcludeGuideSlug(slug);
+    if (!isValidPrerenderedSlug(slug)) {
+      counters.invalidSlug += 1;
+      continue;
+    }
+    const { exclude } = shouldExcludeGuideSlug(slug);
     if (exclude) {
-      counters[reason] = (counters[reason] || 0) + 1;
+      counters.excluded += 1;
       continue;
     }
     urls.push(`${BASE_URL}/guide/${slug}`);
@@ -203,15 +269,19 @@ function buildGuideUrls(rows) {
 }
 
 function buildDreamUrls(rows) {
-  const normalizedSlugs = rows.map((row) => normalizeSlug(row.slug || row.id)).filter(Boolean);
-  const existingSlugSet = new Set(normalizedSlugs);
-  const counters = { manual: 0, 'duplicate-suffix': 0, empty: 0 };
+  const rawSlugs = rows.map((row) => normalizeSlug(row.slug)).filter(Boolean);
+  const validSlugSet = new Set(rawSlugs.filter(isValidPrerenderedSlug));
+  const counters = { invalidSlug: 0, excluded: 0 };
   const urls = [];
 
-  for (const slug of normalizedSlugs) {
-    const { exclude, reason } = shouldExcludeDreamSlug(slug, existingSlugSet);
+  for (const slug of rawSlugs) {
+    if (!isValidPrerenderedSlug(slug)) {
+      counters.invalidSlug += 1;
+      continue;
+    }
+    const { exclude } = shouldExcludeDreamSlug(slug, validSlugSet);
     if (exclude) {
-      counters[reason] = (counters[reason] || 0) + 1;
+      counters.excluded += 1;
       continue;
     }
     urls.push(`${BASE_URL}/dream/${slug}`);
@@ -220,58 +290,8 @@ function buildDreamUrls(rows) {
   return { urls: uniqueOrdered(urls), counters };
 }
 
-function loadYearlyFortuneUrls() {
-  try {
-    const raw = fs.readFileSync(POPULAR_BIRTH_DATES_FILE, 'utf-8');
-    const data = JSON.parse(raw);
-    const birthDates = Array.isArray(data.birth_dates) ? data.birth_dates : [];
-    return uniqueOrdered(
-      birthDates
-        .map((value) => String(value || '').trim())
-        .filter((value) => /^\d{4}-\d{2}-\d{2}$/.test(value))
-        .map((value) => `${BASE_URL}/yearly-fortune/${value}`),
-    );
-  } catch (error) {
-    console.warn(`⚠️ yearly-fortune 생성 실패: ${error instanceof Error ? error.message : error}`);
-    return [];
-  }
-}
-
-function generateCoreUrls() {
-  const pages = [
-    '/',
-    '/naming',
-    '/fortune-dictionary',
-    '/yearly-fortune',
-    '/lifelong-saju',
-    '/compatibility',
-    '/family-saju',
-    '/tarot',
-    '/tojeong',
-    '/astrology',
-    '/daily-fortune',
-    '/manselyeok',
-    '/hybrid-compatibility',
-    '/psychology',
-    '/lucky-lunch',
-    '/about',
-  ];
-
-  return pages.map((page) => `${BASE_URL}${page}`);
-}
-
-function generateIndex() {
-  return sitemapIndexXml([
-    'sitemap-core.xml',
-    'sitemap-dictionary.xml',
-    'sitemap-guide.xml',
-    'sitemap-dream.xml',
-    'sitemap-yearly-fortune.xml',
-  ]);
-}
-
 async function main() {
-  console.log('🚀 Sitemap 생성 시작 (Search Console 제외 규칙 반영)\n' + '='.repeat(60));
+  console.log('🚀 MUUN sitemap generation started');
 
   const [dictionaryResult, guideResult, dreamResult] = await Promise.all([
     loadDictionaryRows(),
@@ -279,35 +299,39 @@ async function main() {
     loadDreamRows(),
   ]);
 
+  const coreUrls = CORE_PATHS.map((p) => `${BASE_URL}${p === '/' ? '/' : p}`);
   const dictionary = buildDictionaryUrls(dictionaryResult.rows);
   const guide = buildGuideUrls(guideResult.rows);
   const dream = buildDreamUrls(dreamResult.rows);
-  const yearlyFortuneUrls = loadYearlyFortuneUrls();
-  const coreUrls = generateCoreUrls();
 
   console.log(`📚 dictionary source: ${dictionaryResult.source}`);
   console.log(`📚 guide source: ${guideResult.source}`);
   console.log(`📚 dream source: ${dreamResult.source}`);
-  console.log(`🧹 dictionary excluded: ${JSON.stringify(dictionary.counters)}`);
-  console.log(`🧹 guide excluded: ${JSON.stringify(guide.counters)}`);
-  console.log(`🧹 dream excluded: ${JSON.stringify(dream.counters)}`);
+  console.log(`🧹 dictionary filtered: ${JSON.stringify(dictionary.counters)}`);
+  console.log(`🧹 guide filtered: ${JSON.stringify(guide.counters)}`);
+  console.log(`🧹 dream filtered: ${JSON.stringify(dream.counters)}`);
 
-  console.log('\n📝 XML 파일 생성 중...');
   saveFile('sitemap-core.xml', urlsetXml(coreUrls));
   saveFile('sitemap-dictionary.xml', urlsetXml(dictionary.urls));
-  saveFile('sitemap-guide.xml', urlsetXml([`${BASE_URL}/guide`, ...guide.urls]));
-  saveFile('sitemap-dream.xml', urlsetXml([`${BASE_URL}/dream`, ...dream.urls]));
-  saveFile('sitemap-yearly-fortune.xml', urlsetXml(yearlyFortuneUrls));
-  saveFile('sitemap.xml', generateIndex());
+  saveFile('sitemap-guide.xml', urlsetXml(guide.urls));
+  saveFile('sitemap-dream.xml', urlsetXml(dream.urls));
 
-  const total = coreUrls.length + dictionary.urls.length + guide.urls.length + 1 + dream.urls.length + 1 + yearlyFortuneUrls.length;
-  console.log(`\n✅ 총 ${total}개 URL 생성 완료`);
-  console.log(`   core: ${coreUrls.length} | dictionary: ${dictionary.urls.length} | guide: ${guide.urls.length + 1} | dream: ${dream.urls.length + 1} | yearly: ${yearlyFortuneUrls.length}`);
-  console.log('\n' + '='.repeat(60));
-  console.log('✅ 사이트맵 생성 완료!\n');
+  // Important: personalized/generated yearly result pages should not be submitted.
+  removeFileIfExists('sitemap-yearly-fortune.xml');
+
+  saveFile('sitemap.xml', sitemapIndexXml([
+    'sitemap-core.xml',
+    'sitemap-dictionary.xml',
+    'sitemap-guide.xml',
+    'sitemap-dream.xml',
+  ]));
+
+  const total = coreUrls.length + dictionary.urls.length + guide.urls.length + dream.urls.length;
+  console.log(`✅ Sitemap generation complete: ${total} URLs`);
+  console.log(`   core: ${coreUrls.length} | dictionary: ${dictionary.urls.length} | guide: ${guide.urls.length} | dream: ${dream.urls.length}`);
 }
 
 main().catch((error) => {
-  console.error('❌ Fatal error:', error instanceof Error ? error.message : error);
+  console.error('❌ Fatal sitemap error:', error instanceof Error ? error.message : error);
   process.exit(1);
 });
