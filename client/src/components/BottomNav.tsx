@@ -1,23 +1,25 @@
-import { BookOpen, Compass, Home, Settings2, UserRound } from 'lucide-react';
+import { BookOpen, CalendarDays, Compass, Grid3x3, Home } from 'lucide-react';
 import { Link, useLocation } from 'wouter';
 
 const NAV_ITEMS = [
   { href: '/', label: '홈', Icon: Home },
   { href: '/daily-fortune', label: '운세', Icon: Compass },
-  { href: '/lifelong-saju', label: '사주', Icon: Settings2 },
-  { href: '/fortune-dictionary', label: '사주사전', Icon: BookOpen },
-  { href: '/more', label: '마이', Icon: UserRound },
+  { href: '/lifelong-saju', label: '사주', Icon: CalendarDays },
+  { href: '/fortune-dictionary', label: '사전', Icon: BookOpen },
+  { href: '/more', label: '전체', Icon: Grid3x3 },
 ] as const;
+
+const moreRoutes = ['/more', '/manselyeok', '/tojeong', '/astrology', '/tarot', '/family-saju', '/hybrid-compatibility', '/naming', '/psychology', '/lucky-lunch', '/yearly-fortune'];
 
 export function BottomNav() {
   const [location] = useLocation();
 
   const isActive = (href: string) => {
     if (href === '/') return location === '/';
-    if (href === '/daily-fortune') return location.startsWith('/daily-fortune') || location.startsWith('/yearly-fortune') || location.startsWith('/tojeong');
-    if (href === '/lifelong-saju') return location.startsWith('/lifelong-saju') || location.startsWith('/manselyeok') || location.startsWith('/compatibility') || location.startsWith('/family-saju') || location.startsWith('/hybrid-compatibility') || location.startsWith('/astrology') || location.startsWith('/tarot') || location.startsWith('/psychology') || location.startsWith('/naming');
-    if (href === '/fortune-dictionary') return location.startsWith('/fortune-dictionary') || location.startsWith('/dictionary') || location.startsWith('/dream') || location.startsWith('/guide');
-    if (href === '/more') return location.startsWith('/more') || location.startsWith('/about') || location.startsWith('/contact') || location.startsWith('/privacy') || location.startsWith('/terms') || location.startsWith('/lucky-lunch') || location.startsWith('/past-life') || location.startsWith('/tarot-history');
+    if (href === '/more') return moreRoutes.some((path) => location === path || location.startsWith(`${path}/`));
+    if (href === '/fortune-dictionary') {
+      return location === href || location.startsWith('/dictionary/') || location.startsWith('/fortune-dictionary/');
+    }
     return location === href || location.startsWith(`${href}/`);
   };
 
@@ -29,7 +31,7 @@ export function BottomNav() {
           const active = isActive(href);
           return (
             <Link key={href} href={href} className={`mu-bottom-nav-modern__tab ${active ? 'is-active' : ''}`} aria-current={active ? 'page' : undefined}>
-              <span className="mu-bottom-nav-modern__icon-wrap"><Icon size={20} strokeWidth={active ? 2.3 : 2} /></span>
+              <span className="mu-bottom-nav-modern__icon-wrap"><Icon size={20} strokeWidth={active ? 2.2 : 1.9} /></span>
               <span className="mu-bottom-nav-modern__label">{label}</span>
             </Link>
           );

@@ -1,23 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
     <loc>https://muunsaju.com/sitemap-core.xml</loc>
-    <lastmod>2026-04-26</lastmod>
   </sitemap>
   <sitemap>
     <loc>https://muunsaju.com/sitemap-dictionary.xml</loc>
-    <lastmod>2026-04-26</lastmod>
   </sitemap>
   <sitemap>
     <loc>https://muunsaju.com/sitemap-guide.xml</loc>
-    <lastmod>2026-04-26</lastmod>
   </sitemap>
   <sitemap>
     <loc>https://muunsaju.com/sitemap-dream.xml</loc>
-    <lastmod>2026-04-26</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>https://muunsaju.com/sitemap-yearly-fortune.xml</loc>
-    <lastmod>2026-04-26</lastmod>
   </sitemap>
 </sitemapindex>

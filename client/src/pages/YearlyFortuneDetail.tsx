@@ -191,8 +191,8 @@ export default function YearlyFortuneDetail() {
       <Helmet>
         <title>{birthDateStr ? `${birthDateStr.split('-')[0]}년생 2026년 신년운세 - 무운` : '2026년 신년운세 결과 - 무운'}</title>
         <meta name="description" content={birthDateStr ? `${birthDateStr.split('-')[0]}년생의 2026년 병오년 신년운세 분석 결과입니다. 월별 운세, 재물운, 직업운, 애정운을 확인하세요.` : '2026년 신년운세 분석 결과입니다.'} />
-        <link rel="canonical" href={`https://muunsaju.com/yearly-fortune/${birthDateStr}`} />
-        <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+        <link rel="canonical" href="https://muunsaju.com/yearly-fortune" />
+        <meta name="robots" content="noindex, follow" />
       </Helmet>
       {result && fortune && <YearlyFortuneSchema birthDate={birthDateStr!} saju={result} fortune={fortune} />}
 
