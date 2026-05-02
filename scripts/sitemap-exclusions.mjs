@@ -131,6 +131,25 @@ const RAW_EXCLUDED_PATHS = [
   "/dream/집",
   "/dream/바다",
   "/guide/five-elements-harmony",
+  // 2026-04-26~27 Google Search Console 404 확인 목록 (추가분)
+  "/dream/말",
+  "/dream/편지",
+  "/dream/청소하는 꿈",
+  "/dream/낚시하는 꿈",
+  "/dream/여행하는 꿈",
+  "/dream/열매",
+  "/guide/what-is-dohwasal",
+  "/dictionary/cheoneul-gwiin",
+  "/dictionary/earth-element",
+  "/dream/money-tree-growing-dream",
+  "/dream/등산하는 꿈",
+  "/dream/옷",
+  "/dream/군인",
+  "/dream/운동하는 꿈",
+  "/dream/피",
+  "/dream/자동차",
+  "/dream/뱀",
+  "/dictionary/goegang-sal",
 ];
 
 export const EXCLUDED_PATHS = new Set(RAW_EXCLUDED_PATHS);
