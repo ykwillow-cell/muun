@@ -2,14 +2,14 @@ import { Link } from 'wouter';
 import { ArrowUpRight, CalendarDays, Globe2, ScrollText, Sparkles } from 'lucide-react';
 
 const EXTRA_SERVICES = [
-  { href: '/yearly-fortune', label: '신년운세', desc: '2026년 한 해 흐름', Icon: Sparkles, badge: '인기' },
-  { href: '/manselyeok', label: '만세력', desc: '사주 네 기둥 확인', Icon: CalendarDays },
-  { href: '/tojeong', label: '토정비결', desc: '월별 흐름 보기', Icon: ScrollText },
-  { href: '/astrology', label: '점성술', desc: '네이탈 차트 분석', Icon: Globe2, badge: '인기' },
-  { href: '/tarot', label: '타로', desc: '질문 중심 리딩', Icon: Sparkles },
-  { href: '/family-saju', label: '가족사주', desc: '가족 오행 조화', Icon: Globe2 },
-  { href: '/hybrid-compatibility', label: '사주×MBTI', desc: '성향 결합 궁합', Icon: Sparkles, badge: 'NEW' },
-  { href: '/naming', label: '작명소', desc: '이름 후보 비교', Icon: CalendarDays, badge: 'NEW' },
+  { href: '/yearly-fortune', label: '신년운세', desc: '올해 운세 한눈에', Icon: Sparkles, badge: '인기' },
+  { href: '/manselyeok', label: '만세력', desc: '내 사주 기둥 보기', Icon: CalendarDays },
+  { href: '/tojeong', label: '토정비결', desc: '월별 운세 확인', Icon: ScrollText },
+  { href: '/astrology', label: '점성술', desc: '별자리 운세 분석', Icon: Globe2, badge: '인기' },
+  { href: '/tarot', label: '타로', desc: '카드로 보는 답', Icon: Sparkles },
+  { href: '/family-saju', label: '가족사주', desc: '가족 사주 풀이', Icon: Globe2 },
+  { href: '/hybrid-compatibility', label: '사주×MBTI', desc: '사주+MBTI 궁합', Icon: Sparkles, badge: 'NEW' },
+  { href: '/naming', label: '작명소', desc: '사주에 맞는 이름', Icon: CalendarDays, badge: 'NEW' },
 ] as const;
 
 export function MainBanner() {

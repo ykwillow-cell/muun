@@ -35,7 +35,7 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
       <div className="mu-home-hero__content">
         <p className="mu-home-hero__eyebrow">회원가입 없이 바로 시작</p>
         <h1 id="home-hero-title" className="mu-home-hero__title">생년월일만 입력하면<br />바로 보는 무료 사주</h1>
-        <p className="mu-home-hero__desc">평생사주, 오늘의 운세, 궁합, 꿈해몽까지 빠르게 이어지는 모바일 사주 서비스를 준비했습니다.</p>
+        <p className="mu-home-hero__desc">생년월일 하나로 평생사주, 오늘의 운세, 궁합, 꿈해몽까지 무료로 확인해보세요.</p>
 
         <form className="mu-home-hero__form" onSubmit={handleSubmit} noValidate>
           <label className="mu-home-hero__field" htmlFor="home-birth-input">

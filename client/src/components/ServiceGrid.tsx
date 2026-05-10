@@ -18,7 +18,7 @@ const FEATURED = [
   {
     href: '/lifelong-saju',
     title: '평생사주',
-    desc: '나의 성향과 운명의 흐름을 한눈에 확인해보세요.',
+    desc: '타고난 기질, 재물운, 직업운을 한번에 확인해보세요.',
     cta: '내 사주 보기',
     tone: 'lavender',
     emoji: '四柱',
@@ -26,7 +26,7 @@ const FEATURED = [
   {
     href: '/compatibility',
     title: '궁합',
-    desc: '함께하는 사람과의 조화를 확인해보세요.',
+    desc: '두 사람의 사주로 보는 연애·결혼 궁합 분석이에요.',
     cta: '궁합 보기',
     tone: 'rose',
     emoji: '♥',
@@ -34,9 +34,9 @@ const FEATURED = [
 ] as const;
 
 const SECONDARY = [
-  { href: '/fortune-dictionary', title: '사주사전', desc: '사주 기초부터 용어까지 쉽게 알아보세요.', cta: '바로가기', tone: 'mint', Icon: BookOpen },
-  { href: '/dream', title: '꿈해몽', desc: '꿈이 전하는 메시지로 내 마음을 들여다보세요.', cta: '바로가기', tone: 'peach', Icon: Moon },
-  { href: '/guide', title: '운세 칼럼', desc: '운세와 삶의 지혜를 함께 나눠요.', cta: '더보기', tone: 'sky', Icon: PenLine },
+  { href: '/fortune-dictionary', title: '사주사전', desc: '사주 명리학 용어를 쉽고 빠르게 찾아볼 수 있어요.', cta: '바로가기', tone: 'mint', Icon: BookOpen },
+  { href: '/dream', title: '꿈해몽', desc: '어젯밤 꿈의 의미가 궁금하다면 여기서 확인해보세요.', cta: '바로가기', tone: 'peach', Icon: Moon },
+  { href: '/guide', title: '운세 칼럼', desc: '사주·운세에 관한 깊이 있는 칼럼을 읽어보세요.', cta: '더보기', tone: 'sky', Icon: PenLine },
 ] as const;
 
 export function ServiceGrid() {
@@ -54,8 +54,8 @@ export function ServiceGrid() {
       <Link href="/daily-fortune" className="mu-home-today-card">
         <div className="mu-home-today-card__copy">
           <p className="mu-home-today-card__eyebrow"><Clock3 size={14} /> 오늘의 운세</p>
-          <h2 id="home-service-title">새로운 시작을 위한<br />좋은 기운이 들어와요.</h2>
-          <p>오늘의 흐름을 먼저 확인하고, 필요한 서비스로 이어가세요.</p>
+          <h2 id="home-service-title">오늘 하루도<br />좋은 기운이 함께해요</h2>
+          <p>오늘의 운세를 먼저 확인하고 필요한 서비스로 이어보세요.</p>
           <span className="mu-home-today-card__cta">자세히 보기 <ArrowRight size={15} /></span>
         </div>
         <div className="mu-home-today-card__side">

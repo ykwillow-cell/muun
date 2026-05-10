@@ -38,7 +38,7 @@ const Footer = () => {
           <img src="/images/muun-mark.png" alt="" width="28" height="28" aria-hidden="true" />
           <div>
             <strong>무운사주</strong>
-            <p>회원가입 없이 보는 무료 사주·운세 서비스</p>
+            <p>회원가입 없이 무료로 보는 사주·운세 서비스</p>
           </div>
         </div>
         <div className="mu-footer-modern__grid">

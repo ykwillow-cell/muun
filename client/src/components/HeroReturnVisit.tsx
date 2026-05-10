@@ -75,9 +75,9 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
         <div className="mu-home-hero__cloud mu-home-hero__cloud--two" />
       </div>
       <div className="mu-home-hero__content">
-        <p className="mu-home-hero__eyebrow">저장된 정보로 이어보기</p>
-        <h1 id="home-hero-return-title" className="mu-home-hero__title">오늘도 좋은 기운으로<br />빛나는 하루 되세요</h1>
-        <p className="mu-home-hero__desc">저장된 생년월일로 오늘의 흐름과 평생사주를 바로 확인할 수 있어요.</p>
+        <p className="mu-home-hero__eyebrow">다시 돌아오셨군요</p>
+        <h1 id="home-hero-return-title" className="mu-home-hero__title">오늘의 운세를<br />확인하고 하루를 시작해보세요</h1>
+        <p className="mu-home-hero__desc">지난번에 입력한 생년월일로 오늘의 운세와 평생사주를 바로 이어볼 수 있어요.</p>
 
         <div className="mu-home-return-card">
           <div className="mu-home-return-card__top">

@@ -34,7 +34,7 @@ const routeBannerMeta: Array<{ match: (path: string) => boolean; meta: BannerMet
     meta: {
       eyebrow: '만세력',
       title: '사주 네 기둥, 바로 확인하세요',
-      description: '생년월일시를 입력하면 천간·지지 조합과 오행 흐름을 한눈에 볼 수 있습니다.',
+      description: '생년월일을 입력하면 천간·지지 조합과 오행 흐름을 한눈에 확인할 수 있어요.',
       Icon: CalendarDays,
       chips: ['회원가입 없음', '오행 균형', '무료'],
       quickLinks: [{ href: '/lifelong-saju', label: '평생사주 보기' }, { href: '/fortune-dictionary', label: '용어 사전' }],
@@ -45,7 +45,7 @@ const routeBannerMeta: Array<{ match: (path: string) => boolean; meta: BannerMet
     meta: {
       eyebrow: '평생사주',
       title: '타고난 기질과 평생 운세를 분석합니다',
-      description: '성격, 재물, 직업, 관계까지 사주의 핵심 항목을 카드 형태로 정리해 드립니다.',
+      description: '성격, 재물운, 직업운, 관계까지 타고난 기질을 항목별로 분석해 드려요.',
       Icon: Sparkles,
       chips: ['대표 서비스', '기질 해설', '무료'],
       quickLinks: [{ href: '/guide', label: '관련 칼럼' }, { href: '/fortune-dictionary', label: '용어 찾기' }],
@@ -56,7 +56,7 @@ const routeBannerMeta: Array<{ match: (path: string) => boolean; meta: BannerMet
     meta: {
       eyebrow: '2026 신년운세',
       title: '2026 병오년, 올해의 흐름을 확인하세요',
-      description: '총운부터 월별 운세, 재물·직업·건강 항목까지 올해의 운세를 상세하게 분석합니다.',
+      description: '총운부터 월별 흐름, 재물·직업·건강까지 올해의 운세를 상세히 풀어드려요.',
       Icon: Sparkles,
       chips: ['월별 운세', '재물·직업', '무료'],
       quickLinks: [{ href: '/daily-fortune', label: '오늘의 운세' }, { href: '/lifelong-saju', label: '평생사주' }],
@@ -67,7 +67,7 @@ const routeBannerMeta: Array<{ match: (path: string) => boolean; meta: BannerMet
     meta: {
       eyebrow: '오늘의 운세',
       title: '오늘 하루의 운세를 빠르게 확인하세요',
-      description: '총평과 영역별 운세를 간결하게 정리해 드립니다. 매일 새롭게 업데이트됩니다.',
+      description: '총운과 영역별 운세를 매일 새롭게 확인할 수 있어요.',
       Icon: Zap,
       chips: ['하루 요약', '빠른 확인', '무료'],
       quickLinks: [{ href: '/yearly-fortune', label: '신년운세' }, { href: '/guide', label: '운세 칼럼' }],
@@ -78,7 +78,7 @@ const routeBannerMeta: Array<{ match: (path: string) => boolean; meta: BannerMet
     meta: {
       eyebrow: '궁합',
       title: '두 사람의 사주 궁합을 분석합니다',
-      description: '연애·결혼 궁합을 오행 조화와 관계 특성으로 풀어드립니다.',
+      description: '두 사람의 오행 조화와 관계 특성으로 연애·결혼 궁합을 분석해 드려요.',
       Icon: Heart,
       chips: ['관계 분석', '연애·결혼', '무료'],
       quickLinks: [{ href: '/hybrid-compatibility', label: '사주×MBTI 궁합' }, { href: '/lifelong-saju', label: '평생사주' }],
@@ -89,7 +89,7 @@ const routeBannerMeta: Array<{ match: (path: string) => boolean; meta: BannerMet
     meta: {
       eyebrow: '토정비결',
       title: '전통 방식으로 보는 올해의 운세',
-      description: '토정비결로 월별 흐름과 총운을 확인해 보세요. 전통 운세를 쉽게 풀어드립니다.',
+      description: '토정비결로 이달의 흐름과 총운을 확인해 보세요.',
       Icon: ScrollText,
       chips: ['전통 운세', '월별 해설', '무료'],
       quickLinks: [{ href: '/yearly-fortune', label: '신년운세' }, { href: '/lifelong-saju', label: '평생사주' }],
@@ -100,7 +100,7 @@ const routeBannerMeta: Array<{ match: (path: string) => boolean; meta: BannerMet
     meta: {
       eyebrow: '점성술',
       title: '네이탈 차트로 별자리 운세를 분석합니다',
-      description: '출생 시간과 장소를 기반으로 행성 배치와 의미를 해석해 드립니다.',
+      description: '출생 시간과 장소를 기반으로 행성 배치를 분석하고 운세를 해석해 드려요.',
       Icon: Stars,
       chips: ['네이탈 차트', '행성 해설', '무료'],
       quickLinks: [{ href: '/lifelong-saju', label: '평생사주' }, { href: '/guide', label: '운세 칼럼' }],
@@ -111,7 +111,7 @@ const routeBannerMeta: Array<{ match: (path: string) => boolean; meta: BannerMet
     meta: {
       eyebrow: '타로',
       title: '질문을 떠올리고 카드를 선택하세요',
-      description: '카드 선택부터 해석, 조언까지 단계별로 안내해 드립니다.',
+      description: '질문을 떠올리고 카드를 선택하면 해석과 조언을 드려요.',
       Icon: Stars,
       chips: ['카드 해석', '질문 중심', '무료'],
       quickLinks: [{ href: '/dream', label: '꿈해몽' }, { href: '/lifelong-saju', label: '평생사주' }],
@@ -120,9 +120,9 @@ const routeBannerMeta: Array<{ match: (path: string) => boolean; meta: BannerMet
   {
     match: (path) => path.startsWith('/naming'),
     meta: {
-      eyebrow: '작명소',
-      title: '사주에 맞는 이름을 찾아드립니다',
-      description: '81수리 성명학과 한자 의미를 바탕으로 이름 후보를 분석합니다.',
+      eyebrow: '작명',
+      title: '사주에 어울리는 이름을 찾아드려요',
+      description: '81수리 성명학과 한자 의미를 바탕으로 사주에 어울리는 이름을 찾아드려요.',
       Icon: PenLine,
       chips: ['이름 분석', '한자 풀이', '무료'],
       quickLinks: [{ href: '/lifelong-saju', label: '평생사주' }, { href: '/fortune-dictionary', label: '용어 사전' }],

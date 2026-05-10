@@ -11,16 +11,16 @@ interface CallToActionProps {
 
 const VARIANTS = {
   daily: {
-    eyebrow: '오늘의 무료 운세',
+    eyebrow: '오늘의 운세',
     message: '오늘 하루의 흐름도 함께 확인해 보세요',
-    description: '생년월일만 입력하면 오늘의 총운, 재물운, 애정운을 간단하게 확인할 수 있습니다.',
+    description: '생년월일만 입력하면 오늘의 총운, 재물운, 애정운을 바로 확인할 수 있어요.',
     buttonLabel: '오늘의 운세 보기',
     targetPath: '/daily-fortune',
   },
   lifelong: {
-    eyebrow: '무운 평생사주',
+    eyebrow: '평생사주',
     message: '타고난 기질과 인생의 흐름을 차분히 확인해 보세요',
-    description: '평생사주 결과와 칼럼, 사전 콘텐츠를 함께 보면 이해가 훨씬 쉬워집니다.',
+    description: '생년월일 하나로 나의 타고난 기질, 재물운, 직업운까지 한번에 볼 수 있어요.',
     buttonLabel: '평생사주 바로 보기',
     targetPath: '/lifelong-saju',
   },
@@ -58,8 +58,8 @@ export default function CallToAction({ message, targetPath, buttonLabel, variant
             <div className="flex items-center gap-3 text-white">
               <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/14 shadow-sm"><Sparkles size={20} aria-hidden="true" /></div>
               <div>
-                <div className="text-xs font-bold uppercase tracking-[0.18em] text-white/60">추천 이동</div>
-                <div className="mt-1 text-sm font-extrabold text-white">핵심 결과 페이지로 바로 이동</div>
+                <div className="text-xs font-bold uppercase tracking-[0.18em] text-white/60">바로 확인하기</div>
+                <div className="mt-1 text-sm font-extrabold text-white">결과 페이지로 바로 이동해요</div>
               </div>
             </div>
 
@@ -67,7 +67,7 @@ export default function CallToAction({ message, targetPath, buttonLabel, variant
               <span>{finalButtonLabel}</span>
               <ArrowRight size={16} aria-hidden="true" />
             </Link>
-            <p className="mt-3 text-center text-[11px] leading-5 text-white/60">개인정보를 저장하지 않는 흐름으로 설계했습니다.</p>
+            <p className="mt-3 text-center text-[11px] leading-5 text-white/60">저장 없음 · 회원가입 없음</p>
           </div>
         </div>
       </div>
