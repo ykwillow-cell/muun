@@ -40,7 +40,7 @@ function isValidSlug(value) { return SLUG_PATTERN.test(normalizeSlug(value)); }
 function buildPageShell({ sectionLabel, h1, description, metaLines = [], sections = [], breadcrumbs = [], relatedLinks = [] }) {
   const breadcrumbHtml = breadcrumbs.length ? `<nav aria-label="breadcrumb"><ol>${breadcrumbs.map((item, index) => { const content = item.href ? `<a href="${item.href}">${escapeHtml(item.label)}</a>` : `<span aria-current="page">${escapeHtml(item.label)}</span>`; return `<li>${content}${index < breadcrumbs.length - 1 ? ' › ' : ''}</li>`; }).join('')}</ol></nav>` : '';
   const metaHtml = metaLines.length ? `<ul>${metaLines.map((line) => `<li>${escapeHtml(line)}</li>`).join('')}</ul>` : '';
-  const sectionsHtml = sections.filter(Boolean).map((section) => `<section>${section.heading ? `<h2>${escapeHtml(section.heading)}</h2>` : ''}${(section.paragraphs || []).filter(Boolean).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('')}</section>`).join('');
+  const sectionsHtml = sections.filter(Boolean).map((section) => `<section>${section.heading ? `<h2>${escapeHtml(section.heading)}</h2>` : ''}${((Array.isArray(section.paragraphs) ? section.paragraphs : (section.paragraphs ? [section.paragraphs] : []))).filter(Boolean).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('')}</section>`).join('');
   const relatedHtml = relatedLinks.length ? `<section aria-label="관련 서비스"><h2>함께 보면 좋은 서비스</h2><ul>${relatedLinks.map((link) => `<li><a href="${link.href}">${escapeHtml(link.label)}</a></li>`).join('')}</ul></section>` : '';
   
   const navLinks = [
