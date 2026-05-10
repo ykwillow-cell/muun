@@ -361,12 +361,12 @@ export default function LifelongSaju() {
  trackEvent("User Input", "Change Gender", value);
  }
  }}
- className="w-full h-11 grid grid-cols-2 gap-[3px] bg-[#EDE8E8] rounded-xl p-[3px]"
+ className="w-full h-11 flex gap-[3px] bg-[#EDE8E8] rounded-xl p-[3px]"
  >
- <ToggleGroupItem value="male" className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-purple-600 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-base md:text-sm">
+ <ToggleGroupItem value="male" className="flex-1 h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-purple-600 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-base md:text-sm">
  남성
  </ToggleGroupItem>
- <ToggleGroupItem value="female" className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-purple-600 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-base md:text-sm">
+ <ToggleGroupItem value="female" className="flex-1 h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-purple-600 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-base md:text-sm">
  여성
  </ToggleGroupItem>
  </ToggleGroup>
@@ -417,12 +417,12 @@ export default function LifelongSaju() {
  trackEvent("User Input", "Change Calendar Type", value);
  }
  }}
- className="w-full h-11 grid grid-cols-2 gap-[3px] bg-[#EDE8E8] rounded-xl p-[3px]"
+ className="w-full h-11 flex gap-[3px] bg-[#EDE8E8] rounded-xl p-[3px]"
  >
- <ToggleGroupItem value="solar" className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-purple-600 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-base md:text-sm">
+ <ToggleGroupItem value="solar" className="flex-1 h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-purple-600 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-base md:text-sm">
  양력
  </ToggleGroupItem>
- <ToggleGroupItem value="lunar" className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-purple-600 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-base md:text-sm">
+ <ToggleGroupItem value="lunar" className="flex-1 h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-purple-600 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-base md:text-sm">
  음력
  </ToggleGroupItem>
  </ToggleGroup>
@@ -453,12 +453,12 @@ export default function LifelongSaju() {
  form.setValue("isMarried", value as "yes" | "no");
  }
  }}
- className="w-full h-11 grid grid-cols-2 gap-[3px] bg-[#EDE8E8] rounded-xl p-[3px]"
+ className="w-full h-11 flex gap-[3px] bg-[#EDE8E8] rounded-xl p-[3px]"
  >
- <ToggleGroupItem value="no" className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-purple-600 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-base md:text-sm">
+ <ToggleGroupItem value="no" className="flex-1 h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-purple-600 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-base md:text-sm">
  미혼
  </ToggleGroupItem>
- <ToggleGroupItem value="yes" className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-purple-600 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-base md:text-sm">
+ <ToggleGroupItem value="yes" className="flex-1 h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-purple-600 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-base md:text-sm">
  기혼
  </ToggleGroupItem>
  </ToggleGroup>
