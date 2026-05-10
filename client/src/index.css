@@ -2496,9 +2496,11 @@
   }
 
   .mu-home-hero__field {
-    display: grid;
+    display: flex;
+    align-items: center;
     gap: 8px;
     margin-bottom: 10px;
+    width: 100%;
   }
 
   .mu-home-hero__field > span {
@@ -2508,10 +2510,12 @@
     font-size: 0.9rem;
     font-weight: 700;
     color: var(--mu-pastel-ink);
+    white-space: nowrap;
   }
 
   .mu-home-hero__field input {
-    width: 100%;
+    flex: 1;
+    min-width: 0;
     height: 48px;
     border-radius: 16px;
     border: 1px solid rgba(111,99,255,0.08);

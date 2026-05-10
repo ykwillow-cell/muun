@@ -60,11 +60,7 @@ export function HeroFirstVisit({ onBirthSaved }: { onBirthSaved: () => void }) {
           </button>
         </form>
 
-        <div className="mu-home-hero__trust">
-          <span><CheckCircle2 size={14} /> 회원가입 없음</span>
-          <span><Lock size={14} /> 개인정보 저장 안 함</span>
-          <span><Sparkles size={14} /> 무료 결과 확인</span>
-        </div>
+
       </div>
     </section>
   );
