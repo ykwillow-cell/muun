@@ -2121,9 +2121,12 @@
   }
 
   .mu-appbar-modern__brand-mark {
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     display: block;
+    border-radius: 9px;
+    overflow: hidden;
+    flex-shrink: 0;
   }
 
   .mu-appbar-modern__brand-name {

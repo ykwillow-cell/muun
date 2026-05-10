@@ -62,7 +62,7 @@ export function AppBar({ onSearch }: AppBarProps) {
     <header className="mu-appbar-modern" style={{ paddingTop: 'var(--safe-area-top)' }}>
       <div className="mu-appbar-modern__bar">
         <Link href="/" className="mu-appbar-modern__brand" aria-label="무운사주 홈">
-          <img src="/images/muun-mark.png" alt="" width="36" height="36" className="mu-appbar-modern__brand-mark" aria-hidden="true" />
+          <img src="/images/muun-mark.png" alt="" width="32" height="32" className="mu-appbar-modern__brand-mark" aria-hidden="true" />
           <span className="mu-appbar-modern__brand-name">무운사주</span>
         </Link>
 
