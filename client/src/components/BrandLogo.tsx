@@ -28,7 +28,7 @@ export function BrandLogo({ variant = 'horizontal', size = 'md', className }: Br
         width={dimension}
         height={dimension}
         className={className}
-        style={{ width: dimension, height: dimension, display: 'block' }}
+        style={{ width: dimension, height: dimension, display: 'block', borderRadius: '9px', overflow: 'hidden', flexShrink: 0 }}
       />
     );
   }

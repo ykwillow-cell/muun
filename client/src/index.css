@@ -2333,6 +2333,12 @@
     margin-bottom: 20px;
   }
 
+  .mu-footer-modern__brand img {
+    border-radius: 9px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
   .mu-footer-modern__brand strong {
     display: block;
     font-size: 1rem;
