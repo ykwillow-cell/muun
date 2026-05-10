@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'wouter';
 import { ArrowRight, BookOpen, BookMarked, CalendarDays, Clock3, Compass, Heart, Layers, Moon, PenLine, ScrollText, Sparkles, Star, Brain } from 'lucide-react';
 
@@ -39,7 +40,37 @@ const SECONDARY = [
   { href: '/guide', title: '운세 칼럼', desc: '사주·운세에 관한 깊이 있는 칼럼을 읽어보세요.', cta: '더보기', tone: 'sky', Icon: PenLine },
 ] as const;
 
+function seededRandom(seed: number) {
+  const x = Math.sin(seed + 1) * 10000;
+  return x - Math.floor(x);
+}
+
+function getDailyScore(birth: string): number {
+  const today = new Date();
+  const dateSeed = `${today.getFullYear()}${today.getMonth()}${today.getDate()}`;
+  const seed = parseInt((birth || '19900101') + dateSeed, 10) % 99999;
+  return Math.floor(seededRandom(seed) * 22) + 72;
+}
+
+function getScoreLabel(score: number): string {
+  if (score >= 90) return '최고의 운세';
+  if (score >= 80) return '매우 좋은 운세';
+  if (score >= 70) return '좋은 운세';
+  return '보통 운세';
+}
+
 export function ServiceGrid() {
+  const [birth, setBirth] = useState<string | null>(null);
+
+  useEffect(() => {
+    try {
+      const raw = window.localStorage.getItem('muun_user_birth');
+      const parsed = raw ? JSON.parse(raw) : null;
+      setBirth(parsed?.birth ?? null);
+    } catch {
+      setBirth(null);
+    }
+  }, []);
   return (
     <section className="mu-home-services" aria-labelledby="home-service-title">
       <div className="mu-home-service-strip" role="list" aria-label="주요 서비스 바로가기">
@@ -51,21 +82,26 @@ export function ServiceGrid() {
         ))}
       </div>
 
-      <Link href="/daily-fortune" className="mu-home-today-card">
-        <div className="mu-home-today-card__copy">
-          <p className="mu-home-today-card__eyebrow"><Clock3 size={14} /> 오늘의 운세</p>
-          <h2 id="home-service-title">오늘 하루도<br />좋은 기운이 함께해요</h2>
-          <p>오늘의 운세를 먼저 확인하고 필요한 서비스로 이어보세요.</p>
-          <span className="mu-home-today-card__cta">자세히 보기 <ArrowRight size={15} /></span>
-        </div>
-        <div className="mu-home-today-card__side">
-          <div className="mu-home-today-card__score">
-            <strong>87</strong>
-            <span>점</span>
-          </div>
-          <div className="mu-home-today-card__tag">매우 좋은 운세</div>
-        </div>
-      </Link>
+      {birth && (() => {
+        const score = getDailyScore(birth);
+        const label = getScoreLabel(score);
+        return (
+          <Link href="/daily-fortune" className="mu-home-today-card">
+            <div className="mu-home-today-card__copy">
+              <p className="mu-home-today-card__eyebrow"><Clock3 size={14} /> 오늘의 운세</p>
+              <h2 id="home-service-title">오늘 하루도<br />좋은 기운이 함께해요</h2>
+              <p>오늘의 운세를 먼저 확인하고 필요한 서비스로 이어보세요.</p>
+              <span className="mu-home-today-card__cta">자세히 보기 <ArrowRight size={15} /></span>
+            </div>
+            <div className="mu-home-today-card__side">
+              <div className="mu-home-today-card__score">
+                <strong>{score}<span>점</span></strong>
+              </div>
+              <div className="mu-home-today-card__tag">{label}</div>
+            </div>
+          </Link>
+        );
+      })()}
 
       <div className="mu-home-feature-grid">
         {FEATURED.map((item) => (

@@ -2881,8 +2881,9 @@
     width: 124px;
     height: 124px;
     border-radius: 999px;
-    display: grid;
-    place-items: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: rgba(255,255,255,0.9);
     color: var(--mu-pastel-purple-deep);
     box-shadow: inset 0 0 0 10px rgba(255,255,255,0.16);
@@ -2890,12 +2891,15 @@
   }
 
   .mu-home-today-card__score strong {
-    display: block;
     font-size: 2.7rem;
+    font-weight: 900;
     line-height: 1;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 2px;
   }
 
-  .mu-home-today-card__score span {
+  .mu-home-today-card__score strong span {
     font-size: 0.92rem;
     font-weight: 700;
   }
