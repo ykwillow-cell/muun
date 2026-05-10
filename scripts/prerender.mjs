@@ -62,7 +62,8 @@ function buildPageShell({ sectionLabel, h1, description, metaLines = [], section
 }
 
 function makeHead({ title, description, canonicalUrl, keywords = '', ogType = 'article', ogImage = `${BASE_URL}/images/horse_mascot.png`, schema = [], extraMeta = [] }) {
-  const schemaScripts = schema.filter(Boolean).map((item) => `<script type="application/ld+json">${JSON.stringify(item)}</script>`).join('\n    ');
+  const schemaArray = Array.isArray(schema) ? schema : (schema ? [schema] : []);
+  const schemaScripts = schemaArray.filter(Boolean).map((item) => `<script type="application/ld+json">${JSON.stringify(item)}</script>`).join('\n    ');
   return {
     title: `<title>${escapeHtml(title)}</title>`,
     meta: [
