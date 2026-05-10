@@ -33,7 +33,7 @@ export function OrganizationSchema({
   name = "무운 (MUUN)",
   description = "회원가입 없이, 개인정보 저장 없이 이용하는 100% 무료 사주, 타로, 운세 분석 서비스",
   url = "https://muunsaju.com",
-  logo = "https://muunsaju.com/images/muun-mark.svg",
+  logo = "https://muunsaju.com/images/muun-mark.png",
   sameAs = [],
 }: OrganizationSchemaProps) {
   const schema = {
@@ -230,7 +230,7 @@ export function WebApplicationSchema() {
       "오늘의 운세",
       "점성술",
     ],
-    screenshot: "https://muunsaju.com/images/horse_mascot.png",
+    screenshot: "https://muunsaju.com/images/og-image.png",
     author: {
       "@type": "Organization",
       name: "MUUN Celestial Services",

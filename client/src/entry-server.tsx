@@ -2729,7 +2729,7 @@ const metaData: Record<string, { title: string, description: string, h1?: string
         "@type": "Organization",
         "name": "무운 (MuUn)",
         "url": "https://muunsaju.com",
-        "logo": { "@type": "ImageObject", "url": "https://muunsaju.com/images/horse_mascot.png" }
+        "logo": { "@type": "ImageObject", "url": "https://muunsaju.com/images/og-image.png" }
       },
       "mainEntityOfPage": { "@type": "WebPage", "@id": canonicalUrl },
       "inLanguage": "ko-KR"
@@ -2746,7 +2746,7 @@ const metaData: Record<string, { title: string, description: string, h1?: string
         "@type": "Organization",
         "name": "무운 (MuUn)",
         "url": "https://muunsaju.com",
-        "logo": { "@type": "ImageObject", "url": "https://muunsaju.com/images/horse_mascot.png" }
+        "logo": { "@type": "ImageObject", "url": "https://muunsaju.com/images/og-image.png" }
       },
       "mainEntityOfPage": { "@type": "WebPage", "@id": canonicalUrl },
       "inLanguage": "ko-KR"
@@ -2769,7 +2769,7 @@ const metaData: Record<string, { title: string, description: string, h1?: string
         "@type": "Organization",
         "name": "무운 (MuUn)",
         "url": "https://muunsaju.com",
-        "logo": { "@type": "ImageObject", "url": "https://muunsaju.com/images/horse_mascot.png" }
+        "logo": { "@type": "ImageObject", "url": "https://muunsaju.com/images/og-image.png" }
       },
       "inLanguage": "ko-KR"
     };
@@ -2792,7 +2792,7 @@ const metaData: Record<string, { title: string, description: string, h1?: string
         "@type": "Organization",
         "name": "무운 (MuUn)",
         "url": "https://muunsaju.com",
-        "logo": { "@type": "ImageObject", "url": "https://muunsaju.com/images/horse_mascot.png" }
+        "logo": { "@type": "ImageObject", "url": "https://muunsaju.com/images/og-image.png" }
       }
     };
   } else if (options.path === '/') {
@@ -2918,7 +2918,7 @@ const metaData: Record<string, { title: string, description: string, h1?: string
         `<meta property="og:type" content="${(isGuidePage || isDictionaryPage || isDreamPage) ? 'article' : 'website'}">`,
         `<meta property="og:site_name" content="무운 (MuUn)">`,
         `<meta property="og:locale" content="ko_KR">`,
-        `<meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png">`,
+        `<meta property="og:image" content="https://muunsaju.com/images/og-image.png">`,
         `<meta name="twitter:card" content="summary_large_image">`,
         `<meta name="twitter:title" content="${currentMeta.title}">`,
         `<meta name="twitter:description" content="${currentMeta.description}">`,

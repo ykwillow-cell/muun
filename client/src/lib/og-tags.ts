@@ -10,9 +10,9 @@ interface OGTagsConfig {
   type?: string;
 }
 
-const DEFAULT_OG_IMAGE = "https://muunsaju.com/images/horse_mascot.png";
-const DICTIONARY_OG_IMAGE = "https://muunsaju.com/images/horse_mascot.png";
-const TAROT_OG_IMAGE = "https://muunsaju.com/images/horse_mascot.png";
+const DEFAULT_OG_IMAGE = "https://muunsaju.com/images/og-image.png";
+const DICTIONARY_OG_IMAGE = "https://muunsaju.com/images/og-image.png";
+const TAROT_OG_IMAGE = "https://muunsaju.com/images/og-image.png";
 
 export const updateOGTags = (config: OGTagsConfig) => {
   const {
