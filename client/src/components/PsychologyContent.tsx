@@ -1,6 +1,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BrainCircuit } from "lucide-react";
+import { Brain } from "lucide-react";
 import RelatedServices from "@/components/RelatedServices";
 
 const PsychologyContent = () => {
@@ -26,21 +26,21 @@ const PsychologyContent = () => {
             <h2 className="text-2xl font-semibold text-foreground mb-4">무운 심리테스트의 특징</h2>
             <ul className="space-y-4">
               <li className="flex items-start space-x-3">
-                <BrainCircuit className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
+                <Brain className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="font-semibold text-foreground">다양하고 흥미로운 주제</h3>
                   <p className="text-foreground/70">연애 스타일, 직업 적성, 스트레스 대처 방식 등 다양한 주제의 테스트를 통해 자신을 다각도로 이해할 수 있습니다.</p>
                 </div>
               </li>
               <li className="flex items-start space-x-3">
-                <BrainCircuit className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
+                <Brain className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="font-semibold text-foreground">직관적이고 재미있는 방식</h3>
                   <p className="text-foreground/70">간단한 그림 선택, 상황별 행동 선택 등 누구나 쉽고 재미있게 참여할 수 있는 방식으로 구성되어 있습니다.</p>
                 </div>
               </li>
               <li className="flex items-start space-x-3">
-                <BrainCircuit className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
+                <Brain className="w-5 h-5 text-primary mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="font-semibold text-foreground">따뜻하고 통찰력 있는 결과</h3>
                   <p className="text-foreground/70">단순히 유형을 나누는 것을 넘어, 자신의 장점을 발견하고 삶에 긍정적인 변화를 가져올 수 있도록 돕는 따뜻한 조언을 제공합니다.</p>

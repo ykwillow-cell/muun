@@ -1,13 +1,17 @@
 import { Link } from 'wouter';
-import { ArrowRight, BookOpen, CalendarDays, Clock3, Heart, Moon, PenLine, Sparkles, BrainCircuit } from 'lucide-react';
+import { ArrowRight, BookOpen, BookMarked, CalendarDays, Clock3, Compass, Heart, Layers, Moon, PenLine, ScrollText, Sparkles, Star, Brain } from 'lucide-react';
 
 const QUICK_ACTIONS = [
-  { href: '/daily-fortune', label: '오늘의 운세', Icon: Sparkles, tone: 'purple' },
-  { href: '/lifelong-saju', label: '평생사주', Icon: CalendarDays, tone: 'pink' },
-  { href: '/compatibility', label: '궁합', Icon: Heart, tone: 'blue' },
-  { href: '/fortune-dictionary', label: '사주사전', Icon: BookOpen, tone: 'mint' },
-  { href: '/dream', label: '꿈해몽', Icon: Moon, tone: 'gold' },
-  { href: '/psychology', label: '심리테스트', Icon: BrainCircuit, tone: 'sky' },
+  { href: '/daily-fortune',      label: '오늘의 운세', Icon: Sparkles,    tone: 'purple' },
+  { href: '/yearly-fortune',     label: '신년운세',    Icon: Star,         tone: 'orange' },
+  { href: '/lifelong-saju',      label: '평생사주',    Icon: CalendarDays, tone: 'pink'   },
+  { href: '/compatibility',      label: '궁합',        Icon: Heart,        tone: 'blue'   },
+  { href: '/manselyeok',         label: '만세력',      Icon: Compass,      tone: 'teal'   },
+  { href: '/dream',              label: '꿈해몽',      Icon: Moon,         tone: 'gold'   },
+  { href: '/fortune-dictionary', label: '사주사전',    Icon: BookOpen,     tone: 'mint'   },
+  { href: '/tarot',              label: '타로',        Icon: Layers,       tone: 'rose'   },
+  { href: '/tojeong',            label: '토정비결',    Icon: ScrollText,   tone: 'amber'  },
+  { href: '/psychology',         label: '심리테스트',  Icon: Brain,        tone: 'sky'    },
 ] as const;
 
 const FEATURED = [
