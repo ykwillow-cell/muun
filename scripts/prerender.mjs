@@ -1,7 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
-import { loadColumnsDataset, loadDreamsDataset, loadDictionaryDataset } from './generate-content-snapshots.mjs';
+import { loadColumnsDataset, loadDreamsDataset, loadDictionaryDataset } from './utils/content-data.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const toAbsolute = (p) => path.resolve(__dirname, p);
