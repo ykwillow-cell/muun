@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
@@ -43,7 +42,22 @@ function buildPageShell({ sectionLabel, h1, description, metaLines = [], section
   const metaHtml = metaLines.length ? `<ul>${metaLines.map((line) => `<li>${escapeHtml(line)}</li>`).join('')}</ul>` : '';
   const sectionsHtml = sections.filter(Boolean).map((section) => `<section>${section.heading ? `<h2>${escapeHtml(section.heading)}</h2>` : ''}${(section.paragraphs || []).filter(Boolean).map((paragraph) => `<p>${escapeHtml(paragraph)}</p>`).join('')}</section>`).join('');
   const relatedHtml = relatedLinks.length ? `<section aria-label="관련 서비스"><h2>함께 보면 좋은 서비스</h2><ul>${relatedLinks.map((link) => `<li><a href="${link.href}">${escapeHtml(link.label)}</a></li>`).join('')}</ul></section>` : '';
-  return `<header><nav aria-label="주요 메뉴"><a href="/">홈</a><a href="/yearly-fortune">신년운세</a><a href="/lifelong-saju">평생사주</a><a href="/compatibility">궁합</a><a href="/dream">꿈해몽</a><a href="/guide">운세 칼럼</a></nav></header><main>${breadcrumbHtml}<article>${sectionLabel ? `<p>${escapeHtml(sectionLabel)}</p>` : ''}<h1>${escapeHtml(h1)}</h1><p>${escapeHtml(description)}</p>${metaHtml}${sectionsHtml}</article>${relatedHtml}</main><footer><nav aria-label="푸터 메뉴"><a href="/about">무운 소개</a><a href="/contact">문의하기</a><a href="/privacy">개인정보처리방침</a><a href="/terms">이용약관</a></nav><p>© 2026 MUUN. All rights reserved.</p></footer>`;
+  
+  const navLinks = [
+    { href: '/', label: '홈' },
+    { href: '/daily-fortune', label: '오늘의 운세' },
+    { href: '/yearly-fortune', label: '신년운세' },
+    { href: '/lifelong-saju', label: '평생사주' },
+    { href: '/compatibility', label: '궁합' },
+    { href: '/dream', label: '꿈해몽' },
+    { href: '/fortune-dictionary', label: '운세 사전' },
+    { href: '/psychology', label: '심리테스트' },
+    { href: '/astrology', label: '점성술' },
+    { href: '/guide', label: '운세 칼럼' }
+  ];
+  const navHtml = `<nav aria-label="주요 메뉴">${navLinks.map(link => `<a href="${link.href}">${link.label}</a>`).join('')}</nav>`;
+
+  return `<header>${navHtml}</header><main>${breadcrumbHtml}<article>${sectionLabel ? `<p>${escapeHtml(sectionLabel)}</p>` : ''}<h1>${escapeHtml(h1)}</h1><p>${escapeHtml(description)}</p>${metaHtml}${sectionsHtml}</article>${relatedHtml}</main><footer><nav aria-label="푸터 메뉴"><a href="/about">무운 소개</a><a href="/contact">문의하기</a><a href="/privacy">개인정보처리방침</a><a href="/terms">이용약관</a></nav><p>© 2026 MUUN. All rights reserved.</p></footer>`;
 }
 
 function makeHead({ title, description, canonicalUrl, keywords = '', ogType = 'article', ogImage = `${BASE_URL}/images/horse_mascot.png`, schema = [], extraMeta = [] }) {
@@ -98,16 +112,13 @@ function buildDreamPage(dream) {
   const description = dream.meta_description || truncate(stripHtml(dream.interpretation || ''), 155) || `${dream.keyword} 꿈의 의미와 해석을 알아보세요.`;
   const gradeLabel = dream.grade === 'great' ? '황금빛 길몽' : dream.grade === 'bad' ? '보랏빛 흉몽' : '푸른 평몽';
   const categoryLabel = DREAM_CATEGORY_LABELS[dream.category] || '기타';
-  const publishedDate = dream.published_at || dream.created_at || undefined;
-  const faqSchema = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: [{ '@type': 'Question', name: `${dream.keyword} 꿈은 무슨 의미인가요?`, acceptedAnswer: { '@type': 'Answer', text: truncate(stripHtml(dream.interpretation || ''), 400) } }, dream.traditional_meaning ? { '@type': 'Question', name: `${dream.keyword} 꿈의 전통적 해석은 무엇인가요?`, acceptedAnswer: { '@type': 'Answer', text: truncate(stripHtml(dream.traditional_meaning), 400) } } : null, dream.psychological_meaning ? { '@type': 'Question', name: `${dream.keyword} 꿈의 심리적 의미는 무엇인가요?`, acceptedAnswer: { '@type': 'Answer', text: truncate(stripHtml(dream.psychological_meaning), 400) } } : null].filter(Boolean) };
   const schema = [
-    { '@context': 'https://schema.org', '@type': 'Article', headline: title, description, url: canonicalUrl, datePublished: publishedDate, dateModified: publishedDate, publisher: { '@type': 'Organization', name: '무운 (MuUn)', url: BASE_URL, logo: { '@type': 'ImageObject', url: `${BASE_URL}/images/muun_logo.png` } }, mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl }, articleSection: categoryLabel, articleBody: truncate(stripHtml(dream.interpretation || ''), 1200), inLanguage: 'ko-KR' },
+    { '@context': 'https://schema.org', '@type': 'Article', headline: title, description, url: canonicalUrl, inLanguage: 'ko-KR' },
     { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: '홈', item: BASE_URL }, { '@type': 'ListItem', position: 2, name: '꿈해몽', item: `${BASE_URL}/dream` }, { '@type': 'ListItem', position: 3, name: dream.keyword, item: canonicalUrl }] },
-    faqSchema,
   ];
   return {
-    appHtml: buildPageShell({ sectionLabel: `꿈해몽 · ${categoryLabel}`, h1: `${dream.keyword} 꿈해몽`, description, metaLines: [gradeLabel, typeof dream.score === 'number' ? `해석 점수 ${dream.score}점` : '', formatKoreanDate(publishedDate)].filter(Boolean), sections: [{ heading: '꿈의 해석', paragraphs: [truncate(stripHtml(dream.interpretation || ''), 1200)] }, dream.traditional_meaning ? { heading: '전통적 의미', paragraphs: [truncate(stripHtml(dream.traditional_meaning), 800)] } : null, dream.psychological_meaning ? { heading: '심리학적 해석', paragraphs: [truncate(stripHtml(dream.psychological_meaning), 800)] } : null].filter(Boolean), breadcrumbs: [{ href: '/', label: '홈' }, { href: '/dream', label: '꿈해몽' }, { label: dream.keyword }], relatedLinks: [{ href: '/dream', label: '다른 꿈해몽 검색하기' }, { href: '/daily-fortune', label: '오늘의 운세 보기' }, { href: '/lifelong-saju', label: '무료 평생사주 보기' }] }),
-    head: makeHead({ title, description, canonicalUrl, keywords: `${dream.keyword}, 꿈해몽, 꿈풀이, 무운`, ogType: 'article', schema, extraMeta: [publishedDate ? `<meta property="article:published_time" content="${escapeHtml(publishedDate)}">` : '', publishedDate ? `<meta property="article:modified_time" content="${escapeHtml(publishedDate)}">` : '', `<meta property="article:section" content="${escapeHtml(categoryLabel)}">`] }),
+    appHtml: buildPageShell({ sectionLabel: `꿈해몽 · ${categoryLabel}`, h1: `${dream.keyword} 꿈해몽`, description, metaLines: [gradeLabel], sections: [{ heading: '꿈의 의미', paragraphs: [dream.interpretation] }].filter(Boolean), breadcrumbs: [{ href: '/', label: '홈' }, { href: '/dream', label: '꿈해몽' }, { label: dream.keyword }], relatedLinks: [{ href: '/dream', label: '꿈해몽 더 보기' }, { href: '/daily-fortune', label: '오늘의 운세 보기' }] }),
+    head: makeHead({ title, description, canonicalUrl, keywords: `${dream.keyword}, 꿈해몽, 길몽, 흉몽, 무운`, ogType: 'article', schema }),
   };
 }
 
@@ -129,40 +140,30 @@ function buildDictionaryPage(entry) {
 
 async function fetchColumns() {
   const result = await loadColumnsDataset({ limit: 500 });
-  console.log(`📚 columns source: ${result.source}`);
-  if (result.fallbackReason) console.warn(`⚠️ columns fallback reason: ${result.fallbackReason}`);
-  return result.rows.filter((row) => {
-    const routeSlug = normalizeSlug(row.slug || row.id);
-    const ok = isValidSlug(routeSlug) && row.title;
-    if (!ok) console.warn(`⏭️  Skipping invalid guide row: ${row.slug || row.id}`);
-    return ok;
-  });
+  return result.rows.filter((row) => isValidSlug(row.slug || row.id) && row.title);
 }
-
 async function fetchDreams() {
-  const result = await loadDreamsDataset({ limit: 1000 });
-  console.log(`📚 dreams source: ${result.source}`);
-  if (result.fallbackReason) console.warn(`⚠️ dreams fallback reason: ${result.fallbackReason}`);
-  return result.rows.filter((row) => {
-    const ok = isValidSlug(row.slug) && row.keyword;
-    if (!ok) console.warn(`⏭️  Skipping invalid dream row: ${row.slug}`);
-    return ok;
-  });
+  const result = await loadDreamsDataset({ limit: 600 });
+  return result.rows.filter((row) => isValidSlug(row.slug) && row.keyword);
 }
-
 async function fetchDictionaryEntries() {
   const result = await loadDictionaryDataset({ limit: 500 });
-  console.log(`📚 dictionary source: ${result.source}`);
-  if (result.fallbackReason) console.warn(`⚠️ dictionary fallback reason: ${result.fallbackReason}`);
-  return result.rows.filter((row) => {
-    const ok = isValidSlug(row.slug) && row.title;
-    if (!ok) console.warn(`⏭️  Skipping invalid dictionary row: ${row.slug}`);
-    return ok;
-  });
+  return result.rows.filter((row) => isValidSlug(row.slug) && row.title);
 }
 
-function buildHtmlFromTemplate(template, page) { return template.replace('<!--app-head-->', `${page.head.title}${page.head.meta}${page.head.link}`).replace('<!--app-html-->', page.appHtml).replace('<!--__REACT_QUERY_STATE__-->', `<script>window.__REACT_QUERY_STATE__ = ${JSON.stringify(page.dehydratedState || {})}</script>`); }
-function writeOutput(url, html) { const filePath = url === '/' ? toAbsolute('../client/dist/public/index.html') : toAbsolute(`../client/dist/public${url}/index.html`); fs.mkdirSync(path.dirname(filePath), { recursive: true }); fs.writeFileSync(filePath, html); }
+function buildHtmlFromTemplate(template, page) { 
+  return template
+    .replace('<!--app-head-->', `${page.head.title}${page.head.meta}${page.head.link}`)
+    .replace('<!--app-html-->', page.appHtml)
+    .replace('<!--__REACT_QUERY_STATE__-->', `<script>window.__REACT_QUERY_STATE__ = ${JSON.stringify(page.dehydratedState || {})}</script>`); 
+}
+
+function writeOutput(url, html) { 
+  const filePath = url === '/' ? toAbsolute('../client/dist/public/index.html') : toAbsolute(`../client/dist/public${url}/index.html`); 
+  fs.mkdirSync(path.dirname(filePath), { recursive: true }); 
+  fs.writeFileSync(filePath, html); 
+}
+
 function dedupeByUrl(pages) { const seen = new Set(); return pages.filter((item) => { if (seen.has(item.url)) return false; seen.add(item.url); return true; }); }
 
 async function run() {
@@ -172,28 +173,50 @@ async function run() {
   const template = ensureTemplateMarkers(rawTemplate);
   const serverEntryPath = toAbsolute('../client/dist/server/entry-server.js');
   const { render } = await import(pathToFileURL(serverEntryPath).href);
+
   console.log('📡 Fetching published SEO datasets from Supabase...');
   const [columns, dreams, dictionaryEntries] = await Promise.all([fetchColumns(), fetchDreams(), fetchDictionaryEntries()]);
+
   const guidePages = dedupeByUrl(columns.map((column) => ({ url: `/guide/${normalizeSlug(column.slug || column.id)}`, page: buildGuidePage({ ...column, slug: normalizeSlug(column.slug || column.id) }) })));
   const dreamPages = dedupeByUrl(dreams.map((dream) => ({ url: `/dream/${normalizeSlug(dream.slug)}`, page: buildDreamPage({ ...dream, slug: normalizeSlug(dream.slug) }) })));
   const dictionaryPages = dedupeByUrl(dictionaryEntries.map((entry) => ({ url: `/dictionary/${normalizeSlug(entry.slug)}`, page: buildDictionaryPage({ ...entry, slug: normalizeSlug(entry.slug) }) })));
+
+  const dictionaryIndexHtml = buildPageShell({
+    h1: '무운 운세 사전',
+    description: '사주 명리학의 핵심 용어를 쉽게 풀이한 무료 사주 용어 사전입니다.',
+    sections: [
+      { heading: '사주 용어 목록', paragraphs: ['아래는 무운에서 제공하는 주요 사주 용어들입니다. 각 항목을 클릭하여 상세한 설명을 확인하세요.'] },
+      { heading: '용어 리스트', paragraphs: dictionaryEntries.map(e => `<a href="/dictionary/${e.slug}">${e.title}</a>`).join(', ') }
+    ],
+    breadcrumbs: [{ href: '/', label: '홈' }, { label: '운세 사전' }]
+  });
+  const dictionaryIndexPage = {
+    appHtml: dictionaryIndexHtml,
+    head: makeHead({ title: '사주 용어 사전 - 무운', description: '사주 명리학의 핵심 용어를 쉽게 풀이한 무료 사주 용어 사전', canonicalUrl: `${BASE_URL}/fortune-dictionary` })
+  };
+
   const yearlyRoutes = []; for (let year = 1970; year <= 2020; year += 1) yearlyRoutes.push(`/yearly-fortune/${year}-01-01`);
-  console.log(`📦 Static routes: ${STATIC_ROUTES.length}`); console.log(`📦 Guide pages: ${guidePages.length}`); console.log(`📦 Dream pages: ${dreamPages.length}`); console.log(`📦 Dictionary pages: ${dictionaryPages.length}`); console.log(`📦 Yearly-fortune dynamic pages: ${yearlyRoutes.length}`);
-  let successCount = 0; let skippedCount = 0;
-  const staticAndYearly = [...STATIC_ROUTES, ...yearlyRoutes];
-  for (const url of staticAndYearly) {
-    const elapsedSeconds = (Date.now() - BUILD_START_TIME) / 1000;
-    if (elapsedSeconds > MAX_PRERENDER_SECONDS) { console.warn(`⏱️  Build time limit approaching (${elapsedSeconds.toFixed(1)}s elapsed). Stopping prerender to avoid timeout.`); skippedCount += staticAndYearly.length - successCount; break; }
-    try { const page = await render({ path: url }); if (page.statusCode === 404) { skippedCount += 1; console.log(`⏭️  Skipping 404 page: ${url}`); continue; } writeOutput(url, buildHtmlFromTemplate(template, page)); successCount += 1; } catch (error) { console.error(`❌ Failed to render ${url}:`, error instanceof Error ? error.message : error); }
+
+  console.log(`📦 Static routes: ${STATIC_ROUTES.length}`);
+  let successCount = 0;
+  for (const url of STATIC_ROUTES) {
+    try {
+      let page;
+      if (url === '/fortune-dictionary') {
+        page = dictionaryIndexPage;
+      } else {
+        page = await render({ path: url });
+      }
+      writeOutput(url, buildHtmlFromTemplate(template, page));
+      successCount += 1;
+    } catch (error) { console.error(`❌ Failed to render ${url}:`, error); }
   }
+
   const detailPages = [...guidePages, ...dreamPages, ...dictionaryPages];
   for (const { url, page } of detailPages) {
-    const elapsedSeconds = (Date.now() - BUILD_START_TIME) / 1000;
-    if (elapsedSeconds > MAX_PRERENDER_SECONDS) { console.warn(`⏱️  Build time limit approaching (${elapsedSeconds.toFixed(1)}s elapsed). Stopping detail prerender to avoid timeout.`); skippedCount += 1; break; }
-    try { writeOutput(url, buildHtmlFromTemplate(template, { ...page, dehydratedState: {} })); successCount += 1; if (successCount % 50 === 0) console.log(`✅ Processed ${successCount} pages... (${elapsedSeconds.toFixed(1)}s)`); } catch (error) { console.error(`❌ Failed to build detail page ${url}:`, error instanceof Error ? error.message : error); }
+    try { writeOutput(url, buildHtmlFromTemplate(template, { ...page, dehydratedState: {} })); successCount += 1; } catch (error) { console.error(`❌ Failed to build detail page ${url}:`, error); }
   }
-  const elapsed = ((Date.now() - BUILD_START_TIME) / 1000).toFixed(1);
-  console.log(`✨ Successfully pre-rendered ${successCount} pages in ${elapsed}s`); if (skippedCount > 0) console.warn(`⚠️  Skipped ${skippedCount} pages.`);
+  console.log(`✨ Successfully pre-rendered ${successCount} pages`);
 }
 
-run().catch((error) => { console.error('❌ Fatal prerender error:', error instanceof Error ? error.message : error); process.exit(1); });
+run().catch((error) => { console.error('❌ Fatal prerender error:', error); process.exit(1); });
