@@ -264,6 +264,8 @@ export function SiteNavigationSchema() {
       { "@type": "SiteNavigationElement", position: 8, name: "오늘의 운세", url: "https://muunsaju.com/daily-fortune" },
       { "@type": "SiteNavigationElement", position: 9, name: "심리테스트", url: "https://muunsaju.com/psychology" },
       { "@type": "SiteNavigationElement", position: 10, name: "운세 칼럼", url: "https://muunsaju.com/guide" },
+      { "@type": "SiteNavigationElement", position: 11, name: "운세 사전", url: "https://muunsaju.com/fortune-dictionary" },
+      { "@type": "SiteNavigationElement", position: 12, name: "점성술", url: "https://muunsaju.com/astrology" },
     ],
   };
 

@@ -93,6 +93,13 @@ export default function Guide() {
                 <span className="mu-stat-pill"><BookOpenText size={14} /> 무료 아카이브</span>
                 <span className="mu-stat-pill"><Sparkles size={14} /> 사주 기초부터 관계 운까지</span>
               </div>
+              <div className="mt-6 p-5 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm">
+                <p className="text-sm leading-relaxed text-white/90">
+                  운세는 단순히 미래를 맞히는 도구가 아니라, 나를 이해하고 더 나은 선택을 하기 위한 지혜입니다. 무운의 <strong>운세 칼럼</strong>은 사주 명리학의 깊이 있는 개념들을 일상적인 언어로 풀어내어, 여러분의 삶에 실질적인 도움이 되는 통찰을 제공합니다. 
+                  <br /><br />
+                  자신의 기운을 북돋는 개운법부터 재물, 건강, 인간관계에 대한 조언까지 전문가의 시선으로 정리된 다양한 칼럼을 만나보세요. 각 칼럼은 관련 서비스와 연결되어 있어, 읽은 내용을 바로 자신의 사주에 적용해볼 수 있습니다.
+                </p>
+              </div>
             </div>
 
             <div className="mu-auto-grid-180">

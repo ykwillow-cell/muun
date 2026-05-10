@@ -76,6 +76,13 @@ export default function FortuneDictionary() {
                 <span className="mu-stat-pill"><BookMarked size={14} /> 핵심 용어 정리</span>
                 <span className="mu-stat-pill"><Sparkles size={14} /> 결과 페이지와 내부 연결</span>
               </div>
+              <div className="mt-6 p-5 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm">
+                <p className="text-sm leading-relaxed text-white/90">
+                  사주 명리학은 낯선 용어 때문에 어렵게 느껴질 수 있지만, 그 원리는 우리 삶의 자연스러운 흐름을 담고 있습니다. 무운의 <strong>운세 사전</strong>은 복잡한 한자어와 전문 용어를 현대적인 언어로 재해석하여 누구나 쉽게 이해할 수 있도록 정리했습니다. 
+                  <br /><br />
+                  천간과 지지의 기초부터 십신, 신살, 대운의 흐름까지. 사주 풀이 결과에서 마주친 궁금한 용어들을 여기서 바로 찾아보세요. 각 용어는 상세한 설명과 함께 실생활에서의 의미를 담고 있어 사주 공부의 훌륭한 길잡이가 되어줄 것입니다.
+                </p>
+              </div>
             </div>
 
             <div className="mu-auto-grid-180">

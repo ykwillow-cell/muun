@@ -97,6 +97,13 @@ export default function DreamInterpretation() {
                 <span className="mu-stat-pill"><MoonStar size={14} /> 길몽·평몽·흉몽 분류</span>
                 <span className="mu-stat-pill">검색과 카테고리 필터 제공</span>
               </div>
+              <div className="mt-6 p-5 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm">
+                <p className="text-sm leading-relaxed text-white/90">
+                  꿈은 무의식이 우리에게 보내는 중요한 메시지입니다. 무운의 <strong>꿈해몽 아카이브</strong>는 전통적인 해몽 방식과 현대 심리학적 관점을 결합하여, 당신이 꾼 꿈이 가진 상징적 의미를 명확하게 풀이해 드립니다. 
+                  <br /><br />
+                  돼지, 물, 불, 조상님 등 자주 나타나는 상징물부터 구체적인 행동까지 1,000개 이상의 키워드를 분류하여 제공합니다. 어젯밤 꿈이 길몽인지 흉몽인지, 혹은 당신의 내면이 보내는 신호인지 지금 바로 확인해보세요.
+                </p>
+              </div>
             </div>
 
             <div className="mu-auto-grid-180">

@@ -1,5 +1,5 @@
 import { Link } from 'wouter';
-import { ArrowRight, BookOpen, CalendarDays, Clock3, Heart, Moon, PenLine, Sparkles } from 'lucide-react';
+import { ArrowRight, BookOpen, CalendarDays, Clock3, Heart, Moon, PenLine, Sparkles, BrainCircuit } from 'lucide-react';
 
 const QUICK_ACTIONS = [
   { href: '/daily-fortune', label: '오늘의 운세', Icon: Sparkles, tone: 'purple' },
@@ -7,6 +7,7 @@ const QUICK_ACTIONS = [
   { href: '/compatibility', label: '궁합', Icon: Heart, tone: 'blue' },
   { href: '/fortune-dictionary', label: '사주사전', Icon: BookOpen, tone: 'mint' },
   { href: '/dream', label: '꿈해몽', Icon: Moon, tone: 'gold' },
+  { href: '/psychology', label: '심리테스트', Icon: BrainCircuit, tone: 'sky' },
 ] as const;
 
 const FEATURED = [

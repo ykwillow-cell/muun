@@ -472,7 +472,14 @@ export default function YearlyFortune() {
  </CardTitle>
  </CardHeader>
  <CardContent className="p-4 md:p-6">
- <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+ <div className="mb-6 p-5 rounded-2xl bg-primary/5 border border-primary/10">
+ <p className="text-sm leading-relaxed text-slate-600">
+ <strong>2026년 병오년(丙午年)</strong>은 '붉은 말의 해'로, 뜨거운 열정과 에너지가 가득한 한 해입니다. 무운의 신년운세는 단순한 길흉화복을 넘어, 당신의 사주 원국과 올해의 기운이 어떻게 상호작용하는지 <strong>명리학적 근거</strong>를 바탕으로 상세히 분석해 드립니다. 
+ <br /><br />
+ 본 서비스는 회원가입 없이 100% 무료로 제공되며, 입력하신 생년월일 정보는 결과 분석 후 즉시 파기되어 안전합니다. 지금 바로 당신의 2026년 흐름을 확인해보세요.
+ </p>
+ </div>
+ <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
  <div className="space-y-1.5">
  <Label htmlFor="name" className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">

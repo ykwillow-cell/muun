@@ -2,14 +2,18 @@
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <sitemap>
     <loc>https://muunsaju.com/sitemap-core.xml</loc>
+    <lastmod>2026-05-09</lastmod>
   </sitemap>
   <sitemap>
     <loc>https://muunsaju.com/sitemap-dictionary.xml</loc>
+    <lastmod>2026-05-09</lastmod>
   </sitemap>
   <sitemap>
     <loc>https://muunsaju.com/sitemap-guide.xml</loc>
+    <lastmod>2026-05-09</lastmod>
   </sitemap>
   <sitemap>
     <loc>https://muunsaju.com/sitemap-dream.xml</loc>
+    <lastmod>2026-05-09</lastmod>
   </sitemap>
 </sitemapindex>
