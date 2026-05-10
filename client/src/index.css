@@ -2780,6 +2780,11 @@
   .mu-home-service-chip.is-blue .mu-home-service-chip__icon { background: linear-gradient(135deg, #8cb0ff, #6f8dfa); }
   .mu-home-service-chip.is-mint .mu-home-service-chip__icon { background: linear-gradient(135deg, #93e3cf, #65c8af); }
   .mu-home-service-chip.is-gold .mu-home-service-chip__icon { background: linear-gradient(135deg, #f5ca8d, #ebb86d); }
+  .mu-home-service-chip.is-sky .mu-home-service-chip__icon { background: linear-gradient(135deg, #7ec8f8, #4baee8); }
+  .mu-home-service-chip.is-orange .mu-home-service-chip__icon { background: linear-gradient(135deg, #ffb97a, #f8955a); }
+  .mu-home-service-chip.is-teal .mu-home-service-chip__icon { background: linear-gradient(135deg, #7de8d8, #4ecfc0); }
+  .mu-home-service-chip.is-rose .mu-home-service-chip__icon { background: linear-gradient(135deg, #f9a8c9, #f07aaa); }
+  .mu-home-service-chip.is-amber .mu-home-service-chip__icon { background: linear-gradient(135deg, #fcd57a, #f5b84a); }
 
   .mu-home-today-card {
     margin-top: 16px;
