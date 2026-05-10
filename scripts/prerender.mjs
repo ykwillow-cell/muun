@@ -118,11 +118,13 @@ function buildGuidePage(column) {
 function buildDreamPage(dream) {
   const categoryLabel = DREAM_CATEGORY_LABELS[dream.category] || '꿈해몽';
   const title = `${dream.keyword} 꿈해몽 풀이 | 무운`;
-  const description = truncate(stripHtml(dream.content), 160);
+  // DB 실제 필드명: interpretation (content 는 레거시 호환)
+  const dreamContent = dream.interpretation || dream.traditional_meaning || dream.psychological_meaning || dream.content || '';
+  const description = truncate(stripHtml(dreamContent), 160);
   const canonicalUrl = `${BASE_URL}/dream/${dream.slug}`;
   const schema = { "@context": "https://schema.org", "@type": "Article", "headline": `${dream.keyword} 꿈해몽`, "description": description, "author": { "@type": "Organization", "name": "무운 (MuUn)" } };
   return {
-    appHtml: buildPageShell({ sectionLabel: `꿈해몽 > ${categoryLabel}`, h1: `${dream.keyword} 꿈해몽`, description: '꿈속의 상징이 알려주는 당신의 미래와 심리 상태를 확인하세요.', sections: [{ paragraphs: [stripHtml(dream.content)] }], breadcrumbs: [{ href: '/', label: '홈' }, { href: '/dream', label: '꿈해몽' }, { label: dream.keyword }], relatedLinks: [{ href: '/dream', label: '다른 꿈해몽 찾기' }, { href: '/daily-fortune', label: '오늘의 운세 보기' }] }),
+    appHtml: buildPageShell({ sectionLabel: `꿈해몽 > ${categoryLabel}`, h1: `${dream.keyword} 꿈해몽`, description: '꿈속의 상징이 알려주는 당신의 미래와 심리 상태를 확인하세요.', sections: [{ paragraphs: [stripHtml(dreamContent)] }], breadcrumbs: [{ href: '/', label: '홈' }, { href: '/dream', label: '꿈해몽' }, { label: dream.keyword }], relatedLinks: [{ href: '/dream', label: '다른 꿈해몽 찾기' }, { href: '/daily-fortune', label: '오늘의 운세 보기' }] }),
     head: makeHead({ title, description, canonicalUrl, keywords: [dream.keyword, '꿈해몽', '꿈풀이', categoryLabel].join(', '), ogType: 'article', schema }),
   };
 }
@@ -130,11 +132,13 @@ function buildDreamPage(dream) {
 function buildDictionaryPage(entry) {
   const categoryLabel = DICTIONARY_CATEGORY_LABELS[entry.category] || '사주 용어';
   const title = `${entry.title} 뜻과 특징 - 사주 용어 사전 | 무운`;
-  const description = truncate(stripHtml(entry.content), 160);
+  // DB 실제 필드명: original_meaning, modern_interpretation (content 는 레거시 호환)
+  const entryContent = [entry.original_meaning, entry.modern_interpretation, entry.content].filter(Boolean).join('\n\n');
+  const description = truncate(stripHtml(entry.summary || entryContent), 160);
   const canonicalUrl = `${BASE_URL}/dictionary/${entry.slug}`;
   const schema = { "@context": "https://schema.org", "@type": "Article", "headline": entry.title, "description": description, "author": { "@type": "Organization", "name": "무운 (MuUn)" } };
   return {
-    appHtml: buildPageShell({ sectionLabel: `운세 사전 > ${categoryLabel}`, h1: entry.title, description: entry.summary || '사주 명리학의 핵심 용어를 알기 쉽게 설명해 드립니다.', sections: [{ heading: '용어 설명', paragraphs: [stripHtml(entry.content)] }, entry.muun_advice ? { heading: '무운의 조언', paragraphs: [truncate(stripHtml(entry.muun_advice), 900)] } : null].filter(Boolean), breadcrumbs: [{ href: '/', label: '홈' }, { href: '/fortune-dictionary', label: '운세 사전' }, { label: entry.title }], relatedLinks: [{ href: '/fortune-dictionary', label: '운세 사전 더 보기' }, { href: '/lifelong-saju', label: '무료 평생사주 보기' }, { href: '/family-saju', label: '가족사주 보기' }] }),
+    appHtml: buildPageShell({ sectionLabel: `운세 사전 > ${categoryLabel}`, h1: entry.title, description: entry.summary || '사주 명리학의 핵심 용어를 알기 쉽게 설명해 드립니다.', sections: [{ heading: '용어 설명', paragraphs: [stripHtml(entryContent) || entry.summary || ''] }, entry.muun_advice ? { heading: '무운의 조언', paragraphs: [truncate(stripHtml(entry.muun_advice), 900)] } : null].filter(Boolean), breadcrumbs: [{ href: '/', label: '홈' }, { href: '/fortune-dictionary', label: '운세 사전' }, { label: entry.title }], relatedLinks: [{ href: '/fortune-dictionary', label: '운세 사전 더 보기' }, { href: '/lifelong-saju', label: '무료 평생사주 보기' }, { href: '/family-saju', label: '가족사주 보기' }] }),
     head: makeHead({ title, description, canonicalUrl, keywords: [entry.title, ...(Array.isArray(entry.tags) ? entry.tags : []), '운세사전', '사주용어'].filter(Boolean).join(', '), ogType: 'article', schema, extraMeta: [`<meta property="article:section" content="${escapeHtml(categoryLabel)}">`] }),
   };
 }
@@ -180,16 +184,32 @@ async function run() {
   console.log('📡 Fetching published SEO datasets from Supabase...');
   const [columns, dreams, dictionaryEntries] = await Promise.all([fetchColumns(), fetchDreams(), fetchDictionaryEntries()]);
   
-  const guidePages = dedupeByUrl(columns.map((column) => ({ url: `/guide/${normalizeSlug(column.slug || column.id)}`, page: buildGuidePage({ ...column, slug: normalizeSlug(column.slug || column.id) }) })));
+  const HEX_SUFFIX_PATTERN = /-[0-9a-f]{8}$/;
+  function resolveGuideSlug(column) {
+    const slug = normalizeSlug(column.slug || column.id);
+    if (HEX_SUFFIX_PATTERN.test(slug)) return slug; // 이미 hex suffix 있음
+    const idShort = String(column.id || '').toLowerCase().match(/^([0-9a-f]{8})/)?.[1];
+    return idShort ? `${slug}-${idShort}` : slug;
+  }
+
+  const guidePages = dedupeByUrl(columns.map((column) => {
+    const finalSlug = resolveGuideSlug(column);
+    return { url: `/guide/${finalSlug}`, page: buildGuidePage({ ...column, slug: finalSlug }) };
+  }));
   const dreamPages = dedupeByUrl(dreams.map((dream) => ({ url: `/dream/${normalizeSlug(dream.slug)}`, page: buildDreamPage({ ...dream, slug: normalizeSlug(dream.slug) }) })));
   const dictionaryPages = dedupeByUrl(dictionaryEntries.map((entry) => ({ url: `/dictionary/${normalizeSlug(entry.slug)}`, page: buildDictionaryPage({ ...entry, slug: normalizeSlug(entry.slug) }) })));
   
+  // fortune-dictionary 인덱스: stale short slug(20자 이하 3단어 이하)는 링크에서 제외
+  const validDictEntries = dictionaryEntries.filter(e => {
+    const s = normalizeSlug(e.slug);
+    return s.length > 20 || s.split('-').length > 3;
+  });
   const dictionaryIndexHtml = buildPageShell({
     h1: '무운 운세 사전',
     description: '사주 명리학의 핵심 용어를 쉽게 풀이한 무료 사주 용어 사전입니다.',
     sections: [
       { heading: '사주 용어 목록', paragraphs: ['아래는 무운에서 제공하는 주요 사주 용어들입니다. 각 항목을 클릭하여 상세한 설명을 확인하세요.'] },
-      { heading: '용어 리스트', paragraphs: dictionaryEntries.map(e => `<a href="/dictionary/${e.slug}">${e.title}</a>`) }
+      { heading: '용어 리스트', paragraphs: validDictEntries.map(e => `<a href="/dictionary/${e.slug}">${e.title}</a>`) }
     ],
     breadcrumbs: [{ href: '/', label: '홈' }, { label: '운세 사전' }]
   });

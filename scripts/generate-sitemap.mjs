@@ -41,8 +41,42 @@ const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const HEX_SUFFIX_PATTERN = /-[0-9a-f]{8}$/;
 
-const SUPABASE_URL = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || '';
-const SUPABASE_ANON_KEY = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || '';
+// ── Supabase 접속 정보 (환경변수 우선, 없으면 기본값 사용) ──
+const DEFAULT_SUPABASE_URL = 'https://vuifbmsdggnwygvgcrkj.supabase.co';
+const DEFAULT_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1aWZibXNkZ2dud3lndmdjcmtqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE4NzY0ODYsImV4cCI6MjA4NzQ1MjQ4Nn0.PhMK66O73HH98WIPAu66qk8FuXwJLU4Z2bhDcmDCpKI';
+
+const SUPABASE_URL = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || DEFAULT_SUPABASE_URL;
+const SUPABASE_ANON_KEY = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || DEFAULT_SUPABASE_ANON_KEY;
+
+// ── Backup fallback 경로 ──
+const BACKUPS_DIR = path.join(ROOT_DIR, 'backups');
+
+/** 가장 최신 backup 날짜 폴더 경로에서 테이블 JSON 읽기 */
+function readBackupTable(tableName) {
+  if (!fs.existsSync(BACKUPS_DIR)) return [];
+  const dirs = fs.readdirSync(BACKUPS_DIR, { withFileTypes: true })
+    .filter((e) => e.isDirectory() && /^\d{4}-\d{2}-\d{2}$/.test(e.name))
+    .map((e) => e.name)
+    .sort((a, b) => b.localeCompare(a));
+  for (const dir of dirs) {
+    const fp = path.join(BACKUPS_DIR, dir, `${tableName}.json`);
+    if (fs.existsSync(fp)) {
+      try {
+        const raw = JSON.parse(fs.readFileSync(fp, 'utf8'));
+        return Array.isArray(raw) ? raw : [];
+      } catch { continue; }
+    }
+  }
+  return [];
+}
+
+/**
+ * Dictionary short slug 감지: 20자 이하 & 하이픈 구분 단어가 3개 이하인 한국어 로마자 표기 slug.
+ * 이런 slug는 DB 마이그레이션으로 새 slug로 대체됐거나 redirect/404 상태.
+ */
+function isLikelyStaleShortSlug(slug) {
+  return slug.length <= 20 && slug.split('-').length <= 3;
+}
 
 // ────────────────────────────────────────────────────────────
 // Core 페이지 정의 (priority, changefreq, lastmod)
@@ -213,46 +247,58 @@ async function fetchRestTable(tableName, { select = '*', filters = [], order = [
 
 async function loadDictionaryRows() {
   try {
-    return await fetchRestTable('fortune_dictionary', {
+    const rows = await fetchRestTable('fortune_dictionary', {
       select: 'id,slug,published_at,updated_at',
       filters: [{ field: 'published', value: true }],
       order: ['published_at.desc.nullslast', 'created_at.desc'],
       limit: 500,
     });
+    console.log(`   ✅ dictionary Supabase: ${rows.length}개`);
+    return rows;
   } catch (e) {
-    console.error(`❌ dictionary fetch 실패: ${e.message}`);
+    console.warn(`   ⚠️ dictionary Supabase 실패 → backup 폴백: ${e.message}`);
+    const rows = readBackupTable('fortune_dictionary').filter((r) => r.published !== false);
+    console.log(`   📦 dictionary backup: ${rows.length}개`);
     if (STRICT_MODE) throw e;
-    return [];
+    return rows;
   }
 }
 
 async function loadGuideRows() {
   try {
-    return await fetchRestTable('columns', {
+    const rows = await fetchRestTable('columns', {
       select: 'id,slug,published_at,updated_at',
       filters: [{ field: 'published', value: true }],
       order: ['published_at.desc.nullslast', 'created_at.desc'],
       limit: 500,
     });
+    console.log(`   ✅ guide Supabase: ${rows.length}개`);
+    return rows;
   } catch (e) {
-    console.error(`❌ guide fetch 실패: ${e.message}`);
+    console.warn(`   ⚠️ guide Supabase 실패 → backup 폴백: ${e.message}`);
+    const rows = readBackupTable('columns').filter((r) => r.published !== false);
+    console.log(`   📦 guide backup: ${rows.length}개`);
     if (STRICT_MODE) throw e;
-    return [];
+    return rows;
   }
 }
 
 async function loadDreamRows() {
   try {
-    return await fetchRestTable('dreams', {
+    const rows = await fetchRestTable('dreams', {
       select: 'id,slug,published_at,updated_at',
       filters: [{ field: 'published', value: true }],
       order: ['published_at.desc.nullslast', 'created_at.desc'],
       limit: 1000,
     });
+    console.log(`   ✅ dream Supabase: ${rows.length}개`);
+    return rows;
   } catch (e) {
-    console.error(`❌ dream fetch 실패: ${e.message}`);
+    console.warn(`   ⚠️ dream Supabase 실패 → backup 폴백: ${e.message}`);
+    const rows = readBackupTable('dreams').filter((r) => r.published !== false);
+    console.log(`   📦 dream backup: ${rows.length}개`);
     if (STRICT_MODE) throw e;
-    return [];
+    return rows;
   }
 }
 
@@ -307,10 +353,11 @@ function buildGuideEntries(rows) {
 
 /**
  * Dictionary URL: 슬러그 그대로 사용 (long descriptive 형식).
- * 단, 옛 slug는 DB에서 published=false 처리되어야 함.
+ * ⚠️ Backup 폴백 시 short/stale slug(20자 이하 & 3단어 이하)는 제외.
+ * 이런 slug는 DB에서 새 slug로 교체됐거나 redirect/404 상태.
  */
 function buildDictionaryEntries(rows) {
-  const counters = { invalid: 0, excluded: 0, total: rows.length };
+  const counters = { invalid: 0, excluded: 0, staleShort: 0, total: rows.length };
   const entries = [];
 
   for (const row of rows) {
@@ -319,6 +366,9 @@ function buildDictionaryEntries(rows) {
 
     const { exclude } = shouldExcludeDictionarySlug(slug);
     if (exclude) { counters.excluded++; continue; }
+
+    // Backup 폴백 데이터에 포함된 stale short slug 제외
+    if (isLikelyStaleShortSlug(slug)) { counters.staleShort++; continue; }
 
     entries.push({
       loc: `${BASE_URL}/dictionary/${slug}`,
