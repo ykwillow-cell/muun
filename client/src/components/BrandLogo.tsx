@@ -23,7 +23,7 @@ export function BrandLogo({ variant = 'horizontal', size = 'md', className }: Br
     const dimension = symbolSizes[size];
     return (
       <img
-        src="/images/muun-mark.svg"
+        src="/images/muun-mark.png"
         alt="무운 로고"
         width={dimension}
         height={dimension}

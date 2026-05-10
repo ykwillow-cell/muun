@@ -35,7 +35,7 @@ const Footer = () => {
     <footer className="mu-footer-modern">
       <div className="mu-footer-modern__inner">
         <div className="mu-footer-modern__brand">
-          <img src="/images/muun-mark.svg" alt="" width="28" height="28" aria-hidden="true" />
+          <img src="/images/muun-mark.png" alt="" width="28" height="28" aria-hidden="true" />
           <div>
             <strong>무운사주</strong>
             <p>회원가입 없이 보는 무료 사주·운세 서비스</p>
