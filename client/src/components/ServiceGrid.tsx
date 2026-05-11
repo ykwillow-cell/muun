@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { Link } from 'wouter';
 import { ArrowRight, BookOpen, BookMarked, CalendarDays, Clock3, Compass, Heart, Layers, Moon, PenLine, ScrollText, Sparkles, Star, Brain } from 'lucide-react';
 
@@ -59,18 +58,7 @@ function getScoreLabel(score: number): string {
   return '보통 운세';
 }
 
-export function ServiceGrid() {
-  const [birth, setBirth] = useState<string | null>(null);
-
-  useEffect(() => {
-    try {
-      const raw = window.localStorage.getItem('muun_user_birth');
-      const parsed = raw ? JSON.parse(raw) : null;
-      setBirth(parsed?.birth ?? null);
-    } catch {
-      setBirth(null);
-    }
-  }, []);
+export function ServiceGrid({ birth }: { birth?: string | null }) {
   return (
     <section className="mu-home-services" aria-labelledby="home-service-title">
       <div className="mu-home-service-strip" role="list" aria-label="주요 서비스 바로가기">

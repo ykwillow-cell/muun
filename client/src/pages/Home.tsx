@@ -18,14 +18,31 @@ export default function Home() {
   }, []);
 
   const [hasBirth, setHasBirth] = useState(false);
+  const [savedBirth, setSavedBirth] = useState<string | null>(null);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    setHasBirth(!!window.localStorage.getItem('muun_user_birth'));
+    try {
+      const raw = window.localStorage.getItem('muun_user_birth');
+      const parsed = raw ? JSON.parse(raw) : null;
+      const birth = parsed?.birth ?? null;
+      setHasBirth(!!birth);
+      setSavedBirth(birth);
+    } catch {
+      setHasBirth(false);
+      setSavedBirth(null);
+    }
   }, []);
 
-  const handleBirthSaved = () => setHasBirth(true);
-  const handleBirthDeleted = () => setHasBirth(false);
+  const handleBirthSaved = () => {
+    try {
+      const raw = window.localStorage.getItem('muun_user_birth');
+      const parsed = raw ? JSON.parse(raw) : null;
+      setSavedBirth(parsed?.birth ?? null);
+    } catch { /* noop */ }
+    setHasBirth(true);
+  };
+  const handleBirthDeleted = () => { setHasBirth(false); setSavedBirth(null); };
 
   const heroComponent = useMemo(
     () => (hasBirth ? <HeroReturnVisit onDeleteBirth={handleBirthDeleted} /> : <HeroFirstVisit onBirthSaved={handleBirthSaved} />),
@@ -41,7 +58,7 @@ export default function Home() {
         <link rel="canonical" href="https://muunsaju.com/" />
         <meta property="og:title" content="무료 사주 무운 (MuUn) - 회원가입 없는 100% 무료 사주풀이" />
         <meta property="og:description" content="회원가입 없이, 개인정보 저장 없이, 생년월일만으로 바로 확인하는 100% 무료 사주풀이. 2026년 신년운세, 토정비결, 궁합, 타로까지 모두 무료!" />
-        <meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png" />
+        <meta property="og:image" content="https://muunsaju.com/images/og-image.png" />
         <meta property="og:url" content="https://muunsaju.com/" />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="무운 (MuUn)" />
@@ -49,7 +66,7 @@ export default function Home() {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="무료 사주 무운 (MuUn) - 회원가입 없는 100% 무료 사주풀이" />
         <meta name="twitter:description" content="회원가입 없이, 개인정보 저장 없이, 생년월일만으로 바로 확인하는 100% 무료 사주풀이 서비스." />
-        <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
+        <meta name="twitter:image" content="https://muunsaju.com/images/og-image.png" />
         <meta name="robots" content="index, follow" />
       </Helmet>
 
@@ -60,7 +77,7 @@ export default function Home() {
 
       {heroComponent}
 
-      <ServiceGrid />
+      <ServiceGrid birth={savedBirth} />
 
       <MainBanner />
 
