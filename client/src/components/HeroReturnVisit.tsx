@@ -1,30 +1,37 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'wouter';
-import { CalendarDays, Trash2 } from 'lucide-react';
+import { CalendarDays, Trash2, UtensilsCrossed } from 'lucide-react';
 import { trackCustomEvent } from '@/lib/ga4';
 
-const TITLES = ['차분하게 흐름을 살피기 좋은 날', '작은 선택이 운을 키우는 날', '주변의 도움을 받기 좋은 날', '새로운 시작에 힘이 실리는 날'];
-const DESCS = [
-  '오늘은 급하게 결론 내리기보다, 차근차근 확인하는 태도가 좋은 결과로 이어집니다.',
-  '작은 루틴과 준비가 하루 전체의 안정감을 만들어주는 흐름이에요.',
-  '대화와 제안 속에서 생각보다 좋은 기회를 발견할 수 있습니다.',
-  '마음을 가볍게 하고 시작하면 성과와 자신감이 함께 따라와요.',
-];
+const LUNCH_MENUS = [
+  { menu: '된장찌개 정식', reason: '오늘은 마음을 안정시키는 음식이 잘 맞아요. 구수하고 깊은 된장의 기운이 하루를 편안하게 해줄 거예요.' },
+  { menu: '비빔밥', reason: '여러 재료가 조화를 이루는 비빔밥처럼, 오늘은 다양한 흐름을 한데 모아 정리하기 좋은 날이에요.' },
+  { menu: '순두부찌개', reason: '부드럽고 따뜻한 음식이 오늘의 기운과 잘 맞아요. 몸과 마음을 편안하게 해줄 거예요.' },
+  { menu: '삼겹살 구이', reason: '오늘은 든든하게 먹어두면 오후 에너지가 살아나요. 기운을 채워줄 음식이 필요한 날이에요.' },
+  { menu: '칼국수', reason: '오늘은 따뜻하고 소박한 한 끼가 정답이에요. 긴 면처럼 좋은 흐름이 이어질 거예요.' },
+  { menu: '제육볶음 정식', reason: '활기찬 에너지가 필요한 날이에요. 매콤하고 감칠맛 나는 제육볶음이 오후 집중력을 높여줄 거예요.' },
+  { menu: '돼지국밥', reason: '오늘은 뭔가 진하고 든든한 한 끼가 좋아요. 국밥 한 그릇으로 하루의 중심을 잡아보세요.' },
+  { menu: '쌀국수', reason: '가볍고 깔끔하게 먹고 싶은 날이에요. 개운한 한 끼가 오후를 상쾌하게 만들어줄 거예요.' },
+  { menu: '김치찌개 정식', reason: '오늘은 익숙하고 편안한 음식이 최고예요. 집밥 같은 한 끼가 마음에도 위안이 돼요.' },
+  { menu: '초밥 세트', reason: '섬세한 맛을 즐기는 여유가 오늘의 기운과 잘 맞아요. 천천히 음미하며 먹는 한 끼를 추천해요.' },
+  { menu: '닭갈비', reason: '활기차고 재미있는 에너지가 필요한 날이에요. 매콤한 닭갈비가 오늘의 활력소가 될 거예요.' },
+  { menu: '파스타', reason: '창의적인 흐름이 좋은 날이에요. 색다른 맛의 파스타 한 접시로 기분 전환을 해보세요.' },
+  { menu: '설렁탕', reason: '오늘은 조용히 에너지를 채우는 날이에요. 담백하고 깊은 국물이 속을 든든하게 채워줄 거예요.' },
+  { menu: '회덮밥', reason: '상쾌하고 맑은 기운이 필요한 날이에요. 신선한 회덮밥 한 그릇이 오후 집중력을 끌어올려 줄 거예요.' },
+  { menu: '탕수육 정식', reason: '오늘은 달달하고 바삭한 맛이 기분을 업시켜줄 거예요. 소소한 즐거움을 더해줄 한 끼예요.' },
+] as const;
 
 function seededRandom(seed: number) {
   const x = Math.sin(seed + 1) * 10000;
   return x - Math.floor(x);
 }
 
-function getDailyFortune(birth: string) {
+function getLunchRecommendation(birth: string) {
   const today = new Date();
   const dateSeed = `${today.getFullYear()}${today.getMonth()}${today.getDate()}`;
   const seed = parseInt((birth || '19900101') + dateSeed, 10) % 99999;
-  const r1 = seededRandom(seed);
-  const r2 = seededRandom(seed + 9);
-  const score = Math.floor(r1 * 22) + 72;
-  const idx = Math.floor(r2 * TITLES.length);
-  return { score, title: TITLES[idx], desc: DESCS[idx] };
+  const idx = Math.floor(seededRandom(seed + 3) * LUNCH_MENUS.length);
+  return LUNCH_MENUS[idx];
 }
 
 interface HeroReturnVisitProps {
@@ -51,7 +58,7 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
     return y && m && d ? `${parseInt(y, 10)}년 ${parseInt(m, 10)}월 ${parseInt(d, 10)}일생` : '저장된 생년월일';
   }, [birth]);
 
-  const fortune = getDailyFortune(birth || '19900101');
+  const lunch = getLunchRecommendation(birth || '19900101');
 
   useEffect(() => {
     if (!showDelete) return;
@@ -91,14 +98,11 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
           </div>
           <div className="mu-home-return-card__fortune">
             <div>
-              <span className="mu-home-return-card__fortune-label">오늘의 운세</span>
-              <h2>{fortune.title}</h2>
-              <p>{fortune.desc}</p>
+              <span className="mu-home-return-card__fortune-label"><UtensilsCrossed size={13} /> 오늘의 점심 추천</span>
+              <h2>{lunch.menu}</h2>
+              <p>{lunch.reason}</p>
             </div>
-            <div className="mu-home-return-card__score">
-              <strong>{fortune.score}</strong>
-              <span>점</span>
-            </div>
+            <Link href="/lucky-lunch" className="mu-home-return-card__lunch-btn">메뉴 더보기</Link>
           </div>
           <div className="mu-home-return-card__actions">
             <Link href={`/lifelong-saju?birth=${birth}`} className="mu-home-return-card__primary">평생사주 보기</Link>

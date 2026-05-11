@@ -2638,6 +2638,9 @@
     border-radius: 18px;
     padding: 14px;
     margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
 
   .mu-home-return-card__fortune h2 {
@@ -2652,6 +2655,21 @@
     color: var(--mu-pastel-sub);
     font-size: 0.92rem;
     line-height: 1.6;
+  }
+
+  .mu-home-return-card__lunch-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-start;
+    padding: 7px 14px;
+    border-radius: 20px;
+    background: rgba(111, 99, 255, 0.1);
+    color: var(--mu-pastel-purple-deep);
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+    margin-top: 2px;
   }
 
   .mu-home-return-card__score {
