@@ -5,11 +5,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion } from "framer-motion";
-import { ChevronLeft, Share2, Sparkles, Coffee, User, Calendar, Zap, RefreshCw } from "lucide-react";
+import { ChevronLeft, Share2, Sparkles, UtensilsCrossed, User, Calendar, RefreshCw, Zap } from "lucide-react";
 import DatePickerInput from "@/components/DatePickerInput";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { BirthTimeSelect } from "@/components/ui/birth-time-select";
 import { Label } from "@/components/ui/label";
@@ -32,6 +31,8 @@ const formSchema = z.object({
 });
 
 type FormValues = z.infer<typeof formSchema>;
+
+const ENERGY_STAR = ["", "★", "★★", "★★★", "★★★★", "★★★★★"] as const;
 
 export default function LuckyLunch() {
   useCanonical('/lucky-lunch');
@@ -70,28 +71,23 @@ export default function LuckyLunch() {
   }, [form]);
 
   const onSubmit = (data: FormValues) => {
-    // 생년월일 데이터 표준화 (YYYY.MM.DD, YYYY/MM/DD 등 -> YYYY-MM-DD)
     let birthDateStr = data.birthDate;
     if (typeof birthDateStr === 'string') {
-      birthDateStr = birthDateStr.replace(/[\.\/]/g, '-').replace(/\s/g, '');
+      birthDateStr = birthDateStr.replace(/[\.\\/]/g, '-').replace(/\s/g, '');
       if (/^\d{8}$/.test(birthDateStr)) {
         birthDateStr = `${birthDateStr.substring(0, 4)}-${birthDateStr.substring(4, 6)}-${birthDateStr.substring(6, 8)}`;
       }
     } else if (birthDateStr instanceof Date) {
-      birthDateStr = birthDateStr.toISOString().split('T')[0];
+      birthDateStr = (birthDateStr as Date).toISOString().split('T')[0];
     }
-    
-    // 숫자 추출 및 유효성 체크
     const dateParts = String(birthDateStr).match(/\d+/g);
     let finalDateStr = "2000-01-01";
     if (dateParts && dateParts.length >= 3) {
       finalDateStr = `${dateParts[0]}-${dateParts[1].padStart(2, '0')}-${dateParts[2].padStart(2, '0')}`;
     }
-
     const existingData = localStorage.getItem("muun_user_data");
     const existing = existingData ? JSON.parse(existingData) : {};
-    const mergedData = { ...existing, ...data };
-    localStorage.setItem("muun_user_data", JSON.stringify(mergedData));
+    localStorage.setItem("muun_user_data", JSON.stringify({ ...existing, ...data }));
 
     setUserName(data.name);
     const rawTime = data.birthTimeUnknown ? "12:00" : data.birthTime;
@@ -104,359 +100,246 @@ export default function LuckyLunch() {
     window.scrollTo(0, 0);
   };
 
-  const commonMaxWidth = "w-full";
+  const toggleClass = "w-full h-11 flex gap-[3px] bg-[#EDE8E8] rounded-xl p-[3px]";
+  const toggleItemClass = "flex-1 h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-purple-600 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-sm";
+  const labelClass = "text-sm font-medium text-[#3d3d3a] flex items-center gap-1.5";
+  const inputClass = "h-11 bg-[#F7F6FF] border-[#e0daf5] text-[#1a1a18] placeholder:text-[#b0adc8] rounded-xl focus:ring-purple-400/30 focus:border-purple-400 transition-all text-sm";
 
-  // 입력 화면
+  // ── 입력 화면 ────────────────────────────────────────────
   if (!showResult) {
     return (
-      <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
-
-        <header className="mu-subpage-header sticky top-[82px] z-50 bg-white border-b border-black/[0.06]">
+      <div className="mu-subpage-screen min-h-screen bg-[#F5F4FB] pb-16">
+        <header className="mu-subpage-header sticky top-[60px] z-50 bg-white/90 backdrop-blur border-b border-black/[0.06]">
           <div className="w-full px-4 h-14 flex items-center">
             <Link href="/">
-              <Button variant="ghost" className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] -ml-2 flex items-center gap-1 text-sm font-medium">
-                <ChevronLeft className="h-5 w-5" />
-                <span>홈</span>
+              <Button variant="ghost" className="-ml-2 mr-1 flex items-center gap-1 text-sm font-medium text-[#3d3d3a] hover:bg-purple-50">
+                <ChevronLeft className="h-5 w-5" />홈
               </Button>
             </Link>
-            <h1 className="text-base font-bold text-[#1a1a18]">행운의 점심 메뉴</h1>
+            <h1 className="text-base font-bold text-[#1a1a18]">오늘의 점심 추천</h1>
           </div>
         </header>
 
-        <main className="mu-service-main relative z-10 w-full px-4 py-5">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className={`${commonMaxWidth} space-y-5`}
-          >
-            {/* Hero Section */}
-            <div className="text-center space-y-2">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-amber-500/20 text-amber-500 text-xs font-medium">
-                <Coffee className="w-3 h-3" />
-                <span>오늘의 추천 메뉴</span>
+        <main className="px-4 py-6 max-w-lg mx-auto">
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }} className="space-y-5">
+
+            {/* 히어로 */}
+            <div className="text-center pt-2 pb-4">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-50 border border-purple-100 text-purple-600 text-xs font-semibold mb-3">
+                <UtensilsCrossed className="w-3.5 h-3.5" />
+                사주 오행 기반 추천
               </div>
-              <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-[#1a1a18]">행운의 점심 메뉴</h2>
-              <p className="text-muted-foreground text-xs md:text-sm">
-                당신의 사주에 맞는 행운의 점심 메뉴를 추천받아보세요
-              </p>
+              <h2 className="text-2xl font-bold text-[#1a1a18] tracking-tight mb-1.5">오늘의 행운 점심 메뉴</h2>
+              <p className="text-sm text-[#7a78a0]">생년월일을 입력하면 내 사주에 맞는 점심 메뉴를 추천해 드려요</p>
             </div>
 
-            {/* Input Form Card */}
-            <Card className="bg-white rounded-2xl shadow-sm border border-black/[0.06] overflow-hidden">
-              <CardHeader className="border-b border-black/[0.06] px-4 py-3 md:px-6">
-                <CardTitle className="text-[#1a1a18] flex items-center gap-2 text-base">
-                  <div className="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center">
-                    <User className="w-4 h-4 text-amber-400" />
-                  </div>
-                  기본 정보 입력
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-4 md:p-6">
-                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                  {/* Name & Gender Row */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-1.5">
-                      <Label htmlFor="name" className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
-                        <User className="w-3.5 h-3.5 text-amber-400" />
-                        이름
-                      </Label>
-                      <Input
-                        id="name"
-                        placeholder="이름을 입력해주세요"
-                        {...form.register("name")}
-                        className="h-11 bg-[#F7F5F3] border-[#E8E5E0] text-[#1a1a18] placeholder:text-[#b0ada6] rounded-xl focus:ring-amber-500/30 focus:border-amber-500 transition-all text-base md:text-sm"
-                      />
-                    </div>
+            {/* 폼 카드 */}
+            <div className="bg-white rounded-2xl border border-[#ece8f8] p-5 space-y-4 shadow-sm">
+              <div className="flex items-center gap-2 pb-2 border-b border-[#f0edf9]">
+                <div className="w-7 h-7 rounded-lg bg-purple-50 flex items-center justify-center">
+                  <User className="w-3.5 h-3.5 text-purple-500" />
+                </div>
+                <span className="text-sm font-semibold text-[#1a1a18]">기본 정보 입력</span>
+              </div>
 
-                    <div className="space-y-1.5">
-                      <Label className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
-                        <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                        성별
-                      </Label>
-                      <ToggleGroup
-                        type="single"
-                        value={form.watch("gender")}
-                        onValueChange={(value) => {
-                          if (value) form.setValue("gender", value as "male" | "female");
-                        }}
-                        className="w-full h-11 grid grid-cols-2 gap-[3px] bg-[#EDE8E8] rounded-xl p-[3px]"
-                      >
-                        <ToggleGroupItem
-                          value="male"
-                          className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-amber-500 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-base md:text-sm"
-                        >
-                          남성
-                        </ToggleGroupItem>
-                        <ToggleGroupItem
-                          value="female"
-                          className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-amber-500 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-base md:text-sm"
-                        >
-                          여성
-                        </ToggleGroupItem>
-                      </ToggleGroup>
-                    </div>
-                  </div>
-
-                  {/* Birth Date */}
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                {/* 이름 + 성별 */}
+                <div className="grid grid-cols-2 gap-3">
                   <div className="space-y-1.5">
-                    <Label htmlFor="birthDate" className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
-                      <Calendar className="w-3.5 h-3.5 text-amber-400" />
-                      생년월일
+                    <Label htmlFor="name" className={labelClass}>
+                      <User className="w-3.5 h-3.5 text-purple-400" />이름
                     </Label>
-                    <DatePickerInput
-                      id="birthDate"
-                      value={form.watch("birthDate")}
-                      {...form.register("birthDate")}
-                      accentColor="amber"
-                    />
+                    <Input id="name" placeholder="이름 입력" {...form.register("name")} className={inputClass} />
                   </div>
-
-                  {/* Birth Time */}
                   <div className="space-y-1.5">
-                    <Label htmlFor="birthTime" className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
-                      <Calendar className="w-3.5 h-3.5 text-amber-400" />
-                      출생 시간 (선택사항)
+                    <Label className={labelClass}>
+                      <Sparkles className="w-3.5 h-3.5 text-purple-400" />성별
                     </Label>
-                    <BirthTimeSelect
-                      value={form.watch("birthTime")}
-                      onChange={(val) => form.setValue("birthTime", val)}
-                      onUnknownChange={(isUnknown) => { form.setValue("birthTimeUnknown", isUnknown); if (isUnknown) form.setValue("birthTime", "12:00"); }}
-                      isUnknown={form.watch("birthTimeUnknown")}
-                      accentClass="focus:ring-amber-500/50 focus:border-amber-500"
-                    />
-                  </div>
-
-                  {/* Calendar Type */}
-                  <div className="space-y-1.5">
-                    <Label className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
-                      <Calendar className="w-3.5 h-3.5 text-amber-400" />
-                      날짜 구분
-                    </Label>
-                    <ToggleGroup
-                      type="single"
-                      value={form.watch("calendarType")}
-                      onValueChange={(value) => {
-                        if (value) {
-                          form.setValue("calendarType", value as "solar" | "lunar");
-                          if (value === "solar") form.setValue("isLeapMonth", false);
-                        }
-                      }}
-                      className="w-full h-11 grid grid-cols-2 gap-[3px] bg-[#EDE8E8] rounded-xl p-[3px]"
-                    >
-                      <ToggleGroupItem value="solar" className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-amber-500 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-base md:text-sm">
-                        양력
-                      </ToggleGroupItem>
-                      <ToggleGroupItem value="lunar" className="h-full rounded-lg data-[state=on]:bg-white data-[state=on]:text-amber-500 data-[state=on]:shadow-sm text-[#5a5a56] transition-all font-medium text-base md:text-sm">
-                        음력
-                      </ToggleGroupItem>
+                    <ToggleGroup type="single" value={form.watch("gender")} onValueChange={(v) => { if (v) form.setValue("gender", v as "male" | "female"); }} className={toggleClass}>
+                      <ToggleGroupItem value="male" className={toggleItemClass}>남성</ToggleGroupItem>
+                      <ToggleGroupItem value="female" className={toggleItemClass}>여성</ToggleGroupItem>
                     </ToggleGroup>
                   </div>
+                </div>
 
-                  {/* Leap Month */}
-                  {form.watch("calendarType") === "lunar" && (
-                    <div className="flex items-center gap-2 px-1">
-                      <label className="flex items-center gap-2 cursor-pointer group">
-                        <Checkbox
-                          checked={form.watch("isLeapMonth") || false}
-                          onCheckedChange={(checked) => form.setValue("isLeapMonth", checked === true)}
-                          className="data-[state=checked]:bg-amber-500 data-[state=checked]:border-amber-500"
-                        />
-                        <span className="text-base md:text-sm text-[#1a1a18] group-hover:text-amber-400 transition-colors">윤달(Leap Month)인 경우 체크</span>
-                      </label>
-                    </div>
-                  )}
+                {/* 생년월일 */}
+                <div className="space-y-1.5">
+                  <Label htmlFor="birthDate" className={labelClass}>
+                    <Calendar className="w-3.5 h-3.5 text-purple-400" />생년월일
+                  </Label>
+                  <DatePickerInput id="birthDate" value={form.watch("birthDate")} {...form.register("birthDate")} accentColor="purple" />
+                </div>
 
-                  {/* Submit Button */}
-                  <Button
-                    type="submit"
-                    style={{ background: 'linear-gradient(135deg, #F59E0B, #D97706)' }}
-                    className="w-full h-12 text-white font-bold text-sm rounded-xl shadow-sm transition-all hover:opacity-90 active:scale-[0.98] mt-2"
-                  >
-                    <Zap className="w-4 h-4 mr-2" />
-                    행운의 메뉴 추천받기
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
+                {/* 출생 시간 */}
+                <div className="space-y-1.5">
+                  <Label htmlFor="birthTime" className={labelClass}>
+                    <Calendar className="w-3.5 h-3.5 text-purple-400" />태어난 시간 <span className="text-[#b0adc8] font-normal">(선택)</span>
+                  </Label>
+                  <BirthTimeSelect
+                    value={form.watch("birthTime")}
+                    onChange={(val) => form.setValue("birthTime", val)}
+                    onUnknownChange={(isUnknown) => { form.setValue("birthTimeUnknown", isUnknown); if (isUnknown) form.setValue("birthTime", "12:00"); }}
+                    isUnknown={form.watch("birthTimeUnknown")}
+                    accentClass="focus:ring-purple-400/50 focus:border-purple-400"
+                  />
+                </div>
+
+                {/* 날짜 구분 */}
+                <div className="space-y-1.5">
+                  <Label className={labelClass}>
+                    <Calendar className="w-3.5 h-3.5 text-purple-400" />날짜 구분
+                  </Label>
+                  <ToggleGroup type="single" value={form.watch("calendarType")} onValueChange={(v) => { if (v) { form.setValue("calendarType", v as "solar" | "lunar"); if (v === "solar") form.setValue("isLeapMonth", false); } }} className={toggleClass}>
+                    <ToggleGroupItem value="solar" className={toggleItemClass}>양력</ToggleGroupItem>
+                    <ToggleGroupItem value="lunar" className={toggleItemClass}>음력</ToggleGroupItem>
+                  </ToggleGroup>
+                </div>
+
+                {form.watch("calendarType") === "lunar" && (
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <Checkbox checked={form.watch("isLeapMonth") || false} onCheckedChange={(checked) => form.setValue("isLeapMonth", checked === true)} className="data-[state=checked]:bg-purple-500 data-[state=checked]:border-purple-500" />
+                    <span className="text-sm text-[#3d3d3a]">윤달인 경우 체크</span>
+                  </label>
+                )}
+
+                <button type="submit" className="w-full h-12 rounded-xl bg-[#6246b0] text-white font-semibold text-sm flex items-center justify-center gap-2 hover:bg-[#5038a0] transition-colors mt-1">
+                  <UtensilsCrossed className="w-4 h-4" />
+                  오늘의 점심 메뉴 추천받기
+                </button>
+              </form>
+            </div>
           </motion.div>
         </main>
       </div>
     );
   }
 
-  // 결과 화면
+  // ── 결과 화면 ────────────────────────────────────────────
   return (
     <>
       <Helmet>
         <title>행운의 점심 메뉴 추천 - 사주 오행 기반 무료 추천 | 무운</title>
         <meta name="description" content="사주팔자 오행을 기반으로 오늘의 행운의 점심 메뉴를 추천합니다. 회원가입 없이 100% 무료로 나에게 맞는 음식을 확인하세요." />
         <meta property="og:title" content="행운의 점심 메뉴 추천 - 사주 오행 기반 무료 추천 | 무운" />
-        <meta property="og:description" content="사주팔자 오행을 기반으로 오늘의 행운의 점심 메뉴를 추천합니다. 회원가입 없이 100% 무료로 나에게 맞는 음식을 확인하세요." />
-                <meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png" />
+        <meta property="og:description" content="사주팔자 오행을 기반으로 오늘의 행운의 점심 메뉴를 추천합니다." />
+        <meta property="og:image" content="https://muunsaju.com/images/og-image.png" />
         <meta property="og:type" content="website" />
         <meta property="og:site_name" content="무운 (MuUn)" />
         <meta property="og:locale" content="ko_KR" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:image" content="https://muunsaju.com/images/horse_mascot.png" />
-<meta name="keywords" content="행운의점심, 점심메뉴추천, 오행음식, 사주음식, 행운음식, 오늘점심, 무료추천" />
+        <meta name="twitter:image" content="https://muunsaju.com/images/og-image.png" />
+        <meta name="keywords" content="행운의점심, 점심메뉴추천, 오행음식, 사주음식, 행운음식, 오늘점심, 무료추천" />
         <link rel="canonical" href="https://muunsaju.com/lucky-lunch" />
       </Helmet>
-    <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
 
-      <header className="mu-subpage-header sticky top-[82px] z-50 bg-white border-b border-black/[0.06]">
-        <div className="w-full px-4 h-14 flex items-center justify-between">
-          <div className="flex items-center">
-            <Button
-              onClick={() => setShowResult(false)}
-              variant="ghost"
-              className="mr-2 text-[#1a1a18] hover:bg-black/[0.06] -ml-2 flex items-center gap-1 text-sm font-medium"
-            >
-              <ChevronLeft className="h-5 w-5" />
-              <span>다시입력</span>
-            </Button>
-            <h1 className="text-base font-bold text-[#1a1a18]">행운의 점심 메뉴</h1>
-          </div>
-          <Button
-            onClick={() => shareContent(`행운의 점심 메뉴 추천: ${result.recommendedMenus[0]?.name || '메뉴'}`)}
-            variant="ghost"
-            size="icon"
-            className="text-[#1a1a18] hover:bg-black/[0.06] min-w-[44px] min-h-[44px]"
-          >
-            <Share2 className="h-5 w-5" />
-          </Button>
-        </div>
-      </header>
-
-      <main className="mu-service-main relative z-10 w-full px-4 py-5">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className={`${commonMaxWidth} space-y-6`}
-        >
-          {/* Result Header */}
-          <div className="text-center space-y-4 mb-8">
-            <div className="inline-block">
-              <div className="text-5xl mb-3">☯️</div>
-              <h2 className="text-3xl md:text-4xl font-bold text-[#1a1a18] mb-2">오늘의 행운 메뉴</h2>
-              <p className="text-amber-400 font-bold text-xl">{result.elementName} 기운</p>
+      <div className="mu-subpage-screen min-h-screen bg-[#F5F4FB] pb-16">
+        <header className="mu-subpage-header sticky top-[60px] z-50 bg-white/90 backdrop-blur border-b border-black/[0.06]">
+          <div className="w-full px-4 h-14 flex items-center justify-between">
+            <div className="flex items-center">
+              <Button onClick={() => setShowResult(false)} variant="ghost" className="-ml-2 mr-1 flex items-center gap-1 text-sm font-medium text-[#3d3d3a] hover:bg-purple-50">
+                <ChevronLeft className="h-5 w-5" />다시입력
+              </Button>
+              <h1 className="text-base font-bold text-[#1a1a18]">오늘의 점심 추천</h1>
             </div>
-            <p className="text-[#1a1a18] text-base md:text-sm leading-relaxed w-full">{result.elementDescription}</p>
+            <Button onClick={() => shareContent(`${userName}님의 오늘 행운 점심: ${result.recommendedMenus.map((m: any) => m.name).join(", ")}`)} variant="ghost" size="icon" className="text-[#3d3d3a] hover:bg-purple-50 min-w-[44px] min-h-[44px]">
+              <Share2 className="h-5 w-5" />
+            </Button>
           </div>
+        </header>
 
-          {/* Recommended Menus */}
-          <div className="space-y-4">
-            <h3 className="text-[#1a1a18] font-bold text-xl flex items-center gap-2">
-              <Coffee className="w-5 h-5 text-amber-400" />
-              추천 메뉴
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {result.recommendedMenus.map((menu: any, index: number) => (
-                <motion.div
-                  key={menu.id}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <Card className="bg-white border border-black/[0.06] rounded-2xl overflow-hidden hover:shadow-md transition-all h-full group" data-lunch-card>
-                    <CardHeader className="border-b border-black/[0.06] pb-3 group-hover:border-amber-500/30 transition-colors">
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <div className="text-sm md:text-xs font-semibold text-amber-400 mb-1">추천 #{index + 1}</div>
-                          <CardTitle className="text-[#1a1a18] text-base group-hover:text-amber-400 transition-colors">{menu.name}</CardTitle>
-                        </div>
-                        <div className="text-2xl ml-2">🍽️</div>
+        <main className="px-4 py-5 max-w-lg mx-auto">
+          <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }} className="space-y-4">
+
+            {/* 히어로 — 오행 정보 */}
+            <div className="bg-[#6246b0] rounded-2xl p-5 text-white text-center">
+              <p className="text-xs font-semibold text-purple-200 mb-1">오늘 {userName}님의 기운</p>
+              <h2 className="text-2xl font-bold mb-1">{result.elementName} 기운</h2>
+              <p className="text-sm text-purple-100 leading-relaxed">{result.elementDescription}</p>
+            </div>
+
+            {/* 추천 메뉴 목록 */}
+            <div>
+              <p className="text-sm font-semibold text-[#3d3d3a] mb-3 flex items-center gap-1.5">
+                <UtensilsCrossed className="w-4 h-4 text-purple-500" />추천 메뉴
+              </p>
+              <div className="space-y-3">
+                {result.recommendedMenus.map((menu: any, index: number) => (
+                  <motion.div
+                    key={menu.id}
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: index * 0.08 }}
+                    className="bg-white rounded-2xl border border-[#ece8f8] overflow-hidden shadow-sm"
+                  >
+                    {/* 카드 헤더 */}
+                    <div className="flex items-center gap-3 px-4 py-3 border-b border-[#f0edf9]">
+                      <div className="w-7 h-7 rounded-full bg-[#6246b0] flex items-center justify-center flex-shrink-0">
+                        <span className="text-xs font-bold text-white">{index + 1}</span>
                       </div>
-                    </CardHeader>
-                    <CardContent className="p-4 space-y-4">
-                      <p className="text-base md:text-sm text-[#5a5a56] leading-relaxed">{cleanAIContent(menu.description)}</p>
-                      <div className="space-y-3">
-                        <div>
-                          <p className="text-sm md:text-xs font-semibold text-amber-400 mb-2">✨ 주요 효능</p>
-                          <ul className="space-y-1.5">
-                            {menu.benefits.map((benefit: string, i: number) => (
-                              <li key={i} className="text-sm md:text-xs text-[#5a5a56] flex items-center gap-2">
-                                <span className="w-1.5 h-1.5 bg-amber-400 rounded-full" />
-                                {benefit}
-                              </li>
-                            ))}
-                          </ul>
-                        </div>
-                        <div>
-                          <p className="text-sm md:text-xs font-semibold text-amber-400 mb-2">🥘 주요 재료</p>
-                          <div className="flex flex-wrap gap-1.5">
-                            {menu.ingredients.map((ingredient: string, i: number) => (
-                              <span key={i} className="inline-block px-2.5 py-1 bg-black/[0.05] border border-black/10 rounded-full text-sm md:text-xs text-[#5a5a56] hover:border-amber-400/50 transition-colors">
-                                {ingredient}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-                        <div className="pt-2 border-t border-black/10">
-                          <p className="text-sm md:text-xs text-[#5a5a56]">에너지 레벨: <span className="text-amber-400 font-semibold">{"⭐".repeat(menu.energyLevel)}</span></p>
+                      <span className="text-base font-bold text-[#1a1a18] flex-1">{menu.name}</span>
+                      <span className="text-xs text-purple-400 font-medium">
+                        {ENERGY_STAR[Math.min(menu.energyLevel, 5)]}
+                      </span>
+                    </div>
+
+                    {/* 카드 바디 */}
+                    <div className="px-4 py-3 space-y-3">
+                      <p className="text-sm text-[#5a5a56] leading-relaxed">{cleanAIContent(menu.description)}</p>
+
+                      {/* 효능 */}
+                      <div>
+                        <p className="text-xs font-semibold text-purple-500 mb-1.5">✨ 주요 효능</p>
+                        <div className="flex flex-wrap gap-1.5">
+                          {menu.benefits.map((benefit: string, i: number) => (
+                            <span key={i} className="px-2.5 py-1 rounded-full bg-purple-50 text-purple-700 text-xs font-medium">{benefit}</span>
+                          ))}
                         </div>
                       </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              ))}
+
+                      {/* 재료 */}
+                      <div>
+                        <p className="text-xs font-semibold text-[#9080c0] mb-1.5">🥘 주요 재료</p>
+                        <div className="flex flex-wrap gap-1.5">
+                          {menu.ingredients.map((ingredient: string, i: number) => (
+                            <span key={i} className="px-2.5 py-1 rounded-full bg-[#f4f2ff] border border-[#e8e3f8] text-xs text-[#5a5a56]">{ingredient}</span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
-          </div>
 
-          {/* Energy Advice */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            <Card className="bg-white border border-black/[0.06] rounded-2xl overflow-hidden" data-misc-card>
-              <CardHeader className="border-b border-black/[0.06] bg-gradient-to-r from-amber-500/10 to-transparent">
-                <CardTitle className="text-[#1a1a18] text-lg flex items-center gap-2">
-                  <Zap className="w-5 h-5 text-amber-400" />
-                  에너지 조언
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-6 space-y-4">
-                <div className="space-y-2">
-                  <p className="text-sm md:text-xs font-semibold text-amber-400 uppercase tracking-wide">💫 기운 활성화</p>
-                  <p className="text-base md:text-sm text-[#1a1a18] leading-relaxed">{result.energyAdvice}</p>
+            {/* 에너지 조언 */}
+            <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.28 }} className="bg-white rounded-2xl border border-[#ece8f8] p-4 space-y-3 shadow-sm">
+              <p className="text-sm font-semibold text-[#3d3d3a] flex items-center gap-1.5">
+                <Zap className="w-4 h-4 text-purple-500" />에너지 조언
+              </p>
+              <div className="space-y-2.5">
+                <div className="bg-[#f8f6ff] rounded-xl p-3">
+                  <p className="text-xs font-semibold text-purple-500 mb-1">💫 기운 활성화</p>
+                  <p className="text-sm text-[#3d3d3a] leading-relaxed">{result.energyAdvice}</p>
                 </div>
-                <div className="space-y-2 pt-4 border-t border-black/10">
-                  <p className="text-sm md:text-xs font-semibold text-amber-400 uppercase tracking-wide">🌍 계절 조언</p>
-                  <p className="text-base md:text-sm text-[#1a1a18] leading-relaxed">{result.seasonalAdvice}</p>
+                <div className="bg-[#f8f6ff] rounded-xl p-3">
+                  <p className="text-xs font-semibold text-purple-500 mb-1">🌿 계절 조언</p>
+                  <p className="text-sm text-[#3d3d3a] leading-relaxed">{result.seasonalAdvice}</p>
                 </div>
-              </CardContent>
-            </Card>
-          </motion.div>
+              </div>
+            </motion.div>
 
-          {/* Action Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="flex gap-3 pt-4"
-          >
-            <Button
-              onClick={() => setShowResult(false)}
-              variant="outline"
-              className="flex-1 h-11 border-[#E8E5E0] text-[#1a1a18] rounded-xl font-medium text-sm"
-            >
-              <RefreshCw className="w-4 h-4 mr-2" />
-              다시보기
-            </Button>
-            <Button
-              onClick={() => shareContent(`${userName}님의 행운의 점심 메뉴: ${result.recommendedMenus.map((m: any) => m.name).join(", ")}`)}
-              className="flex-1 h-11 font-bold text-sm rounded-xl text-white"
-              style={{ background: 'linear-gradient(135deg, #F59E0B, #D97706)' }}
-            >
-              <Share2 className="w-4 h-4 mr-2" />
-              결과 공유
-            </Button>
+            {/* 하단 버튼 */}
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4, delay: 0.35 }} className="flex gap-3 pt-1">
+              <button onClick={() => setShowResult(false)} className="flex-1 h-11 rounded-xl border border-[#ddd8f0] bg-white text-[#3d3d3a] text-sm font-medium flex items-center justify-center gap-1.5 hover:bg-purple-50 transition-colors">
+                <RefreshCw className="w-4 h-4" />다시보기
+              </button>
+              <button onClick={() => shareContent(`${userName}님의 오늘 행운 점심: ${result.recommendedMenus.map((m: any) => m.name).join(", ")}`)} className="flex-1 h-11 rounded-xl bg-[#6246b0] text-white text-sm font-semibold flex items-center justify-center gap-1.5 hover:bg-[#5038a0] transition-colors">
+                <Share2 className="w-4 h-4" />결과 공유
+              </button>
+            </motion.div>
           </motion.div>
-        </motion.div>
-      </main>
-    </div>
+        </main>
+      </div>
     </>
   );
 }
