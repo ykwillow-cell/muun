@@ -12,6 +12,7 @@ const STATIC_ROUTES = [
   '/compatibility', '/tojeong', '/psychology', '/astrology', '/tarot', '/about',
   '/privacy', '/terms', '/family-saju', '/hybrid-compatibility', '/fortune-dictionary',
   '/naming', '/lucky-lunch', '/contact', '/guide',
+  '/tarot-history', '/past-life',
 ];
 
 const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
