@@ -73,8 +73,19 @@ function readBackupTable(tableName) {
 /**
  * Dictionary short slug 감지: 20자 이하 & 하이픈 구분 단어가 3개 이하인 한국어 로마자 표기 slug.
  * 이런 slug는 DB 마이그레이션으로 새 slug로 대체됐거나 redirect/404 상태.
+ * ⚠️ 단, DB에 실제로 존재하고 HTTP 200을 반환하는 유효한 short slug는 화이트리스트로 허용.
  */
+const ALLOWED_SHORT_DICT_SLUGS = new Set([
+  'am-rok', 'baek-ho-sal', 'bi-gyeon', 'chak-sal',
+  'cheon-mun-seong', 'cheon-ui-seong', 'do-hwa-sal', 'do-sik',
+  'gap-ja', 'geon-rok', 'geop-jae', 'go-ran-sal', 'goe-gang-sal',
+  'hong-yeom-sal', 'hwa-gae-sal', 'hyeon-chim-sal', 'hyeong-sal',
+  'jae-saeng-gwan', 'je-wang', 'jeong-gwan', 'jeong-in', 'jeong-jae',
+  'pyeon-gwan', 'pyeon-in', 'sang-gwan', 'sik-sin',
+  'won-jin-sal', 'yang-in-sal', 'yeok-ma-sal',
+]);
 function isLikelyStaleShortSlug(slug) {
+  if (ALLOWED_SHORT_DICT_SLUGS.has(slug)) return false; // 유효한 short slug는 제외하지 않음
   return slug.length <= 20 && slug.split('-').length <= 3;
 }
 

@@ -2473,6 +2473,16 @@ const metaData: Record<string, { title: string, description: string, h1?: string
       description: "직장에서 갈등이나 뒷담이 많다면 사주팔자로 원인을 찾아보세요. 관성(官星)과 비겁(比劫) 관계로 직장 갈등의 원인과 해결책을 사주로 알아보세요.",
       h1: "직장 갈등과 뒷담 사주 해결책"
     },
+    '/tarot-history': {
+      title: "내 타로 기록 | 무운 (MuUn)",
+      description: "무운에서 진행한 타로 상담 기록을 확인하세요. 회원가입 없이 이용한 무료 타로 상담 결과를 다시 볼 수 있습니다.",
+      h1: "내 타로 기록"
+    },
+    '/past-life': {
+      title: "전생 테스트 - 나의 전생은? | 무운 (MuUn)",
+      description: "사주팔자로 분석하는 전생 테스트. 나의 전생 시대, 나라, 직업, 이름을 AI가 무료로 풀어드립니다.",
+      h1: "전생 테스트 - 나의 전생은?"
+    },
   };
 
   // 동적 라우트 처리: /yearly-fortune/:birthDate
@@ -2623,7 +2633,11 @@ const metaData: Record<string, { title: string, description: string, h1?: string
     : '';
 
   // 페이지별 canonical URL
-  const canonicalUrl = `https://muunsaju.com${options.path}`;
+  // 숫자 suffix dream URL (-2, -3 등)은 원본 URL을 canonical로 설정하여 중복 페이지 문제 해결
+  const dreamDuplicateMatch = options.path.match(/^\/dream\/(.+)-(\d+)$/);
+  const canonicalUrl = dreamDuplicateMatch
+    ? `https://muunsaju.com/dream/${dreamDuplicateMatch[1]}`
+    : `https://muunsaju.com${options.path}`;
 
   // 개인정보처리방침 본문
   const privacyContent = `

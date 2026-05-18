@@ -575,6 +575,116 @@
       "source": "/dream/%EB%A8%B8%EB%A6%AC%EC%B9%B4%EB%9D%BD",
       "destination": "/dream/hair-loss-bald-dream-meaning",
       "statusCode": 301
+    },
+    {
+      "source": "/dream/%EC%96%91",
+      "destination": "/dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/%EC%88%A0",
+      "destination": "/dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/%EC%A5%90",
+      "destination": "/dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/%EB%8B%AC",
+      "destination": "/dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/%EC%82%B0",
+      "destination": "/dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/%EC%B1%85",
+      "destination": "/dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/%EB%B9%84",
+      "destination": "/dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/%EB%B2%8C",
+      "destination": "/dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/%EA%B8%B0%EB%A6%B0",
+      "destination": "/dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/%EA%B1%B0%EC%A7%80",
+      "destination": "/dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/%EA%B8%B8",
+      "destination": "/dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/%EA%B3%BC%EC%9D%BC",
+      "destination": "/dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/%EB%8B%AD",
+      "destination": "/dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/%EC%83%98%EB%AC%BC",
+      "destination": "/dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/%EA%B8%88%EB%B0%98%EC%A7%80",
+      "destination": "/dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/%EB%AC%BC",
+      "destination": "/dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/%EA%B2%BD%EC%B0%B0",
+      "destination": "/dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/%EB%8F%BC%EC%A7%80",
+      "destination": "/dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/%EC%82%AC%EB%83%A5%ED%95%98%EB%8A%94%20%EA%BF%88",
+      "destination": "/dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/%EA%B1%B0%EC%9A%B8",
+      "destination": "/dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/%EB%B0%94%EB%8B%A4",
+      "destination": "/dream",
+      "statusCode": 301
+    },
+    {
+      "source": "/dream/%EC%A7%91",
+      "destination": "/dream",
+      "statusCode": 301
     }
   ],
   "trailingSlash": false
