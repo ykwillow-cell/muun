@@ -25,7 +25,6 @@ const RAW_EXCLUDED_PATHS = [
   "/dream/dead-person-scolding-dream-guilt",
   "/dream/내가-죽는-꿈,-가족이-죽는-꿈,-시체-꿈",
   "/dream/눈(날씨)",
-  "/guide/naming-baby-saju-key-factors",
   "/dream/third-eye-forehead-dream-meaning-2",
   "/guide/column-002",
   "/dictionary/se-un",
