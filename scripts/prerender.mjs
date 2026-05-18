@@ -122,7 +122,11 @@ function buildDreamPage(dream) {
   // DB 실제 필드명: interpretation (content 는 레거시 호환)
   const dreamContent = dream.interpretation || dream.traditional_meaning || dream.psychological_meaning || dream.content || '';
   const description = truncate(stripHtml(dreamContent), 160);
-  const canonicalUrl = `${BASE_URL}/dream/${dream.slug}`;
+  // 숫자 suffix slug(-2, -3 등)는 원본 URL을 canonical로 설정하여 중복 페이지 문제 해결
+  const suffixMatch = dream.slug.match(/^(.+)-(\d+)$/);
+  const canonicalUrl = suffixMatch
+    ? `${BASE_URL}/dream/${suffixMatch[1]}`
+    : `${BASE_URL}/dream/${dream.slug}`;
   const schema = { "@context": "https://schema.org", "@type": "Article", "headline": `${dream.keyword} 꿈해몽`, "description": description, "author": { "@type": "Organization", "name": "무운 (MuUn)" } };
   return {
     appHtml: buildPageShell({ sectionLabel: `꿈해몽 > ${categoryLabel}`, h1: `${dream.keyword} 꿈해몽`, description: '꿈속의 상징이 알려주는 당신의 미래와 심리 상태를 확인하세요.', sections: [{ paragraphs: [stripHtml(dreamContent)] }], breadcrumbs: [{ href: '/', label: '홈' }, { href: '/dream', label: '꿈해몽' }, { label: dream.keyword }], relatedLinks: [{ href: '/dream', label: '다른 꿈해몽 찾기' }, { href: '/daily-fortune', label: '오늘의 운세 보기' }] }),
