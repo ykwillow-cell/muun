@@ -167,8 +167,17 @@ export default function Tarot() {
       </Helmet>
 
       {/* ── 헤더 ── */}
-      <header className="mu-subpage-header sticky top-[82px] z-50 border-b border-black/[0.06]"
-        style={{ background: step === "shuffle" ? "rgba(15,10,46,0.96)" : "rgba(255,255,255,0.94)", borderColor: step === "shuffle" ? "rgba(255,255,255,0.08)" : undefined }}>
+      <header
+        className="z-[60]"
+        style={{
+          position: 'sticky',
+          top: 'var(--mu-appbar-offset, 60px)',
+          background: step === "shuffle" ? "rgba(15,10,46,0.96)" : "rgba(255,255,255,0.94)",
+          borderBottom: step === "shuffle" ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(15,23,42,0.06)",
+          backdropFilter: "blur(18px)",
+          WebkitBackdropFilter: "blur(18px)",
+          boxShadow: step === "shuffle" ? "none" : "0 4px 16px rgba(15,23,42,0.04)",
+        }}>
         <div className="w-full px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
             {step !== 'input' ? (
