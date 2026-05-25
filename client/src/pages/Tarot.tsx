@@ -148,7 +148,7 @@ export default function Tarot() {
   }, [shuffledDeck]);
 
   return (
-    <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-20 antialiased overflow-x-hidden">
+    <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-20 antialiased overflow-x-hidden" {...(step === "shuffle" ? { "data-tarot-shuffle": "" } : {})}>
       <Helmet>
         <title>무료 타로 상담 - 회원가입 없이 무료로 | 무운 (MuUn)</title>
         <meta name="description" content="회원가입 없이 바로 시작하는 무료 타로 상담. 고민되는 문제에 대한 해답을 개인정보 저장 없이 100% 무료로 확인하세요." />
@@ -167,24 +167,13 @@ export default function Tarot() {
       </Helmet>
 
       {/* ── 헤더 ── */}
-      <header
-        className="z-[60]"
-        style={{
-          position: 'sticky',
-          top: 'var(--mu-appbar-offset, 60px)',
-          background: step === "shuffle" ? "rgba(15,10,46,0.96)" : "rgba(255,255,255,0.94)",
-          borderBottom: step === "shuffle" ? "1px solid rgba(255,255,255,0.08)" : "1px solid rgba(15,23,42,0.06)",
-          backdropFilter: "blur(18px)",
-          WebkitBackdropFilter: "blur(18px)",
-          boxShadow: step === "shuffle" ? "none" : "0 4px 16px rgba(15,23,42,0.04)",
-        }}>
+      <header className="mu-subpage-header sticky top-[82px] z-50 bg-white border-b border-black/[0.06]">
         <div className="w-full px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
             {step !== 'input' ? (
               <button
                 onClick={() => step === 'shuffle' ? setStep('input') : resetTarot()}
-                className="mr-2 w-10 h-10 rounded-xl flex items-center justify-center hover:bg-black/[0.06] transition-colors"
-                style={{ color: step === 'shuffle' ? 'rgba(255,255,255,0.8)' : '#1a1a18' }}
+                className="mr-2 w-10 h-10 rounded-xl flex items-center justify-center hover:bg-black/[0.06] transition-colors text-[#1a1a18]"
               >
                 <ChevronLeft className="h-6 w-6" />
               </button>
@@ -195,8 +184,7 @@ export default function Tarot() {
                 </button>
               </Link>
             )}
-            <h1 className="text-base font-bold"
-              style={{ color: step === 'shuffle' ? 'rgba(255,255,255,0.9)' : '#1a1a18' }}>
+            <h1 className="text-base font-bold text-[#1a1a18]">
               무운 타로 상담소
             </h1>
           </div>
@@ -211,7 +199,7 @@ export default function Tarot() {
         </div>
       </header>
 
-      <main className="relative z-10 w-full">
+      <main className="mu-service-main relative z-10 w-full px-0 pt-0 pb-0">
       <AnimatePresence mode="wait">
 
         {/* ════════════════════════════════
