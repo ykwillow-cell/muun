@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Helmet } from "react-helmet-async";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, Star, Sparkles, User, Zap, Briefcase, Activity, Heart, Quote, TrendingUp, Share2, ScrollText, Calendar, Clock, Shield, Baby, Landmark, Sunset, RefreshCw } from "lucide-react";
+import { ChevronLeft, Star, Sparkles, User, Zap, Briefcase, Activity, Heart, Quote, TrendingUp, Share2, ScrollText, Calendar, Clock, Shield, Baby, Landmark, Sunset, RefreshCw, Compass, Flame } from "lucide-react";
 import DatePickerInput from "@/components/DatePickerInput";
 import { Link } from "wouter";
 import { shareContent } from "@/lib/share";
@@ -32,8 +32,9 @@ import { iljuData } from "@/lib/ilju-data";
 import { convertToHanja } from "@/lib/hanja-converter";
 import { trackEvent, trackCustomEvent } from "@/lib/ga4";
 import { 
- generateLifelongFortune, 
- FortuneResult 
+ generateLifelongFortune,
+ generateYearly2026Fortune,
+ FortuneResult
 } from "@/lib/fortune-templates";
 import {
  STEM_READINGS,
@@ -144,6 +145,7 @@ export default function LifelongSaju() {
  const [extraInfo, setExtraInfo] = useState<any>(null);
  const [loveFortune, setLoveFortune] = useState<{ title: string; content: string } | null>(null);
  const [healthFortune, setHealthFortune] = useState<{ title: string; content: string } | null>(null);
+  const [yearly2026Fortune, setYearly2026Fortune] = useState<FortuneResult | null>(null);
  const [initialLoadDone, setInitialLoadDone] = useState(false);
  
  const form = useForm<FormValues>({
@@ -271,6 +273,9 @@ export default function LifelongSaju() {
  
  const health = generateHealthFortune(sajuResult);
  setHealthFortune(health);
+
+    const yearly2026 = generateYearly2026Fortune(sajuResult);
+    setYearly2026Fortune(yearly2026);
  
  const fortuneKeys = ['personality', 'earlyLife', 'midLife', 'lateLife', 'wealth', 'career'] as const;
  
@@ -334,7 +339,7 @@ export default function LifelongSaju() {
  </CardHeader>
  <CardContent className="p-4 md:p-6">
  <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
- <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+ <div className="grid grid-cols-1 gap-4">
  <div className="space-y-1.5">
  <Label htmlFor="name" className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
  <User className="w-3.5 h-3.5 text-purple-600" />
@@ -373,7 +378,7 @@ export default function LifelongSaju() {
  </div>
  </div>
 
- <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+ <div className="grid grid-cols-1 gap-4">
  <div className="space-y-1.5">
  <Label htmlFor="birthDate" className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
  <Calendar className="w-3.5 h-3.5 text-purple-600" />
@@ -401,7 +406,7 @@ export default function LifelongSaju() {
  </div>
  </div>
 
- <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+ <div className="grid grid-cols-1 gap-4">
  <div className="space-y-1.5">
  <Label className="text-[#1a1a18] text-base md:text-sm font-medium flex items-center gap-1.5">
  <ScrollText className="w-3.5 h-3.5 text-purple-600" />
@@ -520,7 +525,34 @@ export default function LifelongSaju() {
  }
 
  // ===== 결과 화면 =====
- const dayElement = STEM_ELEMENTS[result.dayPillar.stem];
+ 
+  // ── 용신 데이터 ──
+  const YONGSHIN_DATA: Record<string, {
+    label: string;
+    desc: string;
+    colors: string[];
+    direction: string;
+    foods: string[];
+    activities: string[];
+    avoidColors: string[];
+  }> = {
+    '木': { label: '목(木) · 나무', desc: '성장과 창의성의 기운을 보완하면 새로운 도전과 인간관계에서 더 큰 기회가 열립니다.', colors: ['초록색', '청색', '남색'], direction: '동쪽', foods: ['채소·나물', '녹차', '새싹 식품', '부추'], activities: ['산책·등산', '독서·글쓰기', '정원 가꾸기', '창작 활동'], avoidColors: ['흰색', '금색'] },
+    '火': { label: '화(火) · 불', desc: '열정과 활력의 기운을 보완하면 사회적 활동이 활발해지고 인정받을 기회가 늘어납니다.', colors: ['빨간색', '주황색', '보라색'], direction: '남쪽', foods: ['매운 음식', '붉은 과일', '홍삼', '석류'], activities: ['조깅·댄스', '사교 모임', '스포츠 관람', '여행'], avoidColors: ['검은색', '남색'] },
+    '土': { label: '토(土) · 흙', desc: '안정과 신뢰의 기운을 보완하면 삶의 중심이 단단해지고 가정·재물의 기반이 강화됩니다.', colors: ['노란색', '갈색', '베이지'], direction: '중앙', foods: ['잡곡밥', '고구마·감자', '두부', '견과류'], activities: ['명상·요가', '텃밭 가꾸기', '가족 시간', '규칙적 생활'], avoidColors: ['초록색', '파란색'] },
+    '金': { label: '금(金) · 쇠', desc: '결단력과 정밀함의 기운을 보완하면 판단력이 높아지고 목표 달성 속도가 빨라집니다.', colors: ['흰색', '금색', '은색'], direction: '서쪽', foods: ['흰 음식', '배·무', '잣·은행', '도라지'], activities: ['헬스·격투기', '목표 설정', '정리정돈', '규칙적 운동'], avoidColors: ['빨간색', '주황색'] },
+    '水': { label: '수(水) · 물', desc: '지혜와 유연성의 기운을 보완하면 통찰력이 깊어지고 어떤 상황에서도 길을 찾을 수 있습니다.', colors: ['검은색', '남색', '파란색'], direction: '북쪽', foods: ['해산물', '검은콩', '블루베리', '미역·다시마'], activities: ['수영', '독서·명상', '글쓰기', '온천·반신욕'], avoidColors: ['노란색', '갈색'] },
+  };
+
+  // ── 추천 직업군 ──
+  const JOB_RECOMMENDATIONS: Record<string, string[]> = {
+    '木': ['교사·교수', '연구원', '기획자', '작가·콘텐츠', '환경전문가', 'UX디자이너', '사회복지사', '출판·미디어'],
+    '火': ['마케터', '방송·연예인', '영업전문가', '강사·코치', '셰프·요식업', 'CEO·창업가', '이벤트플래너', '광고기획'],
+    '土': ['공무원', '부동산전문가', '금융상담사', 'HR전문가', '경영관리자', '의사', '건설·건축', '농업·식품업'],
+    '金': ['변호사', '의사·외과의', '회계사', '기계공학자', 'IT개발자', '경찰·군인', '금융분석가', '품질관리'],
+    '水': ['연구원', '컨설턴트', '철학자·심리상담사', '데이터사이언티스트', '해외무역', '작가·번역가', '언론·저널리스트', 'IT기획'],
+  };
+
+  const dayElement = STEM_ELEMENTS[result.dayPillar.stem];
  const dayStem = result.dayPillar.stem;
  const stemPersonality = STEM_PERSONALITY[dayStem];
  const elementBalance = calculateElementBalance(result);
@@ -602,6 +634,32 @@ export default function LifelongSaju() {
  animate={{ opacity: 1, y: 0 }}
  className={`${commonMaxWidth} space-y-5 md:space-y-6`}
  >
+          {/* 0. 인물 정보 요약 */}
+          <Card className="rounded-2xl overflow-hidden" data-result-card>
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(135deg, #2d1a82, #6B5FFF)' }}>
+                  <span className="text-base font-black text-white">{userName.charAt(0)}</span>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-base font-bold text-[#1a1a18]">{userName}님</p>
+                  <p className="text-sm text-[#5a5a56] mt-0.5">
+                    {form.getValues('birthDate').replace(/-/g, '.')}
+                    {' · '}
+                    {form.getValues('calendarType') === 'solar' ? '양력' : '음력'}
+                    {form.getValues('isLeapMonth') ? ' (윤달)' : ''}
+                    {' · '}
+                    {form.getValues('gender') === 'male' ? '남성' : '여성'}
+                    {!form.getValues('birthTimeUnknown') && ` · ${form.getValues('birthTime')}`}
+                  </p>
+                </div>
+                <span className="flex-shrink-0 inline-flex items-center px-2.5 py-1.5 rounded-full bg-purple-500/10 text-purple-700 text-xs font-bold whitespace-nowrap">
+                  {pillarReading(result.dayPillar.stem, result.dayPillar.branch)} 일주
+                </span>
+              </div>
+            </CardContent>
+          </Card>
+
  {/* 1. 사주팔자표 */}
  <section className="space-y-3">
  <div className="flex items-center gap-2">
@@ -638,14 +696,14 @@ export default function LifelongSaju() {
  </CardHeader>
  <CardContent className="p-4 space-y-4">
  {stemPersonality.personality.map((p, i) => (
- <p key={i} className="text-base md:text-sm text-[#1a1a18] leading-relaxed">{p}</p>
+ <p key={i} className="text-base text-[#1a1a18] leading-relaxed">{p}</p>
  ))}
- <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
+ <div className="grid grid-cols-1 gap-3 mt-3">
  <div className="bg-green-500/5 border border-green-500/10 rounded-xl p-3">
- <p className="text-sm md:text-xs font-bold text-green-600 mb-2">강점</p>
+ <p className="text-sm font-bold text-green-600 mb-2">강점</p>
  <ul className="space-y-1">
  {stemPersonality.strength.map((s, i) => (
- <li key={i} className="text-sm md:text-xs text-[#5a5a56] flex items-start gap-1.5">
+ <li key={i} className="text-sm text-[#5a5a56] flex items-start gap-1.5">
  <span className="w-1 h-1 bg-green-400 rounded-full mt-1.5 shrink-0" />
  {s}
  </li>
@@ -653,10 +711,10 @@ export default function LifelongSaju() {
  </ul>
  </div>
  <div className="bg-red-500/5 border border-red-500/10 rounded-xl p-3">
- <p className="text-sm md:text-xs font-bold text-red-600 mb-2">주의점</p>
+ <p className="text-sm font-bold text-red-600 mb-2">주의점</p>
  <ul className="space-y-1">
  {stemPersonality.weakness.map((w, i) => (
- <li key={i} className="text-sm md:text-xs text-[#5a5a56] flex items-start gap-1.5">
+ <li key={i} className="text-sm text-[#5a5a56] flex items-start gap-1.5">
  <span className="w-1 h-1 bg-red-400 rounded-full mt-1.5 shrink-0" />
  {w}
  </li>
@@ -664,19 +722,19 @@ export default function LifelongSaju() {
  </ul>
  </div>
  </div>
- <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+ <div className="grid grid-cols-1 gap-3">
  <div className="bg-pink-500/5 border border-pink-500/10 rounded-xl p-3">
- <p className="text-sm md:text-xs font-bold text-pink-600 mb-1">연애 스타일</p>
- <p className="text-sm md:text-xs text-[#5a5a56] leading-relaxed">{stemPersonality.loveStyle}</p>
+ <p className="text-sm font-bold text-pink-600 mb-1">연애 스타일</p>
+ <p className="text-sm text-[#5a5a56] leading-relaxed">{stemPersonality.loveStyle}</p>
  </div>
  <div className="bg-blue-500/5 border border-blue-500/10 rounded-xl p-3">
- <p className="text-sm md:text-xs font-bold text-blue-600 mb-1">직업 스타일</p>
- <p className="text-sm md:text-xs text-[#5a5a56] leading-relaxed">{stemPersonality.workStyle}</p>
+ <p className="text-sm font-bold text-blue-600 mb-1">직업 스타일</p>
+ <p className="text-sm text-[#5a5a56] leading-relaxed">{stemPersonality.workStyle}</p>
  </div>
  </div>
  <div className="bg-yellow-500/5 border border-yellow-500/10 rounded-xl p-3">
- <p className="text-sm md:text-xs font-bold text-yellow-600 mb-1">전문가 조언</p>
- <p className="text-sm md:text-xs text-[#5a5a56] leading-relaxed">{stemPersonality.advice}</p>
+ <p className="text-sm font-bold text-yellow-600 mb-1">전문가 조언</p>
+ <p className="text-sm text-[#5a5a56] leading-relaxed">{stemPersonality.advice}</p>
  </div>
  </CardContent>
  </Card>
@@ -699,7 +757,7 @@ export default function LifelongSaju() {
  const percentage = Math.round((element.value / 8) * 100);
  return (
  <div key={element.name} className="flex items-center gap-3">
- <span className={`w-12 text-center font-bold text-base md:text-sm ${color}`}>
+ <span className={`w-12 text-center font-bold text-base ${color}`}>
  {withReading(element.name)}
  </span>
  <div className="flex-1 h-3 bg-black/06 rounded-full overflow-hidden">
@@ -716,20 +774,77 @@ export default function LifelongSaju() {
  }`}
  />
  </div>
- <span className="w-16 text-right text-sm md:text-xs text-[#5a5a56]">{element.value}개 ({percentage}%)</span>
+ <span className="w-16 text-right text-sm text-[#5a5a56]">{element.value}개 ({percentage}%)</span>
  </div>
  );
  })}
  </div>
  <div className="bg-black/[0.05] rounded-xl p-3 space-y-2">
- <p className="text-base md:text-sm text-[#1a1a18] leading-relaxed">{balanceAnalysis.analysis}</p>
+ <p className="text-base text-[#1a1a18] leading-relaxed">{balanceAnalysis.analysis}</p>
  {balanceAnalysis.supplement && (
- <p className="text-sm md:text-xs text-[#5a5a56] leading-relaxed">{balanceAnalysis.supplement}</p>
+ <p className="text-sm text-[#5a5a56] leading-relaxed">{balanceAnalysis.supplement}</p>
  )}
  </div>
  </CardContent>
  </Card>
  </section>
+
+          {/* 3-1. 용신(用神) & 일상 보완 방법 */}
+          {(() => {
+            const weakest = elementBalance.reduce((min, el) => el.value < min.value ? el : min, elementBalance[0]);
+            const ys = YONGSHIN_DATA[weakest.name];
+            if (!ys) return null;
+            return (
+              <section className="space-y-3">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 rounded-lg bg-teal-500/20 flex items-center justify-center">
+                    <Compass className="w-4 h-4 text-teal-600" />
+                  </div>
+                  <h2 className="text-lg font-bold text-[#1a1a18]">용신(用神) & 보완 방법</h2>
+                </div>
+                <Card className="rounded-2xl overflow-hidden" data-result-card>
+                  <CardContent className="p-4 space-y-4">
+                    <div className="flex items-start gap-3">
+                      <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-teal-500/10 flex items-center justify-center">
+                        <span className={`text-2xl font-black ${ELEMENT_TEXT_COLOR[weakest.name]}`}>{weakest.name}</span>
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-teal-700 mb-1">보완이 필요한 기운 — {ys.label}</p>
+                        <p className="text-base text-[#1a1a18] leading-relaxed">{ys.desc}</p>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-1 gap-3">
+                      <div className="bg-teal-500/5 border border-teal-500/10 rounded-xl p-3">
+                        <p className="text-sm font-bold text-teal-700 mb-2">행운 색상 & 방향</p>
+                        <div className="flex flex-wrap gap-2">
+                          {ys.colors.map((c: string) => (
+                            <span key={c} className="inline-flex items-center px-2.5 py-1 rounded-full bg-white border border-teal-200 text-sm text-teal-800 font-medium">{c}</span>
+                          ))}
+                          <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-white border border-teal-200 text-sm text-teal-800 font-medium">{ys.direction}</span>
+                        </div>
+                      </div>
+                      <div className="bg-green-500/5 border border-green-500/10 rounded-xl p-3">
+                        <p className="text-sm font-bold text-green-700 mb-2">도움이 되는 음식</p>
+                        <div className="flex flex-wrap gap-2">
+                          {ys.foods.map((f: string) => (
+                            <span key={f} className="inline-flex items-center px-2.5 py-1 rounded-full bg-white border border-green-200 text-sm text-green-800 font-medium">{f}</span>
+                          ))}
+                        </div>
+                      </div>
+                      <div className="bg-blue-500/5 border border-blue-500/10 rounded-xl p-3">
+                        <p className="text-sm font-bold text-blue-700 mb-2">추천 활동</p>
+                        <div className="flex flex-wrap gap-2">
+                          {ys.activities.map((a: string) => (
+                            <span key={a} className="inline-flex items-center px-2.5 py-1 rounded-full bg-white border border-blue-200 text-sm text-blue-800 font-medium">{a}</span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              </section>
+            );
+          })()}
 
  {/* 4. 행운 아이템 */}
  <section className="space-y-3">
@@ -756,11 +871,11 @@ export default function LifelongSaju() {
  <div className="w-8 h-8 rounded-lg bg-cyan-500/20 flex items-center justify-center">
  <Baby className="w-4 h-4 text-cyan-600" />
  </div>
- <h2 className="text-lg font-bold text-[#1a1a18]">{fortunes.earlyLife.title}</h2>
+ <h2 className="text-lg font-bold text-[#1a1a18]">{fortunes.earlyLife.title}<span className="ml-1.5 text-sm font-medium text-[#8b95a1]">(0~30세)</span></h2>
  </div>
  <Card className="rounded-2xl overflow-hidden" data-result-card>
  <CardContent className="p-4">
- <div className="text-base md:text-sm text-[#1a1a18] leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(cleanAIContent(fortunes.earlyLife.content))}</div>
+ <div className="text-base text-[#1a1a18] leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(cleanAIContent(fortunes.earlyLife.content))}</div>
  </CardContent>
  </Card>
  </motion.section>
@@ -778,11 +893,11 @@ export default function LifelongSaju() {
  <div className="w-8 h-8 rounded-lg bg-indigo-500/20 flex items-center justify-center">
  <TrendingUp className="w-4 h-4 text-indigo-600" />
  </div>
- <h2 className="text-lg font-bold text-[#1a1a18]">{fortunes.midLife.title}</h2>
+ <h2 className="text-lg font-bold text-[#1a1a18]">{fortunes.midLife.title}<span className="ml-1.5 text-sm font-medium text-[#8b95a1]">(30~55세)</span></h2>
  </div>
  <Card className="rounded-2xl overflow-hidden" data-result-card>
  <CardContent className="p-4">
- <div className="text-base md:text-sm text-[#1a1a18] leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(cleanAIContent(fortunes.midLife.content))}</div>
+ <div className="text-base text-[#1a1a18] leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(cleanAIContent(fortunes.midLife.content))}</div>
  </CardContent>
  </Card>
  </motion.section>
@@ -800,11 +915,11 @@ export default function LifelongSaju() {
  <div className="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center">
  <Sunset className="w-4 h-4 text-amber-600" />
  </div>
- <h2 className="text-lg font-bold text-[#1a1a18]">{fortunes.lateLife.title}</h2>
+ <h2 className="text-lg font-bold text-[#1a1a18]">{fortunes.lateLife.title}<span className="ml-1.5 text-sm font-medium text-[#8b95a1]">(55세~)</span></h2>
  </div>
  <Card className="rounded-2xl overflow-hidden" data-result-card>
  <CardContent className="p-4">
- <div className="text-base md:text-sm text-[#1a1a18] leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(cleanAIContent(fortunes.lateLife.content))}</div>
+ <div className="text-base text-[#1a1a18] leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(cleanAIContent(fortunes.lateLife.content))}</div>
  </CardContent>
  </Card>
  </motion.section>
@@ -826,7 +941,7 @@ export default function LifelongSaju() {
  </div>
  <Card className="rounded-2xl overflow-hidden" data-result-card>
  <CardContent className="p-4">
- <div className="text-base md:text-sm text-[#1a1a18] leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(cleanAIContent(fortunes.wealth.content))}</div>
+ <div className="text-base text-[#1a1a18] leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(cleanAIContent(fortunes.wealth.content))}</div>
  </CardContent>
  </Card>
  </motion.section>
@@ -848,11 +963,33 @@ export default function LifelongSaju() {
  </div>
  <Card className="rounded-2xl overflow-hidden" data-result-card>
  <CardContent className="p-4">
- <div className="text-base md:text-sm text-[#1a1a18] leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(cleanAIContent(fortunes.career.content))}</div>
+ <div className="text-base text-[#1a1a18] leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(cleanAIContent(fortunes.career.content))}</div>
  </CardContent>
  </Card>
  </motion.section>
  )}
+
+          {/* 2026년 병오년 운세 */}
+          {yearly2026Fortune && (
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.55 }}
+              className="space-y-3"
+            >
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-orange-500/20 flex items-center justify-center">
+                  <Flame className="w-4 h-4 text-orange-600" />
+                </div>
+                <h2 className="text-lg font-bold text-[#1a1a18]">2026년 병오년 운세</h2>
+              </div>
+              <Card className="rounded-2xl overflow-hidden" data-result-card>
+                <CardContent className="p-4">
+                  <div className="text-base text-[#1a1a18] leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(yearly2026Fortune.content)}</div>
+                </CardContent>
+              </Card>
+            </motion.section>
+          )}
 
  {/* 연애/결혼운 */}
  {loveFortune && (
@@ -870,7 +1007,7 @@ export default function LifelongSaju() {
  </div>
  <Card className="rounded-2xl overflow-hidden" data-result-card>
  <CardContent className="p-4">
- <div className="text-base md:text-sm text-[#1a1a18] leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(loveFortune.content)}</div>
+ <div className="text-base text-[#1a1a18] leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(loveFortune.content)}</div>
  </CardContent>
  </Card>
  </motion.section>
@@ -892,7 +1029,7 @@ export default function LifelongSaju() {
  </div>
  <Card className="rounded-2xl overflow-hidden" data-result-card>
  <CardContent className="p-4">
- <div className="text-base md:text-sm text-[#1a1a18] leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(healthFortune.content)}</div>
+ <div className="text-base text-[#1a1a18] leading-relaxed whitespace-pre-line">{autoLinkKeywordsToJSX(healthFortune.content)}</div>
  </CardContent>
  </Card>
  </motion.section>
@@ -910,10 +1047,10 @@ export default function LifelongSaju() {
  </div>
  <Card className="rounded-2xl overflow-hidden" data-result-card>
  <CardContent className="p-4">
- <p className="text-sm md:text-xs text-[#999891] mb-2">
+ <p className="text-sm text-[#999891] mb-2">
  일주: {pillarReading(result.dayPillar.stem, result.dayPillar.branch)}
  </p>
- <p className="text-base md:text-sm text-[#1a1a18] leading-relaxed">
+ <p className="text-base text-[#1a1a18] leading-relaxed">
  {(() => {
  const stem = result.dayPillar.stem;
  const branch = result.dayPillar.branch;
