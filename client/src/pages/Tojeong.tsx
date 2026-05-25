@@ -53,7 +53,7 @@ export default function Tojeong() {
     defaultValues: {
       name: "",
       gender: "male",
-      birthDate: "2000-01-01",
+      birthDate: "",
       calendarType: "lunar", // 음력 기본값
       isLeapMonth: false,
     },
@@ -88,7 +88,7 @@ export default function Tojeong() {
         form.reset({
           ...form.getValues(),
           ...rest,
-          birthDate: /^\d{4}-\d{2}-\d{2}$/.test(rest.birthDate) ? rest.birthDate : form.getValues().birthDate || "2000-01-01",
+          birthDate: /^\d{4}-\d{2}-\d{2}$/.test(rest.birthDate) ? rest.birthDate : form.getValues().birthDate || "",
         });
         setTimeout(() => setInitialLoadDone(true), 100);
         return;

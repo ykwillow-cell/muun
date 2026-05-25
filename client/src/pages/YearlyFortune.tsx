@@ -255,7 +255,7 @@ export default function YearlyFortune() {
  defaultValues: {
  name: "",
  gender: "male",
- birthDate: "2000-01-01",
+ birthDate: "",
  birthTime: "12:00",
  birthTimeUnknown: false,
  calendarType: "solar",
@@ -285,7 +285,7 @@ export default function YearlyFortune() {
  }
  // birthDate 유효성 검사 - YYYY-MM-DD 형식이 아니면 기본값 사용
  if (!/^\d{4}-\d{2}-\d{2}$/.test(birthDateStr)) {
-   birthDateStr = "2000-01-01";
+   birthDateStr = "";
  }
  const [year, month, day] = birthDateStr.split('-').map(Number);
  const birthDateObj = new Date(year, month - 1, day);
@@ -326,7 +326,7 @@ export default function YearlyFortune() {
  const parsed = JSON.parse(savedData);
  const safeData = {
  ...parsed,
- birthDate: /^\d{4}-\d{2}-\d{2}$/.test(parsed.birthDate) ? parsed.birthDate : "2000-01-01",
+ birthDate: /^\d{4}-\d{2}-\d{2}$/.test(parsed.birthDate) ? parsed.birthDate : "",
  birthTime: /^\d{2}:\d{2}$/.test(parsed.birthTime) ? parsed.birthTime : "12:00",
  };
  form.reset(safeData);

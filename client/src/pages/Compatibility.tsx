@@ -458,13 +458,13 @@ export default function Compatibility() {
  defaultValues: {
  name1: "",
  gender1: "male",
- birthDate1: "2000-01-01",
+ birthDate1: "",
  birthTime1: "12:30",
  birthTimeUnknown1: false,
  calendarType1: "solar",
  name2: "",
  gender2: undefined, // 4단계: 기본값 미선택
- birthDate2: "2000-01-01",
+ birthDate2: "",
  birthTime2: "12:30",
  birthTimeUnknown2: false,
  calendarType2: "solar",
@@ -478,13 +478,13 @@ export default function Compatibility() {
  form.reset({
  name1: parsed.name || "",
  gender1: parsed.gender || "male",
- birthDate1: parsed.birthDate || "2000-01-01",
+ birthDate1: parsed.birthDate || "",
  birthTime1: parsed.birthTime || "12:30",
  birthTimeUnknown1: false,
  calendarType1: parsed.calendarType || "solar",
  name2: "",
  gender2: undefined, // 4단계: 기본값 미선택
- birthDate2: "2000-01-01",
+ birthDate2: "",
  birthTime2: "12:30",
  birthTimeUnknown2: false,
  calendarType2: "solar",

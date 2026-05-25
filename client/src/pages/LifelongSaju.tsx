@@ -153,7 +153,7 @@ export default function LifelongSaju() {
  defaultValues: {
  name: "",
  gender: "male",
- birthDate: "2000-01-01",
+ birthDate: "",
  birthTime: "12:30",
  birthTimeUnknown: false,
  calendarType: "solar",
@@ -161,6 +161,19 @@ export default function LifelongSaju() {
  isMarried: "no",
  },
  });
+
+
+  // 결과 화면일 때 RouteBanner 숨기기
+  useEffect(() => {
+    if (result) {
+      document.documentElement.setAttribute('data-hide-banner', '');
+    } else {
+      document.documentElement.removeAttribute('data-hide-banner');
+    }
+    return () => {
+      document.documentElement.removeAttribute('data-hide-banner');
+    };
+  }, [result]);
 
  // 생년월일·성별·음양력 변경 시 기존 결과 초기화
  const watchedBirthDate = form.watch("birthDate");
@@ -194,7 +207,7 @@ export default function LifelongSaju() {
  form.reset({
  ...form.getValues(),
  ...parsed,
- birthDate: /^\d{4}-\d{2}-\d{2}$/.test(parsed.birthDate) ? parsed.birthDate : form.getValues().birthDate || "2000-01-01",
+ birthDate: /^\d{4}-\d{2}-\d{2}$/.test(parsed.birthDate) ? parsed.birthDate : form.getValues().birthDate || "",
  birthTime: /^\d{2}:\d{2}$/.test(parsed.birthTime) ? parsed.birthTime : form.getValues().birthTime || "12:00",
  });
  setTimeout(() => setInitialLoadDone(true), 100);

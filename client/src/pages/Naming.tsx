@@ -488,7 +488,7 @@ export default function Naming() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       gender: "male",
-      birthDate: "2000-01-01",
+      birthDate: "",
       birthTime: "12:00",
       birthTimeUnknown: false,
       calendarType: "solar",

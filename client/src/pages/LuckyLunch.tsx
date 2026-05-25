@@ -46,7 +46,7 @@ export default function LuckyLunch() {
     defaultValues: {
       name: "",
       gender: "male",
-      birthDate: "2000-01-01",
+      birthDate: "",
       birthTime: "12:30",
       birthTimeUnknown: false,
       calendarType: "solar",
@@ -61,7 +61,7 @@ export default function LuckyLunch() {
       form.reset({
         name: parsed.name || "",
         gender: parsed.gender || "male",
-        birthDate: parsed.birthDate || "2000-01-01",
+        birthDate: parsed.birthDate || "",
         birthTime: parsed.birthTime || "12:30",
         birthTimeUnknown: false,
         calendarType: parsed.calendarType || "solar",

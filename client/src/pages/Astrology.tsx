@@ -189,7 +189,7 @@ const Astrology: React.FC = () => {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      birthDate: "2000-01-01",
+      birthDate: "",
       birthTime: "12:00",
       birthTimeUnknown: false,
       birthCity: "서울",

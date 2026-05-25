@@ -364,7 +364,7 @@ export default function DailyFortune() {
     defaultValues: {
       name: "",
       gender: "male",
-      birthDate: "2000-01-01",
+      birthDate: "",
       calendarType: "solar",
       isLeapMonth: false,
     },
@@ -399,7 +399,7 @@ export default function DailyFortune() {
         form.reset({
           name: parsed.name || "",
           gender: parsed.gender || "male",
-          birthDate: parsed.birthDate || "2000-01-01",
+          birthDate: parsed.birthDate || "",
           calendarType: parsed.calendarType || "solar",
           isLeapMonth: parsed.isLeapMonth || false,
         });
