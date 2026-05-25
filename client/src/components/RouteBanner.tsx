@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'wouter';
 import {
   ArrowRight,
@@ -213,9 +214,23 @@ function resolveBannerMeta(path: string) {
 
 export default function RouteBanner() {
   const [location] = useLocation();
+  const [hidden, setHidden] = useState(
+    () => document.documentElement.hasAttribute('data-hide-banner')
+  );
+
+  useEffect(() => {
+    const el = document.documentElement;
+    // 결과 화면 진입/이탈 시 data-hide-banner attribute 변화 감지
+    const observer = new MutationObserver(() => {
+      setHidden(el.hasAttribute('data-hide-banner'));
+    });
+    observer.observe(el, { attributes: true, attributeFilter: ['data-hide-banner'] });
+    return () => observer.disconnect();
+  }, []);
+
   const meta = resolveBannerMeta(location);
 
-  if (!meta) return null;
+  if (!meta || hidden) return null;
 
   const { Icon } = meta;
 
