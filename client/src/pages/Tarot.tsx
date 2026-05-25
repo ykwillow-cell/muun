@@ -148,7 +148,7 @@ export default function Tarot() {
   }, [shuffledDeck]);
 
   return (
-    <div className="mu-subpage-screen min-h-screen text-foreground pb-20 antialiased overflow-x-hidden">
+    <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-20 antialiased overflow-x-hidden">
       <Helmet>
         <title>무료 타로 상담 - 회원가입 없이 무료로 | 무운 (MuUn)</title>
         <meta name="description" content="회원가입 없이 바로 시작하는 무료 타로 상담. 고민되는 문제에 대한 해답을 개인정보 저장 없이 100% 무료로 확인하세요." />
@@ -168,7 +168,7 @@ export default function Tarot() {
 
       {/* ── 헤더 ── */}
       <header className="mu-subpage-header sticky top-[82px] z-50 border-b border-black/[0.06]"
-        style={{ background: step === 'shuffle' ? 'rgba(15,10,46,0.96)' : 'rgba(255,255,255,0.92)' }}>
+        style={{ background: step === "shuffle" ? "rgba(15,10,46,0.96)" : "rgba(255,255,255,0.94)", borderColor: step === "shuffle" ? "rgba(255,255,255,0.08)" : undefined }}>
         <div className="w-full px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
             {step !== 'input' ? (
@@ -202,6 +202,7 @@ export default function Tarot() {
         </div>
       </header>
 
+      <main className="relative z-10 w-full">
       <AnimatePresence mode="wait">
 
         {/* ════════════════════════════════
@@ -593,6 +594,7 @@ export default function Tarot() {
         )}
 
       </AnimatePresence>
+      </main>
 
       <Helmet>
         <title>타로 상담소 | 무운(MUUN) - 온라인 운세</title>
