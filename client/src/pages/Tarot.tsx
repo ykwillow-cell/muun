@@ -167,7 +167,7 @@ export default function Tarot() {
       </Helmet>
 
       {/* ── 헤더 ── */}
-      <header className="mu-subpage-header sticky top-[82px] z-50 bg-white border-b border-black/[0.06]">
+      <header className="relative z-50 bg-white border-b border-black/[0.06]" style={{ boxShadow: "0 1px 0 rgba(0,0,0,0.06)" }}>
         <div className="w-full px-4 h-14 flex items-center justify-between">
           <div className="flex items-center">
             {step !== 'input' ? (
