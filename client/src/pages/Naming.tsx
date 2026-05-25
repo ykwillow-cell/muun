@@ -771,13 +771,13 @@ export default function Naming() {
                     >
                       <ToggleGroupItem
                         value="male"
-                        className="h-full rounded-lg data-[state=on]:bg-[#6B5FFF] data-[state=on]:text-[#191F28] text-[#4E5968] transition-all font-medium text-sm"
+                        className="h-full rounded-lg data-[state=on]:bg-[#6B5FFF] data-[state=on]:text-white text-[#4E5968] transition-all font-medium text-sm"
                       >
                         남성
                       </ToggleGroupItem>
                       <ToggleGroupItem
                         value="female"
-                        className="h-full rounded-lg data-[state=on]:bg-[#6B5FFF] data-[state=on]:text-[#191F28] text-[#4E5968] transition-all font-medium text-sm"
+                        className="h-full rounded-lg data-[state=on]:bg-[#6B5FFF] data-[state=on]:text-white text-[#4E5968] transition-all font-medium text-sm"
                       >
                         여성
                       </ToggleGroupItem>
@@ -838,13 +838,13 @@ export default function Naming() {
                     >
                       <ToggleGroupItem
                         value="solar"
-                        className="h-full rounded-lg data-[state=on]:bg-[#6B5FFF] data-[state=on]:text-[#191F28] text-[#4E5968] transition-all font-medium text-sm"
+                        className="h-full rounded-lg data-[state=on]:bg-[#6B5FFF] data-[state=on]:text-white text-[#4E5968] transition-all font-medium text-sm"
                       >
                         양력
                       </ToggleGroupItem>
                       <ToggleGroupItem
                         value="lunar"
-                        className="h-full rounded-lg data-[state=on]:bg-[#6B5FFF] data-[state=on]:text-[#191F28] text-[#4E5968] transition-all font-medium text-sm"
+                        className="h-full rounded-lg data-[state=on]:bg-[#6B5FFF] data-[state=on]:text-white text-[#4E5968] transition-all font-medium text-sm"
                       >
                         음력
                       </ToggleGroupItem>
