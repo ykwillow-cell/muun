@@ -28,7 +28,8 @@ function ToggleGroup({
       data-variant={variant}
       data-size={size}
       className={cn(
-        "group/toggle-group flex w-fit items-center rounded-md data-[variant=outline]:shadow-xs",
+        // items-stretch: 아이템이 컨테이너 높이에 맞게 늘어남 (items-center 제거)
+        "group/toggle-group flex w-fit items-stretch rounded-md data-[variant=outline]:shadow-xs",
         className
       )}
       {...props}
@@ -60,7 +61,9 @@ function ToggleGroupItem({
           variant: context.variant || variant,
           size: context.size || size,
         }),
-        "min-w-0 flex-1 shrink-0 rounded-none shadow-none first:rounded-l-md last:rounded-r-md focus:z-10 focus-visible:z-10 data-[variant=outline]:border-l-0 data-[variant=outline]:first:border-l",
+        // h-auto: toggleVariants의 h-9를 무효화 → 부모 stretch에 의해 높이 결정
+        // self-stretch: 부모가 items-center여도 이 아이템은 항상 늘어남
+        "min-w-0 flex-1 shrink-0 rounded-none shadow-none first:rounded-l-md last:rounded-r-md focus:z-10 focus-visible:z-10 data-[variant=outline]:border-l-0 data-[variant=outline]:first:border-l h-auto self-stretch",
         className
       )}
       {...props}
