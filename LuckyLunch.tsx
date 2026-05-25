@@ -42,12 +42,12 @@ export default function LuckyLunch() {
   // 결과 화면일 때 RouteBanner 숨기기
   useEffect(() => {
     if (showResult) {
-      document.documentElement.setAttribute('data-hide-banner', '');
+      window.dispatchEvent(new Event('muun:banner:hide'));
     } else {
-      document.documentElement.removeAttribute('data-hide-banner');
+      window.dispatchEvent(new Event('muun:banner:show'));
     }
     return () => {
-      document.documentElement.removeAttribute('data-hide-banner');
+      window.dispatchEvent(new Event('muun:banner:show'));
     };
   }, [showResult]);
 
