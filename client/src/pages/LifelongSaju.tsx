@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from 'react';
+import RelatedServices from '@/components/RelatedServices';
 import { useCanonical } from '@/lib/use-canonical';
 import { setLifelongSajuOGTags } from '@/lib/og-tags';
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -1134,7 +1135,16 @@ export default function LifelongSaju() {
  </div>
  </div>
  {/* 콘텐츠 추천 섹션 */}
- <RecommendedContent />
+       <RelatedServices
+        title="평생사주와 함께 보면 좋은 서비스"
+        services={[
+          { href: '/daily-fortune', emoji: '📅', label: '오늘의 운세', description: '오늘 하루의 구체적인 운세도 함께 확인해보세요.' },
+          { href: '/yearly-fortune', emoji: '📆', label: '신년운세', description: '올해의 운 흐름을 더 자세히 살펴보세요.' },
+          { href: '/compatibility', emoji: '💞', label: '궁합', description: '나의 사주를 기반으로 인연 운도 분석해보세요.' },
+          { href: '/fortune-dictionary', emoji: '📖', label: '운세 사전', description: '결과에 나온 용어가 궁금하다면 사전에서 바로 확인하세요.' },
+        ]}
+      />
+          <RecommendedContent />
  </motion.div>
  </main>
  </div>

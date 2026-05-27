@@ -238,14 +238,14 @@ export default function DreamDetail() {
       <section className="mu-container-reading">
         <CallToAction variant="daily" />
         <RelatedServices
-          title="꿈해몽과 함께 보면 좋은 서비스"
-          services={[
-            { href: '/daily-fortune', label: '오늘의 운세', description: '오늘 하루의 흐름을 빠르게 확인할 수 있습니다.', emoji: '☀️' },
-            { href: '/lifelong-saju', label: '평생사주', description: '타고난 기질과 운의 큰 흐름을 함께 보면 해석 폭이 넓어집니다.', emoji: '🔮' },
-            { href: '/fortune-dictionary', label: '운세 사전', description: '꿈풀이에서 자주 보이는 상징과 용어를 정리해 보세요.', emoji: '📚' },
-            { href: '/guide', label: '운세 칼럼', description: '사주와 상징 해석에 관한 읽을거리를 더 깊게 살펴볼 수 있습니다.', emoji: '📝' },
-          ]}
-        />
+        title="꿈해몽 상세와 함께 보면 좋은 서비스"
+        services={[
+        { href: '/lifelong-saju', emoji: '🔮', label: '평생사주', description: '꿈에서 느낀 기운이 내 타고난 기질과 연결되는지 확인해보세요.' },
+        { href: '/fortune-dictionary', emoji: '📖', label: '운세 사전', description: '꿈 속 상징을 명리학 용어로 더 깊이 이해해보세요.' },
+        { href: '/compatibility', emoji: '💞', label: '궁합', description: '꿈에 특정 사람이 나왔다면 그 사람과의 궁합도 확인해보세요.' },
+        { href: '/yearly-fortune', emoji: '📆', label: '신년운세', description: '올해의 큰 운 흐름을 함께 확인해보세요.' },
+        ]}
+      />
       </section>
     </div>
   );

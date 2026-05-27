@@ -37,7 +37,7 @@ export function RelatedTermsSection({ currentTermId, currentTags = [], maxItems 
   return (
     <section className="my-10">
       <div className="mu-glass-panel p-5 sm:p-6">
-        <span className="mu-divider-text">Related terms</span>
+        <span className="mu-divider-text">연관 용어</span>
         <h3 className="mt-3 text-[22px] font-extrabold tracking-[-0.05em] text-slate-900">함께 보면 좋은 사전어</h3>
         <div className="mt-5 mu-auto-grid-220">
           {relatedTerms.map((term) => (

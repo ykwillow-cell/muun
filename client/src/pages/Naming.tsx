@@ -11,6 +11,7 @@
  */
 
 import { useState, useRef } from "react";
+import RelatedServices from '@/components/RelatedServices';
 import { useCanonical } from "@/lib/use-canonical";
 import { Helmet } from "react-helmet-async";
 import { motion, AnimatePresence } from "framer-motion";
@@ -1436,6 +1437,16 @@ export default function Naming() {
           header { display: none !important; }
         }
       `}</style>
+      <RelatedServices
+        title="작명과 함께 보면 좋은 서비스"
+        services={[
+          { href: '/lifelong-saju', emoji: '🔮', label: '평생사주', description: '이름과 함께 타고난 기질과 사주 흐름도 확인해보세요.' },
+          { href: '/compatibility', emoji: '💞', label: '궁합', description: '이름 에너지가 맞는 파트너를 궁합으로 찾아보세요.' },
+          { href: '/fortune-dictionary', emoji: '📖', label: '운세 사전', description: '작명에 활용되는 오행과 음양 개념을 용어 사전에서 확인하세요.' },
+          { href: '/manselyeok', emoji: '📅', label: '만세력', description: '정확한 생년월일 기반 정보를 만세력으로 확인해보세요.' },
+        ]}
+      />
+
     </div>
   );
 }

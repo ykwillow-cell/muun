@@ -1,53 +1,102 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useCanonical } from '@/lib/use-canonical';
-import { Search, ChevronRight, BookMarked, Hash, Sparkles } from 'lucide-react';
-import { useLocation, Link } from 'wouter';
+import { Search, X, BookOpen, Moon, Heart, Newspaper } from 'lucide-react';
+import { useLocation, Link, useRoute } from 'wouter';
 import { DICTIONARY_INDEX } from '@/generated/content-snapshots';
 
 const categories = [
-  { id: 'basic', label: '사주 기초' },
-  { id: 'stem', label: '천간' },
-  { id: 'branch', label: '지지' },
-  { id: 'ten-stem', label: '십신' },
-  { id: 'sipsin', label: '십신' },
-  { id: 'evil-spirit', label: '신살' },
-  { id: 'luck-flow', label: '운의 흐름' },
-  { id: 'relation', label: '관계 · 궁합' },
-  { id: 'concept', label: '운세 개념' },
-  { id: 'wealth', label: '재물 · 직업' },
-  { id: 'health', label: '건강 · 신체' },
-  { id: 'other', label: '기타' },
+  { id: 'basic',        label: '사주 기초',   emoji: '☯️' },
+  { id: 'stem',         label: '천간',         emoji: '🌿' },
+  { id: 'branch',       label: '지지',         emoji: '🐉' },
+  { id: 'sipsin',       label: '십신',         emoji: '⚖️' },
+  { id: 'evil-spirit',  label: '신살',         emoji: '⚡' },
+  { id: 'luck-flow',    label: '운의 흐름',    emoji: '🌊' },
+  { id: 'relation',     label: '관계 · 궁합', emoji: '💞' },
+  { id: 'concept',      label: '운세 개념',    emoji: '🔮' },
+  { id: 'wealth',       label: '재물 · 직업', emoji: '💰' },
+  { id: 'health',       label: '건강 · 신체', emoji: '🌱' },
+  { id: 'other',        label: '기타',         emoji: '📌' },
 ] as const;
 
-const featuredKeywords = ['일주', '용신', '대운', '십신', '천간', '지지'] as const;
+// 카테고리별 사이드바 + 배지 색상
+const categoryStyle: Record<string, { side: string; bg: string; text: string }> = {
+  'basic':       { side: '#a78bfa', bg: 'bg-violet-50',  text: 'text-violet-700' },
+  'stem':        { side: '#6ee7b7', bg: 'bg-emerald-50', text: 'text-emerald-700' },
+  'branch':      { side: '#93c5fd', bg: 'bg-blue-50',    text: 'text-blue-700' },
+  'ten-stem':    { side: '#818cf8', bg: 'bg-indigo-50',  text: 'text-indigo-700' },
+  'sipsin':      { side: '#818cf8', bg: 'bg-indigo-50',  text: 'text-indigo-700' },
+  'evil-spirit': { side: '#fda4af', bg: 'bg-rose-50',    text: 'text-rose-700' },
+  'luck-flow':   { side: '#67e8f9', bg: 'bg-cyan-50',    text: 'text-cyan-700' },
+  'relation':    { side: '#f9a8d4', bg: 'bg-pink-50',    text: 'text-pink-700' },
+  'concept':     { side: '#d8b4fe', bg: 'bg-purple-50',  text: 'text-purple-700' },
+  'wealth':      { side: '#fcd34d', bg: 'bg-amber-50',   text: 'text-amber-700' },
+  'health':      { side: '#5eead4', bg: 'bg-teal-50',    text: 'text-teal-700' },
+  'other':       { side: '#cbd5e1', bg: 'bg-slate-100',  text: 'text-slate-600' },
+};
+
+// 하단 서비스 내부링크 카드
+const serviceLinks = [
+  { href: '/lifelong-saju', emoji: '🔮', label: '평생사주', desc: '용어가 내 사주에서 어떻게 나타나는지 직접 확인' },
+  { href: '/dream',         emoji: '🌙', label: '꿈해몽',   desc: '꿈 속 상징을 사주 관점으로 풀어보기' },
+  { href: '/compatibility', emoji: '💞', label: '궁합',     desc: '관계 운과 궁합을 명리학으로 분석' },
+  { href: '/guide',         emoji: '📝', label: '운세 칼럼', desc: '용어가 실생활과 어떻게 연결되는지 칼럼으로' },
+] as const;
 
 export default function FortuneDictionary() {
   useCanonical('/fortune-dictionary');
   const [location] = useLocation();
 
-  const initialCategory = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('category') : null;
-  const initialQuery = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('q') || '' : '';
+  const params = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(params?.get('category') || null);
+  const [searchQuery, setSearchQuery] = useState(params?.get('q') || '');
 
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(initialCategory);
-  const [searchQuery, setSearchQuery] = useState(initialQuery);
-
+  // URL 파라미터 변경 감지 (다른 페이지에서 링크로 들어올 때)
   useEffect(() => {
-    const params = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
-    setSelectedCategory(params?.get('category') || null);
-    setSearchQuery(params?.get('q') || '');
+    const p = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
+    setSelectedCategory(p?.get('category') || null);
+    setSearchQuery(p?.get('q') || '');
   }, [location]);
+
+  // 카테고리·검색어 변경 시 URL 동기화
+  const applyCategory = (cat: string | null) => {
+    setSelectedCategory(cat);
+    if (typeof window !== 'undefined') {
+      const p = new URLSearchParams(window.location.search);
+      cat ? p.set('category', cat) : p.delete('category');
+      p.delete('q');
+      window.history.pushState(null, '', `${window.location.pathname}${p.toString() ? '?' + p.toString() : ''}`);
+    }
+  };
+
+  const applySearch = (q: string) => {
+    setSearchQuery(q);
+    if (typeof window !== 'undefined') {
+      const p = new URLSearchParams(window.location.search);
+      q ? p.set('q', q) : p.delete('q');
+      window.history.pushState(null, '', `${window.location.pathname}${p.toString() ? '?' + p.toString() : ''}`);
+    }
+  };
 
   const filteredEntries = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
-    let results = selectedCategory ? DICTIONARY_INDEX.filter((entry) => entry.category === selectedCategory) : [...DICTIONARY_INDEX];
-
+    let results = selectedCategory
+      ? DICTIONARY_INDEX.filter((e) => {
+          const cat = e.category === 'ten-stem' ? 'sipsin' : e.category;
+          return cat === selectedCategory;
+        })
+      : [...DICTIONARY_INDEX];
     if (q) {
-      results = results.filter((entry) => [entry.title, entry.subtitle || '', entry.summary, entry.originalMeaning, entry.modernInterpretation, entry.muunAdvice, ...(entry.tags || [])].join(' ').toLowerCase().includes(q));
+      results = results.filter((e) =>
+        [e.title, e.subtitle || '', e.summary, e.originalMeaning, e.modernInterpretation, e.muunAdvice, ...(e.tags || [])]
+          .join(' ').toLowerCase().includes(q),
+      );
     }
-
     return results;
   }, [selectedCategory, searchQuery]);
+
+  const hasFilter = !!searchQuery || selectedCategory !== null;
+  const categoryLabel = selectedCategory ? (categories.find((c) => c.id === selectedCategory)?.label ?? '선택됨') : null;
 
   return (
     <div className="min-h-screen mu-page-bg pb-16">
@@ -63,107 +112,167 @@ export default function FortuneDictionary() {
         <meta property="og:type" content="website" />
       </Helmet>
 
-      <section className="mu-hero-shell">
-        <div className="mu-container-narrow px-4 pb-8 pt-5 text-white">
-          <div className="grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))] items-end">
-            <div>
-              <span className="mu-kicker">Fortune glossary</span>
-              <h1 className="mt-4 text-[34px] font-extrabold leading-[1.1] tracking-[-0.06em] text-white">무운 운세 사전</h1>
-              <p className="mt-4 text-sm leading-7 text-white/80">
-                사주 명리학을 처음 보는 분도 이해할 수 있도록 용어를 짧고 선명하게 정리했습니다. 결과 화면에서 처음 보는 개념이 나와도 바로 찾아볼 수 있게 설계했습니다.
-              </p>
-              <div className="mt-5 flex flex-wrap gap-2">
-                <span className="mu-stat-pill"><BookMarked size={14} /> 핵심 용어 정리</span>
-                <span className="mu-stat-pill"><Sparkles size={14} /> 결과 페이지와 내부 연결</span>
-              </div>
-              <div className="mt-6 p-5 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm">
-                <p className="text-sm leading-relaxed text-white/90">
-                  사주 명리학은 낯선 용어 때문에 어렵게 느껴질 수 있지만, 그 원리는 우리 삶의 자연스러운 흐름을 담고 있습니다. 무운의 <strong>운세 사전</strong>은 복잡한 한자어와 전문 용어를 현대적인 언어로 재해석하여 누구나 쉽게 이해할 수 있도록 정리했습니다. 
-                  <br /><br />
-                  천간과 지지의 기초부터 십신, 신살, 대운의 흐름까지. 사주 풀이 결과에서 마주친 궁금한 용어들을 여기서 바로 찾아보세요. 각 용어는 상세한 설명과 함께 실생활에서의 의미를 담고 있어 사주 공부의 훌륭한 길잡이가 되어줄 것입니다.
-                </p>
-              </div>
-            </div>
-
-            <div className="mu-auto-grid-180">
-              <div className="mu-soft-card p-4 text-slate-900">
-                <div className="text-xs font-bold uppercase tracking-[0.12em] text-slate-400">공개된 용어</div>
-                <div className="mt-3 text-[30px] font-extrabold tracking-[-0.06em] text-[#5648db]">{DICTIONARY_INDEX.length}</div>
-                <div className="mt-1 text-sm text-slate-500">천간·지지·십신·신살 등</div>
-              </div>
-              <div className="mu-soft-card p-4 text-slate-900">
-                <div className="text-xs font-bold uppercase tracking-[0.12em] text-slate-400">주요 분류</div>
-                <div className="mt-3 text-[30px] font-extrabold tracking-[-0.06em] text-[#5648db]">{new Set(DICTIONARY_INDEX.map((entry) => entry.category)).size}</div>
-                <div className="mt-1 text-sm text-slate-500">기초 개념부터 관계·재물 해석까지</div>
-              </div>
-            </div>
-          </div>
+      {/* ── sticky 검색 헤더 ── */}
+      <section className="sticky top-0 z-20 bg-[#f5f4ff]/95 backdrop-blur-md border-b border-[#6B5FFF]/10 px-4 pb-4 pt-[calc(var(--safe-area-top,0px)+44px)]">
+        <div className="flex items-center justify-between mb-3">
+          <h1 className="text-[22px] font-extrabold tracking-[-0.05em] text-[#1e2340]">운세 사전</h1>
+          <span className="text-xs font-semibold text-[#707797]">{DICTIONARY_INDEX.length}개 용어</span>
         </div>
+        <label className="relative block">
+          <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-[#707797]" aria-hidden="true" />
+          <input
+            type="text"
+            placeholder="용어 검색 (예: 역마살, 대운, 편재)"
+            value={searchQuery}
+            onChange={(e) => applySearch(e.target.value)}
+            className="h-11 w-full rounded-2xl border border-[#6B5FFF]/20 bg-white pl-10 pr-9 text-sm text-[#1e2340] placeholder:text-[#707797] outline-none shadow-sm transition focus:border-[#6B5FFF] focus:ring-4 focus:ring-[#6B5FFF]/10"
+          />
+          {searchQuery && (
+            <button
+              onClick={() => applySearch('')}
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1 text-[#707797] hover:text-[#1e2340]"
+              aria-label="검색어 지우기"
+            >
+              <X size={15} />
+            </button>
+          )}
+        </label>
       </section>
 
-      <section className="mu-container-narrow -mt-6 pb-6 relative z-10">
-        <div className="mu-glass-panel p-5 sm:p-6">
-          <label className="relative block">
-            <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" aria-hidden="true" />
-            <input
-              type="text"
-              placeholder="용어를 검색해보세요 (예: 역마살, 재성, 대운)"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="h-13 w-full rounded-2xl border border-slate-200 bg-white pl-12 pr-4 text-sm text-slate-900 shadow-sm outline-none transition focus:border-[#6B5FFF] focus:ring-4 focus:ring-[#6B5FFF]/10"
-            />
-          </label>
-
-          <div className="mt-4 flex gap-2 overflow-x-auto pb-1 no-scrollbar">
-            {featuredKeywords.map((term) => (
-              <button key={term} onClick={() => setSearchQuery(term)} className={`mu-chip whitespace-nowrap ${searchQuery === term ? 'mu-chip--active' : ''}`}>
-                #{term}
+      {/* ── 카테고리 그리드 (검색 중엔 숨김) ── */}
+      {!searchQuery && (
+        <section className="px-4 pt-4 pb-2">
+          <p className="mb-3 text-xs font-extrabold tracking-[.06em] text-[#5a4ddb]">카테고리 탐색</p>
+          <div className="grid grid-cols-4 gap-2">
+            {/* 전체 보기 — 가로 full */}
+            <button
+              onClick={() => applyCategory(null)}
+              className={`col-span-4 flex items-center justify-center gap-2 rounded-2xl border py-2.5 text-sm font-bold transition
+                ${selectedCategory === null
+                  ? 'border-[#6B5FFF] bg-[#6B5FFF] text-white shadow-[0_6px_16px_rgba(107,95,255,.28)]'
+                  : 'border-slate-200 bg-white/90 text-slate-600 hover:border-[#6B5FFF]/30'}`}
+            >
+              <span>📖</span> 전체 보기
+            </button>
+            {categories.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => applyCategory(cat.id)}
+                className={`flex flex-col items-center gap-1.5 rounded-2xl border py-3 text-center transition
+                  ${selectedCategory === cat.id
+                    ? 'border-[#6B5FFF] bg-[#6B5FFF] text-white shadow-[0_6px_16px_rgba(107,95,255,.28)]'
+                    : 'border-slate-200 bg-white/90 hover:border-[#6B5FFF]/30'}`}
+              >
+                <span className="text-xl leading-none">{cat.emoji}</span>
+                <span className={`text-[10px] font-bold leading-tight ${selectedCategory === cat.id ? 'text-white' : 'text-slate-600'}`}>
+                  {cat.label}
+                </span>
               </button>
             ))}
           </div>
+        </section>
+      )}
 
-          <div className="mt-5 flex gap-2 overflow-x-auto pb-1 no-scrollbar">
-            <button onClick={() => setSelectedCategory(null)} className={`mu-chip whitespace-nowrap ${selectedCategory === null ? 'mu-chip--active' : ''}`}>전체</button>
-            {categories.map((category) => (
-              <button key={category.id} onClick={() => setSelectedCategory(category.id)} className={`mu-chip whitespace-nowrap ${selectedCategory === category.id ? 'mu-chip--active' : ''}`}>
-                {category.label}
-              </button>
-            ))}
-          </div>
-        </div>
+      {/* ── 결과 헤더 ── */}
+      <section className="flex items-center justify-between px-4 pb-2 pt-3">
+        <p className="text-sm font-semibold text-slate-500">
+          {hasFilter ? (
+            <>
+              {categoryLabel && <span className="mr-1 font-bold text-[#5648db]">[{categoryLabel}]</span>}
+              {searchQuery && <span className="mr-1 font-bold text-slate-700">'{searchQuery}'</span>}
+              검색 결과 <span className="font-bold text-slate-900">{filteredEntries.length}</span>개
+            </>
+          ) : (
+            <>전체 <span className="font-bold text-slate-900">{filteredEntries.length}</span>개 용어</>
+          )}
+        </p>
+        {hasFilter && (
+          <button
+            onClick={() => { applySearch(''); applyCategory(null); }}
+            className="flex items-center gap-1 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-500 shadow-sm hover:border-[#6B5FFF]/30 hover:text-[#5648db]"
+          >
+            <X size={11} /> 초기화
+          </button>
+        )}
       </section>
 
-      <section className="mu-container-narrow pb-10">
+      {/* ── 카드 목록 ── */}
+      <section className="px-4 pb-6">
         {filteredEntries.length > 0 ? (
-          <div className="mu-auto-grid-220">
-            {filteredEntries.map((entry) => (
-              <Link key={entry.id} href={`/dictionary/${entry.slug}`} className="mu-link-card h-full p-5 text-left">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-[#6B5FFF]/10 text-[#5648db]">
-                    <Hash size={18} aria-hidden="true" />
+          <div className="flex flex-col gap-2.5">
+            {filteredEntries.map((entry) => {
+              const style = categoryStyle[entry.category] ?? categoryStyle['other'];
+              const catEmoji = categories.find((c) => c.id === entry.category || (entry.category === 'ten-stem' && c.id === 'sipsin'))?.emoji ?? '📌';
+              return (
+                <Link key={entry.id} href={`/dictionary/${entry.slug}`} className="flex overflow-hidden rounded-2xl border border-slate-200/80 bg-white/96 shadow-sm hover:-translate-y-0.5 hover:border-[#6B5FFF]/20 hover:shadow-md transition-all">
+                  {/* 카테고리 색상 사이드바 */}
+                  <div className="w-1 shrink-0" style={{ background: style.side }} />
+                  <div className="flex-1 min-w-0 px-4 py-3">
+                    {/* 뱃지 */}
+                    <button
+                      onClick={(e) => { e.preventDefault(); applyCategory(entry.category === 'ten-stem' ? 'sipsin' : entry.category); }}
+                      className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold ${style.bg} ${style.text} hover:opacity-80`}
+                    >
+                      {catEmoji} {entry.categoryLabel}
+                    </button>
+                    {/* 제목 */}
+                    <div className="mt-1 flex items-baseline gap-2">
+                      <span className="text-[18px] font-extrabold tracking-[-0.05em] text-slate-900">{entry.title}</span>
+                      {entry.subtitle && <span className="truncate text-[11px] font-semibold text-slate-400">{entry.subtitle}</span>}
+                    </div>
+                    {/* 설명 */}
+                    <p className="mt-1 line-clamp-2 text-[12px] leading-[1.7] text-slate-500">{entry.summary}</p>
+                    {/* 태그 — 클릭 시 검색 */}
+                    {entry.tags && entry.tags.length > 0 && (
+                      <div className="mt-2 flex flex-wrap gap-1.5">
+                        {entry.tags.slice(0, 3).map((tag) => (
+                          <button
+                            key={tag}
+                            onClick={(e) => { e.preventDefault(); applySearch(tag); }}
+                            className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-500 hover:bg-[#6B5FFF]/10 hover:text-[#5648db] transition-colors"
+                          >
+                            #{tag}
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                  <ChevronRight className="mt-1 h-5 w-5 text-slate-400" aria-hidden="true" />
-                </div>
-                <div className="mt-4 inline-flex rounded-full bg-[#6B5FFF]/10 px-2.5 py-1 text-[11px] font-bold text-[#5648db]">{entry.categoryLabel}</div>
-                <h2 className="mt-4 text-[20px] font-extrabold tracking-[-0.05em] text-slate-900">{entry.title}</h2>
-                {entry.subtitle && <p className="mt-1 line-clamp-2 text-sm font-semibold text-slate-400">{entry.subtitle}</p>}
-                <p className="mt-3 line-clamp-3 text-sm leading-6 text-slate-600">{entry.summary}</p>
-                {entry.tags && entry.tags.length > 0 && (
-                  <div className="mt-4 flex flex-wrap gap-1.5">
-                    {entry.tags.slice(0, 3).map((tag) => (
-                      <span key={tag} className="rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-semibold text-slate-500">#{tag}</span>
-                    ))}
-                  </div>
-                )}
-              </Link>
-            ))}
+                  <div className="flex items-center pr-3 text-slate-300 text-lg">›</div>
+                </Link>
+              );
+            })}
           </div>
         ) : (
-          <div className="mu-glass-panel px-6 py-12 text-center">
-            <h2 className="text-[22px] font-extrabold tracking-[-0.04em] text-slate-900">검색 결과가 없습니다</h2>
+          <div className="mu-glass-panel px-6 py-14 text-center">
+            <div className="text-4xl">🔍</div>
+            <h2 className="mt-4 text-[18px] font-extrabold tracking-[-0.04em] text-slate-900">검색 결과가 없습니다</h2>
             <p className="mt-2 text-sm leading-7 text-slate-500">다른 용어나 카테고리로 다시 찾아보세요.</p>
+            <button
+              onClick={() => { applySearch(''); applyCategory(null); }}
+              className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-[#6B5FFF] px-5 py-2.5 text-sm font-bold text-white shadow"
+            >
+              <X size={13} /> 초기화
+            </button>
           </div>
         )}
+      </section>
+
+      {/* ── 하단 서비스 내부링크 ── */}
+      <section className="px-4 pb-10">
+        <p className="mb-3 text-xs font-extrabold tracking-[.06em] text-[#5a4ddb]">이 사전과 함께 보면 좋은 서비스</p>
+        <div className="grid grid-cols-2 gap-2.5">
+          {serviceLinks.map((s) => (
+            <Link
+              key={s.href}
+              href={s.href}
+              className="flex flex-col gap-2 rounded-2xl border border-slate-200/80 bg-white/90 p-4 shadow-sm hover:-translate-y-0.5 hover:border-[#6B5FFF]/20 hover:shadow-md transition-all"
+            >
+              <span className="text-2xl">{s.emoji}</span>
+              <span className="text-[14px] font-extrabold tracking-[-0.04em] text-slate-900">{s.label}</span>
+              <span className="text-[11px] leading-[1.6] text-slate-500">{s.desc}</span>
+            </Link>
+          ))}
+        </div>
       </section>
     </div>
   );

@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useLocation } from 'wouter';
 import { Search, MoonStar, PawPrint, Users, Mountain, Box, Activity, Layers, Trophy, CheckCircle2, AlertCircle, ArrowUpRight } from 'lucide-react';
+import RelatedServices from '@/components/RelatedServices';
 import { useCanonical } from '@/lib/use-canonical';
 import { DREAM_INDEX } from '@/generated/content-snapshots';
 
@@ -200,6 +201,16 @@ export default function DreamInterpretation() {
           </div>
         )}
       </section>
+      <RelatedServices
+        title="꿈해몽과 함께 보면 좋은 서비스"
+        services={[
+          { href: '/lifelong-saju', emoji: '🔮', label: '평생사주', description: '꿈에서 느낀 기운이 내 사주와 어떻게 연결되는지 확인해보세요.' },
+          { href: '/daily-fortune', emoji: '📅', label: '오늘의 운세', description: '오늘의 전반적인 운의 흐름과 꿈 내용을 함께 비교해보세요.' },
+          { href: '/fortune-dictionary', emoji: '📖', label: '운세 사전', description: '꿈 속 상징을 명리학 용어로 더 깊이 이해해보세요.' },
+          { href: '/compatibility', emoji: '💞', label: '궁합', description: '꿈에 특정 사람이 나왔다면 궁합도 함께 확인해보세요.' },
+        ]}
+      />
+
     </div>
   );
 }

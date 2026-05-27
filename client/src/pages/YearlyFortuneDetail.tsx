@@ -1,3 +1,4 @@
+import RelatedServices from '@/components/RelatedServices';
 import { useParams, useLocation } from "wouter";
 import { Helmet } from "react-helmet-async";
 import { useEffect, useState } from "react";
@@ -268,6 +269,15 @@ export default function YearlyFortuneDetail() {
         <SajuGlossary />
 
         {/* 가이드 */}
+              <RelatedServices
+        title="신년운세 상세와 함께 보면 좋은 서비스"
+        services={[
+        { href: '/lifelong-saju', emoji: '🔮', label: '평생사주', description: '올해 운세의 바탕이 되는 타고난 기질까지 확인해보세요.' },
+        { href: '/daily-fortune', emoji: '📅', label: '오늘의 운세', description: '연간 흐름 안에서 오늘의 구체적인 운세를 확인하세요.' },
+        { href: '/fortune-dictionary', emoji: '📖', label: '운세 사전', description: '결과에 나온 사주 용어의 의미를 사전에서 찾아보세요.' },
+        { href: '/compatibility', emoji: '💞', label: '궁합', description: '올해의 인연운과 함께 궁합도 분석해보세요.' },
+        ]}
+      />
         <SajuGuide userName="" />
       </div>
     </div>

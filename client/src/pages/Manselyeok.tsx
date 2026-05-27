@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from "react";
+import RelatedServices from '@/components/RelatedServices';
 import { useCanonical } from '@/lib/use-canonical';
 import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
@@ -1047,6 +1048,16 @@ export default function Manselyeok() {
           )}
         </AnimatePresence>
       </main>
+      <RelatedServices
+        title="만세력과 함께 보면 좋은 서비스"
+        services={[
+          { href: '/lifelong-saju', emoji: '🔮', label: '평생사주', description: '만세력으로 확인한 사주팔자를 풀이로 연결해보세요.' },
+          { href: '/yearly-fortune', emoji: '📆', label: '신년운세', description: '올해의 세운이 내 사주에 어떤 영향을 미치는지 확인하세요.' },
+          { href: '/compatibility', emoji: '💞', label: '궁합', description: '두 사람의 사주를 기반으로 궁합을 분석해보세요.' },
+          { href: '/fortune-dictionary', emoji: '📖', label: '운세 사전', description: '천간, 지지, 십신 등 만세력 용어를 사전에서 확인하세요.' },
+        ]}
+      />
+
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import RelatedServices from '@/components/RelatedServices';
 import { useCanonical } from "@/lib/use-canonical";
 import { Helmet } from "react-helmet-async";
 import { motion, AnimatePresence } from "framer-motion";
@@ -418,6 +419,16 @@ export default function PastLife() {
         </AnimatePresence>
       </div>
       </main>
+      <RelatedServices
+        title="전생과 함께 보면 좋은 서비스"
+        services={[
+          { href: '/lifelong-saju', emoji: '🔮', label: '평생사주', description: '전생의 흔적이 이번 생 사주에 어떻게 나타나는지 확인해보세요.' },
+          { href: '/tarot', emoji: '🃏', label: '타로', description: '전생과 연결된 현재의 운을 타로 카드로도 읽어보세요.' },
+          { href: '/dream', emoji: '🌙', label: '꿈해몽', description: '전생과 연결된 꿈을 꿨다면 꿈해몽으로 더 깊이 풀어보세요.' },
+          { href: '/fortune-dictionary', emoji: '📖', label: '운세 사전', description: '전생과 인연 운에 관련된 사주 용어를 사전에서 확인하세요.' },
+        ]}
+      />
+
     </div>
   );
 }
