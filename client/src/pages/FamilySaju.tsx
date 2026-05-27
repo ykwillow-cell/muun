@@ -428,7 +428,7 @@ export default function FamilySaju() {
  {/* '시간 모름' 시 안내 라벨 */}
  {anyUnknownTime && (
  <div className="bg-primary/10 border-b border-primary/20 py-2 px-4 relative z-[60]">
- <p className="text-[10px] md:text-sm md:text-xs text-primary text-center font-medium">
+ <p className="text-xs md:text-sm md:text-xs text-primary text-center font-medium">
  태어난 시간을 모르는 구성원이 포함된 삼주 분석 결과입니다
  </p>
  </div>
@@ -530,7 +530,7 @@ export default function FamilySaju() {
  }}
  />
  </div>
- <span className="text-xs md:text-[10px] text-[#999891] block text-center mt-0.5">{ELEMENT_KOREAN[b.name] || b.name}</span>
+ <span className="text-xs text-[#999891] block text-center mt-0.5">{ELEMENT_KOREAN[b.name] || b.name}</span>
  </div>
  ))}
  </div>

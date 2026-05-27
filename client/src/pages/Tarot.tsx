@@ -236,7 +236,7 @@ export default function Tarot() {
                   <Sparkles className="w-3 h-3" style={{ color: 'rgba(255,255,255,0.8)' }} />
                   <span className="text-xs font-bold tracking-widest uppercase" style={{ color: 'rgba(255,255,255,0.8)' }}>Tarot Reading</span>
                 </div>
-                <h2 className="text-2xl font-black text-white leading-tight tracking-tight mb-2">
+                <h2 className="text-2xl font-bold text-white leading-tight tracking-tight mb-2">
                   카드가 말하는<br />당신의 이야기
                 </h2>
                 <p className="text-sm" style={{ color: 'rgba(255,255,255,0.65)' }}>
@@ -335,7 +335,7 @@ export default function Tarot() {
                       <img src={selectedCards[i].image} alt={selectedCards[i].korName} className="w-full h-full object-cover" />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
-                        <span className="text-2xl font-black" style={{ color: 'rgba(255,255,255,0.15)' }}>{i + 1}</span>
+                        <span className="text-2xl font-bold" style={{ color: 'rgba(255,255,255,0.15)' }}>{i + 1}</span>
                       </div>
                     )}
                   </div>
@@ -400,7 +400,7 @@ export default function Tarot() {
                               width: '24px', height: '24px', borderRadius: '50%',
                               background: '#7c3aed', color: 'white',
                               display: 'flex', alignItems: 'center', justifyContent: 'center',
-                              fontWeight: 900, fontSize: '12px',
+                              fontWeight: 700, fontSize: '12px',
                               boxShadow: '0 2px 8px rgba(0,0,0,0.5)',
                             }}>
                               {selectIndex + 1}
@@ -448,7 +448,7 @@ export default function Tarot() {
                               {isSelected && (
                                 <div className="absolute inset-0 flex items-center justify-center"
                                   style={{ background: 'rgba(124,58,237,0.4)', backdropFilter: 'blur(1px)' }}>
-                                  <div className="w-6 h-6 rounded-full flex items-center justify-center font-black text-xs text-white"
+                                  <div className="w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs text-white"
                                     style={{ background: '#7c3aed', boxShadow: '0 2px 8px rgba(0,0,0,0.4)' }}>
                                     {selectIndex + 1}
                                   </div>

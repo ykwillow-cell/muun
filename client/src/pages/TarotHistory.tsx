@@ -160,7 +160,7 @@ export default function TarotHistory() {
                         </div>
                         <div className="flex gap-1">
                           {reading.selectedCards.slice(0, 3).map((card, i) => (
-                            <div key={i} className="text-[10px] px-2 py-1 bg-primary/10 rounded text-primary font-bold truncate">
+                            <div key={i} className="text-xs px-2 py-1 bg-primary/10 rounded text-primary font-bold truncate">
                               {card.korName}
                             </div>
                           ))}
@@ -227,7 +227,7 @@ export default function TarotHistory() {
                                 />
                               </div>
                               <div className="text-center">
-                                <span className="text-[10px] text-primary font-bold uppercase tracking-widest block mb-1">
+                                <span className="text-xs text-primary font-bold uppercase tracking-widest block mb-1">
                                   {index === 0 ? "Past" : index === 1 ? "Present" : "Future"}
                                 </span>
                                 <h4 className="text-sm font-bold text-[#1a1a18]">{card.korName}</h4>

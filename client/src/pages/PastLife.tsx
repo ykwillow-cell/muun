@@ -322,14 +322,14 @@ export default function PastLife() {
                   <span className="text-xs font-bold uppercase tracking-widest text-foreground/40">
                     전생 탐색 결과
                   </span>
-                  <span className={`text-sm font-black ${result.elementColor}`}>
+                  <span className={`text-sm font-bold ${result.elementColor}`}>
                     {elementEmoji} {result.element}의 기운
                   </span>
                 </div>
 
                 {/* 이름 & 신분 */}
                 <div className="text-center mb-6">
-                  <div className="text-3xl font-black mb-1">{result.name}</div>
+                  <div className="text-3xl font-bold mb-1">{result.name}</div>
                   <div className={`text-base font-bold ${result.elementColor} mb-1`}>
                     {result.identity}
                   </div>
@@ -341,14 +341,14 @@ export default function PastLife() {
                   <div className="rounded-xl bg-[#F7F5F3] border border-black/[0.06] p-3">
                     <div className="flex items-center gap-1.5 mb-1">
                       <Scroll className="w-3.5 h-3.5 text-foreground/40" />
-                      <span className="text-[10px] text-foreground/40 uppercase tracking-widest font-bold">시대</span>
+                      <span className="text-xs text-foreground/40 uppercase tracking-widest font-bold">시대</span>
                     </div>
                     <div className="text-sm font-bold">{result.era}</div>
                   </div>
                   <div className="rounded-xl bg-[#F7F5F3] border border-black/[0.06] p-3">
                     <div className="flex items-center gap-1.5 mb-1">
                       <Globe className="w-3.5 h-3.5 text-foreground/40" />
-                      <span className="text-[10px] text-foreground/40 uppercase tracking-widest font-bold">지역</span>
+                      <span className="text-xs text-foreground/40 uppercase tracking-widest font-bold">지역</span>
                     </div>
                     <div className="text-sm font-bold">{result.country}</div>
                   </div>
@@ -358,7 +358,7 @@ export default function PastLife() {
                 <div className="rounded-xl bg-[#F7F5F3] border border-black/[0.06] p-4 mb-4">
                   <div className="flex items-center gap-1.5 mb-2">
                     <BookOpen className="w-3.5 h-3.5 text-foreground/40" />
-                    <span className="text-[10px] text-foreground/40 uppercase tracking-widest font-bold">전생 이야기</span>
+                    <span className="text-xs text-foreground/40 uppercase tracking-widest font-bold">전생 이야기</span>
                   </div>
                   <p className="text-sm text-foreground/80 leading-relaxed">{result.story}</p>
                 </div>
@@ -367,7 +367,7 @@ export default function PastLife() {
                 <div className="rounded-xl bg-[#F7F5F3] border border-black/[0.06] p-4 mb-4">
                   <div className="flex items-center gap-1.5 mb-2">
                     <Flame className="w-3.5 h-3.5 text-foreground/40" />
-                    <span className="text-[10px] text-foreground/40 uppercase tracking-widest font-bold">이번 생의 사명</span>
+                    <span className="text-xs text-foreground/40 uppercase tracking-widest font-bold">이번 생의 사명</span>
                   </div>
                   <p className="text-sm text-foreground/80 leading-relaxed">{result.lesson}</p>
                 </div>
@@ -376,7 +376,7 @@ export default function PastLife() {
                 <div className="rounded-xl bg-[#F7F5F3] border border-black/[0.06] p-4">
                   <div className="flex items-center gap-1.5 mb-2">
                     <Link2 className="w-3.5 h-3.5 text-foreground/40" />
-                    <span className="text-[10px] text-foreground/40 uppercase tracking-widest font-bold">현생과의 연결</span>
+                    <span className="text-xs text-foreground/40 uppercase tracking-widest font-bold">현생과의 연결</span>
                   </div>
                   <p className="text-sm text-foreground/80 leading-relaxed">{result.karma}</p>
                 </div>

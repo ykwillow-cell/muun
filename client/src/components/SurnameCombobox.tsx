@@ -320,11 +320,11 @@ export default function SurnameCombobox({
         <div className="mt-1.5 flex items-center gap-1.5">
           <Badge
             variant="outline"
-            className="text-[11px] bg-amber-500/10 border-amber-500/30 text-amber-700 px-2 py-0.5"
+            className="text-xs bg-amber-500/10 border-amber-500/30 text-amber-700 px-2 py-0.5"
           >
             {value} — 원획수 {strokes}획
           </Badge>
-          <span className="text-[10px] text-[#999891]">자동 적용됨</span>
+          <span className="text-xs text-[#999891]">자동 적용됨</span>
         </div>
       )}
 
@@ -348,10 +348,10 @@ export default function SurnameCombobox({
                     : ""
                 )}
               >
-                <span className="text-xl font-black text-[#1a1a18]">{opt.hanja}</span>
+                <span className="text-xl font-bold text-[#1a1a18]">{opt.hanja}</span>
                 <div>
                   <p className="text-xs text-[#1a1a18] font-medium">{opt.hangul}({opt.hanja})</p>
-                  <p className="text-[10px] text-[#999891]">{opt.strokes}획</p>
+                  <p className="text-xs text-[#999891]">{opt.strokes}획</p>
                 </div>
                 {value === `${opt.hangul}(${opt.hanja})` && (
                   <Check className="w-3.5 h-3.5 text-amber-600 ml-auto" />
@@ -371,7 +371,7 @@ export default function SurnameCombobox({
           {filtered.length === 0 ? (
             <div className="p-3 text-center">
               <p className="text-xs text-[#999891]">검색 결과가 없습니다</p>
-              <p className="text-[11px] text-[#1a1a18]/25 mt-1">
+              <p className="text-xs text-[#1a1a18]/25 mt-1">
                 목록에 없는 성씨는 아래 직접 입력을 이용해주세요
               </p>
             </div>
@@ -396,7 +396,7 @@ export default function SurnameCombobox({
                       )}
                     >
                       <div className="flex items-center gap-2.5">
-                        <span className="text-base font-black text-[#1a1a18] w-6 text-center">
+                        <span className="text-base font-bold text-[#1a1a18] w-6 text-center">
                           {s.hangul}
                         </span>
                         <div>
@@ -404,14 +404,14 @@ export default function SurnameCombobox({
                             {allHanja.map((h) => h.hanja).join(" / ")}
                           </span>
                           {allHanja.length > 1 && (
-                            <span className="ml-1.5 text-[10px] text-amber-600/70">
+                            <span className="ml-1.5 text-xs text-amber-600/70">
                               ({allHanja.length}가지)
                             </span>
                           )}
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <span className="text-[11px] text-[#999891]">
+                        <span className="text-xs text-[#999891]">
                           {allHanja.length === 1
                             ? `${s.strokes}획`
                             : `${Math.min(...allHanja.map((h) => h.strokes))}~${Math.max(...allHanja.map((h) => h.strokes))}획`}
@@ -443,7 +443,7 @@ export default function SurnameCombobox({
                 <span className="text-xs text-[#999891]">
                   "{query.trim()}" 직접 입력
                 </span>
-                <span className="ml-1.5 text-[10px] text-amber-600/60">
+                <span className="ml-1.5 text-xs text-amber-600/60">
                   (획수 별도 입력 필요)
                 </span>
               </button>

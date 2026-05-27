@@ -117,12 +117,12 @@ export default function DictionaryDetail() {
           </div>
 
           {/* 용어명 */}
-          <h1 className="text-[36px] font-extrabold tracking-[-0.07em] text-white leading-[1.05]">{entry.title}</h1>
+          <h1 className="text-[36px] font-bold tracking-[-0.07em] text-white leading-[1.05]">{entry.title}</h1>
           {entry.subtitle && <p className="mt-1.5 text-sm font-semibold text-white/55">{entry.subtitle}</p>}
 
           {/* 핵심 요약 — hero 안에 */}
           <div className="mt-4 rounded-2xl border border-white/20 bg-white/15 p-4 backdrop-blur-sm">
-            <p className="text-[10px] font-extrabold tracking-[.08em] text-white/55 mb-2">한 줄 요약</p>
+            <p className="text-xs font-bold tracking-[.08em] text-white/55 mb-2">한 줄 요약</p>
             <p className="text-sm leading-[1.8] text-white/92">{entry.summary}</p>
           </div>
 
@@ -133,7 +133,7 @@ export default function DictionaryDetail() {
                 <Link
                   key={tag}
                   href={`/fortune-dictionary?q=${encodeURIComponent(tag)}`}
-                  className="rounded-full border border-white/20 bg-white/12 px-2.5 py-1 text-[11px] font-semibold text-white/85 hover:bg-white/22 transition"
+                  className="rounded-full border border-white/20 bg-white/12 px-2.5 py-1 text-xs font-semibold text-white/85 hover:bg-white/22 transition"
                 >
                   #{tag}
                 </Link>
@@ -146,7 +146,7 @@ export default function DictionaryDetail() {
             <button onClick={handleShare} className="inline-flex items-center gap-1.5 rounded-2xl border border-white/25 bg-white/10 px-4 py-2.5 text-xs font-bold text-white/85 hover:bg-white/18 transition">
               <Share2 size={13} /> 공유
             </button>
-            <Link href="/lifelong-saju" className="inline-flex items-center gap-1.5 rounded-2xl bg-white px-4 py-2.5 text-xs font-extrabold text-[#5648db] hover:bg-white/90 transition">
+            <Link href="/lifelong-saju" className="inline-flex items-center gap-1.5 rounded-2xl bg-white px-4 py-2.5 text-xs font-bold text-[#5648db] hover:bg-white/90 transition">
               내 사주 풀이 보기 <ArrowUpRight size={13} />
             </Link>
           </div>
@@ -168,8 +168,8 @@ export default function DictionaryDetail() {
                       <Icon size={16} className="text-slate-600" aria-hidden="true" />
                     </div>
                     <div>
-                      <span className={`block text-[9px] font-extrabold tracking-[.1em] ${sec.stepColor}`}>{sec.step}</span>
-                      <h2 className="text-[15px] font-extrabold tracking-[-0.03em] text-slate-900 leading-none">{sec.title}</h2>
+                      <span className={`block text-xs font-bold tracking-[.1em] ${sec.stepColor}`}>{sec.step}</span>
+                      <h2 className="text-[15px] font-bold tracking-[-0.03em] text-slate-900 leading-none">{sec.title}</h2>
                     </div>
                   </div>
                   <p className="mt-3.5 text-sm leading-[1.85] text-slate-700">
@@ -187,7 +187,7 @@ export default function DictionaryDetail() {
         <section className="mu-container-reading pb-2">
           <div className="mu-glass-panel p-5">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-[18px] font-extrabold tracking-[-0.04em] text-slate-900">함께 보면 좋은 용어</h2>
+              <h2 className="text-[18px] font-bold tracking-[-0.04em] text-slate-900">함께 보면 좋은 용어</h2>
               {/* 이 카테고리 전체 보기 */}
               <Link
                 href={`/fortune-dictionary?category=${entry.category}`}
@@ -200,10 +200,10 @@ export default function DictionaryDetail() {
             <div className="flex gap-3 overflow-x-auto pb-1 no-scrollbar">
               {relatedEntries.map((item) => (
                 <Link key={item.slug} href={`/dictionary/${item.slug}`} className="shrink-0 w-48 rounded-2xl border border-slate-200/80 bg-white p-4 hover:border-[#6B5FFF]/25 hover:shadow-sm transition-all">
-                  <span className="inline-flex rounded-full bg-slate-100 px-2.5 py-0.5 text-[10px] font-bold text-slate-500">{item.categoryLabel}</span>
-                  <p className="mt-2 text-[16px] font-extrabold tracking-[-0.04em] text-slate-900 leading-tight">{item.title}</p>
-                  <p className="mt-1.5 line-clamp-2 text-[11px] leading-[1.65] text-slate-500">{item.summary}</p>
-                  <p className="mt-2 text-[11px] font-bold text-[#5648db]">자세히 보기 →</p>
+                  <span className="inline-flex rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-bold text-slate-500">{item.categoryLabel}</span>
+                  <p className="mt-2 text-[16px] font-bold tracking-[-0.04em] text-slate-900 leading-tight">{item.title}</p>
+                  <p className="mt-1.5 line-clamp-2 text-xs leading-[1.65] text-slate-500">{item.summary}</p>
+                  <p className="mt-2 text-xs font-bold text-[#5648db]">자세히 보기 →</p>
                 </Link>
               ))}
             </div>
@@ -219,16 +219,16 @@ export default function DictionaryDetail() {
               <Link href={`/dictionary/${prevEntry.slug}`} className="flex-1 flex items-center gap-3 rounded-2xl border border-slate-200/80 bg-white/90 p-4 hover:border-[#6B5FFF]/25 hover:shadow-sm transition-all min-w-0">
                 <ChevronLeft size={18} className="text-slate-400 shrink-0" />
                 <div className="min-w-0">
-                  <p className="text-[10px] font-extrabold tracking-[.06em] text-slate-400">이전 용어</p>
-                  <p className="text-[15px] font-extrabold tracking-[-0.04em] text-slate-900 truncate">{prevEntry.title}</p>
+                  <p className="text-xs font-bold tracking-[.06em] text-slate-400">이전 용어</p>
+                  <p className="text-[15px] font-bold tracking-[-0.04em] text-slate-900 truncate">{prevEntry.title}</p>
                 </div>
               </Link>
             ) : <div className="flex-1" />}
             {nextEntry ? (
               <Link href={`/dictionary/${nextEntry.slug}`} className="flex-1 flex items-center justify-end gap-3 rounded-2xl border border-slate-200/80 bg-white/90 p-4 hover:border-[#6B5FFF]/25 hover:shadow-sm transition-all min-w-0 text-right">
                 <div className="min-w-0">
-                  <p className="text-[10px] font-extrabold tracking-[.06em] text-slate-400">다음 용어</p>
-                  <p className="text-[15px] font-extrabold tracking-[-0.04em] text-slate-900 truncate">{nextEntry.title}</p>
+                  <p className="text-xs font-bold tracking-[.06em] text-slate-400">다음 용어</p>
+                  <p className="text-[15px] font-bold tracking-[-0.04em] text-slate-900 truncate">{nextEntry.title}</p>
                 </div>
                 <ChevronRight size={18} className="text-slate-400 shrink-0" />
               </Link>
@@ -241,12 +241,12 @@ export default function DictionaryDetail() {
       <section className="mu-container-reading pb-4">
         <div className="rounded-[24px] bg-gradient-to-br from-[#3929a0] to-[#6B5FFF] p-5 flex items-center gap-4">
           <div className="flex-1 min-w-0">
-            <p className="text-[10px] font-extrabold tracking-[.06em] text-white/60 mb-1">무운 서비스</p>
-            <p className="text-[16px] font-extrabold tracking-[-0.04em] text-white leading-tight">
+            <p className="text-xs font-bold tracking-[.06em] text-white/60 mb-1">무운 서비스</p>
+            <p className="text-[16px] font-bold tracking-[-0.04em] text-white leading-tight">
               {entry.title}이(가) 내 사주에서<br />어떻게 나타나는지 확인해보세요
             </p>
           </div>
-          <Link href="/lifelong-saju" className="shrink-0 rounded-2xl bg-white px-4 py-2.5 text-[13px] font-extrabold text-[#5648db] hover:bg-white/90 transition text-center leading-tight">
+          <Link href="/lifelong-saju" className="shrink-0 rounded-2xl bg-white px-4 py-2.5 text-[13px] font-bold text-[#5648db] hover:bg-white/90 transition text-center leading-tight">
             평생사주<br />보기
           </Link>
         </div>
@@ -255,7 +255,7 @@ export default function DictionaryDetail() {
       {/* ── 관련 서비스 링크 ── */}
       <section className="mu-container-reading pb-10">
         <div className="mu-glass-panel p-5">
-          <h3 className="text-[15px] font-extrabold tracking-[-0.03em] text-slate-900 mb-3">이 용어와 함께 보면 좋은 서비스</h3>
+          <h3 className="text-[15px] font-bold tracking-[-0.03em] text-slate-900 mb-3">이 용어와 함께 보면 좋은 서비스</h3>
           <div className="grid grid-cols-2 gap-2.5">
             {[
               { href: '/lifelong-saju',  emoji: '🔮', label: '평생사주',  desc: '이 용어가 내 사주에 어떻게 나타나는지' },
@@ -265,8 +265,8 @@ export default function DictionaryDetail() {
             ].map((s) => (
               <Link key={s.href} href={s.href} className="flex flex-col gap-1.5 rounded-2xl border border-slate-200/80 bg-white p-3.5 hover:border-[#6B5FFF]/20 hover:shadow-sm transition-all">
                 <span className="text-xl">{s.emoji}</span>
-                <span className="text-[13px] font-extrabold tracking-[-0.03em] text-slate-900">{s.label}</span>
-                <span className="text-[11px] leading-[1.55] text-slate-500">{s.desc}</span>
+                <span className="text-[13px] font-bold tracking-[-0.03em] text-slate-900">{s.label}</span>
+                <span className="text-xs leading-[1.55] text-slate-500">{s.desc}</span>
               </Link>
             ))}
           </div>

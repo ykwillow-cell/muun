@@ -418,7 +418,7 @@ export default function Manselyeok() {
 
       {form.watch("birthTimeUnknown") && (
         <div className="bg-primary/10 border-b border-primary/20 py-2 px-4 relative z-50">
-          <p className="text-[10px] md:text-xs text-primary text-center font-medium">
+          <p className="text-xs text-primary text-center font-medium">
             태어난 시간을 제외한 삼주 분석 결과입니다
           </p>
         </div>
@@ -582,7 +582,7 @@ export default function Manselyeok() {
                       <div className={`w-8 h-8 md:w-9 md:h-9 rounded-lg ${item.bg} flex items-center justify-center mx-auto`}>
                         {item.icon}
                       </div>
-                      <p className="text-[10px] md:text-xs font-medium text-[#1a1a18]">{item.label}</p>
+                      <p className="text-xs font-medium text-[#1a1a18]">{item.label}</p>
                     </CardContent>
                   </Card>
                 ))}
@@ -680,11 +680,11 @@ export default function Manselyeok() {
                           return (
                             <div key={item.label} className="text-center space-y-1">
                               {/* 기둥 레이블 */}
-                              <p className="text-[10px] text-emerald-600 font-bold">{item.label}</p>
-                              <p className="text-[9px] text-[#999891]">{item.sub}</p>
+                              <p className="text-xs text-emerald-600 font-bold">{item.label}</p>
+                              <p className="text-xs text-[#999891]">{item.sub}</p>
 
                               {/* 십성 */}
-                              <div className="text-[9px] md:text-[10px] font-medium text-[#10b981] h-4 flex items-center justify-center">
+                              <div className="text-xs font-medium text-[#10b981] h-4 flex items-center justify-center">
                                 {tenGodLabel}
                               </div>
 
@@ -694,7 +694,7 @@ export default function Manselyeok() {
                                 style={isIlju ? { boxShadow: 'inset 0 0 0 2px #34d399' } : undefined}
                               >
                                 <p className="text-xl font-bold">{item.pillar.stem}</p>
-                                <p className="text-[9px] md:text-[10px] opacity-70 mt-0.5">
+                                <p className="text-xs opacity-70 mt-0.5">
                                   {STEM_READINGS[item.pillar.stem]} · {ELEMENT_READINGS[item.pillar.stemElement]}
                                 </p>
                               </div>
@@ -702,13 +702,13 @@ export default function Manselyeok() {
                               {/* 지지 */}
                               <div className={`rounded-xl border p-2 md:p-3 ${getElementColor(item.pillar.branchElement)}`}>
                                 <p className="text-xl font-bold">{item.pillar.branch}</p>
-                                <p className="text-[9px] md:text-[10px] opacity-70 mt-0.5">
+                                <p className="text-xs opacity-70 mt-0.5">
                                   {BRANCH_READINGS[item.pillar.branch]} · {ELEMENT_READINGS[item.pillar.branchElement]}
                                 </p>
                               </div>
 
                               {/* 12운성 */}
-                              <div className="text-[9px] md:text-[10px] text-[#999891] h-4 flex items-center justify-center">
+                              <div className="text-xs text-[#999891] h-4 flex items-center justify-center">
                                 {twelveStage}
                               </div>
                             </div>
@@ -798,7 +798,7 @@ export default function Manselyeok() {
                   </CardHeader>
                   <CardContent className="p-4 space-y-4">
                     {/* 레이블 */}
-                    <div className="flex justify-between text-[10px] text-[#999891] font-medium">
+                    <div className="flex justify-between text-xs text-[#999891] font-medium">
                       <span>신약</span>
                       <span>중화</span>
                       <span>신강</span>
@@ -895,7 +895,7 @@ export default function Manselyeok() {
                         대운 (大運)
                       </CardTitle>
                       <div className="flex items-center gap-1.5">
-                        <span className="text-[10px] text-[#999891]">
+                        <span className="text-xs text-[#999891]">
                           {daewunData.startAge}세 시작 · {daewunData.isForward ? '순행' : '역행'}
                         </span>
                       </div>
@@ -933,7 +933,7 @@ export default function Manselyeok() {
                         })}
                       </div>
                     </div>
-                    <p className="text-[10px] text-[#999891] mt-3 text-center">← 가로로 스크롤하여 전체 대운 확인</p>
+                    <p className="text-xs text-[#999891] mt-3 text-center">← 가로로 스크롤하여 전체 대운 확인</p>
                   </CardContent>
                 </Card>
               )}

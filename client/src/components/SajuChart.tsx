@@ -62,7 +62,7 @@ export default function SajuChart({ result, theme = 'yellow' }: SajuChartProps) 
                     </span>
                     {/* 보조 텍스트: 어드민 result-label-color 우선 */}
                     <p
-                      className="text-[10px] mt-0.5"
+                      className="text-xs mt-0.5"
                       style={{ color: 'var(--result-label-color, #999891)' }}
                     >
                       {p.desc}
@@ -81,7 +81,7 @@ export default function SajuChart({ result, theme = 'yellow' }: SajuChartProps) 
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.3 + i * 0.1 }}
-                    className="text-[10px] font-medium"
+                    className="text-xs font-medium"
                     style={{ color: 'var(--result-label-color, #999891)' }}
                   >
                     {p.pillar.tenGod ? TEN_GOD_MEANINGS[p.pillar.tenGod]?.name || p.pillar.tenGod : '일간'}
@@ -119,7 +119,7 @@ export default function SajuChart({ result, theme = 'yellow' }: SajuChartProps) 
                       >
                         {STEM_READINGS[p.pillar.stem]}
                         <span
-                          className="text-[10px] ml-1"
+                          className="text-xs ml-1"
                           style={{ color: 'var(--result-label-color, #999891)' }}
                         >
                           ({isYang ? '양' : '음'}{ELEMENT_READINGS[elem]})
@@ -152,7 +152,7 @@ export default function SajuChart({ result, theme = 'yellow' }: SajuChartProps) 
                       >
                         {BRANCH_READINGS[p.pillar.branch]}
                         <span
-                          className="text-[10px] ml-1"
+                          className="text-xs ml-1"
                           style={{ color: 'var(--result-label-color, #999891)' }}
                         >
                           ({isYang ? '양' : '음'}{ELEMENT_READINGS[elem]})
@@ -176,16 +176,16 @@ export default function SajuChart({ result, theme = 'yellow' }: SajuChartProps) 
                       transition={{ delay: 0.6 + i * 0.1 }}
                       className="flex items-center justify-center gap-1"
                     >
-                      <span className={`text-[10px] font-medium ${ELEMENT_TEXT[stemElem]}`}>
+                      <span className={`text-xs font-medium ${ELEMENT_TEXT[stemElem]}`}>
                         {withReading(stemElem)}
                       </span>
                       <span
-                        className="text-[10px]"
+                        className="text-xs"
                         style={{ color: 'var(--result-label-color, #999891)' }}
                       >
                         /
                       </span>
-                      <span className={`text-[10px] font-medium ${ELEMENT_TEXT[branchElem]}`}>
+                      <span className={`text-xs font-medium ${ELEMENT_TEXT[branchElem]}`}>
                         {withReading(branchElem)}
                       </span>
                     </motion.div>
@@ -218,7 +218,7 @@ export default function SajuChart({ result, theme = 'yellow' }: SajuChartProps) 
           {pillarReading(result.hourPillar.stem, result.hourPillar.branch)}시
         </p>
         <p
-          className="text-[11px] mt-1"
+          className="text-xs mt-1"
           style={{ color: 'var(--result-label-color, #999891)' }}
         >
           일간(日干): {withReading(result.dayPillar.stem)} — {STEM_YIN_YANG[result.dayPillar.stem] ? '양' : '음'}의 {ELEMENT_READINGS[STEM_ELEMENTS[result.dayPillar.stem]]}({STEM_ELEMENTS[result.dayPillar.stem]}) 기운

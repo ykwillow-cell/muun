@@ -149,7 +149,7 @@ export default function DreamDetail() {
               <span className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#6B5FFF]/10 px-3 py-1.5 text-xs font-bold text-[#5648db]">
                 <MoonStar size={13} aria-hidden="true" /> Dream interpretation
               </span>
-              <h1 className="mt-4 text-[32px] font-extrabold leading-[1.12] tracking-[-0.06em] text-slate-900">{dream.keyword} 꿈해몽</h1>
+              <h1 className="mt-4 text-[32px] font-bold leading-[1.12] tracking-[-0.06em] text-slate-900">{dream.keyword} 꿈해몽</h1>
               <p className="mt-4 text-sm leading-7 text-slate-600">{metaDescription}</p>
 
               <div className="mt-5 flex flex-wrap gap-3">
@@ -173,7 +173,7 @@ export default function DreamDetail() {
                     <GradeIcon size={22} aria-hidden="true" />
                   </div>
                   <div>
-                    <div className="text-[22px] font-extrabold tracking-[-0.05em] text-white">{grade.label}</div>
+                    <div className="text-[22px] font-bold tracking-[-0.05em] text-white">{grade.label}</div>
                     <div className="text-sm text-white/70">카테고리 · {categoryLabel}</div>
                   </div>
                 </div>
@@ -220,12 +220,12 @@ export default function DreamDetail() {
         <section className="mu-container-reading pb-2">
           <div className="mu-glass-panel p-5 sm:p-6">
             <span className="mu-divider-text">Related dreams</span>
-            <h2 className="mt-3 text-[24px] font-extrabold tracking-[-0.05em] text-slate-900">비슷한 분위기의 꿈해몽</h2>
+            <h2 className="mt-3 text-[24px] font-bold tracking-[-0.05em] text-slate-900">비슷한 분위기의 꿈해몽</h2>
             <div className="mt-5 mu-auto-grid-220">
               {relatedDreams.map((item) => (
                 <Link key={item.slug} href={`/dream/${item.slug}`} className="mu-link-card p-4">
-                  <div className="inline-flex rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-500">{item.categoryLabel}</div>
-                  <h3 className="mt-3 line-clamp-2 text-[18px] font-extrabold tracking-[-0.04em] text-slate-900">{item.keyword} 꿈해몽</h3>
+                  <div className="inline-flex rounded-full bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-500">{item.categoryLabel}</div>
+                  <h3 className="mt-3 line-clamp-2 text-[18px] font-bold tracking-[-0.04em] text-slate-900">{item.keyword} 꿈해몽</h3>
                   <p className="mt-2 line-clamp-3 text-sm leading-6 text-slate-600">{item.excerpt}</p>
                   <div className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-[#5648db]">자세히 보기 <ArrowUpRight size={14} /></div>
                 </Link>

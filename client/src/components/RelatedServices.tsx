@@ -21,7 +21,7 @@ export default function RelatedServices({ title = '함께 보면 좋은 서비�
       <div className="mu-glass-panel overflow-hidden p-5 sm:p-6">
         <div>
           <span className="mu-divider-text">함께 이용하기</span>
-          <h2 className="mt-3 text-[24px] font-extrabold tracking-[-0.05em] text-slate-900">{title}</h2>
+          <h2 className="mt-3 text-[24px] font-bold tracking-[-0.05em] text-slate-900">{title}</h2>
         </div>
 
         <div className="mt-5 mu-auto-grid-220">
@@ -33,7 +33,7 @@ export default function RelatedServices({ title = '함께 보면 좋은 서비�
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-start justify-between gap-3">
-                    <h3 className="text-[17px] font-extrabold tracking-[-0.04em] text-slate-900">{service.label}</h3>
+                    <h3 className="text-[17px] font-bold tracking-[-0.04em] text-slate-900">{service.label}</h3>
                     <ArrowUpRight size={16} className="text-slate-400" aria-hidden="true" />
                   </div>
                   <p className="mt-2 text-sm leading-6 text-slate-600">{service.description}</p>

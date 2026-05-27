@@ -146,7 +146,7 @@ export default function GuideDetail() {
         )}
 
         {/* 제목 */}
-        <h1 className="text-[28px] font-extrabold leading-[1.15] tracking-[-0.05em] text-white">
+        <h1 className="text-[28px] font-bold leading-[1.15] tracking-[-0.05em] text-white">
           {column.title}
         </h1>
 
@@ -186,8 +186,8 @@ export default function GuideDetail() {
 
           {/* 헤드라인 */}
           <div className="text-center mb-5">
-            <p className="text-xs font-extrabold tracking-[.1em] text-white/50 mb-2">이 칼럼을 읽으셨다면</p>
-            <h2 className="text-[22px] font-extrabold tracking-[-0.05em] text-white leading-tight">
+            <p className="text-xs font-bold tracking-[.1em] text-white/50 mb-2">이 칼럼을 읽으셨다면</p>
+            <h2 className="text-[22px] font-bold tracking-[-0.05em] text-white leading-tight">
               지금 바로 내 사주에<br/>직접 적용해보세요
             </h2>
             {/* 신뢰 배지 */}
@@ -212,10 +212,10 @@ export default function GuideDetail() {
                 <div className={`h-1.5 w-full bg-gradient-to-r ${svc.gradient}`} />
                 <div className="flex flex-col flex-1 p-3.5 gap-2">
                   <span className="text-2xl leading-none">{svc.emoji}</span>
-                  <p className="text-xs font-extrabold text-white/60 leading-tight">{svc.hook}</p>
-                  <p className="text-base font-extrabold text-white tracking-[-0.03em] leading-tight">{svc.label}</p>
+                  <p className="text-xs font-bold text-white/60 leading-tight">{svc.hook}</p>
+                  <p className="text-base font-bold text-white tracking-[-0.03em] leading-tight">{svc.label}</p>
                   <p className="text-xs leading-[1.6] text-white/60 flex-1">{svc.desc}</p>
-                  <div className="inline-flex items-center gap-1 rounded-full bg-white/15 px-3 py-1 text-xs font-extrabold text-white mt-1 self-start group-hover:bg-white/25 transition">
+                  <div className="inline-flex items-center gap-1 rounded-full bg-white/15 px-3 py-1 text-xs font-bold text-white mt-1 self-start group-hover:bg-white/25 transition">
                     무료로 확인 →
                   </div>
                 </div>
@@ -235,7 +235,7 @@ export default function GuideDetail() {
         <section className="mu-container-reading pb-4">
           <div className="mu-glass-panel p-5 sm:p-6">
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-[20px] font-extrabold tracking-[-0.04em] text-slate-900">같이 읽으면 좋은 칼럼</h2>
+              <h2 className="text-[20px] font-bold tracking-[-0.04em] text-slate-900">같이 읽으면 좋은 칼럼</h2>
               <Link href="/guide" className="text-sm font-bold text-[#5648db] hover:underline">전체 보기 →</Link>
             </div>
             <div className="flex flex-col gap-3">
@@ -250,7 +250,7 @@ export default function GuideDetail() {
                     <span className="inline-flex rounded-full bg-[#6B5FFF]/10 px-2.5 py-0.5 text-xs font-bold text-[#5648db]">
                       {item.categoryLabel}
                     </span>
-                    <h3 className="mt-1.5 line-clamp-2 text-base font-extrabold tracking-[-0.04em] text-slate-900 leading-snug">
+                    <h3 className="mt-1.5 line-clamp-2 text-base font-bold tracking-[-0.04em] text-slate-900 leading-snug">
                       {item.title}
                     </h3>
                     <p className="mt-1 line-clamp-1 text-sm text-slate-500">{item.description}</p>
@@ -265,7 +265,7 @@ export default function GuideDetail() {
       {/* ── 하단 서비스 링크 (간결하게) ── */}
       <section className="mu-container-reading pb-10">
         <div className="mu-glass-panel p-5">
-          <h3 className="text-base font-extrabold tracking-[-0.03em] text-slate-900 mb-3">
+          <h3 className="text-base font-bold tracking-[-0.03em] text-slate-900 mb-3">
             이 칼럼과 함께 보면 좋은 서비스
           </h3>
           <div className="grid grid-cols-2 gap-2.5">
@@ -279,7 +279,7 @@ export default function GuideDetail() {
                 className="flex flex-col gap-1.5 rounded-2xl border border-slate-200/80 bg-white p-3.5 hover:border-[#6B5FFF]/20 hover:shadow-sm transition-all"
               >
                 <span className="text-xl">{s.emoji}</span>
-                <span className="text-sm font-extrabold tracking-[-0.03em] text-slate-900">{s.label}</span>
+                <span className="text-sm font-bold tracking-[-0.03em] text-slate-900">{s.label}</span>
                 <span className="text-xs leading-[1.5] text-slate-500">{s.desc}</span>
               </Link>
             ))}

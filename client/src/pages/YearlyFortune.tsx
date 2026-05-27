@@ -605,7 +605,7 @@ export default function YearlyFortune() {
  <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-[#3B82F6]/10 flex items-center justify-center mx-auto">
  <Star className="w-4 h-4 md:w-5 md:h-5 text-[#3B82F6]" />
  </div>
- <p className="text-[10px] md:text-xs font-medium text-[#1a1a18]">2026년 총운</p>
+ <p className="text-xs font-medium text-[#1a1a18]">2026년 총운</p>
  </CardContent>
  </Card>
  <Card className="bg-white border border-black/[0.06] rounded-xl shadow-sm">
@@ -613,7 +613,7 @@ export default function YearlyFortune() {
  <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-yellow-500/10 flex items-center justify-center mx-auto">
  <Zap className="w-4 h-4 md:w-5 md:h-5 text-yellow-600" />
  </div>
- <p className="text-[10px] md:text-xs font-medium text-[#1a1a18]">재물운</p>
+ <p className="text-xs font-medium text-[#1a1a18]">재물운</p>
  </CardContent>
  </Card>
  <Card className="bg-white border border-black/[0.06] rounded-xl shadow-sm">
@@ -621,7 +621,7 @@ export default function YearlyFortune() {
  <div className="w-8 h-8 md:w-10 md:h-10 rounded-lg bg-[#3B82F6]/10 flex items-center justify-center mx-auto">
  <Briefcase className="w-4 h-4 md:w-5 md:h-5 text-[#3B82F6]" />
  </div>
- <p className="text-[10px] md:text-xs font-medium text-[#1a1a18]">직업운</p>
+ <p className="text-xs font-medium text-[#1a1a18]">직업운</p>
  </CardContent>
  </Card>
  </div>
@@ -684,7 +684,7 @@ export default function YearlyFortune() {
  {/* '시간 모름' 시 안내 라벨 */}
  {form.watch("birthTimeUnknown") && (
  <div className="bg-primary/10 border-b border-primary/20 py-2 px-4 relative z-50">
- <p className="text-[10px] md:text-sm md:text-xs text-primary text-center font-medium">
+ <p className="text-xs md:text-sm md:text-xs text-primary text-center font-medium">
  태어난 시간을 제외한 삼주 분석 결과입니다
  </p>
  </div>

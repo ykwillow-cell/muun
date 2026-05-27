@@ -791,7 +791,7 @@ export default function Compatibility() {
  <ToggleGroupItem value="female" className="compat-segment-item">여성</ToggleGroupItem>
  </ToggleGroup>
  {(form.formState.errors as any)?.gender2 && (
-   <p className="text-[11px] text-red-500">{(form.formState.errors as any).gender2?.message}</p>
+   <p className="text-xs text-red-500">{(form.formState.errors as any).gender2?.message}</p>
  )}
  {/* ② 수직 정렬: 마이크로카피와 동일 높이 spacer */}
  <div className="h-[14px]" />
@@ -1121,7 +1121,7 @@ export default function Compatibility() {
                </defs>
              </svg>
              <div className="absolute inset-0 flex flex-col items-center justify-center">
-               <span className="text-5xl font-black text-white leading-none">{scores.total}</span>
+               <span className="text-5xl font-bold text-white leading-none">{scores.total}</span>
                <span className="text-xs text-white/60 mt-1">/ 100</span>
              </div>
            </div>
@@ -1284,7 +1284,7 @@ export default function Compatibility() {
                  {/* 중앙 레이블 */}
                  <div className="flex flex-col items-center w-12 flex-shrink-0">
                    <span className="text-sm font-bold text-[#1a1a18]">{elemSymbols[elem]}</span>
-                   <span className="text-[10px] text-[#999]">{v1}:{v2}</span>
+                   <span className="text-xs text-[#999]">{v1}:{v2}</span>
                  </div>
                  {/* 오른쪽 바 (주황) */}
                  <div className="flex-1">
@@ -1485,7 +1485,7 @@ export default function Compatibility() {
              <AccordionContent className="px-5 pb-5 space-y-4">
                <div>
                  <div className="flex items-center gap-2 mb-2">
-                   <span className="w-5 h-5 rounded-full bg-[#7C5CFC] text-white text-[10px] font-bold flex items-center justify-center">1</span>
+                   <span className="w-5 h-5 rounded-full bg-[#7C5CFC] text-white text-xs font-bold flex items-center justify-center">1</span>
                    <span className="text-sm font-bold text-[#7C5CFC]">{name1}님의 사주</span>
                  </div>
                  <div className="rounded-xl border border-[#E8E5F0] overflow-hidden">
@@ -1494,7 +1494,7 @@ export default function Compatibility() {
                </div>
                <div>
                  <div className="flex items-center gap-2 mb-2">
-                   <span className="w-5 h-5 rounded-full bg-[#F59E0B] text-white text-[10px] font-bold flex items-center justify-center">2</span>
+                   <span className="w-5 h-5 rounded-full bg-[#F59E0B] text-white text-xs font-bold flex items-center justify-center">2</span>
                    <span className="text-sm font-bold text-[#D97706]">{name2}님의 사주</span>
                  </div>
                  <div className="rounded-xl border border-[#F0EDE5] overflow-hidden">

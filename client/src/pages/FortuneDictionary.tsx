@@ -115,7 +115,7 @@ export default function FortuneDictionary() {
       {/* ── sticky 검색 헤더 ── */}
       <section className="sticky top-0 z-20 bg-[#f5f4ff]/95 backdrop-blur-md border-b border-[#6B5FFF]/10 px-4 pb-4 pt-[calc(var(--safe-area-top,0px)+44px)]">
         <div className="flex items-center justify-between mb-3">
-          <h1 className="text-[22px] font-extrabold tracking-[-0.05em] text-[#1e2340]">운세 사전</h1>
+          <h1 className="text-[22px] font-bold tracking-[-0.05em] text-[#1e2340]">운세 사전</h1>
           <span className="text-xs font-semibold text-[#707797]">{DICTIONARY_INDEX.length}개 용어</span>
         </div>
         <label className="relative block">
@@ -142,7 +142,7 @@ export default function FortuneDictionary() {
       {/* ── 카테고리 그리드 (검색 중엔 숨김) ── */}
       {!searchQuery && (
         <section className="px-4 pt-4 pb-2">
-          <p className="mb-3 text-xs font-extrabold tracking-[.06em] text-[#5a4ddb]">카테고리 탐색</p>
+          <p className="mb-3 text-xs font-bold tracking-[.06em] text-[#5a4ddb]">카테고리 탐색</p>
           <div className="grid grid-cols-4 gap-2">
             {/* 전체 보기 — 가로 full */}
             <button
@@ -164,7 +164,7 @@ export default function FortuneDictionary() {
                     : 'border-slate-200 bg-white/90 hover:border-[#6B5FFF]/30'}`}
               >
                 <span className="text-xl leading-none">{cat.emoji}</span>
-                <span className={`text-[10px] font-bold leading-tight ${selectedCategory === cat.id ? 'text-white' : 'text-slate-600'}`}>
+                <span className={`text-xs font-bold leading-tight ${selectedCategory === cat.id ? 'text-white' : 'text-slate-600'}`}>
                   {cat.label}
                 </span>
               </button>
@@ -211,14 +211,14 @@ export default function FortuneDictionary() {
                     {/* 뱃지 */}
                     <button
                       onClick={(e) => { e.preventDefault(); applyCategory(entry.category === 'ten-stem' ? 'sipsin' : entry.category); }}
-                      className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-[10px] font-bold ${style.bg} ${style.text} hover:opacity-80`}
+                      className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-bold ${style.bg} ${style.text} hover:opacity-80`}
                     >
                       {catEmoji} {entry.categoryLabel}
                     </button>
                     {/* 제목 */}
                     <div className="mt-1 flex items-baseline gap-2">
-                      <span className="text-[18px] font-extrabold tracking-[-0.05em] text-slate-900">{entry.title}</span>
-                      {entry.subtitle && <span className="truncate text-[11px] font-semibold text-slate-400">{entry.subtitle}</span>}
+                      <span className="text-[18px] font-bold tracking-[-0.05em] text-slate-900">{entry.title}</span>
+                      {entry.subtitle && <span className="truncate text-xs font-semibold text-slate-400">{entry.subtitle}</span>}
                     </div>
                     {/* 설명 */}
                     <p className="mt-1 line-clamp-2 text-[12px] leading-[1.7] text-slate-500">{entry.summary}</p>
@@ -229,7 +229,7 @@ export default function FortuneDictionary() {
                           <button
                             key={tag}
                             onClick={(e) => { e.preventDefault(); applySearch(tag); }}
-                            className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-500 hover:bg-[#6B5FFF]/10 hover:text-[#5648db] transition-colors"
+                            className="rounded-full bg-slate-100 px-2 py-0.5 text-xs font-semibold text-slate-500 hover:bg-[#6B5FFF]/10 hover:text-[#5648db] transition-colors"
                           >
                             #{tag}
                           </button>
@@ -245,7 +245,7 @@ export default function FortuneDictionary() {
         ) : (
           <div className="mu-glass-panel px-6 py-14 text-center">
             <div className="text-4xl">🔍</div>
-            <h2 className="mt-4 text-[18px] font-extrabold tracking-[-0.04em] text-slate-900">검색 결과가 없습니다</h2>
+            <h2 className="mt-4 text-[18px] font-bold tracking-[-0.04em] text-slate-900">검색 결과가 없습니다</h2>
             <p className="mt-2 text-sm leading-7 text-slate-500">다른 용어나 카테고리로 다시 찾아보세요.</p>
             <button
               onClick={() => { applySearch(''); applyCategory(null); }}
@@ -259,7 +259,7 @@ export default function FortuneDictionary() {
 
       {/* ── 하단 서비스 내부링크 ── */}
       <section className="px-4 pb-10">
-        <p className="mb-3 text-xs font-extrabold tracking-[.06em] text-[#5a4ddb]">이 사전과 함께 보면 좋은 서비스</p>
+        <p className="mb-3 text-xs font-bold tracking-[.06em] text-[#5a4ddb]">이 사전과 함께 보면 좋은 서비스</p>
         <div className="grid grid-cols-2 gap-2.5">
           {serviceLinks.map((s) => (
             <Link
@@ -268,8 +268,8 @@ export default function FortuneDictionary() {
               className="flex flex-col gap-2 rounded-2xl border border-slate-200/80 bg-white/90 p-4 shadow-sm hover:-translate-y-0.5 hover:border-[#6B5FFF]/20 hover:shadow-md transition-all"
             >
               <span className="text-2xl">{s.emoji}</span>
-              <span className="text-[14px] font-extrabold tracking-[-0.04em] text-slate-900">{s.label}</span>
-              <span className="text-[11px] leading-[1.6] text-slate-500">{s.desc}</span>
+              <span className="text-[14px] font-bold tracking-[-0.04em] text-slate-900">{s.label}</span>
+              <span className="text-xs leading-[1.6] text-slate-500">{s.desc}</span>
             </Link>
           ))}
         </div>

@@ -443,7 +443,7 @@ const Astrology: React.FC = () => {
       {/* '시간 모름' 시 안내 라벨 */}
       {form.watch("birthTimeUnknown") && (
         <div className="bg-primary/10 border-b border-primary/20 py-2 px-4 relative z-50">
-          <p className="text-[10px] md:text-xs text-primary text-center font-medium">
+          <p className="text-xs text-primary text-center font-medium">
             태어난 시간을 제외한 분석 결과입니다 (일부 해석이 제한될 수 있습니다)
           </p>
         </div>
@@ -478,7 +478,7 @@ const Astrology: React.FC = () => {
               <Sparkles className="w-16 h-16 text-primary" />
             </div>
             <p className="text-xs font-semibold text-primary mb-1 uppercase tracking-wider">나의 태양 별자리</p>
-            <h2 className="text-xl font-black text-[#1a1a18] leading-snug mb-2">
+            <h2 className="text-xl font-bold text-[#1a1a18] leading-snug mb-2">
               {result.sun.sign.name}의 기운을 타고난<br/>
               <span className="text-primary">당신은 어떤 사람일까요?</span>
             </h2>
@@ -496,7 +496,7 @@ const Astrology: React.FC = () => {
                   Natal Chart
                 </h3>
                 {result.city && (
-                  <p className="text-[10px] text-primary flex items-center gap-1">
+                  <p className="text-xs text-primary flex items-center gap-1">
                     <MapPin className="w-3 h-3" />
                     {result.city.name}
                   </p>
@@ -515,7 +515,7 @@ const Astrology: React.FC = () => {
                 <div key={p.en} className="flex items-center gap-2 bg-black/[0.04] p-2.5 rounded-xl border border-black/[0.06]">
                   <span className="text-xl flex-shrink-0">{p.icon}</span>
                   <div className="min-w-0">
-                    <div className="text-[10px] text-[#999891] truncate">{p.name}</div>
+                    <div className="text-xs text-[#999891] truncate">{p.name}</div>
                     <div className="text-xs text-[#1a1a18] font-bold truncate">{p.sign.name}</div>
                   </div>
                 </div>
@@ -555,7 +555,7 @@ const Astrology: React.FC = () => {
                              p.en === 'Jupiter' ? '나의 행운과 성장' :
                              p.en === 'Saturn' ? '나의 책임과 교훈' : p.name}
                           </div>
-                          <div className="text-[10px] text-primary font-semibold mt-0.5">
+                          <div className="text-xs text-primary font-semibold mt-0.5">
                             {p.name} · {p.sign.name} {p.longitude.toFixed(1)}°
                           </div>
                         </div>

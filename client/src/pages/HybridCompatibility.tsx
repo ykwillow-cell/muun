@@ -177,7 +177,7 @@ function ScoreCircle({ score, label, color, size = 96 }: { score: number; label:
         </svg>
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span className="text-2xl font-bold text-[#1a1a18] leading-none">{score}</span>
-          <span className="text-[10px] text-[#999891]">/ 100</span>
+          <span className="text-xs text-[#999891]">/ 100</span>
         </div>
       </div>
       <span className="text-xs text-[#5a5a56] text-center">{label}</span>
@@ -325,7 +325,7 @@ function TimelineGraph({ timeline }: { timeline: HybridCompatResult['timeline'] 
         {data.map((item, idx) => (
           <div key={idx} className="text-center p-2 rounded-lg bg-black/[0.05] border border-black/10">
             <div className="text-lg font-bold text-[#1a1a18]">{item.score}</div>
-            <div className="text-[10px] text-[#999891]">{item.phase}</div>
+            <div className="text-xs text-[#999891]">{item.phase}</div>
           </div>
         ))}
       </div>
@@ -660,7 +660,7 @@ export default function HybridCompatibilityPage() {
                           transition={{ type: "spring", stiffness: 200, damping: 15, delay: 0.2 }}
                           className="relative"
                         >
-                          <div className="text-7xl md:text-8xl font-black text-[#1a1a18] leading-none" style={{ textShadow: `0 0 40px ${elem1Color}60` }}>
+                          <div className="text-7xl md:text-8xl font-bold text-[#1a1a18] leading-none" style={{ textShadow: `0 0 40px ${elem1Color}60` }}>
                             {hybrid.totalScore}
                           </div>
                           <div className="text-sm text-[#999891] mt-1">/ 100점</div>
@@ -919,7 +919,7 @@ export default function HybridCompatibilityPage() {
                         {form.watch("calendarType1") === "lunar" && (
                           <div className="flex items-center justify-end gap-2 pr-1 pt-0.5">
                             <Checkbox id="isLeapMonth1" checked={form.watch("isLeapMonth1") || false} onCheckedChange={(checked) => form.setValue("isLeapMonth1", checked === true)} className="data-[state=checked]:bg-purple-500 data-[state=checked]:border-purple-500" />
-                            <Label htmlFor="isLeapMonth1" className="text-[#5a5a56] text-[11px] cursor-pointer">윤달입니다</Label>
+                            <Label htmlFor="isLeapMonth1" className="text-[#5a5a56] text-xs cursor-pointer">윤달입니다</Label>
                           </div>
                         )}
                       </div>
@@ -1015,7 +1015,7 @@ export default function HybridCompatibilityPage() {
                         {form.watch("calendarType2") === "lunar" && (
                           <div className="flex items-center justify-end gap-2 pr-1 pt-0.5">
                             <Checkbox id="isLeapMonth2" checked={form.watch("isLeapMonth2") || false} onCheckedChange={(checked) => form.setValue("isLeapMonth2", checked === true)} className="data-[state=checked]:bg-pink-500 data-[state=checked]:border-pink-500" />
-                            <Label htmlFor="isLeapMonth2" className="text-[#5a5a56] text-[11px] cursor-pointer">윤달입니다</Label>
+                            <Label htmlFor="isLeapMonth2" className="text-[#5a5a56] text-xs cursor-pointer">윤달입니다</Label>
                           </div>
                         )}
                       </div>

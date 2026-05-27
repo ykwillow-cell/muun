@@ -90,7 +90,7 @@ export default function DreamInterpretation() {
           <div className="grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))] items-end">
             <div>
               <span className="mu-kicker">Dream archive</span>
-              <h1 className="mt-4 text-[34px] font-extrabold leading-[1.1] tracking-[-0.06em] text-white">자주 찾는 꿈해몽 아카이브</h1>
+              <h1 className="mt-4 text-[34px] font-bold leading-[1.1] tracking-[-0.06em] text-white">자주 찾는 꿈해몽 아카이브</h1>
               <p className="mt-4 text-sm leading-7 text-white/80">
                 자주 검색되는 꿈 키워드를 빠르게 찾고, 상세 페이지에서 전통적 의미와 심리적 해석을 함께 읽을 수 있도록 모바일 중심으로 정리했습니다.
               </p>
@@ -116,7 +116,7 @@ export default function DreamInterpretation() {
                     <div className={`inline-flex h-10 w-10 items-center justify-center rounded-2xl border ${grade.chip}`}>
                       <Icon size={18} aria-hidden="true" />
                     </div>
-                    <div className="mt-4 text-[22px] font-extrabold tracking-[-0.05em] text-slate-900">{gradeStats[gradeKey]}</div>
+                    <div className="mt-4 text-[22px] font-bold tracking-[-0.05em] text-slate-900">{gradeStats[gradeKey]}</div>
                     <div className="mt-1 text-sm font-bold text-slate-600">{grade.label} 키워드</div>
                   </div>
                 );
@@ -170,7 +170,7 @@ export default function DreamInterpretation() {
               return (
                 <Link key={dream.slug} href={`/dream/${dream.slug}`} className="mu-link-card overflow-hidden p-5">
                   <div className="flex items-start justify-between gap-3">
-                    <div className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-[11px] font-bold ${grade.chip}`}>
+                    <div className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-bold ${grade.chip}`}>
                       <GradeIcon size={12} aria-hidden="true" />
                       {grade.label}
                     </div>
@@ -182,7 +182,7 @@ export default function DreamInterpretation() {
                       <div className="text-xs font-bold uppercase tracking-[0.14em] text-slate-400">{dream.categoryLabel}</div>
                       <div className="rounded-full bg-white/80 px-2.5 py-1 text-xs font-bold text-slate-700">점수 {dream.score}</div>
                     </div>
-                    <h2 className="mt-3 text-[20px] font-extrabold tracking-[-0.05em] text-slate-900 line-clamp-2">{dream.keyword} 꿈해몽</h2>
+                    <h2 className="mt-3 text-[20px] font-bold tracking-[-0.05em] text-slate-900 line-clamp-2">{dream.keyword} 꿈해몽</h2>
                     <div className="mt-3 h-2 rounded-full bg-white/70">
                       <div className="h-2 rounded-full bg-[#6B5FFF]" style={{ width: `${Math.min(100, dream.score)}%` }} />
                     </div>
@@ -196,7 +196,7 @@ export default function DreamInterpretation() {
           </div>
         ) : (
           <div className="mu-glass-panel px-6 py-12 text-center">
-            <h2 className="text-[22px] font-extrabold tracking-[-0.04em] text-slate-900">검색 결과가 없습니다</h2>
+            <h2 className="text-[22px] font-bold tracking-[-0.04em] text-slate-900">검색 결과가 없습니다</h2>
             <p className="mt-2 text-sm leading-7 text-slate-500">다른 꿈 키워드나 카테고리로 다시 찾아보세요.</p>
           </div>
         )}

@@ -41,7 +41,7 @@ export const DreamQuickSearch: React.FC = () => {
 
         {/* 전체보기 링크 */}
         <Link href="/dream" className="flex-shrink-0">
-          <span className="flex items-center gap-0.5 text-[11px] text-indigo-500/70 hover:text-indigo-600 transition-colors whitespace-nowrap">
+          <span className="flex items-center gap-0.5 text-xs text-indigo-500/70 hover:text-indigo-600 transition-colors whitespace-nowrap">
             전체보기 <ArrowRight className="w-3 h-3" />
           </span>
         </Link>

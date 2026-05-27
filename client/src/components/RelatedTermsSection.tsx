@@ -38,14 +38,14 @@ export function RelatedTermsSection({ currentTermId, currentTags = [], maxItems 
     <section className="my-10">
       <div className="mu-glass-panel p-5 sm:p-6">
         <span className="mu-divider-text">연관 용어</span>
-        <h3 className="mt-3 text-[22px] font-extrabold tracking-[-0.05em] text-slate-900">함께 보면 좋은 사전어</h3>
+        <h3 className="mt-3 text-[22px] font-bold tracking-[-0.05em] text-slate-900">함께 보면 좋은 사전어</h3>
         <div className="mt-5 mu-auto-grid-220">
           {relatedTerms.map((term) => (
             <Link key={term.id} href={`/dictionary/${term.slug}`} className="mu-link-card p-4">
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0 flex-1">
-                  <div className="inline-flex rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-500">{term.categoryLabel}</div>
-                  <h4 className="mt-3 line-clamp-1 text-[17px] font-extrabold tracking-[-0.04em] text-slate-900">{term.title}</h4>
+                  <div className="inline-flex rounded-full bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-500">{term.categoryLabel}</div>
+                  <h4 className="mt-3 line-clamp-1 text-[17px] font-bold tracking-[-0.04em] text-slate-900">{term.title}</h4>
                   <p className="mt-2 line-clamp-2 text-sm leading-6 text-slate-600">{term.summary}</p>
                 </div>
                 <ArrowUpRight size={16} className="text-slate-400" aria-hidden="true" />
@@ -53,7 +53,7 @@ export function RelatedTermsSection({ currentTermId, currentTags = [], maxItems 
               {term.tags && term.tags.length > 0 && (
                 <div className="mt-3 flex flex-wrap gap-1.5">
                   {term.tags.slice(0, 3).map((tag) => (
-                    <span key={tag} className="rounded-full bg-[#6B5FFF]/8 px-2.5 py-1 text-[11px] font-semibold text-[#5648db]">#{tag}</span>
+                    <span key={tag} className="rounded-full bg-[#6B5FFF]/8 px-2.5 py-1 text-xs font-semibold text-[#5648db]">#{tag}</span>
                   ))}
                 </div>
               )}

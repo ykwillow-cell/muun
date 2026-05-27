@@ -140,7 +140,7 @@ export const CompatibilityRelatedServices = () => {
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-2">
               <span className="text-xl">{FEATURED_SERVICE.emoji}</span>
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-pink-500/15 rounded-full text-[10px] font-bold text-pink-600 uppercase tracking-wide">
+              <span className="inline-flex items-center gap-1 px-2 py-0.5 bg-pink-500/15 rounded-full text-xs font-bold text-pink-600 uppercase tracking-wide">
                 <Star className="w-2.5 h-2.5 fill-pink-600" />
                 {FEATURED_SERVICE.badge}
               </span>

@@ -502,7 +502,7 @@ export default function LifelongSaju() {
  <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-purple-500/10 flex items-center justify-center mx-auto">
  <User className="w-4 h-4 text-purple-600" />
  </div>
- <p className="text-[10px] md:text-xs font-medium text-[#1a1a18]">타고난 성격</p>
+ <p className="text-xs font-medium text-[#1a1a18]">타고난 성격</p>
  </CardContent>
  </Card>
  <Card className="bg-white border border-black/[0.06] rounded-xl shadow-sm">
@@ -510,7 +510,7 @@ export default function LifelongSaju() {
  <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-yellow-500/10 flex items-center justify-center mx-auto">
  <Zap className="w-4 h-4 text-yellow-600" />
  </div>
- <p className="text-[10px] md:text-xs font-medium text-[#1a1a18]">재물운</p>
+ <p className="text-xs font-medium text-[#1a1a18]">재물운</p>
  </CardContent>
  </Card>
  <Card className="bg-white border border-black/[0.06] rounded-xl shadow-sm">
@@ -518,7 +518,7 @@ export default function LifelongSaju() {
  <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-blue-500/10 flex items-center justify-center mx-auto">
  <Briefcase className="w-4 h-4 text-blue-600" />
  </div>
- <p className="text-[10px] md:text-xs font-medium text-[#1a1a18]">직업운</p>
+ <p className="text-xs font-medium text-[#1a1a18]">직업운</p>
  </CardContent>
  </Card>
  <Card className="bg-white border border-black/[0.06] rounded-xl shadow-sm">
@@ -526,7 +526,7 @@ export default function LifelongSaju() {
  <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-pink-500/10 flex items-center justify-center mx-auto">
  <Heart className="w-4 h-4 text-pink-600" />
  </div>
- <p className="text-[10px] md:text-xs font-medium text-[#1a1a18]">연애운</p>
+ <p className="text-xs font-medium text-[#1a1a18]">연애운</p>
  </CardContent>
  </Card>
  </div>
@@ -653,7 +653,7 @@ export default function LifelongSaju() {
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(135deg, #2d1a82, #6B5FFF)' }}>
-                  <span className="text-base font-black text-white">{userName.charAt(0)}</span>
+                  <span className="text-base font-bold text-white">{userName.charAt(0)}</span>
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-base font-bold text-[#1a1a18]">{userName}님</p>
@@ -820,7 +820,7 @@ export default function LifelongSaju() {
                   <CardContent className="p-4 space-y-4">
                     <div className="flex items-start gap-3">
                       <div className="flex-shrink-0 w-14 h-14 rounded-xl bg-teal-500/10 flex items-center justify-center">
-                        <span className={`text-2xl font-black ${ELEMENT_TEXT_COLOR[weakest.name]}`}>{weakest.name}</span>
+                        <span className={`text-2xl font-bold ${ELEMENT_TEXT_COLOR[weakest.name]}`}>{weakest.name}</span>
                       </div>
                       <div>
                         <p className="text-sm font-bold text-teal-700 mb-1">보완이 필요한 기운 — {ys.label}</p>

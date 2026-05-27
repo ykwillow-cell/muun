@@ -131,7 +131,7 @@ export default function Guide() {
       {/* ── Sticky 검색 헤더 ── */}
       <section className="sticky top-0 z-20 bg-[#f5f4ff]/95 backdrop-blur-md border-b border-[#6B5FFF]/10 px-4 pb-4 pt-[calc(var(--safe-area-top,0px)+44px)]">
         <div className="flex items-center justify-between mb-3">
-          <h1 className="text-[22px] font-extrabold tracking-[-0.05em] text-[#1e2340]">운세 칼럼</h1>
+          <h1 className="text-[22px] font-bold tracking-[-0.05em] text-[#1e2340]">운세 칼럼</h1>
           <span className="text-sm font-semibold text-[#707797]">{GUIDE_INDEX.length}편</span>
         </div>
         <label className="relative block">
@@ -158,7 +158,7 @@ export default function Guide() {
       {/* ── 카테고리 그리드 (검색 중엔 숨김) ── */}
       {!searchQuery && (
         <section className="px-4 pt-4 pb-2">
-          <p className="mb-3 text-xs font-extrabold tracking-[.06em] text-[#5a4ddb]">카테고리 탐색</p>
+          <p className="mb-3 text-xs font-bold tracking-[.06em] text-[#5a4ddb]">카테고리 탐색</p>
           <div className="grid grid-cols-4 gap-2">
             {/* 전체 — 가로 full */}
             <button
@@ -187,7 +187,7 @@ export default function Guide() {
                     {cat.label}
                   </span>
                   {cnt > 0 && (
-                    <span className={`text-xs font-extrabold ${active ? 'text-white/80' : 'text-slate-400'}`}>
+                    <span className={`text-xs font-bold ${active ? 'text-white/80' : 'text-slate-400'}`}>
                       {cnt}편
                     </span>
                   )}
@@ -272,7 +272,7 @@ export default function Guide() {
                         {catEmoji} {column.categoryLabel}
                       </button>
 
-                      <h2 className="mt-1.5 line-clamp-2 text-base font-extrabold tracking-[-0.04em] text-slate-900 leading-snug">
+                      <h2 className="mt-1.5 line-clamp-2 text-base font-bold tracking-[-0.04em] text-slate-900 leading-snug">
                         {column.title}
                       </h2>
                       <p className="mt-1 line-clamp-2 text-sm leading-[1.65] text-slate-500">
@@ -293,7 +293,7 @@ export default function Guide() {
         ) : (
           <div className="mu-glass-panel px-6 py-14 text-center">
             <div className="text-4xl">🔍</div>
-            <h2 className="mt-4 text-[22px] font-extrabold tracking-[-0.04em] text-slate-900">검색 결과가 없습니다</h2>
+            <h2 className="mt-4 text-[22px] font-bold tracking-[-0.04em] text-slate-900">검색 결과가 없습니다</h2>
             <p className="mt-2 text-base leading-7 text-slate-500">다른 키워드나 카테고리로 다시 찾아보세요.</p>
             <button
               onClick={() => { applySearch(''); applyCategory(null); }}

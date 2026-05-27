@@ -103,7 +103,7 @@ export function GNB() {
         <div className="w-full bg-primary/8 py-2 md:py-3 border-b border-primary/15 overflow-hidden">
           <div className="container max-w-[1280px] px-5 flex items-center justify-center gap-2 animate-in fade-in slide-in-from-top duration-1000">
             <Sparkles className="w-3.5 h-3.5 md:w-4 md:h-4 text-primary animate-pulse" />
-            <p className="text-[11px] md:text-sm font-medium text-foreground/70 tracking-tight text-center">
+            <p className="text-xs md:text-sm font-medium text-foreground/70 tracking-tight text-center">
               회원가입 없이 1초 만에 확인하는 <span className="text-primary font-semibold">100% 무료</span> 운세 서비스
             </p>
             <Sparkles className="w-3.5 h-3.5 md:w-4 md:h-4 text-primary animate-pulse" />
@@ -129,7 +129,7 @@ export function GNB() {
                 <Sparkles className="w-6 h-6 md:w-7 md:h-7 text-white" />
               </div>
               <span className={cn(
-                "text-2xl md:text-3xl font-black tracking-tighter",
+                "text-2xl md:text-3xl font-bold tracking-tighter",
                 isHome ? "text-white" : "text-primary"
               )}>
                 MUUN
@@ -168,7 +168,7 @@ export function GNB() {
                       <div className="w-6 h-6 bg-primary rounded flex items-center justify-center">
                         <Sparkles className="w-4 h-4 text-white" />
                       </div>
-                      <span className="text-primary font-black tracking-tighter">MUUN</span>
+                      <span className="text-primary font-bold tracking-tighter">MUUN</span>
                     </SheetTitle>
                   </SheetHeader>
                   
@@ -197,7 +197,7 @@ export function GNB() {
                             </div>
                             <div className="flex-1">
                               <div className="text-sm font-bold">{item.name}</div>
-                              <div className="text-[11px] opacity-50 font-medium">{item.description}</div>
+                              <div className="text-xs opacity-50 font-medium">{item.description}</div>
                             </div>
                             <ChevronRight className={cn(
                               "w-4 h-4 transition-transform",
@@ -210,7 +210,7 @@ export function GNB() {
                   </div>
 
                   <div className="p-6 border-t border-black/10 bg-black/[0.05]">
-                    <p className="text-[10px] text-center text-foreground/40 font-medium uppercase tracking-widest">
+                    <p className="text-xs text-center text-foreground/40 font-medium uppercase tracking-widest">
                       © 2026 MUUN Celestial Services
                     </p>
                   </div>

@@ -332,7 +332,7 @@ export default function Tojeong() {
                   {/* Info Box */}
                   <div className="flex items-start gap-2 p-3 rounded-xl bg-[#6B5FFF]/5 border border-[#6B5FFF]/10">
                     <Info className="w-3.5 h-3.5 text-[#6B5FFF] mt-0.5 flex-shrink-0" />
-                    <p className="text-[11px] md:text-xs text-amber-200/70 leading-relaxed">
+                    <p className="text-xs text-amber-200/70 leading-relaxed">
                       토정비결은 전통적으로 <strong className="text-[#6B5FFF]">음력 생일</strong>을 기준으로 할 때 가장 정확합니다.
                     </p>
                   </div>
@@ -357,7 +357,7 @@ export default function Tojeong() {
                   <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-[#6B5FFF]/10 flex items-center justify-center mx-auto">
                     <ScrollText className="w-4 h-4 text-[#6B5FFF]" />
                   </div>
-                  <p className="text-[10px] md:text-xs font-medium text-[#191F28]">144괴 해석</p>
+                  <p className="text-xs font-medium text-[#191F28]">144괴 해석</p>
                 </CardContent>
               </Card>
               <Card className="bg-white border border-black/[0.06] rounded-xl shadow-sm">
@@ -365,7 +365,7 @@ export default function Tojeong() {
                   <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-yellow-500/10 flex items-center justify-center mx-auto">
                     <Calendar className="w-4 h-4 text-yellow-500" />
                   </div>
-                  <p className="text-[10px] md:text-xs font-medium text-[#191F28]">월별 운세</p>
+                  <p className="text-xs font-medium text-[#191F28]">월별 운세</p>
                 </CardContent>
               </Card>
               <Card className="bg-white border border-black/[0.06] rounded-xl shadow-sm">
@@ -373,7 +373,7 @@ export default function Tojeong() {
                   <div className="w-8 h-8 md:w-9 md:h-9 rounded-lg bg-orange-500/10 flex items-center justify-center mx-auto">
                     <BookOpen className="w-4 h-4 text-orange-500" />
                   </div>
-                  <p className="text-[10px] md:text-xs font-medium text-[#191F28]">전통 해석</p>
+                  <p className="text-xs font-medium text-[#191F28]">전통 해석</p>
                 </CardContent>
               </Card>
             </div>
@@ -399,7 +399,7 @@ export default function Tojeong() {
     <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
       {/* 토정비결은 원래 삼주(연,월,일)만 사용하므로 안내 라벨 표시 */}
       <div className="bg-[#6B5FFF]/10 border-b border-[#6B5FFF]/20 py-2 px-4 relative z-50">
-        <p className="text-[10px] md:text-xs text-[#6B5FFF] text-center font-medium">
+        <p className="text-xs text-[#6B5FFF] text-center font-medium">
           전통 방식에 따른 연, 월, 일(삼주) 분석 결과입니다
         </p>
       </div>
@@ -461,8 +461,8 @@ export default function Tojeong() {
                   <Card className="bg-white border border-black/[0.06] rounded-xl overflow-hidden hover:shadow-md transition-all duration-300 group">
                     <CardContent className="p-3 md:p-4">
                       <div className="flex justify-between items-center mb-2">
-                        <span className="text-base font-black text-[#6B5FFF] group-hover:scale-110 transition-transform origin-left">{item.month}월</span>
-                        <span className="px-2 py-0.5 rounded-full bg-[#6B5FFF]/10 text-[#6B5FFF] text-[10px] md:text-xs font-bold border border-[#6B5FFF]/20">{item.tag}</span>
+                        <span className="text-base font-bold text-[#6B5FFF] group-hover:scale-110 transition-transform origin-left">{item.month}월</span>
+                        <span className="px-2 py-0.5 rounded-full bg-[#6B5FFF]/10 text-[#6B5FFF] text-xs font-bold border border-[#6B5FFF]/20">{item.tag}</span>
                       </div>
                       <p className="text-[#4E5968] leading-relaxed text-xs md:text-sm">{item.content}</p>
                     </CardContent>

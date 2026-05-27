@@ -45,7 +45,7 @@ export default function CallToAction({ message, targetPath, buttonLabel, variant
         <div className="grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr))] items-end">
           <div>
             <span className="mu-kicker">{config.eyebrow}</span>
-            <h3 className="mt-4 text-[28px] font-extrabold tracking-[-0.05em] text-white">{finalMessage}</h3>
+            <h3 className="mt-4 text-[28px] font-bold tracking-[-0.05em] text-white">{finalMessage}</h3>
             <p className="mt-3 text-sm leading-7 text-white/78">{config.description}</p>
             <div className="mt-5 flex flex-wrap gap-2">
               {trustBadges.map((label) => (
@@ -59,7 +59,7 @@ export default function CallToAction({ message, targetPath, buttonLabel, variant
               <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-white/14 shadow-sm"><Sparkles size={20} aria-hidden="true" /></div>
               <div>
                 <div className="text-xs font-bold uppercase tracking-[0.18em] text-white/60">바로 확인하기</div>
-                <div className="mt-1 text-sm font-extrabold text-white">결과 페이지로 바로 이동해요</div>
+                <div className="mt-1 text-sm font-bold text-white">결과 페이지로 바로 이동해요</div>
               </div>
             </div>
 
@@ -67,7 +67,7 @@ export default function CallToAction({ message, targetPath, buttonLabel, variant
               <span>{finalButtonLabel}</span>
               <ArrowRight size={16} aria-hidden="true" />
             </Link>
-            <p className="mt-3 text-center text-[11px] leading-5 text-white/60">저장 없음 · 회원가입 없음</p>
+            <p className="mt-3 text-center text-xs leading-5 text-white/60">저장 없음 · 회원가입 없음</p>
           </div>
         </div>
       </div>

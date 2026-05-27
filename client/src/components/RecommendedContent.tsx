@@ -145,7 +145,7 @@ export default function RecommendedContent() {
                     <div>
                       <div className="flex items-center gap-1 mb-1.5">
                         <BookOpen className="w-3 h-3 text-primary flex-shrink-0" />
-                        <span className="text-[10px] font-bold text-primary uppercase tracking-wider">운세 칼럼</span>
+                        <span className="text-xs font-bold text-primary uppercase tracking-wider">운세 칼럼</span>
                       </div>
                       <p className="text-xs font-semibold text-[#1a1a18]/90 line-clamp-2 leading-snug">
                         {item.data.title}
@@ -167,12 +167,12 @@ export default function RecommendedContent() {
                     <div>
                       <div className="flex items-center gap-1 mb-1.5">
                         <CloudMoon className="w-3 h-3 text-purple-600 flex-shrink-0" />
-                        <span className="text-[10px] font-bold text-purple-600 uppercase tracking-wider">꿈해몽</span>
+                        <span className="text-xs font-bold text-purple-600 uppercase tracking-wider">꿈해몽</span>
                       </div>
                       <p className="text-xs font-semibold text-[#1a1a18]/90 line-clamp-2 leading-snug">
                         {item.data.keyword}
                       </p>
-                      <p className="text-[10px] text-[#999891] mt-1 line-clamp-2 leading-snug">
+                      <p className="text-xs text-[#999891] mt-1 line-clamp-2 leading-snug">
                         {item.data.interpretation}
                       </p>
                     </div>
@@ -192,12 +192,12 @@ export default function RecommendedContent() {
                     <div>
                       <div className="flex items-center gap-1 mb-1.5">
                         <BookMarked className="w-3 h-3 text-yellow-600 flex-shrink-0" />
-                        <span className="text-[10px] font-bold text-yellow-600 uppercase tracking-wider">운세 사전</span>
+                        <span className="text-xs font-bold text-yellow-600 uppercase tracking-wider">운세 사전</span>
                       </div>
                       <p className="text-xs font-semibold text-[#1a1a18]/90 line-clamp-2 leading-snug">
                         {item.title}
                       </p>
-                      <p className="text-[10px] text-[#999891] mt-1 line-clamp-2 leading-snug">
+                      <p className="text-xs text-[#999891] mt-1 line-clamp-2 leading-snug">
                         {item.summary}
                       </p>
                     </div>
