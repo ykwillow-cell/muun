@@ -26,7 +26,7 @@ export function BottomNav() {
   return (
     <>
       <div className="mu-bottom-nav-modern__spacer" aria-hidden="true" />
-      <nav className="mu-bottom-nav-modern" style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }} aria-label="하단 내비게이션">
+      <nav className="mu-bottom-nav-modern" aria-label="하단 내비게이션">
         {NAV_ITEMS.map(({ href, label, Icon }) => {
           const active = isActive(href);
           return (
