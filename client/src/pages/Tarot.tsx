@@ -586,17 +586,7 @@ export default function Tarot() {
               </motion.div>
             )}
 
-            {/* 추천 콘텐츠 */}
-                  <RelatedServices
-        title="타로와 함께 보면 좋은 서비스"
-        services={[
-          { href: '/lifelong-saju', emoji: '🔮', label: '평생사주', description: '타로가 보여준 흐름을 사주로 더 깊이 확인해보세요.' },
-          { href: '/daily-fortune', emoji: '📅', label: '오늘의 운세', description: '오늘 하루의 총운, 재물운, 애정운을 바로 확인해보세요.' },
-          { href: '/compatibility', emoji: '💞', label: '궁합', description: '관계에 관한 질문이라면 궁합 분석도 함께 보세요.' },
-          { href: '/past-life', emoji: '✨', label: '전생', description: '타로와 함께 전생으로 보는 나의 본질도 확인해보세요.' },
-        ]}
-      />
-          <RecommendedContent />
+            {/* 추천 콘텐츠 */}          <RecommendedContent />
           </motion.div>
         )}
 

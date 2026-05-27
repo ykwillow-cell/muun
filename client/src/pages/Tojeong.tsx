@@ -513,18 +513,7 @@ export default function Tojeong() {
                 다시보기
               </Button>
             </div>
-          </div>
-          {/* 콘텐츠 추천 섹션 */}
-                <RelatedServices
-        title="토정비결과 함께 보면 좋은 서비스"
-        services={[
-          { href: '/lifelong-saju', emoji: '🔮', label: '평생사주', description: '토정비결과 함께 타고난 기질과 평생 운도 확인해보세요.' },
-          { href: '/yearly-fortune', emoji: '📆', label: '신년운세', description: '올해의 운 흐름을 더 다양한 관점으로 살펴보세요.' },
-          { href: '/daily-fortune', emoji: '📅', label: '오늘의 운세', description: '오늘 하루의 구체적인 운세도 함께 확인해보세요.' },
-          { href: '/fortune-dictionary', emoji: '📖', label: '운세 사전', description: '토정비결에 나오는 용어의 의미를 사전에서 찾아보세요.' },
-        ]}
-      />
-          <RecommendedContent />
+          </div>          <RecommendedContent />
         </motion.div>
       </main>
     </div>

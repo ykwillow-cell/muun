@@ -589,19 +589,7 @@ const Astrology: React.FC = () => {
                 나를 더 깊이 이해하는 재미있는 가이드로 활용해보세요!
               </p>
             </CardContent>
-          </Card>
-
-          {/* 콘텐츠 추천 섹션 */}
-                <RelatedServices
-        title="별자리 운세와 함께 보면 좋은 서비스"
-        services={[
-          { href: '/lifelong-saju', emoji: '🔮', label: '평생사주', description: '서양 점성술과 동양 사주의 관점을 함께 비교해보세요.' },
-          { href: '/tarot', emoji: '🃏', label: '타로', description: '별자리의 흐름을 타로 카드로도 읽어보세요.' },
-          { href: '/daily-fortune', emoji: '📅', label: '오늘의 운세', description: '오늘 하루의 동양 운세도 함께 확인해보세요.' },
-          { href: '/compatibility', emoji: '💞', label: '궁합', description: '별자리 궁합과 사주 궁합을 함께 분석해보세요.' },
-        ]}
-      />
-          <RecommendedContent />
+          </Card>          <RecommendedContent />
         </motion.div>
       </main>
     </div>

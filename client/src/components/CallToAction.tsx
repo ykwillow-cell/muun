@@ -26,7 +26,7 @@ const VARIANTS = {
   },
 } as const;
 
-const trustBadges = ['무료', '회원가입 없음', '모바일 최적화'] as const;
+const trustBadges = ['무료', '회원가입 없음', '지금 바로 확인'] as const;
 
 export default function CallToAction({ message, targetPath, buttonLabel, variant = 'lifelong' }: CallToActionProps) {
   const [location] = useLocation();

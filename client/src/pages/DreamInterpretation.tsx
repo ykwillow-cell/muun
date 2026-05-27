@@ -92,7 +92,7 @@ export default function DreamInterpretation() {
               <span className="mu-kicker">Dream archive</span>
               <h1 className="mt-4 text-[34px] font-bold leading-[1.1] tracking-[-0.06em] text-white">자주 찾는 꿈해몽 아카이브</h1>
               <p className="mt-4 text-sm leading-7 text-white/80">
-                자주 검색되는 꿈 키워드를 빠르게 찾고, 상세 페이지에서 전통적 의미와 심리적 해석을 함께 읽을 수 있도록 모바일 중심으로 정리했습니다.
+                자주 검색되는 꿈 키워드를 빠르게 찾고, 상세 페이지에서 전통적 의미와 심리적 해석을 함께 읽어보세요.
               </p>
               <div className="mt-5 flex flex-wrap gap-2">
                 <span className="mu-stat-pill"><MoonStar size={14} /> 길몽·평몽·흉몽 분류</span>

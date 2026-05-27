@@ -240,7 +240,6 @@ export default function DreamDetail() {
         <RelatedServices
         title="꿈해몽 상세와 함께 보면 좋은 서비스"
         services={[
-        { href: '/lifelong-saju', emoji: '🔮', label: '평생사주', description: '꿈에서 느낀 기운이 내 타고난 기질과 연결되는지 확인해보세요.' },
         { href: '/fortune-dictionary', emoji: '📖', label: '운세 사전', description: '꿈 속 상징을 명리학 용어로 더 깊이 이해해보세요.' },
         { href: '/compatibility', emoji: '💞', label: '궁합', description: '꿈에 특정 사람이 나왔다면 그 사람과의 궁합도 확인해보세요.' },
         { href: '/yearly-fortune', emoji: '📆', label: '신년운세', description: '올해의 큰 운 흐름을 함께 확인해보세요.' },
