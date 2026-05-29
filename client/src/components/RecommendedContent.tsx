@@ -12,6 +12,7 @@ import { getLatestColumns, type ColumnData } from '@/lib/column-data-api';
 import { getLatestDreams, type DreamData } from '@/lib/dream-data-api';
 import { trackCustomEvent } from '@/lib/ga4';
 import { useLocation } from 'wouter';
+import { getGuidePath } from '@/lib/guide-url';
 
 type RecommendItem =
   | { type: 'column'; data: ColumnData }
@@ -124,7 +125,7 @@ export default function RecommendedContent() {
             transition={{ duration: 0.4, delay: index * 0.07 }}
           >
             {item.type === 'column' && (
-              <Link href={`/guide/${item.data.id}`}>
+              <Link href={getGuidePath(item.data.slug, item.data.id)}>
                 <div
                   onClick={() => handleClick(item)}
                   className="group flex flex-col h-full min-h-[80px] bg-black/[0.05] border border-black/10 rounded-2xl overflow-hidden hover:border-primary/40 hover:bg-white transition-all cursor-pointer active:scale-[0.98]"

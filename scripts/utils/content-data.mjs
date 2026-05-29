@@ -159,7 +159,7 @@ export async function loadColumnsDataset({ limit = 200 } = {}) {
 export async function loadDreamsDataset({ limit = 600 } = {}) {
   try {
     const result = await fetchRestTable('dreams', {
-      select: 'id,keyword,slug,interpretation,traditional_meaning,psychological_meaning,category,grade,score,published_at,created_at,updated_at,published,meta_title,meta_description,seo_data',
+      select: 'id,keyword,slug,interpretation,traditional_meaning,psychological_meaning,category,grade,score,published_at,created_at,updated_at,published,seo_data',
       filters: [{ field: 'published', value: true }],
       order: ['published_at.desc.nullslast'],
       limit,

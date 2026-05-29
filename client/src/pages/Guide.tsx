@@ -5,6 +5,7 @@ import { Helmet } from 'react-helmet-async';
 import { Clock3, Search, X, ChevronDown } from 'lucide-react';
 import { GUIDE_INDEX } from '@/generated/content-snapshots';
 import RelatedServices from '@/components/RelatedServices';
+import { getGuidePath } from '@/lib/guide-url';
 
 // ── 카테고리 정의 (이모지 + 편수는 런타임 집계) ──
 const CATEGORIES = [
@@ -245,7 +246,7 @@ export default function Guide() {
               return (
                 <Link
                   key={column.slug}
-                  href={`/guide/${column.slug}`}
+                  href={getGuidePath(column.slug, column.id)}
                   className="flex overflow-hidden rounded-2xl border border-slate-200/80 bg-white/96 shadow-sm hover:-translate-y-0.5 hover:border-[#6B5FFF]/20 hover:shadow-md transition-all"
                 >
                   {/* 썸네일 */}

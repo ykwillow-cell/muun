@@ -1,6 +1,7 @@
 import { Link } from 'wouter';
 import { ArrowRight, BookOpenText, Clock3 } from 'lucide-react';
 import { HOME_COLUMNS_PREVIEW } from '@/generated/content-snapshots';
+import { getGuidePath } from '@/lib/guide-url';
 
 function formatDate(value: string) {
   if (!value) return '';
@@ -26,7 +27,7 @@ export function HomeColumnSection() {
       </div>
       <div className="mu-home-content-list">
         {previewColumns.length > 0 ? previewColumns.map((column, index) => (
-          <Link key={column.slug} href={`/guide/${column.slug}`} className="mu-home-content-card">
+          <Link key={column.slug} href={getGuidePath(column.slug, column.id)} className="mu-home-content-card">
             <div className={`mu-home-content-card__thumb is-${index % 2 === 0 ? 'lavender' : 'mint'}`} aria-hidden="true">
               <BookOpenText size={28} />
             </div>

@@ -5,6 +5,7 @@ import { CalendarDays, Clock3, Share2, Loader2, ChevronLeft, CheckCircle2 } from
 import NotFound from '@/pages/NotFound';
 import { useCanonical } from '@/lib/use-canonical';
 import { getColumnBySlug, type ColumnData } from '@/lib/column-data-api';
+import { getGuideCanonicalUrl, getGuidePath, resolveGeneratedGuideSlug, stripGeneratedGuideHexSuffix } from '@/lib/guide-url';
 import { injectLinksIntoHtml } from '@/hooks/useLinkedText';
 import { GUIDE_INDEX } from '@/generated/content-snapshots';
 
@@ -52,9 +53,18 @@ const TRUST_BADGES = ['100% 무료', '회원가입 없음', '생년월일만 입
 
 export default function GuideDetail() {
   const { id } = useParams<{ id: string }>();
-  const preview = GUIDE_INDEX.find((item) => item.slug === id || item.id === id);
+  const normalizedId = id || '';
+  const preview = GUIDE_INDEX.find((item) => {
+    const generatedSlug = resolveGeneratedGuideSlug(item.slug, item.id);
+    return item.slug === normalizedId || generatedSlug === normalizedId || item.id === normalizedId;
+  });
   const [column, setColumn] = useState<ColumnData | null | undefined>(undefined);
-  useCanonical(`/guide/${id}`);
+  const canonicalSlug = column
+    ? resolveGeneratedGuideSlug(column.slug || normalizedId, column.id)
+    : preview
+    ? resolveGeneratedGuideSlug(preview.slug, preview.id)
+    : normalizedId;
+  useCanonical(`/guide/${canonicalSlug}`);
 
   useEffect(() => {
     let active = true;
@@ -69,7 +79,7 @@ export default function GuideDetail() {
 
   const metaTitle       = column?.metaTitle       || preview?.title       || '운세 칼럼 | 무운';
   const metaDescription = column?.metaDescription || preview?.description || '무운 운세 칼럼을 읽어보세요.';
-  const canonicalUrl    = `https://muunsaju.com/guide/${id}`;
+  const canonicalUrl    = getGuideCanonicalUrl(canonicalSlug);
   const publishedDate   = column?.publishedDate   || preview?.publishedDate || '';
   const categoryLabel   = column?.categoryLabel   || preview?.categoryLabel || '운세 칼럼';
   const articleCover    = column?.thumbnail       || preview?.thumbnail    || '';
@@ -79,9 +89,13 @@ export default function GuideDetail() {
 
   const relatedColumns = useMemo(() => {
     return GUIDE_INDEX
-      .filter((item) => item.slug !== id && (!category || item.category === category))
+      .filter((item) => {
+        const generatedSlug = resolveGeneratedGuideSlug(item.slug, item.id);
+        const currentBaseSlug = stripGeneratedGuideHexSuffix(canonicalSlug);
+        return item.slug !== currentBaseSlug && generatedSlug !== canonicalSlug && (!category || item.category === category);
+      })
       .slice(0, 3);
-  }, [category, id]);
+  }, [category, canonicalSlug]);
 
   const handleShare = async () => {
     try {
@@ -240,7 +254,7 @@ export default function GuideDetail() {
             </div>
             <div className="flex flex-col gap-3">
               {relatedColumns.map((item) => (
-                <Link key={item.slug} href={`/guide/${item.slug}`}
+                <Link key={item.slug} href={getGuidePath(item.slug, item.id)}
                   className="flex overflow-hidden rounded-2xl border border-slate-200/80 bg-white hover:border-[#6B5FFF]/20 hover:shadow-sm transition-all"
                 >
                   <div className="w-20 shrink-0 bg-[linear-gradient(135deg,#17114c_0%,#352597_55%,#5f4bcb_100%)]">

@@ -3,6 +3,7 @@
  * muun-admin과 동일한 Supabase 프로젝트를 사용합니다.
  */
 import { createClient } from '@supabase/supabase-js';
+import { hasGeneratedGuideHexSuffix, stripGeneratedGuideHexSuffix } from './guide-url';
 
 const SUPABASE_URL = 'https://vuifbmsdggnwygvgcrkj.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1aWZibXNkZ2dud3lndmdjcmtqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE4NzY0ODYsImV4cCI6MjA4NzQ1MjQ4Nn0.PhMK66O73HH98WIPAu66qk8FuXwJLU4Z2bhDcmDCpKI';
@@ -107,10 +108,10 @@ export async function getColumnById(id: string): Promise<ColumnData | null> {
       .from('columns')
       .select('*')
       .eq('id', id)
-      .single();
+      .eq('published', true)
+      .maybeSingle();
 
     if (error) {
-      if (error.code === 'PGRST116') return null;
       console.error('Supabase getColumnById error:', error);
       return null;
     }
@@ -121,25 +122,48 @@ export async function getColumnById(id: string): Promise<ColumnData | null> {
   }
 }
 
+async function getPublishedColumnBySlugValue(slug: string): Promise<ColumnData | null> {
+  const { data, error } = await supabase
+    .from('columns')
+    .select('*')
+    .eq('slug', slug)
+    .eq('published', true)
+    .maybeSingle();
+
+  if (error) {
+    console.error('Supabase getColumnBySlug error:', error);
+    return null;
+  }
+
+  return data ? mapRow(data) : null;
+}
+
 /**
  * 슬러그로 칼럼 상세 조회
+ *
+ * 리뉴얼 이후 sitemap/prerender URL은 /guide/{slug}-{id8} 형태인데,
+ * 일부 Supabase rows는 여전히 {slug}만 저장하고 있습니다.
+ * 이 경우 클라이언트 hydration 후 NotFound(noindex)로 바뀌지 않도록
+ * 1) URL slug 그대로 조회 → 2) generated hex suffix 제거 후 재조회 → 3) UUID 조회
+ * 순서로 fallback 합니다.
  */
 export async function getColumnBySlug(slug: string): Promise<ColumnData | null> {
   try {
-    const { data, error } = await supabase
-      .from('columns')
-      .select('*')
-      .eq('slug', slug)
-      .single();
+    const normalizedSlug = String(slug || '').trim().toLowerCase();
+    if (!normalizedSlug) return null;
 
-    if (error) {
-      if (error.code === 'PGRST116') {
-        return getColumnById(slug);
+    const direct = await getPublishedColumnBySlugValue(normalizedSlug);
+    if (direct) return direct;
+
+    if (hasGeneratedGuideHexSuffix(normalizedSlug)) {
+      const baseSlug = stripGeneratedGuideHexSuffix(normalizedSlug);
+      if (baseSlug && baseSlug !== normalizedSlug) {
+        const byBaseSlug = await getPublishedColumnBySlugValue(baseSlug);
+        if (byBaseSlug) return byBaseSlug;
       }
-      console.error('Supabase getColumnBySlug error:', error);
-      return null;
     }
-    return data ? mapRow(data) : null;
+
+    return getColumnById(normalizedSlug);
   } catch (error) {
     console.error('Failed to fetch column by slug:', error);
     return null;
