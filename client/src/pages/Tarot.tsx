@@ -4,7 +4,7 @@ import { useCanonical } from '@/lib/use-canonical';
 import { setTarotOGTags } from '@/lib/og-tags';
 import { Helmet } from "react-helmet-async";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, RefreshCw, ChevronRight, AlertCircle, ChevronLeft, Star, BookOpen, Search, Lightbulb, Heart, Briefcase, Coins, Moon } from "lucide-react";
+import { Sparkles, RefreshCw, ChevronRight, AlertCircle, ChevronLeft, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
@@ -13,37 +13,34 @@ import tarotData from "@/lib/tarot-data.json";
 import { trackCustomEvent } from "@/lib/ga4";
 import TarotContent from "@/components/TarotContent";
 import RecommendedContent from "@/components/RecommendedContent";
-// tarot-api 인라인 — 외부 파일 의존 없이 직접 서버 호출
-export interface TarotCardResult {
-  position: string;
-  positionMeaning: string;
-  cardName: string;
-  coreMessage: string;
-  detailMessage: string;
-  advice: string;
-}
+import { Search, BookOpen, Lightbulb, Heart, Moon } from "lucide-react";
 
-export interface TarotStructuredResult {
-  summary: string;
-  cards: TarotCardResult[];
-  synthesis: string;
-  keyMessage: string;
-  actionItems: string[];
-  closingWord: string;
+// ── 타로 API 인라인 (tarot-api.ts 불필요) ──────────────────────────────
+interface TarotCardResult {
+  position: string; positionMeaning: string; cardName: string;
+  coreMessage: string; detailMessage: string; advice: string;
 }
-
-async function getTarotInterpretation(payload: { question: string; cards: TarotCard[] }) {
-  const response = await fetch('/api/tarot', {
+interface TarotStructuredResult {
+  summary: string; cards: TarotCardResult[];
+  synthesis: string; keyMessage: string;
+  actionItems: string[]; closingWord: string;
+}
+async function callTarotAPI(question: string, cards: TarotCard[]) {
+  const res = await fetch('/api/tarot', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ question: payload.question, cards: payload.cards }),
+    body: JSON.stringify({ question, cards }),
   });
-  if (!response.ok) {
-    const err = await response.json().catch(() => ({}));
-    throw new Error(`${response.status}: ${err?.error || response.statusText}`);
-  }
-  return response.json();
+  if (!res.ok) { const e = await res.json().catch(()=>({})); throw new Error(`${res.status}: ${e?.error||res.statusText}`); }
+  return res.json();
 }
+function tryParseStructured(raw: string): TarotStructuredResult | null {
+  const attempt = (s: string) => { try { const p = JSON.parse(s); return p?.summary && Array.isArray(p?.cards) ? p : null; } catch { return null; } };
+  return attempt(raw)
+    ?? attempt(raw.replace(/^```json\s*/i,'').replace(/\s*```$/i,'').trim())
+    ?? attempt((raw.match(/\{[\s\S]*\}/) ?? [])[0] ?? '');
+}
+// ──────────────────────────────────────────────────────────────────────
 
 interface TarotCard {
   id: number;
@@ -76,14 +73,12 @@ const EXAMPLE_QUESTIONS = [
 const CARD_POSITIONS = ["과거", "현재", "미래"];
 const CARD_POSITION_EN = ["Past", "Present", "Future"];
 
-// 포지션별 색상
+
 const POSITION_COLORS = [
   { bg: "bg-indigo-50", border: "border-indigo-200", badge: "bg-indigo-100 text-indigo-700", accent: "#6366f1" },
   { bg: "bg-purple-50", border: "border-purple-200", badge: "bg-purple-100 text-purple-700", accent: "#7c3aed" },
   { bg: "bg-violet-50", border: "border-violet-200", badge: "bg-violet-100 text-violet-700", accent: "#8b5cf6" },
 ];
-
-// 내부 검색 링크 데이터
 const INTERNAL_SEARCH_LINKS = [
   { href: "/lifelong-saju", label: "평생사주", icon: "🔮", desc: "타로가 보여준 흐름을 사주로 더 깊이" },
   { href: "/daily-fortune", label: "오늘의 운세", icon: "📅", desc: "오늘 하루 총운·재물운·애정운" },
@@ -92,46 +87,15 @@ const INTERNAL_SEARCH_LINKS = [
   { href: "/tojeong", label: "토정비결", icon: "📖", desc: "한 해 운세를 전통 방식으로" },
   { href: "/psychology", label: "심리테스트", icon: "🧠", desc: "나를 더 깊이 이해하는 시간" },
 ];
-
-const TAROT_KEYWORDS = [
-  { label: "연애운 타로", href: "/tarot" },
-  { label: "취업 타로", href: "/tarot" },
-  { label: "재물운 타로", href: "/tarot" },
-  { label: "인관관계 타로", href: "/tarot" },
-  { label: "결혼 타로", href: "/tarot" },
-  { label: "이직 타로", href: "/tarot" },
-];
-
 const TAROT_COLUMNS = [
-  {
-    href: "/column/tarot-card-meanings",
-    category: "타로 가이드",
-    title: "타로카드 78장의 의미 완전 정리",
-    summary: "메이저 아르카나 22장부터 마이너 아르카나까지, 각 카드가 상징하는 핵심 키워드를 한눈에 정리했습니다.",
-    emoji: "🃏",
-    thumbBg: "#eef2ff",
-  },
-  {
-    href: "/column/wheel-of-fortune-meaning",
-    category: "운세 칼럼",
-    title: "변화를 앞둔 당신에게, 운명의 수레바퀴가 말하는 것",
-    summary: "직장·이직·이사 등 큰 변화의 기로에 선 사람들에게 수레바퀴 카드가 전하는 메시지를 깊이 풀어봅니다.",
-    emoji: "🔄",
-    thumbBg: "#f5f3ff",
-  },
-  {
-    href: "/column/the-sun-card-guide",
-    category: "사주 칼럼",
-    title: "태양 카드가 나왔다면? 성공 운을 최대로 살리는 법",
-    summary: "타로에서 가장 긍정적인 카드 중 하나인 태양. 이 에너지를 일상과 결정에 어떻게 연결할 수 있는지 알아보세요.",
-    emoji: "☀️",
-    thumbBg: "#faf5ff",
-  },
+  { href: "/column/tarot-card-meanings", category: "타로 가이드", title: "타로카드 78장의 의미 완전 정리", summary: "메이저 아르카나 22장부터 마이너 아르카나까지, 각 카드가 상징하는 핵심 키워드를 한눈에 정리했습니다.", emoji: "🃏", thumbBg: "#eef2ff" },
+  { href: "/column/wheel-of-fortune-meaning", category: "운세 칼럼", title: "변화를 앞둔 당신에게, 운명의 수레바퀴가 말하는 것", summary: "직장·이직·이사 등 큰 변화의 기로에 선 사람들에게 수레바퀴 카드가 전하는 메시지를 깊이 풀어봅니다.", emoji: "🔄", thumbBg: "#f5f3ff" },
+  { href: "/column/the-sun-card-guide", category: "사주 칼럼", title: "태양 카드가 나왔다면? 성공 운을 최대로 살리는 법", summary: "타로에서 가장 긍정적인 카드 중 하나인 태양. 이 에너지를 일상과 결정에 어떻게 연결할 수 있는지 알아보세요.", emoji: "☀️", thumbBg: "#faf5ff" },
 ];
 
 export default function Tarot() {
   useCanonical('/tarot');
-
+  
   useEffect(() => {
     setTarotOGTags();
   }, []);
@@ -149,8 +113,8 @@ export default function Tarot() {
   }, [step]);
 
   const [selectedCards, setSelectedCards] = useState<TarotCard[]>([]);
+  const [interpretation, setInterpretation] = useState("");
   const [structuredResult, setStructuredResult] = useState<TarotStructuredResult | null>(null);
-  const [fallbackInterpretation, setFallbackInterpretation] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [shuffledDeck, setShuffledDeck] = useState<TarotCard[]>([]);
   const [error, setError] = useState<ErrorState | null>(null);
@@ -181,22 +145,13 @@ export default function Tarot() {
 
   const handleInterpretation = async () => {
     try {
-      const data = await getTarotInterpretation({ question, cards: selectedCards });
+      const data = await callTarotAPI(question, selectedCards);
       if (data.structured) {
         setStructuredResult(data.structured);
       } else if (data.interpretation) {
-        // 서버 파싱 실패 대비 — 클라이언트에서 한 번 더 시도
-        const tryParse = (s: string) => { try { return JSON.parse(s); } catch { return null; } };
-        const raw = data.interpretation;
-        const parsed =
-          tryParse(raw) ??
-          tryParse(raw.replace(/^```json\s*/i, '').replace(/\s*```$/i, '').trim()) ??
-          tryParse((raw.match(/\{[\s\S]*\}/) ?? [])[0] ?? '');
-        if (parsed?.summary && Array.isArray(parsed?.cards)) {
-          setStructuredResult(parsed);
-        } else {
-          setFallbackInterpretation(raw);
-        }
+        const parsed = tryParseStructured(data.interpretation);
+        if (parsed) { setStructuredResult(parsed); }
+        else { setInterpretation(data.interpretation); }
       }
     } catch (error) {
       console.error("Tarot interpretation error:", error);
@@ -218,8 +173,7 @@ export default function Tarot() {
     setIsLoading(true);
     setStep("result");
     setError(null);
-    setStructuredResult(null);
-    setFallbackInterpretation("");
+    setInterpretation("");
     try { await handleInterpretation(); } finally { setIsLoading(false); }
   };
 
@@ -227,8 +181,8 @@ export default function Tarot() {
     setStep("input");
     setQuestion("");
     setSelectedCards([]);
+    setInterpretation("");
     setStructuredResult(null);
-    setFallbackInterpretation("");
     setError(null);
   };
 
@@ -239,6 +193,7 @@ export default function Tarot() {
       const mobile = window.innerWidth < 768;
       setIsMobile(mobile);
       if (!mobile) {
+        // 데스크탑: 팬 스프레드 (11-11)
         setRows([shuffledDeck.slice(0, 11), shuffledDeck.slice(11, 22)]);
       }
     };
@@ -308,9 +263,10 @@ export default function Tarot() {
         {step === "input" && (
           <motion.div key="input" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
 
-            {/* 히어로 */}
+            {/* 히어로 — 딥 미드나이트 퍼플 */}
             <div className="relative overflow-hidden"
               style={{ background: 'linear-gradient(160deg, #130a38 0%, #221265 38%, #3a1660 68%, #1a0832 100%)', minHeight: '220px' }}>
+              {/* 별 */}
               <div className="absolute inset-0 pointer-events-none">
                 {[...Array(18)].map((_, i) => (
                   <div key={i} className="absolute rounded-full bg-white"
@@ -321,11 +277,13 @@ export default function Tarot() {
                     }} />
                 ))}
               </div>
+              {/* 달 */}
               <div className="absolute right-6 top-5" style={{
                 width: '80px', height: '80px', borderRadius: '50%',
                 background: 'radial-gradient(circle at 42% 40%, #fffef6 0%, #fff9e0 48%, rgba(255,244,196,0.4) 100%)',
                 boxShadow: '0 0 40px rgba(255,228,100,0.2)',
               }} />
+              {/* 텍스트 */}
               <div className="relative z-10 px-5 pt-8 pb-7">
                 <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-4"
                   style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)' }}>
@@ -357,6 +315,7 @@ export default function Tarot() {
                     style={{ minHeight: '120px' }}
                     disabled={isLoading}
                   />
+                  {/* 예시 질문 칩 */}
                   <div className="mt-3 flex flex-wrap gap-2">
                     {EXAMPLE_QUESTIONS.map((q) => (
                       <button key={q} onClick={() => setQuestion(q)}
@@ -377,6 +336,7 @@ export default function Tarot() {
                 </div>
               </div>
 
+              {/* 안내 */}
               <div className="flex items-start gap-3 px-1">
                 <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
                   style={{ background: 'linear-gradient(135deg, #7c3aed, #5b21b6)' }}>
@@ -390,6 +350,7 @@ export default function Tarot() {
                 </div>
               </div>
 
+              {/* SEO 콘텐츠 */}
               <TarotContent />
             </div>
           </motion.div>
@@ -403,6 +364,7 @@ export default function Tarot() {
             className="min-h-screen"
             style={{ background: 'linear-gradient(180deg, #0f0a2e 0%, #1a0f4a 40%, #0f0a2e 100%)' }}>
 
+            {/* 상단 안내 */}
             <div className="px-5 pt-6 pb-4 text-center">
               <p className="text-sm font-medium mb-1" style={{ color: 'rgba(167,139,250,0.9)' }}>
                 마음이 끌리는 카드를 순서대로 선택하세요
@@ -412,6 +374,7 @@ export default function Tarot() {
               </p>
             </div>
 
+            {/* 선택된 카드 슬롯 */}
             <div className="flex justify-center gap-4 px-5 mb-6">
               {[0, 1, 2].map((i) => (
                 <div key={i} className="flex flex-col items-center gap-2">
@@ -437,7 +400,9 @@ export default function Tarot() {
               ))}
             </div>
 
+            {/* 카드 덱 — 모바일: 5열 그리드 / 데스크탑: 팬 스프레드 */}
             {isMobile ? (
+              /* ── 모바일: 5열 그리드 — 전체 카드 한눈에 ── */
               <div className="px-4 pb-4">
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '8px' }}>
                   {shuffledDeck.map((card) => {
@@ -461,6 +426,7 @@ export default function Tarot() {
                             ? '0 0 0 2.5px #a78bfa, 0 8px 20px rgba(124,58,237,0.45)'
                             : '0 3px 10px rgba(0,0,0,0.45)',
                         }}>
+                        {/* 카드 뒷면 */}
                         <div style={{
                           width: '100%', height: '100%',
                           background: isSelected
@@ -477,6 +443,7 @@ export default function Tarot() {
                             <Sparkles className="w-2.5 h-2.5" style={{ color: isSelected ? 'rgba(167,139,250,0.8)' : 'rgba(167,139,250,0.3)' }} />
                           </div>
                         </div>
+                        {/* 선택 번호 뱃지 */}
                         {isSelected && (
                           <div style={{
                             position: 'absolute', inset: 0,
@@ -500,6 +467,7 @@ export default function Tarot() {
                 </div>
               </div>
             ) : (
+              /* ── 데스크탑: 팬 스프레드 ── */
               <div className="relative space-y-4 py-2 px-2">
                 {rows.map((row, rowIndex) => {
                   const maxAngle = row.length <= 7 ? 24 : 28;
@@ -550,6 +518,7 @@ export default function Tarot() {
               </div>
             )}
 
+            {/* 3장 선택 완료 → 해석 버튼 */}
             <AnimatePresence>
               {selectedCards.length === 3 && (
                 <motion.div initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 40 }}
@@ -572,11 +541,11 @@ export default function Tarot() {
         ════════════════════════════════ */}
         {step === "result" && (
           <motion.div key="result" initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-            className="px-4 py-5 space-y-4">
+            className="px-4 py-5 space-y-5">
 
             {/* 질문 요약 */}
             <div className="rounded-2xl px-4 py-3 flex items-start gap-3"
-              style={{ background: 'linear-gradient(135deg, #1a0f4a, #2d1a82)' }}>
+              style={{ background: 'linear-gradient(135deg, #1a0f4a, #2d1a82)', }}>
               <Sparkles className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'rgba(167,139,250,0.9)' }} />
               <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.85)' }}>
                 "{question}"
@@ -605,9 +574,8 @@ export default function Tarot() {
               ))}
             </div>
 
-            {/* ── 해석 영역 ── */}
+            {/* 해석 영역 */}
             {isLoading ? (
-              /* 로딩 */
               <div className="bg-white border border-black/[0.06] rounded-2xl p-6" data-tarot-result-card>
                 <div className="flex flex-col items-center justify-center py-8 space-y-4">
                   <div className="relative w-16 h-16">
@@ -620,13 +588,12 @@ export default function Tarot() {
                   </div>
                 </div>
                 <div className="space-y-2.5">
-                  {[100, 90, 95, 85, 92, 88, 96].map((w, i) => (
+                  {[100, 90, 95, 85, 92].map((w, i) => (
                     <Skeleton key={i} className="h-4 bg-black/[0.05] rounded-full" style={{ width: `${w}%` }} />
                   ))}
                 </div>
               </div>
             ) : error ? (
-              /* 에러 */
               <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
                 className="bg-red-50 border border-red-200 rounded-2xl p-6 text-center space-y-4">
                 <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto">
@@ -642,239 +609,96 @@ export default function Tarot() {
                 </button>
               </motion.div>
             ) : structuredResult ? (
-              /* ──────── 구조화된 AI 결과 ──────── */
+              /* ── 구조화 AI 결과 ── */
               <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
-
                 {/* 도입 요약 */}
-                <div className="rounded-2xl p-5"
-                  style={{ background: 'linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%)', border: '1px solid rgba(124,58,237,0.15)' }}>
+                <div className="rounded-2xl p-5" style={{ background: 'linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%)', border: '1px solid rgba(124,58,237,0.15)' }}>
                   <div className="flex items-center gap-2 mb-3">
-                    <div className="w-7 h-7 rounded-lg flex items-center justify-center"
-                      style={{ background: 'linear-gradient(135deg, #7c3aed, #5b21b6)' }}>
-                      <Sparkles className="w-3.5 h-3.5 text-white" />
-                    </div>
-                    <span className="text-sm font-bold text-[#1a1a18]">타로 마스터의 첫 인상</span>
+                    <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #7c3aed, #5b21b6)' }}><Sparkles className="w-3.5 h-3.5 text-white" /></div>
+                    <span className="text-base font-bold text-[#1a1a18]">타로 마스터의 첫 인상</span>
                   </div>
-                  <p className="text-sm text-[#3a3a60] leading-relaxed">{structuredResult.summary}</p>
+                  <p className="text-base text-[#3a3a60] leading-relaxed">{structuredResult.summary}</p>
                 </div>
-
                 {/* 카드 개별 해석 */}
-                {structuredResult.cards.map((cardResult: TarotCardResult, index: number) => {
+                {structuredResult.cards.map((cardResult, index) => {
                   const card = selectedCards[index];
                   const color = POSITION_COLORS[index];
                   return (
-                    <motion.div key={index}
-                      initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.1 + index * 0.12 }}
-                      className={`bg-white rounded-2xl overflow-hidden border ${color.border}`}
-                      data-tarot-result-card>
-
-                      {/* 카드 헤더 */}
+                    <div key={index} className={`bg-white rounded-2xl overflow-hidden border ${color.border}`}>
                       <div className={`px-4 py-3 ${color.bg} flex items-center gap-3`}>
-                        <div className="w-10 h-15 rounded-lg overflow-hidden flex-shrink-0"
-                          style={{ width: '40px', height: '60px', border: `1.5px solid ${color.accent}40`, boxShadow: `0 4px 12px ${color.accent}30` }}>
-                          <img src={card.image} alt={card.korName} className="w-full h-full object-cover" />
+                        <div style={{ width:'40px', height:'60px', borderRadius:'8px', overflow:'hidden', border:`1.5px solid ${color.accent}40`, flexShrink:0 }}>
+                          <img src={card.image} alt={card.korName} style={{ width:'100%', height:'100%', objectFit:'cover' }} />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${color.badge}`}>
-                              {cardResult.position}
-                            </span>
-                          </div>
-                          <p className="text-sm font-bold text-[#1a1a18] truncate">{card.korName}</p>
-                          <p className="text-xs text-[#6b7280] truncate">{cardResult.positionMeaning}</p>
+                          <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${color.badge}`}>{cardResult.position}</span>
+                          <p className="text-base font-bold text-[#1a1a18] mt-1">{card.korName}</p>
+                          <p className="text-xs text-[#6b7280]">{cardResult.positionMeaning}</p>
                         </div>
                       </div>
-
-                      {/* 핵심 메시지 */}
                       <div className="px-4 pt-4 pb-3">
                         <div className="flex items-start gap-2 mb-3">
-                          <div className="w-1 h-full rounded-full flex-shrink-0 mt-1"
-                            style={{ width: '3px', minHeight: '40px', background: color.accent }} />
-                          <p className="text-sm font-semibold text-[#1a1a18] leading-relaxed">
-                            {cardResult.coreMessage}
-                          </p>
+                          <div style={{ width:'3px', minHeight:'40px', borderRadius:'2px', background:color.accent, flexShrink:0, marginTop:'3px' }} />
+                          <p className="text-base font-bold text-[#1a1a18] leading-relaxed">{cardResult.coreMessage}</p>
                         </div>
-
-                        {/* 상세 해석 */}
-                        <p className="text-sm text-[#4a4a5a] leading-relaxed mb-3">
-                          {cardResult.detailMessage}
-                        </p>
-
-                        {/* 행동 조언 */}
-                        <div className={`rounded-xl px-3 py-2.5 ${color.bg}`}>
-                          <div className="flex items-start gap-2">
-                            <Lightbulb className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: color.accent }} />
-                            <p className="text-xs text-[#4a4a5a] leading-relaxed">
-                              <span className="font-bold" style={{ color: color.accent }}>카드의 조언 </span>
-                              {cardResult.advice}
-                            </p>
-                          </div>
+                        <p className="text-sm text-[#4a4a5a] leading-relaxed mb-3">{cardResult.detailMessage}</p>
+                        <div className={`rounded-xl px-3 py-2.5 ${color.bg} flex items-start gap-2`}>
+                          <Lightbulb className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: color.accent }} />
+                          <p className="text-sm text-[#4a4a5a] leading-relaxed"><span className="font-bold" style={{ color: color.accent }}>카드의 조언 </span>{cardResult.advice}</p>
                         </div>
                       </div>
-                    </motion.div>
+                    </div>
                   );
                 })}
-
                 {/* 종합 해석 */}
-                <motion.div
-                  initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 }}
-                  className="bg-white rounded-2xl overflow-hidden border border-black/[0.06]"
-                  data-tarot-result-card>
-                  <div className="px-5 py-4 border-b border-black/[0.06]"
-                    style={{ background: 'linear-gradient(135deg, #1a0f4a, #2d1a82)' }}>
+                <div className="bg-white rounded-2xl overflow-hidden border border-black/[0.06]">
+                  <div className="px-5 py-4" style={{ background: 'linear-gradient(135deg, #1a0f4a, #2d1a82)' }}>
                     <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-white/10">
-                        <BookOpen className="w-4 h-4 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="text-sm font-bold text-white">3장 카드 종합 해석</h3>
-                        <p className="text-xs" style={{ color: 'rgba(167,139,250,0.7)' }}>과거·현재·미래의 흐름</p>
-                      </div>
+                      <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-white/10"><BookOpen className="w-4 h-4 text-white" /></div>
+                      <div><p className="text-base font-bold text-white">3장 카드 종합 해석</p><p className="text-xs" style={{ color:'rgba(167,139,250,0.7)' }}>과거·현재·미래의 흐름</p></div>
                     </div>
                   </div>
-                  <div className="px-5 py-5">
-                    <p className="text-sm text-[#1a1a18] leading-relaxed">{structuredResult.synthesis}</p>
-                  </div>
-                </motion.div>
-
-                {/* 핵심 메시지 배너 */}
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.65 }}
-                  className="rounded-2xl px-5 py-4 text-center"
-                  style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%)', boxShadow: '0 8px 32px rgba(124,58,237,0.3)' }}>
+                  <div className="px-5 py-5"><p className="text-base text-[#1a1a18] leading-relaxed">{structuredResult.synthesis}</p></div>
+                </div>
+                {/* 키 메시지 */}
+                <div className="rounded-2xl px-5 py-4 text-center" style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%)', boxShadow:'0 8px 32px rgba(124,58,237,0.3)' }}>
                   <p className="text-xs font-bold text-purple-200 mb-2 tracking-wider uppercase">Today's Key Message</p>
                   <p className="text-base font-bold text-white leading-snug">"{structuredResult.keyMessage}"</p>
-                </motion.div>
-
-                {/* 실천 행동 3가지 */}
-                <motion.div
-                  initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.75 }}
-                  className="bg-white rounded-2xl overflow-hidden border border-black/[0.06]">
-                  <div className="px-5 py-4 border-b border-black/[0.06]">
-                    <div className="flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-lg flex items-center justify-center"
-                        style={{ background: 'linear-gradient(135deg, #7c3aed, #5b21b6)' }}>
-                        <Star className="w-3.5 h-3.5 text-white" />
-                      </div>
-                      <h3 className="text-sm font-bold text-[#1a1a18]">카드가 제안하는 행동 3가지</h3>
-                    </div>
+                </div>
+                {/* 행동 3가지 */}
+                <div className="bg-white rounded-2xl overflow-hidden border border-black/[0.06]">
+                  <div className="px-5 py-4 border-b border-black/[0.06] flex items-center gap-2">
+                    <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background:'linear-gradient(135deg, #7c3aed, #5b21b6)' }}><Star className="w-3.5 h-3.5 text-white" /></div>
+                    <h3 className="text-base font-bold text-[#1a1a18]">카드가 제안하는 행동 3가지</h3>
                   </div>
                   <div className="px-5 py-4 space-y-3">
-                    {structuredResult.actionItems.map((item: string, i: number) => (
+                    {structuredResult.actionItems.map((item, i) => (
                       <div key={i} className="flex items-start gap-3">
-                        <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold text-white"
-                          style={{ background: 'linear-gradient(135deg, #7c3aed, #5b21b6)', minWidth: '24px' }}>
-                          {i + 1}
-                        </div>
-                        <p className="text-sm text-[#1a1a18] leading-relaxed">{item}</p>
+                        <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold text-white" style={{ background:'linear-gradient(135deg, #7c3aed, #5b21b6)', minWidth:'24px' }}>{i+1}</div>
+                        <p className="text-base text-[#1a1a18] leading-relaxed">{item}</p>
                       </div>
                     ))}
                   </div>
-                </motion.div>
-
-                {/* 마무리 인사 */}
-                <motion.div
-                  initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.85 }}
-                  className="rounded-2xl p-5"
-                  style={{ background: 'linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%)', border: '1px solid rgba(124,58,237,0.15)' }}>
+                </div>
+                {/* 마무리 */}
+                <div className="rounded-2xl p-5" style={{ background:'linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%)', border:'1px solid rgba(124,58,237,0.15)' }}>
                   <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
-                      style={{ background: 'linear-gradient(135deg, #7c3aed, #5b21b6)' }}>
-                      <Heart className="w-4 h-4 text-white" />
-                    </div>
-                    <p className="text-sm text-[#3a3060] leading-relaxed">{structuredResult.closingWord}</p>
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background:'linear-gradient(135deg, #7c3aed, #5b21b6)' }}><Heart className="w-4 h-4 text-white" /></div>
+                    <p className="text-base text-[#3a3060] leading-relaxed">{structuredResult.closingWord}</p>
                   </div>
-                </motion.div>
-
-                {/* 새 상담 버튼 */}
-                <button onClick={resetTarot}
-                  className="w-full h-12 rounded-xl text-base font-bold text-[#1a1a18] border border-black/10 bg-white flex items-center justify-center gap-2 hover:bg-black/[0.03] transition-colors">
-                  <RefreshCw className="w-4 h-4" />
-                  새로운 상담 시작
+                </div>
+                {/* 새 상담 */}
+                <button onClick={resetTarot} className="w-full h-12 rounded-xl text-base font-bold text-[#1a1a18] border border-black/10 bg-white flex items-center justify-center gap-2 hover:bg-black/[0.03] transition-colors">
+                  <RefreshCw className="w-4 h-4" />새로운 상담 시작
                 </button>
-              </motion.div>
-            ) : fallbackInterpretation ? (
-              /* 폴백: 텍스트 결과 */
-              <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
-                className="bg-white border border-black/[0.06] rounded-2xl overflow-hidden" data-tarot-result-card>
-                <div className="px-5 py-4 border-b border-black/[0.06]"
-                  style={{ background: 'linear-gradient(135deg, #f5f3ff, #ede9fe)' }}>
-                  <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-lg flex items-center justify-center"
-                      style={{ background: 'linear-gradient(135deg, #7c3aed, #5b21b6)' }}>
-                      <Sparkles className="w-4 h-4 text-white" />
-                    </div>
-                    <h3 className="text-base font-bold text-[#1a1a18]">타로의 메시지</h3>
-                  </div>
-                </div>
-                <div className="px-5 py-5">
-                  <div className="text-base text-[#1a1a18] leading-relaxed whitespace-pre-wrap">
-                    {fallbackInterpretation}
-                  </div>
-                </div>
-                <div className="px-5 pb-5">
-                  <button onClick={resetTarot}
-                    className="w-full h-12 rounded-xl text-base font-bold text-[#1a1a18] border border-black/10 bg-white flex items-center justify-center gap-2 hover:bg-black/[0.03] transition-colors">
-                    <RefreshCw className="w-4 h-4" />
-                    새로운 상담 시작
-                  </button>
-                </div>
-              </motion.div>
-            ) : null}
-
-            {/* ──────────────────────────────────
-                내부 검색 강화 섹션
-            ────────────────────────────────── */}
-            {(structuredResult || fallbackInterpretation) && (
-              <motion.div
-                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 1.0 }}
-                className="space-y-4 pt-2">
-
-                {/* 빠른 타로 주제 검색 */}
-                <div className="bg-white rounded-2xl border border-black/[0.06] overflow-hidden">
-                  <div className="px-5 py-4 border-b border-black/[0.06] flex items-center gap-2">
-                    <div className="w-7 h-7 rounded-lg flex items-center justify-center"
-                      style={{ background: 'linear-gradient(135deg, #7c3aed, #5b21b6)' }}>
-                      <Search className="w-3.5 h-3.5 text-white" />
-                    </div>
-                    <h3 className="text-base font-bold text-[#1a1a18]">자주 찾는 타로 주제</h3>
-                  </div>
-                  <div className="px-4 py-4">
-                    <div className="flex flex-wrap gap-2">
-                      {TAROT_KEYWORDS.map((kw) => (
-                        <button
-                          key={kw.label}
-                          onClick={() => { setQuestion(kw.label.replace(' 타로', '')); resetTarot(); }}
-                          className="text-sm px-3 py-1.5 rounded-full font-medium transition-colors"
-                          style={{ background: '#f5f3ff', color: '#6d28d9', border: '1px solid rgba(124,58,237,0.2)' }}>
-                          {kw.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
                 {/* 함께 보면 좋은 서비스 */}
                 <div className="bg-white rounded-2xl border border-black/[0.06] overflow-hidden">
                   <div className="px-5 py-4 border-b border-black/[0.06] flex items-center gap-2">
-                    <div className="w-7 h-7 rounded-lg flex items-center justify-center"
-                      style={{ background: 'linear-gradient(135deg, #7c3aed, #5b21b6)' }}>
-                      <Sparkles className="w-3.5 h-3.5 text-white" />
-                    </div>
+                    <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background:'linear-gradient(135deg, #7c3aed, #5b21b6)' }}><Sparkles className="w-3.5 h-3.5 text-white" /></div>
                     <h3 className="text-base font-bold text-[#1a1a18]">함께 보면 좋은 서비스</h3>
                   </div>
-                  {/* 무료·비회원 안내 */}
                   <div className="px-5 py-2.5 flex items-center gap-2">
-                    <span className="text-xs font-medium px-2 py-1 rounded-md"
-                      style={{ background: '#f5f3ff', color: '#5b21b6', border: '0.5px solid rgba(124,58,237,0.25)' }}>무료</span>
-                    <span className="text-xs font-medium px-2 py-1 rounded-md"
-                      style={{ background: '#f0fdf4', color: '#0f6e56', border: '0.5px solid #5DCAA5' }}>회원가입 없이</span>
+                    <span className="text-xs font-medium px-2 py-1 rounded-md" style={{ background:'#f5f3ff', color:'#5b21b6', border:'0.5px solid rgba(124,58,237,0.25)' }}>무료</span>
+                    <span className="text-xs font-medium px-2 py-1 rounded-md" style={{ background:'#f0fdf4', color:'#0f6e56', border:'0.5px solid #5DCAA5' }}>회원가입 없이</span>
                     <span className="text-sm text-[#6b7280]">바로 확인할 수 있어요</span>
                   </div>
                   <div className="divide-y divide-black/[0.04]">
@@ -886,10 +710,8 @@ export default function Tarot() {
                             <p className="text-base font-bold text-[#1a1a18]">{link.label}</p>
                             <p className="text-sm text-[#6b7280]">{link.desc}</p>
                             <div className="flex gap-1.5 mt-1">
-                              <span className="text-xs px-1.5 py-0.5 rounded"
-                                style={{ background: '#f5f3ff', color: '#5b21b6', border: '0.5px solid rgba(124,58,237,0.2)' }}>무료</span>
-                              <span className="text-xs px-1.5 py-0.5 rounded"
-                                style={{ background: '#f0fdf4', color: '#0f6e56', border: '0.5px solid #5DCAA5' }}>회원가입 없음</span>
+                              <span className="text-xs px-1.5 py-0.5 rounded" style={{ background:'#f5f3ff', color:'#5b21b6', border:'0.5px solid rgba(124,58,237,0.2)' }}>무료</span>
+                              <span className="text-xs px-1.5 py-0.5 rounded" style={{ background:'#f0fdf4', color:'#0f6e56', border:'0.5px solid #5DCAA5' }}>회원가입 없음</span>
                             </div>
                           </div>
                           <ChevronRight className="w-4 h-4 text-[#d1d5db] flex-shrink-0" />
@@ -898,26 +720,19 @@ export default function Tarot() {
                     ))}
                   </div>
                 </div>
-
-                {/* 칼럼 내부 링크 */}
+                {/* 칼럼 링크 */}
                 <div className="bg-white rounded-2xl border border-black/[0.06] overflow-hidden">
                   <div className="px-5 py-4 border-b border-black/[0.06] flex items-center gap-2">
-                    <div className="w-7 h-7 rounded-lg flex items-center justify-center"
-                      style={{ background: '#0f6e56' }}>
-                      <BookOpen className="w-3.5 h-3.5 text-white" />
-                    </div>
+                    <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background:'#0f6e56' }}><BookOpen className="w-3.5 h-3.5 text-white" /></div>
                     <h3 className="text-base font-bold text-[#1a1a18]">이런 칼럼은 어떠세요?</h3>
                   </div>
                   <div className="divide-y divide-black/[0.04]">
                     {TAROT_COLUMNS.map((col) => (
                       <Link key={col.href} href={col.href}>
                         <div className="flex items-start gap-3 px-5 py-4 hover:bg-black/[0.02] transition-colors cursor-pointer">
-                          <div className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
-                            style={{ background: col.thumbBg }}>
-                            {col.emoji}
-                          </div>
+                          <div className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl flex-shrink-0" style={{ background: col.thumbBg }}>{col.emoji}</div>
                           <div className="flex-1 min-w-0">
-                            <p className="text-xs font-bold mb-1" style={{ color: '#7c3aed' }}>{col.category}</p>
+                            <p className="text-xs font-bold mb-1" style={{ color:'#7c3aed' }}>{col.category}</p>
                             <p className="text-base font-bold text-[#1a1a18] leading-snug mb-1">{col.title}</p>
                             <p className="text-sm text-[#6b7280] leading-relaxed line-clamp-2">{col.summary}</p>
                           </div>
@@ -927,12 +742,28 @@ export default function Tarot() {
                     ))}
                   </div>
                 </div>
-
-                {/* 추천 콘텐츠 */}
                 <RecommendedContent />
               </motion.div>
-            )}
+            ) : interpretation ? (
+              /* ── 폴백: 텍스트 결과 ── */
+              <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
+                className="bg-white border border-black/[0.06] rounded-2xl overflow-hidden" data-tarot-result-card>
+                <div className="px-5 py-4 border-b border-black/[0.06]" style={{ background: 'linear-gradient(135deg, #f5f3ff, #ede9fe)' }}>
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #7c3aed, #5b21b6)' }}><Sparkles className="w-4 h-4 text-white" /></div>
+                    <h3 className="text-base font-bold text-[#1a1a18]">타로의 메시지</h3>
+                  </div>
+                </div>
+                <div className="px-5 py-5"><div className="text-base text-[#1a1a18] leading-relaxed whitespace-pre-wrap">{interpretation}</div></div>
+                <div className="px-5 pb-5">
+                  <button onClick={resetTarot} className="w-full h-12 rounded-xl text-base font-bold text-[#1a1a18] border border-black/10 bg-white flex items-center justify-center gap-2 hover:bg-black/[0.03] transition-colors">
+                    <RefreshCw className="w-4 h-4" />새로운 상담 시작
+                  </button>
+                </div>
+              </motion.div>
+            ) : null}
 
+            <RecommendedContent />
           </motion.div>
         )}
 
