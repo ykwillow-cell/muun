@@ -155,7 +155,18 @@ export default function Tarot() {
       if (data.structured) {
         setStructuredResult(data.structured);
       } else if (data.interpretation) {
-        setFallbackInterpretation(data.interpretation);
+        // 서버 파싱 실패 대비 — 클라이언트에서 한 번 더 시도
+        const tryParse = (s: string) => { try { return JSON.parse(s); } catch { return null; } };
+        const raw = data.interpretation;
+        const parsed =
+          tryParse(raw) ??
+          tryParse(raw.replace(/^```json\s*/i, '').replace(/\s*```$/i, '').trim()) ??
+          tryParse((raw.match(/\{[\s\S]*\}/) ?? [])[0] ?? '');
+        if (parsed?.summary && Array.isArray(parsed?.cards)) {
+          setStructuredResult(parsed);
+        } else {
+          setFallbackInterpretation(raw);
+        }
       }
     } catch (error) {
       console.error("Tarot interpretation error:", error);
