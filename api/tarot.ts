@@ -87,7 +87,7 @@ ${cardDetails}
 
 [해석 지침 — 반드시 아래 구조와 형식을 따르세요]
 
-응답은 반드시 아래의 JSON 형식으로만 반환하세요. 다른 텍스트는 일절 포함하지 마세요.
+⚠️ 중요: 반드시 아래 JSON 형식으로만 응답하세요. { 로 시작해서 } 로 끝나야 합니다. ```json 같은 마크다운 코드블록, 앞뒤 설명 문장, 인사말, 어떤 부가 텍스트도 절대 포함하지 마세요. 첫 글자는 반드시 { 이어야 합니다.
 
 {
   "summary": "의뢰인의 질문을 한 문장으로 공감하는 도입 (2~3줄, 따뜻하고 신비로운 문체)",
@@ -157,22 +157,60 @@ ${cardDetails}
 
     const rawText = response.data.candidates[0].content.parts[0].text;
 
-    // JSON 파싱 시도
+    // JSON 파싱 — 여러 패턴 순차 시도
     let structured = null;
-    try {
-      const cleaned = rawText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-      structured = JSON.parse(cleaned);
-    } catch {
-      // JSON 파싱 실패 시 텍스트 그대로 반환
-      console.warn('[Tarot API] JSON parse failed, returning raw text');
+
+    const tryParse = (text: string) => {
+      try { return JSON.parse(text); } catch { return null; }
+    };
+
+    // 1) 코드블록 제거 후 파싱
+    const stripped = rawText
+      .replace(/^```json\s*/i, '')
+      .replace(/^```\s*/i, '')
+      .replace(/\s*```$/i, '')
+      .trim();
+    structured = tryParse(stripped);
+
+    // 2) { ... } 범위만 추출해서 파싱
+    if (!structured) {
+      const match = rawText.match(/\{[\s\S]*\}/);
+      if (match) structured = tryParse(match[0]);
     }
 
-    console.log('[Tarot API] Success');
+    // 3) 그래도 실패하면 Gemini에 JSON만 재요청
+    if (!structured) {
+      console.warn('[Tarot API] JSON parse failed, retrying with strict prompt');
+      try {
+        const retryResponse = await axios.post(
+          geminiUrl,
+          {
+            contents: [{
+              parts: [{ text: `아래 텍스트에서 JSON 객체만 추출하여 순수 JSON으로만 반환하세요. 마크다운 코드블록, 설명, 앞뒤 텍스트 없이 { 로 시작하여 } 로 끝나는 JSON만 반환하세요.\n\n${rawText}` }]
+            }],
+            generationConfig: { temperature: 0, maxOutputTokens: 3000 }
+          },
+          { headers: { 'Content-Type': 'application/json' }, timeout: 15000 }
+        );
+        const retryRaw = retryResponse.data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+        const retryMatch = retryRaw.match(/\{[\s\S]*\}/);
+        if (retryMatch) structured = tryParse(retryMatch[0]);
+      } catch (retryErr) {
+        console.error('[Tarot API] Retry failed:', retryErr);
+      }
+    }
 
-    return res.status(200).json({
-      interpretation: structured ? null : rawText,
-      structured: structured || null,
-    });
+    console.log('[Tarot API] Success, structured:', !!structured);
+
+    // structured 파싱 성공 시 structured 반환, 실패 시 에러 반환 (raw JSON 텍스트 노출 방지)
+    if (structured) {
+      return res.status(200).json({ interpretation: null, structured });
+    } else {
+      return res.status(500).json({
+        error: 'AI 해석 형식 오류',
+        details: '카드 해석을 불러오는 데 실패했습니다. 다시 시도해 주세요.'
+      });
+    }
   } catch (error: any) {
     const errorStatus = error.response?.status || 500;
     const errorData = error.response?.data || error.message;
