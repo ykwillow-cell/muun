@@ -1,7 +1,11 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useParams } from 'wouter';
-import { Share2, Loader2, Trophy, CheckCircle2, AlertCircle, ArrowUpRight, MoonStar } from 'lucide-react';
+import {
+  Share2, Loader2, Trophy, CheckCircle2, AlertCircle,
+  ArrowUpRight, MoonStar, Search, BookOpen, ChevronRight,
+  Sparkles, Star, Heart
+} from 'lucide-react';
 import NotFound from '@/pages/NotFound';
 import { useCanonical } from '@/lib/use-canonical';
 import { getDreamBySlug, type DreamData } from '@/lib/dream-data-api';
@@ -12,29 +16,64 @@ import { DREAM_INDEX } from '@/generated/content-snapshots';
 
 type DreamGrade = 'great' | 'good' | 'bad';
 
-const gradeConfig: Record<DreamGrade, { label: string; Icon: typeof Trophy; chip: string; description: string; panel: string }> = {
+const gradeConfig: Record<DreamGrade, {
+  label: string; Icon: typeof Trophy;
+  chip: string; chipDark: string;
+  description: string; panel: string;
+  accent: string; accentBg: string; accentLight: string;
+  emoji: string;
+}> = {
   great: {
-    label: '길몽',
-    Icon: Trophy,
+    label: '길몽', Icon: Trophy,
     chip: 'bg-amber-50 text-amber-700 border-amber-200',
+    chipDark: 'bg-amber-500/20 text-amber-300 border-amber-500/30',
     description: '재물, 성취, 경사와 연결되는 경우가 많은 좋은 상징입니다.',
-    panel: 'from-amber-100 via-white to-amber-50',
+    panel: 'from-amber-50 to-orange-50',
+    accent: '#d97706', accentBg: '#fef3c7', accentLight: '#fffbeb',
+    emoji: '✨',
   },
   good: {
-    label: '평몽',
-    Icon: CheckCircle2,
+    label: '평몽', Icon: CheckCircle2,
     chip: 'bg-sky-50 text-sky-700 border-sky-200',
+    chipDark: 'bg-sky-500/20 text-sky-300 border-sky-500/30',
     description: '일상의 흐름과 심리 상태를 부드럽게 반영하는 중립적 꿈으로 볼 수 있습니다.',
-    panel: 'from-sky-100 via-white to-sky-50',
+    panel: 'from-sky-50 to-indigo-50',
+    accent: '#0284c7', accentBg: '#e0f2fe', accentLight: '#f0f9ff',
+    emoji: '🌙',
   },
   bad: {
-    label: '흉몽',
-    Icon: AlertCircle,
+    label: '흉몽', Icon: AlertCircle,
     chip: 'bg-fuchsia-50 text-fuchsia-700 border-fuchsia-200',
+    chipDark: 'bg-fuchsia-500/20 text-fuchsia-300 border-fuchsia-500/30',
     description: '주의가 필요한 시기, 혹은 감정적 긴장을 상징할 수 있습니다.',
-    panel: 'from-fuchsia-100 via-white to-fuchsia-50',
+    panel: 'from-fuchsia-50 to-purple-50',
+    accent: '#9333ea', accentBg: '#fae8ff', accentLight: '#fdf4ff',
+    emoji: '🌑',
   },
 };
+
+// 꿈 키워드 검색 칩
+const DREAM_KEYWORD_CHIPS = [
+  '돼지꿈', '뱀꿈', '불꿈', '물꿈', '이빨꿈', '똥꿈', '죽음꿈', '아기꿈',
+  '결혼꿈', '로또꿈', '귀신꿈', '조상꿈',
+];
+
+// 연관 서비스
+const RELATED_SERVICES = [
+  { href: '/daily-fortune', icon: '📅', label: '오늘의 운세', desc: '꿈이 암시하는 오늘의 운기를 확인해보세요', free: true },
+  { href: '/lifelong-saju', icon: '🔮', label: '평생사주', desc: '타고난 운명의 흐름을 사주로 더 깊이', free: true },
+  { href: '/compatibility', icon: '💞', label: '궁합', desc: '꿈에 누군가 나왔다면 그 사람과의 궁합도', free: true },
+  { href: '/fortune-dictionary', icon: '📖', label: '운세사전', desc: '꿈 속 상징을 명리학 용어로 더 깊이', free: true },
+  { href: '/tarot', icon: '🃏', label: '타로 상담', desc: '꿈이 전하는 메시지를 타로로 확인', free: true },
+  { href: '/tojeong', icon: '📜', label: '토정비결', desc: '올해 나에게 찾아올 운의 흐름', free: true },
+];
+
+// 꿈 관련 칼럼
+const DREAM_COLUMNS = [
+  { href: '/column/dream-interpretation-guide', category: '꿈해몽 가이드', title: '꿈해몽의 모든 것 — 길몽과 흉몽을 구별하는 법', summary: '오천 년 동양 역술이 축적한 꿈 해석의 원리를 쉽게 풀어봅니다. 꿈에 나타난 상징이 길조인지 흉조인지 스스로 판단하는 법을 알려드려요.', emoji: '🌙', thumbBg: '#eef2ff' },
+  { href: '/column/lucky-dream-signs', category: '길몽 분석', title: '로또 당첨자들이 자주 꾼 꿈 TOP 10', summary: '실제 복권 당첨 후기에서 가장 많이 등장한 꿈의 패턴을 분석했습니다. 별·돼지·용·이빨이 빠지는 꿈의 진짜 의미는?', emoji: '✨', thumbBg: '#fef9c3' },
+  { href: '/column/recurring-dream-meaning', category: '심리 해석', title: '반복되는 꿈이 있다면? 무의식이 보내는 신호', summary: '같은 꿈이 계속 반복된다면 단순한 우연이 아닙니다. 심리학과 명리학이 말하는 반복몽의 의미와 해소 방법을 소개합니다.', emoji: '🔄', thumbBg: '#f0fdf4' },
+];
 
 export default function DreamDetail() {
   const { slug } = useParams<{ slug: string }>();
@@ -45,17 +84,12 @@ export default function DreamDetail() {
   useEffect(() => {
     let active = true;
     const load = async () => {
-      if (!slug) {
-        setDream(null);
-        return;
-      }
+      if (!slug) { setDream(null); return; }
       const result = await getDreamBySlug(slug);
       if (active) setDream(result);
     };
     load();
-    return () => {
-      active = false;
-    };
+    return () => { active = false; };
   }, [slug]);
 
   const gradeKey = (dream?.grade || preview?.grade || 'good') as DreamGrade;
@@ -70,7 +104,9 @@ export default function DreamDetail() {
 
   const relatedDreams = useMemo(() => {
     const category = dream?.category || preview?.category;
-    return DREAM_INDEX.filter((item) => item.slug !== slug && (!category || item.category === category)).slice(0, 3);
+    return DREAM_INDEX
+      .filter((item) => item.slug !== slug && (!category || item.category === category))
+      .slice(0, 4);
   }, [dream?.category, preview?.category, slug]);
 
   const handleShare = async () => {
@@ -81,9 +117,7 @@ export default function DreamDetail() {
         await navigator.clipboard.writeText(canonicalUrl);
         alert('링크가 복사되었습니다.');
       }
-    } catch {
-      // user cancelled
-    }
+    } catch { /* user cancelled */ }
   };
 
   if (dream === undefined) {
@@ -93,13 +127,10 @@ export default function DreamDetail() {
       </div>
     );
   }
-
-  if (!dream) {
-    return <NotFound />;
-  }
+  if (!dream) return <NotFound />;
 
   return (
-    <div className="min-h-screen mu-page-bg pb-16">
+    <div className="min-h-screen mu-page-bg pb-20">
       <Helmet>
         <title>{metaTitle}</title>
         <meta name="description" content={metaDescription} />
@@ -125,8 +156,7 @@ export default function DreamDetail() {
             datePublished: publishedDate,
             author: { '@type': 'Organization', name: '무운 (MuUn)' },
             publisher: {
-              '@type': 'Organization',
-              name: '무운 (MuUn)',
+              '@type': 'Organization', name: '무운 (MuUn)',
               logo: { '@type': 'ImageObject', url: 'https://muunsaju.com/images/muun-mark.svg' },
             },
             mainEntityOfPage: canonicalUrl,
@@ -134,100 +164,179 @@ export default function DreamDetail() {
         </script>
       </Helmet>
 
+      {/* ── 히어로 ── */}
       <section className="mu-container-reading pt-6">
-        <div className="overflow-hidden rounded-[32px] border border-slate-200/80 bg-white/90 shadow-[0_24px_54px_rgba(15,23,42,0.08)]">
-          <div className="grid gap-0 [grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))]">
-            <div className="p-6 sm:p-7">
-              <div className="flex flex-wrap items-center gap-2">
-                <Link href="/dream" className="mu-chip">꿈해몽</Link>
-                <span className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-bold ${grade.chip}`}>
-                  <GradeIcon size={13} aria-hidden="true" />
-                  {grade.label}
-                </span>
-              </div>
+        <div className="overflow-hidden rounded-[28px] border border-slate-200/80 bg-white shadow-[0_20px_48px_rgba(15,23,42,0.08)]">
 
-              <span className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#6B5FFF]/10 px-3 py-1.5 text-xs font-bold text-[#5648db]">
-                <MoonStar size={13} aria-hidden="true" /> Dream interpretation
+          {/* 상단: 키워드 + 제목 */}
+          <div className="px-6 pt-6 pb-5 sm:px-8 sm:pt-7">
+            <div className="flex flex-wrap items-center gap-2 mb-4">
+              <Link href="/dream" className="mu-chip">꿈해몽</Link>
+              <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold ${grade.chip}`}>
+                <GradeIcon size={12} aria-hidden="true" />
+                {grade.label}
               </span>
-              <h1 className="mt-4 text-[32px] font-bold leading-[1.12] tracking-[-0.06em] text-slate-900">{dream.keyword} 꿈해몽</h1>
-              <p className="mt-4 text-sm leading-7 text-slate-600">{metaDescription}</p>
-
-              <div className="mt-5 flex flex-wrap gap-3">
-                <button onClick={handleShare} className="inline-flex min-h-[46px] items-center gap-2 rounded-2xl border border-slate-200 bg-white px-4 text-sm font-bold text-slate-700 shadow-sm">
-                  <Share2 size={16} aria-hidden="true" /> 링크 공유하기
-                </button>
-                <Link href="/daily-fortune" className="inline-flex min-h-[46px] items-center justify-center rounded-2xl bg-[#6B5FFF] px-4 text-sm font-bold text-white shadow-[0_16px_30px_rgba(107,95,255,0.26)]">
-                  오늘의 운세 보기
-                </Link>
-              </div>
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 border border-slate-200 px-3 py-1 text-xs font-bold text-slate-600">
+                {categoryLabel}
+              </span>
             </div>
 
-            <div className={`bg-gradient-to-br ${grade.panel} p-6 sm:p-7`}>
-              <div className="rounded-[28px] bg-[linear-gradient(145deg,#17114c_0%,#30208d_58%,#5f4bcb_100%)] p-5 text-white shadow-[0_24px_44px_rgba(15,23,42,0.18)]">
-                <div className="flex items-center justify-between gap-3">
-                  <div className="text-xs font-bold uppercase tracking-[0.14em] text-white/70">꿈 판단 힌트</div>
-                  <div className="rounded-full bg-white/14 px-3 py-1 text-xs font-bold text-white">점수 {score}</div>
-                </div>
-                <div className="mt-4 flex items-center gap-3">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white/14">
-                    <GradeIcon size={22} aria-hidden="true" />
-                  </div>
-                  <div>
-                    <div className="text-[22px] font-bold tracking-[-0.05em] text-white">{grade.label}</div>
-                    <div className="text-sm text-white/70">카테고리 · {categoryLabel}</div>
-                  </div>
-                </div>
-                <div className="mt-4 h-2 rounded-full bg-white/12">
-                  <div className="h-2 rounded-full bg-[#FFF1B8]" style={{ width: `${Math.min(100, score)}%` }} />
-                </div>
-                <p className="mt-4 text-sm leading-7 text-white/80">{grade.description}</p>
+            <div className="flex items-start gap-3 mb-3">
+              <div className="flex-shrink-0 w-10 h-10 rounded-2xl flex items-center justify-center text-lg"
+                style={{ background: grade.accentBg }}>
+                {grade.emoji}
               </div>
+              <h1 className="text-[28px] sm:text-[32px] font-bold leading-[1.15] tracking-[-0.05em] text-slate-900">
+                {dream.keyword} 꿈해몽
+              </h1>
+            </div>
+            <p className="text-base leading-7 text-slate-600 mb-5">{metaDescription}</p>
+
+            <div className="flex flex-wrap gap-2.5">
+              <button
+                onClick={handleShare}
+                className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-700 shadow-sm hover:bg-slate-50 transition-colors"
+              >
+                <Share2 size={15} /> 공유하기
+              </button>
+              <Link href="/daily-fortune"
+                className="inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold text-white shadow-sm hover:opacity-90 transition-opacity"
+                style={{ background: 'linear-gradient(135deg, #6B5FFF, #5648db)' }}>
+                오늘의 운세 보기
+              </Link>
+            </div>
+          </div>
+
+          {/* 하단: 점수 패널 */}
+          <div className={`px-6 pb-6 sm:px-8 sm:pb-7`} style={{ background: grade.accentLight }}>
+            <div className="rounded-[20px] p-5 bg-white border border-slate-200/80">
+              <div className="flex items-center justify-between gap-3 mb-4">
+                <div className="flex items-center gap-2">
+                  <MoonStar size={14} className="text-slate-400" />
+                  <span className="text-xs font-bold text-slate-400 tracking-[0.08em]">꿈 점수</span>
+                </div>
+                <div className="rounded-full px-3 py-1 text-xs font-bold"
+                  style={{ background: grade.accentBg, color: grade.accent }}>{score}점</div>
+              </div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl flex-shrink-0"
+                  style={{ background: grade.accentBg }}>
+                  <GradeIcon size={20} style={{ color: grade.accent }} />
+                </div>
+                <div>
+                  <div className="text-[22px] font-bold tracking-[-0.04em] text-slate-900">{grade.label}</div>
+                  <div className="text-sm text-slate-500">{categoryLabel}</div>
+                </div>
+              </div>
+              <div className="h-2 rounded-full bg-slate-100 mb-3">
+                <div className="h-2 rounded-full transition-all duration-700"
+                  style={{ width: `${Math.min(100, score)}%`, background: grade.accent }} />
+              </div>
+              <p className="text-sm leading-6 text-slate-500">{grade.description}</p>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="mu-container-reading py-6">
-        <div className="grid gap-4">
-          <div className="rounded-[24px] border border-slate-200/80 bg-slate-50/80 p-5 text-sm leading-7 text-slate-600 shadow-[0_16px_34px_rgba(15,23,42,0.05)]">
-            꿈은 미래를 단정하기보다, 현재의 관심사와 감정 흐름을 비춰주는 상징으로 읽는 편이 더 도움이 됩니다. 아래에서 핵심 해석과 전통적 의미, 심리적 해석을 함께 살펴보세요.
-          </div>
-
-          <article className="mu-reading-surface p-6 sm:p-8 lg:p-10">
-            <div className="mu-reading-prose">
-              <h2>핵심 해석</h2>
-              <p><LinkedText text={dream.interpretation} /></p>
-
-              {dream.traditional_meaning && (
-                <>
-                  <h2>전통적 의미</h2>
-                  <p><LinkedText text={dream.traditional_meaning} /></p>
-                </>
-              )}
-
-              {dream.psychological_meaning && (
-                <>
-                  <h2>심리적 해석</h2>
-                  <p><LinkedText text={dream.psychological_meaning} /></p>
-                </>
-              )}
-            </div>
-          </article>
+      {/* ── 안내 문구 ── */}
+      <section className="mu-container-reading pt-4">
+        <div className="rounded-[16px] border border-slate-200/60 px-5 py-4 text-sm leading-7 text-slate-500"
+          style={{ background: 'rgba(248,250,252,0.8)' }}>
+          꿈은 미래를 단정하기보다, 현재의 관심사와 감정 흐름을 비춰주는 상징으로 읽는 편이 더 도움이 됩니다.
+          아래에서 핵심 해석과 전통적 의미, 심리적 해석을 함께 살펴보세요.
         </div>
       </section>
 
+      {/* ── 본문 해석 ── */}
+      <section className="mu-container-reading pt-4">
+        <div className="space-y-3">
+
+          {/* 핵심 해석 */}
+          <div className="bg-white rounded-[20px] border border-slate-200/80 overflow-hidden shadow-[0_4px_20px_rgba(15,23,42,0.05)]">
+            <div className="flex items-center gap-3 px-5 py-4 border-b border-slate-100">
+              <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
+                style={{ background: grade.accentBg }}>
+                <Star size={15} style={{ color: grade.accent }} />
+              </div>
+              <h2 className="text-base font-bold text-slate-900">핵심 해석</h2>
+            </div>
+            <div className="px-5 py-5">
+              <p className="text-base leading-8 text-slate-700"><LinkedText text={dream.interpretation} /></p>
+            </div>
+          </div>
+
+          {/* 전통적 의미 */}
+          {dream.traditional_meaning && (
+            <div className="bg-white rounded-[20px] border border-slate-200/80 overflow-hidden shadow-[0_4px_20px_rgba(15,23,42,0.05)]">
+              <div className="flex items-center gap-3 px-5 py-4 border-b border-slate-100">
+                <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
+                  style={{ background: '#fef3c7' }}>
+                  <BookOpen size={15} style={{ color: '#d97706' }} />
+                </div>
+                <h2 className="text-base font-bold text-slate-900">전통적 의미</h2>
+              </div>
+              <div className="px-5 py-5">
+                <p className="text-base leading-8 text-slate-700"><LinkedText text={dream.traditional_meaning} /></p>
+              </div>
+            </div>
+          )}
+
+          {/* 심리적 해석 */}
+          {dream.psychological_meaning && (
+            <div className="bg-white rounded-[20px] border border-slate-200/80 overflow-hidden shadow-[0_4px_20px_rgba(15,23,42,0.05)]">
+              <div className="flex items-center gap-3 px-5 py-4 border-b border-slate-100">
+                <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
+                  style={{ background: '#ede9fe' }}>
+                  <MoonStar size={15} style={{ color: '#7c3aed' }} />
+                </div>
+                <h2 className="text-base font-bold text-slate-900">심리적 해석</h2>
+              </div>
+              <div className="px-5 py-5">
+                <p className="text-base leading-8 text-slate-700"><LinkedText text={dream.psychological_meaning} /></p>
+              </div>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* ── 관련 꿈해몽 ── */}
       {relatedDreams.length > 0 && (
-        <section className="mu-container-reading pb-2">
-          <div className="mu-glass-panel p-5 sm:p-6">
-            <span className="mu-divider-text">Related dreams</span>
-            <h2 className="mt-3 text-[24px] font-bold tracking-[-0.05em] text-slate-900">비슷한 분위기의 꿈해몽</h2>
-            <div className="mt-5 mu-auto-grid-220">
+        <section className="mu-container-reading pt-4">
+          <div className="bg-white rounded-[20px] border border-slate-200/80 overflow-hidden shadow-[0_4px_20px_rgba(15,23,42,0.05)]">
+            <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-slate-100">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 bg-indigo-50">
+                  <MoonStar size={15} className="text-indigo-600" />
+                </div>
+                <h2 className="text-base font-bold text-slate-900">비슷한 분위기의 꿈해몽</h2>
+              </div>
+              <Link href="/dream" className="text-sm font-bold text-indigo-600 flex items-center gap-1 hover:opacity-80 transition-opacity">
+                전체보기 <ChevronRight size={14} />
+              </Link>
+            </div>
+            <div className="divide-y divide-slate-100">
               {relatedDreams.map((item) => (
-                <Link key={item.slug} href={`/dream/${item.slug}`} className="mu-link-card p-4">
-                  <div className="inline-flex rounded-full bg-slate-100 px-2.5 py-1 text-xs font-bold text-slate-500">{item.categoryLabel}</div>
-                  <h3 className="mt-3 line-clamp-2 text-[18px] font-bold tracking-[-0.04em] text-slate-900">{item.keyword} 꿈해몽</h3>
-                  <p className="mt-2 line-clamp-3 text-sm leading-6 text-slate-600">{item.excerpt}</p>
-                  <div className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-[#5648db]">자세히 보기 <ArrowUpRight size={14} /></div>
+                <Link key={item.slug} href={`/dream/${item.slug}`}>
+                  <div className="flex items-start gap-3 px-5 py-4 hover:bg-slate-50 transition-colors cursor-pointer">
+                    <div className="flex-shrink-0 w-9 h-9 rounded-xl bg-indigo-50 flex items-center justify-center">
+                      <MoonStar size={16} className="text-indigo-500" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-bold ${
+                          item.grade === 'great' ? 'bg-amber-50 text-amber-700 border-amber-200' :
+                          item.grade === 'bad' ? 'bg-fuchsia-50 text-fuchsia-700 border-fuchsia-200' :
+                          'bg-sky-50 text-sky-700 border-sky-200'
+                        }`}>
+                          {item.grade === 'great' ? '길몽' : item.grade === 'bad' ? '흉몽' : '평몽'}
+                        </span>
+                        <span className="text-xs text-slate-400">{item.categoryLabel}</span>
+                      </div>
+                      <p className="text-base font-bold text-slate-900 leading-snug mb-1">{item.keyword} 꿈해몽</p>
+                      <p className="text-sm text-slate-500 leading-relaxed line-clamp-2">{item.excerpt}</p>
+                    </div>
+                    <ChevronRight size={16} className="text-slate-300 flex-shrink-0 mt-1" />
+                  </div>
                 </Link>
               ))}
             </div>
@@ -235,17 +344,108 @@ export default function DreamDetail() {
         </section>
       )}
 
-      <section className="mu-container-reading">
-        <CallToAction variant="daily" />
-        <RelatedServices
-        title="꿈해몽 상세와 함께 보면 좋은 서비스"
-        services={[
-        { href: '/fortune-dictionary', emoji: '📖', label: '운세 사전', description: '꿈 속 상징을 명리학 용어로 더 깊이 이해해보세요.' },
-        { href: '/compatibility', emoji: '💞', label: '궁합', description: '꿈에 특정 사람이 나왔다면 그 사람과의 궁합도 확인해보세요.' },
-        { href: '/yearly-fortune', emoji: '📆', label: '신년운세', description: '올해의 큰 운 흐름을 함께 확인해보세요.' },
-        ]}
-      />
+      {/* ── 키워드 검색 칩 ── */}
+      <section className="mu-container-reading pt-4">
+        <div className="bg-white rounded-[20px] border border-slate-200/80 overflow-hidden shadow-[0_4px_20px_rgba(15,23,42,0.05)]">
+          <div className="flex items-center gap-3 px-5 py-4 border-b border-slate-100">
+            <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 bg-indigo-50">
+              <Search size={15} className="text-indigo-600" />
+            </div>
+            <h3 className="text-base font-bold text-slate-900">자주 찾는 꿈해몽</h3>
+          </div>
+          <div className="px-5 py-4">
+            <div className="flex flex-wrap gap-2">
+              {DREAM_KEYWORD_CHIPS.map((kw) => (
+                <Link key={kw} href={`/dream?q=${encodeURIComponent(kw.replace('꿈', ''))}`}>
+                  <span className="inline-flex items-center text-sm px-3 py-1.5 rounded-full font-medium cursor-pointer hover:opacity-80 transition-opacity"
+                    style={{ background: '#eef2ff', color: '#4338ca', border: '0.5px solid rgba(99,102,241,0.25)' }}>
+                    {kw}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
       </section>
+
+      {/* ── 함께 보면 좋은 서비스 ── */}
+      <section className="mu-container-reading pt-4">
+        <div className="bg-white rounded-[20px] border border-slate-200/80 overflow-hidden shadow-[0_4px_20px_rgba(15,23,42,0.05)]">
+          <div className="flex items-center gap-3 px-5 py-4 border-b border-slate-100">
+            <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
+              style={{ background: 'linear-gradient(135deg, #6B5FFF, #5648db)' }}>
+              <Sparkles size={15} className="text-white" />
+            </div>
+            <h3 className="text-base font-bold text-slate-900">함께 보면 좋은 서비스</h3>
+          </div>
+          {/* 무료 안내 */}
+          <div className="px-5 py-2.5 flex items-center gap-2 border-b border-slate-100">
+            <span className="text-xs font-medium px-2 py-1 rounded-md"
+              style={{ background: '#f5f3ff', color: '#5b21b6', border: '0.5px solid rgba(124,58,237,0.25)' }}>무료</span>
+            <span className="text-xs font-medium px-2 py-1 rounded-md"
+              style={{ background: '#f0fdf4', color: '#0f6e56', border: '0.5px solid #5DCAA5' }}>회원가입 없이</span>
+            <span className="text-sm text-slate-500">바로 확인할 수 있어요</span>
+          </div>
+          <div className="divide-y divide-slate-100">
+            {RELATED_SERVICES.map((svc) => (
+              <Link key={svc.href} href={svc.href}>
+                <div className="flex items-center gap-3 px-5 py-3.5 hover:bg-slate-50 transition-colors cursor-pointer">
+                  <div className="w-9 h-9 rounded-xl bg-slate-100 flex items-center justify-center text-lg flex-shrink-0">
+                    {svc.icon}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-base font-bold text-slate-900">{svc.label}</p>
+                    <p className="text-sm text-slate-500">{svc.desc}</p>
+                    <div className="flex gap-1.5 mt-1">
+                      <span className="text-xs px-1.5 py-0.5 rounded"
+                        style={{ background: '#f5f3ff', color: '#5b21b6', border: '0.5px solid rgba(124,58,237,0.2)' }}>무료</span>
+                      <span className="text-xs px-1.5 py-0.5 rounded"
+                        style={{ background: '#f0fdf4', color: '#0f6e56', border: '0.5px solid #5DCAA5' }}>회원가입 없음</span>
+                    </div>
+                  </div>
+                  <ChevronRight size={16} className="text-slate-300 flex-shrink-0" />
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 꿈 관련 칼럼 ── */}
+      <section className="mu-container-reading pt-4">
+        <div className="bg-white rounded-[20px] border border-slate-200/80 overflow-hidden shadow-[0_4px_20px_rgba(15,23,42,0.05)]">
+          <div className="flex items-center gap-3 px-5 py-4 border-b border-slate-100">
+            <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0 bg-emerald-50">
+              <BookOpen size={15} className="text-emerald-600" />
+            </div>
+            <h3 className="text-base font-bold text-slate-900">이런 칼럼은 어떠세요?</h3>
+          </div>
+          <div className="divide-y divide-slate-100">
+            {DREAM_COLUMNS.map((col) => (
+              <Link key={col.href} href={col.href}>
+                <div className="flex items-start gap-3 px-5 py-4 hover:bg-slate-50 transition-colors cursor-pointer">
+                  <div className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl flex-shrink-0"
+                    style={{ background: col.thumbBg }}>
+                    {col.emoji}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-bold text-indigo-600 mb-1">{col.category}</p>
+                    <p className="text-base font-bold text-slate-900 leading-snug mb-1">{col.title}</p>
+                    <p className="text-sm text-slate-500 leading-relaxed line-clamp-2">{col.summary}</p>
+                  </div>
+                  <ChevronRight size={16} className="text-slate-300 flex-shrink-0 mt-1" />
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA ── */}
+      <section className="mu-container-reading pt-4 pb-4">
+        <CallToAction variant="daily" />
+      </section>
+
     </div>
   );
 }
