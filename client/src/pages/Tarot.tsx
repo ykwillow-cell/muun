@@ -13,34 +13,8 @@ import tarotData from "@/lib/tarot-data.json";
 import { trackCustomEvent } from "@/lib/ga4";
 import TarotContent from "@/components/TarotContent";
 import RecommendedContent from "@/components/RecommendedContent";
-import { Search, BookOpen, Lightbulb, Heart, Moon } from "lucide-react";
-
-// ── 타로 API 인라인 (tarot-api.ts 불필요) ──────────────────────────────
-interface TarotCardResult {
-  position: string; positionMeaning: string; cardName: string;
-  coreMessage: string; detailMessage: string; advice: string;
-}
-interface TarotStructuredResult {
-  summary: string; cards: TarotCardResult[];
-  synthesis: string; keyMessage: string;
-  actionItems: string[]; closingWord: string;
-}
-async function callTarotAPI(question: string, cards: TarotCard[]) {
-  const res = await fetch('/api/tarot', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ question, cards }),
-  });
-  if (!res.ok) { const e = await res.json().catch(()=>({})); throw new Error(`${res.status}: ${e?.error||res.statusText}`); }
-  return res.json();
-}
-function tryParseStructured(raw: string): TarotStructuredResult | null {
-  const attempt = (s: string) => { try { const p = JSON.parse(s); return p?.summary && Array.isArray(p?.cards) ? p : null; } catch { return null; } };
-  return attempt(raw)
-    ?? attempt(raw.replace(/^```json\s*/i,'').replace(/\s*```$/i,'').trim())
-    ?? attempt((raw.match(/\{[\s\S]*\}/) ?? [])[0] ?? '');
-}
-// ──────────────────────────────────────────────────────────────────────
+import { getTarotInterpretation } from "@/lib/tarot-api";
+import { processAIContent } from "@/lib/content-cleaner";
 
 interface TarotCard {
   id: number;
@@ -73,26 +47,6 @@ const EXAMPLE_QUESTIONS = [
 const CARD_POSITIONS = ["과거", "현재", "미래"];
 const CARD_POSITION_EN = ["Past", "Present", "Future"];
 
-
-const POSITION_COLORS = [
-  { bg: "bg-indigo-50", border: "border-indigo-200", badge: "bg-indigo-100 text-indigo-700", accent: "#6366f1" },
-  { bg: "bg-purple-50", border: "border-purple-200", badge: "bg-purple-100 text-purple-700", accent: "#7c3aed" },
-  { bg: "bg-violet-50", border: "border-violet-200", badge: "bg-violet-100 text-violet-700", accent: "#8b5cf6" },
-];
-const INTERNAL_SEARCH_LINKS = [
-  { href: "/lifelong-saju", label: "평생사주", icon: "🔮", desc: "타로가 보여준 흐름을 사주로 더 깊이" },
-  { href: "/daily-fortune", label: "오늘의 운세", icon: "📅", desc: "오늘 하루 총운·재물운·애정운" },
-  { href: "/compatibility", label: "궁합", icon: "💞", desc: "관계 고민이라면 궁합 분석까지" },
-  { href: "/dream", label: "꿈해몽", icon: "🌙", desc: "어젯밤 꿈이 궁금하다면" },
-  { href: "/tojeong", label: "토정비결", icon: "📖", desc: "한 해 운세를 전통 방식으로" },
-  { href: "/psychology", label: "심리테스트", icon: "🧠", desc: "나를 더 깊이 이해하는 시간" },
-];
-const TAROT_COLUMNS = [
-  { href: "/column/tarot-card-meanings", category: "타로 가이드", title: "타로카드 78장의 의미 완전 정리", summary: "메이저 아르카나 22장부터 마이너 아르카나까지, 각 카드가 상징하는 핵심 키워드를 한눈에 정리했습니다.", emoji: "🃏", thumbBg: "#eef2ff" },
-  { href: "/column/wheel-of-fortune-meaning", category: "운세 칼럼", title: "변화를 앞둔 당신에게, 운명의 수레바퀴가 말하는 것", summary: "직장·이직·이사 등 큰 변화의 기로에 선 사람들에게 수레바퀴 카드가 전하는 메시지를 깊이 풀어봅니다.", emoji: "🔄", thumbBg: "#f5f3ff" },
-  { href: "/column/the-sun-card-guide", category: "사주 칼럼", title: "태양 카드가 나왔다면? 성공 운을 최대로 살리는 법", summary: "타로에서 가장 긍정적인 카드 중 하나인 태양. 이 에너지를 일상과 결정에 어떻게 연결할 수 있는지 알아보세요.", emoji: "☀️", thumbBg: "#faf5ff" },
-];
-
 export default function Tarot() {
   useCanonical('/tarot');
   
@@ -114,7 +68,6 @@ export default function Tarot() {
 
   const [selectedCards, setSelectedCards] = useState<TarotCard[]>([]);
   const [interpretation, setInterpretation] = useState("");
-  const [structuredResult, setStructuredResult] = useState<TarotStructuredResult | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [shuffledDeck, setShuffledDeck] = useState<TarotCard[]>([]);
   const [error, setError] = useState<ErrorState | null>(null);
@@ -145,14 +98,8 @@ export default function Tarot() {
 
   const handleInterpretation = async () => {
     try {
-      const data = await callTarotAPI(question, selectedCards);
-      if (data.structured) {
-        setStructuredResult(data.structured);
-      } else if (data.interpretation) {
-        const parsed = tryParseStructured(data.interpretation);
-        if (parsed) { setStructuredResult(parsed); }
-        else { setInterpretation(data.interpretation); }
-      }
+      const data = await getTarotInterpretation({ question, cards: selectedCards });
+      setInterpretation(data.interpretation);
     } catch (error) {
       console.error("Tarot interpretation error:", error);
       let errorType: ErrorState["type"] = "unknown";
@@ -182,7 +129,6 @@ export default function Tarot() {
     setQuestion("");
     setSelectedCards([]);
     setInterpretation("");
-    setStructuredResult(null);
     setError(null);
   };
 
@@ -608,162 +554,39 @@ export default function Tarot() {
                   다시 시도하기
                 </button>
               </motion.div>
-            ) : structuredResult ? (
-              /* ── 구조화 AI 결과 ── */
-              <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="space-y-4">
-                {/* 도입 요약 */}
-                <div className="rounded-2xl p-5" style={{ background: 'linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%)', border: '1px solid rgba(124,58,237,0.15)' }}>
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #7c3aed, #5b21b6)' }}><Sparkles className="w-3.5 h-3.5 text-white" /></div>
-                    <span className="text-base font-bold text-[#1a1a18]">타로 마스터의 첫 인상</span>
-                  </div>
-                  <p className="text-base text-[#3a3a60] leading-relaxed">{structuredResult.summary}</p>
-                </div>
-                {/* 카드 개별 해석 */}
-                {structuredResult.cards.map((cardResult, index) => {
-                  const card = selectedCards[index];
-                  const color = POSITION_COLORS[index];
-                  return (
-                    <div key={index} className={`bg-white rounded-2xl overflow-hidden border ${color.border}`}>
-                      <div className={`px-4 py-3 ${color.bg} flex items-center gap-3`}>
-                        <div style={{ width:'40px', height:'60px', borderRadius:'8px', overflow:'hidden', border:`1.5px solid ${color.accent}40`, flexShrink:0 }}>
-                          <img src={card.image} alt={card.korName} style={{ width:'100%', height:'100%', objectFit:'cover' }} />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${color.badge}`}>{cardResult.position}</span>
-                          <p className="text-base font-bold text-[#1a1a18] mt-1">{card.korName}</p>
-                          <p className="text-xs text-[#6b7280]">{cardResult.positionMeaning}</p>
-                        </div>
-                      </div>
-                      <div className="px-4 pt-4 pb-3">
-                        <div className="flex items-start gap-2 mb-3">
-                          <div style={{ width:'3px', minHeight:'40px', borderRadius:'2px', background:color.accent, flexShrink:0, marginTop:'3px' }} />
-                          <p className="text-base font-bold text-[#1a1a18] leading-relaxed">{cardResult.coreMessage}</p>
-                        </div>
-                        <p className="text-sm text-[#4a4a5a] leading-relaxed mb-3">{cardResult.detailMessage}</p>
-                        <div className={`rounded-xl px-3 py-2.5 ${color.bg} flex items-start gap-2`}>
-                          <Lightbulb className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" style={{ color: color.accent }} />
-                          <p className="text-sm text-[#4a4a5a] leading-relaxed"><span className="font-bold" style={{ color: color.accent }}>카드의 조언 </span>{cardResult.advice}</p>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-                {/* 종합 해석 */}
-                <div className="bg-white rounded-2xl overflow-hidden border border-black/[0.06]">
-                  <div className="px-5 py-4" style={{ background: 'linear-gradient(135deg, #1a0f4a, #2d1a82)' }}>
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-white/10"><BookOpen className="w-4 h-4 text-white" /></div>
-                      <div><p className="text-base font-bold text-white">3장 카드 종합 해석</p><p className="text-xs" style={{ color:'rgba(167,139,250,0.7)' }}>과거·현재·미래의 흐름</p></div>
-                    </div>
-                  </div>
-                  <div className="px-5 py-5"><p className="text-base text-[#1a1a18] leading-relaxed">{structuredResult.synthesis}</p></div>
-                </div>
-                {/* 키 메시지 */}
-                <div className="rounded-2xl px-5 py-4 text-center" style={{ background: 'linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%)', boxShadow:'0 8px 32px rgba(124,58,237,0.3)' }}>
-                  <p className="text-xs font-bold text-purple-200 mb-2 tracking-wider uppercase">Today's Key Message</p>
-                  <p className="text-base font-bold text-white leading-snug">"{structuredResult.keyMessage}"</p>
-                </div>
-                {/* 행동 3가지 */}
-                <div className="bg-white rounded-2xl overflow-hidden border border-black/[0.06]">
-                  <div className="px-5 py-4 border-b border-black/[0.06] flex items-center gap-2">
-                    <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background:'linear-gradient(135deg, #7c3aed, #5b21b6)' }}><Star className="w-3.5 h-3.5 text-white" /></div>
-                    <h3 className="text-base font-bold text-[#1a1a18]">카드가 제안하는 행동 3가지</h3>
-                  </div>
-                  <div className="px-5 py-4 space-y-3">
-                    {structuredResult.actionItems.map((item, i) => (
-                      <div key={i} className="flex items-start gap-3">
-                        <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0 text-xs font-bold text-white" style={{ background:'linear-gradient(135deg, #7c3aed, #5b21b6)', minWidth:'24px' }}>{i+1}</div>
-                        <p className="text-base text-[#1a1a18] leading-relaxed">{item}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                {/* 마무리 */}
-                <div className="rounded-2xl p-5" style={{ background:'linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%)', border:'1px solid rgba(124,58,237,0.15)' }}>
-                  <div className="flex items-start gap-3">
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0" style={{ background:'linear-gradient(135deg, #7c3aed, #5b21b6)' }}><Heart className="w-4 h-4 text-white" /></div>
-                    <p className="text-base text-[#3a3060] leading-relaxed">{structuredResult.closingWord}</p>
-                  </div>
-                </div>
-                {/* 새 상담 */}
-                <button onClick={resetTarot} className="w-full h-12 rounded-xl text-base font-bold text-[#1a1a18] border border-black/10 bg-white flex items-center justify-center gap-2 hover:bg-black/[0.03] transition-colors">
-                  <RefreshCw className="w-4 h-4" />새로운 상담 시작
-                </button>
-                {/* 함께 보면 좋은 서비스 */}
-                <div className="bg-white rounded-2xl border border-black/[0.06] overflow-hidden">
-                  <div className="px-5 py-4 border-b border-black/[0.06] flex items-center gap-2">
-                    <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background:'linear-gradient(135deg, #7c3aed, #5b21b6)' }}><Sparkles className="w-3.5 h-3.5 text-white" /></div>
-                    <h3 className="text-base font-bold text-[#1a1a18]">함께 보면 좋은 서비스</h3>
-                  </div>
-                  <div className="px-5 py-2.5 flex items-center gap-2">
-                    <span className="text-xs font-medium px-2 py-1 rounded-md" style={{ background:'#f5f3ff', color:'#5b21b6', border:'0.5px solid rgba(124,58,237,0.25)' }}>무료</span>
-                    <span className="text-xs font-medium px-2 py-1 rounded-md" style={{ background:'#f0fdf4', color:'#0f6e56', border:'0.5px solid #5DCAA5' }}>회원가입 없이</span>
-                    <span className="text-sm text-[#6b7280]">바로 확인할 수 있어요</span>
-                  </div>
-                  <div className="divide-y divide-black/[0.04]">
-                    {INTERNAL_SEARCH_LINKS.map((link) => (
-                      <Link key={link.href} href={link.href}>
-                        <div className="flex items-center gap-3 px-5 py-3.5 hover:bg-black/[0.02] transition-colors cursor-pointer">
-                          <span className="text-xl w-8 text-center flex-shrink-0">{link.icon}</span>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-base font-bold text-[#1a1a18]">{link.label}</p>
-                            <p className="text-sm text-[#6b7280]">{link.desc}</p>
-                            <div className="flex gap-1.5 mt-1">
-                              <span className="text-xs px-1.5 py-0.5 rounded" style={{ background:'#f5f3ff', color:'#5b21b6', border:'0.5px solid rgba(124,58,237,0.2)' }}>무료</span>
-                              <span className="text-xs px-1.5 py-0.5 rounded" style={{ background:'#f0fdf4', color:'#0f6e56', border:'0.5px solid #5DCAA5' }}>회원가입 없음</span>
-                            </div>
-                          </div>
-                          <ChevronRight className="w-4 h-4 text-[#d1d5db] flex-shrink-0" />
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-                {/* 칼럼 링크 */}
-                <div className="bg-white rounded-2xl border border-black/[0.06] overflow-hidden">
-                  <div className="px-5 py-4 border-b border-black/[0.06] flex items-center gap-2">
-                    <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background:'#0f6e56' }}><BookOpen className="w-3.5 h-3.5 text-white" /></div>
-                    <h3 className="text-base font-bold text-[#1a1a18]">이런 칼럼은 어떠세요?</h3>
-                  </div>
-                  <div className="divide-y divide-black/[0.04]">
-                    {TAROT_COLUMNS.map((col) => (
-                      <Link key={col.href} href={col.href}>
-                        <div className="flex items-start gap-3 px-5 py-4 hover:bg-black/[0.02] transition-colors cursor-pointer">
-                          <div className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl flex-shrink-0" style={{ background: col.thumbBg }}>{col.emoji}</div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-xs font-bold mb-1" style={{ color:'#7c3aed' }}>{col.category}</p>
-                            <p className="text-base font-bold text-[#1a1a18] leading-snug mb-1">{col.title}</p>
-                            <p className="text-sm text-[#6b7280] leading-relaxed line-clamp-2">{col.summary}</p>
-                          </div>
-                          <ChevronRight className="w-4 h-4 text-[#d1d5db] flex-shrink-0 mt-1" />
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-                <RecommendedContent />
-              </motion.div>
-            ) : interpretation ? (
-              /* ── 폴백: 텍스트 결과 ── */
+            ) : (
               <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}
                 className="bg-white border border-black/[0.06] rounded-2xl overflow-hidden" data-tarot-result-card>
-                <div className="px-5 py-4 border-b border-black/[0.06]" style={{ background: 'linear-gradient(135deg, #f5f3ff, #ede9fe)' }}>
+                {/* 헤더 */}
+                <div className="px-5 py-4 border-b border-black/[0.06]"
+                  style={{ background: 'linear-gradient(135deg, #f5f3ff, #ede9fe)' }}>
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #7c3aed, #5b21b6)' }}><Sparkles className="w-4 h-4 text-white" /></div>
+                    <div className="w-8 h-8 rounded-lg flex items-center justify-center"
+                      style={{ background: 'linear-gradient(135deg, #7c3aed, #5b21b6)' }}>
+                      <Sparkles className="w-4 h-4 text-white" />
+                    </div>
                     <h3 className="text-base font-bold text-[#1a1a18]">타로의 메시지</h3>
                   </div>
                 </div>
-                <div className="px-5 py-5"><div className="text-base text-[#1a1a18] leading-relaxed whitespace-pre-wrap">{interpretation}</div></div>
-                <div className="px-5 pb-5">
-                  <button onClick={resetTarot} className="w-full h-12 rounded-xl text-base font-bold text-[#1a1a18] border border-black/10 bg-white flex items-center justify-center gap-2 hover:bg-black/[0.03] transition-colors">
-                    <RefreshCw className="w-4 h-4" />새로운 상담 시작
+                {/* 본문 */}
+                <div className="px-5 py-5">
+                  <div className="text-base text-[#1a1a18] leading-relaxed whitespace-pre-wrap">
+                    {processAIContent(interpretation)}
+                  </div>
+                </div>
+                {/* 버튼 */}
+                <div className="px-5 pb-5 space-y-2.5">
+
+                  <button onClick={resetTarot}
+                    className="w-full h-12 rounded-xl text-base font-bold text-[#1a1a18] border border-black/10 bg-white flex items-center justify-center gap-2 hover:bg-black/[0.03] transition-colors">
+                    <RefreshCw className="w-4 h-4" />
+                    새로운 상담 시작
                   </button>
                 </div>
               </motion.div>
-            ) : null}
+            )}
 
-            <RecommendedContent />
+            {/* 추천 콘텐츠 */}          <RecommendedContent />
           </motion.div>
         )}
 
