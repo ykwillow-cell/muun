@@ -13,7 +13,37 @@ import tarotData from "@/lib/tarot-data.json";
 import { trackCustomEvent } from "@/lib/ga4";
 import TarotContent from "@/components/TarotContent";
 import RecommendedContent from "@/components/RecommendedContent";
-import { getTarotInterpretation, type TarotStructuredResult, type TarotCardResult } from "@/lib/tarot-api";
+// tarot-api 인라인 — 외부 파일 의존 없이 직접 서버 호출
+export interface TarotCardResult {
+  position: string;
+  positionMeaning: string;
+  cardName: string;
+  coreMessage: string;
+  detailMessage: string;
+  advice: string;
+}
+
+export interface TarotStructuredResult {
+  summary: string;
+  cards: TarotCardResult[];
+  synthesis: string;
+  keyMessage: string;
+  actionItems: string[];
+  closingWord: string;
+}
+
+async function getTarotInterpretation(payload: { question: string; cards: TarotCard[] }) {
+  const response = await fetch('/api/tarot', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ question: payload.question, cards: payload.cards }),
+  });
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error(`${response.status}: ${err?.error || response.statusText}`);
+  }
+  return response.json();
+}
 
 interface TarotCard {
   id: number;
