@@ -8,16 +8,12 @@ export default async function handler(
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-  );
+  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
 
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   const { question, cards } = req.body;
-
   if (!question || !cards || !Array.isArray(cards) || cards.length < 3) {
     return res.status(400).json({ error: '질문과 3장의 카드 정보가 필요합니다.' });
   }
@@ -48,12 +44,6 @@ export default async function handler(
     "태양":            { upright: "행복, 성공, 명확함, 활기찬 에너지와 풍요", shadow: "과도한 자신감, 표면적 행복", keywords: "행복·성공·명확·활기" },
     "심판":            { upright: "부활, 해방, 중요한 결단, 과거를 넘어서는 새 출발", shadow: "자기 비판 과잉, 과거에 얽매임", keywords: "심판·부활·해방·결단" },
     "세계":            { upright: "완성, 성취, 통합, 긴 여정의 완벽한 마무리", shadow: "미완성, 방향 상실, 목표 부재", keywords: "완성·성취·통합·완벽" },
-    "지팡이 에이스":   { upright: "새로운 열정, 창의적 에너지의 씨앗, 기회의 시작", shadow: "에너지 낭비, 방향 없는 열정", keywords: "시작·열정·창조·기회" },
-    "지팡이 여왕":     { upright: "카리스마, 자신감, 활기찬 리더십, 독립적인 에너지", shadow: "지배욕, 충동적 판단, 질투", keywords: "카리스마·자신감·열정·독립" },
-    "펜타클 에이스":   { upright: "물질적 기회, 새로운 재물 씨앗, 안정의 출발점", shadow: "물질만능주의, 기회 낭비", keywords: "재물·기회·안정·시작" },
-    "펜타클 여왕":     { upright: "현실적 지혜, 풍요로운 돌봄, 안정된 번영", shadow: "과보호, 물질 집착, 불안감", keywords: "풍요·안정·실용·돌봄" },
-    "검 에이스":       { upright: "명확한 통찰, 진실의 시작, 새로운 아이디어", shadow: "혼란, 잘못된 판단, 갈등의 씨앗", keywords: "진실·명확·통찰·시작" },
-    "컵 에이스":       { upright: "새로운 감정의 시작, 사랑·직관의 씨앗, 풍요로운 감성", shadow: "감정 억압, 차단된 흐름", keywords: "사랑·감정·직관·시작" },
   };
 
   const positionLabels = ["과거 (뿌리·원인·배경)", "현재 (핵심·장애·조언)", "미래 (결과·가능성·방향)"];
@@ -62,12 +52,12 @@ export default async function handler(
     const meaning = CARD_MEANINGS[card.korName];
     return `카드 ${i + 1} [${positionLabels[i]}]
   카드명: ${card.korName} (${card.name})
-  정방향 의미: ${meaning?.upright ?? "새로운 에너지와 전환점을 상징합니다"}
-  그림자 의미: ${meaning?.shadow ?? "내면의 두려움과 직면이 필요합니다"}
-  핵심 키워드: ${meaning?.keywords ?? "변화·통찰·성장"}`;
+  정방향 의미: ${meaning?.upright ?? '새로운 에너지와 전환점을 상징합니다'}
+  그림자 의미: ${meaning?.shadow ?? '내면의 두려움과 직면이 필요합니다'}
+  핵심 키워드: ${meaning?.keywords ?? '변화·통찰·성장'}`;
   }).join('\n\n');
 
-  const prompt = `당신은 "무운 타로 상담소"의 전문 타로 마스터입니다. 15년 이상의 경력을 가진 상담사로서 라이더-웨이트 덱을 깊이 이해하고 있습니다.
+  const prompt = `당신은 "무운 타로 상담소"의 전문 타로 마스터입니다.
 
 [의뢰인의 질문]
 "${question}"
@@ -75,23 +65,20 @@ export default async function handler(
 [뽑힌 카드와 포지션]
 ${cardDetails}
 
-[출력 규칙 — 반드시 준수]
-- 응답은 반드시 JSON 객체 하나로만 구성합니다
-- 첫 글자는 반드시 { 이고 마지막 글자는 반드시 } 입니다
-- \`\`\`json 같은 마크다운 코드블록을 절대 사용하지 않습니다
-- JSON 앞뒤로 어떤 설명 문장도 붙이지 않습니다
+[출력 규칙]
+반드시 아래 JSON 형식만 출력하세요. { 로 시작해서 } 로 끝나야 합니다.
+마크다운 코드블록(\`\`\`), 설명 문장, 인사말 등 JSON 외 텍스트를 절대 출력하지 마세요.
 
-[출력 형식]
 {
-  "summary": "의뢰인 질문에 공감하는 도입 (2~3줄, 따뜻하고 신비로운 문체)",
+  "summary": "질문에 공감하는 따뜻한 도입 (2~3줄)",
   "cards": [
     {
       "position": "과거",
-      "positionMeaning": "이 자리가 묻는 것 (예: 지금 상황의 뿌리, 지나온 흐름)",
+      "positionMeaning": "이 자리가 묻는 것",
       "cardName": "카드 한국명",
       "coreMessage": "이 카드가 이 자리에서 말하는 핵심 (2~3줄, 질문과 직접 연결)",
-      "detailMessage": "더 깊은 해석 (4~6줄. 카드 이미지 상징, 질문과의 맥락)",
-      "advice": "이 카드가 주는 실천 조언 (1~2줄, 구체적 행동 제안)"
+      "detailMessage": "더 깊은 해석 (4~6줄, 카드 이미지 상징 포함)",
+      "advice": "실천 조언 (1~2줄)"
     },
     {
       "position": "현재",
@@ -110,14 +97,14 @@ ${cardDetails}
       "advice": "실천 조언"
     }
   ],
-  "synthesis": "3장 카드 흐름을 통합하는 종합 메시지 (5~7줄. 과거→현재→미래 연결, 질문에 대한 직접적인 답 포함)",
-  "keyMessage": "오늘 상담의 핵심 한 문장 (30자 이내)",
+  "synthesis": "3장 종합 메시지 (5~7줄, 과거→현재→미래 연결, 질문에 대한 직접적인 답 포함)",
+  "keyMessage": "핵심 한 문장 (30자 이내)",
   "actionItems": ["행동 조언 1", "행동 조언 2", "행동 조언 3"],
-  "closingWord": "따뜻하고 희망적인 마무리 (2~3줄)"
+  "closingWord": "따뜻한 마무리 인사 (2~3줄)"
 }`;
 
   try {
-    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
+    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
     const response = await axios.post(
       geminiUrl,
@@ -128,7 +115,6 @@ ${cardDetails}
           topK: 40,
           topP: 0.95,
           maxOutputTokens: 3000,
-          responseMimeType: "application/json",
         },
       },
       {
@@ -142,21 +128,30 @@ ${cardDetails}
     }
 
     const rawText: string = response.data.candidates[0].content.parts[0].text ?? '';
+    console.log('[Tarot API] rawText[:200]:', rawText.slice(0, 200));
 
-    // JSON 파싱 — 코드블록 제거 → { } 범위 추출 순으로 시도
-    const tryParse = (s: string) => { try { return JSON.parse(s); } catch { return null; } };
+    // JSON 파싱 — 3단계 시도
+    const tryParse = (s: string) => {
+      try {
+        const p = JSON.parse(s);
+        return p?.summary && Array.isArray(p?.cards) ? p : null;
+      } catch {
+        return null;
+      }
+    };
 
-    let structured =
+    const structured =
       tryParse(rawText) ??
       tryParse(rawText.replace(/^```json\s*/i, '').replace(/\s*```$/i, '').trim()) ??
       tryParse((rawText.match(/\{[\s\S]*\}/) ?? [])[0] ?? '');
 
-    if (structured?.summary && Array.isArray(structured?.cards)) {
+    if (structured) {
+      console.log('[Tarot API] Success — structured result');
       return res.status(200).json({ interpretation: null, structured });
     }
 
-    // 파싱 실패 — raw 텍스트를 그대로 내려서 클라이언트가 재시도 유도
-    console.error('[Tarot API] JSON parse failed. raw[:300]:', rawText.slice(0, 300));
+    // 파싱 실패 — raw 텍스트 그대로 반환 (클라이언트에서 재시도)
+    console.error('[Tarot API] JSON parse failed');
     return res.status(200).json({ interpretation: rawText, structured: null });
 
   } catch (error: any) {
