@@ -185,19 +185,19 @@ export default function DictionaryDetail() {
           {(prevEntry || nextEntry) && (
             <div className="flex border-t border-black/[0.05]">
               {prevEntry ? (
-                <Link href={`/dictionary/${prevEntry.slug}`} className="flex-1 flex items-center gap-2 px-4 py-3 hover:bg-slate-50 transition-colors cursor-pointer border-r border-black/[0.05]">
+                <Link href={`/dictionary/${prevEntry.slug}`} className="flex-1 min-w-0 flex items-center gap-2 px-4 py-3 hover:bg-slate-50 transition-colors cursor-pointer border-r border-black/[0.05]">
                   <ChevronLeft size={15} className="text-slate-400 flex-shrink-0" />
-                  <div className="min-w-0">
+                  <div className="min-w-0 overflow-hidden">
                     <p className="text-xs text-slate-400 mb-0.5">이전</p>
-                    <p className="text-sm font-bold text-slate-700 truncate">{prevEntry.title}</p>
+                    <p className="text-sm font-bold text-slate-700 truncate">{prevEntry.title.replace(/\(.*?\)/g, '').trim()}</p>
                   </div>
                 </Link>
               ) : <div className="flex-1 border-r border-black/[0.05]" />}
               {nextEntry ? (
-                <Link href={`/dictionary/${nextEntry.slug}`} className="flex-1 flex items-center justify-end gap-2 px-4 py-3 hover:bg-slate-50 transition-colors cursor-pointer text-right">
-                  <div className="min-w-0">
+                <Link href={`/dictionary/${nextEntry.slug}`} className="flex-1 min-w-0 flex items-center justify-end gap-2 px-4 py-3 hover:bg-slate-50 transition-colors cursor-pointer text-right">
+                  <div className="min-w-0 overflow-hidden">
                     <p className="text-xs text-slate-400 mb-0.5">다음</p>
-                    <p className="text-sm font-bold text-slate-700 truncate">{nextEntry.title}</p>
+                    <p className="text-sm font-bold text-slate-700 truncate">{nextEntry.title.replace(/\(.*?\)/g, '').trim()}</p>
                   </div>
                   <ChevronRight size={15} className="text-slate-400 flex-shrink-0" />
                 </Link>
