@@ -24,17 +24,17 @@ const categoryStyle: Record<string, { side: string; bg: string; text: string; li
 };
 
 const sections = [
-  { key: 'originalMeaning'      as const, label: '기본 개념',       Icon: BookOpen,  iconBg: '#eef2ff', iconColor: '#4338ca', barColor: '#818cf8' },
-  { key: 'modernInterpretation' as const, label: '지금 내 삶에서는', Icon: Lightbulb, iconBg: '#fffbeb', iconColor: '#d97706', barColor: '#fcd34d' },
-  { key: 'muunAdvice'           as const, label: '이렇게 활용하세요', Icon: Star,      iconBg: '#f0fdf4', iconColor: '#16a34a', barColor: '#4ade80' },
+  { key: 'originalMeaning'      as const, label: '기본 개념',        Icon: BookOpen,  iconBg: '#eef2ff', iconColor: '#4338ca' },
+  { key: 'modernInterpretation' as const, label: '지금 내 삶에서는', Icon: Lightbulb, iconBg: '#fffbeb', iconColor: '#d97706' },
+  { key: 'muunAdvice'           as const, label: '이렇게 활용하세요', Icon: Star,      iconBg: '#f0fdf4', iconColor: '#16a34a' },
 ] as const;
 
 const SERVICE_LINKS = [
-  { href: '/lifelong-saju', emoji: '🔮', label: '평생사주',  desc: '이 용어가 내 사주에 어떻게 나타나는지' },
-  { href: '/guide',         emoji: '📝', label: '운세 칼럼', desc: '용어와 연결된 실생활 칼럼 읽기' },
-  { href: '/compatibility', emoji: '💞', label: '궁합',      desc: '관계 운을 명리학으로 분석' },
-  { href: '/dream',         emoji: '🌙', label: '꿈해몽',    desc: '상징 해석을 꿈해몽으로 확장' },
-  { href: '/tarot',         emoji: '🃏', label: '타로 상담', desc: '카드가 전하는 오늘의 메시지' },
+  { href: '/lifelong-saju', emoji: '🔮', label: '평생사주',   desc: '이 용어가 내 사주에 어떻게 나타나는지' },
+  { href: '/guide',         emoji: '📝', label: '운세 칼럼',  desc: '용어와 연결된 실생활 칼럼 읽기' },
+  { href: '/compatibility', emoji: '💞', label: '궁합',       desc: '관계 운을 명리학으로 분석' },
+  { href: '/dream',         emoji: '🌙', label: '꿈해몽',     desc: '상징 해석을 꿈해몽으로 확장' },
+  { href: '/tarot',         emoji: '🃏', label: '타로 상담',  desc: '카드가 전하는 오늘의 메시지' },
   { href: '/daily-fortune', emoji: '📅', label: '오늘의 운세', desc: '오늘 하루 총운·재물운·애정운' },
 ];
 
@@ -60,16 +60,6 @@ export default function DictionaryDetail() {
   const canonicalUrl = `https://muunsaju.com/dictionary/${id}`;
   const metaTitle = entry?.metaTitle || `${entry?.title || preview?.title || '운세 용어'} | 무운 운세 사전`;
   const metaDescription = entry?.metaDescription || entry?.summary || preview?.summary || '사주 용어의 의미를 확인해 보세요.';
-
-  const { prevEntry, nextEntry } = useMemo(() => {
-    const category = entry?.category || preview?.category;
-    const sameCategory = DICTIONARY_INDEX.filter((item) => item.category === category);
-    const currentIndex = sameCategory.findIndex((item) => item.slug === id || item.id === id);
-    return {
-      prevEntry: currentIndex > 0 ? sameCategory[currentIndex - 1] : null,
-      nextEntry: currentIndex < sameCategory.length - 1 ? sameCategory[currentIndex + 1] : null,
-    };
-  }, [entry?.category, preview?.category, id]);
 
   const relatedEntries = useMemo(() => {
     const category = entry?.category || preview?.category;
@@ -119,20 +109,19 @@ export default function DictionaryDetail() {
         </script>
       </Helmet>
 
-      {/* ── 히어로 ── */}
+      {/* ── 1. 제목 카드 ── */}
       <section className="mu-container-reading pt-5">
         <div className="bg-white rounded-[20px] border border-black/[0.06] overflow-hidden shadow-[0_4px_20px_rgba(15,23,42,0.06)]">
+          <div className="px-5 pt-5 pb-6">
 
-          {/* 상단 */}
-          <div className="px-5 pt-5 pb-4">
             {/* 브레드크럼 */}
-            <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-2 mb-5">
               <Link href="/fortune-dictionary">
-                <span className="inline-flex items-center gap-1 text-xs font-medium text-slate-500 hover:text-[#5648db] transition-colors cursor-pointer">
-                  <ChevronLeft size={13} /> 운세 사전
+                <span className="inline-flex items-center gap-1 text-sm font-medium text-slate-400 hover:text-[#5648db] transition-colors cursor-pointer">
+                  <ChevronLeft size={14} /> 운세 사전
                 </span>
               </Link>
-              <span className="text-slate-300 text-xs">·</span>
+              <span className="text-slate-200">·</span>
               <Link href={`/fortune-dictionary?category=${entry.category}`}>
                 <span className={`inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-bold cursor-pointer ${catStyle.bg} ${catStyle.text}`}>
                   {entry.categoryLabel}
@@ -141,22 +130,22 @@ export default function DictionaryDetail() {
             </div>
 
             {/* 제목 */}
-            <h1 className="text-[26px] font-bold tracking-[-0.05em] text-slate-900 leading-[1.15] mb-2">
+            <h1 className="text-[26px] font-bold tracking-[-0.05em] text-slate-900 leading-[1.2] mb-2">
               {entry.title}
             </h1>
             {entry.subtitle && (
-              <p className="text-sm text-slate-400 mb-4">{entry.subtitle}</p>
+              <p className="text-sm text-slate-400 mb-5">{entry.subtitle}</p>
             )}
 
             {/* 한 줄 요약 */}
-            <div className="rounded-xl px-4 py-3 mb-4" style={{ background: catStyle.lightBg }}>
-              <p className="text-xs font-bold mb-1" style={{ color: catStyle.side }}>한 줄 요약</p>
+            <div className="rounded-xl px-4 py-3" style={{ background: catStyle.lightBg }}>
+              <p className="text-xs font-bold mb-1.5" style={{ color: catStyle.side }}>한 줄 요약</p>
               <p className="text-base leading-relaxed text-slate-700">{entry.summary}</p>
             </div>
 
             {/* 태그 */}
             {entry.tags && entry.tags.length > 0 && (
-              <div className="flex flex-wrap gap-1.5 mb-4">
+              <div className="flex flex-wrap gap-1.5 mt-4">
                 {entry.tags.map((tag) => (
                   <Link key={tag} href={`/fortune-dictionary?q=${encodeURIComponent(tag)}`}>
                     <span className="rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-500 hover:bg-slate-200 transition-colors cursor-pointer">
@@ -166,48 +155,11 @@ export default function DictionaryDetail() {
                 ))}
               </div>
             )}
-
-            {/* 버튼 */}
-            <div className="flex gap-2">
-              <button onClick={handleShare}
-                className="inline-flex items-center gap-1.5 rounded-xl border border-black/[0.08] bg-white px-4 py-2.5 text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors">
-                <Share2 size={14} /> 공유하기
-              </button>
-              <Link href="/lifelong-saju"
-                className="inline-flex items-center gap-1.5 rounded-xl px-4 py-2.5 text-sm font-bold text-white hover:opacity-90 transition-opacity"
-                style={{ background: '#5648db' }}>
-                내 사주 풀이 보기
-              </Link>
-            </div>
           </div>
-
-          {/* 이전/다음 네비 */}
-          {(prevEntry || nextEntry) && (
-            <div className="flex border-t border-black/[0.05]">
-              {prevEntry ? (
-                <Link href={`/dictionary/${prevEntry.slug}`} className="flex-1 min-w-0 flex items-center gap-2 px-4 py-3 hover:bg-slate-50 transition-colors cursor-pointer border-r border-black/[0.05]">
-                  <ChevronLeft size={15} className="text-slate-400 flex-shrink-0" />
-                  <div className="min-w-0 overflow-hidden">
-                    <p className="text-xs text-slate-400 mb-0.5">이전</p>
-                    <p className="text-sm font-bold text-slate-700 truncate">{prevEntry.title.replace(/\(.*?\)/g, '').trim()}</p>
-                  </div>
-                </Link>
-              ) : <div className="flex-1 border-r border-black/[0.05]" />}
-              {nextEntry ? (
-                <Link href={`/dictionary/${nextEntry.slug}`} className="flex-1 min-w-0 flex items-center justify-end gap-2 px-4 py-3 hover:bg-slate-50 transition-colors cursor-pointer text-right">
-                  <div className="min-w-0 overflow-hidden">
-                    <p className="text-xs text-slate-400 mb-0.5">다음</p>
-                    <p className="text-sm font-bold text-slate-700 truncate">{nextEntry.title.replace(/\(.*?\)/g, '').trim()}</p>
-                  </div>
-                  <ChevronRight size={15} className="text-slate-400 flex-shrink-0" />
-                </Link>
-              ) : <div className="flex-1" />}
-            </div>
-          )}
         </div>
       </section>
 
-      {/* ── 본문 해석 (하나의 카드) ── */}
+      {/* ── 2. 본문 해석 (하나의 카드) ── */}
       <section className="mu-container-reading pt-3">
         <div className="bg-white rounded-[20px] border border-black/[0.06] overflow-hidden shadow-[0_4px_20px_rgba(15,23,42,0.06)]">
           {sections.map((sec, idx) => {
@@ -234,7 +186,23 @@ export default function DictionaryDetail() {
         </div>
       </section>
 
-      {/* ── 관련 용어 ── */}
+      {/* ── 3. 공유 + 사주 풀이 버튼 ── */}
+      <section className="mu-container-reading pt-3">
+        <div className="flex gap-2">
+          <button onClick={handleShare}
+            className="flex-1 inline-flex items-center justify-center gap-2 rounded-2xl border border-black/[0.08] bg-white px-4 py-3 text-base font-bold text-slate-700 hover:bg-slate-50 transition-colors shadow-sm">
+            <Share2 size={15} /> 공유하기
+          </button>
+          <Link href="/lifelong-saju" className="flex-1">
+            <div className="w-full inline-flex items-center justify-center gap-2 rounded-2xl px-4 py-3 text-base font-bold text-white hover:opacity-90 transition-opacity shadow-sm"
+              style={{ background: '#5648db' }}>
+              내 사주 풀이 보기
+            </div>
+          </Link>
+        </div>
+      </section>
+
+      {/* ── 4. 관련 용어 ── */}
       {relatedEntries.length > 0 && (
         <section className="mu-container-reading pt-3">
           <div className="bg-white rounded-[20px] border border-black/[0.06] overflow-hidden shadow-[0_4px_20px_rgba(15,23,42,0.06)]">
@@ -283,7 +251,7 @@ export default function DictionaryDetail() {
         <div className="flex-1 h-px bg-slate-200" />
       </div>
 
-      {/* ── 서비스 링크 ── */}
+      {/* ── 5. 서비스 링크 ── */}
       <section className="mu-container-reading pt-3">
         <div className="bg-white rounded-[20px] border border-black/[0.06] overflow-hidden shadow-[0_4px_20px_rgba(15,23,42,0.06)]">
           <div className="flex items-center gap-2 px-5 py-4 border-b border-black/[0.05]">
@@ -319,7 +287,7 @@ export default function DictionaryDetail() {
         </div>
       </section>
 
-      {/* ── CTA 배너 ── */}
+      {/* ── 6. CTA 배너 ── */}
       <section className="mu-container-reading pt-3 pb-4">
         <div className="relative overflow-hidden rounded-[22px] p-5"
           style={{ background: 'linear-gradient(145deg, #17114c 0%, #2d1f8a 50%, #5d49cb 100%)', boxShadow: '0 16px 40px rgba(15,23,42,0.18)' }}>
@@ -331,7 +299,7 @@ export default function DictionaryDetail() {
           </h3>
           <Link href="/lifelong-saju"
             className="flex w-full items-center justify-center gap-2 rounded-2xl py-3.5 text-base font-bold transition-opacity hover:opacity-90"
-            style={{ background: '#ffffff', color: '#17114c', boxShadow: '0 8px 24px rgba(15,23,42,0.3)', fontWeight: 700 }}>
+            style={{ background: '#ffffff', color: '#17114c', boxShadow: '0 8px 24px rgba(15,23,42,0.25)' }}>
             무료로 바로 확인하기
             <ArrowRight size={17} />
           </Link>
