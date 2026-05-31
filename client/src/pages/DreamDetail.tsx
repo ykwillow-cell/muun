@@ -194,7 +194,7 @@ export default function DreamDetail() {
 
             {/* 제목 */}
             <h1 className="text-[26px] sm:text-[30px] font-bold leading-[1.2] tracking-[-0.04em] text-slate-900 mb-3">
-              {dream.keyword.replace(/\s*꿈해몽\s*$/g, '').trim()}<br />꿈해몽
+              {dream.keyword.replace(/\s*꿈해몽\s*$/g, '').trim()} 꿈해몽
             </h1>
             <p className="text-base leading-7 text-slate-500 mb-5">{metaDescription}</p>
 
