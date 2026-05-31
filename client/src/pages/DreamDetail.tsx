@@ -98,7 +98,14 @@ export default function DreamDetail() {
   const metaTitle = dream?.meta_title || preview?.metaTitle || `${preview?.keyword || slug} 꿈해몽 | 무운`;
   const metaDescription = dream?.meta_description || preview?.metaDescription || preview?.excerpt || '꿈의 의미와 해석을 알아보세요.';
   const canonicalUrl = `https://muunsaju.com/dream/${slug}`;
-  const categoryLabel = dream ? dream.category : preview?.categoryLabel || '기타';
+  const rawCategory = dream?.category || preview?.category || 'other';
+  const { label: categoryLabel } = (
+    { animal:'동물', nature:'자연 · 현상', person:'사람', object:'생활 · 사물',
+      action:'행동', emotion:'감정', place:'장소', other:'기타' }[rawCategory] 
+    ? { label: { animal:'동물', nature:'자연 · 현상', person:'사람', object:'생활 · 사물',
+        action:'행동', emotion:'감정', place:'장소', other:'기타' }[rawCategory] as string }
+    : { label: preview?.categoryLabel || '기타' }
+  );
   const publishedDate = preview?.publishedDate || '';
   const score = dream?.score || preview?.score || 70;
 
@@ -169,70 +176,77 @@ export default function DreamDetail() {
         <div className="overflow-hidden rounded-[28px] border border-slate-200/80 bg-white shadow-[0_20px_48px_rgba(15,23,42,0.08)]">
 
           {/* 상단: 키워드 + 제목 */}
-          <div className="px-6 pt-6 pb-5 sm:px-8 sm:pt-7">
-            <div className="flex flex-wrap items-center gap-2 mb-4">
-              <Link href="/dream" className="mu-chip">꿈해몽</Link>
-              <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-bold ${grade.chip}`}>
+          <div className="px-5 pt-6 pb-5 sm:px-6 sm:pt-7">
+            {/* 뱃지 */}
+            <div className="flex flex-wrap items-center gap-2 mb-5">
+              <Link href="/dream">
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 border border-slate-200 px-3 py-1.5 text-xs font-bold text-slate-600 hover:bg-slate-200 transition-colors cursor-pointer">
+                  꿈해몽
+                </span>
+              </Link>
+              <span className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-bold ${grade.chip}`}>
                 <GradeIcon size={12} aria-hidden="true" />
                 {grade.label}
               </span>
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 border border-slate-200 px-3 py-1 text-xs font-bold text-slate-600">
+              <span className="inline-flex items-center rounded-full bg-slate-100 border border-slate-200 px-3 py-1.5 text-xs font-bold text-slate-600">
                 {categoryLabel}
               </span>
             </div>
 
-            <div className="flex items-start gap-3 mb-3">
-              <div className="flex-shrink-0 w-10 h-10 rounded-2xl flex items-center justify-center text-lg"
-                style={{ background: grade.accentBg }}>
-                {grade.emoji}
-              </div>
-              <h1 className="text-[28px] sm:text-[32px] font-bold leading-[1.15] tracking-[-0.05em] text-slate-900">
-                {dream.keyword} 꿈해몽
-              </h1>
-            </div>
-            <p className="text-base leading-7 text-slate-600 mb-5">{metaDescription}</p>
+            {/* 제목 */}
+            <h1 className="text-[26px] sm:text-[30px] font-bold leading-[1.2] tracking-[-0.04em] text-slate-900 mb-3">
+              {dream.keyword}<br />꿈해몽
+            </h1>
+            <p className="text-base leading-7 text-slate-500 mb-5">{metaDescription}</p>
 
-            <div className="flex flex-wrap gap-2.5">
+            {/* 버튼 */}
+            <div className="flex flex-wrap gap-2">
               <button
                 onClick={handleShare}
-                className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-700 shadow-sm hover:bg-slate-50 transition-colors"
+                className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-base font-bold text-slate-700 hover:bg-slate-50 transition-colors"
               >
                 <Share2 size={15} /> 공유하기
               </button>
               <Link href="/daily-fortune"
-                className="inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-bold text-white shadow-sm hover:opacity-90 transition-opacity"
-                style={{ background: 'linear-gradient(135deg, #6B5FFF, #5648db)' }}>
+                className="inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-base font-bold text-white hover:opacity-90 transition-opacity"
+                style={{ background: '#5648db' }}>
                 오늘의 운세 보기
               </Link>
             </div>
           </div>
 
           {/* 하단: 점수 패널 */}
-          <div className={`px-6 pb-6 sm:px-8 sm:pb-7`} style={{ background: grade.accentLight }}>
-            <div className="rounded-[20px] p-5 bg-white border border-slate-200/80">
-              <div className="flex items-center justify-between gap-3 mb-4">
+          {/* 점수 패널 */}
+          <div className="px-5 pt-4 pb-5 sm:px-6 sm:pb-6" style={{ background: grade.accentLight }}>
+            <div className="rounded-2xl overflow-hidden" style={{ border: `1.5px solid ${grade.accent}25` }}>
+              {/* 상단 헤더 */}
+              <div className="flex items-center justify-between px-4 py-3"
+                style={{ background: grade.accentBg }}>
                 <div className="flex items-center gap-2">
-                  <MoonStar size={14} className="text-slate-400" />
-                  <span className="text-xs font-bold text-slate-400 tracking-[0.08em]">꿈 점수</span>
+                  <MoonStar size={14} style={{ color: grade.accent }} />
+                  <span className="text-xs font-bold tracking-[0.08em]" style={{ color: grade.accent }}>꿈 점수</span>
                 </div>
-                <div className="rounded-full px-3 py-1 text-xs font-bold"
-                  style={{ background: grade.accentBg, color: grade.accent }}>{score}점</div>
+                <div className="rounded-full px-3 py-1 text-sm font-bold text-white"
+                  style={{ background: grade.accent }}>{score}점</div>
               </div>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="flex h-11 w-11 items-center justify-center rounded-xl flex-shrink-0"
-                  style={{ background: grade.accentBg }}>
-                  <GradeIcon size={20} style={{ color: grade.accent }} />
+              {/* 본문 */}
+              <div className="bg-white px-4 py-4">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl flex-shrink-0"
+                    style={{ background: grade.accentBg }}>
+                    <GradeIcon size={26} style={{ color: grade.accent }} />
+                  </div>
+                  <div>
+                    <div className="text-[28px] font-bold tracking-[-0.05em] text-slate-900 leading-none mb-1">{grade.label}</div>
+                    <div className="text-sm text-slate-500">{categoryLabel}</div>
+                  </div>
                 </div>
-                <div>
-                  <div className="text-[22px] font-bold tracking-[-0.04em] text-slate-900">{grade.label}</div>
-                  <div className="text-sm text-slate-500">{categoryLabel}</div>
+                <div className="h-2.5 rounded-full bg-slate-100 mb-3">
+                  <div className="h-2.5 rounded-full transition-all duration-700"
+                    style={{ width: `${Math.min(100, score)}%`, background: grade.accent }} />
                 </div>
+                <p className="text-sm leading-6 text-slate-500">{grade.description}</p>
               </div>
-              <div className="h-2 rounded-full bg-slate-100 mb-3">
-                <div className="h-2 rounded-full transition-all duration-700"
-                  style={{ width: `${Math.min(100, score)}%`, background: grade.accent }} />
-              </div>
-              <p className="text-sm leading-6 text-slate-500">{grade.description}</p>
             </div>
           </div>
         </div>
@@ -247,28 +261,26 @@ export default function DreamDetail() {
         </div>
       </section>
 
-      {/* ── 본문 해석 ── */}
+      {/* ── 본문 해석 (하나의 카드로 묶음) ── */}
       <section className="mu-container-reading pt-4">
-        <div className="space-y-3">
+        <div className="bg-white rounded-[20px] border border-slate-200/80 overflow-hidden shadow-[0_4px_20px_rgba(15,23,42,0.05)]">
 
           {/* 핵심 해석 */}
-          <div className="bg-white rounded-[20px] border border-slate-200/80 overflow-hidden shadow-[0_4px_20px_rgba(15,23,42,0.05)]">
-            <div className="flex items-center gap-3 px-5 py-4 border-b border-slate-100">
-              <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
-                style={{ background: grade.accentBg }}>
-                <Star size={15} style={{ color: grade.accent }} />
-              </div>
-              <h2 className="text-base font-bold text-slate-900">핵심 해석</h2>
+          <div className="flex items-center gap-3 px-5 py-4 border-b border-slate-100">
+            <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
+              style={{ background: grade.accentBg }}>
+              <Star size={15} style={{ color: grade.accent }} />
             </div>
-            <div className="px-5 py-5">
-              <p className="text-base leading-8 text-slate-700"><LinkedText text={dream.interpretation} /></p>
-            </div>
+            <h2 className="text-base font-bold text-slate-900">핵심 해석</h2>
+          </div>
+          <div className="px-5 py-5">
+            <p className="text-base leading-8 text-slate-700"><LinkedText text={dream.interpretation} /></p>
           </div>
 
           {/* 전통적 의미 */}
           {dream.traditional_meaning && (
-            <div className="bg-white rounded-[20px] border border-slate-200/80 overflow-hidden shadow-[0_4px_20px_rgba(15,23,42,0.05)]">
-              <div className="flex items-center gap-3 px-5 py-4 border-b border-slate-100">
+            <>
+              <div className="flex items-center gap-3 px-5 py-4 border-t border-slate-100 border-b border-slate-100">
                 <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
                   style={{ background: '#fef3c7' }}>
                   <BookOpen size={15} style={{ color: '#d97706' }} />
@@ -278,13 +290,13 @@ export default function DreamDetail() {
               <div className="px-5 py-5">
                 <p className="text-base leading-8 text-slate-700"><LinkedText text={dream.traditional_meaning} /></p>
               </div>
-            </div>
+            </>
           )}
 
           {/* 심리적 해석 */}
           {dream.psychological_meaning && (
-            <div className="bg-white rounded-[20px] border border-slate-200/80 overflow-hidden shadow-[0_4px_20px_rgba(15,23,42,0.05)]">
-              <div className="flex items-center gap-3 px-5 py-4 border-b border-slate-100">
+            <>
+              <div className="flex items-center gap-3 px-5 py-4 border-t border-slate-100 border-b border-slate-100">
                 <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
                   style={{ background: '#ede9fe' }}>
                   <MoonStar size={15} style={{ color: '#7c3aed' }} />
@@ -294,8 +306,18 @@ export default function DreamDetail() {
               <div className="px-5 py-5">
                 <p className="text-base leading-8 text-slate-700"><LinkedText text={dream.psychological_meaning} /></p>
               </div>
-            </div>
+            </>
           )}
+
+        </div>
+      </section>
+
+      {/* ── 본문 끝 구분선 ── */}
+      <section className="mu-container-reading pt-6 pb-2">
+        <div className="flex items-center gap-3">
+          <div className="flex-1 h-px bg-slate-200" />
+          <span className="text-xs font-bold text-slate-400 tracking-[0.1em] uppercase px-1">추천 콘텐츠</span>
+          <div className="flex-1 h-px bg-slate-200" />
         </div>
       </section>
 
