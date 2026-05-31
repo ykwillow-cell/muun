@@ -380,7 +380,7 @@ export default function YearlyFortune() {
    const birthDateObj = new Date(year, month - 1, day);
 
  trackCustomEvent("check_fortune_result", {
- fortune_type: "신년운세",
+ fortune_type: "올해운세",
  gender: data.gender,
  birth_date: finalDateStr,
  birth_year: birthDateObj.getFullYear(),
@@ -429,7 +429,7 @@ export default function YearlyFortune() {
  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
  <link rel="canonical" href="https://muunsaju.com/yearly-fortune" />
  <script type="application/ld+json">{JSON.stringify({"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"홈","item":"https://muunsaju.com"},{"@type":"ListItem","position":2,"name":"2026년 신년운세","item":"https://muunsaju.com/yearly-fortune"}]})}</script>
- <script type="application/ld+json">{JSON.stringify({"@context":"https://schema.org","@type":"Service","name":"2026년 무료 신년운세","description":"사주팔자 기반의 2026년 병오년 무료 신년운세 서비스","provider":{"@type":"Organization","name":"무운 (MuUn)","url":"https://muunsaju.com"},"url":"https://muunsaju.com/yearly-fortune","serviceType":"신년운세","areaServed":"KR","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}})}</script>
+ <script type="application/ld+json">{JSON.stringify({"@context":"https://schema.org","@type":"Service","name":"2026년 무료 신년운세","description":"사주팔자 기반의 2026년 병오년 무료 신년운세 서비스","provider":{"@type":"Organization","name":"무운 (MuUn)","url":"https://muunsaju.com"},"url":"https://muunsaju.com/yearly-fortune","serviceType":"올해운세","areaServed":"KR","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"}})}</script>
  </Helmet>
  <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">
 
@@ -441,7 +441,7 @@ export default function YearlyFortune() {
  <span>홈</span>
  </Button>
  </Link>
- <h2 className="text-base font-bold text-[#1a1a18]">2026년 신년운세</h2>
+ <h2 className="text-base font-bold text-[#1a1a18]">2026년 올해운세</h2>
  </div>
  </header>
 
@@ -457,7 +457,7 @@ export default function YearlyFortune() {
  <ScrollText className="w-3 h-3" />
  <span>2026년 병오년 운세</span>
  </div>
- <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-[#1a1a18]">신년운세</h2>
+ <h2 className="text-2xl md:text-3xl font-bold tracking-tight text-[#1a1a18]">올해운세</h2>
  <p className="text-muted-foreground text-xs md:text-sm">
  새로운 해의 기운을 미리 확인하고 당신의 한 해를 설계해보세요
  </p>
@@ -594,7 +594,7 @@ export default function YearlyFortune() {
  className="w-full h-12 text-white font-bold text-sm rounded-xl shadow-sm transition-all hover:opacity-90 active:scale-[0.98] mt-2"
  >
  <Sparkles className="w-4 h-4 mr-2" />
- 2026년 신년운세 보기 </Button>
+ 2026년 올해운세 보기 </Button>
  </form>
  </CardContent>
  </Card>
@@ -696,7 +696,7 @@ export default function YearlyFortune() {
  <ChevronLeft className="h-5 w-5" />
  <span>다시입력</span>
  </Button>
- <h1 className="text-base font-bold text-[#1a1a18]">2026년 신년운세 결과</h1>
+ <h1 className="text-base font-bold text-[#1a1a18]">2026년 올해운세 결과</h1>
  </div>
  <Button
  variant="ghost"
@@ -704,8 +704,8 @@ export default function YearlyFortune() {
  className="text-primary min-w-[44px] min-h-[44px]"
  onClick={() => {
  shareContent({
- title: '무운 2026년 신년운세',
- text: '2026년 신년운세 결과를 확인해보세요!',
+ title: '무운 2026년 올해운세',
+ text: '2026년 올해운세 결과를 확인해보세요!',
  page: 'yearly_fortune',
  buttonType: 'icon',
  });
@@ -1068,8 +1068,8 @@ export default function YearlyFortune() {
  style={{ background: 'linear-gradient(135deg, #3B82F6, #1D4ED8)' }}
  onClick={() => {
  shareContent({
- title: '무운 2026년 신년운세',
- text: '2026년 신년운세 결과를 확인해보세요!',
+ title: '무운 2026년 올해운세',
+ text: '2026년 올해운세 결과를 확인해보세요!',
  page: 'yearly_fortune',
  buttonType: 'text_button',
  });

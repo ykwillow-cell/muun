@@ -140,7 +140,7 @@ export default function YearlyFortuneDetail() {
       
       // GA4 추적
       trackCustomEvent("view_fortune_detail", {
-        fortune_type: "신년운세",
+        fortune_type: "올해운세",
       });
       
       setLoading(false);
@@ -209,7 +209,7 @@ export default function YearlyFortuneDetail() {
         {/* 제목 */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
           <h1 className="text-4xl font-bold mb-2">
-            2026년 신년운세 결과
+            2026년 올해운세 결과
           </h1>
           <p className="text-lg text-muted-foreground">
             {zodiacAnimal}띠 · {elementKorean}의 기운
@@ -218,7 +218,7 @@ export default function YearlyFortuneDetail() {
 
         {/* 공유 카드 */}
         <FortuneShareCard 
-          title={'2026년 신년운세 결과'}
+          title={'2026년 올해운세 결과'}
           description={`${zodiacAnimal}띠의 2026년 신년운세를 확인해보세요.`}
           url={`https://muunsaju.com/yearly-fortune/${birthDateStr}`}
         />
@@ -270,7 +270,7 @@ export default function YearlyFortuneDetail() {
 
         {/* 가이드 */}
               <RelatedServices
-        title="신년운세 상세와 함께 보면 좋은 서비스"
+        title="올해운세와 함께 보면 좋은 서비스"
         services={[
         { href: '/lifelong-saju', emoji: '🔮', label: '평생사주', description: '올해 운세의 바탕이 되는 타고난 기질까지 확인해보세요.' },
         { href: '/daily-fortune', emoji: '📅', label: '오늘의 운세', description: '연간 흐름 안에서 오늘의 구체적인 운세를 확인하세요.' },

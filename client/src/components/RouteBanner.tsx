@@ -55,7 +55,7 @@ const routeBannerMeta: Array<{ match: (path: string) => boolean; meta: BannerMet
   {
     match: (path) => path.startsWith('/yearly-fortune'),
     meta: {
-      eyebrow: '2026 신년운세',
+      eyebrow: '2026 올해운세',
       title: '2026 병오년, 올해의 흐름을 확인하세요',
       description: '총운부터 월별 흐름, 재물·직업·건강까지 올해의 운세를 상세히 풀어드려요.',
       Icon: Sparkles,
@@ -71,7 +71,7 @@ const routeBannerMeta: Array<{ match: (path: string) => boolean; meta: BannerMet
       description: '총운과 영역별 운세를 매일 새롭게 확인할 수 있어요.',
       Icon: Zap,
       chips: ['하루 요약', '빠른 확인', '무료'],
-      quickLinks: [{ href: '/yearly-fortune', label: '신년운세' }, { href: '/guide', label: '운세 칼럼' }],
+      quickLinks: [{ href: '/yearly-fortune', label: '올해운세' }, { href: '/guide', label: '운세 칼럼' }],
     },
   },
   {
@@ -93,7 +93,7 @@ const routeBannerMeta: Array<{ match: (path: string) => boolean; meta: BannerMet
       description: '토정비결로 이달의 흐름과 총운을 확인해 보세요.',
       Icon: ScrollText,
       chips: ['전통 운세', '월별 해설', '무료'],
-      quickLinks: [{ href: '/yearly-fortune', label: '신년운세' }, { href: '/lifelong-saju', label: '평생사주' }],
+      quickLinks: [{ href: '/yearly-fortune', label: '올해운세' }, { href: '/lifelong-saju', label: '평생사주' }],
     },
   },
   {

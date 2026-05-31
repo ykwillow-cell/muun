@@ -3,7 +3,7 @@ import { ArrowRight, BookOpen, BookMarked, CalendarDays, Clock3, Compass, Heart,
 
 const QUICK_ACTIONS = [
   { href: '/daily-fortune',      label: '오늘의 운세', Icon: Sparkles,    tone: 'purple' },
-  { href: '/yearly-fortune',     label: '신년운세',    Icon: Star,         tone: 'orange' },
+  { href: '/yearly-fortune',     label: '올해운세',    Icon: Star,         tone: 'orange' },
   { href: '/lifelong-saju',      label: '평생사주',    Icon: CalendarDays, tone: 'pink'   },
   { href: '/compatibility',      label: '궁합',        Icon: Heart,        tone: 'blue'   },
   { href: '/manselyeok',         label: '만세력',      Icon: Compass,      tone: 'teal'   },

@@ -2,7 +2,7 @@ import { Link } from 'wouter';
 import { ArrowUpRight, CalendarDays, Globe2, ScrollText, Sparkles } from 'lucide-react';
 
 const EXTRA_SERVICES = [
-  { href: '/yearly-fortune', label: '신년운세', desc: '올해 운세 한눈에', Icon: Sparkles, badge: '인기' },
+  { href: '/yearly-fortune', label: '올해운세', desc: '올해 운세 한눈에', Icon: Sparkles, badge: '인기' },
   { href: '/manselyeok', label: '만세력', desc: '내 사주 기둥 보기', Icon: CalendarDays },
   { href: '/tojeong', label: '토정비결', desc: '월별 운세 확인', Icon: ScrollText },
   { href: '/astrology', label: '점성술', desc: '별자리 운세 분석', Icon: Globe2, badge: '인기' },

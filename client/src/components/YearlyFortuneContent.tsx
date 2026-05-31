@@ -3,7 +3,7 @@ import RelatedServices from "@/components/RelatedServices";
 const YearlyFortuneContent = () => {
   return (
     <RelatedServices
-      title="신년운세와 함께 보면 좋은 서비스"
+      title="올해운세와 함께 보면 좋은 서비스"
       services={[
         {
           href: "/lifelong-saju",
