@@ -4,12 +4,11 @@ import { Link, useParams } from 'wouter';
 import {
   Share2, Loader2, Trophy, CheckCircle2, AlertCircle,
   ArrowUpRight, MoonStar, Search, BookOpen, ChevronRight,
-  Sparkles, Star, Heart
+  Sparkles, Star, Heart, ArrowRight, Zap
 } from 'lucide-react';
 import NotFound from '@/pages/NotFound';
 import { useCanonical } from '@/lib/use-canonical';
 import { getDreamBySlug, type DreamData } from '@/lib/dream-data-api';
-import CallToAction from '@/components/CallToAction';
 import RelatedServices from '@/components/RelatedServices';
 import { LinkedText } from '@/hooks/useLinkedText';
 import { DREAM_INDEX } from '@/generated/content-snapshots';
@@ -195,7 +194,7 @@ export default function DreamDetail() {
 
             {/* 제목 */}
             <h1 className="text-[26px] sm:text-[30px] font-bold leading-[1.2] tracking-[-0.04em] text-slate-900 mb-3">
-              {dream.keyword}<br />꿈해몽
+              {dream.keyword.replace(/\s*꿈해몽\s*$/g, '').trim()}<br />꿈해몽
             </h1>
             <p className="text-base leading-7 text-slate-500 mb-5">{metaDescription}</p>
 
@@ -418,12 +417,6 @@ export default function DreamDetail() {
                   <div className="flex-1 min-w-0">
                     <p className="text-base font-bold text-slate-900">{svc.label}</p>
                     <p className="text-sm text-slate-500">{svc.desc}</p>
-                    <div className="flex gap-1.5 mt-1">
-                      <span className="text-xs px-1.5 py-0.5 rounded"
-                        style={{ background: '#f5f3ff', color: '#5b21b6', border: '0.5px solid rgba(124,58,237,0.2)' }}>무료</span>
-                      <span className="text-xs px-1.5 py-0.5 rounded"
-                        style={{ background: '#f0fdf4', color: '#0f6e56', border: '0.5px solid #5DCAA5' }}>회원가입 없음</span>
-                    </div>
                   </div>
                   <ChevronRight size={16} className="text-slate-300 flex-shrink-0" />
                 </div>
@@ -463,9 +456,33 @@ export default function DreamDetail() {
         </div>
       </section>
 
-      {/* ── CTA ── */}
+      {/* ── CTA 배너 ── */}
       <section className="mu-container-reading pt-4 pb-4">
-        <CallToAction variant="daily" />
+        <div className="relative overflow-hidden rounded-[24px] p-6"
+          style={{ background: 'linear-gradient(145deg, #17114c 0%, #2d1f8a 50%, #5d49cb 100%)', boxShadow: '0 20px 48px rgba(15,23,42,0.22)' }}>
+
+          {/* 배경 데코 */}
+          <div className="pointer-events-none absolute -right-8 -top-8 h-40 w-40 rounded-full opacity-10"
+            style={{ background: 'radial-gradient(circle, #fff 0%, transparent 70%)' }} />
+          <div className="pointer-events-none absolute -bottom-10 -left-6 h-32 w-32 rounded-full opacity-10"
+            style={{ background: 'radial-gradient(circle, #a78bfa 0%, transparent 70%)' }} />
+
+          {/* 헤드라인 */}
+          <p className="text-xs font-bold tracking-[0.15em] uppercase text-white/50 mb-3">오늘의 운세</p>
+          <h3 className="text-[22px] font-bold leading-[1.25] tracking-[-0.04em] text-white mb-5">
+            꿈의 기운, 오늘 운세로<br />확인해보세요
+          </h3>
+
+          {/* CTA 버튼 */}
+          <Link href="/daily-fortune"
+            onClick={() => trackCustomEvent('click_cta_to_fortune', { source_page: `dream/${slug}`, cta_location: 'content_bottom', target_path: '/daily-fortune', variant: 'dream_detail' })}
+            className="flex w-full items-center justify-center gap-2 rounded-2xl py-4 text-base font-bold transition-opacity hover:opacity-90 active:scale-[0.98]"
+            style={{ background: '#ffffff', color: '#17114c', boxShadow: '0 8px 24px rgba(15,23,42,0.25)' }}>
+            무료로 바로 확인하기
+            <ArrowRight size={18} />
+          </Link>
+          <p className="text-center text-xs text-white/40 mt-3">회원가입 없음 · 저장 없음</p>
+        </div>
       </section>
 
     </div>
