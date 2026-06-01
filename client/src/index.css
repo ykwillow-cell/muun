@@ -527,6 +527,43 @@
     box-shadow: 0 16px 36px rgba(15, 23, 42, 0.08);
   }
 
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     꿈해몽 히어로 (DreamInterpretation / DreamDetail)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+  .mu-dream-hero {
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* 파스텔 라벤더 배경 — 메인 히어로 계열, 밤하늘 몽환 톤 */
+  .mu-dream-hero__bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 82% 0%, rgba(215, 205, 255, 0.72) 0%, transparent 55%),
+      radial-gradient(ellipse 50% 40% at 10% 90%, rgba(255, 220, 240, 0.35) 0%, transparent 50%),
+      linear-gradient(160deg, #f0edff 0%, #e8e3ff 45%, #f5eeff 100%);
+    border-bottom-left-radius: 32px;
+    border-bottom-right-radius: 32px;
+  }
+
+  /* 별빛 dot 레이어 */
+  .mu-dream-hero__stars {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle 1.5px at 72% 18%, rgba(255, 255, 255, 0.95) 100%, transparent),
+      radial-gradient(circle 1px   at 60% 10%, rgba(255, 255, 255, 0.80) 100%, transparent),
+      radial-gradient(circle 1.5px at 48% 22%, rgba(255, 255, 255, 0.90) 100%, transparent),
+      radial-gradient(circle 1px   at 85% 30%, rgba(255, 255, 255, 0.75) 100%, transparent),
+      radial-gradient(circle 2px   at 90% 12%, rgba(255, 255, 255, 0.85) 100%, transparent),
+      radial-gradient(circle 1px   at 55% 35%, rgba(255, 255, 255, 0.60) 100%, transparent);
+    border-bottom-left-radius: 32px;
+    border-bottom-right-radius: 32px;
+    pointer-events: none;
+  }
+
   .mu-divider-text {
     display: inline-flex;
     align-items: center;
