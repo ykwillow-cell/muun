@@ -204,11 +204,10 @@ async function run() {
   const dreamPages = dedupeByUrl(dreams.map((dream) => ({ url: `/dream/${normalizeSlug(dream.slug)}`, page: buildDreamPage({ ...dream, slug: normalizeSlug(dream.slug) }) })));
   const dictionaryPages = dedupeByUrl(dictionaryEntries.map((entry) => ({ url: `/dictionary/${normalizeSlug(entry.slug)}`, page: buildDictionaryPage({ ...entry, slug: normalizeSlug(entry.slug) }) })));
   
-  // fortune-dictionary 인덱스: stale short slug(20자 이하 3단어 이하)는 링크에서 제외
-  const validDictEntries = dictionaryEntries.filter(e => {
-    const s = normalizeSlug(e.slug);
-    return s.length > 20 || s.split('-').length > 3;
-  });
+  // fortune-dictionary 인덱스: 발행된 사전 항목은 단어별 상세 URL로 모두 연결합니다.
+  const validDictEntries = dictionaryEntries
+    .map((entry) => ({ ...entry, slug: normalizeSlug(entry.slug) }))
+    .filter((entry) => entry.slug);
   const dictionaryIndexHtml = buildPageShell({
     h1: '무운 운세 사전',
     description: '사주 명리학의 핵심 용어를 쉽게 풀이한 무료 사주 용어 사전입니다.',
