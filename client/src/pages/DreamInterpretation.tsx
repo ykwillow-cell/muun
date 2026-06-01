@@ -156,11 +156,11 @@ export default function DreamInterpretation() {
               ))}
             </div>
 
-            {/* 검색 — 카드 패딩 없이 풀 너비 */}
+            {/* 검색 — 카드 풀 너비 */}
             <div className="pt-3 pb-3 px-3.5">
-              <label className="relative block mb-3">
+              <label className="relative flex items-center mb-3">
                 <Search
-                  className="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none"
+                  className="absolute left-3.5 pointer-events-none"
                   size={16}
                   style={{ color: '#a09abe' }}
                   aria-hidden="true"
@@ -176,6 +176,7 @@ export default function DreamInterpretation() {
                     border: '1px solid rgba(111,99,255,0.12)',
                     color: '#1e2340',
                     fontSize: '16px',
+                    boxSizing: 'border-box',
                   }}
                 />
               </label>
