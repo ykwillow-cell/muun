@@ -39,6 +39,18 @@ async function fetchActiveTheme() {
   return themes.length > 0 ? themes[0] : null;
 }
 
+/**
+ * CSS 변수 값에서 Tailwind CSS v4 파싱 에러를 유발하는 작은따옴표를 제거합니다.
+ * 폰트 패밀리: 'Pretendard Variable' → Pretendard Variable
+ * content: '' → 그대로 유지 (빈 문자열은 안전)
+ */
+function sanitizeCssValue(value) {
+  if (typeof value !== 'string') return value;
+  // 작은따옴표로 감싼 폰트명 → 따옴표 제거 (예: 'Pretendard Variable' → Pretendard Variable)
+  // 단, content: '' 같은 빈 문자열은 유지
+  return value.replace(/'([^']+)'/g, '$1');
+}
+
 function generateCss(theme) {
   const lines = [
     `/* ============================================================`,
@@ -55,7 +67,7 @@ function generateCss(theme) {
   if (theme.colors && Object.keys(theme.colors).length > 0) {
     lines.push(`  /* === 색상 토큰 (Theme: ${theme.name}) === */`);
     for (const [key, value] of Object.entries(theme.colors)) {
-      lines.push(`  ${key}: ${value};`);
+      lines.push(`  ${key}: ${sanitizeCssValue(value)};`);
     }
     lines.push('');
   }
@@ -64,7 +76,7 @@ function generateCss(theme) {
   if (theme.typography && Object.keys(theme.typography).length > 0) {
     lines.push(`  /* === 타이포그래피 토큰 === */`);
     for (const [key, value] of Object.entries(theme.typography)) {
-      lines.push(`  ${key}: ${value};`);
+      lines.push(`  ${key}: ${sanitizeCssValue(value)};`);
     }
     lines.push('');
   }
@@ -73,7 +85,7 @@ function generateCss(theme) {
   if (theme.gradients && Object.keys(theme.gradients).length > 0) {
     lines.push(`  /* === 그라디언트 토큰 === */`);
     for (const [key, value] of Object.entries(theme.gradients)) {
-      lines.push(`  ${key}: ${value};`);
+      lines.push(`  ${key}: ${sanitizeCssValue(value)};`);
     }
     lines.push('');
   }
@@ -108,7 +120,7 @@ function generateCss(theme) {
       const label = SECTION_LABELS[sectionId] || sectionId;
       lines.push(`  /* -- ${label} -- */`);
       for (const [key, value] of Object.entries(group)) {
-        lines.push(`  ${key}: ${value};`);
+        lines.push(`  ${key}: ${sanitizeCssValue(value)};`);
       }
       lines.push('');
     }
