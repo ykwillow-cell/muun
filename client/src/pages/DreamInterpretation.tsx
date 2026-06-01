@@ -20,27 +20,30 @@ const categories = [
 
 const quickTags = ['돼지', '물', '불', '뱀', '돈', '조상', '이빨', '대통령'] as const;
 
-const gradeConfig: Record<DreamGrade, { label: string; Icon: typeof Trophy; tone: string; chip: string; panel: string }> = {
+const gradeConfig: Record<DreamGrade, { label: string; Icon: typeof Trophy; tone: string; chip: string; panel: string; barColor: string }> = {
   great: {
     label: '길몽',
     Icon: Trophy,
     tone: 'text-amber-600',
     chip: 'bg-amber-50 text-amber-700 border-amber-200',
-    panel: 'from-amber-100 via-white to-amber-50',
+    panel: 'from-amber-50 via-white to-amber-50/60',
+    barColor: '#d97706',
   },
   good: {
     label: '평몽',
     Icon: CheckCircle2,
     tone: 'text-sky-600',
     chip: 'bg-sky-50 text-sky-700 border-sky-200',
-    panel: 'from-sky-100 via-white to-sky-50',
+    panel: 'from-sky-50 via-white to-sky-50/60',
+    barColor: '#0284c7',
   },
   bad: {
     label: '흉몽',
     Icon: AlertCircle,
     tone: 'text-fuchsia-600',
     chip: 'bg-fuchsia-50 text-fuchsia-700 border-fuchsia-200',
-    panel: 'from-fuchsia-100 via-white to-fuchsia-50',
+    panel: 'from-fuchsia-50 via-white to-fuchsia-50/60',
+    barColor: '#9333ea',
   },
 };
 
@@ -58,11 +61,11 @@ export default function DreamInterpretation() {
   const filteredDreams = useMemo(() => {
     const q = searchTerm.trim().toLowerCase();
     let list = activeCategory ? DREAM_INDEX.filter((item) => item.category === activeCategory) : [...DREAM_INDEX];
-
     if (q) {
-      list = list.filter((item) => [item.keyword, item.excerpt, item.categoryLabel, item.metaDescription].join(' ').toLowerCase().includes(q));
+      list = list.filter((item) =>
+        [item.keyword, item.excerpt, item.categoryLabel, item.metaDescription].join(' ').toLowerCase().includes(q)
+      );
     }
-
     return list.sort((a, b) => (b.score || 0) - (a.score || 0));
   }, [searchTerm, activeCategory]);
 
@@ -76,120 +79,175 @@ export default function DreamInterpretation() {
     <div className="min-h-screen mu-page-bg pb-16">
       <Helmet>
         <title>꿈해몽 - 자주 찾는 길몽·흉몽 무료 풀이 | 무운 (MuUn)</title>
-        <meta name="description" content="돼지꿈, 물꿈, 불꿈, 조상꿈, 대통령꿈까지. 무운의 꿈해몽 아카이브에서 길몽·평몽·흉몽 풀이를 무료로 찾아보세요." />
+        <meta name="description" content="돼지꿈, 물꿈, 불꿈, 조상꿈, 대통령꿈까지. 무운의 꿈 풀이 사전에서 길몽·평몽·흉몽 풀이를 무료로 찾아보세요." />
         <meta name="keywords" content="꿈해몽, 꿈풀이, 길몽, 흉몽, 돼지꿈, 물꿈, 불꿈, 조상꿈, 대통령꿈" />
         <link rel="canonical" href="https://muunsaju.com/dream" />
         <meta property="og:title" content="꿈해몽 - 자주 찾는 길몽·흉몽 무료 풀이 | 무운 (MuUn)" />
-        <meta property="og:description" content="돼지꿈, 물꿈, 불꿈, 조상꿈, 대통령꿈까지. 무운의 꿈해몽 아카이브에서 길몽·평몽·흉몽 풀이를 무료로 찾아보세요." />
+        <meta property="og:description" content="돼지꿈, 물꿈, 불꿈, 조상꿈, 대통령꿈까지. 무운의 꿈 풀이 사전에서 길몽·평몽·흉몽 풀이를 무료로 찾아보세요." />
         <meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png" />
         <meta property="og:type" content="website" />
       </Helmet>
 
-      <section className="mu-hero-shell">
-        <div className="mu-container-narrow px-4 pb-8 pt-5 text-white">
-          <div className="grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr))] items-end">
-            <div>
-              <span className="mu-kicker">Dream archive</span>
-              <h1 className="mt-4 text-[34px] font-bold leading-[1.1] tracking-[-0.06em] text-white">자주 찾는 꿈해몽 아카이브</h1>
-              <p className="mt-4 text-sm leading-7 text-white/80">
-                자주 검색되는 꿈 키워드를 빠르게 찾고, 상세 페이지에서 전통적 의미와 심리적 해석을 함께 읽어보세요.
-              </p>
-              <div className="mt-5 flex flex-wrap gap-2">
-                <span className="mu-stat-pill"><MoonStar size={14} /> 길몽·평몽·흉몽 분류</span>
-                <span className="mu-stat-pill">검색과 카테고리 필터 제공</span>
-              </div>
-              <div className="mt-6 p-5 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm">
-                <p className="text-sm leading-relaxed text-white/90">
-                  꿈은 무의식이 우리에게 보내는 중요한 메시지입니다. 무운의 <strong>꿈해몽 아카이브</strong>는 전통적인 해몽 방식과 현대 심리학적 관점을 결합하여, 당신이 꾼 꿈이 가진 상징적 의미를 명확하게 풀이해 드립니다. 
-                  <br /><br />
-                  돼지, 물, 불, 조상님 등 자주 나타나는 상징물부터 구체적인 행동까지 1,000개 이상의 키워드를 분류하여 제공합니다. 어젯밤 꿈이 길몽인지 흉몽인지, 혹은 당신의 내면이 보내는 신호인지 지금 바로 확인해보세요.
-                </p>
-              </div>
-            </div>
+      {/* ━━━ 히어로 ━━━ */}
+      <section className="mu-dream-hero">
+        {/* 배경 레이어 */}
+        <div className="mu-dream-hero__bg" aria-hidden="true" />
+        <div className="mu-dream-hero__stars" aria-hidden="true" />
 
-            <div className="mu-auto-grid-180">
-              {(['great', 'good', 'bad'] as DreamGrade[]).map((gradeKey) => {
-                const grade = gradeConfig[gradeKey];
-                const Icon = grade.Icon;
-                return (
-                  <div key={gradeKey} className={`rounded-[24px] border border-white/12 bg-gradient-to-br ${grade.panel} p-4 text-slate-900 shadow-[0_18px_34px_rgba(15,23,42,0.08)]`}>
-                    <div className={`inline-flex h-10 w-10 items-center justify-center rounded-2xl border ${grade.chip}`}>
-                      <Icon size={18} aria-hidden="true" />
-                    </div>
-                    <div className="mt-4 text-[22px] font-bold tracking-[-0.05em] text-slate-900">{gradeStats[gradeKey]}</div>
-                    <div className="mt-1 text-sm font-bold text-slate-600">{grade.label} 키워드</div>
+        <div className="mu-container-narrow px-4 pt-6 pb-6 relative z-10">
+          {/* eyebrow */}
+          <div className="inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-bold mb-4"
+            style={{
+              background: 'rgba(255,255,255,0.65)',
+              border: '1px solid rgba(111,99,255,0.15)',
+              color: '#5a4ddb',
+              backdropFilter: 'blur(4px)',
+            }}>
+            <MoonStar size={13} aria-hidden="true" />
+            꿈 풀이 · 해몽 사전
+          </div>
+
+          <h1 className="text-[26px] font-extrabold leading-[1.22] tracking-[-0.05em] mb-2.5"
+            style={{ color: '#1e2340' }}>
+            오늘 밤 꿈이<br />길몽일까 흉몽일까
+          </h1>
+          <p className="text-sm leading-7 mb-5" style={{ color: '#6b6c91' }}>
+            전통 동양 해몽과 심리학적 관점을 함께 담은<br />무운의 꿈 풀이 사전입니다.
+          </p>
+
+          {/* 통계 + 검색 카드 */}
+          <div className="rounded-[20px] overflow-hidden"
+            style={{
+              background: 'rgba(255,255,255,0.82)',
+              border: '1px solid rgba(111,99,255,0.10)',
+              boxShadow: '0 16px 40px rgba(80,71,140,0.09)',
+              backdropFilter: 'blur(8px)',
+            }}>
+
+            {/* 통계 행 */}
+            <div className="flex divide-x divide-[rgba(111,99,255,0.08)] border-b border-[rgba(111,99,255,0.07)]">
+              {([
+                { key: 'great', label: '길몽 키워드', color: '#c5870a' },
+                { key: 'good',  label: '평몽 키워드', color: '#2563eb' },
+                { key: 'bad',   label: '흉몽 키워드', color: '#8b3cd8' },
+              ] as const).map(({ key, label, color }) => (
+                <div key={key} className="flex-1 py-3.5 text-center">
+                  <div className="text-[19px] font-extrabold tracking-[-0.04em] leading-none mb-1"
+                    style={{ color }}>
+                    {gradeStats[key]}
                   </div>
-                );
-              })}
+                  <div className="text-xs font-semibold" style={{ color: '#8b8fb0' }}>{label}</div>
+                </div>
+              ))}
+            </div>
+
+            {/* 검색 */}
+            <div className="px-3.5 pt-3 pb-3">
+              <label className="relative block mb-2.5">
+                <Search
+                  className="absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"
+                  size={15}
+                  style={{ color: '#a09abe' }}
+                  aria-hidden="true"
+                />
+                <input
+                  type="text"
+                  placeholder="꿈 키워드 검색 (예: 돼지, 이빨, 조상)"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full h-10 pl-9 pr-3 rounded-xl text-sm outline-none transition focus:ring-2 focus:ring-[#6B5FFF]/20"
+                  style={{
+                    background: 'rgba(249,248,255,0.95)',
+                    border: '1px solid rgba(111,99,255,0.12)',
+                    color: '#1e2340',
+                    fontSize: '14px',
+                  }}
+                />
+              </label>
+
+              {/* 퀵태그 */}
+              <div className="flex gap-1.5 overflow-x-auto pb-0.5 no-scrollbar">
+                {quickTags.map((tag) => (
+                  <button
+                    key={tag}
+                    onClick={() => setSearchTerm(searchTerm === tag ? '' : tag)}
+                    className="flex-shrink-0 whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-semibold transition-colors"
+                    style={searchTerm === tag
+                      ? { background: '#5a4ddb', color: '#fff', border: '1px solid #5a4ddb' }
+                      : { background: 'rgba(255,255,255,0.9)', color: '#5a4ddb', border: '1px solid rgba(111,99,255,0.18)' }
+                    }
+                  >
+                    #{tag}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="mu-container-narrow -mt-6 pb-6 relative z-10">
-        <div className="mu-glass-panel p-5 sm:p-6">
-          <label className="relative block">
-            <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400" aria-hidden="true" />
-            <input
-              type="text"
-              placeholder="꿈 키워드를 검색해보세요 (예: 돼지, 이빨, 조상, 대통령)"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="h-13 w-full rounded-2xl border border-slate-200 bg-white pl-12 pr-4 text-sm text-slate-900 shadow-sm outline-none transition focus:border-[#6B5FFF] focus:ring-4 focus:ring-[#6B5FFF]/10"
-            />
-          </label>
-
-          <div className="mt-4 flex gap-2 overflow-x-auto pb-1 no-scrollbar">
-            {quickTags.map((tag) => (
-              <button key={tag} onClick={() => setSearchTerm(tag)} className={`mu-chip whitespace-nowrap ${searchTerm === tag ? 'mu-chip--active' : ''}`}>
-                #{tag}
+      {/* ━━━ 카테고리 필터 ━━━ */}
+      <section className="mu-container-narrow pt-3 pb-1">
+        <div className="flex gap-2 overflow-x-auto pb-1 no-scrollbar px-4">
+          {categories.map(({ id, name, Icon }) => {
+            const active = activeCategory === id;
+            return (
+              <button
+                key={name}
+                onClick={() => setActiveCategory(id)}
+                className="flex-shrink-0 inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-semibold border transition-colors"
+                style={active
+                  ? { background: '#1e2340', color: '#fff', border: '1px solid #1e2340' }
+                  : { background: '#fff', color: '#64748b', border: '0.5px solid #e2e8f0' }
+                }
+              >
+                <Icon size={12} aria-hidden="true" />
+                {name}
               </button>
-            ))}
-          </div>
-
-          <div className="mt-5 flex gap-2 overflow-x-auto pb-1 no-scrollbar">
-            {categories.map(({ id, name, Icon }) => {
-              const active = activeCategory === id;
-              return (
-                <button key={name} onClick={() => setActiveCategory(id)} className={`mu-chip whitespace-nowrap ${active ? 'mu-chip--active' : ''}`}>
-                  <Icon size={14} aria-hidden="true" />
-                  {name}
-                </button>
-              );
-            })}
-          </div>
+            );
+          })}
         </div>
       </section>
 
-      <section className="mu-container-narrow pb-10">
+      {/* ━━━ 카드 그리드 ━━━ */}
+      <section className="mu-container-narrow pb-10 px-4">
         {filteredDreams.length > 0 ? (
-          <div className="mu-auto-grid-220">
+          <div className="grid gap-3" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 220px), 1fr))' }}>
             {filteredDreams.map((dream) => {
               const grade = gradeConfig[dream.grade as DreamGrade] || gradeConfig.good;
               const GradeIcon = grade.Icon;
               return (
-                <Link key={dream.slug} href={`/dream/${dream.slug}`} className="mu-link-card overflow-hidden p-5">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-bold ${grade.chip}`}>
-                      <GradeIcon size={12} aria-hidden="true" />
-                      {grade.label}
+                <Link key={dream.slug} href={`/dream/${dream.slug}`}
+                  className="block bg-white rounded-[14px] overflow-hidden transition-transform hover:-translate-y-0.5"
+                  style={{ border: '0.5px solid #e9e5fa', boxShadow: '0 2px 12px rgba(80,71,140,0.06)' }}>
+                  <div className="p-3.5">
+                    {/* 뱃지 + 아이콘 */}
+                    <div className="flex items-center justify-between mb-3">
+                      <span className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-1 text-xs font-bold ${grade.chip}`}>
+                        <GradeIcon size={11} aria-hidden="true" />
+                        {grade.label}
+                      </span>
+                      <ArrowUpRight size={14} className="text-slate-300" aria-hidden="true" />
                     </div>
-                    <ArrowUpRight size={16} className="text-slate-400" aria-hidden="true" />
-                  </div>
 
-                  <div className={`mt-4 rounded-[22px] bg-gradient-to-br ${grade.panel} p-4`}>
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="text-xs font-bold uppercase tracking-[0.14em] text-slate-400">{dream.categoryLabel}</div>
-                      <div className="rounded-full bg-white/80 px-2.5 py-1 text-xs font-bold text-slate-700">점수 {dream.score}</div>
+                    {/* 패널 */}
+                    <div className={`rounded-[10px] bg-gradient-to-br ${grade.panel} p-3 mb-3`}>
+                      <div className="text-xs font-bold uppercase tracking-[0.08em] text-slate-400 mb-1.5">
+                        {dream.categoryLabel}
+                      </div>
+                      <h2 className="text-base font-extrabold tracking-[-0.04em] text-slate-900 leading-snug mb-2.5 line-clamp-2">
+                        {dream.keyword} 꿈해몽
+                      </h2>
+                      <div className="h-1 rounded-full bg-white/70">
+                        <div className="h-1 rounded-full transition-all"
+                          style={{ width: `${Math.min(100, dream.score)}%`, background: grade.barColor }} />
+                      </div>
                     </div>
-                    <h2 className="mt-3 text-[20px] font-bold tracking-[-0.05em] text-slate-900 line-clamp-2">{dream.keyword} 꿈해몽</h2>
-                    <div className="mt-3 h-2 rounded-full bg-white/70">
-                      <div className="h-2 rounded-full bg-[#6B5FFF]" style={{ width: `${Math.min(100, dream.score)}%` }} />
-                    </div>
-                  </div>
 
-                  <p className="mt-4 line-clamp-3 text-sm leading-6 text-slate-600">{dream.excerpt}</p>
-                  <div className={`mt-4 text-sm font-bold ${grade.tone}`}>상세 풀이 보러가기</div>
+                    {/* 발췌 */}
+                    <p className="text-xs leading-relaxed text-slate-500 line-clamp-2 mb-2.5">{dream.excerpt}</p>
+                    <div className={`text-xs font-bold ${grade.tone}`}>상세 풀이 보기 →</div>
+                  </div>
                 </Link>
               );
             })}
@@ -201,6 +259,7 @@ export default function DreamInterpretation() {
           </div>
         )}
       </section>
+
       <RelatedServices
         title="꿈해몽과 함께 보면 좋은 서비스"
         services={[
@@ -210,7 +269,6 @@ export default function DreamInterpretation() {
           { href: '/compatibility', emoji: '💞', label: '궁합', description: '꿈에 특정 사람이 나왔다면 궁합도 함께 확인해보세요.' },
         ]}
       />
-
     </div>
   );
 }
