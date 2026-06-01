@@ -363,12 +363,12 @@ function buildGuideEntries(rows) {
 }
 
 /**
- * Dictionary URL: 슬러그 그대로 사용 (long descriptive 형식).
- * ⚠️ Backup 폴백 시 short/stale slug(20자 이하 & 3단어 이하)는 제외.
- * 이런 slug는 DB에서 새 slug로 교체됐거나 redirect/404 상태.
+ * Dictionary URL: 발행된 사전 항목은 단어별 정식 slug URL로 모두 포함합니다.
+ * 짧은 slug라도 실제 용어(hap, sam-jae, gong-mang 등)일 수 있으므로
+ * sitemap에서 임의로 제외하지 않습니다.
  */
 function buildDictionaryEntries(rows) {
-  const counters = { invalid: 0, excluded: 0, staleShort: 0, total: rows.length };
+  const counters = { invalid: 0, excluded: 0, total: rows.length };
   const entries = [];
 
   for (const row of rows) {
@@ -378,8 +378,6 @@ function buildDictionaryEntries(rows) {
     const { exclude } = shouldExcludeDictionarySlug(slug);
     if (exclude) { counters.excluded++; continue; }
 
-    // Backup 폴백 데이터에 포함된 stale short slug 제외
-    if (isLikelyStaleShortSlug(slug)) { counters.staleShort++; continue; }
 
     entries.push({
       loc: `${BASE_URL}/dictionary/${slug}`,
