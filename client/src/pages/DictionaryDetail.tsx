@@ -44,7 +44,8 @@ export default function DictionaryDetail() {
   const [entry, setEntry] = useState<DictionaryEntry | null | undefined>(
     preview ? { ...preview, subtitle: preview.subtitle, metaTitle: preview.metaTitle, metaDescription: preview.metaDescription } : undefined,
   );
-  useCanonical(`/dictionary/${id}`);
+  const canonicalSlug = entry?.slug || preview?.slug || id || '';
+  useCanonical(canonicalSlug ? `/dictionary/${canonicalSlug}` : '/fortune-dictionary');
 
   useEffect(() => {
     let active = true;
@@ -57,16 +58,16 @@ export default function DictionaryDetail() {
     return () => { active = false; };
   }, [id, preview]);
 
-  const canonicalUrl = `https://muunsaju.com/dictionary/${id}`;
+  const canonicalUrl = `https://muunsaju.com/dictionary/${canonicalSlug}`;
   const metaTitle = entry?.metaTitle || `${entry?.title || preview?.title || '운세 용어'} | 무운 운세 사전`;
   const metaDescription = entry?.metaDescription || entry?.summary || preview?.summary || '사주 용어의 의미를 확인해 보세요.';
 
   const relatedEntries = useMemo(() => {
     const category = entry?.category || preview?.category;
     const tags = entry?.tags || preview?.tags || [];
-    if (!tags.length) return DICTIONARY_INDEX.filter((item) => item.slug !== id && item.category === category).slice(0, 4);
+    if (!tags.length) return DICTIONARY_INDEX.filter((item) => item.slug !== canonicalSlug && item.category === category).slice(0, 4);
     const byTag = DICTIONARY_INDEX
-      .filter((item) => item.slug !== id)
+      .filter((item) => item.slug !== canonicalSlug)
       .map((item) => ({ item, score: (item.tags || []).filter((t) => tags.includes(t)).length }))
       .filter(({ score }) => score > 0)
       .sort((a, b) => b.score - a.score)
@@ -74,9 +75,9 @@ export default function DictionaryDetail() {
       .slice(0, 4);
     if (byTag.length >= 4) return byTag;
     const ids = new Set(byTag.map((i) => i.slug));
-    const supplement = DICTIONARY_INDEX.filter((item) => item.slug !== id && !ids.has(item.slug) && item.category === category).slice(0, 4 - byTag.length);
+    const supplement = DICTIONARY_INDEX.filter((item) => item.slug !== canonicalSlug && !ids.has(item.slug) && item.category === category).slice(0, 4 - byTag.length);
     return [...byTag, ...supplement];
-  }, [entry, preview, id]);
+  }, [entry, preview, id, canonicalSlug]);
 
   const handleShare = async () => {
     if (!entry) return;
