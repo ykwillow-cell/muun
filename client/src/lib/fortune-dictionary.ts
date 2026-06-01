@@ -10,6 +10,7 @@ const SUPABASE_ANON_KEY =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1aWZibXNkZ2dud3lndmdjcmtqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE4NzY0ODYsImV4cCI6MjA4NzQ1MjQ4Nn0.PhMK66O73HH98WIPAu66qk8FuXwJLU4Z2bhDcmDCpKI';
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 export interface DictionaryEntry {
   id: string;
@@ -102,20 +103,31 @@ export async function fetchFortuneDictionary(): Promise<DictionaryEntry[]> {
  * Slug로 단일 항목 조회
  */
 export async function fetchDictionaryEntryBySlug(slug: string): Promise<DictionaryEntry | null> {
+  const normalized = String(slug || '').trim().toLowerCase();
+  if (!normalized) return null;
+
   try {
     const { data, error } = await supabase
       .from('fortune_dictionary')
       .select('*')
-      .eq('slug', slug)
+      .eq('slug', normalized)
       .eq('published', true)
-      .single();
+      .maybeSingle();
 
-    if (error) {
-      if (error.code === 'PGRST116') return null;
+    if (data) return mapRow(data);
+
+    if (error && error.code !== 'PGRST116') {
       console.error('Supabase fetchDictionaryEntryBySlug error:', error);
       return null;
     }
-    return data ? mapRow(data) : null;
+
+    // 비정식 /dictionary/{uuid} 접근은 상세 페이지가 NotFound/noindex로 떨어지지 않도록
+    // 동일 row를 id로 한 번 더 찾습니다. 실제 SEO 정리는 vercel-output.mjs에서 301로 처리합니다.
+    if (UUID_PATTERN.test(normalized)) {
+      return await fetchDictionaryEntryById(normalized);
+    }
+
+    return null;
   } catch (err) {
     console.error('Failed to fetch dictionary entry by slug:', err);
     return null;
