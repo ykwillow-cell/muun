@@ -108,9 +108,22 @@ export default function DreamDetail() {
 
   const relatedDreams = useMemo(() => {
     const category = dream?.category || preview?.category;
-    return DREAM_INDEX
-      .filter((item) => item.slug !== slug && (!category || item.category === category))
-      .slice(0, 4);
+    const published = DREAM_INDEX.filter((item) =>
+      item.slug !== slug && !!item.publishedDate
+    );
+
+    // 같은 카테고리 우선, 부족하면 전체에서 score 높은 순으로 보충
+    const sameCategory = published
+      .filter((item) => category && item.category === category)
+      .sort((a, b) => (b.score || 0) - (a.score || 0));
+
+    if (sameCategory.length >= 4) return sameCategory.slice(0, 4);
+
+    const others = published
+      .filter((item) => !category || item.category !== category)
+      .sort((a, b) => (b.score || 0) - (a.score || 0));
+
+    return [...sameCategory, ...others].slice(0, 4);
   }, [dream?.category, preview?.category, slug]);
 
   const handleShare = async () => {
