@@ -67,9 +67,9 @@ const RELATED_SERVICES = [
 ];
 
 const DREAM_COLUMNS = [
-  { href: '/column/fortune-flow-late-bloom-fortune-9f61d4e0', category: '운명의 흐름', title: '막막한 인생길, 내 사주의 보물 지도를 펼칠 시간', summary: '꿈이 보여주는 방향과 사주가 가리키는 운의 흐름을 함께 읽으면 인생의 다음 챕터가 보입니다.', emoji: '🗺️', thumbBg: '#eef2ff' },
-  { href: '/column/2026-byongo-year-zodiac-fortune-all', category: '올해의 운세', title: '2026 병오년 띠별 운세 총정리', summary: '올해 내 띠의 전반적인 흐름을 미리 확인하세요. 꿈이 반복된다면 대운의 변화와 연결되어 있을 수 있습니다.', emoji: '🐴', thumbBg: '#fef9c3' },
-  { href: '/column/luck-2026-daeun-change-b0d87c9e', category: '대운 변화', title: '2026년 대운 변화: 당신의 운명이 바뀌는 시기', summary: '사주의 대운이 바뀌는 시기에는 꿈의 패턴도 달라집니다. 내 운명의 전환점이 언제인지 지금 확인해보세요.', emoji: '🔮', thumbBg: '#f0fdf4' },
+  { href: '/guide/fortune-flow-late-bloom-fortune-9f61d4e0', category: '운명의 흐름', title: '막막한 인생길, 내 사주의 보물 지도를 펼칠 시간', summary: '꿈이 보여주는 방향과 사주가 가리키는 운의 흐름을 함께 읽으면 인생의 다음 챕터가 보입니다.', emoji: '🗺️', thumbBg: '#eef2ff' },
+  { href: '/guide/2026-byongo-year-zodiac-fortune-all', category: '올해의 운세', title: '2026 병오년 띠별 운세 총정리', summary: '올해 내 띠의 전반적인 흐름을 미리 확인하세요. 꿈이 반복된다면 대운의 변화와 연결되어 있을 수 있습니다.', emoji: '🐴', thumbBg: '#fef9c3' },
+  { href: '/guide/luck-2026-daeun-change-b0d87c9e', category: '대운 변화', title: '2026년 대운 변화: 당신의 운명이 바뀌는 시기', summary: '사주의 대운이 바뀌는 시기에는 꿈의 패턴도 달라집니다. 내 운명의 전환점이 언제인지 지금 확인해보세요.', emoji: '🔮', thumbBg: '#f0fdf4' },
 ];
 
 export default function DreamDetail() {
