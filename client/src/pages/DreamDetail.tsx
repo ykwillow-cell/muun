@@ -67,9 +67,9 @@ const RELATED_SERVICES = [
 ];
 
 const DREAM_COLUMNS = [
-  { href: '/column/dream-interpretation-guide', category: '꿈해몽 가이드', title: '꿈해몽의 모든 것 — 길몽과 흉몽을 구별하는 법', summary: '오천 년 동양 역술이 축적한 꿈 해석의 원리를 쉽게 풀어봅니다. 꿈에 나타난 상징이 길조인지 흉조인지 스스로 판단하는 법을 알려드려요.', emoji: '🌙', thumbBg: '#eef2ff' },
-  { href: '/column/lucky-dream-signs', category: '길몽 분석', title: '로또 당첨자들이 자주 꾼 꿈 TOP 10', summary: '실제 복권 당첨 후기에서 가장 많이 등장한 꿈의 패턴을 분석했습니다. 별·돼지·용·이빨이 빠지는 꿈의 진짜 의미는?', emoji: '✨', thumbBg: '#fef9c3' },
-  { href: '/column/recurring-dream-meaning', category: '심리 해석', title: '반복되는 꿈이 있다면? 무의식이 보내는 신호', summary: '같은 꿈이 계속 반복된다면 단순한 우연이 아닙니다. 심리학과 명리학이 말하는 반복몽의 의미와 해소 방법을 소개합니다.', emoji: '🔄', thumbBg: '#f0fdf4' },
+  { href: '/column/fortune-flow-late-bloom-fortune-9f61d4e0', category: '운명의 흐름', title: '막막한 인생길, 내 사주의 보물 지도를 펼칠 시간', summary: '꿈이 보여주는 방향과 사주가 가리키는 운의 흐름을 함께 읽으면 인생의 다음 챕터가 보입니다.', emoji: '🗺️', thumbBg: '#eef2ff' },
+  { href: '/column/2026-byongo-year-zodiac-fortune-all', category: '올해의 운세', title: '2026 병오년 띠별 운세 총정리', summary: '올해 내 띠의 전반적인 흐름을 미리 확인하세요. 꿈이 반복된다면 대운의 변화와 연결되어 있을 수 있습니다.', emoji: '🐴', thumbBg: '#fef9c3' },
+  { href: '/column/luck-2026-daeun-change-b0d87c9e', category: '대운 변화', title: '2026년 대운 변화: 당신의 운명이 바뀌는 시기', summary: '사주의 대운이 바뀌는 시기에는 꿈의 패턴도 달라집니다. 내 운명의 전환점이 언제인지 지금 확인해보세요.', emoji: '🔮', thumbBg: '#f0fdf4' },
 ];
 
 export default function DreamDetail() {
