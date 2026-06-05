@@ -357,6 +357,166 @@
     pointer-events: none;
   }
 
+  /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+     신규 서비스 롤링 배너 (NewServiceBanner)
+     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+  .mu-home-new-banner {
+    border-radius: 20px;
+    overflow: hidden;
+    border: 0.5px solid rgba(111, 99, 255, 0.10);
+    margin-bottom: 12px;
+  }
+
+  .mu-home-new-banner__viewport {
+    overflow: hidden;
+  }
+
+  .mu-home-new-banner__track {
+    display: flex;
+  }
+
+  .mu-home-new-banner__slide {
+    min-width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 18px 20px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .mu-home-new-banner__slide--career {
+    background: linear-gradient(135deg, #edfdf8, #e0faf2);
+  }
+
+  .mu-home-new-banner__slide--moving {
+    background: linear-gradient(135deg, #fff8f0, #fff0e0);
+  }
+
+  .mu-home-new-banner__icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .mu-home-new-banner__slide--career--icon {
+    background: linear-gradient(135deg, #7de8d8, #4ecfc0);
+  }
+
+  .mu-home-new-banner__slide--moving--icon {
+    background: linear-gradient(135deg, #ffb97a, #f8955a);
+  }
+
+  .mu-home-new-banner__body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .mu-home-new-banner__kicker {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .mu-home-new-banner__slide--career .mu-home-new-banner__kicker { color: #0d9488; }
+  .mu-home-new-banner__slide--moving .mu-home-new-banner__kicker { color: #ea6f18; }
+
+  .mu-home-new-banner__title {
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: #1e2340;
+    line-height: 1.3;
+    margin-bottom: 3px;
+  }
+
+  .mu-home-new-banner__desc {
+    font-size: 0.82rem;
+    color: #6b6c91;
+    line-height: 1.55;
+  }
+
+  .mu-home-new-banner__cta {
+    font-size: 0.82rem;
+    font-weight: 700;
+    margin-top: 7px;
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .mu-home-new-banner__slide--career .mu-home-new-banner__cta { color: #0d9488; }
+  .mu-home-new-banner__slide--moving .mu-home-new-banner__cta { color: #ea6f18; }
+
+  .mu-home-new-banner__arrow {
+    color: rgba(111, 99, 255, 0.25);
+    flex-shrink: 0;
+  }
+
+  /* 인디케이터 — 배너 영역과 분리 */
+  .mu-home-new-banner__dots {
+    background: #ffffff;
+    border-top: 0.5px solid rgba(111, 99, 255, 0.07);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    padding: 9px 0;
+  }
+
+  .mu-home-new-banner__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 99px;
+    background: rgba(111, 99, 255, 0.20);
+    border: none;
+    outline: none;
+    padding: 0;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .mu-home-new-banner__dot.is-active {
+    width: 18px;
+    background: #6B5FFF;
+  }
+
+  /* 칩 NEW 뱃지 */
+  .mu-home-service-chip.is-new {
+    position: relative;
+  }
+
+  .mu-home-service-chip.is-new .mu-home-service-chip__icon::after {
+    content: 'NEW';
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #ff4d6d;
+    color: #ffffff;
+    font-size: 8px;
+    font-weight: 800;
+    padding: 2px 5px;
+    border-radius: 5px;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+  }
+
+  .mu-home-service-chip.is-new .mu-home-service-chip__icon {
+    position: relative;
+  }
+
+  .mu-home-service-chip.is-new > span {
+    color: #6B5FFF;
+  }
+
+
   .mu-hero-shell::after {
     content: '';
     position: absolute;
