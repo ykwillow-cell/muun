@@ -626,15 +626,17 @@ export default function CareerFortune() {
                 <Briefcase className="w-3 h-3" />
                 <span>{result.jobStatus === 'employed' ? '이직운' : '취업운'} · {result.dayElement}({result.dayStem}) 일간</span>
               </div>
-              <h2 className="text-xl font-bold tracking-tight text-[#191F28]">{result.name}님의 {result.jobStatus === 'employed' ? '이직' : '취업'} 사주 풀이</h2>
-              <p className="text-muted-foreground text-xs md:text-sm">{result.summary}</p>
+              <h2 className="text-xl font-bold tracking-tight text-[#191F28]">
+                {result.name}님의 {result.jobStatus === 'employed' ? '이직' : '취업'} 사주 풀이
+              </h2>
+              <p className="text-sm text-muted-foreground">{result.summary}</p>
             </div>
 
             {/* 점수 카드 */}
             <Card className="bg-white border border-black/[0.06] rounded-2xl shadow-sm overflow-hidden">
               <div
-                className="flex items-center justify-between px-4 py-2.5 border-b border-black/[0.06]"
-                style={{ background: `${scoreColor}10` }}
+                className="flex items-center justify-between px-4 py-3 border-b border-black/[0.06]"
+                style={{ background: `${scoreColor}12` }}
               >
                 <div className="flex items-center gap-2 text-sm font-bold" style={{ color: scoreColor }}>
                   <TrendingUp className="w-4 h-4" />
@@ -647,28 +649,30 @@ export default function CareerFortune() {
                   {result.score}점 · {scoreLabel}
                 </div>
               </div>
-              <CardContent className="p-4">
-                <div className="flex items-center gap-3 mb-3">
+              <CardContent className="p-4 space-y-3">
+                {/* 헤드라인 + 게이지 */}
+                <div className="flex items-center gap-3">
                   <div
-                    className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+                    className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
                     style={{ background: `${scoreColor}15` }}
                   >
                     <TrendingUp className="w-5 h-5" style={{ color: scoreColor }} />
                   </div>
-                  <div className="flex-1">
-                    <p className="text-base font-bold text-[#191F28] leading-none mb-1.5">{result.headline}</p>
-                    <div className="h-1.5 rounded-full bg-black/[0.06]">
+                  <div className="flex-1 min-w-0">
+                    <p className="text-base font-bold text-[#191F28] mb-2">{result.headline}</p>
+                    <div className="h-2 rounded-full bg-black/[0.06]">
                       <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${result.score}%` }}
                         transition={{ duration: 1, delay: 0.3 }}
-                        className="h-1.5 rounded-full"
+                        className="h-2 rounded-full"
                         style={{ background: scoreColor }}
                       />
                     </div>
                   </div>
                 </div>
-                <p className="text-sm text-[#4E5968] leading-relaxed">{result.overallText}</p>
+                {/* 총평 본문 — text-base로 통일 */}
+                <p className="text-base text-[#4E5968] leading-relaxed">{result.overallText}</p>
               </CardContent>
             </Card>
 
@@ -687,7 +691,7 @@ export default function CareerFortune() {
                   <Card key={m.label} className="bg-white border border-black/[0.06] rounded-xl shadow-sm">
                     <CardContent className="p-3 text-center space-y-1">
                       <p className="text-base font-bold text-emerald-600">{m.label}</p>
-                      <p className="text-xs text-muted-foreground">{m.note}</p>
+                      <p className="text-sm text-muted-foreground">{m.note}</p>
                     </CardContent>
                   </Card>
                 ))}
@@ -695,7 +699,7 @@ export default function CareerFortune() {
                   <Card key={m.label} className="bg-white border border-black/[0.06] rounded-xl shadow-sm">
                     <CardContent className="p-3 text-center space-y-1">
                       <p className="text-base font-bold text-rose-500">{m.label}</p>
-                      <p className="text-xs text-muted-foreground">{m.note}</p>
+                      <p className="text-sm text-muted-foreground">{m.note}</p>
                     </CardContent>
                   </Card>
                 ))}
@@ -712,7 +716,7 @@ export default function CareerFortune() {
               </div>
               <Card className="bg-white border border-black/[0.06] rounded-xl shadow-sm">
                 <CardContent className="p-4">
-                  <p className="text-sm text-[#4E5968] leading-relaxed">{result.suitableFields}</p>
+                  <p className="text-base text-[#4E5968] leading-relaxed">{result.suitableFields}</p>
                 </CardContent>
               </Card>
             </section>
@@ -734,7 +738,7 @@ export default function CareerFortune() {
                       <div className="w-6 h-6 rounded-full bg-[#6B5FFF] text-white text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">
                         {i + 1}
                       </div>
-                      <p className="text-sm text-[#4E5968] leading-relaxed">{item}</p>
+                      <p className="text-base text-[#4E5968] leading-relaxed">{item}</p>
                     </CardContent>
                   </Card>
                 ))}
@@ -744,23 +748,24 @@ export default function CareerFortune() {
             {/* 주의 사항 */}
             <Card className="bg-[#6B5FFF]/5 border-[#6B5FFF]/20 rounded-xl overflow-hidden">
               <CardContent className="p-4 flex items-start gap-3">
-                <AlertTriangle className="w-4 h-4 text-[#6B5FFF] mt-0.5 flex-shrink-0" />
-                <p className="text-xs text-[#4E5968] leading-relaxed">{result.warningText}</p>
+                <AlertTriangle className="w-4 h-4 text-[#6B5FFF] mt-1 flex-shrink-0" />
+                <p className="text-sm text-[#4E5968] leading-relaxed">{result.warningText}</p>
               </CardContent>
             </Card>
 
-            {/* 연계 서비스 배너 */}
-            <Link href="/lifelong-saju">
-              <a className="rounded-2xl p-4 flex items-center gap-4 block" style={{ background: 'linear-gradient(135deg, #2D1B5E, #1A0F3C)' }}>
-                <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0">
-                  <Sparkles className="w-5 h-5 text-yellow-300" />
-                </div>
-                <div className="flex-1">
-                  <p className="text-xs text-white/60 mb-0.5">더 깊이 알고 싶다면</p>
-                  <p className="text-sm font-bold text-white">평생사주로 직업운 상세 분석 보기</p>
-                </div>
-                <ChevronRight className="w-4 h-4 text-white/40" />
-              </a>
+            {/* 연계 서비스 배너 — Link>a 중첩 제거 */}
+            <Link href="/lifelong-saju"
+              className="rounded-2xl p-4 flex items-center gap-4 block"
+              style={{ background: 'linear-gradient(135deg, #2D1B5E, #1A0F3C)' }}
+            >
+              <div className="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0">
+                <Sparkles className="w-5 h-5 text-yellow-300" />
+              </div>
+              <div className="flex-1">
+                <p className="text-xs text-white/60 mb-0.5">더 깊이 알고 싶다면</p>
+                <p className="text-sm font-bold text-white">평생사주로 직업운 상세 분석 보기</p>
+              </div>
+              <ChevronRight className="w-4 h-4 text-white/40" />
             </Link>
 
             {/* 다시 분석 + 공유 */}
