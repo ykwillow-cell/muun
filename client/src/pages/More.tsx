@@ -60,6 +60,13 @@ const CATEGORIES: Category[] = [
         iconColor: 'from-[#86efac] to-[#22c55e]',
       },
       {
+        href: '/moving-fortune',
+        label: '이사운',
+        copy: '어디로, 언제 이사할까? 방향과 시기 확인',
+        icon: '🏠',
+        iconColor: 'from-[#fdba74] to-[#f97316]',
+      },
+      {
         href: '/tojeong',
         label: '토정비결',
         copy: '이달, 이번 달은 어떻게 흘러갈까?',
