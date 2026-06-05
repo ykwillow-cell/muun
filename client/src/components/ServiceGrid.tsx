@@ -126,7 +126,7 @@ function NewServiceBanner() {
   }, [cur]);
 
   return (
-    <div className="mu-home-new-banner">
+    <div className="mu-home-new-banner" style={{ marginTop: '16px' }}>
       {/* 슬라이드 영역 */}
       <div className="mu-home-new-banner__viewport" ref={viewportRef}>
         <div className="mu-home-new-banner__track" ref={trackRef}>
@@ -135,9 +135,9 @@ function NewServiceBanner() {
               key={href}
               href={href}
               ref={(el) => { slideRefs.current[i] = el; }}
-              className={`mu-home-new-banner__slide ${bgClass}`}
+              className={`mu-home-new-banner__slide mu-home-new-banner__slide--${bgClass.replace('mu-home-new-banner__slide--', '')}`}
             >
-              <div className={`mu-home-new-banner__icon ${bgClass}--icon`}>
+              <div className={`mu-home-new-banner__icon mu-home-new-banner__icon--${bgClass.replace('mu-home-new-banner__slide--', '')}`}>
                 <Icon size={22} color="white" />
               </div>
               <div className="mu-home-new-banner__body">
