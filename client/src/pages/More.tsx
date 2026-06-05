@@ -53,6 +53,13 @@ const CATEGORIES: Category[] = [
         iconColor: 'from-[#7dd3fc] to-[#38bdf8]',
       },
       {
+        href: '/career-fortune',
+        label: '취업·이직운',
+        copy: '지금 움직여도 될까? 이직 적기 확인',
+        icon: '💼',
+        iconColor: 'from-[#86efac] to-[#22c55e]',
+      },
+      {
         href: '/tojeong',
         label: '토정비결',
         copy: '이달, 이번 달은 어떻게 흘러갈까?',
