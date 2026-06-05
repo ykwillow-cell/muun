@@ -41,6 +41,7 @@ const Guide = lazy(() => import("./pages/Guide"));
 const GuideDetail = lazy(() => import("./pages/GuideDetail"));
 const DreamInterpretation = lazy(() => import("./pages/DreamInterpretation"));
 const DreamDetail = lazy(() => import("./pages/DreamDetail"));
+const CareerFortune = lazy(() => import("./pages/CareerFortune"));
 const PastLife = lazy(() => import("./pages/PastLife"));
 const Naming = lazy(() => import("./pages/Naming"));
 const More = lazy(() => import("./pages/More"));
@@ -99,6 +100,7 @@ function Router() {
         <Route path="/guide/:id" component={GuideDetail} />
         <Route path="/dream" component={DreamInterpretation} />
         <Route path="/dream/:slug" component={DreamDetail} />
+        <Route path="/career-fortune" component={CareerFortune} />
         <Route path="/past-life" component={PastLife} />
         <Route path="/naming" component={Naming} />
         <Route path="/more" component={More} />
