@@ -68,7 +68,10 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
   }, [showDelete]);
 
   const handleDelete = () => {
-    if (typeof window !== 'undefined') window.localStorage.removeItem('muun_user_birth');
+    if (typeof window !== 'undefined') {
+      window.localStorage.removeItem('muun_user_birth');
+      window.localStorage.removeItem('muun_user_data');
+    }
     trackCustomEvent('birth_delete', { entry: 'home_pastel_design' });
     setShowDelete(false);
     onDeleteBirth();
