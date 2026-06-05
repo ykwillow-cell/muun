@@ -70,7 +70,25 @@ export function HeroReturnVisit({ onDeleteBirth }: HeroReturnVisitProps) {
   const handleDelete = () => {
     if (typeof window !== 'undefined') {
       window.localStorage.removeItem('muun_user_birth');
-      window.localStorage.removeItem('muun_user_data');
+      // muun_user_data에서 생년월일/시간 관련 필드만 초기화 (이름 등 나머지는 유지)
+      const saved = window.localStorage.getItem('muun_user_data');
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          const cleared = {
+            ...parsed,
+            name: '',
+            birthDate: '',
+            birthTime: '12:30',
+            birthTimeUnknown: false,
+            calendarType: 'solar',
+            isLeapMonth: false,
+          };
+          window.localStorage.setItem('muun_user_data', JSON.stringify(cleared));
+        } catch {
+          window.localStorage.removeItem('muun_user_data');
+        }
+      }
     }
     trackCustomEvent('birth_delete', { entry: 'home_pastel_design' });
     setShowDelete(false);
