@@ -404,11 +404,11 @@
     flex-shrink: 0;
   }
 
-  .mu-home-new-banner__slide--career--icon {
+  .mu-home-new-banner__icon--career {
     background: linear-gradient(135deg, #7de8d8, #4ecfc0);
   }
 
-  .mu-home-new-banner__slide--moving--icon {
+  .mu-home-new-banner__icon--moving {
     background: linear-gradient(135deg, #ffb97a, #f8955a);
   }
 
