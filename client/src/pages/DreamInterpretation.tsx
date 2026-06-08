@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link, useLocation } from 'wouter';
+import { Link } from 'wouter';
 import { Search, MoonStar, PawPrint, Users, Mountain, Box, Activity, Layers, Trophy, CheckCircle2, AlertCircle, ArrowUpRight } from 'lucide-react';
 import RelatedServices from '@/components/RelatedServices';
 import { useCanonical } from '@/lib/use-canonical';
@@ -52,15 +52,41 @@ const gradeConfig: Record<DreamGrade, { label: string; Icon: typeof Trophy; tone
 
 export default function DreamInterpretation() {
   useCanonical('/dream');
-  const [location] = useLocation();
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(() => {
+    if (typeof window === 'undefined') return '';
+    return new URLSearchParams(window.location.search).get('q') || '';
+  });
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [activeGrade, setActiveGrade] = useState<DreamGrade | null>(null);
 
+  // wouter v3의 useLocation은 pathname만 추적하여 query string 변화를 감지 못함.
+  // popstate / pushState 이벤트로 직접 감지
   useEffect(() => {
-    const query = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('q') || '' : '';
-    setSearchTerm(query);
-  }, [location]);
+    const syncFromUrl = () => {
+      const q = new URLSearchParams(window.location.search).get('q') || '';
+      setSearchTerm(q);
+    };
+
+    const origPush = history.pushState.bind(history);
+    const origReplace = history.replaceState.bind(history);
+
+    history.pushState = (...args: Parameters<typeof history.pushState>) => {
+      origPush(...args);
+      setTimeout(syncFromUrl, 0);
+    };
+    history.replaceState = (...args: Parameters<typeof history.replaceState>) => {
+      origReplace(...args);
+      setTimeout(syncFromUrl, 0);
+    };
+
+    window.addEventListener('popstate', syncFromUrl);
+
+    return () => {
+      window.removeEventListener('popstate', syncFromUrl);
+      history.pushState = origPush;
+      history.replaceState = origReplace;
+    };
+  }, []);
 
   const filteredDreams = useMemo(() => {
     const q = searchTerm.trim().toLowerCase();
@@ -158,7 +184,7 @@ export default function DreamInterpretation() {
 
             {/* 검색 — 카드 풀 너비 */}
             <div className="pt-3 pb-3 px-3.5">
-              <label className="relative flex items-center mb-3">
+              <label className="relative flex items-center mb-3 w-full">
                 <Search
                   className="absolute left-3.5 pointer-events-none"
                   size={16}
