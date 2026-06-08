@@ -358,19 +358,26 @@ export default function DreamInterpretation() {
             })}
           </div>
         ) : (
-          <div className="mu-glass-panel px-6 py-12 text-center">
+          <div
+            className="rounded-[20px] px-6 py-12 text-center"
+            style={{
+              background: '#fff',
+              border: '1px solid rgba(107,95,255,0.12)',
+              boxShadow: '0 4px 24px rgba(80,71,140,0.07)',
+            }}
+          >
             <div className="text-4xl mb-4">🔍</div>
             {searchTerm.trim() ? (
               <>
-                <h2 className="text-[20px] font-bold tracking-[-0.04em] text-slate-900">
-                  '<span style={{ color: '#6B5FFF' }}>{searchTerm.trim()}</span>'에 대한 꿈해몽이 없어요
+                <h2 className="text-[18px] font-bold tracking-[-0.03em]" style={{ color: '#1e2340' }}>
+                  <span style={{ color: '#6B5FFF' }}>&#39;{searchTerm.trim()}&#39;</span>에 대한 꿈해몽이 없어요
                 </h2>
-                <p className="mt-2 leading-7 text-slate-500" style={{ fontSize: '15px' }}>
+                <p className="mt-2 leading-7" style={{ color: '#8b8fb0', fontSize: '14px' }}>
                   다른 키워드로 검색하거나 필터를 초기화해보세요.
                 </p>
                 <button
                   onClick={() => setSearchTerm('')}
-                  className="mt-4 inline-flex items-center gap-1.5 rounded-full px-4 py-2 font-semibold text-sm transition-colors"
+                  className="mt-5 inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 font-semibold text-sm"
                   style={{ background: '#6B5FFF', color: '#fff' }}
                 >
                   검색어 지우기
@@ -378,13 +385,15 @@ export default function DreamInterpretation() {
               </>
             ) : (
               <>
-                <h2 className="text-[20px] font-bold tracking-[-0.04em] text-slate-900">해당 조건의 꿈이 없어요</h2>
-                <p className="mt-2 leading-7 text-slate-500" style={{ fontSize: '15px' }}>
+                <h2 className="text-[18px] font-bold tracking-[-0.03em]" style={{ color: '#1e2340' }}>
+                  해당 조건의 꿈이 없어요
+                </h2>
+                <p className="mt-2 leading-7" style={{ color: '#8b8fb0', fontSize: '14px' }}>
                   다른 카테고리나 등급 필터로 다시 찾아보세요.
                 </p>
                 <button
                   onClick={() => { setActiveGrade(null); setActiveCategory(null); }}
-                  className="mt-4 inline-flex items-center gap-1.5 rounded-full px-4 py-2 font-semibold text-sm transition-colors"
+                  className="mt-5 inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 font-semibold text-sm"
                   style={{ background: '#6B5FFF', color: '#fff' }}
                 >
                   필터 초기화
