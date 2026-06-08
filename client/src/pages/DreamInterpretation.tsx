@@ -359,10 +359,38 @@ export default function DreamInterpretation() {
           </div>
         ) : (
           <div className="mu-glass-panel px-6 py-12 text-center">
-            <h2 className="text-[22px] font-bold tracking-[-0.04em] text-slate-900">검색 결과가 없습니다</h2>
-            <p className="mt-2 leading-7 text-slate-500" style={{ fontSize: '16px' }}>
-              다른 꿈 키워드나 카테고리로 다시 찾아보세요.
-            </p>
+            <div className="text-4xl mb-4">🔍</div>
+            {searchTerm.trim() ? (
+              <>
+                <h2 className="text-[20px] font-bold tracking-[-0.04em] text-slate-900">
+                  '<span style={{ color: '#6B5FFF' }}>{searchTerm.trim()}</span>'에 대한 꿈해몽이 없어요
+                </h2>
+                <p className="mt-2 leading-7 text-slate-500" style={{ fontSize: '15px' }}>
+                  다른 키워드로 검색하거나 필터를 초기화해보세요.
+                </p>
+                <button
+                  onClick={() => setSearchTerm('')}
+                  className="mt-4 inline-flex items-center gap-1.5 rounded-full px-4 py-2 font-semibold text-sm transition-colors"
+                  style={{ background: '#6B5FFF', color: '#fff' }}
+                >
+                  검색어 지우기
+                </button>
+              </>
+            ) : (
+              <>
+                <h2 className="text-[20px] font-bold tracking-[-0.04em] text-slate-900">해당 조건의 꿈이 없어요</h2>
+                <p className="mt-2 leading-7 text-slate-500" style={{ fontSize: '15px' }}>
+                  다른 카테고리나 등급 필터로 다시 찾아보세요.
+                </p>
+                <button
+                  onClick={() => { setActiveGrade(null); setActiveCategory(null); }}
+                  className="mt-4 inline-flex items-center gap-1.5 rounded-full px-4 py-2 font-semibold text-sm transition-colors"
+                  style={{ background: '#6B5FFF', color: '#fff' }}
+                >
+                  필터 초기화
+                </button>
+              </>
+            )}
           </div>
         )}
       </section>
