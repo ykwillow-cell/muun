@@ -82,7 +82,7 @@ export async function getAllDreams(category?: string): Promise<DreamData[]> {
       query = query.eq('category', category);
     }
 
-    const { data, error } = await query.limit(2000);
+    const { data, error } = await query.limit(3000);
     if (error) {
       console.error('Supabase getAllDreams error:', error);
       return [];
