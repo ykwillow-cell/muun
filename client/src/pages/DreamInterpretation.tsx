@@ -88,7 +88,7 @@ export default function DreamInterpretation() {
     getAllDreams()
       .then((data) => {
         if (data && data.length > 0) {
-          setAllDreams(data);
+          setAllDreams([...data]);
         }
       })
       .catch(() => {/* 실패 시 스냅샷 유지 */})
@@ -284,7 +284,7 @@ export default function DreamInterpretation() {
 
         {(activeGrade || activeCategory || searchTerm.trim()) && (
           <div className="flex items-center gap-2 px-4 pb-2">
-            <span className="text-sm text-slate-500">{filteredDreams.length}개 결과</span>
+            <span className="text-sm text-slate-500">{filteredDreams.length}개 결과 (v3)</span>
             <button
               onClick={() => { setActiveGrade(null); setActiveCategory(null); setSearchTerm(''); }}
               className="text-sm font-bold transition-opacity hover:opacity-70"
@@ -309,7 +309,7 @@ export default function DreamInterpretation() {
               const catLabel = categoryLabelMap[dream.category] || dream.category;
               const excerpt = dream.interpretation || dream.meta_description || '';
               return (
-                <Link key={dream.slug} href={`/dream/${dream.slug}`}
+                <Link key={dream.id || dream.slug} href={`/dream/${dream.slug}`}
                   className="block bg-white rounded-[14px] overflow-hidden transition-transform hover:-translate-y-0.5"
                   style={{ border: '0.5px solid #e9e5fa', boxShadow: '0 2px 12px rgba(80,71,140,0.06)' }}>
                   <div className="p-4">
