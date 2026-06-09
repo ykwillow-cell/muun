@@ -82,8 +82,13 @@ export default function DreamDetail() {
     let active = true;
     const load = async () => {
       if (!slug) { setDream(null); return; }
-      const result = await getDreamBySlug(slug);
-      if (active) setDream(result);
+      try {
+        const result = await getDreamBySlug(slug);
+        if (active) setDream(result);
+      } catch {
+        // Supabase 실패 시 null로 설정 (아래에서 preview fallback 처리)
+        if (active) setDream(null);
+      }
     };
     load();
     return () => { active = false; };
@@ -137,21 +142,24 @@ export default function DreamDetail() {
     } catch { /* user cancelled */ }
   };
 
-  if (dream === undefined) {
+  // 로딩 중 (preview도 없으면 스피너)
+  if (dream === undefined && !preview) {
     return (
       <div className="flex min-h-screen items-center justify-center mu-page-bg">
         <Loader2 className="h-8 w-8 animate-spin text-[#5648db]" />
       </div>
     );
   }
-  if (!dream) return <NotFound />;
+  // Supabase fetch 완료됐지만 데이터 없고 preview도 없으면 404
+  if (dream === null && !preview) return <NotFound />;
+  // dream이 아직 로딩 중이지만 preview 있으면 계속 렌더링 (dream 로드 완료 시 업데이트됨)
 
   return (
     <div className="min-h-screen mu-page-bg pb-20">
       <Helmet>
         <title>{metaTitle}</title>
         <meta name="description" content={metaDescription} />
-        <meta name="keywords" content={`${dream.keyword}, ${dream.keyword} 꿈, ${dream.keyword} 꿈해몽, 꿈해몽, 꿈풀이, 무운`} />
+        <meta name="keywords" content={`${dream?.keyword || preview?.keyword || slug}, ${dream?.keyword || preview?.keyword || slug} 꿈해몽, 꿈해몽, 꿈풀이, 무운`} />
         <link rel="canonical" href={canonicalUrl} />
         <meta property="og:title" content={metaTitle} />
         <meta property="og:description" content={metaDescription} />
@@ -220,7 +228,7 @@ export default function DreamDetail() {
           {/* 제목 */}
           <h1 className="text-[26px] font-extrabold leading-[1.2] tracking-[-0.05em] mb-2"
             style={{ color: '#1e2340' }}>
-            {dream.keyword.replace(/\s*꿈해몽\s*$/g, '').trim()} 꿈해몽
+            {(dream?.keyword || preview?.keyword || slug).replace(/\s*꿈해몽\s*$/g, '').trim()} 꿈해몽
           </h1>
           <p className="text-sm leading-7 mb-5" style={{ color: '#6b6c91' }}>{metaDescription}</p>
 
@@ -311,12 +319,12 @@ export default function DreamDetail() {
           </div>
           <div className="px-5 py-5">
             <p className="text-base leading-8" style={{ color: '#334155' }}>
-              <LinkedText text={dream.interpretation} />
+              <LinkedText text={dream?.interpretation || preview?.excerpt || ''} />
             </p>
           </div>
 
           {/* 전통적 의미 */}
-          {dream.traditional_meaning && (
+          {dream?.traditional_meaning && (
             <>
               <div className="flex items-center gap-3 px-5 py-4 border-t border-b border-slate-100">
                 <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
@@ -327,14 +335,14 @@ export default function DreamDetail() {
               </div>
               <div className="px-5 py-5">
                 <p className="text-base leading-8" style={{ color: '#334155' }}>
-                  <LinkedText text={dream.traditional_meaning} />
+                  <LinkedText text={dream?.traditional_meaning ?? ''} />
                 </p>
               </div>
             </>
           )}
 
           {/* 심리적 해석 */}
-          {dream.psychological_meaning && (
+          {dream?.psychological_meaning && (
             <>
               <div className="flex items-center gap-3 px-5 py-4 border-t border-b border-slate-100">
                 <div className="w-8 h-8 rounded-xl flex items-center justify-center flex-shrink-0"
@@ -345,7 +353,7 @@ export default function DreamDetail() {
               </div>
               <div className="px-5 py-5">
                 <p className="text-base leading-8" style={{ color: '#334155' }}>
-                  <LinkedText text={dream.psychological_meaning} />
+                  <LinkedText text={dream?.psychological_meaning ?? ''} />
                 </p>
               </div>
             </>
