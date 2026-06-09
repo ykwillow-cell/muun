@@ -75,13 +75,14 @@ export async function getAllDreams(category?: string): Promise<DreamData[]> {
     let query = supabase
       .from('dreams')
       .select('*')
+      .eq('published', true)
       .order('score', { ascending: false });
 
     if (category) {
       query = query.eq('category', category);
     }
 
-    const { data, error } = await query.limit(1000);
+    const { data, error } = await query.limit(2000);
     if (error) {
       console.error('Supabase getAllDreams error:', error);
       return [];
