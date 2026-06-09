@@ -99,19 +99,24 @@ export async function getAllDreams(category?: string): Promise<DreamData[]> {
  */
 export async function getDreamBySlug(slug: string): Promise<DreamData | null> {
   try {
+    // published 필드 타입 불일치 방지: boolean/string 모두 커버하기 위해
+    // published 조건 없이 slug만으로 먼저 조회 후 클라이언트에서 필터
     const { data, error } = await supabase
       .from('dreams')
       .select('*')
       .eq('slug', slug)
-      .eq('published', true)
-      .single();
+      .limit(1)
+      .maybeSingle();
 
     if (error) {
-      if (error.code === 'PGRST116') return null;
       console.error('Supabase getDreamBySlug error:', error);
       return null;
     }
-    return data ? mapRow(data) : null;
+    if (!data) return null;
+    // published가 boolean true 또는 string 'true' 모두 허용
+    const pub = data.published;
+    if (pub !== true && pub !== 'true' && pub !== 1) return null;
+    return mapRow(data);
   } catch (error) {
     console.error('Failed to fetch dream by slug:', error);
     return null;
