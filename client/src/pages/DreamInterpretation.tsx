@@ -52,40 +52,14 @@ const gradeConfig: Record<DreamGrade, { label: string; Icon: typeof Trophy; tone
 
 export default function DreamInterpretation() {
   useCanonical('/dream');
-  const [searchTerm, setSearchTerm] = useState(() => {
-    if (typeof window === 'undefined') return '';
-    return new URLSearchParams(window.location.search).get('q') || '';
-  });
+  const [searchTerm, setSearchTerm] = useState('');
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [activeGrade, setActiveGrade] = useState<DreamGrade | null>(null);
 
-  // wouter v3의 useLocation은 pathname만 추적하여 query string 변화를 감지 못함.
-  // popstate / pushState 이벤트로 직접 감지
+  // 마운트 시 URL ?q= 파라미터로 초기 검색어 설정
   useEffect(() => {
-    const syncFromUrl = () => {
-      const q = new URLSearchParams(window.location.search).get('q') || '';
-      setSearchTerm(q);
-    };
-
-    const origPush = history.pushState.bind(history);
-    const origReplace = history.replaceState.bind(history);
-
-    history.pushState = (...args: Parameters<typeof history.pushState>) => {
-      origPush(...args);
-      setTimeout(syncFromUrl, 0);
-    };
-    history.replaceState = (...args: Parameters<typeof history.replaceState>) => {
-      origReplace(...args);
-      setTimeout(syncFromUrl, 0);
-    };
-
-    window.addEventListener('popstate', syncFromUrl);
-
-    return () => {
-      window.removeEventListener('popstate', syncFromUrl);
-      history.pushState = origPush;
-      history.replaceState = origReplace;
-    };
+    const q = new URLSearchParams(window.location.search).get('q') || '';
+    if (q) setSearchTerm(q);
   }, []);
 
   const filteredDreams = useMemo(() => {
