@@ -238,30 +238,6 @@ export default function DreamInterpretation() {
       {/* ━━━ 등급 + 카테고리 필터 ━━━ */}
       <section className="mu-container-narrow pt-3 pb-0">
         <div className="flex gap-2 overflow-x-auto pb-2 no-scrollbar px-4">
-          {(['great', 'good', 'bad'] as DreamGrade[]).map((key) => {
-            const g = gradeConfig[key];
-            const GradeIcon = g.Icon;
-            const isActive = activeGrade === key;
-            return (
-              <button key={key}
-                onClick={() => setActiveGrade(isActive ? null : key)}
-                className="flex-shrink-0 inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border font-semibold transition-colors"
-                style={{
-                  fontSize: '14px', padding: '6px 14px',
-                  ...(isActive
-                    ? { background: key === 'great' ? '#d97706' : key === 'good' ? '#0284c7' : '#9333ea', color: '#fff', border: '1px solid transparent' }
-                    : { background: '#fff', color: '#64748b', border: '0.5px solid #e2e8f0' }
-                  ),
-                }}>
-                <GradeIcon size={13} aria-hidden="true" />
-                {g.label}
-                <span className="ml-0.5 opacity-70" style={{ fontSize: '12px' }}>{gradeStats[key]}</span>
-              </button>
-            );
-          })}
-
-          <div className="flex-shrink-0 w-px bg-slate-200 mx-1 self-stretch" />
-
           {categories.map(({ id, name, Icon }) => {
             const active = activeCategory === id;
             return (
