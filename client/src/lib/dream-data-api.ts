@@ -16,7 +16,7 @@ export interface DreamSEOData {
   description?: string | null;
 }
 
-interface DreamData {
+export interface DreamData {
   id: string;
   keyword: string;
   slug: string;
@@ -75,14 +75,13 @@ export async function getAllDreams(category?: string): Promise<DreamData[]> {
     let query = supabase
       .from('dreams')
       .select('*')
-      .eq('published', true)
-      .order('published_at', { ascending: false, nullsFirst: false });
+      .order('score', { ascending: false });
 
     if (category) {
       query = query.eq('category', category);
     }
 
-    const { data, error } = await query.limit(500);
+    const { data, error } = await query.limit(1000);
     if (error) {
       console.error('Supabase getAllDreams error:', error);
       return [];
