@@ -15,7 +15,7 @@ function cleanTitle(title: string) {
 }
 
 export function HomeColumnSection() {
-  const previewColumns = HOME_COLUMNS_PREVIEW.slice(0, 2);
+  const previewColumns = HOME_COLUMNS_PREVIEW.slice(0, 5);
   return (
     <section className="mu-home-content-section" aria-labelledby="home-columns-title">
       <div className="mu-home-content-section__head">
@@ -25,19 +25,46 @@ export function HomeColumnSection() {
         </div>
         <Link href="/guide" className="muun-see-all">더보기 <ArrowRight size={12} /></Link>
       </div>
-      <div className="mu-home-content-list">
-        {previewColumns.length > 0 ? previewColumns.map((column, index) => (
-          <Link key={column.slug} href={getGuidePath(column.slug, column.id)} className="mu-home-content-card">
-            <div className={`mu-home-content-card__thumb is-${index % 2 === 0 ? 'lavender' : 'mint'}`} aria-hidden="true">
-              <BookOpenText size={28} />
+      <div className="flex flex-col gap-3">
+        {previewColumns.length > 0 ? previewColumns.map((column) => (
+          <Link
+            key={column.slug}
+            href={getGuidePath(column.slug, column.id)}
+            className="flex items-center gap-3 bg-white rounded-[14px] overflow-hidden transition-transform hover:-translate-y-0.5"
+            style={{ border: '0.5px solid #e9e5fa', boxShadow: '0 2px 12px rgba(80,71,140,0.06)' }}
+          >
+            <div className="flex-shrink-0 w-[88px] h-[88px] overflow-hidden bg-[#ede9ff] flex items-center justify-center">
+              {column.thumbnail ? (
+                <img
+                  src={column.thumbnail}
+                  alt={cleanTitle(column.title)}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              ) : (
+                <BookOpenText size={28} className="text-[#6B5FFF] opacity-40" />
+              )}
             </div>
-            <div className="mu-home-content-card__body">
-              <span className="mu-home-content-card__badge">{column.categoryLabel || '운세 칼럼'}</span>
-              <h3>{cleanTitle(column.title)}</h3>
-              <p className="mu-home-content-card__meta"><Clock3 size={12} /> {formatDate(column.publishedDate)} · {column.readTime}분</p>
+            <div className="flex-1 min-w-0 py-3 pr-4">
+              <span
+                className="inline-block rounded-full px-2 py-0.5 font-semibold mb-1.5"
+                style={{ fontSize: '11px', background: '#f0eeff', color: '#6B5FFF' }}
+              >
+                {column.categoryLabel || '운세 칼럼'}
+              </span>
+              <h3
+                className="font-bold leading-snug tracking-[-0.03em] line-clamp-2 mb-1.5"
+                style={{ fontSize: '14px', color: '#1e2340' }}
+              >
+                {cleanTitle(column.title)}
+              </h3>
+              <p className="flex items-center gap-1" style={{ fontSize: '12px', color: '#a0a0bc' }}>
+                <Clock3 size={11} />
+                {formatDate(column.publishedDate)} · {column.readTime}분
+              </p>
             </div>
           </Link>
-        )) : <div className="mu-home-content-card">칼럼 데이터를 준비 중입니다.</div>}
+        )) : <div className="bg-white rounded-[14px] p-4 text-sm text-slate-400">칼럼 데이터를 준비 중입니다.</div>}
       </div>
     </section>
   );
