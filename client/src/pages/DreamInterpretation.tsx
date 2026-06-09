@@ -283,8 +283,8 @@ export default function DreamInterpretation() {
         </div>
 
         {(activeGrade || activeCategory || searchTerm.trim()) && (
-          <div className="flex items-center gap-2 px-4 pb-2">
-            <span className="text-sm text-slate-500">{filteredDreams.length}개 결과 (v3)</span>
+          <div className="flex items-center justify-between px-4 pb-2">
+            <span className="text-sm text-slate-500">{filteredDreams.length}개 결과</span>
             <button
               onClick={() => { setActiveGrade(null); setActiveCategory(null); setSearchTerm(''); }}
               className="text-sm font-bold transition-opacity hover:opacity-70"
