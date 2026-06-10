@@ -78,17 +78,30 @@ export async function fetchFortuneDictionary(): Promise<DictionaryEntry[]> {
     return _cache;
   }
   try {
-    const { data, error } = await supabase
-      .from('fortune_dictionary')
-      .select('*')
-      .eq('published', true)
-      .order('created_at', { ascending: true });
+    const PAGE_SIZE = 1000;
+    let allData: any[] = [];
+    let from = 0;
 
-    if (error) {
-      console.error('Supabase fortune_dictionary error:', error);
-      return _cache || [];
+    while (true) {
+      const { data, error } = await supabase
+        .from('fortune_dictionary')
+        .select('*')
+        .eq('published', true)
+        .order('created_at', { ascending: true })
+        .range(from, from + PAGE_SIZE - 1);
+
+      if (error) {
+        console.error('Supabase fortune_dictionary error:', error);
+        break;
+      }
+      if (!data || data.length === 0) break;
+
+      allData = allData.concat(data);
+      if (data.length < PAGE_SIZE) break;
+      from += PAGE_SIZE;
     }
-    _cache = (data || []).map(mapRow);
+
+    _cache = allData.map(mapRow);
     _cacheTime = now;
     // 동기 배열도 업데이트
     fortuneDictionary.splice(0, fortuneDictionary.length, ..._cache);
