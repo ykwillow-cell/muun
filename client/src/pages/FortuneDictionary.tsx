@@ -4,6 +4,7 @@ import { useCanonical } from '@/lib/use-canonical';
 import { Search, X, BookOpen, ChevronRight, Sparkles, TrendingUp } from 'lucide-react';
 import { useLocation, Link } from 'wouter';
 import { DICTIONARY_INDEX } from '@/generated/content-snapshots';
+import { fetchFortuneDictionary } from '@/lib/fortune-dictionary';
 
 const categories = [
   { id: 'basic',        label: '사주 기초',    emoji: '☯️' },
@@ -50,6 +51,13 @@ const SERVICE_LINKS = [
 export default function FortuneDictionary() {
   useCanonical('/fortune-dictionary');
   const [location] = useLocation();
+  const [allEntries, setAllEntries] = useState<typeof DICTIONARY_INDEX>(DICTIONARY_INDEX as any);
+
+  useEffect(() => {
+    fetchFortuneDictionary().then((data) => {
+      if (data && data.length > 0) setAllEntries(data as any);
+    });
+  }, []);
 
   const params = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
   const [selectedCategory, setSelectedCategory] = useState<string | null>(params?.get('category') || null);
@@ -83,19 +91,19 @@ export default function FortuneDictionary() {
   const filteredEntries = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
     let results = selectedCategory
-      ? DICTIONARY_INDEX.filter((e) => {
+      ? allEntries.filter((e: any) => {
           const cat = e.category === 'ten-stem' ? 'sipsin' : e.category;
           return cat === selectedCategory;
         })
-      : [...DICTIONARY_INDEX];
+      : [...allEntries];
     if (q) {
-      results = results.filter((e) =>
+      results = results.filter((e: any) =>
         [e.title, e.subtitle || '', e.summary, e.originalMeaning, e.modernInterpretation, e.muunAdvice, ...(e.tags || [])]
           .join(' ').toLowerCase().includes(q),
       );
     }
     return results;
-  }, [selectedCategory, searchQuery]);
+  }, [selectedCategory, searchQuery, allEntries]);
 
   const hasFilter = !!searchQuery || selectedCategory !== null;
   const categoryLabel = selectedCategory ? (categories.find((c) => c.id === selectedCategory)?.label ?? '선택됨') : null;
@@ -127,7 +135,7 @@ export default function FortuneDictionary() {
             <h1 className="text-base font-bold text-[#1a1a18]">운세 사전</h1>
           </div>
           <span className="text-xs font-medium text-[#8b8fa8] bg-white border border-black/[0.06] px-2.5 py-1 rounded-full">
-            {DICTIONARY_INDEX.length}개 용어
+            {allEntries.length}개 용어
           </span>
         </div>
 
