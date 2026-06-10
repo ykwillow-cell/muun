@@ -33,7 +33,7 @@ export function HomeColumnSection() {
             className="flex items-center gap-3 bg-white rounded-[14px] overflow-hidden transition-transform hover:-translate-y-0.5"
             style={{ border: '0.5px solid #e9e5fa', boxShadow: '0 2px 12px rgba(80,71,140,0.06)' }}
           >
-            <div className="flex-shrink-0 w-[88px] h-[88px] overflow-hidden bg-[#ede9ff] flex items-center justify-center">
+            <div className="flex-shrink-0 w-[100px] self-stretch overflow-hidden bg-[#ede9ff] flex items-center justify-center">
               {column.thumbnail ? (
                 <img
                   src={column.thumbnail}
