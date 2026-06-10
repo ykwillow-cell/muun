@@ -30,22 +30,26 @@ export function HomeColumnSection() {
           <Link
             key={column.slug}
             href={getGuidePath(column.slug, column.id)}
-            className="flex items-center gap-3 bg-white rounded-[14px] overflow-hidden transition-transform hover:-translate-y-0.5"
+            className="flex flex-col bg-white rounded-[14px] overflow-hidden transition-transform hover:-translate-y-0.5"
             style={{ border: '0.5px solid #e9e5fa', boxShadow: '0 2px 12px rgba(80,71,140,0.06)' }}
           >
-            <div className="flex-shrink-0 w-[100px] self-stretch overflow-hidden bg-[#ede9ff] flex items-center justify-center">
+            {/* 썸네일: 16:9 가로형 */}
+            <div className="relative w-full bg-[#ede9ff]" style={{ paddingTop: '56.25%' }}>
               {column.thumbnail ? (
                 <img
                   src={column.thumbnail}
                   alt={cleanTitle(column.title)}
-                  className="w-full h-full object-cover"
+                  className="absolute inset-0 w-full h-full object-cover"
                   loading="lazy"
                 />
               ) : (
-                <BookOpenText size={28} className="text-[#6B5FFF] opacity-40" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <BookOpenText size={32} className="text-[#6B5FFF] opacity-40" />
+                </div>
               )}
             </div>
-            <div className="flex-1 min-w-0 py-3 pr-4">
+            {/* 텍스트 */}
+            <div className="px-4 py-3">
               <span
                 className="inline-block rounded-full px-2 py-0.5 font-semibold mb-1.5"
                 style={{ fontSize: '11px', background: '#f0eeff', color: '#6B5FFF' }}
