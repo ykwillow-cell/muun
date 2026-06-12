@@ -33,6 +33,20 @@ const BASE_URL = 'https://muunsaju.com';
 const VERIFY_URLS = process.env.VERIFY === '1';
 const STRICT_MODE = process.env.STRICT === '1';
 
+function getPositiveIntEnv(name, defaultValue) {
+  const raw = process.env[name];
+  if (raw == null || raw === '') return defaultValue;
+  const parsed = Number.parseInt(raw, 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : defaultValue;
+}
+
+const SEO_LIMITS = {
+  dreams: getPositiveIntEnv('SEO_DREAM_LIMIT', 1000),
+  dictionary: getPositiveIntEnv('SEO_DICTIONARY_LIMIT', 1000),
+  columns: getPositiveIntEnv('SEO_COLUMN_LIMIT', 500),
+};
+const REST_PAGE_SIZE = getPositiveIntEnv('SUPABASE_REST_PAGE_SIZE', 1000);
+
 // ────────────────────────────────────────────────────────────
 // Slug 정규화 패턴
 // ────────────────────────────────────────────────────────────
@@ -108,6 +122,8 @@ const CORE_PAGES = [
   ['/manselyeok',           '0.8', 'monthly', null],
   ['/daily-fortune',        '0.8', 'daily',   null],
   ['/family-saju',          '0.8', 'monthly', null],
+  ['/career-fortune',       '0.8', 'monthly', null],
+  ['/moving-fortune',       '0.8', 'monthly', null],
   ['/hybrid-compatibility', '0.7', 'monthly', null],
   ['/tojeong',              '0.8', 'monthly', null],
   ['/psychology',           '0.8', 'monthly', null],
@@ -119,6 +135,7 @@ const CORE_PAGES = [
   ['/guide',                '0.8', 'weekly',  null],
   ['/lucky-lunch',          '0.6', 'monthly', null],
   ['/past-life',            '0.6', 'monthly', null],
+  ['/more',                 '0.5', 'monthly', null],
   // 정보성
   ['/about',                '0.5', 'yearly',  '2025-01-01'],
   ['/privacy',              '0.4', 'yearly',  '2025-01-01'],
@@ -223,7 +240,7 @@ function removeFileIfExists(filename) {
 // Supabase fetch
 // ────────────────────────────────────────────────────────────
 
-async function fetchRestTable(tableName, { select = '*', filters = [], order = [], limit } = {}) {
+async function fetchRestTablePage(tableName, { select = '*', filters = [], order = [], limit, offset = 0 } = {}) {
   if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
     throw new Error('Supabase 환경변수가 없음 → fallback 모드');
   }
@@ -237,6 +254,7 @@ async function fetchRestTable(tableName, { select = '*', filters = [], order = [
   }
   for (const sortExpr of order) url.searchParams.append('order', sortExpr);
   if (typeof limit === 'number') url.searchParams.set('limit', String(limit));
+  if (offset > 0) url.searchParams.set('offset', String(offset));
 
   const response = await fetch(url, {
     headers: {
@@ -256,20 +274,34 @@ async function fetchRestTable(tableName, { select = '*', filters = [], order = [
   return data;
 }
 
+async function fetchRestTable(tableName, { select = '*', filters = [], order = [], limit } = {}) {
+  const requestedLimit = typeof limit === 'number' && Number.isFinite(limit) ? limit : REST_PAGE_SIZE;
+  const rows = [];
+
+  for (let offset = 0; rows.length < requestedLimit; offset += REST_PAGE_SIZE) {
+    const pageLimit = Math.min(REST_PAGE_SIZE, requestedLimit - rows.length);
+    const page = await fetchRestTablePage(tableName, { select, filters, order, limit: pageLimit, offset });
+    rows.push(...page);
+    if (page.length < pageLimit) break;
+  }
+
+  return rows;
+}
+
 async function loadDictionaryRows() {
   try {
     const rows = await fetchRestTable('fortune_dictionary', {
       select: 'id,slug,published_at,updated_at',
       filters: [{ field: 'published', value: true }],
       order: ['published_at.desc.nullslast', 'created_at.desc'],
-      limit: 500,
+      limit: SEO_LIMITS.dictionary,
     });
-    console.log(`   ✅ dictionary Supabase: ${rows.length}개`);
+    console.log(`   ✅ dictionary Supabase: ${rows.length}개 / limit=${SEO_LIMITS.dictionary}`);
     return rows;
   } catch (e) {
     console.warn(`   ⚠️ dictionary Supabase 실패 → backup 폴백: ${e.message}`);
-    const rows = readBackupTable('fortune_dictionary').filter((r) => r.published !== false);
-    console.log(`   📦 dictionary backup: ${rows.length}개`);
+    const rows = readBackupTable('fortune_dictionary').filter((r) => r.published !== false).slice(0, SEO_LIMITS.dictionary);
+    console.log(`   📦 dictionary backup: ${rows.length}개 / limit=${SEO_LIMITS.dictionary}`);
     if (STRICT_MODE) throw e;
     return rows;
   }
@@ -281,14 +313,14 @@ async function loadGuideRows() {
       select: 'id,slug,published_at,updated_at',
       filters: [{ field: 'published', value: true }],
       order: ['published_at.desc.nullslast', 'created_at.desc'],
-      limit: 500,
+      limit: SEO_LIMITS.columns,
     });
-    console.log(`   ✅ guide Supabase: ${rows.length}개`);
+    console.log(`   ✅ guide Supabase: ${rows.length}개 / limit=${SEO_LIMITS.columns}`);
     return rows;
   } catch (e) {
     console.warn(`   ⚠️ guide Supabase 실패 → backup 폴백: ${e.message}`);
-    const rows = readBackupTable('columns').filter((r) => r.published !== false);
-    console.log(`   📦 guide backup: ${rows.length}개`);
+    const rows = readBackupTable('columns').filter((r) => r.published !== false).slice(0, SEO_LIMITS.columns);
+    console.log(`   📦 guide backup: ${rows.length}개 / limit=${SEO_LIMITS.columns}`);
     if (STRICT_MODE) throw e;
     return rows;
   }
@@ -300,14 +332,14 @@ async function loadDreamRows() {
       select: 'id,slug,published_at,updated_at',
       filters: [{ field: 'published', value: true }],
       order: ['published_at.desc.nullslast', 'created_at.desc'],
-      limit: 1000,
+      limit: SEO_LIMITS.dreams,
     });
-    console.log(`   ✅ dream Supabase: ${rows.length}개`);
+    console.log(`   ✅ dream Supabase: ${rows.length}개 / limit=${SEO_LIMITS.dreams}`);
     return rows;
   } catch (e) {
     console.warn(`   ⚠️ dream Supabase 실패 → backup 폴백: ${e.message}`);
-    const rows = readBackupTable('dreams').filter((r) => r.published !== false);
-    console.log(`   📦 dream backup: ${rows.length}개`);
+    const rows = readBackupTable('dreams').filter((r) => r.published !== false).slice(0, SEO_LIMITS.dreams);
+    console.log(`   📦 dream backup: ${rows.length}개 / limit=${SEO_LIMITS.dreams}`);
     if (STRICT_MODE) throw e;
     return rows;
   }

@@ -5,7 +5,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { loadColumnsDataset } from './utils/content-data.mjs';
+import { loadColumnsDataset, SEO_LIMITS } from './utils/content-data.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(__dirname, '..');
@@ -48,7 +48,7 @@ function addRedirect(redirects, seen, sourcePath, destinationPath) {
 
 async function buildGuideCanonicalRedirects() {
   try {
-    const { rows, source, fallbackReason } = await loadColumnsDataset({ limit: 300 });
+    const { rows, source, fallbackReason } = await loadColumnsDataset({ limit: SEO_LIMITS.columns });
     if (fallbackReason) {
       console.warn(`⚠️ guide canonical redirects using fallback dataset (${source}): ${fallbackReason}`);
     }

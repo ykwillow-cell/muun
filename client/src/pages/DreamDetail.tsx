@@ -33,7 +33,7 @@ const gradeConfig: Record<DreamGrade, {
     emoji: '✨',
   },
   good: {
-    label: '평몽', Icon: CheckCircle2,
+    label: '보통', Icon: CheckCircle2,
     chip: 'bg-sky-50 text-sky-700 border-sky-200',
     chipDark: 'bg-sky-500/20 text-sky-300 border-sky-500/30',
     description: '일상의 흐름과 심리 상태를 부드럽게 반영하는 중립적 꿈으로 볼 수 있습니다.',
@@ -404,7 +404,7 @@ export default function DreamDetail() {
                           item.grade === 'bad' ? 'bg-fuchsia-50 text-fuchsia-700 border-fuchsia-200' :
                           'bg-sky-50 text-sky-700 border-sky-200'
                         }`}>
-                          {item.grade === 'great' ? '길몽' : item.grade === 'bad' ? '흉몽' : '평몽'}
+                          {item.grade === 'great' ? '길몽' : item.grade === 'bad' ? '흉몽' : '보통'}
                         </span>
                         <span className="text-xs text-slate-400">{item.categoryLabel}</span>
                       </div>

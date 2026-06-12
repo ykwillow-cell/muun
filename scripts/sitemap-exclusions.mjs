@@ -151,7 +151,9 @@ const RAW_EXCLUDED_PATHS = [
 export const EXCLUDED_PATHS = new Set(RAW_EXCLUDED_PATHS);
 
 export const UUID_SLUG_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-export const DREAM_DUPLICATE_SUFFIX_PATTERN = /^(.+)-(\d+)$/;
+// 과거에는 slug-2 같은 숫자 suffix를 중복 URL로 간주했지만,
+// 현재 꿈해몽 Supabase slug는 숫자로 끝나는 고유 slug가 많습니다.
+// 따라서 자동 중복 제외는 제거하고, 실제 삭제/병합 URL만 RAW_EXCLUDED_PATHS로 관리합니다.
 
 export function normalizePathname(value = '') {
   let pathname = String(value || '').trim();
@@ -173,18 +175,13 @@ export function isLegacyGuideUuid(slug) {
   return UUID_SLUG_PATTERN.test(String(slug || '').trim());
 }
 
-export function isDreamDuplicateVariant(slug, existingSlugSet) {
-  const normalized = String(slug || '').trim();
-  const match = DREAM_DUPLICATE_SUFFIX_PATTERN.exec(normalized);
-  if (!match) return false;
-  const baseSlug = match[1];
-  return existingSlugSet.has(baseSlug);
+export function isDreamDuplicateVariant() {
+  return false;
 }
 
 export function shouldExcludeDreamSlug(slug, existingSlugSet) {
   const pathname = `/dream/${String(slug || '').trim()}`;
   if (isManuallyExcluded(pathname)) return { exclude: true, reason: 'manual' };
-  if (isDreamDuplicateVariant(slug, existingSlugSet)) return { exclude: true, reason: 'duplicate-suffix' };
   return { exclude: false, reason: null };
 }
 

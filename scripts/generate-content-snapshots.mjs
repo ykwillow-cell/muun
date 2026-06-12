@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { loadColumnsDataset, loadDreamsDataset, loadDictionaryDataset } from './utils/content-data.mjs';
+import { loadColumnsDataset, loadDreamsDataset, loadDictionaryDataset, SNAPSHOT_LIMITS } from './utils/content-data.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const rootDir = path.resolve(__dirname, '..');
@@ -136,9 +136,9 @@ async function main() {
   console.log('📚 Generating content snapshots for static/SEO rendering...');
 
   const [columnsResult, dreamsResult, dictionaryResult] = await Promise.all([
-    loadColumnsDataset({ limit: 200 }),
-    loadDreamsDataset({ limit: 600 }),
-    loadDictionaryDataset({ limit: 300 }),
+    loadColumnsDataset({ limit: SNAPSHOT_LIMITS.columns }),
+    loadDreamsDataset({ limit: SNAPSHOT_LIMITS.dreams }),
+    loadDictionaryDataset({ limit: SNAPSHOT_LIMITS.dictionary }),
   ]);
 
   const guideIndex = buildGuideIndex(columnsResult.rows);

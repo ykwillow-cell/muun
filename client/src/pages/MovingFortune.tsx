@@ -625,7 +625,7 @@ export default function MovingFortune() {
       <Helmet>
         <title>{result.name}님의 이사운 결과 - 무운</title>
         <meta name="description" content={`${result.name}님의 사주로 보는 이사운 분석 결과입니다. ${result.headline}`} />
-        <meta name="robots" content="noindex" />
+        <meta name="robots" content="index, follow" />
       </Helmet>
 
       <div className="mu-subpage-screen min-h-screen bg-[#F5F4F8] text-foreground pb-16 antialiased">

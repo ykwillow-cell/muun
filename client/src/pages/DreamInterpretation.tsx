@@ -30,7 +30,7 @@ const gradeConfig: Record<DreamGrade, { label: string; Icon: typeof Trophy; tone
     panel: 'from-amber-50 via-white to-amber-50/60', barColor: '#d97706',
   },
   good: {
-    label: '평몽', Icon: CheckCircle2, tone: 'text-sky-600',
+    label: '보통', Icon: CheckCircle2, tone: 'text-sky-600',
     chip: 'bg-sky-50 text-sky-700 border-sky-200',
     chipActive: 'bg-sky-500 text-white border-sky-500',
     panel: 'from-sky-50 via-white to-sky-50/60', barColor: '#0284c7',
@@ -135,11 +135,11 @@ export default function DreamInterpretation() {
     <div className="min-h-screen mu-page-bg pb-16">
       <Helmet>
         <title>꿈해몽 - 자주 찾는 길몽·흉몽 무료 풀이 | 무운 (MuUn)</title>
-        <meta name="description" content="돼지꿈, 물꿈, 불꿈, 조상꿈, 대통령꿈까지. 무운의 꿈 풀이 사전에서 길몽·평몽·흉몽 풀이를 무료로 찾아보세요." />
+        <meta name="description" content="돼지꿈, 물꿈, 불꿈, 조상꿈, 대통령꿈까지. 무운의 꿈 풀이 사전에서 길몽·보통·흉몽 풀이를 무료로 찾아보세요." />
         <meta name="keywords" content="꿈해몽, 꿈풀이, 길몽, 흉몽, 돼지꿈, 물꿈, 불꿈, 조상꿈, 대통령꿈" />
         <link rel="canonical" href="https://muunsaju.com/dream" />
         <meta property="og:title" content="꿈해몽 - 자주 찾는 길몽·흉몽 무료 풀이 | 무운 (MuUn)" />
-        <meta property="og:description" content="돼지꿈, 물꿈, 불꿈, 조상꿈, 대통령꿈까지. 무운의 꿈 풀이 사전에서 길몽·평몽·흉몽 풀이를 무료로 찾아보세요." />
+        <meta property="og:description" content="돼지꿈, 물꿈, 불꿈, 조상꿈, 대통령꿈까지. 무운의 꿈 풀이 사전에서 길몽·보통·흉몽 풀이를 무료로 찾아보세요." />
         <meta property="og:image" content="https://muunsaju.com/images/horse_mascot.png" />
         <meta property="og:type" content="website" />
       </Helmet>
@@ -171,7 +171,7 @@ export default function DreamInterpretation() {
             <div className="flex divide-x divide-[rgba(111,99,255,0.08)] border-b border-[rgba(111,99,255,0.07)]">
               {([
                 { key: 'great', label: '길몽 키워드', color: '#c5870a', activeBg: '#fef3c7' },
-                { key: 'good',  label: '평몽 키워드', color: '#2563eb', activeBg: '#dbeafe' },
+                { key: 'good',  label: '보통 키워드', color: '#2563eb', activeBg: '#dbeafe' },
                 { key: 'bad',   label: '흉몽 키워드', color: '#8b3cd8', activeBg: '#fae8ff' },
               ] as const).map(({ key, label, color, activeBg }) => (
                 <button key={key}

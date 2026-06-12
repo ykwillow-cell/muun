@@ -418,7 +418,7 @@ function PrescriptionCard({ prescription }: { prescription: HybridCompatResult['
 
 // ─── 메인 페이지 컴포넌트 ────────────────────────────────────────────────────
 export default function HybridCompatibilityPage() {
-  useCanonical();
+  useCanonical('/hybrid-compatibility');
   const [result, setResult] = useState<HybridCompatResult | null>(null);
   const [expandedSection, setExpandedSection] = useState<string | null>('communication');
   const [isSaving, setIsSaving] = useState(false);
