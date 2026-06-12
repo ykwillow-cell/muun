@@ -72,22 +72,36 @@ function mapRow(row: any): DreamData {
  */
 export async function getAllDreams(category?: string): Promise<DreamData[]> {
   try {
-    let query = supabase
-      .from('dreams')
-      .select('*')
-      .eq('published', true)
-      .order('score', { ascending: false });
+    const PAGE_SIZE = 1000;
+    let allData: any[] = [];
+    let from = 0;
 
-    if (category) {
-      query = query.eq('category', category);
+    const MAX_ITEMS = 50000;
+    while (allData.length < MAX_ITEMS) {
+      let query = supabase
+        .from('dreams')
+        .select('*')
+        .eq('published', true)
+        .order('score', { ascending: false })
+        .range(from, from + PAGE_SIZE - 1);
+
+      if (category) {
+        query = query.eq('category', category);
+      }
+
+      const { data, error } = await query;
+      if (error) {
+        console.error('Supabase getAllDreams error:', error);
+        break;
+      }
+      if (!data || data.length === 0) break;
+
+      allData = allData.concat(data);
+      if (data.length < PAGE_SIZE) break; // 마지막 페이지
+      from += PAGE_SIZE;
     }
 
-    const { data, error } = await query.limit(50000);
-    if (error) {
-      console.error('Supabase getAllDreams error:', error);
-      return [];
-    }
-    return (data || []).map(mapRow);
+    return allData.map(mapRow);
   } catch (error) {
     console.error('Failed to fetch dreams from Supabase:', error);
     return [];
