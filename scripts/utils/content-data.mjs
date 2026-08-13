@@ -73,7 +73,8 @@ export function getPositiveIntEnv(name, defaultValue) {
 }
 
 export const SEO_LIMITS = {
-  dreams: getPositiveIntEnv('SEO_DREAM_LIMIT', 1000),
+  // 꿈해몽 콘텐츠가 1,000개를 초과하므로 사이트맵과 프리렌더에서 전체 발행 콘텐츠를 다룹니다.
+  dreams: getPositiveIntEnv('SEO_DREAM_LIMIT', 2000),
   dictionary: getPositiveIntEnv('SEO_DICTIONARY_LIMIT', 1000),
   columns: getPositiveIntEnv('SEO_COLUMN_LIMIT', 500),
 };
