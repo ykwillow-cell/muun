@@ -11,7 +11,7 @@
     "prerender": "node scripts/prerender.mjs",
     "build:vercel-output": "node scripts/vercel-output.mjs",
     "inject-tokens": "node scripts/inject-design-tokens.mjs",
-    "build": "STRICT=1 STRICT_CONTENT_FETCH=1 pnpm run generate-content-snapshots && STRICT=1 STRICT_CONTENT_FETCH=1 pnpm run generate-sitemap && STRICT=1 STRICT_CONTENT_FETCH=1 pnpm run generate-rss && pnpm run inject-tokens && pnpm run build:client && pnpm run build:ssr && pnpm run build:server && STRICT=1 STRICT_CONTENT_FETCH=1 pnpm run prerender && STRICT=1 STRICT_CONTENT_FETCH=1 pnpm run build:vercel-output",
+    "build": "STRICT=1 STRICT_CONTENT_FETCH=1 ALLOW_CONTENT_BACKUP_FALLBACK=1 pnpm run generate-content-snapshots && STRICT=1 STRICT_CONTENT_FETCH=1 ALLOW_CONTENT_BACKUP_FALLBACK=1 pnpm run generate-static-content-fallbacks && STRICT=1 ALLOW_CONTENT_BACKUP_FALLBACK=1 pnpm run generate-sitemap && STRICT=1 STRICT_CONTENT_FETCH=1 ALLOW_CONTENT_BACKUP_FALLBACK=1 pnpm run generate-rss && pnpm run inject-tokens && pnpm run build:client && pnpm run build:ssr && pnpm run build:server && STRICT=1 STRICT_CONTENT_FETCH=1 ALLOW_CONTENT_BACKUP_FALLBACK=1 pnpm run prerender && pnpm run verify-prerender-integrity && STRICT=1 STRICT_CONTENT_FETCH=1 ALLOW_CONTENT_BACKUP_FALLBACK=1 pnpm run build:vercel-output",
     "start": "NODE_ENV=production node dist/index.js",
     "check": "tsc --noEmit",
     "format": "prettier --write .",
@@ -22,7 +22,9 @@
     "seo:check": "pnpm verify-canonical && pnpm generate-sitemap",
     "test": "vitest run",
     "db:push": "drizzle-kit generate && drizzle-kit migrate",
-    "generate-content-snapshots": "node scripts/generate-content-snapshots.mjs"
+    "generate-content-snapshots": "node scripts/generate-content-snapshots.mjs",
+    "generate-static-content-fallbacks": "node scripts/generate-static-content-fallbacks.mjs",
+    "verify-prerender-integrity": "node scripts/verify-prerender-integrity.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.693.0",

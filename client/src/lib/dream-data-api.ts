@@ -45,6 +45,19 @@ export const DREAM_CATEGORIES: Record<string, { label: string; color: string }> 
   other: { label: '기타', color: 'bg-slate-500/20 text-slate-400' },
 };
 
+async function loadStaticDreamBySlug(slug: string): Promise<DreamData | null> {
+  const normalized = String(slug || '').trim().toLowerCase();
+  if (!normalized) return null;
+  try {
+    const response = await fetch(`/content-fallback/dreams/${encodeURIComponent(normalized)}.json`, { cache: 'force-cache' });
+    if (!response.ok) return null;
+    const row = await response.json();
+    return row ? mapRow(row) : null;
+  } catch {
+    return null;
+  }
+}
+
 function mapRow(row: any): DreamData {
   const seoData: DreamSEOData | null = row?.seo_data && typeof row.seo_data === 'object' ? row.seo_data : null;
 
@@ -124,16 +137,16 @@ export async function getDreamBySlug(slug: string): Promise<DreamData | null> {
 
     if (error) {
       console.error('Supabase getDreamBySlug error:', error);
-      return null;
+      return loadStaticDreamBySlug(slug);
     }
-    if (!data) return null;
+    if (!data) return loadStaticDreamBySlug(slug);
     // published가 boolean true 또는 string 'true' 모두 허용
     const pub = data.published;
-    if (pub !== true && pub !== 'true' && pub !== 1) return null;
+    if (pub !== true && pub !== 'true' && pub !== 1) return loadStaticDreamBySlug(slug);
     return mapRow(data);
   } catch (error) {
     console.error('Failed to fetch dream by slug:', error);
-    return null;
+    return loadStaticDreamBySlug(slug);
   }
 }
 

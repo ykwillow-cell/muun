@@ -44,6 +44,19 @@ const CATEGORY_LABELS: Record<string, string> = {
   other: '기타',
 };
 
+async function loadStaticDictionaryBySlug(slug: string): Promise<DictionaryEntry | null> {
+  const normalized = String(slug || '').trim().toLowerCase();
+  if (!normalized) return null;
+  try {
+    const response = await fetch(`/content-fallback/dictionary/${encodeURIComponent(normalized)}.json`, { cache: 'force-cache' });
+    if (!response.ok) return null;
+    const row = await response.json();
+    return row ? mapRow(row) : null;
+  } catch {
+    return null;
+  }
+}
+
 function mapRow(row: any): DictionaryEntry {
   const category = row.category || 'basic';
   const categoryLabel = CATEGORY_LABELS[category] || category;
@@ -131,7 +144,7 @@ export async function fetchDictionaryEntryBySlug(slug: string): Promise<Dictiona
 
     if (error && error.code !== 'PGRST116') {
       console.error('Supabase fetchDictionaryEntryBySlug error:', error);
-      return null;
+      return loadStaticDictionaryBySlug(normalized);
     }
 
     // 비정식 /dictionary/{uuid} 접근은 상세 페이지가 NotFound/noindex로 떨어지지 않도록
@@ -140,10 +153,10 @@ export async function fetchDictionaryEntryBySlug(slug: string): Promise<Dictiona
       return await fetchDictionaryEntryById(normalized);
     }
 
-    return null;
+    return loadStaticDictionaryBySlug(normalized);
   } catch (err) {
     console.error('Failed to fetch dictionary entry by slug:', err);
-    return null;
+    return loadStaticDictionaryBySlug(normalized);
   }
 }
 

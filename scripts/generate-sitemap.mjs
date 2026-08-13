@@ -32,6 +32,8 @@ const BASE_URL = 'https://muunsaju.com';
 
 const VERIFY_URLS = process.env.VERIFY === '1';
 const STRICT_MODE = process.env.STRICT === '1';
+// 운영 DB가 일시 제한된 경우에도 저장소의 최신 백업으로 정적 SEO 배포를 지속합니다.
+const ALLOW_CONTENT_BACKUP_FALLBACK = process.env.ALLOW_CONTENT_BACKUP_FALLBACK === '1';
 
 function getPositiveIntEnv(name, defaultValue) {
   const raw = process.env[name];
@@ -41,7 +43,8 @@ function getPositiveIntEnv(name, defaultValue) {
 }
 
 const SEO_LIMITS = {
-  dreams: getPositiveIntEnv('SEO_DREAM_LIMIT', 1000),
+  // 프리렌더 기본값과 일치시켜 sitemap과 실제 정적 상세 페이지 집합을 동일하게 유지합니다.
+  dreams: getPositiveIntEnv('SEO_DREAM_LIMIT', 2000),
   dictionary: getPositiveIntEnv('SEO_DICTIONARY_LIMIT', 1000),
   columns: getPositiveIntEnv('SEO_COLUMN_LIMIT', 500),
 };
@@ -66,6 +69,16 @@ const SUPABASE_ANON_KEY = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPA
 const BACKUPS_DIR = path.join(ROOT_DIR, 'backups');
 
 /** 가장 최신 backup 날짜 폴더 경로에서 테이블 JSON 읽기 */
+function publishedTime(row) {
+  const value = row?.published_at || row?.created_at || row?.updated_at || '';
+  const time = new Date(value).getTime();
+  return Number.isNaN(time) ? 0 : time;
+}
+
+function sortByPublishedDesc(rows) {
+  return [...rows].sort((a, b) => publishedTime(b) - publishedTime(a));
+}
+
 function readBackupTable(tableName) {
   if (!fs.existsSync(BACKUPS_DIR)) return [];
   const dirs = fs.readdirSync(BACKUPS_DIR, { withFileTypes: true })
@@ -300,9 +313,9 @@ async function loadDictionaryRows() {
     return rows;
   } catch (e) {
     console.warn(`   ⚠️ dictionary Supabase 실패 → backup 폴백: ${e.message}`);
-    const rows = readBackupTable('fortune_dictionary').filter((r) => r.published !== false).slice(0, SEO_LIMITS.dictionary);
+    const rows = sortByPublishedDesc(readBackupTable('fortune_dictionary').filter((r) => r.published !== false)).slice(0, SEO_LIMITS.dictionary);
     console.log(`   📦 dictionary backup: ${rows.length}개 / limit=${SEO_LIMITS.dictionary}`);
-    if (STRICT_MODE) throw e;
+    if (STRICT_MODE && !ALLOW_CONTENT_BACKUP_FALLBACK) throw e;
     return rows;
   }
 }
@@ -319,9 +332,9 @@ async function loadGuideRows() {
     return rows;
   } catch (e) {
     console.warn(`   ⚠️ guide Supabase 실패 → backup 폴백: ${e.message}`);
-    const rows = readBackupTable('columns').filter((r) => r.published !== false).slice(0, SEO_LIMITS.columns);
+    const rows = sortByPublishedDesc(readBackupTable('columns').filter((r) => r.published !== false)).slice(0, SEO_LIMITS.columns);
     console.log(`   📦 guide backup: ${rows.length}개 / limit=${SEO_LIMITS.columns}`);
-    if (STRICT_MODE) throw e;
+    if (STRICT_MODE && !ALLOW_CONTENT_BACKUP_FALLBACK) throw e;
     return rows;
   }
 }
@@ -338,9 +351,9 @@ async function loadDreamRows() {
     return rows;
   } catch (e) {
     console.warn(`   ⚠️ dream Supabase 실패 → backup 폴백: ${e.message}`);
-    const rows = readBackupTable('dreams').filter((r) => r.published !== false).slice(0, SEO_LIMITS.dreams);
+    const rows = sortByPublishedDesc(readBackupTable('dreams').filter((r) => r.published !== false)).slice(0, SEO_LIMITS.dreams);
     console.log(`   📦 dream backup: ${rows.length}개 / limit=${SEO_LIMITS.dreams}`);
-    if (STRICT_MODE) throw e;
+    if (STRICT_MODE && !ALLOW_CONTENT_BACKUP_FALLBACK) throw e;
     return rows;
   }
 }

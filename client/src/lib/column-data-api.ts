@@ -42,6 +42,19 @@ export const COLUMN_CATEGORIES: Record<string, { label: string; color: string }>
   family: { label: '가족 & 자녀', color: 'bg-teal-500/20 text-teal-400' },
 };
 
+async function loadStaticColumnBySlug(slug: string): Promise<ColumnData | null> {
+  const normalized = String(slug || '').trim().toLowerCase();
+  if (!normalized) return null;
+  try {
+    const response = await fetch(`/content-fallback/guides/${encodeURIComponent(normalized)}.json`, { cache: 'force-cache' });
+    if (!response.ok) return null;
+    const row = await response.json();
+    return row ? mapRow(row) : null;
+  } catch {
+    return null;
+  }
+}
+
 function mapRow(row: any): ColumnData {
   const category = row.category || 'luck';
   const categoryLabel = COLUMN_CATEGORIES[category]?.label || category;
@@ -130,10 +143,10 @@ async function getPublishedColumnBySlugValue(slug: string): Promise<ColumnData |
     .eq('published', true)
     .maybeSingle();
 
-  if (error) {
-    console.error('Supabase getColumnBySlug error:', error);
-    return null;
-  }
+    if (error) {
+      console.error('Supabase getColumnBySlug error:', error);
+      return null;
+    }
 
   return data ? mapRow(data) : null;
 }
@@ -163,10 +176,11 @@ export async function getColumnBySlug(slug: string): Promise<ColumnData | null> 
       }
     }
 
-    return getColumnById(normalizedSlug);
+    const byId = await getColumnById(normalizedSlug);
+    return byId || loadStaticColumnBySlug(normalizedSlug);
   } catch (error) {
     console.error('Failed to fetch column by slug:', error);
-    return null;
+    return loadStaticColumnBySlug(slug);
   }
 }
 

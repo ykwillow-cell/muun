@@ -1,0 +1,13 @@
+{
+  "generatedAt": "2026-08-13T05:41:08.731Z",
+  "sources": {
+    "columns": "backup:backups/2026-08-05/columns.json",
+    "dreams": "backup:backups/2026-08-05/dreams.json",
+    "dictionary": "backup:backups/2026-08-05/fortune_dictionary.json"
+  },
+  "counts": {
+    "dreams": 2000,
+    "dictionary": 1000,
+    "guides": 201
+  }
+}

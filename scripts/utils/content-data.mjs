@@ -18,6 +18,9 @@ export const SUPABASE_ANON_KEY = process.env.VITE_SUPABASE_ANON_KEY || process.e
 // 사이트맵/프리렌더가 생성되는 것을 막아야 합니다.
 // Vercel build에서는 STRICT=1 또는 STRICT_CONTENT_FETCH=1 설정을 권장합니다.
 export const STRICT_CONTENT_FETCH = process.env.STRICT_CONTENT_FETCH === '1' || process.env.STRICT === '1';
+// 운영 DB가 egress 제한 등으로 일시 중단됐을 때는 검증된 Git 백업으로 정적 SEO 배포를 계속합니다.
+// 이 값이 없으면 strict 모드에서는 기존처럼 즉시 실패합니다.
+export const ALLOW_CONTENT_BACKUP_FALLBACK = process.env.ALLOW_CONTENT_BACKUP_FALLBACK === '1';
 
 function isDateFolder(name) {
   return /^\d{4}-\d{2}-\d{2}$/.test(name);
@@ -82,7 +85,8 @@ export const SEO_LIMITS = {
 // Client bundle bloat을 막기 위해 목록/관련글용 snapshot은 별도 limit을 사용합니다.
 // 상세 SEO HTML은 prerender가 만들고, 상세 데이터는 hydration 후 Supabase에서 직접 조회합니다.
 export const SNAPSHOT_LIMITS = {
-  dreams: getPositiveIntEnv('SNAPSHOT_DREAM_LIMIT', Math.min(SEO_LIMITS.dreams, 600)),
+  // 상세 페이지가 DB 장애 중에도 고유 제목·요약을 유지하도록 SEO 프리렌더 대상과 같은 범위를 기본값으로 사용합니다.
+  dreams: getPositiveIntEnv('SNAPSHOT_DREAM_LIMIT', SEO_LIMITS.dreams),
   dictionary: getPositiveIntEnv('SNAPSHOT_DICTIONARY_LIMIT', Math.min(SEO_LIMITS.dictionary, 300)),
   columns: getPositiveIntEnv('SNAPSHOT_COLUMN_LIMIT', Math.min(SEO_LIMITS.columns, 200)),
 };
@@ -200,7 +204,7 @@ export async function loadColumnsDataset({ limit = SEO_LIMITS.columns } = {}) {
       source: result.source,
     };
   } catch (error) {
-    if (STRICT_CONTENT_FETCH) {
+    if (STRICT_CONTENT_FETCH && !ALLOW_CONTENT_BACKUP_FALLBACK) {
       throw new Error(`columns Supabase fetch failed and strict fallback is enabled: ${error instanceof Error ? error.message : String(error)}`);
     }
     const backup = readBackupTable('columns');
@@ -226,7 +230,7 @@ export async function loadDreamsDataset({ limit = SEO_LIMITS.dreams } = {}) {
       source: result.source,
     };
   } catch (error) {
-    if (STRICT_CONTENT_FETCH) {
+    if (STRICT_CONTENT_FETCH && !ALLOW_CONTENT_BACKUP_FALLBACK) {
       throw new Error(`dreams Supabase fetch failed and strict fallback is enabled: ${error instanceof Error ? error.message : String(error)}`);
     }
     const backup = readBackupTable('dreams');
@@ -252,7 +256,7 @@ export async function loadDictionaryDataset({ limit = SEO_LIMITS.dictionary } = 
       source: result.source,
     };
   } catch (error) {
-    if (STRICT_CONTENT_FETCH) {
+    if (STRICT_CONTENT_FETCH && !ALLOW_CONTENT_BACKUP_FALLBACK) {
       throw new Error(`fortune_dictionary Supabase fetch failed and strict fallback is enabled: ${error instanceof Error ? error.message : String(error)}`);
     }
     const backup = readBackupTable('fortune_dictionary');
