@@ -5,7 +5,6 @@ import { Search, MoonStar, PawPrint, Users, Mountain, Box, Activity, Layers, Tro
 import RelatedServices from '@/components/RelatedServices';
 import { useCanonical } from '@/lib/use-canonical';
 import { DREAM_INDEX } from '@/generated/content-snapshots';
-import { getAllDreams } from '@/lib/dream-data-api';
 import type { DreamData } from '@/lib/dream-data-api';
 
 type DreamGrade = 'great' | 'good' | 'bad';
@@ -69,30 +68,14 @@ export default function DreamInterpretation() {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [activeGrade, setActiveGrade] = useState<DreamGrade | null>(null);
 
-  // Supabase에서 전체 데이터 로드 (스냅샷보다 우선)
-  const [allDreams, setAllDreams] = useState<DreamData[]>(() =>
-    DREAM_INDEX.map(snapshotToData)
-  );
-  const [loading, setLoading] = useState(true);
-  const fetchedRef = useRef(false);
+  // 목록 검색은 빌드 시 생성된 경량 색인을 사용합니다.
+  // 전체 dreams 테이블을 브라우저에서 내려받으면 한 번의 방문으로 수십 MB egress가 발생합니다.
+  const [allDreams] = useState<DreamData[]>(() => DREAM_INDEX.map(snapshotToData));
+  const [loading] = useState(false);
 
   useEffect(() => {
-    // URL 초기 검색어
     const q = new URLSearchParams(window.location.search).get('q') || '';
     if (q) setSearchTerm(q);
-
-    // Supabase에서 최신 데이터 fetch (중복 방지)
-    if (fetchedRef.current) return;
-    fetchedRef.current = true;
-
-    getAllDreams()
-      .then((data) => {
-        if (data && data.length > 0) {
-          setAllDreams([...data]);
-        }
-      })
-      .catch(() => {/* 실패 시 스냅샷 유지 */})
-      .finally(() => setLoading(false));
   }, []);
 
   const filteredDreams = useMemo(() => {

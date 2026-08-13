@@ -81,39 +81,9 @@ function injectStyleTag(cssText: string): void {
 }
 
 async function fetchAndInject(): Promise<void> {
-  try {
-    const res = await fetch(
-      `${SUPABASE_URL}/rest/v1/design_themes?is_active=eq.true&limit=1`,
-      {
-        headers: {
-          apikey: SUPABASE_ANON_KEY,
-          Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-        },
-        // 항상 최신 테마 가져오기 (브라우저 캐시 무시)
-        cache: 'no-store',
-      }
-    );
-
-    if (!res.ok) return;
-
-    const themes: DesignTheme[] = await res.json();
-    if (!themes || themes.length === 0) return;
-
-    const cssText = buildCssText(themes[0]);
-
-    // 현재 페이지에 즉시 적용
-    injectStyleTag(cssText);
-
-    // 다음 방문 시 FOUC 방지를 위해 localStorage에 저장
-    try {
-      localStorage.setItem(CACHE_KEY, cssText);
-    } catch {
-      // localStorage 저장 실패 시 무시
-    }
-  } catch (err) {
-    // 네트워크 오류 등 — 기본 CSS 변수 유지
-    console.warn('[muun] 디자인 토큰 런타임 주입 실패:', err);
-  }
+  // 런타임마다 Supabase를 조회하면 모든 페이지 방문이 uncached egress를 발생시킵니다.
+  // `inject-design-tokens.mjs`가 빌드 시 최신 CSS를 생성하므로 운영 화면은 정적 토큰을 사용합니다.
+  return;
 }
 
 /**

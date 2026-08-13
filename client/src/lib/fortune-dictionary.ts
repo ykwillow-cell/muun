@@ -4,6 +4,7 @@
  * 기존 하드코딩 데이터를 제거하고 DB 기반으로 전환합니다.
  */
 import { createClient } from '@supabase/supabase-js';
+import { DICTIONARY_INDEX } from '@/generated/content-snapshots';
 
 const SUPABASE_URL = 'https://vuifbmsdggnwygvgcrkj.supabase.co';
 const SUPABASE_ANON_KEY =
@@ -87,42 +88,14 @@ const CACHE_TTL = 5 * 60 * 1000; // 5분
  */
 export async function fetchFortuneDictionary(): Promise<DictionaryEntry[]> {
   const now = Date.now();
-  if (_cache && now - _cacheTime < CACHE_TTL) {
-    return _cache;
-  }
-  try {
-    const PAGE_SIZE = 1000;
-    let allData: any[] = [];
-    let from = 0;
+  if (_cache && now - _cacheTime < CACHE_TTL) return _cache;
 
-    while (true) {
-      const { data, error } = await supabase
-        .from('fortune_dictionary')
-        .select('*')
-        .eq('published', true)
-        .order('created_at', { ascending: true })
-        .range(from, from + PAGE_SIZE - 1);
-
-      if (error) {
-        console.error('Supabase fortune_dictionary error:', error);
-        break;
-      }
-      if (!data || data.length === 0) break;
-
-      allData = allData.concat(data);
-      if (data.length < PAGE_SIZE) break;
-      from += PAGE_SIZE;
-    }
-
-    _cache = allData.map(mapRow);
-    _cacheTime = now;
-    // 동기 배열도 업데이트
-    fortuneDictionary.splice(0, fortuneDictionary.length, ..._cache);
-    return _cache;
-  } catch (err) {
-    console.error('Failed to fetch fortune dictionary:', err);
-    return _cache || [];
-  }
+  // 목록·검색 화면에는 경량 정적 색인을 사용합니다. 기존 구현은 매 방문마다
+  // 전체 fortune_dictionary 테이블을 select('*')로 내려받아 egress를 과도하게 소비했습니다.
+  _cache = (DICTIONARY_INDEX as unknown as DictionaryEntry[]).map((entry) => ({ ...entry }));
+  _cacheTime = now;
+  fortuneDictionary.splice(0, fortuneDictionary.length, ..._cache);
+  return _cache;
 }
 
 /**
@@ -131,6 +104,10 @@ export async function fetchFortuneDictionary(): Promise<DictionaryEntry[]> {
 export async function fetchDictionaryEntryBySlug(slug: string): Promise<DictionaryEntry | null> {
   const normalized = String(slug || '').trim().toLowerCase();
   if (!normalized) return null;
+
+  // 발행 상세 글은 CDN 정적 자산을 우선 사용합니다.
+  const staticEntry = await loadStaticDictionaryBySlug(normalized);
+  if (staticEntry) return staticEntry;
 
   try {
     const { data, error } = await supabase

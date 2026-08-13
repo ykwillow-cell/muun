@@ -3,6 +3,7 @@
  * muun-admin과 동일한 Supabase 프로젝트를 사용합니다.
  */
 import { createClient } from '@supabase/supabase-js';
+import { DREAM_INDEX } from '@/generated/content-snapshots';
 
 const SUPABASE_URL = 'https://vuifbmsdggnwygvgcrkj.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1aWZibXNkZ2dud3lndmdjcmtqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE4NzY0ODYsImV4cCI6MjA4NzQ1MjQ4Nn0.PhMK66O73HH98WIPAu66qk8FuXwJLU4Z2bhDcmDCpKI';
@@ -84,47 +85,36 @@ function mapRow(row: any): DreamData {
  * 발행된 모든 꿈해몽 조회 (최신순)
  */
 export async function getAllDreams(category?: string): Promise<DreamData[]> {
-  try {
-    const PAGE_SIZE = 1000;
-    let allData: any[] = [];
-    let from = 0;
-
-    const MAX_ITEMS = 50000;
-    while (allData.length < MAX_ITEMS) {
-      let query = supabase
-        .from('dreams')
-        .select('*')
-        .eq('published', true)
-        .order('score', { ascending: false })
-        .range(from, from + PAGE_SIZE - 1);
-
-      if (category) {
-        query = query.eq('category', category);
-      }
-
-      const { data, error } = await query;
-      if (error) {
-        console.error('Supabase getAllDreams error:', error);
-        break;
-      }
-      if (!data || data.length === 0) break;
-
-      allData = allData.concat(data);
-      if (data.length < PAGE_SIZE) break; // 마지막 페이지
-      from += PAGE_SIZE;
-    }
-
-    return allData.map(mapRow);
-  } catch (error) {
-    console.error('Failed to fetch dreams from Supabase:', error);
-    return [];
-  }
+  // 목록 탐색에는 빌드 시 생성된 경량 색인을 사용합니다. 기존 구현은 한 방문마다
+  // dreams 전 행을 select('*')·페이지네이션으로 전송해 egress를 급격히 소진했습니다.
+  const rows = DREAM_INDEX.map((item) => ({
+    id: item.id,
+    keyword: item.keyword,
+    slug: item.slug,
+    interpretation: item.excerpt || '',
+    traditional_meaning: null,
+    psychological_meaning: null,
+    category: item.category,
+    grade: item.grade,
+    score: item.score,
+    meta_title: item.metaTitle || null,
+    meta_description: item.metaDescription || item.excerpt || null,
+    published: true,
+    published_at: item.publishedDate || null,
+    created_at: item.publishedDate || '',
+  }));
+  const filtered = category ? rows.filter((row) => row.category === category) : rows;
+  return filtered.map(mapRow);
 }
 
 /**
  * slug로 꿈해몽 상세 조회
  */
 export async function getDreamBySlug(slug: string): Promise<DreamData | null> {
+  // 발행 콘텐츠는 CDN 정적 자산을 먼저 사용해 상세 페이지 조회 egress를 제거합니다.
+  const staticDream = await loadStaticDreamBySlug(slug);
+  if (staticDream) return staticDream;
+
   try {
     // published 필드 타입 불일치 방지: boolean/string 모두 커버하기 위해
     // published 조건 없이 slug만으로 먼저 조회 후 클라이언트에서 필터

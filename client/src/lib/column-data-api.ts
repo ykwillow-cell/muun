@@ -165,6 +165,10 @@ export async function getColumnBySlug(slug: string): Promise<ColumnData | null> 
     const normalizedSlug = String(slug || '').trim().toLowerCase();
     if (!normalizedSlug) return null;
 
+    // 발행 칼럼은 CDN 정적 자산을 우선 사용합니다.
+    const staticColumn = await loadStaticColumnBySlug(normalizedSlug);
+    if (staticColumn) return staticColumn;
+
     const direct = await getPublishedColumnBySlugValue(normalizedSlug);
     if (direct) return direct;
 

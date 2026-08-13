@@ -13,6 +13,13 @@ const rootDir = path.resolve(__dirname, '..');
 const outputDir = path.join(rootDir, 'client', 'public', 'content-fallback');
 const slugPattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const guideHexSuffix = /-[0-9a-f]{8}$/;
+// 정적 fallback은 실제 SEO 프리렌더 범위에 맞춥니다. 배포 파일 수를 과도하게 늘리지 않으면서
+// 검색 노출·주요 랜딩 URL의 Supabase 의존성을 제거합니다.
+const STATIC_LIMITS = {
+  columns: Number.parseInt(process.env.STATIC_COLUMN_LIMIT || String(SEO_LIMITS.columns), 10),
+  dreams: Number.parseInt(process.env.STATIC_DREAM_LIMIT || String(SEO_LIMITS.dreams), 10),
+  dictionary: Number.parseInt(process.env.STATIC_DICTIONARY_LIMIT || String(SEO_LIMITS.dictionary), 10),
+};
 
 function normalizeSlug(value) {
   return String(value || '').trim().toLowerCase();
@@ -101,9 +108,9 @@ async function main() {
   ensureEmptyDir(outputDir);
 
   const [columns, dreams, dictionary] = await Promise.all([
-    loadColumnsDataset({ limit: SEO_LIMITS.columns }),
-    loadDreamsDataset({ limit: SEO_LIMITS.dreams }),
-    loadDictionaryDataset({ limit: SEO_LIMITS.dictionary }),
+    loadColumnsDataset({ limit: Math.max(SEO_LIMITS.columns, STATIC_LIMITS.columns) }),
+    loadDreamsDataset({ limit: Math.max(SEO_LIMITS.dreams, STATIC_LIMITS.dreams) }),
+    loadDictionaryDataset({ limit: Math.max(SEO_LIMITS.dictionary, STATIC_LIMITS.dictionary) }),
   ]);
 
   let dreamCount = 0;
