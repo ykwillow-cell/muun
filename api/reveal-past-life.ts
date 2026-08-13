@@ -1,134 +1,127 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { z } from "zod";
+import { applyPublicApiSecurity, fetchWithTimeout, readLimitedJsonBody } from "./_security";
+
+const currentYear = new Date().getUTCFullYear();
+
+const pastLifeRequestSchema = z
+  .object({
+    birthYear: z.coerce.number().int().min(1900).max(currentYear),
+    birthMonth: z.coerce.number().int().min(1).max(12),
+    birthDay: z.coerce.number().int().min(1).max(31),
+    gender: z.enum(["male", "female"]).optional(),
+  })
+  .strict()
+  .superRefine(({ birthYear, birthMonth, birthDay }, ctx) => {
+    const date = new Date(Date.UTC(birthYear, birthMonth - 1, birthDay));
+    if (date.getUTCFullYear() !== birthYear || date.getUTCMonth() !== birthMonth - 1 || date.getUTCDate() !== birthDay) {
+      ctx.addIssue({ code: "custom", path: ["birthDay"], message: "올바른 생년월일을 입력해주세요." });
+    }
+  });
+
+const pastLifeResponseSchema = z
+  .object({
+    era: z.string().max(100),
+    country: z.string().max(100),
+    identity: z.string().max(150),
+    name: z.string().max(100),
+    trait: z.string().max(100),
+    story: z.string().max(1_500),
+    lesson: z.string().max(1_000),
+    karma: z.string().max(1_000),
+    element: z.enum(["목", "화", "토", "금", "수"]),
+    elementColor: z.enum(["text-green-400", "text-red-400", "text-yellow-400", "text-gray-300", "text-blue-400"]),
+  })
+  .strict();
+
+function parseGeminiJson(data: unknown) {
+  const candidate = (data as { candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }> })
+    ?.candidates?.[0];
+  const rawText = candidate?.content?.parts?.[0]?.text;
+  if (typeof rawText !== "string" || !rawText.trim()) return null;
+
+  try {
+    const cleaned = rawText.replace(/```json\n?/g, "").replace(/```\n?/g, "").trim();
+    return pastLifeResponseSchema.safeParse(JSON.parse(cleaned));
+  } catch {
+    return null;
+  }
+}
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  // CORS 및 기본 헤더 설정
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST');
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-  );
+  if (!applyPublicApiSecurity(req, res, "pastLife")) return;
 
-  if (req.method === 'OPTIONS') {
-    return res.status(200).end();
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
   }
 
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+  const rawBody = readLimitedJsonBody<unknown>(req.body);
+  if (!rawBody) {
+    return res.status(413).json({ error: "요청 본문이 너무 크거나 올바른 JSON 형식이 아닙니다." });
   }
 
-  // 데이터 추출 및 정규화
-  let birthYear, birthMonth, birthDay, gender;
-  
-  try {
-    const body = typeof req.body === 'string' ? JSON.parse(req.body) : req.body;
-    birthYear = body?.birthYear;
-    birthMonth = body?.birthMonth;
-    birthDay = body?.birthDay;
-    gender = body?.gender;
-  } catch (e) {
-    console.error('[PastLife API] Request body parse error:', e);
-    return res.status(400).json({ error: '잘못된 요청 형식입니다. JSON 데이터를 확인해주세요.' });
-  }
-
-  // 필수 필드 검증 (유연하게)
-  if (!birthYear || !birthMonth || !birthDay) {
-    console.error('[PastLife API] Validation failed:', { birthYear, birthMonth, birthDay });
-    return res.status(400).json({ 
-      error: '생년월일을 모두 입력해주세요.',
-      details: 'Year, Month, Day fields are required.'
-    });
+  const parsed = pastLifeRequestSchema.safeParse(rawBody);
+  if (!parsed.success) {
+    return res.status(400).json({ error: "잘못된 요청입니다.", details: parsed.error.issues[0]?.message });
   }
 
   const apiKey = process.env.GEMINI_API_KEY;
   if (!apiKey) {
-    console.error('[PastLife API] GEMINI_API_KEY not set');
-    return res.status(500).json({ error: '서버 설정 오류: API 키가 없습니다.' });
+    console.error("[PastLife API] Gemini API key is not configured");
+    return res.status(503).json({ error: "전생 탐색 서비스를 현재 사용할 수 없습니다." });
   }
 
-  const genderLabel = gender === 'male' ? '남성' : gender === 'female' ? '여성' : '미상';
-
-  const prompt = `당신은 동양 사주와 전생 철학에 정통한 신비로운 영매사입니다.
-아래 생년월일을 바탕으로 이 사람의 전생을 생생하게 묘사해주세요.
+  const { birthYear, birthMonth, birthDay, gender } = parsed.data;
+  const genderLabel = gender === "male" ? "남성" : gender === "female" ? "여성" : "미상";
+  const prompt = `당신은 동양 사주와 전생 철학에 정통한 신비로운 영매사입니다. 아래 생년월일을 바탕으로 이 사람의 전생을 생생하게 묘사해주세요.
 
 생년월일: ${birthYear}년 ${birthMonth}월 ${birthDay}일
 성별: ${genderLabel}
 
-다음 JSON 형식으로 정확하게 응답해주세요. JSON 외의 다른 텍스트는 절대 포함하지 마세요:
-
+아래 JSON 형식만 반환하세요.
 {
-  "era": "구체적인 시대와 연도 (예: 고려 말기, 1380년대)",
-  "country": "나라 또는 지역 (예: 고려, 당나라, 일본 에도, 유럽 중세 프랑스 등 다양하게)",
-  "identity": "전생의 신분과 직업 (예: 고려의 무관, 당나라 시인, 조선의 의녀 등)",
-  "name": "전생의 이름 (해당 시대와 나라에 어울리는 이름)",
-  "trait": "전생 성격의 핵심 특징 한 줄 (20자 이내)",
-  "story": "전생의 삶 이야기 (3~4문장, 구체적이고 생생하게, 감동적으로)",
-  "lesson": "전생에서 이번 생으로 가져온 교훈이나 사명 (2문장)",
-  "karma": "전생의 인연이 현생에 미치는 영향 (2문장, 긍정적으로)",
-  "element": "전생의 지배 오행 (목/화/토/금/수 중 하나)",
-  "elementColor": "오행에 맞는 tailwind 텍스트 색상 클래스 (목=text-green-400, 화=text-red-400, 토=text-yellow-400, 금=text-gray-300, 수=text-blue-400 중 하나)"
-}
-
-생년월일의 숫자들을 수비학적으로 분석하여 전생의 시대와 특성을 결정하세요.
-매번 다양하고 흥미로운 전생을 만들어주세요. 한국, 중국, 일본, 유럽, 중동 등 다양한 배경을 활용하세요.`;
+  "era":"구체적인 시대와 연도",
+  "country":"나라 또는 지역",
+  "identity":"전생의 신분과 직업",
+  "name":"전생의 이름",
+  "trait":"핵심 특징 한 줄",
+  "story":"전생의 삶 이야기",
+  "lesson":"이번 생으로 가져온 교훈이나 사명",
+  "karma":"현생에 미치는 긍정적 영향",
+  "element":"목/화/토/금/수 중 하나",
+  "elementColor":"text-green-400/text-red-400/text-yellow-400/text-gray-300/text-blue-400 중 하나"
+}`;
 
   try {
-    const geminiUrl = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-
-    const response = await fetch(geminiUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: {
-          temperature: 0.9,
-          response_mime_type: "application/json"
-        },
-      }),
-    });
+    const geminiUrl = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${encodeURIComponent(apiKey)}`;
+    const response = await fetchWithTimeout(
+      geminiUrl,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { temperature: 0.9, response_mime_type: "application/json", maxOutputTokens: 900 },
+        }),
+      },
+      12_000,
+    );
 
     if (!response.ok) {
-      const errText = await response.text();
-      console.error('[PastLife API] Gemini error:', response.status, errText);
-      
-      // Fallback to v1beta if v1 fails with 404
-      if (response.status === 404) {
-        const fallbackUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
-        const fallbackResponse = await fetch(fallbackUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: prompt }] }],
-            generationConfig: {
-              temperature: 0.9,
-              response_mime_type: "application/json"
-            },
-          }),
-        });
-        
-        if (fallbackResponse.ok) {
-          const data = await fallbackResponse.json();
-          const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
-          return res.status(200).json(JSON.parse(rawText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()));
-        }
-      }
-
-      return res.status(response.status).json({ error: `외부 API 오류 (${response.status})` });
+      console.error("[PastLife API] Gemini request failed", { status: response.status });
+      return res.status(502).json({ error: "전생 탐색에 실패했습니다. 잠시 후 다시 시도해주세요." });
     }
 
-    const data = await response.json();
-    const rawText = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? '';
-
-    if (!rawText) {
-      return res.status(500).json({ error: '응답 데이터를 생성할 수 없습니다.' });
+    const responseData = parseGeminiJson(await response.json());
+    if (!responseData?.success) {
+      console.error("[PastLife API] Gemini returned invalid structured output");
+      return res.status(502).json({ error: "전생 탐색 결과를 생성하지 못했습니다. 잠시 후 다시 시도해주세요." });
     }
 
-    const cleanJson = rawText.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-    return res.status(200).json(JSON.parse(cleanJson));
-
-  } catch (error: any) {
-    console.error('[PastLife API] Critical error:', error);
-    return res.status(500).json({ error: '전생 탐색 중 예상치 못한 오류가 발생했습니다.' });
+    return res.status(200).json(responseData.data);
+  } catch (error) {
+    console.error("[PastLife API] Unexpected Gemini invocation failure", {
+      name: error instanceof Error ? error.name : "UnknownError",
+    });
+    return res.status(502).json({ error: "전생 탐색 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요." });
   }
 }
