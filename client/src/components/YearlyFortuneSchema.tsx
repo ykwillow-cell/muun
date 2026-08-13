@@ -4,10 +4,21 @@ import { SajuResult } from "@/lib/saju";
 import { BRANCH_READINGS, ELEMENT_KOREAN } from "@/lib/saju-reading";
 import { STEM_ELEMENTS } from "@/lib/saju";
 
+type YearlyFortuneData = {
+  general: FortuneResult;
+  wealth: FortuneResult;
+  career: FortuneResult;
+};
+
+const ZODIAC_ANIMALS: Record<string, string> = {
+  "子": "쥐", "丑": "소", "寅": "호랑이", "卯": "토끼", "辰": "용", "巳": "뱀",
+  "午": "말", "未": "양", "申": "원숭이", "酉": "닭", "戌": "개", "亥": "돼지",
+};
+
 interface YearlyFortuneSchemaProps {
   birthDate: string; // "1990-01-15"
   saju: SajuResult;
-  fortune: FortuneResult;
+  fortune: YearlyFortuneData;
 }
 
 /**
@@ -19,7 +30,7 @@ interface YearlyFortuneSchemaProps {
  * 3. BreadcrumbSchema - 네비게이션 구조
  */
 export function YearlyFortuneSchema({ birthDate, saju, fortune }: YearlyFortuneSchemaProps) {
-  const zodiacAnimal = BRANCH_READINGS[saju.dayPillar.branch]?.animal || '미상';
+  const zodiacAnimal = ZODIAC_ANIMALS[saju.dayPillar.branch] || BRANCH_READINGS[saju.dayPillar.branch] || "미상";
   const dayElement = STEM_ELEMENTS[saju.dayPillar.stem];
   const elementKorean = ELEMENT_KOREAN[dayElement] || dayElement;
   const today = new Date().toISOString().split('T')[0];
@@ -63,7 +74,7 @@ export function YearlyFortuneSchema({ birthDate, saju, fortune }: YearlyFortuneS
         "name": "2026년 총운은 어떻게 되나요?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": fortune.overall?.summary || "2026년 운세를 확인해보세요."
+          "text": fortune.general.content || "2026년 운세를 확인해보세요."
         }
       },
       {
@@ -71,7 +82,7 @@ export function YearlyFortuneSchema({ birthDate, saju, fortune }: YearlyFortuneS
         "name": `${zodiacAnimal}띠의 재물운은?`,
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": fortune.wealth?.summary || "재물운 정보를 확인해보세요."
+          "text": fortune.wealth.content || "재물운 정보를 확인해보세요."
         }
       },
       {
@@ -79,7 +90,7 @@ export function YearlyFortuneSchema({ birthDate, saju, fortune }: YearlyFortuneS
         "name": "직업운과 사업운은?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": fortune.career?.summary || "직업운 정보를 확인해보세요."
+          "text": fortune.career.content || "직업운 정보를 확인해보세요."
         }
       },
       {
@@ -87,7 +98,7 @@ export function YearlyFortuneSchema({ birthDate, saju, fortune }: YearlyFortuneS
         "name": "애정운과 결혼운은?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": fortune.love?.summary || "애정운 정보를 확인해보세요."
+          "text": "애정운은 자신의 일간과 올해의 오행 흐름을 함께 고려해 차분히 살펴보세요."
         }
       },
       {
@@ -177,7 +188,7 @@ interface LifelongSajuSchemaProps {
 }
 
 export function LifelongSajuSchema({ birthDate, saju }: LifelongSajuSchemaProps) {
-  const zodiacAnimal = BRANCH_READINGS[saju.dayPillar.branch]?.animal || '미상';
+  const zodiacAnimal = ZODIAC_ANIMALS[saju.dayPillar.branch] || BRANCH_READINGS[saju.dayPillar.branch] || "미상";
   const dayElement = STEM_ELEMENTS[saju.dayPillar.stem];
   const elementKorean = ELEMENT_KOREAN[dayElement] || dayElement;
   const today = new Date().toISOString().split('T')[0];

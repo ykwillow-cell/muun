@@ -968,8 +968,9 @@ export default function Compatibility() {
      trackCustomEvent('share_click', { source_page: shareUrl, button_type: 'compatibility_result' });
    } catch {}
    try {
-     if (navigator.share && navigator.canShare) {
-       await navigator.share({ title: '무운 궁합 결과', text: shareText, url: shareUrl });
+     const sharePayload = { title: '무운 궁합 결과', text: shareText, url: shareUrl };
+     if (navigator.canShare?.(sharePayload)) {
+       await navigator.share(sharePayload);
        try { trackCustomEvent('share_success', { method: 'native_share', page: 'compatibility' }); } catch {}
      } else {
        await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);

@@ -27,7 +27,8 @@ const formSchema = z.object({
   birthCity: z.string().min(1, "태어난 도시를 선택해주세요"),
 });
 
-type FormValues = z.infer<typeof formSchema>;
+type FormInput = z.input<typeof formSchema>;
+type FormValues = z.output<typeof formSchema>;
 
 // 점성술 차트 컴포넌트
 const AstrologyChart = ({ planets }: { planets: any[] }) => {
@@ -187,7 +188,7 @@ const Astrology: React.FC = () => {
   const [selectedCity, setSelectedCity] = useState<City | null>(null);
   const [initialLoadDone, setInitialLoadDone] = useState(false);
 
-  const form = useForm<FormValues>({
+  const form = useForm<FormInput, unknown, FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       birthDate: "",

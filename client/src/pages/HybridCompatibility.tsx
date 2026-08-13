@@ -54,7 +54,8 @@ const formSchema = z.object({
   mbti2: z.string().min(1, "두 번째 MBTI를 선택해주세요"),
 });
 
-type FormValues = z.infer<typeof formSchema>;
+type FormInput = z.input<typeof formSchema>;
+type FormValues = z.output<typeof formSchema>;
 
 // ─── 에너지 저울 컴포넌트 ─────────────────────────────────────────────────────
 function EnergyScale({
@@ -440,7 +441,7 @@ export default function HybridCompatibilityPage() {
     }
   }, [result]);
 
-  const form = useForm<FormValues>({
+  const form = useForm<FormInput, unknown, FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name1: "",
@@ -464,16 +465,8 @@ export default function HybridCompatibilityPage() {
     // 유효성 검사 통과 시 에러 초기화
     setValidationErrors([]);
     try {
-      let birthDateStr1 = data.birthDate1;
-      if (typeof birthDateStr1 !== 'string') {
-        if (birthDateStr1 instanceof Date) birthDateStr1 = birthDateStr1.toISOString().split('T')[0];
-        else birthDateStr1 = String(birthDateStr1);
-      }
-      let birthDateStr2 = data.birthDate2;
-      if (typeof birthDateStr2 !== 'string') {
-        if (birthDateStr2 instanceof Date) birthDateStr2 = birthDateStr2.toISOString().split('T')[0];
-        else birthDateStr2 = String(birthDateStr2);
-      }
+      const birthDateStr1 = data.birthDate1;
+      const birthDateStr2 = data.birthDate2;
 
       const [year1, month1, day1] = birthDateStr1.split('-').map(Number);
       const [year2, month2, day2] = birthDateStr2.split('-').map(Number);
@@ -896,7 +889,7 @@ export default function HybridCompatibilityPage() {
                           <Clock className="w-3.5 h-3.5 text-purple-600" /> 태어난 시간
                         </Label>
                         <BirthTimeSelect
-                          value={form.watch("birthTime1")}
+                          value={form.watch("birthTime1") ?? "12:30"}
                           onChange={(val) => form.setValue("birthTime1", val)}
                           onUnknownChange={(isUnknown) => form.setValue("birthTimeUnknown1", isUnknown)}
                           isUnknown={form.watch("birthTimeUnknown1")}
@@ -992,7 +985,7 @@ export default function HybridCompatibilityPage() {
                           <Clock className="w-3.5 h-3.5 text-pink-600" /> 태어난 시간
                         </Label>
                         <BirthTimeSelect
-                          value={form.watch("birthTime2")}
+                          value={form.watch("birthTime2") ?? "12:30"}
                           onChange={(val) => form.setValue("birthTime2", val)}
                           onUnknownChange={(isUnknown) => form.setValue("birthTimeUnknown2", isUnknown)}
                           isUnknown={form.watch("birthTimeUnknown2")}

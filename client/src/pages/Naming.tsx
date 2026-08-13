@@ -95,7 +95,8 @@ const formSchema = z.object({
   isLeapMonth: z.boolean().default(false),
   customStrokes: z.string().optional(),
 });
-type FormValues = z.infer<typeof formSchema>;
+type FormInput = z.input<typeof formSchema>;
+type FormValues = z.output<typeof formSchema>;
 
 // ──────────────────────────────────────────────
 // 4격 쉬운 풀이 맵 (일반인 언어)
@@ -485,7 +486,7 @@ export default function Naming() {
   const [currentSurnameHanja, setCurrentSurnameHanja] = useState("");
   const [currentFamilyStrokes, setCurrentFamilyStrokes] = useState(0);
 
-  const form = useForm<FormValues>({
+  const form = useForm<FormInput, unknown, FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       gender: "male",

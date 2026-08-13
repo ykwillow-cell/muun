@@ -32,7 +32,8 @@ const formSchema = z.object({
   isLeapMonth: z.boolean().default(false),
 });
 
-type FormValues = z.infer<typeof formSchema>;
+type FormInput = z.input<typeof formSchema>;
+type FormValues = z.output<typeof formSchema>;
 
 // 월별 운세 데이터 (예시 - 실제로는 144괘 데이터베이스 필요)
 const getMonthlyFortunes = (hexagram: string) => {
@@ -49,7 +50,7 @@ export default function Tojeong() {
   const [result, setResult] = useState<any>(null);
   const [initialLoadDone, setInitialLoadDone] = useState(false);
   
-  const form = useForm<FormValues>({
+  const form = useForm<FormInput, unknown, FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
@@ -76,8 +77,6 @@ export default function Tojeong() {
     if (heroBirth && isHeroBirthFresh()) {
       form.setValue("birthDate", heroBirth.birthDate);
       form.setValue("calendarType", heroBirth.calendarType);
-      form.setValue("birthTime", heroBirth.birthTime);
-      form.setValue("birthTimeUnknown", heroBirth.birthTimeUnknown);
       setTimeout(() => setInitialLoadDone(true), 100);
       return;
     }
@@ -112,8 +111,6 @@ export default function Tojeong() {
       if (/^\d{8}$/.test(birthDateStr)) {
         birthDateStr = `${birthDateStr.substring(0, 4)}-${birthDateStr.substring(4, 6)}-${birthDateStr.substring(6, 8)}`;
       }
-    } else if (birthDateStr instanceof Date) {
-      birthDateStr = birthDateStr.toISOString().split('T')[0];
     }
     
     // 숫자 추출 및 유효성 체크

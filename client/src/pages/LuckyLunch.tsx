@@ -30,7 +30,8 @@ const formSchema = z.object({
   isLeapMonth: z.boolean().default(false),
 });
 
-type FormValues = z.infer<typeof formSchema>;
+type FormInput = z.input<typeof formSchema>;
+type FormValues = z.output<typeof formSchema>;
 
 const ENERGY_STAR = ["", "★", "★★", "★★★", "★★★★", "★★★★★"] as const;
 
@@ -41,7 +42,7 @@ export default function LuckyLunch() {
   const [showResult, setShowResult] = useState(false);
   const [userName, setUserName] = useState("");
 
-  const form = useForm<FormValues>({
+  const form = useForm<FormInput, unknown, FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
@@ -77,8 +78,6 @@ export default function LuckyLunch() {
       if (/^\d{8}$/.test(birthDateStr)) {
         birthDateStr = `${birthDateStr.substring(0, 4)}-${birthDateStr.substring(4, 6)}-${birthDateStr.substring(6, 8)}`;
       }
-    } else if (birthDateStr instanceof Date) {
-      birthDateStr = (birthDateStr as Date).toISOString().split('T')[0];
     }
     const dateParts = String(birthDateStr).match(/\d+/g);
     let finalDateStr = "2000-01-01";
@@ -90,7 +89,7 @@ export default function LuckyLunch() {
     localStorage.setItem("muun_user_data", JSON.stringify({ ...existing, ...data }));
 
     setUserName(data.name);
-    const rawTime = data.birthTimeUnknown ? "12:00" : data.birthTime;
+    const rawTime = data.birthTimeUnknown ? "12:00" : (data.birthTime || "12:00");
     const time = /^\d{2}:\d{2}$/.test(rawTime) ? rawTime : "12:00";
     const date = convertToSolarDate(finalDateStr, time, data.calendarType, data.isLeapMonth);
     const saju = calculateSaju(date, data.gender);
@@ -176,7 +175,7 @@ export default function LuckyLunch() {
                     <Calendar className="w-3.5 h-3.5 text-purple-400" />태어난 시간 <span className="text-[#b0adc8] font-normal">(선택)</span>
                   </Label>
                   <BirthTimeSelect
-                    value={form.watch("birthTime")}
+                    value={form.watch("birthTime") ?? "12:30"}
                     onChange={(val) => form.setValue("birthTime", val)}
                     onUnknownChange={(isUnknown) => { form.setValue("birthTimeUnknown", isUnknown); if (isUnknown) form.setValue("birthTime", "12:00"); }}
                     isUnknown={form.watch("birthTimeUnknown")}
@@ -241,7 +240,7 @@ export default function LuckyLunch() {
               </Button>
               <h1 className="text-base font-bold text-[#1a1a18]">오늘의 점심 추천</h1>
             </div>
-            <Button onClick={() => shareContent(`${userName}님의 오늘 행운 점심: ${result.recommendedMenus.map((m: any) => m.name).join(", ")}`)} variant="ghost" size="icon" className="text-[#3d3d3a] hover:bg-purple-50 min-w-[44px] min-h-[44px]">
+            <Button onClick={() => shareContent({ title: "오늘의 행운 점심", text: `${userName}님의 오늘 행운 점심: ${result.recommendedMenus.map((m: any) => m.name).join(", ")}`, page: "lucky_lunch" })} variant="ghost" size="icon" className="text-[#3d3d3a] hover:bg-purple-50 min-w-[44px] min-h-[44px]">
               <Share2 className="h-5 w-5" />
             </Button>
           </div>
@@ -333,7 +332,7 @@ export default function LuckyLunch() {
               <button onClick={() => setShowResult(false)} className="flex-1 h-11 rounded-xl border border-[#ddd8f0] bg-white text-[#3d3d3a] text-sm font-medium flex items-center justify-center gap-1.5 hover:bg-purple-50 transition-colors">
                 <RefreshCw className="w-4 h-4" />다시보기
               </button>
-              <button onClick={() => shareContent(`${userName}님의 오늘 행운 점심: ${result.recommendedMenus.map((m: any) => m.name).join(", ")}`)} className="flex-1 h-11 rounded-xl bg-[#6246b0] text-white text-sm font-semibold flex items-center justify-center gap-1.5 hover:bg-[#5038a0] transition-colors">
+              <button onClick={() => shareContent({ title: "오늘의 행운 점심", text: `${userName}님의 오늘 행운 점심: ${result.recommendedMenus.map((m: any) => m.name).join(", ")}`, page: "lucky_lunch" })} className="flex-1 h-11 rounded-xl bg-[#6246b0] text-white text-sm font-semibold flex items-center justify-center gap-1.5 hover:bg-[#5038a0] transition-colors">
                 <Share2 className="w-4 h-4" />결과 공유
               </button>
             </motion.div>

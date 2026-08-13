@@ -43,7 +43,8 @@ const formSchema = z.object({
   jobStatus: z.enum(['employed', 'seeking']).default('employed'),
 });
 
-type FormValues = z.infer<typeof formSchema>;
+type FormInput = z.input<typeof formSchema>;
+type FormValues = z.output<typeof formSchema>;
 
 // ─── 결과 타입 ──────────────────────────────────────────────────────────────
 interface CareerResult {
@@ -77,7 +78,13 @@ function generateCareerFortune(
   const balance = calculateElementBalance(saju);
 
   // 관성(官星) 강도로 직업운 점수 추산 (55~95 범위)
-  const guanScore = Math.min(95, Math.max(55, 65 + (balance.officialCount ?? 0) * 8 - (balance.conflictCount ?? 0) * 6));
+  // calculateElementBalance는 오행별 배열을 반환하므로 일간 기준 관성·충돌 오행의 개수를 추출한다.
+  const elementCounts = Object.fromEntries(balance.map(({ name, value }) => [name, value]));
+  const officialElement: Record<string, string> = { '木': '金', '火': '水', '土': '木', '金': '火', '水': '土' };
+  const conflictingElement: Record<string, string> = { '木': '土', '火': '金', '土': '水', '金': '木', '水': '火' };
+  const officialCount = elementCounts[officialElement[dayElement]] ?? 0;
+  const conflictCount = elementCounts[conflictingElement[dayElement]] ?? 0;
+  const guanScore = Math.min(95, Math.max(55, 65 + officialCount * 8 - conflictCount * 6));
   const score = guanScore;
 
   // 오행별 텍스트 맵
@@ -218,7 +225,7 @@ export default function CareerFortune() {
   const [result, setResult] = useState<CareerResult | null>(null);
   const [initialLoadDone, setInitialLoadDone] = useState(false);
 
-  const form = useForm<FormValues>({
+  const form = useForm<FormInput, unknown, FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: '',
@@ -520,7 +527,7 @@ export default function CareerFortune() {
                         태어난 시간
                       </Label>
                       <BirthTimeSelect
-                        value={form.watch('birthTime')}
+                        value={form.watch('birthTime') ?? '12:30'}
                         onChange={(val) => form.setValue('birthTime', val)}
                         onUnknownChange={(isUnknown) => {
                           form.setValue('birthTimeUnknown', isUnknown);

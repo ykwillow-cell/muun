@@ -47,7 +47,7 @@ export type TenGod = '비견' | '겁재' | '식신' | '상관' | '편재' | '정
 const ELEMENT_RELATIONS: Record<FiveElement, { generates: FiveElement, overcomes: FiveElement }> = {
   '木': { generates: '火', overcomes: '土' },
   '火': { generates: '土', overcomes: '金' },
-  '土': { generates: '金', overcomes: '수' },
+  '土': { generates: '金', overcomes: '水' },
   '金': { generates: '水', overcomes: '木' },
   '水': { generates: '木', overcomes: '火' },
 };

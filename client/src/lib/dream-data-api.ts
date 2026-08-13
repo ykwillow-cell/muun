@@ -74,6 +74,8 @@ function mapRow(row: StaticDreamRow): DreamData {
 }
 
 const STATIC_DREAMS = DREAM_INDEX.map((entry) => mapRow(entry));
+/** 상세·목록 화면에서 사용하는 정규화된 정적 색인입니다. */
+export const dreamIndex: readonly DreamData[] = STATIC_DREAMS;
 const STATIC_DREAMS_BY_SLUG = new Map(STATIC_DREAMS.map((entry) => [entry.slug.toLowerCase(), entry]));
 
 async function loadStaticDreamBySlug(slug: string): Promise<DreamData | null> {

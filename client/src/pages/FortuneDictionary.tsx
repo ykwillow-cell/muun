@@ -4,7 +4,7 @@ import { useCanonical } from '@/lib/use-canonical';
 import { Search, X, BookOpen, ChevronRight, Sparkles, TrendingUp } from 'lucide-react';
 import { useLocation, Link } from 'wouter';
 import { DICTIONARY_INDEX } from '@/generated/content-snapshots';
-import { fetchFortuneDictionary } from '@/lib/fortune-dictionary';
+import { fetchFortuneDictionary, fortuneDictionary, type DictionaryEntry } from '@/lib/fortune-dictionary';
 
 const categories = [
   { id: 'basic',        label: '사주 기초',    emoji: '☯️' },
@@ -51,11 +51,11 @@ const SERVICE_LINKS = [
 export default function FortuneDictionary() {
   useCanonical('/fortune-dictionary');
   const [location] = useLocation();
-  const [allEntries, setAllEntries] = useState<typeof DICTIONARY_INDEX>(DICTIONARY_INDEX as any);
+  const [allEntries, setAllEntries] = useState<DictionaryEntry[]>(fortuneDictionary);
 
   useEffect(() => {
     fetchFortuneDictionary().then((data) => {
-      if (data && data.length > 0) setAllEntries(data as any);
+      if (data && data.length > 0) setAllEntries(data);
     });
   }, []);
 
@@ -92,8 +92,8 @@ export default function FortuneDictionary() {
     const q = searchQuery.trim().toLowerCase();
     let results = selectedCategory
       ? allEntries.filter((e: any) => {
-          const cat = e.category === 'ten-stem' ? 'sipsin' : e.category;
-          return cat === selectedCategory;
+          const category = e.category === 'ten-stem' ? 'sipsin' : e.category;
+          return category === selectedCategory;
         })
       : [...allEntries];
     if (q) {
@@ -192,7 +192,7 @@ export default function FortuneDictionary() {
             <div className="flex flex-col gap-2">
               {filteredEntries.map((entry) => {
                 const style = categoryStyle[entry.category] ?? categoryStyle['other'];
-                const catEmoji = categories.find((c) => c.id === entry.category || (entry.category === 'ten-stem' && c.id === 'sipsin'))?.emoji ?? '📌';
+                const catEmoji = categories.find((c) => c.id === (entry.category === 'ten-stem' ? 'sipsin' : entry.category))?.emoji ?? '📌';
                 return (
                   <Link key={entry.id} href={`/dictionary/${entry.slug}`}>
                     <div className="flex overflow-hidden rounded-2xl border border-black/[0.06] bg-white shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer">
@@ -293,7 +293,7 @@ export default function FortuneDictionary() {
               {filteredEntries.map((entry, idx) => {
                 const style = categoryStyle[entry.category] ?? categoryStyle['other'];
                 const catEmoji = categories.find(
-                  (c) => c.id === entry.category || (entry.category === 'ten-stem' && c.id === 'sipsin')
+                  (c) => c.id === (entry.category === 'ten-stem' ? 'sipsin' : entry.category)
                 )?.emoji ?? '📌';
                 return (
                   <Link key={entry.id} href={`/dictionary/${entry.slug}`}>

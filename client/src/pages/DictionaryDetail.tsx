@@ -3,9 +3,8 @@ import { useParams, Link } from 'wouter';
 import { Helmet } from 'react-helmet-async';
 import { ChevronLeft, ChevronRight, Share2, Loader2, BookOpen, Lightbulb, Star, Sparkles, ArrowRight } from 'lucide-react';
 import NotFound from '@/pages/NotFound';
-import { fetchDictionaryEntryBySlug, type DictionaryEntry } from '@/lib/fortune-dictionary';
+import { fetchDictionaryEntryBySlug, fortuneDictionary, type DictionaryEntry } from '@/lib/fortune-dictionary';
 import { LinkedText } from '@/hooks/useLinkedText';
-import { DICTIONARY_INDEX } from '@/generated/content-snapshots';
 import { useCanonical } from '@/lib/use-canonical';
 
 const categoryStyle: Record<string, { side: string; bg: string; text: string; lightBg: string }> = {
@@ -40,10 +39,8 @@ const SERVICE_LINKS = [
 
 export default function DictionaryDetail() {
   const { id } = useParams<{ id: string }>();
-  const preview = DICTIONARY_INDEX.find((item) => item.slug === id || item.id === id);
-  const [entry, setEntry] = useState<DictionaryEntry | null | undefined>(
-    preview ? { ...preview, subtitle: preview.subtitle, metaTitle: preview.metaTitle, metaDescription: preview.metaDescription } : undefined,
-  );
+  const preview = fortuneDictionary.find((item) => item.slug === id || item.id === id);
+  const [entry, setEntry] = useState<DictionaryEntry | null | undefined>(preview);
   const canonicalSlug = entry?.slug || preview?.slug || id || '';
   useCanonical(canonicalSlug ? `/dictionary/${canonicalSlug}` : '/fortune-dictionary');
 
@@ -52,7 +49,7 @@ export default function DictionaryDetail() {
     const load = async () => {
       if (!id) { setEntry(null); return; }
       const fetched = await fetchDictionaryEntryBySlug(id);
-      if (active) setEntry(fetched || (preview ? { ...preview, subtitle: preview.subtitle, metaTitle: preview.metaTitle, metaDescription: preview.metaDescription } : null));
+      if (active) setEntry(fetched || preview || null);
     };
     load();
     return () => { active = false; };
@@ -65,8 +62,8 @@ export default function DictionaryDetail() {
   const relatedEntries = useMemo(() => {
     const category = entry?.category || preview?.category;
     const tags = entry?.tags || preview?.tags || [];
-    if (!tags.length) return DICTIONARY_INDEX.filter((item) => item.slug !== canonicalSlug && item.category === category).slice(0, 4);
-    const byTag = DICTIONARY_INDEX
+    if (!tags.length) return fortuneDictionary.filter((item) => item.slug !== canonicalSlug && item.category === category).slice(0, 4);
+    const byTag = fortuneDictionary
       .filter((item) => item.slug !== canonicalSlug)
       .map((item) => ({ item, score: (item.tags || []).filter((t) => tags.includes(t)).length }))
       .filter(({ score }) => score > 0)
@@ -75,7 +72,7 @@ export default function DictionaryDetail() {
       .slice(0, 4);
     if (byTag.length >= 4) return byTag;
     const ids = new Set(byTag.map((i) => i.slug));
-    const supplement = DICTIONARY_INDEX.filter((item) => item.slug !== canonicalSlug && !ids.has(item.slug) && item.category === category).slice(0, 4 - byTag.length);
+    const supplement = fortuneDictionary.filter((item) => item.slug !== canonicalSlug && !ids.has(item.slug) && item.category === category).slice(0, 4 - byTag.length);
     return [...byTag, ...supplement];
   }, [entry, preview, id, canonicalSlug]);
 

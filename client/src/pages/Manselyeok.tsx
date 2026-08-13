@@ -45,7 +45,8 @@ const formSchema = z.object({
   calendarType: z.enum(["solar", "lunar"]),
   isLeapMonth: z.boolean().default(false),
 });
-type FormValues = z.infer<typeof formSchema>;
+type FormInput = z.input<typeof formSchema>;
+type FormValues = z.output<typeof formSchema>;
 
 // ─────────────────────────────────────────────
 // 오행 색상 헬퍼
@@ -277,7 +278,7 @@ export default function Manselyeok() {
   const [barsAnimated, setBarsAnimated] = useState(false);
   const [initialLoadDone, setInitialLoadDone] = useState(false);
 
-  const form = useForm<FormValues>({
+  const form = useForm<FormInput, unknown, FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
@@ -354,8 +355,6 @@ export default function Manselyeok() {
       if (/^\d{8}$/.test(birthDateStr)) {
         birthDateStr = `${birthDateStr.substring(0, 4)}-${birthDateStr.substring(4, 6)}-${birthDateStr.substring(6, 8)}`;
       }
-    } else if (birthDateStr instanceof Date) {
-      birthDateStr = (birthDateStr as Date).toISOString().split('T')[0];
     }
     const dateParts = String(birthDateStr).match(/\d+/g);
     let finalDateStr = "2000-01-01";

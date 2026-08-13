@@ -1,7 +1,15 @@
 import { Link } from 'wouter';
-import { ArrowUpRight, CalendarDays, Globe2, ScrollText, Sparkles } from 'lucide-react';
+import { ArrowUpRight, CalendarDays, Globe2, ScrollText, Sparkles, type LucideIcon } from 'lucide-react';
 
-const EXTRA_SERVICES = [
+type ExtraService = {
+  href: string;
+  label: string;
+  desc: string;
+  Icon: LucideIcon;
+  badge?: '인기' | 'NEW';
+};
+
+const EXTRA_SERVICES: readonly ExtraService[] = [
   { href: '/yearly-fortune', label: '올해운세', desc: '올해 운세 한눈에', Icon: Sparkles, badge: '인기' },
   { href: '/manselyeok', label: '만세력', desc: '내 사주 기둥 보기', Icon: CalendarDays },
   { href: '/tojeong', label: '토정비결', desc: '월별 운세 확인', Icon: ScrollText },
@@ -10,7 +18,7 @@ const EXTRA_SERVICES = [
   { href: '/family-saju', label: '가족사주', desc: '가족 사주 풀이', Icon: Globe2 },
   { href: '/hybrid-compatibility', label: '사주×MBTI', desc: '사주+MBTI 궁합', Icon: Sparkles, badge: 'NEW' },
   { href: '/naming', label: '작명소', desc: '사주에 맞는 이름', Icon: CalendarDays, badge: 'NEW' },
-] as const;
+];
 
 export function MainBanner() {
   return (

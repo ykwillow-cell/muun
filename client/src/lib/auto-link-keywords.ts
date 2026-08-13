@@ -1,7 +1,7 @@
 // 내부 링크 자동화 시스템
 // 50개 사주 용어를 감지하고 자동으로 /dictionary/{slug}로 링크 생성
 
-import React from 'react';
+import React, { type ReactNode } from 'react';
 import { fortuneDictionary } from './fortune-dictionary';
 import { fortuneDictionary50Complete } from './fortune-dictionary-50-complete';
 
@@ -104,7 +104,7 @@ export function autoLinkKeywords(text: string, keywordMap?: Record<string, strin
 export function autoLinkKeywordsToJSX(
   text: string,
   keywordMap?: Record<string, string>
-): (string | JSX.Element)[] {
+): ReactNode[] {
   if (!keywordMap) {
     keywordMap = createKeywordMap();
   }
@@ -115,7 +115,7 @@ export function autoLinkKeywordsToJSX(
     return [text];
   }
 
-  const elements: (string | JSX.Element)[] = [];
+  const elements: ReactNode[] = [];
   let lastIndex = 0;
 
   matches.forEach((match, index) => {

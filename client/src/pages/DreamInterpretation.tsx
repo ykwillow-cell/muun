@@ -4,8 +4,7 @@ import { Link } from 'wouter';
 import { Search, MoonStar, PawPrint, Users, Mountain, Box, Activity, Layers, Trophy, CheckCircle2, AlertCircle, ArrowUpRight, Loader2 } from 'lucide-react';
 import RelatedServices from '@/components/RelatedServices';
 import { useCanonical } from '@/lib/use-canonical';
-import { DREAM_INDEX } from '@/generated/content-snapshots';
-import type { DreamData } from '@/lib/dream-data-api';
+import { dreamIndex, type DreamData } from '@/lib/dream-data-api';
 
 type DreamGrade = 'great' | 'good' | 'bad';
 
@@ -42,26 +41,6 @@ const gradeConfig: Record<DreamGrade, { label: string; Icon: typeof Trophy; tone
   },
 };
 
-// DREAM_INDEX(스냅샷)를 DreamData 형태로 변환
-function snapshotToData(item: typeof DREAM_INDEX[number]): DreamData {
-  return {
-    id: item.id,
-    keyword: item.keyword,
-    slug: item.slug,
-    interpretation: item.excerpt || '',
-    traditional_meaning: null,
-    psychological_meaning: null,
-    category: item.category,
-    grade: item.grade as DreamGrade,
-    score: item.score,
-    meta_title: item.metaTitle || null,
-    meta_description: item.metaDescription || item.excerpt || null,
-    published: true,
-    published_at: item.publishedDate || null,
-    created_at: item.publishedDate || new Date().toISOString(),
-  };
-}
-
 export default function DreamInterpretation() {
   useCanonical('/dream');
   const [searchTerm, setSearchTerm] = useState('');
@@ -70,7 +49,7 @@ export default function DreamInterpretation() {
 
   // 목록 검색은 빌드 시 생성된 경량 색인을 사용합니다.
   // 전체 dreams 테이블을 브라우저에서 내려받으면 한 번의 방문으로 수십 MB egress가 발생합니다.
-  const [allDreams] = useState<DreamData[]>(() => DREAM_INDEX.map(snapshotToData));
+  const [allDreams] = useState<DreamData[]>(() => [...dreamIndex]);
   const [loading] = useState(false);
 
   useEffect(() => {

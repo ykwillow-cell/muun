@@ -62,7 +62,8 @@ const formSchema = z.object({
  isLeapMonth: z.boolean().default(false),
 });
 
-type FormValues = z.infer<typeof formSchema>;
+type FormInput = z.input<typeof formSchema>;
+type FormValues = z.output<typeof formSchema>;
 
 // 2026년 월별 운세 생성 함수
 function generateMonthlyFortune(saju: SajuResult): { month: number; title: string; content: string; score: number; color: string }[] {
@@ -251,7 +252,7 @@ export default function YearlyFortune() {
  const [extraInfo, setExtraInfo] = useState<any>(null);
  const [expandedMonths, setExpandedMonths] = useState<Set<number>>(new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]));
  
- const form = useForm<FormValues>({
+ const form = useForm<FormInput, unknown, FormValues>({
  resolver: zodResolver(formSchema),
  defaultValues: {
  name: "",
@@ -738,7 +739,7 @@ export default function YearlyFortune() {
  </section>
 
  {/* 1-1. 사주팔자 설명 가이드 */}
- <SajuGuide userName={userName} theme="yellow" />
+ <SajuGuide userName={userName ?? ''} theme="yellow" />
 
  {/* 2. 일간 성격 분석 */}
  {stemPersonality && (
@@ -1045,7 +1046,7 @@ export default function YearlyFortune() {
 
  {/* 이미지 저장 카드 */}
  <div className="pt-2">
- <FortuneShareCard result={result} userName={userName} type="yearly" />
+ <FortuneShareCard result={result} userName={userName ?? ''} type="yearly" />
  </div>
 
  {/* 하단 CTA */}

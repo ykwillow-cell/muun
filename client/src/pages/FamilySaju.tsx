@@ -515,7 +515,7 @@ export default function FamilySaju() {
  일간(日干): {withReading(member.saju!.dayPillar.stem)} — {personality?.symbol || ""} {elemKor}의 기운
  </p>
  <p className="text-sm md:text-xs text-[#999891] leading-relaxed">
- {personality?.description?.substring(0, 80) || ""}...
+ {personality?.advice?.substring(0, 80) || ""}...
  </p>
  {/* 미니 오행 바 */}
  <div className="flex gap-1 mt-2">

@@ -63,7 +63,8 @@ const formSchema = z.object({
  isMarried: z.enum(["yes", "no"]),
 });
 
-type FormValues = z.infer<typeof formSchema>;
+type FormInput = z.input<typeof formSchema>;
+type FormValues = z.output<typeof formSchema>;
 
 // 평생 연애/결혼운 생성
 function generateLoveFortune(saju: SajuResult, gender: string, isMarried: string): { title: string; content: string } {
@@ -149,7 +150,7 @@ export default function LifelongSaju() {
   const [yearly2026Fortune, setYearly2026Fortune] = useState<FortuneResult | null>(null);
  const [initialLoadDone, setInitialLoadDone] = useState(false);
  
- const form = useForm<FormValues>({
+ const form = useForm<FormInput, unknown, FormValues>({
  resolver: zodResolver(formSchema),
  defaultValues: {
  name: "",
@@ -410,7 +411,7 @@ export default function LifelongSaju() {
  태어난 시간
  </Label>
  <BirthTimeSelect
- value={form.watch("birthTime")}
+ value={form.watch("birthTime") ?? "12:30"}
  onChange={(val) => form.setValue("birthTime", val)}
  onUnknownChange={(isUnknown) => { form.setValue("birthTimeUnknown", isUnknown); if (isUnknown) form.setValue("birthTime", "12:00"); }}
  isUnknown={form.watch("birthTimeUnknown")}

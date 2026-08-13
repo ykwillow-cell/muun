@@ -35,7 +35,8 @@ const formSchema = z.object({
   isLeapMonth: z.boolean().default(false),
 });
 
-type FormValues = z.infer<typeof formSchema>;
+type FormInput = z.input<typeof formSchema>;
+type FormValues = z.output<typeof formSchema>;
 
 // ─── 오행 아이콘/색상 매핑 ───────────────────────────────────────────────────
 const ELEMENT_CONFIG: Record<string, { icon: React.ReactNode; color: string; bg: string; border: string; label: string }> = {
@@ -360,7 +361,7 @@ export default function DailyFortune() {
   const [userName, setUserName] = useState("");
   const [initialLoadDone, setInitialLoadDone] = useState(false);
 
-  const form = useForm<FormValues>({
+  const form = useForm<FormInput, unknown, FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
@@ -388,8 +389,6 @@ export default function DailyFortune() {
     if (heroBirth && isHeroBirthFresh()) {
       form.setValue("birthDate", heroBirth.birthDate);
       form.setValue("calendarType", heroBirth.calendarType);
-      form.setValue("birthTime", heroBirth.birthTime);
-      form.setValue("birthTimeUnknown", heroBirth.birthTimeUnknown);
       setTimeout(() => setInitialLoadDone(true), 100);
       return;
     }
@@ -424,8 +423,6 @@ export default function DailyFortune() {
       if (/^\d{8}$/.test(birthDateStr)) {
         birthDateStr = `${birthDateStr.substring(0, 4)}-${birthDateStr.substring(4, 6)}-${birthDateStr.substring(6, 8)}`;
       }
-    } else if (birthDateStr instanceof Date) {
-      birthDateStr = birthDateStr.toISOString().split('T')[0];
     }
     
     // 숫자 추출 및 유효성 체크

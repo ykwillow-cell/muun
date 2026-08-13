@@ -23,10 +23,7 @@ import { convertToHanja } from "@/lib/hanja-converter";
 import FortuneShareCard from "@/components/FortuneShareCard";
 import { trackEvent, trackCustomEvent } from "@/lib/ga4";
 import { YearlyFortuneSchema } from "@/components/YearlyFortuneSchema";
-import { 
-  generateYearlyFortune, 
-  FortuneResult 
-} from "@/lib/fortune-templates";
+import { generateYearlyFortune } from "@/lib/fortune-templates";
 import {
   STEM_READINGS,
   BRANCH_READINGS,
@@ -39,6 +36,10 @@ import {
   analyzeElementBalance,
   getElementRelation,
 } from "@/lib/saju-reading";
+
+// 2026년 신년운세 생성기 반환 타입
+// 스키마와 화면 상태가 동일한 데이터 모델을 사용하도록 고정한다.
+type YearlyFortuneResult = ReturnType<typeof generateYearlyFortune>;
 
 // 2026년 월별 운세 생성 함수
 function generateMonthlyFortune(saju: SajuResult): { month: number; title: string; content: string; score: number; color: string }[] {
@@ -87,7 +88,7 @@ export default function YearlyFortuneDetail() {
   const birthDateStr = params.birthDate; // "1990-01-15"
   
   const [result, setResult] = useState<SajuResult | null>(null);
-  const [fortune, setFortune] = useState<FortuneResult | null>(null);
+  const [fortune, setFortune] = useState<YearlyFortuneResult | null>(null);
   const [extraInfo, setExtraInfo] = useState<any>(null);
   const [monthlyFortune, setMonthlyFortune] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -101,14 +102,7 @@ export default function YearlyFortuneDetail() {
         setLoading(false);
         return;
       }
-      let dateStr = birthDateStr;
-      if (typeof dateStr !== 'string') {
-        if (dateStr instanceof Date) {
-          dateStr = dateStr.toISOString().split('T')[0];
-        } else {
-          dateStr = String(dateStr);
-        }
-      }
+      const dateStr = birthDateStr;
       const [year, month, day] = dateStr.split('-').map(Number);
       
       // 유효성 검사
@@ -182,8 +176,11 @@ export default function YearlyFortuneDetail() {
     );
   }
 
-  const zodiacSign = BRANCH_READINGS[result.dayPillar.branch]?.korean || '미상';
-  const zodiacAnimal = BRANCH_READINGS[result.dayPillar.branch]?.animal || '미상';
+  const zodiacSign = BRANCH_READINGS[result.dayPillar.branch] || '미상';
+  const zodiacAnimal = ({
+    '子': '쥐', '丑': '소', '寅': '호랑이', '卯': '토끼', '辰': '용', '巳': '뱀',
+    '午': '말', '未': '양', '申': '원숭이', '酉': '닭', '戌': '개', '亥': '돼지',
+  } as Record<string, string>)[result.dayPillar.branch] || zodiacSign;
   const dayElement = STEM_ELEMENTS[result.dayPillar.stem];
   const elementKorean = ELEMENT_KOREAN[dayElement] || dayElement;
 
@@ -217,17 +214,17 @@ export default function YearlyFortuneDetail() {
         </motion.div>
 
         {/* 공유 카드 */}
-        <FortuneShareCard 
-          title={'2026년 올해운세 결과'}
-          description={`${zodiacAnimal}띠의 2026년 신년운세를 확인해보세요.`}
-          url={`https://muunsaju.com/yearly-fortune/${birthDateStr}`}
+        <FortuneShareCard
+          type="yearly"
+          result={result}
+          userName={`${zodiacAnimal}띠`}
         />
 
         {/* 사주 차트 */}
-        {result && <SajuChart saju={result} />}
+        <SajuChart result={result} />
 
         {/* 운세 내용 */}
-        {fortune && <YearlyFortuneContent fortune={fortune} />}
+        <YearlyFortuneContent />
 
         {/* 월별 운세 */}
         <Card className="mt-8">

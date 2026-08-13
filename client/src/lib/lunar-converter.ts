@@ -102,6 +102,6 @@ export function solarToLunar(date: Date): { year: number; month: number; day: nu
     year: lunar.year,
     month: lunar.month,
     day: lunar.day,
-    isLeap: lunar.isLeap
+    isLeap: lunar.intercalation === true
   };
 }

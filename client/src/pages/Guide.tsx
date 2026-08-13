@@ -172,7 +172,7 @@ export default function Guide() {
               <span>📋</span> 전체 보기
             </button>
             {CATEGORIES.slice(1).map((cat) => {
-              const cnt = catCounts[cat.id] ?? 0;
+              const cnt = cat.id ? (catCounts[cat.id] ?? 0) : 0;
               const active = selectedCategory === cat.id;
               return (
                 <button

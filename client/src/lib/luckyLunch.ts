@@ -1,4 +1,4 @@
-import { STEM_ELEMENTS, BRANCH_ELEMENTS } from '@/lib/saju';
+import { STEM_ELEMENTS, BRANCH_ELEMENTS, type HeavenlyStem, type EarthlyBranch } from '@/lib/saju';
 
 export interface LunchMenu {
   id: string;
@@ -647,8 +647,8 @@ export function getLuckyLunchResult(saju: any): LuckyLunchResult {
   const pillars = [saju.yearPillar, saju.monthPillar, saju.dayPillar, saju.hourPillar];
   pillars.forEach((pillar: any) => {
     if (pillar) {
-      const stemElement = STEM_ELEMENTS[pillar.stem];
-      const branchElement = BRANCH_ELEMENTS[pillar.branch];
+      const stemElement = STEM_ELEMENTS[pillar.stem as HeavenlyStem];
+      const branchElement = BRANCH_ELEMENTS[pillar.branch as EarthlyBranch];
       if (stemElement && elementCounts.hasOwnProperty(stemElement)) {
         elementCounts[stemElement as keyof typeof elementCounts]++;
       }

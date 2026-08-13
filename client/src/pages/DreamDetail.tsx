@@ -8,10 +8,9 @@ import {
 } from 'lucide-react';
 import NotFound from '@/pages/NotFound';
 import { useCanonical } from '@/lib/use-canonical';
-import { getDreamBySlug, type DreamData } from '@/lib/dream-data-api';
+import { getDreamBySlug, dreamIndex, type DreamData } from '@/lib/dream-data-api';
 import RelatedServices from '@/components/RelatedServices';
 import { LinkedText } from '@/hooks/useLinkedText';
-import { DREAM_INDEX } from '@/generated/content-snapshots';
 import { trackCustomEvent } from '@/lib/ga4';
 
 type DreamGrade = 'great' | 'good' | 'bad';
@@ -74,7 +73,7 @@ const DREAM_COLUMNS = [
 
 export default function DreamDetail() {
   const { slug } = useParams<{ slug: string }>();
-  const preview = DREAM_INDEX.find((item) => item.slug === slug);
+  const preview = dreamIndex.find((item) => item.slug === slug);
   const [dream, setDream] = useState<DreamData | null | undefined>(undefined);
   useCanonical(`/dream/${slug}`);
 
@@ -97,8 +96,8 @@ export default function DreamDetail() {
   const gradeKey = (dream?.grade || preview?.grade || 'good') as DreamGrade;
   const grade = gradeConfig[gradeKey] || gradeConfig.good;
   const GradeIcon = grade.Icon;
-  const metaTitle = dream?.meta_title || preview?.metaTitle || `${preview?.keyword || slug} 꿈해몽 | 무운`;
-  const metaDescription = dream?.meta_description || preview?.metaDescription || preview?.excerpt || '꿈의 의미와 해석을 알아보세요.';
+  const metaTitle = dream?.meta_title || preview?.meta_title || `${preview?.keyword || slug} 꿈해몽 | 무운`;
+  const metaDescription = dream?.meta_description || preview?.meta_description || preview?.interpretation || '꿈의 의미와 해석을 알아보세요.';
   const canonicalUrl = `https://muunsaju.com/dream/${slug}`;
   const rawCategory = dream?.category || preview?.category || 'other';
   const { label: categoryLabel } = (
@@ -106,15 +105,15 @@ export default function DreamDetail() {
       action: '행동', emotion: '감정', place: '장소', other: '기타' }[rawCategory]
     ? { label: { animal: '동물', nature: '자연 · 현상', person: '사람', object: '생활 · 사물',
         action: '행동', emotion: '감정', place: '장소', other: '기타' }[rawCategory] as string }
-    : { label: preview?.categoryLabel || '기타' }
+    : { label: '기타' }
   );
-  const publishedDate = preview?.publishedDate || '';
+  const publishedDate = preview?.published_at || '';
   const score = dream?.score || preview?.score || 70;
 
   const relatedDreams = useMemo(() => {
     const category = dream?.category || preview?.category;
-    const published = DREAM_INDEX.filter((item) =>
-      item.slug !== slug && !!item.publishedDate
+    const published = dreamIndex.filter((item) =>
+      item.slug !== slug && !!item.published_at
     );
 
     // 같은 카테고리 우선, 부족하면 전체에서 score 높은 순으로 보충
@@ -319,7 +318,7 @@ export default function DreamDetail() {
           </div>
           <div className="px-5 py-5">
             <p className="text-base leading-8" style={{ color: '#334155' }}>
-              <LinkedText text={dream?.interpretation || preview?.excerpt || ''} />
+              <LinkedText text={dream?.interpretation || preview?.interpretation || ''} />
             </p>
           </div>
 
@@ -406,12 +405,12 @@ export default function DreamDetail() {
                         }`}>
                           {item.grade === 'great' ? '길몽' : item.grade === 'bad' ? '흉몽' : '보통'}
                         </span>
-                        <span className="text-xs text-slate-400">{item.categoryLabel}</span>
+                        <span className="text-xs text-slate-400">{({ animal: '동물', nature: '자연 · 현상', person: '사람', object: '생활 · 사물', action: '행동', emotion: '감정', place: '장소', other: '기타' } as Record<string, string>)[item.category] || '기타'}</span>
                       </div>
                       <p className="text-sm font-bold leading-snug mb-1" style={{ color: '#1e2340' }}>
                         {item.keyword} 꿈해몽
                       </p>
-                      <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">{item.excerpt}</p>
+                      <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">{item.interpretation}</p>
                     </div>
                     <ChevronRight size={16} className="text-slate-300 flex-shrink-0 mt-1" aria-hidden="true" />
                   </div>

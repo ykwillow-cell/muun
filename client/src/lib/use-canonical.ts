@@ -14,7 +14,7 @@ export function useCanonical(path: string) {
     const canonicalUrl = `${baseUrl}${path}`;
 
     // 기존 canonical 태그 찾기
-    let canonicalLink = document.querySelector('link[rel="canonical"]');
+    let canonicalLink = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
 
     if (canonicalLink) {
       // 기존 태그 업데이트
