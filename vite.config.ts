@@ -4,10 +4,10 @@ import react from "@vitejs/plugin-react";
 import fs from "node:fs";
 import path from "path";
 import { defineConfig } from "vite";
-import { vitePluginManusRuntime } from "vite-plugin-manus-runtime";
 
-
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime()];
+// 프로덕션 배포에는 앱 번들만 필요하다. 개발·에디터 보조 런타임을 HTML에 인라인하면
+// 프리렌더된 수천 개 상세 페이지에 동일 코드가 반복되어 배포 용량이 급증한다.
+const plugins = [react(), tailwindcss(), jsxLocPlugin()];
 
 export default defineConfig({
   plugins,
