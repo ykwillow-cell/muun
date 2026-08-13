@@ -13,6 +13,8 @@ const DEFAULT_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3Mi
 
 export const SUPABASE_URL = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || DEFAULT_SUPABASE_URL;
 export const SUPABASE_ANON_KEY = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || DEFAULT_SUPABASE_ANON_KEY;
+// 빌드/서버 환경은 service role을 우선 사용한다. 브라우저 번들에는 이 변수를 노출하지 않는다.
+export const SUPABASE_REST_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || SUPABASE_ANON_KEY;
 
 // SEO 빌드에서는 Supabase 최신 데이터 fetch 실패 시 오래된 backup fallback으로
 // 사이트맵/프리렌더가 생성되는 것을 막아야 합니다.
@@ -83,7 +85,7 @@ export const SEO_LIMITS = {
 };
 
 // Client bundle bloat을 막기 위해 목록/관련글용 snapshot은 별도 limit을 사용합니다.
-// 상세 SEO HTML은 prerender가 만들고, 상세 데이터는 hydration 후 Supabase에서 직접 조회합니다.
+// 상세 SEO HTML과 hydration fallback은 CDN 정적 자산을 사용하며, 이 스냅샷은 목록/관련글에만 사용합니다.
 export const SNAPSHOT_LIMITS = {
   // 상세 페이지가 DB 장애 중에도 고유 제목·요약을 유지하도록 SEO 프리렌더 대상과 같은 범위를 기본값으로 사용합니다.
   dreams: getPositiveIntEnv('SNAPSHOT_DREAM_LIMIT', SEO_LIMITS.dreams),
@@ -116,8 +118,8 @@ async function fetchRestTablePage(tableName, { select = '*', filters = [], order
 
   const response = await fetch(url, {
     headers: {
-      apikey: SUPABASE_ANON_KEY,
-      Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+      apikey: SUPABASE_REST_KEY,
+      Authorization: `Bearer ${SUPABASE_REST_KEY}`,
       Accept: 'application/json',
     },
   });

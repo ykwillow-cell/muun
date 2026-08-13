@@ -1,14 +1,5 @@
-/**
- * Supabase에서 칼럼 데이터 직접 조회
- * muun-admin과 동일한 Supabase 프로젝트를 사용합니다.
- */
-import { createClient } from '@supabase/supabase-js';
-import { hasGeneratedGuideHexSuffix, stripGeneratedGuideHexSuffix } from './guide-url';
-
-const SUPABASE_URL = 'https://vuifbmsdggnwygvgcrkj.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1aWZibXNkZ2dud3lndmdjcmtqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE4NzY0ODYsImV4cCI6MjA4NzQ1MjQ4Nn0.PhMK66O73HH98WIPAu66qk8FuXwJLU4Z2bhDcmDCpKI';
-
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+import { GUIDE_INDEX, HOME_COLUMNS_PREVIEW } from "@/generated/content-snapshots";
+import { hasGeneratedGuideHexSuffix, stripGeneratedGuideHexSuffix } from "./guide-url";
 
 export interface ColumnData {
   id: string;
@@ -29,237 +20,148 @@ export interface ColumnData {
   canonicalUrl?: string;
 }
 
-// 카테고리 정의 (muun-admin과 동기화)
-export const COLUMN_CATEGORIES: Record<string, { label: string; color: string }> = {
-  luck: { label: '개운법', color: 'bg-yellow-500/20 text-yellow-400' },
-  basic: { label: '사주 기초', color: 'bg-blue-500/20 text-blue-400' },
-  relationship: { label: '관계 & 궁합', color: 'bg-pink-500/20 text-pink-400' },
-  health: { label: '건강 & 운', color: 'bg-green-500/20 text-green-400' },
-  money: { label: '재물운', color: 'bg-purple-500/20 text-purple-400' },
-  flow: { label: '운명의 흐름', color: 'bg-indigo-500/20 text-indigo-400' },
-  career: { label: '취업 & 커리어', color: 'bg-orange-500/20 text-orange-400' },
-  love: { label: '연애 & 결혼', color: 'bg-rose-500/20 text-rose-400' },
-  family: { label: '가족 & 자녀', color: 'bg-teal-500/20 text-teal-400' },
+type StaticColumnRow = {
+  id: string;
+  slug?: string;
+  title?: string;
+  description?: string;
+  content?: string;
+  category?: string;
+  categoryLabel?: string;
+  author?: string;
+  published?: boolean;
+  published_at?: string;
+  publishedDate?: string;
+  created_at?: string;
+  read_time?: number;
+  readTime?: number;
+  thumbnail_url?: string;
+  thumbnail?: string;
+  keywords?: string[];
+  meta_title?: string;
+  metaTitle?: string;
+  meta_description?: string;
+  metaDescription?: string;
+  canonical_url?: string;
+  canonicalUrl?: string;
 };
 
+export const COLUMN_CATEGORIES: Record<string, { label: string; color: string }> = {
+  luck: { label: "개운법", color: "bg-yellow-500/20 text-yellow-400" },
+  basic: { label: "사주 기초", color: "bg-blue-500/20 text-blue-400" },
+  relationship: { label: "관계 & 궁합", color: "bg-pink-500/20 text-pink-400" },
+  health: { label: "건강 & 운", color: "bg-green-500/20 text-green-400" },
+  money: { label: "재물운", color: "bg-purple-500/20 text-purple-400" },
+  flow: { label: "운명의 흐름", color: "bg-indigo-500/20 text-indigo-400" },
+  career: { label: "취업 & 커리어", color: "bg-orange-500/20 text-orange-400" },
+  love: { label: "연애 & 결혼", color: "bg-rose-500/20 text-rose-400" },
+  family: { label: "가족 & 자녀", color: "bg-teal-500/20 text-teal-400" },
+};
+
+function mapRow(row: StaticColumnRow): ColumnData {
+  const category = row.category || "luck";
+  return {
+    id: String(row.id),
+    slug: row.slug || String(row.id),
+    title: row.title || "",
+    description: row.description || "",
+    content: row.content || "",
+    category,
+    categoryLabel: row.categoryLabel || COLUMN_CATEGORIES[category]?.label || category,
+    author: row.author || "무운 역술팀",
+    published: row.published ?? true,
+    publishedDate: row.published_at || row.publishedDate || row.created_at || "",
+    readTime: row.read_time || row.readTime || 5,
+    thumbnail: row.thumbnail_url || row.thumbnail || "",
+    keywords: row.keywords || [],
+    metaTitle: row.meta_title || row.metaTitle,
+    metaDescription: row.meta_description || row.metaDescription,
+    canonicalUrl: row.canonical_url || row.canonicalUrl,
+  };
+}
+
+const STATIC_COLUMNS: ColumnData[] = GUIDE_INDEX.map((entry) => mapRow(entry));
+const STATIC_COLUMNS_BY_SLUG = new Map(STATIC_COLUMNS.map((entry) => [entry.slug?.toLowerCase(), entry]));
+const STATIC_COLUMNS_BY_ID = new Map(STATIC_COLUMNS.map((entry) => [entry.id, entry]));
+
 async function loadStaticColumnBySlug(slug: string): Promise<ColumnData | null> {
-  const normalized = String(slug || '').trim().toLowerCase();
+  const normalized = String(slug || "").trim().toLowerCase();
   if (!normalized) return null;
+
   try {
-    const response = await fetch(`/content-fallback/guides/${encodeURIComponent(normalized)}.json`, { cache: 'force-cache' });
+    const response = await fetch(`/content-fallback/guides/${encodeURIComponent(normalized)}.json`, {
+      cache: "force-cache",
+    });
     if (!response.ok) return null;
-    const row = await response.json();
-    return row ? mapRow(row) : null;
+    return mapRow((await response.json()) as StaticColumnRow);
   } catch {
     return null;
   }
 }
 
-function mapRow(row: any): ColumnData {
-  const category = row.category || 'luck';
-  const categoryLabel = COLUMN_CATEGORIES[category]?.label || category;
-  return {
-    id: String(row.id),
-    slug: row.slug || String(row.id),
-    title: row.title || row.name || '',
-    description: row.description || '',
-    content: row.content || '',
-    category,
-    categoryLabel,
-    author: row.author || '무운 역술팀',
-    published: row.published || false,
-    publishedDate: row.published_at || row.created_at || new Date().toISOString(),
-    readTime: row.read_time || 5,
-    thumbnail: row.thumbnail_url || '',
-    keywords: row.keywords || [],
-    metaTitle: row.meta_title || undefined,
-    metaDescription: row.meta_description || undefined,
-    canonicalUrl: row.canonical_url || undefined,
-  };
-}
+function findStaticColumn(slugOrId: string): ColumnData | null {
+  const normalized = String(slugOrId || "").trim().toLowerCase();
+  if (!normalized) return null;
+  if (STATIC_COLUMNS_BY_ID.has(normalized)) return STATIC_COLUMNS_BY_ID.get(normalized) ?? null;
+  if (STATIC_COLUMNS_BY_SLUG.has(normalized)) return STATIC_COLUMNS_BY_SLUG.get(normalized) ?? null;
 
-/**
- * 발행된 모든 칼럼 조회 (최신순)
- */
-export async function getAllColumns(category?: string): Promise<ColumnData[]> {
-  try {
-    let query = supabase
-      .from('columns')
-      .select('*')
-      .eq('published', true)
-      .order('published_at', { ascending: false, nullsFirst: false });
-
-    if (category) {
-      query = query.eq('category', category);
-    }
-
-    const { data, error } = await query.limit(100);
-    if (error) {
-      console.error('Supabase getAllColumns error:', error);
-      return [];
-    }
-    return (data || []).map(mapRow);
-  } catch (error) {
-    console.error('Failed to fetch columns from Supabase:', error);
-    return [];
+  if (hasGeneratedGuideHexSuffix(normalized)) {
+    const baseSlug = stripGeneratedGuideHexSuffix(normalized);
+    return STATIC_COLUMNS_BY_SLUG.get(baseSlug) ?? null;
   }
+  return null;
 }
 
-/**
- * 카테고리별 칼럼 조회
- */
+/** 정적으로 생성된 발행 칼럼 목록을 최신순으로 반환합니다. */
+export async function getAllColumns(category?: string): Promise<ColumnData[]> {
+  const normalizedCategory = String(category || "").trim().toLowerCase();
+  return STATIC_COLUMNS.filter((entry) => {
+    if (!normalizedCategory) return true;
+    return entry.category.toLowerCase() === normalizedCategory || entry.categoryLabel.toLowerCase() === normalizedCategory;
+  });
+}
+
 export async function getColumnsByCategory(category: string): Promise<ColumnData[]> {
   return getAllColumns(category);
 }
 
-/**
- * ID로 칼럼 상세 조회
- */
 export async function getColumnById(id: string): Promise<ColumnData | null> {
-  try {
-    const { data, error } = await supabase
-      .from('columns')
-      .select('*')
-      .eq('id', id)
-      .eq('published', true)
-      .maybeSingle();
-
-    if (error) {
-      console.error('Supabase getColumnById error:', error);
-      return null;
-    }
-    return data ? mapRow(data) : null;
-  } catch (error) {
-    console.error('Failed to fetch column by id:', error);
-    return null;
-  }
-}
-
-async function getPublishedColumnBySlugValue(slug: string): Promise<ColumnData | null> {
-  const { data, error } = await supabase
-    .from('columns')
-    .select('*')
-    .eq('slug', slug)
-    .eq('published', true)
-    .maybeSingle();
-
-    if (error) {
-      console.error('Supabase getColumnBySlug error:', error);
-      return null;
-    }
-
-  return data ? mapRow(data) : null;
+  const listed = findStaticColumn(id);
+  if (!listed) return null;
+  return (await loadStaticColumnBySlug(listed.slug || listed.id)) || listed;
 }
 
 /**
- * 슬러그로 칼럼 상세 조회
- *
- * 리뉴얼 이후 sitemap/prerender URL은 /guide/{slug}-{id8} 형태인데,
- * 일부 Supabase rows는 여전히 {slug}만 저장하고 있습니다.
- * 이 경우 클라이언트 hydration 후 NotFound(noindex)로 바뀌지 않도록
- * 1) URL slug 그대로 조회 → 2) generated hex suffix 제거 후 재조회 → 3) UUID 조회
- * 순서로 fallback 합니다.
+ * 발행 상세 페이지는 CDN의 정적 fallback을 우선 사용합니다. DB를 직접 조회하지 않아
+ * 공개 anon key를 통한 콘텐츠 테이블 반복 다운로드와 egress 재발을 방지합니다.
  */
 export async function getColumnBySlug(slug: string): Promise<ColumnData | null> {
-  try {
-    const normalizedSlug = String(slug || '').trim().toLowerCase();
-    if (!normalizedSlug) return null;
+  const normalized = String(slug || "").trim().toLowerCase();
+  if (!normalized) return null;
 
-    // 발행 칼럼은 CDN 정적 자산을 우선 사용합니다.
-    const staticColumn = await loadStaticColumnBySlug(normalizedSlug);
-    if (staticColumn) return staticColumn;
+  const direct = await loadStaticColumnBySlug(normalized);
+  if (direct) return direct;
 
-    const direct = await getPublishedColumnBySlugValue(normalizedSlug);
-    if (direct) return direct;
+  const listed = findStaticColumn(normalized);
+  if (!listed) return null;
 
-    if (hasGeneratedGuideHexSuffix(normalizedSlug)) {
-      const baseSlug = stripGeneratedGuideHexSuffix(normalizedSlug);
-      if (baseSlug && baseSlug !== normalizedSlug) {
-        const byBaseSlug = await getPublishedColumnBySlugValue(baseSlug);
-        if (byBaseSlug) return byBaseSlug;
-      }
-    }
-
-    const byId = await getColumnById(normalizedSlug);
-    return byId || loadStaticColumnBySlug(normalizedSlug);
-  } catch (error) {
-    console.error('Failed to fetch column by slug:', error);
-    return loadStaticColumnBySlug(slug);
-  }
+  const byCanonicalSlug = await loadStaticColumnBySlug(listed.slug || listed.id);
+  return byCanonicalSlug || listed;
 }
 
-/**
- * 최신 칼럼 N개 조회
- */
-export async function getLatestColumns(limit: number = 3): Promise<ColumnData[]> {
-  try {
-    const { data, error } = await supabase
-      .from('columns')
-      .select('*')
-      .eq('published', true)
-      .order('published_at', { ascending: false, nullsFirst: false })
-      .limit(limit);
-
-    if (error) {
-      console.error('Supabase getLatestColumns error:', error);
-      return [];
-    }
-    return (data || []).map(mapRow);
-  } catch (error) {
-    console.error('Failed to fetch latest columns:', error);
-    return [];
-  }
+export async function getLatestColumns(limit = 3): Promise<ColumnData[]> {
+  const safeLimit = Math.max(0, Math.min(Math.floor(limit) || 0, STATIC_COLUMNS.length));
+  return STATIC_COLUMNS.slice(0, safeLimit);
 }
 
-/**
- * 메인화면 추천 칼럼 조회 (featured_columns 테이블 기반)
- * 설정된 슬롯이 없으면 최신 칼럼으로 fallback
- */
+/** 홈 추천은 빌드 시 확정된 정적 미리보기로 제공하고, 부족하면 최신 정적 목록으로 채웁니다. */
 export async function getFeaturedColumns(): Promise<ColumnData[]> {
-  try {
-    const { data, error } = await supabase
-      .from('featured_columns')
-      .select('position, column:columns(*)')
-      .order('position', { ascending: true });
+  const featured = HOME_COLUMNS_PREVIEW.map((entry) => mapRow(entry));
+  if (featured.length >= 3) return featured.slice(0, 3);
 
-    if (error) {
-      console.error('Supabase getFeaturedColumns error:', error);
-      return getLatestColumns(3);
-    }
-
-    if (!data || data.length === 0) {
-      return getLatestColumns(3);
-    }
-
-    // position 1~3 슬롯 채우기, 빈 슬롯은 최신 칼럼으로 fallback
-    const slots: (ColumnData | null)[] = [null, null, null];
-    data.forEach((row: any) => {
-      const pos = row.position;
-      if (pos >= 1 && pos <= 3 && row.column) {
-        slots[pos - 1] = mapRow(row.column);
-      }
-    });
-
-    const hasEmpty = slots.some((s) => s === null);
-    if (hasEmpty) {
-      const latest = await getLatestColumns(3);
-      const usedIds = new Set(slots.filter(Boolean).map((s) => s!.id));
-      let latestIdx = 0;
-      return slots.map((s) => {
-        if (s !== null) return s;
-        while (latestIdx < latest.length && usedIds.has(latest[latestIdx].id)) {
-          latestIdx++;
-        }
-        return latestIdx < latest.length ? latest[latestIdx++] : null;
-      }).filter(Boolean) as ColumnData[];
-    }
-
-    return slots.filter(Boolean) as ColumnData[];
-  } catch (error) {
-    console.error('Failed to fetch featured columns:', error);
-    return getLatestColumns(3);
-  }
+  const usedIds = new Set(featured.map((entry) => entry.id));
+  return [...featured, ...STATIC_COLUMNS.filter((entry) => !usedIds.has(entry.id))].slice(0, 3);
 }
 
-// 호환성을 위한 더미 데이터
-export const columns: ColumnData[] = [];
+/** 기존 동기 API와의 호환성용 정적 목록입니다. */
+export const columns: ColumnData[] = STATIC_COLUMNS;
