@@ -80,6 +80,11 @@ function dreamMetaDescription(subject: string, categoryLabel: string, supplied: 
   return detail.slice(0, 160);
 }
 
+function dreamPsychologyContext(subject: string): string {
+  const subjectWithParticle = /꿈$/u.test(subject) ? `${subject}이` : `${subject}에 담긴 장면이`;
+  return `${subjectWithParticle} 반복되거나 유난히 선명했다면, 꿈을 꾼 당시의 관계·환경·감정을 함께 떠올려 보세요. 아래 해석은 현재의 부담, 기대, 변화를 돌아보는 단서로 활용할 수 있습니다.`;
+}
+
 const DREAM_COLUMNS = [
   { href: '/guide/fortune-flow-late-bloom-fortune-9f61d4e0', category: '운명의 흐름', title: '막막한 인생길, 내 사주의 보물 지도를 펼칠 시간', summary: '꿈이 보여주는 방향과 사주가 가리키는 운의 흐름을 함께 읽으면 인생의 다음 챕터가 보입니다.', emoji: '🗺️', thumbBg: '#eef2ff' },
   { href: '/guide/2026-byongo-year-zodiac-fortune-all', category: '올해의 운세', title: '2026 병오년 띠별 운세 총정리', summary: '올해 내 띠의 전반적인 흐름을 미리 확인하세요. 꿈이 반복된다면 대운의 변화와 연결되어 있을 수 있습니다.', emoji: '🐴', thumbBg: '#fef9c3' },
@@ -125,6 +130,7 @@ export default function DreamDetail() {
   const suppliedMetaDescription = dream?.meta_description || preview?.meta_description || preview?.interpretation || '';
   const metaTitle = `${subject} 꿈 해몽 | ${categoryLabel}의 의미와 심리 해석 | 무운사주`;
   const metaDescription = dreamMetaDescription(subject, categoryLabel, suppliedMetaDescription);
+  const psychologyContext = dreamPsychologyContext(subject);
   const publishedDate = dream?.published_at || preview?.published_at || '';
   const score = dream?.score || preview?.score || 70;
 
@@ -367,6 +373,9 @@ export default function DreamDetail() {
                 <h2 className="text-base font-bold" style={{ color: '#1e2340' }}>심리적 해석</h2>
               </div>
               <div className="px-5 py-5">
+                <p className="text-base leading-8 mb-3" style={{ color: '#334155' }}>
+                  {psychologyContext}
+                </p>
                 <p className="text-base leading-8" style={{ color: '#334155' }}>
                   <LinkedText text={dream?.psychological_meaning ?? ''} />
                 </p>

@@ -28,6 +28,10 @@ function extract(pattern, html) {
   return html.match(pattern)?.[1]?.trim() || '';
 }
 
+function normalizeArticleText(html) {
+  return htmlDecode(html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ')).trim();
+}
+
 function duplicateGroups(values) {
   const groups = new Map();
   for (const value of values) {
@@ -55,7 +59,8 @@ const pages = collectHtmlFiles(dreamRoot).map((filePath) => {
     .map((match) => match[1])
     .filter((href) => href !== new URL(canonical).pathname)
     .filter((href, index, all) => all.indexOf(href) === index);
-  return { url, title, description, canonical, relatedDreamLinkCount: relatedDreamLinks.length };
+  const articleText = normalizeArticleText(extract(/<article>([\s\S]*?)<\/article>/i, html));
+  return { url, title, description, canonical, articleText, relatedDreamLinkCount: relatedDreamLinks.length };
 });
 
 const report = {
@@ -63,6 +68,7 @@ const report = {
   pageCount: pages.length,
   titleDuplicateGroups: duplicateGroups(pages.map((page) => page.title)),
   descriptionDuplicateGroups: duplicateGroups(pages.map((page) => page.description)),
+  articleTextDuplicateGroups: duplicateGroups(pages.map((page) => page.articleText)),
   pagesWithThreeOrMoreRelatedDreamLinks: pages.filter((page) => page.relatedDreamLinkCount >= 3).length,
   pagesWithoutRelatedDreamLinks: pages.filter((page) => page.relatedDreamLinkCount === 0).map((page) => page.url),
   samples: pages.slice(0, 3),
@@ -71,7 +77,7 @@ const report = {
 fs.mkdirSync(path.dirname(reportPath), { recursive: true });
 fs.writeFileSync(reportPath, `${JSON.stringify(report, null, 2)}\n`);
 console.log(`Audited ${report.pageCount} generated dream pages.`);
-console.log(`Duplicate titles: ${report.titleDuplicateGroups.length}; duplicate descriptions: ${report.descriptionDuplicateGroups.length}.`);
+console.log(`Duplicate titles: ${report.titleDuplicateGroups.length}; duplicate descriptions: ${report.descriptionDuplicateGroups.length}; duplicate article bodies: ${report.articleTextDuplicateGroups.length}.`);
 console.log(`Pages with 3+ related dream links: ${report.pagesWithThreeOrMoreRelatedDreamLinks}.`);
 console.log(`Report: ${reportPath}`);
 
