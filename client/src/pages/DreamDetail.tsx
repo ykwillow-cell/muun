@@ -72,6 +72,10 @@ function dreamSubject(keyword = ''): string {
   return subject || String(keyword).trim() || '이 꿈';
 }
 
+function dreamHeading(subject: string): string {
+  return /꿈$/u.test(subject) ? `${subject} 해몽` : `${subject} 꿈 해몽`;
+}
+
 function dreamMetaDescription(subject: string, categoryLabel: string, supplied: string): string {
   const lead = `${subject}의 의미를 ${categoryLabel} 관점에서 살펴봅니다.`;
   const detail = supplied
@@ -127,8 +131,9 @@ export default function DreamDetail() {
   );
   const rawKeyword = dream?.keyword || preview?.keyword || slug || '';
   const subject = dreamSubject(rawKeyword);
+  const heading = dreamHeading(subject);
   const suppliedMetaDescription = dream?.meta_description || preview?.meta_description || preview?.interpretation || '';
-  const metaTitle = `${subject} 꿈 해몽 | ${categoryLabel}의 의미와 심리 해석 | 무운사주`;
+  const metaTitle = `${heading} | ${categoryLabel}의 의미와 심리 해석 | 무운사주`;
   const metaDescription = dreamMetaDescription(subject, categoryLabel, suppliedMetaDescription);
   const psychologyContext = dreamPsychologyContext(subject);
   const publishedDate = dream?.published_at || preview?.published_at || '';
@@ -249,7 +254,7 @@ export default function DreamDetail() {
           {/* 제목 */}
           <h1 className="text-[26px] font-extrabold leading-[1.2] tracking-[-0.05em] mb-2"
             style={{ color: '#1e2340' }}>
-            {subject} 꿈 해몽
+            {heading}
           </h1>
           <p className="text-sm leading-7 mb-5" style={{ color: '#6b6c91' }}>{metaDescription}</p>
 
@@ -433,7 +438,7 @@ export default function DreamDetail() {
                         <span className="text-xs text-slate-400">{({ animal: '동물', nature: '자연 · 현상', person: '사람', object: '생활 · 사물', action: '행동', emotion: '감정', place: '장소', other: '기타' } as Record<string, string>)[item.category] || '기타'}</span>
                       </div>
                       <p className="text-sm font-bold leading-snug mb-1" style={{ color: '#1e2340' }}>
-                        {item.keyword} 꿈해몽
+                        {dreamHeading(dreamSubject(item.keyword))}
                       </p>
                       <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">{item.interpretation}</p>
                     </div>

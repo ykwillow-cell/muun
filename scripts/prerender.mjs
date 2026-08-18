@@ -123,6 +123,10 @@ function dreamSubject(keyword = '') {
   return subject || String(keyword).trim() || '이 꿈';
 }
 
+function dreamHeading(subject) {
+  return /꿈$/u.test(subject) ? `${subject} 해몽` : `${subject} 꿈 해몽`;
+}
+
 function buildDreamDescription(dream, categoryLabel) {
   const subject = dreamSubject(dream.keyword);
   const supplied = stripHtml(dream.meta_description || '');
@@ -141,7 +145,8 @@ function buildDreamPsychologyContext(subject) {
 function buildDreamPage(dream, relatedDreams = []) {
   const categoryLabel = DREAM_CATEGORY_LABELS[dream.category] || '꿈해몽';
   const subject = dreamSubject(dream.keyword);
-  const title = `${subject} 꿈 해몽 | ${categoryLabel}의 의미와 심리 해석 | 무운사주`;
+  const heading = dreamHeading(subject);
+  const title = `${heading} | ${categoryLabel}의 의미와 심리 해석 | 무운사주`;
   // DB 실제 필드명: interpretation (content 는 레거시 호환)
   const dreamContent = dream.interpretation || dream.traditional_meaning || dream.psychological_meaning || dream.content || '';
   const description = buildDreamDescription(dream, categoryLabel);
@@ -155,15 +160,15 @@ function buildDreamPage(dream, relatedDreams = []) {
   ];
   // 현재 Supabase의 꿈해몽 slug는 숫자로 끝나도 고유 URL일 수 있으므로 항상 self-canonical 처리합니다.
   const canonicalUrl = `${BASE_URL}/dream/${dream.slug}`;
-  const schema = { "@context": "https://schema.org", "@type": "Article", "headline": `${subject} 꿈 해몽`, "description": description, "author": { "@type": "Organization", "name": "무운 (MuUn)" }, "datePublished": dream.published_at || dream.created_at, "mainEntityOfPage": canonicalUrl };
+  const schema = { "@context": "https://schema.org", "@type": "Article", "headline": heading, "description": description, "author": { "@type": "Organization", "name": "무운 (MuUn)" }, "datePublished": dream.published_at || dream.created_at, "mainEntityOfPage": canonicalUrl };
   const relatedLinks = [
-    ...relatedDreams.map((item) => ({ href: `/dream/${item.slug}`, label: `${dreamSubject(item.keyword)} 꿈 해몽` })),
+    ...relatedDreams.map((item) => ({ href: `/dream/${item.slug}`, label: dreamHeading(dreamSubject(item.keyword)) })),
     { href: '/dream', label: `${categoryLabel} 꿈해몽 더 보기` },
     { href: '/daily-fortune', label: '오늘의 운세 확인하기' },
   ];
   return {
-    appHtml: buildPageShell({ sectionLabel: `꿈해몽 > ${categoryLabel}`, h1: `${subject} 꿈 해몽`, description: `${subject}의 상징을 전통적 의미와 심리적 맥락으로 나누어 살펴봅니다.`, sections: contentSections, breadcrumbs: [{ href: '/', label: '홈' }, { href: '/dream', label: '꿈해몽' }, { label: `${subject} 꿈 해몽` }], relatedLinks }),
-    head: makeHead({ title, description, canonicalUrl, keywords: [subject, `${subject} 꿈 해몽`, '꿈해몽', '꿈풀이', categoryLabel].join(', '), ogType: 'article', schema }),
+    appHtml: buildPageShell({ sectionLabel: `꿈해몽 > ${categoryLabel}`, h1: heading, description: `${subject}의 상징을 전통적 의미와 심리적 맥락으로 나누어 살펴봅니다.`, sections: contentSections, breadcrumbs: [{ href: '/', label: '홈' }, { href: '/dream', label: '꿈해몽' }, { label: heading }], relatedLinks }),
+    head: makeHead({ title, description, canonicalUrl, keywords: [subject, heading, '꿈해몽', '꿈풀이', categoryLabel].join(', '), ogType: 'article', schema }),
   };
 }
 
