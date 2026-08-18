@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { applyPublicApiSecurity, fetchWithTimeout, readLimitedJsonBody } from "./_security";
+import { applyPublicApiSecurity, fetchWithTimeout, readLimitedJsonBody } from "./_security.js";
 
 const currentYear = new Date().getUTCFullYear();
 
