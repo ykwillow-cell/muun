@@ -8,9 +8,23 @@ overrides:
   "@ts-morph/common>minimatch": 3.1.4
   brace-expansion: 1.1.18
   "glob>minimatch": 10.2.6
-  "@vercel/node>undici": 6.27.0
+  "@vercel/node>undici": 6.28.0
+  "@vercel/node>esbuild": 0.28.2
+  "@esbuild-kit/core-utils>esbuild": 0.25.10
+  "@vercel/static-config>ajv": 8.20.0
+  "@vercel/python-analysis>js-yaml": 4.3.1
+  "@vercel/python-analysis>minimatch": 10.2.6
+  "@vercel/python-analysis>smol-toml": 1.6.1
   "express>path-to-regexp": 0.1.13
   "recharts>lodash": 4.18.1
   lodash-es: 4.18.1
   "mermaid>lodash-es": 4.18.1
+  mermaid: 11.16.1
+  dompurify: 3.4.13
+  "@babel/core": 7.29.7
+  "express>body-parser": 1.20.6
+  "express>qs": 6.15.3
+  "react-markdown>mdast-util-to-hast": 13.2.1
+  "hast-util-raw>mdast-util-to-hast": 13.2.1
+  "mermaid>uuid": 11.1.1
   "@supabase/realtime-js>ws": 8.21.3
