@@ -116,18 +116,41 @@ function buildGuidePage(column) {
   };
 }
 
-function buildDreamPage(dream) {
+function dreamSubject(keyword = '') {
+  const subject = String(keyword)
+    .replace(/\s*해몽(?:\s*[:·|-].*)?$/u, '')
+    .trim();
+  return subject || String(keyword).trim() || '이 꿈';
+}
+
+function buildDreamDescription(dream, categoryLabel) {
+  const subject = dreamSubject(dream.keyword);
+  const supplied = stripHtml(dream.meta_description || '');
+  const uniqueLead = `${subject}의 의미를 ${categoryLabel} 관점에서 살펴봅니다.`;
+  const detail = supplied
+    ? `${uniqueLead} ${supplied}`
+    : `${uniqueLead} 전통적 상징과 심리적 해석, 오늘 확인할 점을 함께 정리했습니다.`;
+  return truncate(detail, 160);
+}
+
+function buildDreamPage(dream, relatedDreams = []) {
   const categoryLabel = DREAM_CATEGORY_LABELS[dream.category] || '꿈해몽';
-  const title = dream.meta_title || `${dream.keyword} 꿈해몽 풀이 | 무운`;
+  const subject = dreamSubject(dream.keyword);
+  const title = `${subject} 꿈 해몽 | ${categoryLabel}의 의미와 심리 해석 | 무운사주`;
   // DB 실제 필드명: interpretation (content 는 레거시 호환)
   const dreamContent = dream.interpretation || dream.traditional_meaning || dream.psychological_meaning || dream.content || '';
-  const description = dream.meta_description || truncate(stripHtml(dreamContent), 160);
+  const description = buildDreamDescription(dream, categoryLabel);
   // 현재 Supabase의 꿈해몽 slug는 숫자로 끝나도 고유 URL일 수 있으므로 항상 self-canonical 처리합니다.
   const canonicalUrl = `${BASE_URL}/dream/${dream.slug}`;
-  const schema = { "@context": "https://schema.org", "@type": "Article", "headline": `${dream.keyword} 꿈해몽`, "description": description, "author": { "@type": "Organization", "name": "무운 (MuUn)" } };
+  const schema = { "@context": "https://schema.org", "@type": "Article", "headline": `${subject} 꿈 해몽`, "description": description, "author": { "@type": "Organization", "name": "무운 (MuUn)" }, "datePublished": dream.published_at || dream.created_at, "mainEntityOfPage": canonicalUrl };
+  const relatedLinks = [
+    ...relatedDreams.map((item) => ({ href: `/dream/${item.slug}`, label: `${dreamSubject(item.keyword)} 꿈 해몽` })),
+    { href: '/dream', label: `${categoryLabel} 꿈해몽 더 보기` },
+    { href: '/daily-fortune', label: '오늘의 운세 확인하기' },
+  ];
   return {
-    appHtml: buildPageShell({ sectionLabel: `꿈해몽 > ${categoryLabel}`, h1: `${dream.keyword} 꿈해몽`, description: '꿈속의 상징이 알려주는 당신의 미래와 심리 상태를 확인하세요.', sections: [{ paragraphs: [stripHtml(dreamContent)] }], breadcrumbs: [{ href: '/', label: '홈' }, { href: '/dream', label: '꿈해몽' }, { label: dream.keyword }], relatedLinks: [{ href: '/dream', label: '다른 꿈해몽 찾기' }, { href: '/daily-fortune', label: '오늘의 운세 보기' }] }),
-    head: makeHead({ title, description, canonicalUrl, keywords: [dream.keyword, '꿈해몽', '꿈풀이', categoryLabel].join(', '), ogType: 'article', schema }),
+    appHtml: buildPageShell({ sectionLabel: `꿈해몽 > ${categoryLabel}`, h1: `${subject} 꿈 해몽`, description: `${subject}의 상징을 전통적 의미와 심리적 맥락으로 나누어 살펴봅니다.`, sections: [{ paragraphs: [stripHtml(dreamContent)] }], breadcrumbs: [{ href: '/', label: '홈' }, { href: '/dream', label: '꿈해몽' }, { label: `${subject} 꿈 해몽` }], relatedLinks }),
+    head: makeHead({ title, description, canonicalUrl, keywords: [subject, `${subject} 꿈 해몽`, '꿈해몽', '꿈풀이', categoryLabel].join(', '), ogType: 'article', schema }),
   };
 }
 
@@ -427,7 +450,15 @@ async function run() {
     const finalSlug = resolveGuideSlug(column);
     return { url: `/guide/${finalSlug}`, page: buildGuidePage({ ...column, slug: finalSlug }) };
   }));
-  const dreamPages = dedupeByUrl(dreams.map((dream) => ({ url: `/dream/${normalizeSlug(dream.slug)}`, page: buildDreamPage({ ...dream, slug: normalizeSlug(dream.slug) }) })));
+  const normalizedDreams = dreams
+    .map((dream) => ({ ...dream, slug: normalizeSlug(dream.slug) }))
+    .filter((dream) => dream.slug);
+  const stableHash = (value) => [...value].reduce((hash, char) => ((hash * 31) + char.codePointAt(0)) >>> 0, 0);
+  const relatedDreamsFor = (dream) => normalizedDreams
+    .filter((item) => item.slug !== dream.slug && item.category === dream.category)
+    .sort((left, right) => stableHash(`${dream.slug}:${left.slug}`) - stableHash(`${dream.slug}:${right.slug}`))
+    .slice(0, 3);
+  const dreamPages = dedupeByUrl(normalizedDreams.map((dream) => ({ url: `/dream/${dream.slug}`, page: buildDreamPage(dream, relatedDreamsFor(dream)) })));
   const dictionaryPages = dedupeByUrl(dictionaryEntries.map((entry) => ({ url: `/dictionary/${normalizeSlug(entry.slug)}`, page: buildDictionaryPage({ ...entry, slug: normalizeSlug(entry.slug) }) })));
   
   // fortune-dictionary 인덱스: 발행된 사전 항목은 단어별 상세 URL로 모두 연결합니다.

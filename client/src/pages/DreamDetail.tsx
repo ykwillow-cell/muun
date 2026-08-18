@@ -65,6 +65,21 @@ const RELATED_SERVICES = [
   { href: '/tojeong', icon: '📜', label: '토정비결', desc: '올해 나에게 찾아올 운의 흐름', free: true },
 ];
 
+function dreamSubject(keyword = ''): string {
+  const subject = String(keyword)
+    .replace(/\s*해몽(?:\s*[:·|-].*)?$/u, '')
+    .trim();
+  return subject || String(keyword).trim() || '이 꿈';
+}
+
+function dreamMetaDescription(subject: string, categoryLabel: string, supplied: string): string {
+  const lead = `${subject}의 의미를 ${categoryLabel} 관점에서 살펴봅니다.`;
+  const detail = supplied
+    ? `${lead} ${supplied.replace(/\s+/g, ' ').trim()}`
+    : `${lead} 전통적 상징과 심리적 해석, 오늘 확인할 점을 함께 정리했습니다.`;
+  return detail.slice(0, 160);
+}
+
 const DREAM_COLUMNS = [
   { href: '/guide/fortune-flow-late-bloom-fortune-9f61d4e0', category: '운명의 흐름', title: '막막한 인생길, 내 사주의 보물 지도를 펼칠 시간', summary: '꿈이 보여주는 방향과 사주가 가리키는 운의 흐름을 함께 읽으면 인생의 다음 챕터가 보입니다.', emoji: '🗺️', thumbBg: '#eef2ff' },
   { href: '/guide/2026-byongo-year-zodiac-fortune-all', category: '올해의 운세', title: '2026 병오년 띠별 운세 총정리', summary: '올해 내 띠의 전반적인 흐름을 미리 확인하세요. 꿈이 반복된다면 대운의 변화와 연결되어 있을 수 있습니다.', emoji: '🐴', thumbBg: '#fef9c3' },
@@ -96,8 +111,6 @@ export default function DreamDetail() {
   const gradeKey = (dream?.grade || preview?.grade || 'good') as DreamGrade;
   const grade = gradeConfig[gradeKey] || gradeConfig.good;
   const GradeIcon = grade.Icon;
-  const metaTitle = dream?.meta_title || preview?.meta_title || `${preview?.keyword || slug} 꿈해몽 | 무운`;
-  const metaDescription = dream?.meta_description || preview?.meta_description || preview?.interpretation || '꿈의 의미와 해석을 알아보세요.';
   const canonicalUrl = `https://muunsaju.com/dream/${slug}`;
   const rawCategory = dream?.category || preview?.category || 'other';
   const { label: categoryLabel } = (
@@ -107,7 +120,12 @@ export default function DreamDetail() {
         action: '행동', emotion: '감정', place: '장소', other: '기타' }[rawCategory] as string }
     : { label: '기타' }
   );
-  const publishedDate = preview?.published_at || '';
+  const rawKeyword = dream?.keyword || preview?.keyword || slug || '';
+  const subject = dreamSubject(rawKeyword);
+  const suppliedMetaDescription = dream?.meta_description || preview?.meta_description || preview?.interpretation || '';
+  const metaTitle = `${subject} 꿈 해몽 | ${categoryLabel}의 의미와 심리 해석 | 무운사주`;
+  const metaDescription = dreamMetaDescription(subject, categoryLabel, suppliedMetaDescription);
+  const publishedDate = dream?.published_at || preview?.published_at || '';
   const score = dream?.score || preview?.score || 70;
 
   const relatedDreams = useMemo(() => {
@@ -116,17 +134,15 @@ export default function DreamDetail() {
       item.slug !== slug && !!item.published_at
     );
 
-    // 같은 카테고리 우선, 부족하면 전체에서 score 높은 순으로 보충
-    const sameCategory = published
-      .filter((item) => category && item.category === category)
-      .sort((a, b) => (b.score || 0) - (a.score || 0));
+    // 같은 카테고리 우선. 현재 슬러그를 seed로 사용해 모든 상세가 동일한 인기 항목만 가리키지 않도록 합니다.
+    const stableHash = (value: string) => [...value].reduce((hash, char) => ((hash * 31) + char.codePointAt(0)!) >>> 0, 0);
+    const rankByRelation = (items: DreamData[]) => items
+      .sort((a, b) => stableHash(`${slug}:${a.slug}`) - stableHash(`${slug}:${b.slug}`));
+    const sameCategory = rankByRelation(published.filter((item) => category && item.category === category));
 
     if (sameCategory.length >= 4) return sameCategory.slice(0, 4);
 
-    const others = published
-      .filter((item) => !category || item.category !== category)
-      .sort((a, b) => (b.score || 0) - (a.score || 0));
-
+    const others = rankByRelation(published.filter((item) => !category || item.category !== category));
     return [...sameCategory, ...others].slice(0, 4);
   }, [dream?.category, preview?.category, slug]);
 
@@ -227,7 +243,7 @@ export default function DreamDetail() {
           {/* 제목 */}
           <h1 className="text-[26px] font-extrabold leading-[1.2] tracking-[-0.05em] mb-2"
             style={{ color: '#1e2340' }}>
-            {(dream?.keyword || preview?.keyword || slug).replace(/\s*꿈해몽\s*$/g, '').trim()} 꿈해몽
+            {subject} 꿈 해몽
           </h1>
           <p className="text-sm leading-7 mb-5" style={{ color: '#6b6c91' }}>{metaDescription}</p>
 
@@ -385,7 +401,7 @@ export default function DreamDetail() {
               <Link href="/dream"
                 className="text-sm font-bold flex items-center gap-1 transition-opacity hover:opacity-80"
                 style={{ color: '#5a4ddb' }}>
-                전체보기 <ChevronRight size={14} aria-hidden="true" />
+                전체 꿈해몽 목록 <ChevronRight size={14} aria-hidden="true" />
               </Link>
             </div>
             <div className="divide-y divide-slate-100">
