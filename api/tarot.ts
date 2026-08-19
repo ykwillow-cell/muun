@@ -1,3 +1,4 @@
+import type { VercelRequest, VercelResponse } from "@vercel/node";
 import { z } from "zod";
 import { applyPublicApiSecurity, fetchWithTimeout, readLimitedJsonBody } from "./_security.js";
 
