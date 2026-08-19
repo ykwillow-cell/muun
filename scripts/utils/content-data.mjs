@@ -7,6 +7,10 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR = path.resolve(__dirname, '../..');
 const BACKUPS_DIR = path.join(ROOT_DIR, 'backups');
+const BUILD_SNAPSHOT_PATH = process.env.CONTENT_SNAPSHOT_PATH
+  ? path.resolve(ROOT_DIR, process.env.CONTENT_SNAPSHOT_PATH)
+  : null;
+let buildSnapshotCache;
 
 const DEFAULT_SUPABASE_URL = 'https://vuifbmsdggnwygvgcrkj.supabase.co';
 const DEFAULT_SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ1aWZibXNkZ2dud3lndmdjcmtqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE4NzY0ODYsImV4cCI6MjA4NzQ1MjQ4Nn0.PhMK66O73HH98WIPAu66qk8FuXwJLU4Z2bhDcmDCpKI';
@@ -62,6 +66,34 @@ function readBackupTable(tableName) {
   return {
     rows: parsed,
     source: `backup:${path.relative(ROOT_DIR, backupPath)}`,
+  };
+}
+
+function readBuildSnapshotTable(tableName) {
+  if (!BUILD_SNAPSHOT_PATH) return null;
+
+  if (buildSnapshotCache === undefined) {
+    if (!fs.existsSync(BUILD_SNAPSHOT_PATH)) {
+      throw new Error(`Build content snapshot is missing: ${BUILD_SNAPSHOT_PATH}`);
+    }
+    try {
+      buildSnapshotCache = JSON.parse(fs.readFileSync(BUILD_SNAPSHOT_PATH, 'utf8'));
+    } catch (error) {
+      throw new Error(`Build content snapshot is invalid: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }
+
+  if (buildSnapshotCache?.version !== 1) {
+    throw new Error('Build content snapshot has an unsupported version');
+  }
+  const rows = buildSnapshotCache?.tables?.[tableName]?.rows;
+  if (!Array.isArray(rows)) {
+    throw new Error(`Build content snapshot does not contain ${tableName} rows`);
+  }
+
+  return {
+    rows,
+    source: `build-snapshot:${path.relative(ROOT_DIR, BUILD_SNAPSHOT_PATH)}`,
   };
 }
 
@@ -193,6 +225,14 @@ function normalizeDictionaryMeta(row) {
 }
 
 export async function loadColumnsDataset({ limit = SEO_LIMITS.columns } = {}) {
+  const snapshot = readBuildSnapshotTable('columns');
+  if (snapshot) {
+    return {
+      rows: sortByPublishedDesc(snapshot.rows.filter((row) => row.published !== false)).slice(0, limit),
+      source: snapshot.source,
+    };
+  }
+
   try {
     const result = await fetchRestTable('columns', {
       select: 'id,slug,title,description,content,category,author,thumbnail_url,read_time,meta_title,meta_description,keywords,published_at,created_at,updated_at,published',
@@ -219,11 +259,21 @@ export async function loadColumnsDataset({ limit = SEO_LIMITS.columns } = {}) {
 }
 
 export async function loadDreamsDataset({ limit = SEO_LIMITS.dreams } = {}) {
+  const snapshot = readBuildSnapshotTable('dreams');
+  if (snapshot) {
+    return {
+      rows: sortByPublishedDesc(snapshot.rows.filter((row) => row.published !== false)).slice(0, limit).map(normalizeDreamMeta),
+      source: snapshot.source,
+    };
+  }
+
   try {
     const result = await fetchRestTable('dreams', {
       select: 'id,keyword,slug,interpretation,traditional_meaning,psychological_meaning,category,grade,score,published_at,created_at,updated_at,published,seo_data',
       filters: [{ field: 'published', value: true }],
-      order: ['published_at.desc.nullslast'],
+      // published_at 정렬은 Supabase에서 statement timeout을 유발할 수 있어,
+      // 기본 키로 페이지를 안정적으로 가져온 뒤 기존 로컬 정렬을 적용합니다.
+      order: ['id.asc'],
       limit,
     });
 
@@ -245,6 +295,14 @@ export async function loadDreamsDataset({ limit = SEO_LIMITS.dreams } = {}) {
 }
 
 export async function loadDictionaryDataset({ limit = SEO_LIMITS.dictionary } = {}) {
+  const snapshot = readBuildSnapshotTable('fortune_dictionary');
+  if (snapshot) {
+    return {
+      rows: sortByPublishedDesc(snapshot.rows.filter((row) => row.published !== false)).slice(0, limit).map(normalizeDictionaryMeta),
+      source: snapshot.source,
+    };
+  }
+
   try {
     const result = await fetchRestTable('fortune_dictionary', {
       select: 'id,slug,title,subtitle,summary,original_meaning,modern_interpretation,muun_advice,category,tags,meta_title,meta_description,published_at,created_at,updated_at,published',

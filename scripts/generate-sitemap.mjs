@@ -24,6 +24,11 @@ import {
   shouldExcludeGuideSlug,
   shouldExcludeDictionarySlug,
 } from './sitemap-exclusions.mjs';
+import {
+  loadColumnsDataset,
+  loadDreamsDataset,
+  loadDictionaryDataset,
+} from './utils/content-data.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT_DIR = path.resolve(__dirname, '..');
@@ -302,60 +307,21 @@ async function fetchRestTable(tableName, { select = '*', filters = [], order = [
 }
 
 async function loadDictionaryRows() {
-  try {
-    const rows = await fetchRestTable('fortune_dictionary', {
-      select: 'id,slug,published_at,updated_at',
-      filters: [{ field: 'published', value: true }],
-      order: ['published_at.desc.nullslast', 'created_at.desc'],
-      limit: SEO_LIMITS.dictionary,
-    });
-    console.log(`   ✅ dictionary Supabase: ${rows.length}개 / limit=${SEO_LIMITS.dictionary}`);
-    return rows;
-  } catch (e) {
-    console.warn(`   ⚠️ dictionary Supabase 실패 → backup 폴백: ${e.message}`);
-    const rows = sortByPublishedDesc(readBackupTable('fortune_dictionary').filter((r) => r.published !== false)).slice(0, SEO_LIMITS.dictionary);
-    console.log(`   📦 dictionary backup: ${rows.length}개 / limit=${SEO_LIMITS.dictionary}`);
-    if (STRICT_MODE && !ALLOW_CONTENT_BACKUP_FALLBACK) throw e;
-    return rows;
-  }
+  const result = await loadDictionaryDataset({ limit: SEO_LIMITS.dictionary });
+  console.log(`   ✅ dictionary: ${result.rows.length}개 / ${result.source}`);
+  return result.rows;
 }
 
 async function loadGuideRows() {
-  try {
-    const rows = await fetchRestTable('columns', {
-      select: 'id,slug,published_at,updated_at',
-      filters: [{ field: 'published', value: true }],
-      order: ['published_at.desc.nullslast', 'created_at.desc'],
-      limit: SEO_LIMITS.columns,
-    });
-    console.log(`   ✅ guide Supabase: ${rows.length}개 / limit=${SEO_LIMITS.columns}`);
-    return rows;
-  } catch (e) {
-    console.warn(`   ⚠️ guide Supabase 실패 → backup 폴백: ${e.message}`);
-    const rows = sortByPublishedDesc(readBackupTable('columns').filter((r) => r.published !== false)).slice(0, SEO_LIMITS.columns);
-    console.log(`   📦 guide backup: ${rows.length}개 / limit=${SEO_LIMITS.columns}`);
-    if (STRICT_MODE && !ALLOW_CONTENT_BACKUP_FALLBACK) throw e;
-    return rows;
-  }
+  const result = await loadColumnsDataset({ limit: SEO_LIMITS.columns });
+  console.log(`   ✅ guide: ${result.rows.length}개 / ${result.source}`);
+  return result.rows;
 }
 
 async function loadDreamRows() {
-  try {
-    const rows = await fetchRestTable('dreams', {
-      select: 'id,slug,published_at,updated_at',
-      filters: [{ field: 'published', value: true }],
-      order: ['published_at.desc.nullslast', 'created_at.desc'],
-      limit: SEO_LIMITS.dreams,
-    });
-    console.log(`   ✅ dream Supabase: ${rows.length}개 / limit=${SEO_LIMITS.dreams}`);
-    return rows;
-  } catch (e) {
-    console.warn(`   ⚠️ dream Supabase 실패 → backup 폴백: ${e.message}`);
-    const rows = sortByPublishedDesc(readBackupTable('dreams').filter((r) => r.published !== false)).slice(0, SEO_LIMITS.dreams);
-    console.log(`   📦 dream backup: ${rows.length}개 / limit=${SEO_LIMITS.dreams}`);
-    if (STRICT_MODE && !ALLOW_CONTENT_BACKUP_FALLBACK) throw e;
-    return rows;
-  }
+  const result = await loadDreamsDataset({ limit: SEO_LIMITS.dreams });
+  console.log(`   ✅ dream: ${result.rows.length}개 / ${result.source}`);
+  return result.rows;
 }
 
 // ────────────────────────────────────────────────────────────
@@ -439,7 +405,7 @@ function buildDictionaryEntries(rows) {
  * Dream URL: 슬러그 그대로 사용 (long descriptive 형식).
  */
 function buildDreamEntries(rows) {
-  const counters = { invalid: 0, excluded: 0, total: rows.length };
+  const counters = { invalid: 0, missingKeyword: 0, excluded: 0, total: rows.length };
   const entries = [];
   const validSlugSet = new Set(
     rows.map((r) => normalizeSlug(r.slug)).filter(isValidPrerenderedSlug)
@@ -448,6 +414,9 @@ function buildDreamEntries(rows) {
   for (const row of rows) {
     const slug = normalizeSlug(row.slug);
     if (!slug || !isValidPrerenderedSlug(slug)) { counters.invalid++; continue; }
+    // 프리렌더는 keyword가 있는 꿈 데이터만 상세 HTML을 생성한다.
+    // sitemap도 같은 기준을 사용해 존재하지 않는 정적 URL을 Google에 제출하지 않는다.
+    if (!String(row.keyword || '').trim()) { counters.missingKeyword++; continue; }
 
     const { exclude } = shouldExcludeDreamSlug(slug, validSlugSet);
     if (exclude) { counters.excluded++; continue; }
