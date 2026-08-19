@@ -3,13 +3,14 @@
 # Supabase 무료 플랜은 7일간 활동이 없으면 프로젝트가 일시 중지됩니다.
 # 이 워크플로우는 매일 한국 시간 자정(UTC 15:00)에 Supabase REST API에
 # 경량 SELECT 쿼리를 날려 일시 중지를 방지합니다.
-
+# hanja_dictionary는 anon SELECT 정책이 있어 RLS 적용 후에도 접근 가능합니다.
 name: Ping Supabase to prevent pause
 
 on:
   schedule:
     # 매일 UTC 15:00 = 한국 시간(KST) 자정 00:00
     - cron: '0 15 * * *'
+
   # 수동 실행 허용 (테스트 및 긴급 핑용)
   workflow_dispatch:
 
@@ -19,14 +20,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Ping naming_history table
+      - name: Ping hanja_dictionary table
         env:
           SUPABASE_URL: "https://vuifbmsdggnwygvgcrkj.supabase.co"
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
         run: |
           echo "Pinging Supabase at $(date)..."
           HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
-            "${SUPABASE_URL}/rest/v1/naming_history?select=id&limit=1" \
+            "${SUPABASE_URL}/rest/v1/hanja_dictionary?select=id&limit=1" \
             -H "apikey: ${SUPABASE_ANON_KEY}" \
             -H "Authorization: Bearer ${SUPABASE_ANON_KEY}")
           echo "HTTP Status: ${HTTP_STATUS}"
