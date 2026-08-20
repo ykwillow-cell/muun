@@ -51,6 +51,41 @@ const pastLifeResponseJsonSchema = {
   required: ["era", "country", "identity", "name", "trait", "story", "lesson", "karma", "element", "elementColor"],
 };
 
+type PastLifeInput = z.infer<typeof pastLifeRequestSchema>;
+
+const fallbackProfiles = [
+  { era: "조선 후기", country: "한반도", identity: "기록과 사람을 잇던 서리", name: "연화", trait: "관찰한 것을 차분히 정리하는 태도" },
+  { era: "19세기 후반", country: "동아시아의 항구 도시", identity: "길을 안내하던 상인", name: "도윤", trait: "낯선 변화 속에서도 균형을 찾는 감각" },
+  { era: "근대 초입", country: "한반도의 작은 마을", identity: "배움과 돌봄을 나누던 교사", name: "서린", trait: "작은 약속을 꾸준히 지키는 성향" },
+  { era: "먼 옛날", country: "강과 산이 가까운 마을", identity: "계절의 흐름을 살피던 이야기꾼", name: "하람", trait: "사람의 마음을 듣고 의미를 엮는 힘" },
+];
+const fallbackElements = ["목", "화", "토", "금", "수"] as const;
+const fallbackElementColors = {
+  목: "text-green-400",
+  화: "text-red-400",
+  토: "text-yellow-400",
+  금: "text-gray-300",
+  수: "text-blue-400",
+} as const;
+
+function buildFallbackPastLife({ birthYear, birthMonth, birthDay }: PastLifeInput): z.infer<typeof pastLifeResponseSchema> {
+  const seed = Math.abs(birthYear * 31 + birthMonth * 13 + birthDay);
+  const profile = fallbackProfiles[seed % fallbackProfiles.length];
+  const element = fallbackElements[seed % fallbackElements.length];
+  return {
+    era: profile.era,
+    country: profile.country,
+    identity: profile.identity,
+    name: profile.name,
+    trait: profile.trait,
+    story: `이는 상상력을 위한 전생 서사입니다. 당신은 ${profile.era}의 ${profile.country}에서 ${profile.identity}로 살아가며, 주변의 변화와 사람들의 필요를 세심하게 살폈다는 이야기로 읽어볼 수 있습니다.`,
+    lesson: "정답을 서두르기보다 현재의 감정과 관계를 차분히 돌아보고, 오늘 할 수 있는 작은 선택을 실천하는 태도를 떠올려 보세요.",
+    karma: "과거를 사실로 단정하기보다 자신을 이해하기 위한 상상적 도구로 활용하면, 현재의 강점과 관심사를 발견하는 데 도움이 될 수 있습니다.",
+    element,
+    elementColor: fallbackElementColors[element],
+  };
+}
+
 function parseGeminiJson(data: unknown) {
   const candidate = (data as { candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }> })
     ?.candidates?.[0];
@@ -83,9 +118,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
 
   const apiKey = process.env.GEMINI_API_KEY;
+  const fallbackResult = buildFallbackPastLife(parsed.data);
   if (!apiKey) {
-    console.error("[PastLife API] Gemini API key is not configured");
-    return res.status(503).json({ error: "전생 탐색 서비스를 현재 사용할 수 없습니다." });
+    console.error("[PastLife API] Gemini API key is not configured; serving fallback");
+    return res.status(200).json(fallbackResult);
   }
 
   const { birthYear, birthMonth, birthDay, gender } = parsed.data;
@@ -130,21 +166,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     );
 
     if (!response.ok) {
-      console.error("[PastLife API] Gemini request failed", { status: response.status });
-      return res.status(502).json({ error: "전생 탐색에 실패했습니다. 잠시 후 다시 시도해주세요." });
+      console.error("[PastLife API] Gemini request failed; serving fallback", { status: response.status });
+      return res.status(200).json(fallbackResult);
     }
 
     const responseData = parseGeminiJson(await response.json());
     if (!responseData?.success) {
-      console.error("[PastLife API] Gemini returned invalid structured output");
-      return res.status(502).json({ error: "전생 탐색 결과를 생성하지 못했습니다. 잠시 후 다시 시도해주세요." });
+      console.error("[PastLife API] Gemini returned invalid structured output; serving fallback");
+      return res.status(200).json(fallbackResult);
     }
 
     return res.status(200).json(responseData.data);
   } catch (error) {
-    console.error("[PastLife API] Unexpected Gemini invocation failure", {
+    console.error("[PastLife API] Unexpected Gemini invocation failure; serving fallback", {
       name: error instanceof Error ? error.name : "UnknownError",
     });
-    return res.status(502).json({ error: "전생 탐색 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요." });
+    return res.status(200).json(fallbackResult);
   }
 }
