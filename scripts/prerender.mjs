@@ -62,7 +62,7 @@ function buildPageShell({ sectionLabel, h1, description, metaLines = [], section
   return `<header>${navHtml}</header><main>${breadcrumbHtml}<article>${sectionLabel ? `<p>${escapeHtml(sectionLabel)}</p>` : ''}<h1>${escapeHtml(h1)}</h1><p>${escapeHtml(description)}</p>${metaHtml}${sectionsHtml}</article>${relatedHtml}</main><footer><nav aria-label="푸터 메뉴"><a href="/about">무운 소개</a><a href="/contact">문의하기</a><a href="/privacy">개인정보처리방침</a><a href="/terms">이용약관</a></nav><p>© 2026 MUUN. All rights reserved.</p></footer>`;
 }
 
-function makeHead({ title, description, canonicalUrl, keywords = '', ogType = 'article', ogImage = `${BASE_URL}/images/horse_mascot.png`, schema = [], extraMeta = [] }) {
+function makeHead({ title, description, canonicalUrl, keywords = '', ogType = 'article', ogImage = `${BASE_URL}/images/horse_mascot.png`, schema = [], extraMeta = [], robots = 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1' }) {
   const schemaArray = Array.isArray(schema) ? schema : (schema ? [schema] : []);
   const schemaScripts = schemaArray.filter(Boolean).map((item) => `<script type="application/ld+json">${JSON.stringify(item)}</script>`).join('\n    ');
   return {
@@ -70,7 +70,7 @@ function makeHead({ title, description, canonicalUrl, keywords = '', ogType = 'a
     meta: [
       `<meta name="description" content="${escapeHtml(description)}">`,
       keywords ? `<meta name="keywords" content="${escapeHtml(keywords)}">` : '',
-      '<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">',
+      `<meta name="robots" content="${escapeHtml(robots)}">`,
       `<meta property="og:title" content="${escapeHtml(title)}">`,
       `<meta property="og:description" content="${escapeHtml(description)}">`,
       `<meta property="og:url" content="${escapeHtml(canonicalUrl)}">`,
@@ -509,6 +509,28 @@ async function run() {
     relatedLinks: [{ href: '/daily-fortune', label: '오늘의 운세 보기' }, { href: '/lifelong-saju', label: '평생사주 보기' }]
   });
 
+  // 개인 입력값을 포함하는 결과 URL은 색인 대상이 아닙니다. 모든 날짜 경로가 같은
+  // 초기 HTML을 받도록 전용 정적 쉘을 생성하고, 배포 라우트에서 이 문서로 rewrite합니다.
+  const yearlyFortuneDetailPage = {
+    appHtml: buildPageShell({
+      sectionLabel: '2026년 신년운세 결과',
+      h1: '개인 맞춤 신년운세 결과',
+      description: '입력한 생년월일을 바탕으로 생성한 결과 페이지입니다. 이 페이지는 개인화된 결과이므로 검색 색인에는 포함되지 않습니다.',
+      sections: [{ heading: '신년운세 확인 안내', paragraphs: ['신년운세는 생년월일에 따라 달라지는 개인화된 결과입니다. 결과는 참고 자료로 활용하고, 연간운세 메인에서 새로운 분석을 시작할 수 있습니다.'] }],
+      breadcrumbs: [{ href: '/', label: '홈' }, { href: '/yearly-fortune', label: '신년운세' }, { label: '개인 결과' }],
+      relatedLinks: [{ href: '/yearly-fortune', label: '2026년 신년운세 메인' }, { href: '/daily-fortune', label: '오늘의 운세 보기' }],
+    }),
+    head: makeHead({
+      title: '2026년 신년운세 결과 | 무운사주',
+      description: '개인 맞춤 신년운세 결과 페이지입니다. 새로운 신년운세 분석은 무운사주 신년운세 메인에서 시작하세요.',
+      canonicalUrl: `${BASE_URL}/yearly-fortune`,
+      ogType: 'website',
+      robots: 'noindex, follow',
+      schema: [],
+    }),
+    dehydratedState: {},
+  };
+
   const guideIndexHtml = buildPageShell({
     h1: '무운 운세 칼럼',
     description: `사주, 운세, 궁합, 개운법을 쉽게 이해할 수 있도록 정리한 ${columns.length.toLocaleString('ko-KR')}개의 운세 칼럼입니다.`,
@@ -554,6 +576,9 @@ async function run() {
     } catch (error) { console.error(`❌ Failed to render ${url}:`, error); }
   }
   
+  writeOutput('/yearly-fortune-detail', buildHtmlFromTemplate(template, yearlyFortuneDetailPage));
+  successCount += 1;
+
   const detailPages = [...guidePages, ...dreamPages, ...dictionaryPages];
   for (const { url, page } of detailPages) {
     try { writeOutput(url, buildHtmlFromTemplate(template, { ...page, dehydratedState: {} })); successCount += 1; } catch (error) { console.error(`❌ Failed to build detail page ${url}:`, error); }
