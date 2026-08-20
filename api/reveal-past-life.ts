@@ -93,7 +93,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 }`;
 
   try {
-    const geminiUrl = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${encodeURIComponent(apiKey)}`;
+    const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(apiKey)}`;
     const response = await fetchWithTimeout(
       geminiUrl,
       {
@@ -101,7 +101,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: { temperature: 0.9, response_mime_type: "application/json", maxOutputTokens: 900 },
+          generationConfig: { temperature: 0.9, responseMimeType: "application/json", maxOutputTokens: 900 },
         }),
       },
       12_000,
