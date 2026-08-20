@@ -34,6 +34,23 @@ const pastLifeResponseSchema = z
   })
   .strict();
 
+const pastLifeResponseJsonSchema = {
+  type: "OBJECT",
+  properties: {
+    era: { type: "STRING" },
+    country: { type: "STRING" },
+    identity: { type: "STRING" },
+    name: { type: "STRING" },
+    trait: { type: "STRING" },
+    story: { type: "STRING" },
+    lesson: { type: "STRING" },
+    karma: { type: "STRING" },
+    element: { type: "STRING", enum: ["목", "화", "토", "금", "수"] },
+    elementColor: { type: "STRING", enum: ["text-green-400", "text-red-400", "text-yellow-400", "text-gray-300", "text-blue-400"] },
+  },
+  required: ["era", "country", "identity", "name", "trait", "story", "lesson", "karma", "element", "elementColor"],
+};
+
 function parseGeminiJson(data: unknown) {
   const candidate = (data as { candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }> })
     ?.candidates?.[0];
@@ -101,7 +118,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           contents: [{ parts: [{ text: prompt }] }],
-          generationConfig: { temperature: 0.9, responseMimeType: "application/json", maxOutputTokens: 900 },
+          generationConfig: {
+            temperature: 0.9,
+            responseMimeType: "application/json",
+            responseSchema: pastLifeResponseJsonSchema,
+            maxOutputTokens: 900,
+          },
         }),
       },
       12_000,
